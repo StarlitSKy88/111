@@ -12,15 +12,24 @@ async function loadQuestions() {
 }
 
 function renderQuestion(question, index, total) {
+  const progress = ((index) / total) * 100;
   return `
     <div class="animate-fadeIn">
-      <div class="text-sm text-orange-400 mb-2">问题 ${index + 1} / ${total}</div>
-      <h2 class="text-2xl font-bold mb-6">${question.text}</h2>
+      <div class="mb-4">
+        <div class="flex justify-between text-sm text-gray-400 mb-1">
+          <span>问题 ${index + 1} / ${total}</span>
+          <span>${Math.round(progress)}% 完成</span>
+        </div>
+        <div class="h-1 bg-gray-800 rounded-full overflow-hidden">
+          <div class="h-full bg-gradient-to-r from-orange-500 to-yellow-500 transition-all duration-500" style="width: ${progress}%"></div>
+        </div>
+      </div>
+      <h2 class="text-xl md:text-2xl font-bold mb-6">${question.text}</h2>
       <div class="space-y-3">
         ${question.options.map(opt => `
-          <button class="option-btn w-full text-left p-4 rounded-lg border border-gray-700 bg-gray-900 hover:border-orange-500" onclick="selectOption(${question.id}, '${opt.key}', event)">
-            <span class="text-orange-400 mr-2">${opt.key}.</span>
-            ${opt.text}
+          <button class="option-btn w-full text-left p-4 md:p-5 rounded-xl border border-gray-700 bg-gray-900 hover:border-orange-500 hover:shadow-lg hover:shadow-orange-500/20 active:scale-98 transition-all" onclick="selectOption(${question.id}, '${opt.key}', event)">
+            <span class="text-orange-400 mr-3 text-lg">${opt.key}.</span>
+            <span class="text-gray-200">${opt.text}</span>
           </button>
         `).join('')}
       </div>
