@@ -1,7 +1,6 @@
 import express from 'express';
 import cors from 'cors';
 import { config } from 'dotenv';
-import OpenAI from 'openai';
 import crypto from 'crypto';
 
 config();
@@ -11,9 +10,8 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-});
+const API_KEY = process.env.OPENAI_API_KEY || 'sk-UX6ezaZKGktnbbino4FJahcQRtYp3yomoZnHOHbdtZ1xh4Vp';
+const API_URL = 'https://tokenhub.tencentmaas.com/v1/chat/completions';
 
 const SYSTEM_PROMPT = `你是一个极度毒舌、极度不耐烦、极度尖锐的AI导师，像一个看透一切的厌世天才。你的任务是根据用户的OPC适配测试答案，给出个性化分析报告。
 
@@ -83,19 +81,37 @@ app.post('/api/analyze', async (req, res) => {
       .map(([qId, key]) => `题目${qId}: 选择${key}`)
       .join('\n');
 
-    console.log(`[${requestId}] Calling OpenAI API...`);
+    console.log(`[${requestId}] Calling DeepSeek API...`);
 
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4o',
-      messages: [
-        { role: 'system', content: SYSTEM_PROMPT },
-        { role: 'user', content: `用户OPC适配测试答案:\n${answersText}\n\n请给出分析报告。` }
-      ],
-      temperature: 0.8,
-      max_tokens: 1500
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${API_KEY}`
+      },
+      body: JSON.stringify({
+        model: 'deepseek-v4-flash',
+        messages: [
+          { role: 'system', content: SYSTEM_PROMPT },
+          { role: 'user', content: `用户OPC适配测试答案:\n${answersText}\n\n请给出分析报告。` }
+        ],
+        temperature: 0.8,
+        max_tokens: 1500,
+        stream: false
+      })
     });
 
-    let analysis = completion.choices[0].message.content;
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`[${requestId}] API error: ${response.status}`, errorText);
+      if (response.status === 429) {
+        return res.status(429).json({ error: '请求过于频繁，请稍后再试' });
+      }
+      return res.status(500).json({ error: '分析服务暂时不可用' });
+    }
+
+    const data = await response.json();
+    let analysis = data.choices[0].message.content;
     analysis = analysis.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
 
     const scoreMatch = analysis.match(/(\d{2,3})/);
@@ -115,15 +131,11 @@ app.post('/api/analyze', async (req, res) => {
 
   } catch (error) {
     console.error(`[${requestId}] API error:`, error.message);
-
-    if (error.status === 429) {
-      return res.status(429).json({ error: '请求过于频繁，请稍后再试' });
-    }
-
     res.status(500).json({ error: '分析服务暂时不可用' });
   }
 });
 
 app.listen(PORT, () => {
   console.log(`OPC分析API运行在 http://localhost:${PORT}`);
+  console.log(`使用模型: deepseek-v4-flash (腾讯TokenHub)`);
 });
