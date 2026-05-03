@@ -135,6 +135,71 @@ app.post('/api/analyze', async (req, res) => {
   }
 });
 
+app.post('/api/generate-manual', async (req, res) => {
+  const { answers, results } = req.body;
+  const requestId = crypto.randomUUID();
+
+  console.log(`[${requestId}] Generate manual request started`);
+
+  try {
+    const manualPrompt = `你是一个OPC项目规划专家。基于用户的测试答案和适配度分析，为用户生成一份个性化的OPC项目计划。
+
+用户答案: ${JSON.stringify(answers)}
+适配度: ${results?.fit_score || 75}分
+等级: ${results?.fit_level || '待定'}
+
+请生成以下内容（每项一句话）：
+1. 目标用户：你的第一个客户是谁？
+2. 痛点方案：你解决他们的什么问题？
+3. 推广渠道：你如何获取第一批客户？
+4. 第一周计划：具体要做什么？
+
+格式要求：简洁有力，每项不超过50字。`;
+
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${API_KEY}`
+      },
+      body: JSON.stringify({
+        model: 'deepseek-v4-flash',
+        messages: [
+          { role: 'system', content: '你是OPC项目规划专家，简洁有力，直接给方案。' },
+          { role: 'user', content: manualPrompt }
+        ],
+        temperature: 0.7,
+        max_tokens: 500,
+        stream: false
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error('API call failed');
+    }
+
+    const data = await response.json();
+    const content = data.choices[0].message.content;
+
+    const lines = content.split('\n').filter(l => l.trim());
+    res.json({
+      target_user: lines[0] || '服务有特定需求的年轻职场人',
+      pain_point: lines[1] || '帮助用户实现副业收入突破',
+      channel: lines[2] || '通过内容平台引流',
+      week1_plan: lines[3] || '完成定位并启动最小产品'
+    });
+
+  } catch (error) {
+    console.error(`[${requestId}] Manual generation error:`, error.message);
+    res.json({
+      target_user: '服务有特定需求的年轻职场人',
+      pain_point: '帮助用户实现副业收入突破',
+      channel: '通过内容平台引流',
+      week1_plan: '完成定位并启动最小产品'
+    });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`OPC分析API运行在 http://localhost:${PORT}`);
   console.log(`使用模型: deepseek-v4-flash (腾讯TokenHub)`);
