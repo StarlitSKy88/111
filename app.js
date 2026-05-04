@@ -3,6 +3,7 @@ const state = {
   answers: {},
   results: null,
   loading: false,
+  manualGenerated: false,
   error: null
 };
 
@@ -31,7 +32,7 @@ function renderQuestion(question, index, total) {
           <!-- Question text -->
           <h2 class="text-headline" style="margin-bottom: 2rem; color: var(--text-primary);">${question.text}</h2>
 
-          <!-- Options — ultra minimal, mobile-first -->
+          <!-- Options -->
           <div>
             ${question.options.map(opt => `
               <button class="opt" onclick="selectOption(${question.id}, '${opt.key}', event)">
@@ -121,43 +122,74 @@ function generateMockResults() {
   };
 }
 
-// Generate OPC Manual
-async function generateOPCManual() {
+// Generate manual with progress
+async function generateManualWithProgress() {
   const container = document.getElementById('manual-content');
   if (!container || !state.results) return;
 
-  try {
-    const response = await fetch('/api/generate-manual', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        answers: state.answers,
-        results: state.results
-      })
-    });
+  // Show progress
+  container.innerHTML = `
+    <div style="padding: 2rem 0;">
+      <div class="text-label" style="margin-bottom: 1.5rem; color: var(--text-tertiary);">正在生成OPC项目手册...</div>
+      <div class="progress-bar" style="--progress: 0%"></div>
+      <div id="manual-progress" class="text-label" style="margin-top: 0.75rem;">0%</div>
+    </div>
+  `;
 
-    if (response.ok) {
-      const manual = await response.json();
-      container.innerHTML = `
-        <div style="padding: 1.5rem 0;">
-          ${['目标用户', '痛点方案', '推广渠道', '第一周计划'].map((label, i) => `
-            <div style="margin-bottom: ${i < 3 ? '1.5rem' : '0'};">
-              <div class="text-label" style="margin-bottom: 0.5rem; color: var(--accent);">${label}</div>
-              <div class="text-body" style="color: var(--text-primary);">${Object.values(manual)[i]}</div>
-            </div>
-          `).join('')}
-        </div>
-      `;
-      const pdfBtn = document.getElementById('pdf-btn');
-      if (pdfBtn) pdfBtn.classList.remove('hidden');
-    }
-  } catch (error) {
-    container.innerHTML = `
-      <div class="text-body" style="color: var(--text-tertiary); padding: 1.5rem 0;">
-        请启动后端服务以生成完整项目手册
-      </div>
-    `;
+  // Simulate progress
+  const progressEl = document.getElementById('manual-progress');
+  const barEl = container.querySelector('.progress-bar');
+
+  for (let i = 0; i <= 100; i += 5) {
+    await new Promise(resolve => setTimeout(resolve, 80));
+    progressEl.textContent = i + '%';
+    barEl.style.setProperty('--progress', i + '%');
   }
+
+  // Show payment QR
+  container.innerHTML = `
+    <div style="padding: 2rem 0; text-align: center;">
+      <div class="text-label" style="margin-bottom: 1.5rem; color: var(--accent);">扫码支付9.9元</div>
+
+      <div style="display: inline-block; padding: 1.5rem; background: #fff; border-radius: 4px; margin-bottom: 1.5rem;">
+        <img src="wechat-pay.jpg" alt="微信支付" style="width: 180px; height: 180px; display: block;">
+      </div>
+
+      <div style="margin-bottom: 1.5rem;">
+        <div class="text-label" style="margin-bottom: 0.5rem;">支付后</div>
+        <p class="text-body" style="color: var(--text-secondary);">
+          添加微信：<span style="color: var(--accent);">把你的微信号</span><br>
+          我会发送完整OPC项目手册给你
+        </p>
+      </div>
+
+      <button onclick="showWechatID()" class="action" style="border-bottom: none; background: var(--accent); color: #fff; padding: 0.75rem 1.5rem;">
+        已支付？查看我的微信
+      </button>
+    </div>
+  `;
+}
+
+function showWechatID() {
+  const container = document.getElementById('manual-content');
+  if (!container) return;
+
+  container.innerHTML = `
+    <div style="padding: 2rem 0; text-align: center;">
+      <div class="text-label" style="margin-bottom: 1rem; color: var(--text-tertiary);">添加我的微信</div>
+      <div style="font-size: 1.5rem; font-weight: 300; color: var(--text-primary); margin-bottom: 1.5rem; letter-spacing: 0.1em;">
+        <span style="color: var(--accent);">你的微信号</span>
+      </div>
+      <p class="text-body" style="color: var(--text-secondary);">
+        长按复制微信号，添加到微信后<br>
+        发送"OPC手册"即可收到完整资料
+      </p>
+      <div style="margin-top: 2rem; padding: 1.5rem; border: 1px solid var(--line);">
+        <img src="wechat-pay.jpg" alt="微信二维码" style="width: 140px; height: 140px;">
+        <div class="text-label" style="margin-top: 0.75rem; color: var(--text-tertiary);">扫码也可以</div>
+      </div>
+    </div>
+  `;
 }
 
 // Share Card
@@ -185,7 +217,7 @@ function downloadShareCard() {
   });
 }
 
-// PDF Export
+// PDF Export (from results)
 function downloadPDF() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
@@ -333,18 +365,19 @@ function renderResult() {
           </ol>
         </div>
 
-        <!-- OPC Manual -->
+        <!-- OPC Manual (Payment Required) -->
         <div class="result-section">
           <div class="text-label" style="margin-bottom: 1rem; color: var(--text-tertiary);">OPC项目手册</div>
           <div id="manual-content">
-            <div style="display: flex; align-items: center; gap: 0.875rem; padding: 1.5rem 0;">
-              <div class="spinner"></div>
-              <span class="text-label">正在生成...</span>
+            <div style="text-align: center; padding: 1.5rem 0;">
+              <p class="text-body" style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                包含：目标用户定位 · 痛点方案 · 推广渠道 · 第一周行动计划
+              </p>
+              <button onclick="generateManualWithProgress()" class="btn-pdf">
+                生成完整手册 · 9.9元
+              </button>
             </div>
           </div>
-          <button id="pdf-btn" onclick="downloadPDF()" class="btn-pdf hidden">
-            下载PDF报告
-          </button>
         </div>
 
         <!-- Actions -->
@@ -399,9 +432,7 @@ async function render() {
     setTimeout(() => {
       const container = document.getElementById('score-container');
       if (container) {
-        animateScore(state.results.fit_score, () => {
-          generateOPCManual();
-        });
+        animateScore(state.results.fit_score, () => {});
       }
     }, 100);
   } else {
@@ -414,6 +445,7 @@ function restart() {
   state.currentQuestion = 0;
   state.answers = {};
   state.results = null;
+  state.manualGenerated = false;
   state.error = null;
   render();
 }
