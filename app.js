@@ -158,7 +158,7 @@ async function generateManualWithProgress() {
       <div style="margin-bottom: 1.5rem;">
         <div class="text-label" style="margin-bottom: 0.5rem;">支付后</div>
         <p class="text-body" style="color: var(--text-secondary);">
-          添加微信：<span style="color: var(--accent);">把你的微信号</span><br>
+          添加微信：<span style="color: var(--accent);">bcrf2025</span><br>
           我会发送完整OPC项目手册给你
         </p>
       </div>
@@ -178,7 +178,7 @@ function showWechatID() {
     <div style="padding: 2rem 0; text-align: center;">
       <div class="text-label" style="margin-bottom: 1rem; color: var(--text-tertiary);">添加我的微信</div>
       <div style="font-size: 1.5rem; font-weight: 300; color: var(--text-primary); margin-bottom: 1.5rem; letter-spacing: 0.1em;">
-        <span style="color: var(--accent);">你的微信号</span>
+        <span style="color: var(--accent);">bcrf2025</span>
       </div>
       <p class="text-body" style="color: var(--text-secondary);">
         长按复制微信号，添加到微信后<br>
