@@ -4,38 +4,280 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="description" content="OPC适配自测 - 通过10道测试题，AI豆包帮你分析你是否适合做一人公司。获取个性化项目计划。">
-  <meta name="theme-color" content="#111827">
+  <meta name="theme-color" content="#111110">
   <meta property="og:title" content="OPC适配自测 | 豆包帮你分析">
   <meta property="og:description" content="10道题，AI豆包告诉你适不适合做OPC">
   <meta property="og:type" content="website">
   <title>OPC适配自测 | 豆包帮你分析</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23f97316'><circle cx='12' cy='12' r='10' stroke='%23f97316' stroke-width='2' fill='none'/><circle cx='12' cy='12' r='6' fill='%23f97316'/></svg>">
+
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://cdn.tailwindcss.com">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+  <!-- SVG Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><circle cx='12' cy='12' r='10' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='12' cy='12' r='4' fill='%23C0392B'/></svg>">
+
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+
   <style>
-    * { -webkit-tap-highlight-color: transparent; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-    .animate-fadeIn { animation: fadeIn 0.4s ease-out; }
-    @keyframes scaleIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
-    .animate-scaleIn { animation: scaleIn 0.3s ease-out; }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-    .animate-pulse { animation: pulse 2s ease-in-out infinite; }
-    @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
-    .shimmer { background: linear-gradient(90deg, #f97316 25%, #fbbf24 50%, #f97316 75%); background-size: 200% 100%; animation: shimmer 2s linear infinite; -webkit-background-clip: text; background-clip: text; color: transparent; }
-    .loading-spinner { border: 3px solid rgba(255,255,255,0.1); border-top-color: #f97316; border-radius: 50%; width: 40px; height: 40px; animation: spin 0.8s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .option-btn { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
-    .option-btn:active { transform: scale(0.97); }
-    ::selection { background: #f97316; color: white; }
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #1f2937; }
-    ::-webkit-scrollbar-thumb { background: #f97316; border-radius: 3px; }
+    /* === Japanese Ma Design System === */
+    :root {
+      --ink: #1A1A18;
+      --ink-faded: #6B6862;
+      --ink-ghost: #A8A49E;
+      --paper: #F8F5F0;
+      --crimson: #C0392B;
+      --line: #E8E4DE;
+    }
+
+    * {
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #111110;
+      color: #F0EDE6;
+      min-height: 100dvh;
+      line-height: 1.8;
+      letter-spacing: 0.04em;
+      overflow-x: hidden;
+    }
+
+    /* Reduced motion support */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--crimson); opacity: 0.4; }
+
+    /* Focus states */
+    :focus-visible {
+      outline: 2px solid var(--crimson);
+      outline-offset: 3px;
+    }
+
+    /* Ma Layout Grid */
+    .ma-layout {
+      display: grid;
+      grid-template-columns: 1fr min(58ch, 100%) 1fr;
+      padding: 0 clamp(1.5rem, 5vw, 4rem);
+    }
+
+    .ma-center { grid-column: 2; }
+    .ma-full { grid-column: 1 / -1; }
+
+    /* Animation -书法笔触 feel */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes scoreReveal {
+      from { opacity: 0; transform: scale(0.92); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    .animate-fadeIn {
+      animation: fadeIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+      opacity: 0;
+    }
+
+    .animate-scoreReveal {
+      animation: scoreReveal 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+
+    /* Typography */
+    .text-display {
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      font-weight: 300;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+
+    .text-headline {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+    }
+
+    .text-body {
+      font-size: 1rem;
+      line-height: 1.9;
+      letter-spacing: 0.03em;
+    }
+
+    /* Option buttons - minimal, purposeful */
+    .option-btn {
+      position: relative;
+      width: 100%;
+      text-align: left;
+      padding: 1.5rem 1.25rem;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #F0EDE6;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      overflow: hidden;
+    }
+
+    .option-btn::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 3px;
+      background: var(--crimson);
+      transform: scaleY(0);
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .option-btn:hover {
+      background: rgba(255,255,255,0.04);
+      border-color: rgba(192,57,43,0.3);
+      padding-left: 1.5rem;
+    }
+
+    .option-btn:active {
+      transform: scale(0.99);
+    }
+
+    .option-btn.selected {
+      background: rgba(192,57,43,0.08);
+      border-color: var(--crimson);
+    }
+
+    .option-btn.selected::before {
+      transform: scaleY(1);
+    }
+
+    /* Loading states */
+    .loading-spinner {
+      width: 32px;
+      height: 32px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-top-color: var(--crimson);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Progress bar - thin, refined */
+    .progress-track {
+      height: 2px;
+      background: rgba(255,255,255,0.06);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--crimson);
+      transition: width 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    /* Score display */
+    .score-number {
+      font-size: clamp(4rem, 15vw, 8rem);
+      font-weight: 200;
+      letter-spacing: -0.05em;
+      line-height: 1;
+      color: var(--crimson);
+    }
+
+    /* Cards */
+    .card {
+      background: rgba(255,255,255,0.015);
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 2rem;
+    }
+
+    .card-accent {
+      border-left: 2px solid var(--crimson);
+    }
+
+    /* Buttons */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      background: var(--crimson);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 0.875rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background: #A93226;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      background: transparent;
+      color: #F0EDE6;
+      border: 1px solid rgba(255,255,255,0.15);
+      cursor: pointer;
+      font-size: 0.875rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--crimson);
+      color: var(--crimson);
+    }
+
+    /* Selection */
+    ::selection {
+      background: var(--crimson);
+      color: #fff;
+    }
+
+    /* Share card */
+    #share-card {
+      background: linear-gradient(145deg, #1a1a18 0%, #111110 100%);
+      border: 1px solid rgba(192,57,43,0.2);
+    }
   </style>
 </head>
-<body class="bg-gray-950 text-white min-h-screen antialiased">
-  <div id="app" class="max-w-2xl mx-auto px-4 py-6 md:py-8"></div>
+<body>
+  <div id="app" class="min-h-screen flex flex-col"></div>
+
   <script src="app.js"></script>
 </body>
 </html>

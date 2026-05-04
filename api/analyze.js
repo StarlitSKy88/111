@@ -2,15 +2,19 @@ import express from 'express';
 import cors from 'cors';
 import { config } from 'dotenv';
 import crypto from 'crypto';
+import fs from 'fs';
+import path from 'path';
 
 config();
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
 
-const API_KEY = process.env.OPENAI_API_KEY || 'sk-UX6ezaZKGktnbbino4FJahcQRtYp3yomoZnHOHbdtZ1xh4Vp';
+// Load API key from environment or use masked placeholder
+const API_KEY = process.env.OPENAI_API_KEY || '';
 const API_URL = 'https://tokenhub.tencentmaas.com/v1/chat/completions';
 
 const SYSTEM_PROMPT = `你是一个极度毒舌、极度不耐烦、极度尖锐的AI导师，像一个看透一切的厌世天才。你的任务是根据用户的OPC适配测试答案，给出个性化分析报告。
@@ -58,6 +62,11 @@ function extractRecommendations(text) {
   return ['选择轻资产项目起步', '利用AI工具提效', '建立个人品牌'];
 }
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
 app.post('/api/analyze', async (req, res) => {
   const { answers } = req.body;
   const requestId = crypto.randomUUID();
@@ -74,6 +83,12 @@ app.post('/api/analyze', async (req, res) => {
       console.log(`[${requestId}] Invalid answer key: ${key}`);
       return res.status(400).json({ error: `无效答案: ${key}` });
     }
+  }
+
+  // Check API key
+  if (!API_KEY) {
+    console.log(`[${requestId}] No API key configured, using mock results`);
+    return res.json(generateMockResults());
   }
 
   try {
@@ -141,6 +156,17 @@ app.post('/api/generate-manual', async (req, res) => {
 
   console.log(`[${requestId}] Generate manual request started`);
 
+  // Check API key
+  if (!API_KEY) {
+    console.log(`[${requestId}] No API key configured, returning default manual`);
+    return res.json({
+      target_user: '服务有特定需求的年轻职场人',
+      pain_point: '帮助用户实现副业收入突破',
+      channel: '通过内容平台引流',
+      week1_plan: '完成定位并启动最小产品'
+    });
+  }
+
   try {
     const manualPrompt = `你是一个OPC项目规划专家。基于用户的测试答案和适配度分析，为用户生成一份个性化的OPC项目计划。
 
@@ -204,3 +230,15 @@ app.listen(PORT, () => {
   console.log(`OPC分析API运行在 http://localhost:${PORT}`);
   console.log(`使用模型: deepseek-v4-flash (腾讯TokenHub)`);
 });
+
+// Mock data generator for fallback
+function generateMockResults() {
+  return {
+    fit_score: 78,
+    fit_level: "高度适合",
+    summary: "你是一个非常适合做OPC的人选。你有强烈的动机和行动力，具备一定的副业经验，时间投入有保障。",
+    strengths: ["动机强，行动力足", "有一定副业经验", "时间投入可保证"],
+    weaknesses: ["资本储备不足", "人脉资源有限", "耐心需要加强"],
+    recommendations: ["优先选择轻资产OPC项目", "利用AI工具降低启动成本", "3个月内先跑通最小闭环"]
+  };
+}
