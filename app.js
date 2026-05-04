@@ -17,26 +17,26 @@ function renderQuestion(question, index, total) {
   return `
     <div class="ma-layout">
       <div class="ma-center">
-        <div style="padding-top: 5rem; padding-bottom: 5rem;">
+        <div style="padding-top: 3rem; padding-bottom: 3rem;">
 
           <!-- Progress indicator -->
-          <div style="margin-bottom: 4rem;">
+          <div style="margin-bottom: 2.5rem;">
             <div class="progress-bar" style="--progress: ${progress}%"></div>
-            <div style="display: flex; justify-content: space-between; margin-top: 1rem;">
+            <div class="progress-meta">
               <span class="question-number">${String(index + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}</span>
               <span class="text-label">${Math.round(progress)}%</span>
             </div>
           </div>
 
           <!-- Question text -->
-          <h2 class="text-headline" style="margin-bottom: 3rem; color: var(--text-primary);">${question.text}</h2>
+          <h2 class="text-headline" style="margin-bottom: 2rem; color: var(--text-primary);">${question.text}</h2>
 
-          <!-- Options — ultra minimal -->
+          <!-- Options — ultra minimal, mobile-first -->
           <div>
             ${question.options.map(opt => `
               <button class="opt" onclick="selectOption(${question.id}, '${opt.key}', event)">
                 <span class="opt-key">${opt.key}</span>
-                <span>${opt.text}</span>
+                <span style="font-size: 0.875rem;">${opt.text}</span>
               </button>
             `).join('')}
           </div>
@@ -50,13 +50,11 @@ function renderQuestion(question, index, total) {
 function selectOption(questionId, key, event) {
   state.answers[questionId] = key;
 
-  // Update visual state
   document.querySelectorAll('.opt').forEach(btn => {
     btn.classList.remove('selected');
   });
   event.target.closest('.opt').classList.add('selected');
 
-  // Proceed after pause
   setTimeout(() => {
     const questions = window.QUESTIONS || [];
     if (state.currentQuestion < questions.length - 1) {
@@ -72,7 +70,6 @@ function showResult() {
   submitForAnalysis();
 }
 
-// Analysis submission
 const ABORT_TIMEOUT = 30000;
 
 async function submitForAnalysis() {
@@ -142,23 +139,13 @@ async function generateOPCManual() {
     if (response.ok) {
       const manual = await response.json();
       container.innerHTML = `
-        <div>
-          <div style="margin-bottom: 2.5rem;">
-            <div class="text-label" style="margin-bottom: 0.75rem; color: var(--accent);">目标用户</div>
-            <div class="text-body" style="color: var(--text-primary);">${manual.target_user}</div>
-          </div>
-          <div style="margin-bottom: 2.5rem;">
-            <div class="text-label" style="margin-bottom: 0.75rem; color: var(--accent);">痛点方案</div>
-            <div class="text-body" style="color: var(--text-primary);">${manual.pain_point}</div>
-          </div>
-          <div style="margin-bottom: 2.5rem;">
-            <div class="text-label" style="margin-bottom: 0.75rem; color: var(--accent);">推广渠道</div>
-            <div class="text-body" style="color: var(--text-primary);">${manual.channel}</div>
-          </div>
-          <div>
-            <div class="text-label" style="margin-bottom: 0.75rem; color: var(--accent);">第一周计划</div>
-            <div class="text-body" style="color: var(--text-primary);">${manual.week1_plan}</div>
-          </div>
+        <div style="padding: 1.5rem 0;">
+          ${['目标用户', '痛点方案', '推广渠道', '第一周计划'].map((label, i) => `
+            <div style="margin-bottom: ${i < 3 ? '1.5rem' : '0'};">
+              <div class="text-label" style="margin-bottom: 0.5rem; color: var(--accent);">${label}</div>
+              <div class="text-body" style="color: var(--text-primary);">${Object.values(manual)[i]}</div>
+            </div>
+          `).join('')}
         </div>
       `;
       const pdfBtn = document.getElementById('pdf-btn');
@@ -166,7 +153,7 @@ async function generateOPCManual() {
     }
   } catch (error) {
     container.innerHTML = `
-      <div class="text-body" style="color: var(--text-tertiary);">
+      <div class="text-body" style="color: var(--text-tertiary); padding: 1.5rem 0;">
         请启动后端服务以生成完整项目手册
       </div>
     `;
@@ -204,31 +191,25 @@ function downloadPDF() {
   const doc = new jsPDF();
   const r = state.results;
 
-  // Background
   doc.setFillColor(17, 17, 16);
   doc.rect(0, 0, 210, 297, 'F');
 
-  // Title
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(18);
   doc.setTextColor(192, 57, 43);
   doc.text('OPC适配度分析报告', 105, 25, { align: 'center' });
 
-  // Score
   doc.setFontSize(64);
   doc.text(String(r.fit_score), 105, 65, { align: 'center' });
 
-  // Level
   doc.setFontSize(12);
   doc.setTextColor(150);
   doc.text(r.fit_level, 105, 78, { align: 'center' });
 
-  // Divider
   doc.setDrawColor(192, 57, 43);
   doc.setLineWidth(0.3);
   doc.line(70, 88, 140, 88);
 
-  // Summary
   doc.setTextColor(240, 237, 230);
   doc.setFontSize(10);
   const lines = doc.splitTextToSize(r.summary, 160);
@@ -236,31 +217,28 @@ function downloadPDF() {
 
   let y = 115 + lines.length * 5;
 
-  // Strengths
   doc.setTextColor(34, 197, 94);
   doc.setFontSize(10);
   doc.text('优势', 20, y);
   doc.setTextColor(120);
   doc.setFontSize(9);
-  r.strengths.forEach((s, i) => {
+  r.strengths.forEach((s) => {
     y += 6;
     doc.text('· ' + s, 25, y);
   });
 
-  // Weaknesses
   y = 115 + lines.length * 5;
   doc.setTextColor(239, 68, 68);
   doc.setFontSize(10);
   doc.text('短板', 120, y);
   doc.setTextColor(120);
   doc.setFontSize(9);
-  r.weaknesses.forEach((w, i) => {
+  r.weaknesses.forEach((w) => {
     y += 6;
     doc.text('· ' + w, 125, y);
   });
 
-  // Recommendations
-  y += 15;
+  y += 12;
   doc.setTextColor(192, 57, 43);
   doc.setFontSize(10);
   doc.text('行动建议', 20, y);
@@ -281,7 +259,7 @@ function animateScore(targetScore, callback) {
 
   let current = 0;
   const steps = 50;
-  const duration = 1800;
+  const duration = 1600;
   const increment = targetScore / steps;
   const interval = duration / steps;
 
@@ -306,48 +284,50 @@ function renderResult() {
       <div class="ma-center">
 
         <!-- Score -->
-        <div style="padding-top: 5rem; padding-bottom: 4rem;">
-          <div class="text-label" style="margin-bottom: 1.5rem; color: var(--text-tertiary);">OPC适配度</div>
+        <div style="padding-top: 3rem; padding-bottom: 3rem;">
+          <div class="text-label" style="margin-bottom: 1rem; color: var(--text-tertiary);">OPC适配度</div>
           <div id="score-container">
             <div id="score-value" class="score">0</div>
-            <div style="margin-top: 1rem; font-size: 1.25rem; font-weight: 300; color: var(--text-secondary);">${r.fit_level}</div>
+            <div style="margin-top: 0.75rem; font-size: 1.125rem; font-weight: 300; color: var(--text-secondary);">${r.fit_level}</div>
           </div>
         </div>
 
         <!-- Summary -->
         <div class="result-section">
-          <div class="text-label" style="margin-bottom: 1.25rem; color: var(--text-tertiary);">总体评估</div>
-          <p class="text-body" style="color: var(--text-primary); max-width: 52ch;">${r.summary}</p>
+          <div class="text-label" style="margin-bottom: 1rem; color: var(--text-tertiary);">总体评估</div>
+          <p class="text-body" style="color: var(--text-primary);">${r.summary}</p>
         </div>
 
         <!-- Strengths & Weaknesses -->
-        <div class="result-section" style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;">
-          <div>
-            <div class="text-label" style="margin-bottom: 1.25rem; color: #22c55e;">优势</div>
-            <ul style="list-style: none;">
-              ${r.strengths.map(s => `
-                <li style="margin-bottom: 0.75rem; color: var(--text-secondary);">· ${s}</li>
-              `).join('')}
-            </ul>
-          </div>
-          <div>
-            <div class="text-label" style="margin-bottom: 1.25rem; color: #ef4444;">短板</div>
-            <ul style="list-style: none;">
-              ${r.weaknesses.map(w => `
-                <li style="margin-bottom: 0.75rem; color: var(--text-secondary);">· ${w}</li>
-              `).join('')}
-            </ul>
+        <div class="result-section">
+          <div class="result-grid">
+            <div>
+              <div class="text-label" style="margin-bottom: 1rem; color: #22c55e;">优势</div>
+              <ul style="list-style: none;">
+                ${r.strengths.map(s => `
+                  <li style="margin-bottom: 0.625rem; font-size: 0.875rem; color: var(--text-secondary);">· ${s}</li>
+                `).join('')}
+              </ul>
+            </div>
+            <div>
+              <div class="text-label" style="margin-bottom: 1rem; color: #ef4444;">短板</div>
+              <ul style="list-style: none;">
+                ${r.weaknesses.map(w => `
+                  <li style="margin-bottom: 0.625rem; font-size: 0.875rem; color: var(--text-secondary);">· ${w}</li>
+                `).join('')}
+              </ul>
+            </div>
           </div>
         </div>
 
         <!-- Recommendations -->
         <div class="result-section">
-          <div class="text-label" style="margin-bottom: 1.25rem; color: var(--accent);">行动建议</div>
-          <ol style="list-style: none; counter-reset: rec;">
+          <div class="text-label" style="margin-bottom: 1rem; color: var(--accent);">行动建议</div>
+          <ol style="list-style: none; padding: 0; margin: 0;">
             ${r.recommendations.map((rec, i) => `
-              <li style="margin-bottom: 1rem; color: var(--text-primary); counter-increment: rec;">
-                <span style="display: inline-block; width: 1.5rem; color: var(--accent); font-size: 0.75rem;">${String(i + 1).padStart(2, '0')}</span>
-                ${rec}
+              <li style="margin-bottom: 0.75rem; font-size: 0.875rem; color: var(--text-primary); display: flex; align-items: flex-start;">
+                <span style="display: inline-block; width: 1.25rem; color: var(--accent); font-size: 0.625rem; margin-right: 0.75rem; flex-shrink: 0; padding-top: 0.25rem;">${String(i + 1).padStart(2, '0')}</span>
+                <span>${rec}</span>
               </li>
             `).join('')}
           </ol>
@@ -355,9 +335,9 @@ function renderResult() {
 
         <!-- OPC Manual -->
         <div class="result-section">
-          <div class="text-label" style="margin-bottom: 1.5rem; color: var(--text-tertiary);">OPC项目手册</div>
+          <div class="text-label" style="margin-bottom: 1rem; color: var(--text-tertiary);">OPC项目手册</div>
           <div id="manual-content">
-            <div style="display: flex; align-items: center; gap: 1rem; padding: 2rem 0;">
+            <div style="display: flex; align-items: center; gap: 0.875rem; padding: 1.5rem 0;">
               <div class="spinner"></div>
               <span class="text-label">正在生成...</span>
             </div>
@@ -368,25 +348,25 @@ function renderResult() {
         </div>
 
         <!-- Actions -->
-        <div style="padding: 3rem 0; display: flex; gap: 2rem; flex-wrap: wrap;">
+        <div class="actions">
           <button onclick="restart()" class="action">重新测试</button>
           <button onclick="generateShareCard()" class="action">生成分享</button>
           <a href="#" class="action">咨询详情</a>
         </div>
 
         <!-- Share Card -->
-        <div id="share-container" class="hidden" style="margin-top: 2rem;">
-          <div id="share-card" style="margin-bottom: 1.5rem;">
-            <div style="text-align: center; padding: 1rem 0;">
+        <div id="share-container" class="hidden" style="margin-top: 1.5rem;">
+          <div id="share-card">
+            <div style="text-align: center; padding: 1.5rem 0;">
               <div class="text-label" style="margin-bottom: 0.5rem; color: var(--accent);">OPC适配度测试</div>
-              <div style="font-size: 4rem; font-weight: 100; color: var(--accent); letter-spacing: -0.04em;">${r.fit_score}</div>
-              <div style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.5rem;">${r.fit_level} · 适合做OPC</div>
+              <div style="font-size: clamp(3rem, 15vw, 4rem); font-weight: 100; color: var(--accent); letter-spacing: -0.04em;">${r.fit_score}</div>
+              <div style="font-size: 0.8125rem; color: var(--text-secondary); margin-top: 0.5rem;">${r.fit_level} · 适合做OPC</div>
             </div>
-            <div style="text-align: center; font-size: 0.8125rem; color: var(--text-tertiary); padding: 1.5rem 0; border-top: 1px solid var(--line);">
+            <div style="text-align: center; font-size: 0.75rem; color: var(--text-tertiary); padding: 1rem 0; border-top: 1px solid var(--line);">
               我刚完成OPC适配自测，发现自己${r.fit_level}。你也来试试。
             </div>
           </div>
-          <button onclick="downloadShareCard()" class="action">保存图片</button>
+          <button onclick="downloadShareCard()" class="action" style="margin-top: 0.5rem;">保存图片</button>
         </div>
 
       </div>
@@ -399,7 +379,7 @@ function renderLoading() {
   return `
     <div class="ma-layout">
       <div class="ma-center" style="min-height: 100dvh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-        <div class="spinner" style="margin-bottom: 2rem;"></div>
+        <div class="spinner" style="margin-bottom: 1.5rem;"></div>
         <p class="text-body" style="color: var(--text-secondary);">豆包正在分析你的答案...</p>
       </div>
     </div>
