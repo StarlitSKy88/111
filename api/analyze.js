@@ -1,11 +1,6 @@
-import express from 'express';
-import cors from 'cors';
-import { config } from 'dotenv';
-import crypto from 'crypto';
-import fs from 'fs';
-import path from 'path';
-
-config();
+const express = require('express');
+const cors = require('cors');
+const crypto = require('crypto');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -13,7 +8,6 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
-// Load API key from environment or use masked placeholder
 const API_KEY = process.env.OPENAI_API_KEY || '';
 const API_URL = 'https://tokenhub.tencentmaas.com/v1/chat/completions';
 
@@ -62,7 +56,18 @@ function extractRecommendations(text) {
   return ['选择轻资产项目起步', '利用AI工具提效', '建立个人品牌'];
 }
 
-// Health check endpoint
+function generateMockResults() {
+  return {
+    fit_score: 78,
+    fit_level: "高度适合",
+    summary: "你是一个非常适合做OPC的人选。你有强烈的动机和行动力，具备一定的副业经验，时间投入有保障。",
+    strengths: ["动机强，行动力足", "有一定副业经验", "时间投入可保证"],
+    weaknesses: ["资本储备不足", "人脉资源有限", "耐心需要加强"],
+    recommendations: ["优先选择轻资产OPC项目", "利用AI工具降低启动成本", "3个月内先跑通最小闭环"]
+  };
+}
+
+// Health check
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
@@ -74,20 +79,17 @@ app.post('/api/analyze', async (req, res) => {
   console.log(`[${requestId}] Analyze request started`);
 
   if (!answers || Object.keys(answers).length < 10) {
-    console.log(`[${requestId}] Invalid: missing answers`);
     return res.status(400).json({ error: '请完成所有题目' });
   }
 
   for (const [qId, key] of Object.entries(answers)) {
     if (!VALID_KEYS.includes(key)) {
-      console.log(`[${requestId}] Invalid answer key: ${key}`);
       return res.status(400).json({ error: `无效答案: ${key}` });
     }
   }
 
-  // Check API key
   if (!API_KEY) {
-    console.log(`[${requestId}] No API key configured, using mock results`);
+    console.log(`[${requestId}] No API key, using mock`);
     return res.json(generateMockResults());
   }
 
@@ -118,7 +120,7 @@ app.post('/api/analyze', async (req, res) => {
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error(`[${requestId}] API error: ${response.status}`, errorText);
+      console.error(`[${requestId}] API error: ${response.status}`);
       if (response.status === 429) {
         return res.status(429).json({ error: '请求过于频繁，请稍后再试' });
       }
@@ -132,7 +134,7 @@ app.post('/api/analyze', async (req, res) => {
     const scoreMatch = analysis.match(/(\d{2,3})/);
     const fitScore = scoreMatch ? parseInt(scoreMatch[1]) : 75;
 
-    console.log(`[${requestId}] Analysis complete, score: ${fitScore}`);
+    console.log(`[${requestId}] Done, score: ${fitScore}`);
 
     res.json({
       fit_score: fitScore,
@@ -145,7 +147,7 @@ app.post('/api/analyze', async (req, res) => {
     });
 
   } catch (error) {
-    console.error(`[${requestId}] API error:`, error.message);
+    console.error(`[${requestId}] Error:`, error.message);
     res.status(500).json({ error: '分析服务暂时不可用' });
   }
 });
@@ -154,11 +156,9 @@ app.post('/api/generate-manual', async (req, res) => {
   const { answers, results } = req.body;
   const requestId = crypto.randomUUID();
 
-  console.log(`[${requestId}] Generate manual request started`);
+  console.log(`[${requestId}] Manual request`);
 
-  // Check API key
   if (!API_KEY) {
-    console.log(`[${requestId}] No API key configured, returning default manual`);
     return res.json({
       target_user: '服务有特定需求的年轻职场人',
       pain_point: '帮助用户实现副业收入突破',
@@ -200,14 +200,12 @@ app.post('/api/generate-manual', async (req, res) => {
       })
     });
 
-    if (!response.ok) {
-      throw new Error('API call failed');
-    }
+    if (!response.ok) throw new Error('API failed');
 
     const data = await response.json();
     const content = data.choices[0].message.content;
-
     const lines = content.split('\n').filter(l => l.trim());
+
     res.json({
       target_user: lines[0] || '服务有特定需求的年轻职场人',
       pain_point: lines[1] || '帮助用户实现副业收入突破',
@@ -216,7 +214,7 @@ app.post('/api/generate-manual', async (req, res) => {
     });
 
   } catch (error) {
-    console.error(`[${requestId}] Manual generation error:`, error.message);
+    console.error(`[${requestId}] Manual error:`, error.message);
     res.json({
       target_user: '服务有特定需求的年轻职场人',
       pain_point: '帮助用户实现副业收入突破',
@@ -227,18 +225,6 @@ app.post('/api/generate-manual', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`OPC分析API运行在 http://localhost:${PORT}`);
-  console.log(`使用模型: deepseek-v4-flash (腾讯TokenHub)`);
+  console.log(`OPC API running on http://localhost:${PORT}`);
+  console.log(`Model: deepseek-v4-flash (腾讯TokenHub)`);
 });
-
-// Mock data generator for fallback
-function generateMockResults() {
-  return {
-    fit_score: 78,
-    fit_level: "高度适合",
-    summary: "你是一个非常适合做OPC的人选。你有强烈的动机和行动力，具备一定的副业经验，时间投入有保障。",
-    strengths: ["动机强，行动力足", "有一定副业经验", "时间投入可保证"],
-    weaknesses: ["资本储备不足", "人脉资源有限", "耐心需要加强"],
-    recommendations: ["优先选择轻资产OPC项目", "利用AI工具降低启动成本", "3个月内先跑通最小闭环"]
-  };
-}

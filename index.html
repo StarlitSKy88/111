@@ -2,282 +2,321 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="description" content="OPC适配自测 - 通过10道测试题，AI豆包帮你分析你是否适合做一人公司。获取个性化项目计划。">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="OPC适配自测 - 10道题，AI分析你是否适合做一人公司。">
   <meta name="theme-color" content="#111110">
-  <meta property="og:title" content="OPC适配自测 | 豆包帮你分析">
-  <meta property="og:description" content="10道题，AI豆包告诉你适不适合做OPC">
-  <meta property="og:type" content="website">
-  <title>OPC适配自测 | 豆包帮你分析</title>
+  <title>OPC适配自测</title>
 
-  <!-- Preconnect for performance -->
-  <link rel="preconnect" href="https://cdn.tailwindcss.com">
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-
-  <!-- SVG Favicon -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><circle cx='12' cy='12' r='10' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='12' cy='12' r='4' fill='%23C0392B'/></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
 
   <style>
-    /* === Japanese Ma Design System === */
+    /* ========================================
+       Ma (間) Design System — 墨色暗色模式
+       ======================================== */
+
     :root {
-      --ink: #1A1A18;
-      --ink-faded: #6B6862;
-      --ink-ghost: #A8A49E;
-      --paper: #F8F5F0;
-      --crimson: #C0392B;
-      --line: #E8E4DE;
+      --bg: #111110;
+      --surface: #1A1A18;
+      --text-primary: #F0EDE6;
+      --text-secondary: #7A7670;
+      --text-tertiary: #4A4644;
+      --accent: #C0392B;
+      --line: #2A2A28;
     }
 
     * {
-      -webkit-tap-highlight-color: transparent;
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
 
     html {
-      scroll-behavior: smooth;
+      font-size: 16px;
     }
 
     body {
-      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #111110;
-      color: #F0EDE6;
+      font-family: 'Noto Sans SC', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
       min-height: 100dvh;
-      line-height: 1.8;
+      line-height: 2;
       letter-spacing: 0.04em;
-      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* Reduced motion support */
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
-
-    /* Custom scrollbar */
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--crimson); opacity: 0.4; }
-
-    /* Focus states */
-    :focus-visible {
-      outline: 2px solid var(--crimson);
-      outline-offset: 3px;
-    }
-
-    /* Ma Layout Grid */
-    .ma-layout {
-      display: grid;
-      grid-template-columns: 1fr min(58ch, 100%) 1fr;
-      padding: 0 clamp(1.5rem, 5vw, 4rem);
-    }
-
-    .ma-center { grid-column: 2; }
-    .ma-full { grid-column: 1 / -1; }
-
-    /* Animation -书法笔触 feel */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes scoreReveal {
-      from { opacity: 0; transform: scale(0.92); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    @keyframes shimmer {
-      0% { background-position: -200% 0; }
-      100% { background-position: 200% 0; }
-    }
-
-    .animate-fadeIn {
-      animation: fadeIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-      opacity: 0;
-    }
-
-    .animate-scoreReveal {
-      animation: scoreReveal 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-    }
-
-    /* Typography */
+    /* === Typography === */
     .text-display {
-      font-size: clamp(2.5rem, 8vw, 5rem);
-      font-weight: 300;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
+      font-size: clamp(3rem, 10vw, 8rem);
+      font-weight: 200;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
     }
 
     .text-headline {
-      font-size: clamp(1.5rem, 4vw, 2rem);
-      font-weight: 400;
+      font-size: clamp(1.25rem, 3vw, 1.75rem);
+      font-weight: 300;
       letter-spacing: -0.02em;
-      line-height: 1.3;
+      line-height: 1.4;
     }
 
     .text-body {
-      font-size: 1rem;
+      font-size: 0.9375rem;
       line-height: 1.9;
       letter-spacing: 0.03em;
     }
 
-    /* Option buttons - minimal, purposeful */
-    .option-btn {
-      position: relative;
-      width: 100%;
-      text-align: left;
-      padding: 1.5rem 1.25rem;
-      background: rgba(255,255,255,0.02);
-      border: 1px solid rgba(255,255,255,0.08);
-      color: #F0EDE6;
-      cursor: pointer;
-      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      overflow: hidden;
+    .text-label {
+      font-size: 0.6875rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
     }
 
-    .option-btn::before {
+    /* === Ma Grid === */
+    .ma-layout {
+      display: grid;
+      grid-template-columns: 1fr min(56ch, 100%) 1fr;
+      padding: 0 clamp(1.25rem, 4vw, 4rem);
+    }
+
+    .ma-center {
+      grid-column: 2;
+    }
+
+    /* === Spacing (8px base) === */
+    .section-gap {
+      padding-top: 7rem;
+      padding-bottom: 7rem;
+    }
+
+    /* === Progress Bar === */
+    .progress-bar {
+      height: 1px;
+      background: var(--line);
+      position: relative;
+    }
+
+    .progress-bar::after {
       content: '';
       position: absolute;
       left: 0;
       top: 0;
       height: 100%;
-      width: 3px;
-      background: var(--crimson);
-      transform: scaleY(0);
-      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      width: var(--progress, 0%);
+      background: var(--accent);
+      transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
-    .option-btn:hover {
-      background: rgba(255,255,255,0.04);
-      border-color: rgba(192,57,43,0.3);
+    /* === Question Text === */
+    .question-number {
+      font-size: 0.625rem;
+      letter-spacing: 0.2em;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+    }
+
+    /* === Option Button — 极简无装饰 === */
+    .opt {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 1.25rem 0;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--line);
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      position: relative;
+    }
+
+    .opt::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      transform: translateY(-50%);
+      transition: width 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .opt:hover {
       padding-left: 1.5rem;
     }
 
-    .option-btn:active {
-      transform: scale(0.99);
+    .opt:hover::before {
+      width: 0.75rem;
     }
 
-    .option-btn.selected {
-      background: rgba(192,57,43,0.08);
-      border-color: var(--crimson);
+    .opt-key {
+      display: inline-block;
+      width: 1.5rem;
+      font-size: 0.75rem;
+      color: var(--text-tertiary);
+      margin-right: 1.25rem;
     }
 
-    .option-btn.selected::before {
-      transform: scaleY(1);
+    .opt.selected {
+      padding-left: 1.5rem;
     }
 
-    /* Loading states */
-    .loading-spinner {
-      width: 32px;
-      height: 32px;
-      border: 1px solid rgba(255,255,255,0.1);
-      border-top-color: var(--crimson);
+    .opt.selected::before {
+      width: 0.75rem;
+    }
+
+    .opt.selected .opt-key {
+      color: var(--accent);
+    }
+
+    /* === Loading === */
+    .spinner {
+      width: 24px;
+      height: 24px;
+      border: 1px solid var(--line);
+      border-top-color: var(--accent);
       border-radius: 50%;
-      animation: spin 1s linear infinite;
+      animation: rotate 1s linear infinite;
     }
 
-    @keyframes spin {
+    @keyframes rotate {
       to { transform: rotate(360deg); }
     }
 
-    /* Progress bar - thin, refined */
-    .progress-track {
-      height: 2px;
-      background: rgba(255,255,255,0.06);
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: var(--crimson);
-      transition: width 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-
-    /* Score display */
-    .score-number {
-      font-size: clamp(4rem, 15vw, 8rem);
-      font-weight: 200;
-      letter-spacing: -0.05em;
+    /* === Score Display === */
+    .score {
+      font-size: clamp(5rem, 18vw, 10rem);
+      font-weight: 100;
+      letter-spacing: -0.06em;
       line-height: 1;
-      color: var(--crimson);
+      color: var(--accent);
     }
 
-    /* Cards */
-    .card {
-      background: rgba(255,255,255,0.015);
-      border: 1px solid rgba(255,255,255,0.06);
-      padding: 2rem;
+    /* === Result Card === */
+    .result-section {
+      padding: 4rem 0;
+      border-bottom: 1px solid var(--line);
     }
 
-    .card-accent {
-      border-left: 2px solid var(--crimson);
+    .result-section:first-child {
+      padding-top: 0;
     }
 
-    /* Buttons */
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      padding: 1rem 2rem;
-      background: var(--crimson);
+    /* === Actions — 文字链接风格 === */
+    .action {
+      display: inline-block;
+      padding: 0.75rem 0;
+      color: var(--text-secondary);
+      text-decoration: none;
+      border-bottom: 1px solid var(--line);
+      cursor: pointer;
+      transition: all 0.4s ease;
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      font-size: 0.8125rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .action:hover {
+      color: var(--text-primary);
+      border-bottom-color: var(--text-primary);
+    }
+
+    /* === Share Card === */
+    #share-card {
+      background: var(--surface);
+      padding: 3rem 2rem;
+      border: 1px solid var(--line);
+    }
+
+    /* === PDF Button === */
+    .btn-pdf {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      background: var(--accent);
       color: #fff;
       border: none;
-      cursor: pointer;
-      font-size: 0.875rem;
-      letter-spacing: 0.08em;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
-      transition: all 0.3s ease;
-    }
-
-    .btn-primary:hover {
-      background: #A93226;
-      transform: translateY(-1px);
-    }
-
-    .btn-secondary {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      padding: 1rem 2rem;
-      background: transparent;
-      color: #F0EDE6;
-      border: 1px solid rgba(255,255,255,0.15);
       cursor: pointer;
-      font-size: 0.875rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      transition: all 0.3s ease;
+      transition: background 0.3s ease;
     }
 
-    .btn-secondary:hover {
-      border-color: var(--crimson);
-      color: var(--crimson);
+    .btn-pdf:hover {
+      background: #a33025;
     }
 
-    /* Selection */
+    /* === Animations — 书法笔触感 === */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-up {
+      animation: fadeUp 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+      opacity: 0;
+    }
+
+    @keyframes scoreIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .score-in {
+      animation: scoreIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+
+    /* === Focus States === */
+    :focus-visible {
+      outline: 1px solid var(--accent);
+      outline-offset: 4px;
+    }
+
+    /* === Selection === */
     ::selection {
-      background: var(--crimson);
+      background: var(--accent);
       color: #fff;
     }
 
-    /* Share card */
-    #share-card {
-      background: linear-gradient(145deg, #1a1a18 0%, #111110 100%);
-      border: 1px solid rgba(192,57,43,0.2);
+    /* === Scrollbar === */
+    ::-webkit-scrollbar {
+      width: 3px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--text-tertiary);
+    }
+
+    /* === Reduced Motion === */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
     }
   </style>
 </head>
 <body>
-  <div id="app" class="min-h-screen flex flex-col"></div>
-
+  <div id="app"></div>
   <script src="app.js"></script>
 </body>
 </html>

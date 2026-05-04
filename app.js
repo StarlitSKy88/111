@@ -11,35 +11,36 @@ async function loadQuestions() {
   return await response.json();
 }
 
+// Question Screen
 function renderQuestion(question, index, total) {
-  const progress = ((index) / total) * 100;
+  const progress = (index / total) * 100;
   return `
-    <div class="ma-layout py-12 md:py-20">
-      <div class="ma-center animate-fadeIn" style="animation-delay: 0ms">
-        <!-- Progress -->
-        <div class="mb-16">
-          <div class="flex justify-between text-xs text-gray-500 mb-3 tracking-widest uppercase">
-            <span>问题 ${index + 1} / ${total}</span>
-            <span>${Math.round(progress)}%</span>
-          </div>
-          <div class="progress-track">
-            <div class="progress-fill" style="width: ${progress}%"></div>
-          </div>
-        </div>
+    <div class="ma-layout">
+      <div class="ma-center">
+        <div style="padding-top: 5rem; padding-bottom: 5rem;">
 
-        <!-- Question -->
-        <h2 class="text-headline mb-12 text-gray-100">${question.text}</h2>
+          <!-- Progress indicator -->
+          <div style="margin-bottom: 4rem;">
+            <div class="progress-bar" style="--progress: ${progress}%"></div>
+            <div style="display: flex; justify-content: space-between; margin-top: 1rem;">
+              <span class="question-number">${String(index + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}</span>
+              <span class="text-label">${Math.round(progress)}%</span>
+            </div>
+          </div>
 
-        <!-- Options -->
-        <div class="space-y-3">
-          ${question.options.map(opt => `
-            <button class="option-btn" onclick="selectOption(${question.id}, '${opt.key}', event)" data-key="${opt.key}">
-              <div class="flex items-center">
-                <span class="w-8 h-8 rounded flex items-center justify-center mr-4 text-xs font-medium border border-gray-700 text-gray-400">${opt.key}</span>
-                <span class="text-gray-200">${opt.text}</span>
-              </div>
-            </button>
-          `).join('')}
+          <!-- Question text -->
+          <h2 class="text-headline" style="margin-bottom: 3rem; color: var(--text-primary);">${question.text}</h2>
+
+          <!-- Options — ultra minimal -->
+          <div>
+            ${question.options.map(opt => `
+              <button class="opt" onclick="selectOption(${question.id}, '${opt.key}', event)">
+                <span class="opt-key">${opt.key}</span>
+                <span>${opt.text}</span>
+              </button>
+            `).join('')}
+          </div>
+
         </div>
       </div>
     </div>
@@ -50,18 +51,12 @@ function selectOption(questionId, key, event) {
   state.answers[questionId] = key;
 
   // Update visual state
-  document.querySelectorAll('.option-btn').forEach(btn => {
+  document.querySelectorAll('.opt').forEach(btn => {
     btn.classList.remove('selected');
-    btn.querySelector('span:first-child').classList.remove('border-crimson', 'text-crimson');
-    btn.querySelector('span:first-child').classList.add('border-gray-700', 'text-gray-400');
   });
+  event.target.closest('.opt').classList.add('selected');
 
-  const selectedBtn = event.target.closest('.option-btn');
-  selectedBtn.classList.add('selected');
-  selectedBtn.querySelector('span:first-child').classList.remove('border-gray-700', 'text-gray-400');
-  selectedBtn.querySelector('span:first-child').classList.add('border-crimson', 'text-crimson');
-
-  // Proceed after brief pause
+  // Proceed after pause
   setTimeout(() => {
     const questions = window.QUESTIONS || [];
     if (state.currentQuestion < questions.length - 1) {
@@ -70,13 +65,14 @@ function selectOption(questionId, key, event) {
     } else {
       showResult();
     }
-  }, 400);
+  }, 450);
 }
 
 function showResult() {
   submitForAnalysis();
 }
 
+// Analysis submission
 const ABORT_TIMEOUT = 30000;
 
 async function submitForAnalysis() {
@@ -108,9 +104,8 @@ async function submitForAnalysis() {
     } else if (error.message.includes('网络')) {
       state.error = '网络连接失败，请检查网络';
     } else {
-      state.error = error.message || '分析失败，显示模拟结果';
+      state.error = error.message || '分析失败';
     }
-    console.error('Analysis error:', error);
     state.results = generateMockResults();
   }
 
@@ -122,16 +117,17 @@ function generateMockResults() {
   return {
     fit_score: 78,
     fit_level: "高度适合",
-    summary: "你是一个非常适合做OPC的人选。你有强烈的动机和行动力，具备一定的副业经验，时间投入有保障。",
+    summary: "你是一个非常适合做OPC的人选。有强烈的动机和行动力，具备一定副业经验。",
     strengths: ["动机强，行动力足", "有一定副业经验", "时间投入可保证"],
     weaknesses: ["资本储备不足", "人脉资源有限", "耐心需要加强"],
     recommendations: ["优先选择轻资产OPC项目", "利用AI工具降低启动成本", "3个月内先跑通最小闭环"]
   };
 }
 
+// Generate OPC Manual
 async function generateOPCManual() {
-  const manualContent = document.getElementById('manual-content');
-  if (!manualContent || !state.results) return;
+  const container = document.getElementById('manual-content');
+  if (!container || !state.results) return;
 
   try {
     const response = await fetch('/api/generate-manual', {
@@ -145,38 +141,44 @@ async function generateOPCManual() {
 
     if (response.ok) {
       const manual = await response.json();
-      manualContent.innerHTML = `
-        <div class="space-y-6">
-          <div class="card card-accent">
-            <div class="text-xs text-crimson tracking-widest uppercase mb-2">目标用户</div>
-            <div class="text-gray-300">${manual.target_user || '待生成...'}</div>
+      container.innerHTML = `
+        <div>
+          <div style="margin-bottom: 2.5rem;">
+            <div class="text-label" style="margin-bottom: 0.75rem; color: var(--accent);">目标用户</div>
+            <div class="text-body" style="color: var(--text-primary);">${manual.target_user}</div>
           </div>
-          <div class="card card-accent">
-            <div class="text-xs text-crimson tracking-widest uppercase mb-2">痛点方案</div>
-            <div class="text-gray-300">${manual.pain_point || '待生成...'}</div>
+          <div style="margin-bottom: 2.5rem;">
+            <div class="text-label" style="margin-bottom: 0.75rem; color: var(--accent);">痛点方案</div>
+            <div class="text-body" style="color: var(--text-primary);">${manual.pain_point}</div>
           </div>
-          <div class="card card-accent">
-            <div class="text-xs text-crimson tracking-widest uppercase mb-2">推广渠道</div>
-            <div class="text-gray-300">${manual.channel || '待生成...'}</div>
+          <div style="margin-bottom: 2.5rem;">
+            <div class="text-label" style="margin-bottom: 0.75rem; color: var(--accent);">推广渠道</div>
+            <div class="text-body" style="color: var(--text-primary);">${manual.channel}</div>
           </div>
-          <div class="card card-accent">
-            <div class="text-xs text-crimson tracking-widest uppercase mb-2">第一周计划</div>
-            <div class="text-gray-300">${manual.week1_plan || '待生成...'}</div>
+          <div>
+            <div class="text-label" style="margin-bottom: 0.75rem; color: var(--accent);">第一周计划</div>
+            <div class="text-body" style="color: var(--text-primary);">${manual.week1_plan}</div>
           </div>
         </div>
       `;
-      document.getElementById('download-pdf-btn').classList.remove('hidden');
+      const pdfBtn = document.getElementById('pdf-btn');
+      if (pdfBtn) pdfBtn.classList.remove('hidden');
     }
   } catch (error) {
-    manualContent.innerHTML = `<p class="text-center text-gray-500 py-8">请启动后端服务以生成完整项目手册</p>`;
+    container.innerHTML = `
+      <div class="text-body" style="color: var(--text-tertiary);">
+        请启动后端服务以生成完整项目手册
+      </div>
+    `;
   }
 }
 
+// Share Card
 function generateShareCard() {
-  const container = document.getElementById('share-card-container');
+  const container = document.getElementById('share-container');
   if (container) {
     container.classList.remove('hidden');
-    container.classList.add('animate-fadeIn');
+    container.classList.add('fade-up');
   }
 }
 
@@ -185,106 +187,105 @@ function downloadShareCard() {
   if (!card) return;
 
   html2canvas(card, {
-    backgroundColor: '#111110',
+    backgroundColor: '#1A1A18',
     scale: 2,
     useCORS: true
   }).then(canvas => {
     const link = document.createElement('a');
-    link.download = `opc-result-${Date.now()}.png`;
+    link.download = `opc-${Date.now()}.png`;
     link.href = canvas.toDataURL('image/png');
     link.click();
   });
 }
 
+// PDF Export
 function downloadPDF() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
-
   const r = state.results;
+
+  // Background
   doc.setFillColor(17, 17, 16);
   doc.rect(0, 0, 210, 297, 'F');
 
+  // Title
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(20);
+  doc.setFontSize(18);
   doc.setTextColor(192, 57, 43);
   doc.text('OPC适配度分析报告', 105, 25, { align: 'center' });
 
-  doc.setFontSize(52);
-  doc.text(`${r.fit_score}`, 105, 60, { align: 'center' });
+  // Score
+  doc.setFontSize(64);
+  doc.text(String(r.fit_score), 105, 65, { align: 'center' });
 
+  // Level
   doc.setFontSize(12);
   doc.setTextColor(150);
-  doc.text(r.fit_level + ' · 适合做OPC', 105, 72, { align: 'center' });
+  doc.text(r.fit_level, 105, 78, { align: 'center' });
 
+  // Divider
   doc.setDrawColor(192, 57, 43);
-  doc.setLineWidth(0.5);
-  doc.line(60, 82, 150, 82);
+  doc.setLineWidth(0.3);
+  doc.line(70, 88, 140, 88);
 
-  doc.setTextColor(255, 255, 255);
-  doc.setFontSize(11);
-  doc.text('总体评估', 20, 95);
+  // Summary
+  doc.setTextColor(240, 237, 230);
   doc.setFontSize(10);
-  doc.setTextColor(180);
-  const summaryLines = doc.splitTextToSize(r.summary, 170);
-  doc.text(summaryLines, 20, 103);
+  const lines = doc.splitTextToSize(r.summary, 160);
+  doc.text(lines, 20, 102);
 
-  let y = 100 + summaryLines.length * 6;
+  let y = 115 + lines.length * 5;
+
+  // Strengths
   doc.setTextColor(34, 197, 94);
-  doc.setFontSize(11);
+  doc.setFontSize(10);
   doc.text('优势', 20, y);
-  doc.setTextColor(180);
+  doc.setTextColor(120);
   doc.setFontSize(9);
   r.strengths.forEach((s, i) => {
     y += 6;
-    doc.text(`· ${s}`, 25, y);
+    doc.text('· ' + s, 25, y);
   });
 
-  y += 5;
+  // Weaknesses
+  y = 115 + lines.length * 5;
   doc.setTextColor(239, 68, 68);
-  doc.setFontSize(11);
-  doc.text('短板', 110, y - 18);
-  doc.setTextColor(180);
+  doc.setFontSize(10);
+  doc.text('短板', 120, y);
+  doc.setTextColor(120);
   doc.setFontSize(9);
   r.weaknesses.forEach((w, i) => {
     y += 6;
-    doc.text(`· ${w}`, 115, y);
+    doc.text('· ' + w, 125, y);
   });
 
-  y += 12;
+  // Recommendations
+  y += 15;
   doc.setTextColor(192, 57, 43);
-  doc.setFontSize(11);
-  doc.text('推荐行动', 20, y);
-  doc.setTextColor(180);
+  doc.setFontSize(10);
+  doc.text('行动建议', 20, y);
+  doc.setTextColor(120);
   doc.setFontSize(9);
   r.recommendations.forEach((rec, i) => {
     y += 6;
-    doc.text(`${i + 1}. ${rec}`, 25, y);
+    doc.text((i + 1) + '. ' + rec, 25, y);
   });
-
-  y += 12;
-  doc.setTextColor(168, 85, 247);
-  doc.setFontSize(11);
-  doc.text('下一步建议', 20, y);
-  doc.setTextColor(180);
-  doc.setFontSize(9);
-  y += 6;
-  doc.text('完成测试后，你将获得个性化的OPC项目手册。', 25, y);
-  y += 6;
-  doc.text('扫描二维码，获取你的专属方案。', 25, y);
 
   doc.save(`OPC报告_${Date.now()}.pdf`);
 }
 
+// Score animation
 function animateScore(targetScore, callback) {
-  const scoreEl = document.getElementById('score-value');
-  const scoreContainer = document.getElementById('score-container');
+  const el = document.getElementById('score-value');
+  if (!el) return;
+
   let current = 0;
-  const duration = 2000;
-  const steps = 60;
+  const steps = 50;
+  const duration = 1800;
   const increment = targetScore / steps;
   const interval = duration / steps;
 
-  scoreContainer.classList.add('animate-scoreReveal');
+  el.classList.add('score-in');
 
   const timer = setInterval(() => {
     current += increment;
@@ -293,127 +294,126 @@ function animateScore(targetScore, callback) {
       clearInterval(timer);
       if (callback) callback();
     }
-    scoreEl.textContent = Math.floor(current);
+    el.textContent = Math.floor(current);
   }, interval);
 }
 
+// Result Screen
 function renderResult() {
   const r = state.results;
   return `
-    <div class="ma-layout py-12 md:py-20">
-      <div class="ma-center animate-fadeIn" style="animation-delay: 0ms">
+    <div class="ma-layout">
+      <div class="ma-center">
 
-        <!-- Score Section -->
-        <div class="text-center mb-16">
-          <div class="text-xs text-gray-500 tracking-widest uppercase mb-6">你的OPC适配度</div>
-          <div id="score-container" class="opacity-0">
-            <div id="score-value" class="score-number">0</div>
-            <div class="text-xl text-gray-400 mt-4 font-light">${r.fit_level}</div>
-            <div class="text-sm text-gray-600 mt-1 tracking-wider">适合做OPC</div>
+        <!-- Score -->
+        <div style="padding-top: 5rem; padding-bottom: 4rem;">
+          <div class="text-label" style="margin-bottom: 1.5rem; color: var(--text-tertiary);">OPC适配度</div>
+          <div id="score-container">
+            <div id="score-value" class="score">0</div>
+            <div style="margin-top: 1rem; font-size: 1.25rem; font-weight: 300; color: var(--text-secondary);">${r.fit_level}</div>
           </div>
         </div>
 
-        <!-- Summary Card -->
-        <div class="card card-accent mb-10">
-          <h3 class="text-xs text-crimson tracking-widest uppercase mb-4">总体评估</h3>
-          <p class="text-body text-gray-300 leading-relaxed">${r.summary}</p>
+        <!-- Summary -->
+        <div class="result-section">
+          <div class="text-label" style="margin-bottom: 1.25rem; color: var(--text-tertiary);">总体评估</div>
+          <p class="text-body" style="color: var(--text-primary); max-width: 52ch;">${r.summary}</p>
         </div>
 
-        <!-- Strengths & Weaknesses Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-          <div class="card">
-            <h4 class="text-xs text-green-400 tracking-widest uppercase mb-4">优势</h4>
-            <ul class="space-y-3">
-              ${r.strengths.map(s => `<li class="flex items-start text-gray-300"><span class="text-green-400 mr-3 mt-1">·</span>${s}</li>`).join('')}
+        <!-- Strengths & Weaknesses -->
+        <div class="result-section" style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;">
+          <div>
+            <div class="text-label" style="margin-bottom: 1.25rem; color: #22c55e;">优势</div>
+            <ul style="list-style: none;">
+              ${r.strengths.map(s => `
+                <li style="margin-bottom: 0.75rem; color: var(--text-secondary);">· ${s}</li>
+              `).join('')}
             </ul>
           </div>
-          <div class="card">
-            <h4 class="text-xs text-red-400 tracking-widest uppercase mb-4">短板</h4>
-            <ul class="space-y-3">
-              ${r.weaknesses.map(w => `<li class="flex items-start text-gray-300"><span class="text-red-400 mr-3 mt-1">·</span>${w}</li>`).join('')}
+          <div>
+            <div class="text-label" style="margin-bottom: 1.25rem; color: #ef4444;">短板</div>
+            <ul style="list-style: none;">
+              ${r.weaknesses.map(w => `
+                <li style="margin-bottom: 0.75rem; color: var(--text-secondary);">· ${w}</li>
+              `).join('')}
             </ul>
           </div>
         </div>
 
         <!-- Recommendations -->
-        <div class="card card-accent mb-10">
-          <h4 class="text-xs text-crimson tracking-widest uppercase mb-6">推荐行动路径</h4>
-          <ul class="space-y-4">
+        <div class="result-section">
+          <div class="text-label" style="margin-bottom: 1.25rem; color: var(--accent);">行动建议</div>
+          <ol style="list-style: none; counter-reset: rec;">
             ${r.recommendations.map((rec, i) => `
-              <li class="flex items-start">
-                <span class="w-7 h-7 rounded flex items-center justify-center mr-4 text-xs font-medium border border-crimson text-crimson flex-shrink-0">${i+1}</span>
-                <span class="text-gray-300 pt-1">${rec}</span>
+              <li style="margin-bottom: 1rem; color: var(--text-primary); counter-increment: rec;">
+                <span style="display: inline-block; width: 1.5rem; color: var(--accent); font-size: 0.75rem;">${String(i + 1).padStart(2, '0')}</span>
+                ${rec}
               </li>
             `).join('')}
-          </ul>
+          </ol>
         </div>
 
-        <!-- OPC Manual Section -->
-        <div class="card mb-10">
-          <h4 class="text-xs text-purple-400 tracking-widest uppercase mb-6">OPC项目手册</h4>
+        <!-- OPC Manual -->
+        <div class="result-section">
+          <div class="text-label" style="margin-bottom: 1.5rem; color: var(--text-tertiary);">OPC项目手册</div>
           <div id="manual-content">
-            <div class="flex items-center justify-center py-8">
-              <div class="loading-spinner mr-4"></div>
-              <span class="text-gray-500 text-sm tracking-wider">正在生成个性化项目计划...</span>
+            <div style="display: flex; align-items: center; gap: 1rem; padding: 2rem 0;">
+              <div class="spinner"></div>
+              <span class="text-label">正在生成...</span>
             </div>
           </div>
-          <button id="download-pdf-btn" onclick="downloadPDF()" class="hidden mt-6 w-full btn-primary">
+          <button id="pdf-btn" onclick="downloadPDF()" class="btn-pdf hidden">
             下载PDF报告
           </button>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="flex flex-wrap gap-4 justify-center mb-8">
-          <button onclick="restart()" class="btn-secondary">
-            重新测试
-          </button>
-          <button onclick="generateShareCard()" class="btn-primary">
-            生成分享卡片
-          </button>
-          <a href="#" class="btn-secondary">
-            咨询详情
-          </a>
+        <!-- Actions -->
+        <div style="padding: 3rem 0; display: flex; gap: 2rem; flex-wrap: wrap;">
+          <button onclick="restart()" class="action">重新测试</button>
+          <button onclick="generateShareCard()" class="action">生成分享</button>
+          <a href="#" class="action">咨询详情</a>
         </div>
 
-        <!-- Share Card Container -->
-        <div id="share-card-container" class="hidden mt-8">
-          <div id="share-card" class="rounded-lg p-8 mb-6">
-            <div class="text-center mb-6">
-              <div class="text-sm text-crimson tracking-widest uppercase mb-3">OPC适配度测试</div>
-              <div id="share-score" class="text-7xl font-extralight text-crimson mb-3">${r.fit_score}</div>
-              <div class="text-lg text-gray-400 font-light">${r.fit_level} · 适合做OPC</div>
+        <!-- Share Card -->
+        <div id="share-container" class="hidden" style="margin-top: 2rem;">
+          <div id="share-card" style="margin-bottom: 1.5rem;">
+            <div style="text-align: center; padding: 1rem 0;">
+              <div class="text-label" style="margin-bottom: 0.5rem; color: var(--accent);">OPC适配度测试</div>
+              <div style="font-size: 4rem; font-weight: 100; color: var(--accent); letter-spacing: -0.04em;">${r.fit_score}</div>
+              <div style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.5rem;">${r.fit_level} · 适合做OPC</div>
             </div>
-            <div class="text-sm text-gray-500 text-center leading-relaxed px-4 mb-6">
-              我刚刚完成了OPC适配自测，发现自己${r.fit_level}！你也来试试吧。
-            </div>
-            <div class="text-center text-xs text-gray-600 py-4 border-t border-gray-800">
-              扫码测试 → 开启你的OPC之路
+            <div style="text-align: center; font-size: 0.8125rem; color: var(--text-tertiary); padding: 1.5rem 0; border-top: 1px solid var(--line);">
+              我刚完成OPC适配自测，发现自己${r.fit_level}。你也来试试。
             </div>
           </div>
-          <button onclick="downloadShareCard()" class="w-full btn-primary">
-            保存分享图片
-          </button>
+          <button onclick="downloadShareCard()" class="action">保存图片</button>
         </div>
+
       </div>
     </div>
   `;
 }
 
+// Loading Screen
+function renderLoading() {
+  return `
+    <div class="ma-layout">
+      <div class="ma-center" style="min-height: 100dvh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <div class="spinner" style="margin-bottom: 2rem;"></div>
+        <p class="text-body" style="color: var(--text-secondary);">豆包正在分析你的答案...</p>
+      </div>
+    </div>
+  `;
+}
+
+// Main render
 async function render() {
   const app = document.getElementById('app');
   const questions = await loadQuestions();
   window.QUESTIONS = questions.questions;
 
   if (state.loading) {
-    app.innerHTML = `
-      <div class="ma-layout min-h-screen">
-        <div class="ma-center flex flex-col items-center justify-center">
-          <div class="loading-spinner mb-6"></div>
-          <p class="text-gray-400 text-lg mb-2 font-light">豆包正在分析你的答案...</p>
-          <p class="text-gray-600 text-sm tracking-wider">预计需要 3-5 秒</p>
-        </div>
-      </div>
-    `;
+    app.innerHTML = renderLoading();
   } else if (state.results) {
     app.innerHTML = renderResult();
     setTimeout(() => {
