@@ -693,6 +693,13 @@ function restart() {
 
 document.addEventListener('DOMContentLoaded', render);
 
+// 临时桩函数 - 任务6将实现完整版本
+function selectService(serviceType) {
+  console.warn('selectService called with:', serviceType);
+  // 临时实现：刷新页面
+  alert('服务选择功能即将上线，请稍后...');
+}
+
 // 节点模态框
 function openNodeModal(nodeId) {
   const modal = document.getElementById('node-modal');
