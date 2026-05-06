@@ -6,7 +6,8 @@ const state = {
   userWechatId: '',
   paid: false,
   error: null,
-  showLanding: true
+  showLanding: true,
+  selectedService: null
 };
 
 async function loadQuestions() {
@@ -707,6 +708,7 @@ function restart() {
   state.userWechatId = '';
   state.paid = false;
   state.error = null;
+  state.selectedService = null;
   render();
 }
 
