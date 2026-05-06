@@ -663,6 +663,16 @@ app.post('/api/generate-node-content', async (req, res) => {
 
 格式要求：使用Markdown格式，层次清晰`;
 
+    // 检查 API Key
+    if (!API_KEY) {
+      // 降级：返回原始摘要
+      return res.json({
+        content: `# ${title}\n\n${summary}\n\n---\n*AI内容生成暂时不可用，请稍后重试*`,
+        node_id,
+        generated_at: new Date().toISOString()
+      });
+    }
+
     const response = await fetch(API_URL, {
       method: 'POST',
       headers: {
