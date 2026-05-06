@@ -710,7 +710,10 @@ function restart() {
   render();
 }
 
-document.addEventListener('DOMContentLoaded', render);
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadNodes();
+  render();
+});
 
 // 临时桩函数 - 任务6将实现完整版本
 function selectService(serviceType) {
@@ -786,4 +789,66 @@ function consultForNode() {
 
   closeNodeModal();
   selectService('needs-mapping');
+}
+
+// 节点网格渲染
+async function loadNodes() {
+  try {
+    const response = await fetch('data/nodes.json');
+    const data = await response.json();
+    window.NODES = data.nodes;
+    renderNodesGrid(data.nodes);
+  } catch (error) {
+    console.error('Load nodes error:', error);
+  }
+}
+
+function renderNodesGrid(nodes, filter) {
+  const grid = document.getElementById('nodes-grid');
+  if (!grid) return;
+
+  const filtered = filter && filter !== 'all'
+    ? nodes.filter(n => n.difficulty === filter)
+    : nodes;
+
+  grid.innerHTML = filtered.map(node => `
+    <div style="background: var(--surface); padding: 1.25rem; cursor: pointer;"
+         onclick="openNodeModal(${node.id})">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+        <div class="text-label" style="color: var(--accent);">
+          ${String(node.id).padStart(2, '0')}
+        </div>
+        <div class="text-label" style="color: var(--text-tertiary);">
+          ${node.difficulty}
+        </div>
+      </div>
+      <h3 style="font-size: 1rem; font-weight: 400; color: var(--text-primary); margin-bottom: 0.5rem;">
+        ${node.title}
+      </h3>
+      <p class="text-body" style="font-size: 0.8125rem; color: var(--text-secondary);">
+        ${node.summary}
+      </p>
+      ${node.price_consult ? `
+        <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--line);">
+          <span class="text-label" style="color: var(--text-tertiary);">咨询 </span>
+          <span style="color: var(--accent);">¥${node.price_consult}</span>
+        </div>
+      ` : ''}
+    </div>
+  `).join('');
+}
+
+function filterNodes(difficulty) {
+  // 更新按钮状态
+  document.querySelectorAll('[id^="filter-"]').forEach(btn => {
+    btn.style.color = 'var(--text-secondary)';
+    btn.style.borderBottomColor = 'var(--line)';
+  });
+  const activeBtn = document.getElementById('filter-' + difficulty);
+  if (activeBtn) {
+    activeBtn.style.color = 'var(--text-primary)';
+    activeBtn.style.borderBottomColor = 'var(--accent)';
+  }
+
+  renderNodesGrid(window.NODES, difficulty);
 }
