@@ -8,7 +8,8 @@
       "difficulty": "入门",
       "category": "0-1",
       "price_standard": null,
-      "price_consult": 299
+      "price_consult": 299,
+      "ai_summary": null
     },
     {
       "id": 2,
@@ -18,7 +19,8 @@
       "difficulty": "入门",
       "category": "0-1",
       "price_standard": 299,
-      "price_consult": 299
+      "price_consult": 299,
+      "ai_summary": null
     },
     {
       "id": 3,
@@ -28,7 +30,8 @@
       "difficulty": "入门",
       "category": "0-1",
       "price_standard": null,
-      "price_consult": 299
+      "price_consult": 299,
+      "ai_summary": null
     },
     {
       "id": 4,
@@ -38,7 +41,8 @@
       "difficulty": "入门",
       "category": "0-1",
       "price_standard": null,
-      "price_consult": 299
+      "price_consult": 299,
+      "ai_summary": null
     },
     {
       "id": 5,
@@ -48,7 +52,8 @@
       "difficulty": "进阶",
       "category": "0-1",
       "price_standard": null,
-      "price_consult": 299
+      "price_consult": 299,
+      "ai_summary": null
     },
     {
       "id": 6,
@@ -58,7 +63,8 @@
       "difficulty": "入门",
       "category": "0-1",
       "price_standard": null,
-      "price_consult": 299
+      "price_consult": 299,
+      "ai_summary": null
     },
     {
       "id": 7,
@@ -68,7 +74,8 @@
       "difficulty": "进阶",
       "category": "0-1",
       "price_standard": null,
-      "price_consult": 299
+      "price_consult": 299,
+      "ai_summary": null
     },
     {
       "id": 8,
@@ -78,7 +85,8 @@
       "difficulty": "进阶",
       "category": "0-1",
       "price_standard": 199,
-      "price_consult": 299
+      "price_consult": 299,
+      "ai_summary": null
     },
     {
       "id": 9,
@@ -88,7 +96,8 @@
       "difficulty": "入门",
       "category": "1-10",
       "price_standard": null,
-      "price_consult": 299
+      "price_consult": 299,
+      "ai_summary": null
     },
     {
       "id": 10,
@@ -98,7 +107,8 @@
       "difficulty": "入门",
       "category": "1-10",
       "price_standard": null,
-      "price_consult": 299
+      "price_consult": 299,
+      "ai_summary": null
     },
     {
       "id": 11,
@@ -108,7 +118,8 @@
       "difficulty": "进阶",
       "category": "1-10",
       "price_standard": null,
-      "price_consult": 299
+      "price_consult": 299,
+      "ai_summary": null
     },
     {
       "id": 12,
@@ -118,7 +129,8 @@
       "difficulty": "高级",
       "category": "1-10",
       "price_standard": null,
-      "price_consult": 299
+      "price_consult": 299,
+      "ai_summary": null
     },
     {
       "id": 13,
@@ -128,7 +140,8 @@
       "difficulty": "高级",
       "category": "1-10",
       "price_standard": null,
-      "price_consult": 299
+      "price_consult": 299,
+      "ai_summary": null
     },
     {
       "id": 14,
@@ -138,7 +151,8 @@
       "difficulty": "高级",
       "category": "1-10",
       "price_standard": null,
-      "price_consult": 299
+      "price_consult": 299,
+      "ai_summary": null
     },
     {
       "id": 15,
@@ -148,7 +162,8 @@
       "difficulty": "进阶",
       "category": "1-10",
       "price_standard": null,
-      "price_consult": 299
+      "price_consult": 299,
+      "ai_summary": null
     },
     {
       "id": 16,
@@ -158,7 +173,8 @@
       "difficulty": "进阶",
       "category": "1-10",
       "price_standard": null,
-      "price_consult": 299
+      "price_consult": 299,
+      "ai_summary": null
     },
     {
       "id": 17,
@@ -168,7 +184,8 @@
       "difficulty": "高级",
       "category": "1-10",
       "price_standard": null,
-      "price_consult": 299
+      "price_consult": 299,
+      "ai_summary": null
     },
     {
       "id": 18,
@@ -178,7 +195,8 @@
       "difficulty": "进阶",
       "category": "10+",
       "price_standard": null,
-      "price_consult": 299
+      "price_consult": 299,
+      "ai_summary": null
     },
     {
       "id": 19,
@@ -188,7 +206,8 @@
       "difficulty": "进阶",
       "category": "10+",
       "price_standard": null,
-      "price_consult": 299
+      "price_consult": 299,
+      "ai_summary": null
     },
     {
       "id": 20,
@@ -198,7 +217,8 @@
       "difficulty": "进阶",
       "category": "10+",
       "price_standard": null,
-      "price_consult": 299
+      "price_consult": 299,
+      "ai_summary": null
     },
     {
       "id": 21,
@@ -208,7 +228,8 @@
       "difficulty": "高级",
       "category": "10+",
       "price_standard": null,
-      "price_consult": 299
+      "price_consult": 299,
+      "ai_summary": null
     }
   ]
 }
