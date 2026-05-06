@@ -715,11 +715,230 @@ document.addEventListener('DOMContentLoaded', async () => {
   render();
 });
 
-// 临时桩函数 - 任务6将实现完整版本
+// 服务选择流程
 function selectService(serviceType) {
-  console.warn('selectService called with:', serviceType);
-  // 临时实现：刷新页面
-  alert('服务选择功能即将上线，请稍后...');
+  state.selectedService = serviceType;
+  state.showLanding = false;
+  renderServiceIntro();
+}
+
+function renderServiceIntro() {
+  const app = document.getElementById('app');
+
+  if (state.selectedService === 'company-registration') {
+    app.innerHTML = renderCompanyServiceIntro();
+  } else if (state.selectedService === 'needs-mapping') {
+    app.innerHTML = renderNeedsMappingIntro();
+  }
+}
+
+function renderCompanyServiceIntro() {
+  return `
+    <div class="ma-layout">
+      <div class="ma-center">
+        <div style="padding: 3rem 0;">
+          <div class="text-label" style="margin-bottom: 0.5rem; color: var(--accent);">标准化服务</div>
+          <h2 class="text-headline" style="margin-bottom: 1rem;">公司注册代办</h2>
+
+          <div style="margin-bottom: 2rem;">
+            <div style="font-size: 2rem; color: var(--accent); margin-bottom: 0.5rem;">¥299</div>
+            <div class="text-label" style="color: var(--text-tertiary);">市场价 ¥800-1500</div>
+          </div>
+
+          <div class="text-body" style="color: var(--text-secondary); margin-bottom: 2rem;">
+            <p style="margin-bottom: 1rem;"><strong style="color: var(--text-primary);">包含服务：</strong></p>
+            <ul style="list-style: none; padding: 0;">
+              <li style="margin-bottom: 0.5rem;">· 名称核准</li>
+              <li style="margin-bottom: 0.5rem;">· 营业执照办理</li>
+              <li style="margin-bottom: 0.5rem;">· 税务登记</li>
+              <li style="margin-bottom: 0.5rem;">· 银行开户指导</li>
+            </ul>
+            <p style="margin-top: 1rem;"><strong style="color: var(--text-primary);">时长：</strong>3-5个工作日</p>
+          </div>
+
+          <div style="margin-bottom: 2rem; padding: 1rem; border: 1px solid var(--line);">
+            <div class="text-label" style="margin-bottom: 0.5rem; color: var(--text-tertiary);">适合谁</div>
+            <p class="text-body" style="color: var(--text-secondary);">
+              第一次创业，不知道如何注册公司<br>
+              嫌流程麻烦，想省心中介代办
+            </p>
+          </div>
+
+          <button onclick="goToPayment()" class="btn-pdf" style="width: 100%; margin-bottom: 1rem;">
+            立即购买 · ¥299
+          </button>
+          <button onclick="backToLanding()" class="action" style="display: block; text-align: center;">
+            返回首页
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderNeedsMappingIntro() {
+  return `
+    <div class="ma-layout">
+      <div class="ma-center">
+        <div style="padding: 3rem 0;">
+          <div class="text-label" style="margin-bottom: 0.5rem; color: var(--accent);">非标准化服务</div>
+          <h2 class="text-headline" style="margin-bottom: 1rem;">需求梳理</h2>
+
+          <div style="margin-bottom: 2rem;">
+            <div style="font-size: 2rem; color: var(--accent); margin-bottom: 0.5rem;">¥299</div>
+            <div class="text-label" style="color: var(--text-tertiary);">1对1视频通话</div>
+          </div>
+
+          <div class="text-body" style="color: var(--text-secondary); margin-bottom: 2rem;">
+            <p style="margin-bottom: 1rem;"><strong style="color: var(--text-primary);">服务内容：</strong></p>
+            <ul style="list-style: none; padding: 0;">
+              <li style="margin-bottom: 0.5rem;">· 45-60分钟1对1视频通话</li>
+              <li style="margin-bottom: 0.5rem;">· 帮你梳理当前卡在哪个节点</li>
+              <li style="margin-bottom: 0.5rem;">· 找到最适合你的OPC路径</li>
+              <li style="margin-bottom: 0.5rem;">· 获得个性化的行动清单</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 2rem; padding: 1rem; border: 1px solid var(--line);">
+            <div class="text-label" style="margin-bottom: 0.5rem; color: var(--text-tertiary);">你会得到</div>
+            <p class="text-body" style="color: var(--text-secondary);">
+              一份完整的OPC路径图<br>
+              知道下一步应该做什么<br>
+              避免常见的创业坑
+            </p>
+          </div>
+
+          <button onclick="goToPayment()" class="btn-pdf" style="width: 100%; margin-bottom: 1rem;">
+            立即预约 · ¥299
+          </button>
+          <button onclick="backToLanding()" class="action" style="display: block; text-align: center;">
+            返回首页
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function goToPayment() {
+  const service = state.selectedService;
+  const amount = 299; // 两个服务都是 ¥299
+
+  // 直接进入支付流程
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <div class="ma-layout">
+      <div class="ma-center">
+        <div style="padding: 3rem 0; text-align: center;">
+          <div class="text-label" style="margin-bottom: 1rem; color: var(--text-tertiary);">Step 1/3 — 输入你的微信</div>
+          <p class="text-body" style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+            ${getServiceConfirmText()}
+          </p>
+          <input
+            type="text"
+            id="wechat-input"
+            placeholder="请输入你的微信号"
+            value="${state.userWechatId}"
+            style="
+              width: 100%;
+              max-width: 280px;
+              padding: 0.875rem 1rem;
+              background: var(--surface);
+              border: 1px solid var(--line);
+              color: var(--text-primary);
+              font-size: 0.875rem;
+              text-align: center;
+              outline: none;
+            "
+          >
+          <div style="margin-top: 1rem;">
+            <button onclick="goToPaymentQR()" class="btn-pdf" style="background: var(--text-tertiary);">
+              下一步
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function getServiceConfirmText() {
+  const service = state.selectedService;
+  if (service === 'company-registration') {
+    return '购买"公司注册代办"服务后，我会添加你的微信';
+  } else if (service === 'needs-mapping') {
+    return '购买"需求梳理"服务后，我会添加你的微信预约时间';
+  }
+  return '服务完成后，我会添加你的微信';
+}
+
+function goToPaymentQR() {
+  const input = document.getElementById('wechat-input');
+  if (!input || !input.value.trim()) {
+    input.classList.add('input-error');
+    input.style.borderColor = 'var(--danger)';
+    let errorMsg = document.getElementById('wechat-error');
+    if (!errorMsg) {
+      errorMsg = document.createElement('div');
+      errorMsg.id = 'wechat-error';
+      errorMsg.className = 'error-message';
+      input.parentNode.appendChild(errorMsg);
+    }
+    errorMsg.textContent = '请输入你的微信号';
+    return;
+  }
+  input.classList.remove('input-error');
+  input.style.borderColor = '';
+  const errorMsg = document.getElementById('wechat-error');
+  if (errorMsg) errorMsg.remove();
+  state.userWechatId = input.value.trim();
+  showPaymentQR();
+}
+
+function showPaymentQR() {
+  const app = document.getElementById('app');
+  const service = state.selectedService;
+  const serviceName = service === 'company-registration' ? '公司注册代办' : '需求梳理';
+
+  app.innerHTML = `
+    <div class="ma-layout">
+      <div class="ma-center">
+        <div style="padding: 3rem 0; text-align: center;">
+          <div class="text-label" style="margin-bottom: 1rem; color: var(--text-tertiary);">Step 2/3 — 扫码支付</div>
+
+          <div style="display: inline-block; padding: 0.75rem; background: #fff; margin-bottom: 1.5rem;">
+            <img src="wechat-pay.jpg" alt="微信支付" style="width: 220px; height: auto; display: block;">
+          </div>
+
+          <div style="font-size: 1.5rem; color: var(--accent); margin-bottom: 0.5rem;">
+            ¥299
+          </div>
+          <div class="text-label" style="margin-bottom: 1.5rem; color: var(--text-tertiary);">
+            ${serviceName}
+          </div>
+
+          <div style="margin-bottom: 1.5rem;">
+            <div class="text-label" style="margin-bottom: 0.5rem; color: var(--text-tertiary);">我的微信</div>
+            <div style="font-size: 1rem; color: var(--accent); letter-spacing: 0.1em;">bcrf2025</div>
+          </div>
+
+          <div style="padding: 1rem; border: 1px solid var(--line); margin-bottom: 1.5rem; text-align: left;">
+            <div class="text-label" style="margin-bottom: 0.5rem; color: var(--text-tertiary);">支付后请完成</div>
+            <ol style="list-style: decimal; padding-left: 1.25rem; font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.8;">
+              <li>截图付款凭证</li>
+              <li>添加微信 <span style="color: var(--accent);">bcrf2025</span></li>
+              <li>发送截图和服务类型</li>
+              <li>我会确认并进入服务流程</li>
+            </ol>
+          </div>
+
+          <button onclick="confirmPayment()" class="btn-pdf" style="background: var(--success);">
+            我已支付 ✓
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 // 节点模态框
