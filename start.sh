@@ -10,6 +10,9 @@ if [ ! -f api/.env ]; then
   echo "请编辑 api/.env 填入 OPENAI_API_KEY"
 fi
 
+# 创建数据目录
+mkdir -p data
+
 # 启动API服务（后台）
 echo "📡 启动API服务..."
 cd api && node analyze.js &
@@ -23,7 +26,8 @@ HTTP_PID=$!
 
 echo ""
 echo "✅ 服务已启动！"
-echo "📱 访问: http://localhost:3000"
+echo "📱 测试页面: http://localhost:3000"
+echo "🔧 管理后台: http://localhost:3000/admin.html"
 echo "🔧 API: http://localhost:3001"
 echo ""
 echo "按 Ctrl+C 停止所有服务"

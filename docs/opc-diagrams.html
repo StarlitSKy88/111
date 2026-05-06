@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OPC全流程节点地图 — 可视化图表</title>
+  <style>
+    :root {
+      --bg: #111110;
+      --surface: #1A1A18;
+      --text-primary: #F0EDE6;
+      --text-secondary: #7A7670;
+      --text-tertiary: #4A4644;
+      --accent: #C0392B;
+      --accent-dark: #a33025;
+      --line: #2A2A28;
+      --success: #22c55e;
+      --warning: #eab308;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    .page-title {
+      font-size: 0.625rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 0.5rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 200;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      margin-bottom: 3rem;
+    }
+
+    /* Phase Timeline */
+    .phase-timeline {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--line);
+      margin-bottom: 3rem;
+    }
+
+    .phase {
+      background: var(--bg);
+      padding: 1.5rem;
+    }
+
+    .phase-header {
+      font-size: 0.5625rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .phase-name {
+      font-size: 1.25rem;
+      font-weight: 300;
+      margin-bottom: 0.25rem;
+    }
+
+    .phase-duration {
+      font-size: 0.75rem;
+      color: var(--text-tertiary);
+    }
+
+    .phase-nodes {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--line);
+    }
+
+    .phase-node {
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      padding: 0.25rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .phase-node::before {
+      content: '';
+      width: 4px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    /* Architecture Diagram */
+    .arch-diagram {
+      margin-bottom: 3rem;
+    }
+
+    .arch-title {
+      font-size: 0.625rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 1rem;
+    }
+
+    .arch-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .arch-layer {
+      background: var(--surface);
+      padding: 1.5rem;
+      border-left: 2px solid var(--accent);
+    }
+
+    .arch-layer-name {
+      font-size: 0.6875rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .arch-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .arch-item {
+      background: var(--bg);
+      padding: 0.5rem 1rem;
+      font-size: 0.8125rem;
+      color: var(--text-primary);
+      border: 1px solid var(--line);
+    }
+
+    .arch-item.highlight {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Revenue Table */
+    .revenue-section {
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      font-size: 0.625rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 1rem;
+    }
+
+    .revenue-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--line);
+    }
+
+    .revenue-category {
+      background: var(--bg);
+      padding: 1.25rem;
+    }
+
+    .revenue-cat-name {
+      font-size: 0.75rem;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .revenue-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.375rem 0;
+      font-size: 0.75rem;
+    }
+
+    .revenue-item-name {
+      color: var(--text-secondary);
+    }
+
+    .revenue-item-price {
+      color: var(--accent);
+    }
+
+    /* Roadmap */
+    .roadmap {
+      margin-bottom: 3rem;
+    }
+
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--line);
+    }
+
+    .roadmap-month {
+      background: var(--bg);
+      padding: 1.5rem;
+    }
+
+    .roadmap-month-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .roadmap-month-num {
+      font-size: 0.5625rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .roadmap-month-title {
+      font-size: 1rem;
+      font-weight: 300;
+    }
+
+    .roadmap-milestone {
+      font-size: 0.8125rem;
+      color: var(--text-primary);
+      padding: 0.25rem 0;
+    }
+
+    .roadmap-metric {
+      font-size: 0.6875rem;
+      color: var(--text-tertiary);
+      padding: 0.125rem 0;
+    }
+
+    /* Risk Matrix */
+    .risk-section {
+      margin-bottom: 3rem;
+    }
+
+    .risk-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--line);
+    }
+
+    .risk-cell {
+      background: var(--bg);
+      padding: 1.25rem;
+    }
+
+    .risk-type {
+      font-size: 0.5625rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 0.75rem;
+    }
+
+    .risk-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 0.8125rem;
+    }
+
+    .risk-name {
+      color: var(--text-secondary);
+    }
+
+    .risk-badge {
+      font-size: 0.5625rem;
+      padding: 0.125rem 0.375rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .risk-badge.high { background: var(--success); color: #000; }
+    .risk-badge.medium { background: var(--warning); color: #000; }
+    .risk-badge.low { background: var(--text-tertiary); color: var(--bg); }
+
+    /* Summary Stats */
+    .summary-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--line);
+    }
+
+    .stat-cell {
+      background: var(--bg);
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 100;
+      letter-spacing: -0.02em;
+      color: var(--accent);
+    }
+
+    .stat-label {
+      font-size: 0.5625rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-top: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .phase-timeline {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .revenue-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .roadmap-grid {
+        grid-template-columns: 1fr;
+      }
+      .risk-grid {
+        grid-template-columns: 1fr;
+      }
+      .summary-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="page-title">OPC全流程SaaS工具链</div>
+    <h1>节点地图 & 可视化图表</h1>
+    <div class="subtitle">4阶段 × 21节点 × 37收费点 × 4层架构</div>
+
+    <!-- Summary Stats -->
+    <div class="summary-stats">
+      <div class="stat-cell">
+        <div class="stat-value">21</div>
+        <div class="stat-label">核心节点</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-value">37</div>
+        <div class="stat-label">收费点</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-value">4</div>
+        <div class="stat-label">实施阶段</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-value">6</div>
+        <div class="stat-label">个月周期</div>
+      </div>
+    </div>
+
+    <!-- Phase Timeline -->
+    <div class="phase-timeline">
+      <div class="phase">
+        <div class="phase-header">阶段一</div>
+        <div class="phase-name">冷启动</div>
+        <div class="phase-duration">月1-2</div>
+        <div class="phase-nodes">
+          <div class="phase-node">产品定位</div>
+          <div class="phase-node">MVP打磨</div>
+          <div class="phase-node">种子用户</div>
+          <div class="phase-node">商业验证</div>
+          <div class="phase-node">数据闭环</div>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-header">阶段二</div>
+        <div class="phase-name">产品化</div>
+        <div class="phase-duration">月3-4</div>
+        <div class="phase-nodes">
+          <div class="phase-node">功能完善</div>
+          <div class="phase-node">体验优化</div>
+          <div class="phase-node">视频内容</div>
+          <div class="phase-node">引流体系</div>
+          <div class="phase-node">交付标准化</div>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-header">阶段三</div>
+        <div class="phase-name">规模化</div>
+        <div class="phase-duration">月5-6</div>
+        <div class="phase-nodes">
+          <div class="phase-node">销售转化</div>
+          <div class="phase-node">私域运营</div>
+          <div class="phase-node">裂变机制</div>
+          <div class="phase-node">代理招募</div>
+          <div class="phase-node">品牌建设</div>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-header">阶段四</div>
+        <div class="phase-name">生态化</div>
+        <div class="phase-duration">月7+</div>
+        <div class="phase-nodes">
+          <div class="phase-node">工具链整合</div>
+          <div class="phase-node">知识库建设</div>
+          <div class="phase-node">社区运营</div>
+          <div class="phase-node">API开放</div>
+          <div class="phase-node">生态变现</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4-Layer Architecture -->
+    <div class="arch-diagram">
+      <div class="arch-title">4层技术架构</div>
+      <div class="arch-layers">
+        <div class="arch-layer">
+          <div class="arch-layer-name">用户层</div>
+          <div class="arch-items">
+            <span class="arch-item">Web落地页</span>
+            <span class="arch-item">微信小程序</span>
+            <span class="arch-item">H5移动端</span>
+            <span class="arch-item">浏览器插件</span>
+            <span class="arch-item">桌面客户端</span>
+            <span class="arch-item highlight">API开放平台</span>
+          </div>
+        </div>
+        <div class="arch-layer">
+          <div class="arch-layer-name">服务层</div>
+          <div class="arch-items">
+            <span class="arch-item">用户服务</span>
+            <span class="arch-item highlight">AI分析服务</span>
+            <span class="arch-item">订单服务</span>
+            <span class="arch-item">内容服务</span>
+            <span class="arch-item">消息服务</span>
+            <span class="arch-item">通知服务</span>
+          </div>
+        </div>
+        <div class="arch-layer">
+          <div class="arch-layer-name">数据层</div>
+          <div class="arch-items">
+            <span class="arch-item">PostgreSQL</span>
+            <span class="arch-item">Redis缓存</span>
+            <span class="arch-item">阿里OSS</span>
+            <span class="arch-item">Elasticsearch</span>
+            <span class="arch-item">ClickHouse</span>
+            <span class="arch-item highlight">Milvus向量库</span>
+          </div>
+        </div>
+        <div class="arch-layer">
+          <div class="arch-layer-name">基础设施层</div>
+          <div class="arch-items">
+            <span class="arch-item">腾讯云CVM</span>
+            <span class="arch-item">Kubernetes</span>
+            <span class="arch-item">腾讯云CDN</span>
+            <span class="arch-item">Prometheus</span>
+            <span class="arch-item">WAF安全</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Revenue Model -->
+    <div class="revenue-section">
+      <div class="section-title">37个收费点 — 按类别分布</div>
+      <div class="revenue-grid">
+        <div class="revenue-category">
+          <div class="revenue-cat-name">产品层 (12)</div>
+          <div class="revenue-item">
+            <span class="revenue-item-name">基础测评 ¥99</span>
+            <span class="revenue-item-price">95%</span>
+          </div>
+          <div class="revenue-item">
+            <span class="revenue-item-name">深度测评 ¥299</span>
+            <span class="revenue-item-price">95%</span>
+          </div>
+          <div class="revenue-item">
+            <span class="revenue-item-name">完整版 ¥599</span>
+            <span class="revenue-item-price">96%</span>
+          </div>
+          <div class="revenue-item">
+            <span class="revenue-item-name">AI报告 ¥199</span>
+            <span class="revenue-item-price">92%</span>
+          </div>
+          <div class="revenue-item">
+            <span class="revenue-item-name">方案定制 ¥999</span>
+            <span class="revenue-item-price">70%</span>
+          </div>
+        </div>
+        <div class="revenue-category">
+          <div class="revenue-cat-name">内容层 (8)</div>
+          <div class="revenue-item">
+            <span class="revenue-item-name">录播课 ¥499</span>
+            <span class="revenue-item-price">≈0</span>
+          </div>
+          <div class="revenue-item">
+            <span class="revenue-item-name">直播课 ¥1999</span>
+            <span class="revenue-item-price">≈0</span>
+          </div>
+          <div class="revenue-item">
+            <span class="revenue-item-name">商业模板 ¥99</span>
+            <span class="revenue-item-price">≈0</span>
+          </div>
+          <div class="revenue-item">
+            <span class="revenue-item-name">年费会员 ¥999</span>
+            <span class="revenue-item-price">低</span>
+          </div>
+        </div>
+        <div class="revenue-category">
+          <div class="revenue-cat-name">生态层 (9)</div>
+          <div class="revenue-item">
+            <span class="revenue-item-name">区域代理 ¥5万</span>
+            <span class="revenue-item-price">一次性</span>
+          </div>
+          <div class="revenue-item">
+            <span class="revenue-item-name">行业代理 ¥10万</span>
+            <span class="revenue-item-price">一次性</span>
+          </div>
+          <div class="revenue-item">
+            <span class="revenue-item-name">API调用 ¥0.1/次</span>
+            <span class="revenue-item-price">按量</span>
+          </div>
+          <div class="revenue-item">
+            <span class="revenue-item-name">工具接入 ¥999/月</span>
+            <span class="revenue-item-price">订阅</span>
+          </div>
+        </div>
+        <div class="revenue-category">
+          <div class="revenue-cat-name">增值服务 (8)</div>
+          <div class="revenue-item">
+            <span class="revenue-item-name">系统定制 ¥5万+</span>
+            <span class="revenue-item-price">项目</span>
+          </div>
+          <div class="revenue-item">
+            <span class="revenue-item-name">数据报告 ¥999/月</span>
+            <span class="revenue-item-price">订阅</span>
+          </div>
+          <div class="revenue-item">
+            <span class="revenue-item-name">常年顾问 ¥3万/年</span>
+            <span class="revenue-item-price">订阅</span>
+          </div>
+          <div class="revenue-item">
+            <span class="revenue-item-name">资源对接 ¥999/次</span>
+            <span class="revenue-item-price">按次</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Roadmap -->
+    <div class="roadmap">
+      <div class="section-title">6个月实施路线图</div>
+      <div class="roadmap-grid">
+        <div class="roadmap-month">
+          <div class="roadmap-month-header">
+            <span class="roadmap-month-num">月1-2</span>
+            <span class="roadmap-month-title">冷启动</span>
+          </div>
+          <div class="roadmap-milestone">· 产品上线（测评+报告）</div>
+          <div class="roadmap-milestone">· 种子用户招募</div>
+          <div class="roadmap-milestone">· AI分析流程打通</div>
+          <div class="roadmap-metric">→ 目标：100+用户测评</div>
+          <div class="roadmap-metric">→ 指标：转化率>5%</div>
+        </div>
+        <div class="roadmap-month">
+          <div class="roadmap-month-header">
+            <span class="roadmap-month-num">月3-4</span>
+            <span class="roadmap-month-title">产品化</span>
+          </div>
+          <div class="roadmap-milestone">· 内容产品上线</div>
+          <div class="roadmap-milestone">· 私域社群建立</div>
+          <div class="roadmap-milestone">· 视频内容矩阵</div>
+          <div class="roadmap-metric">→ 目标：月收入>¥3万</div>
+          <div class="roadmap-metric">→ 指标：用户>1000</div>
+        </div>
+        <div class="roadmap-month">
+          <div class="roadmap-month-header">
+            <span class="roadmap-month-num">月5-6</span>
+            <span class="roadmap-month-title">规模化</span>
+          </div>
+          <div class="roadmap-milestone">· 代理体系搭建</div>
+          <div class="roadmap-milestone">· 销售团队组建</div>
+          <div class="roadmap-milestone">· API开放准备</div>
+          <div class="roadmap-metric">→ 目标：月收入>¥10万</div>
+          <div class="roadmap-metric">→ 指标：付费用户>500</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Risk Matrix -->
+    <div class="risk-section">
+      <div class="section-title">风险矩阵与应对策略</div>
+      <div class="risk-grid">
+        <div class="risk-cell">
+          <div class="risk-type">技术风险</div>
+          <div class="risk-item">
+            <span class="risk-name">AI服务不稳定</span>
+            <span class="risk-badge medium">中</span>
+          </div>
+          <div class="risk-item">
+            <span class="risk-name">数据泄露</span>
+            <span class="risk-badge low">低</span>
+          </div>
+        </div>
+        <div class="risk-cell">
+          <div class="risk-type">市场风险</div>
+          <div class="risk-item">
+            <span class="risk-name">竞品复制</span>
+            <span class="risk-badge high">高</span>
+          </div>
+          <div class="risk-item">
+            <span class="risk-name">需求变化</span>
+            <span class="risk-badge medium">中</span>
+          </div>
+        </div>
+        <div class="risk-cell">
+          <div class="risk-type">运营风险</div>
+          <div class="risk-item">
+            <span class="risk-name">获客成本上升</span>
+            <span class="risk-badge high">高</span>
+          </div>
+          <div class="risk-item">
+            <span class="risk-name">用户流失</span>
+            <span class="risk-badge medium">中</span>
+          </div>
+        </div>
+        <div class="risk-cell">
+          <div class="risk-type">政策风险</div>
+          <div class="risk-item">
+            <span class="risk-name">监管收紧</span>
+            <span class="risk-badge low">低</span>
+          </div>
+          <div class="risk-item">
+            <span class="risk-name">支付限制</span>
+            <span class="risk-badge low">低</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

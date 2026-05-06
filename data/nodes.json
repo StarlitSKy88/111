@@ -1,0 +1,235 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "title": "产品定位",
+      "slug": "product-positioning",
+      "summary": "确定你的OPC要做什么产品或服务，核心价值是什么",
+      "difficulty": "入门",
+      "category": "0-1",
+      "price_standard": null,
+      "price_consult": 299,
+      "ai_summary": null
+    },
+    {
+      "id": 2,
+      "title": "公司注册",
+      "slug": "company-registration",
+      "summary": "注册个体户或有限公司，选择经营范围",
+      "difficulty": "入门",
+      "category": "0-1",
+      "price_standard": 299,
+      "price_consult": 299,
+      "ai_summary": null
+    },
+    {
+      "id": 3,
+      "title": "银行开户",
+      "slug": "bank-account",
+      "summary": "开设对公账户，绑定微信商户号",
+      "difficulty": "入门",
+      "category": "0-1",
+      "price_standard": null,
+      "price_consult": 299,
+      "ai_summary": null
+    },
+    {
+      "id": 4,
+      "title": "税务登记",
+      "slug": "tax-registration",
+      "summary": "税务报到、申请发票、了解税率",
+      "difficulty": "入门",
+      "category": "0-1",
+      "price_standard": null,
+      "price_consult": 299,
+      "ai_summary": null
+    },
+    {
+      "id": 5,
+      "title": "云服务器",
+      "slug": "cloud-server",
+      "summary": "选购云服务器，搭建开发环境",
+      "difficulty": "进阶",
+      "category": "0-1",
+      "price_standard": null,
+      "price_consult": 299,
+      "ai_summary": null
+    },
+    {
+      "id": 6,
+      "title": "域名购买",
+      "slug": "domain-purchase",
+      "summary": "购买域名，备案解析",
+      "difficulty": "入门",
+      "category": "0-1",
+      "price_standard": null,
+      "price_consult": 299,
+      "ai_summary": null
+    },
+    {
+      "id": 7,
+      "title": "网站部署",
+      "slug": "website-deployment",
+      "summary": "部署前端项目，配置HTTPS",
+      "difficulty": "进阶",
+      "category": "0-1",
+      "price_standard": null,
+      "price_consult": 299,
+      "ai_summary": null
+    },
+    {
+      "id": 8,
+      "title": "商标申请",
+      "slug": "trademark-application",
+      "summary": "申请商标保护品牌",
+      "difficulty": "进阶",
+      "category": "0-1",
+      "price_standard": 199,
+      "price_consult": 299,
+      "ai_summary": null
+    },
+    {
+      "id": 9,
+      "title": "社保公积金",
+      "slug": "social-security",
+      "summary": "了解灵活就业社保公积金缴纳",
+      "difficulty": "入门",
+      "category": "1-10",
+      "price_standard": null,
+      "price_consult": 299,
+      "ai_summary": null
+    },
+    {
+      "id": 10,
+      "title": "票据管理",
+      "slug": "invoice-management",
+      "summary": "了解发票获取、报销、记账",
+      "difficulty": "入门",
+      "category": "1-10",
+      "price_standard": null,
+      "price_consult": 299,
+      "ai_summary": null
+    },
+    {
+      "id": 11,
+      "title": "年度汇算",
+      "slug": "annual-settlement",
+      "summary": "个税年度汇算清缴",
+      "difficulty": "进阶",
+      "category": "1-10",
+      "price_standard": null,
+      "price_consult": 299,
+      "ai_summary": null
+    },
+    {
+      "id": 12,
+      "title": "团队组建",
+      "slug": "team-building",
+      "summary": "招募合伙人或兼职外包",
+      "difficulty": "高级",
+      "category": "1-10",
+      "price_standard": null,
+      "price_consult": 299,
+      "ai_summary": null
+    },
+    {
+      "id": 13,
+      "title": "融资规划",
+      "slug": "fundraising-planning",
+      "summary": "了解融资时机和流程",
+      "difficulty": "高级",
+      "category": "1-10",
+      "price_standard": null,
+      "price_consult": 299,
+      "ai_summary": null
+    },
+    {
+      "id": 14,
+      "title": "股权设计",
+      "slug": "equity-design",
+      "summary": "设计股权结构",
+      "difficulty": "高级",
+      "category": "1-10",
+      "price_standard": null,
+      "price_consult": 299,
+      "ai_summary": null
+    },
+    {
+      "id": 15,
+      "title": "合同模板",
+      "slug": "contract-templates",
+      "summary": "准备常用合同模板",
+      "difficulty": "进阶",
+      "category": "1-10",
+      "price_standard": null,
+      "price_consult": 299,
+      "ai_summary": null
+    },
+    {
+      "id": 16,
+      "title": "数据备份",
+      "slug": "data-backup",
+      "summary": "设置自动化数据备份",
+      "difficulty": "进阶",
+      "category": "1-10",
+      "price_standard": null,
+      "price_consult": 299,
+      "ai_summary": null
+    },
+    {
+      "id": 17,
+      "title": "安全防护",
+      "slug": "security-protection",
+      "summary": "配置防火墙、安全监控",
+      "difficulty": "高级",
+      "category": "1-10",
+      "price_standard": null,
+      "price_consult": 299,
+      "ai_summary": null
+    },
+    {
+      "id": 18,
+      "title": "SEO优化",
+      "slug": "seo-optimization",
+      "summary": "搜索引擎优化基础",
+      "difficulty": "进阶",
+      "category": "10+",
+      "price_standard": null,
+      "price_consult": 299,
+      "ai_summary": null
+    },
+    {
+      "id": 19,
+      "title": "广告投放",
+      "slug": "advertising",
+      "summary": "了解广告投放基础",
+      "difficulty": "进阶",
+      "category": "10+",
+      "price_standard": null,
+      "price_consult": 299,
+      "ai_summary": null
+    },
+    {
+      "id": 20,
+      "title": "私域运营",
+      "slug": "private-traffic",
+      "summary": "微信私域流量运营",
+      "difficulty": "进阶",
+      "category": "10+",
+      "price_standard": null,
+      "price_consult": 299,
+      "ai_summary": null
+    },
+    {
+      "id": 21,
+      "title": "用户增长",
+      "slug": "user-growth",
+      "summary": "建立用户增长体系",
+      "difficulty": "高级",
+      "category": "10+",
+      "price_standard": null,
+      "price_consult": 299,
+      "ai_summary": null
+    }
+  ]
+}

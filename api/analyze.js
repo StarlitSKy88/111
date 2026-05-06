@@ -1,6 +1,8 @@
+require('dotenv').config({ path: __dirname + '/.env' });
 const express = require('express');
 const cors = require('cors');
 const crypto = require('crypto');
+const dataStore = require('./data-store');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -9,52 +11,79 @@ app.use(cors());
 app.use(express.json());
 
 // API Key 从环境变量读取
-const API_KEY = process.env.OPENAI_API_KEY || '';
+const API_KEY = process.env.API_KEY || '';
 const API_URL = 'https://tokenhub.tencentmaas.com/v1/chat/completions';
 
 // 系统提示词
-const SYSTEM_PROMPT = `你是一个极度毒舌、极度不耐烦、极度尖锐的AI导师，像一个看透一切的厌世天才。你的任务是根据用户的OPC适配测试答案，给出个性化分析报告。
+const SYSTEM_PROMPT = `你是OPC创始人教练，根据用户测试答案给出分析报告。
 
-回复格式要求：
-1. 先用一段话直接指出用户的问题所在（毒舌但有理）
-2. 给出0-100的OPC适配度评分和等级
-3. 列出用户的3个核心优势和3个需要补足的地方
-4. 给出3条具体可执行的推荐行动
-
-语气要求：
-- 像豆包一样毒舌但有用
-- 直接指出用户自欺欺人的地方
-- 用2026年的真实案例和数据
-- 最后给希望，但前提是用户真的行动`;
+回复格式（严格遵守，每条单独一行）：
+OPC适配度评分：XX分，等级：XXX
+优势1：[一句话描述。]
+优势2：[一句话描述。]
+优势3：[一句话描述。]
+短板1：[一句话描述。]
+短板2：[一句话描述。]
+短板3：[一句话描述。]
+推荐1：[一条具体行动。]
+推荐2：[一条具体行动。]
+推荐3：[一条具体行动。]`;
 
 const VALID_KEYS = ['A', 'B', 'C', 'D'];
 
 // 分析结果提取函数
 function extractSummary(text) {
   const lines = text.split('\n');
-  for (let i = 0; i < Math.min(5, lines.length); i++) {
-    if (lines[i].length > 20 && !lines[i].match(/^\d/)) {
-      return lines[i].trim();
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (line.length > 10 && !line.match(/^[优势短板推荐\d]/) && !line.match(/^OPC/)) {
+      return line.substring(0, 100);
     }
   }
   return '你的OPC适配度分析已完成';
 }
 
 function extractStrengths(text) {
-  const matches = text.match(/优势[^。]*[。]/gi) || [];
-  if (matches.length >= 3) return matches.slice(0, 3).map(s => s.replace(/[^，。]*[：:]/, '').trim());
+  const results = [];
+  const lines = text.split('\n');
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (trimmed.startsWith('优势') && trimmed.length > 4) {
+      results.push(trimmed.replace(/^优势\d?：[：:]?/, '').replace(/[。.]$/, '').trim());
+    }
+  }
+  if (results.length >= 3) return results.slice(0, 3);
+  if (results.length >= 1) return results;
   return ['执行力强', '学习能力强', '有危机意识'];
 }
 
 function extractWeaknesses(text) {
-  const matches = text.match(/短板|不足|问题[^。]*[。]/gi) || [];
-  if (matches.length >= 3) return matches.slice(0, 3).map(s => s.replace(/[^，。]*[：:]/, '').trim());
+  const results = [];
+  const lines = text.split('\n');
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (trimmed.startsWith('短板') && trimmed.length > 4) {
+      results.push(trimmed.replace(/^短板\d?：[：:]?/, '').replace(/[。.]$/, '').trim());
+    }
+  }
+  if (results.length >= 3) return results.slice(0, 3);
+  if (results.length >= 1) return results;
   return ['资源积累不足', '耐心不够', '人脉有限'];
 }
 
 function extractRecommendations(text) {
-  const recs = text.match(/\d+[.、][^。]+/g) || [];
-  if (recs.length >= 3) return recs.slice(0, 3).map(r => r.replace(/^\d+[.、]/, '').trim());
+  const results = [];
+  const lines = text.split('\n');
+  for (const line of lines) {
+    const trimmed = line.trim();
+    // 匹配 "推荐1：xxx" 或 "推荐：xxx" 但排除 "推荐行动："
+    if ((trimmed.startsWith('推荐1：') || trimmed.startsWith('推荐2：') || trimmed.startsWith('推荐3：') || (trimmed.startsWith('推荐：') && !trimmed.startsWith('推荐行动'))) && trimmed.length > 4) {
+      const cleaned = trimmed.replace(/^推荐\d?：[：:]?/, '').replace(/[。.]$/, '').trim();
+      if (cleaned.length > 2) results.push(cleaned);
+    }
+  }
+  if (results.length >= 3) return results.slice(0, 3);
+  if (results.length >= 1) return results;
   return ['选择轻资产项目起步', '利用AI工具提效', '建立个人品牌'];
 }
 
@@ -120,7 +149,10 @@ app.post('/api/analyze', async (req, res) => {
   }
 
   if (!API_KEY) {
-    return res.json(generateMockResults());
+    const mockResults = generateMockResults();
+    const savedRecord = dataStore.saveResult({ ...mockResults, answers });
+    mockResults.id = savedRecord.id;
+    return res.json(mockResults);
   }
 
   try {
@@ -136,15 +168,22 @@ app.post('/api/analyze', async (req, res) => {
     const scoreMatch = analysis.match(/(\d{2,3})/);
     const fitScore = scoreMatch ? parseInt(scoreMatch[1]) : 75;
 
-    res.json({
+    const resultData = {
       fit_score: fitScore,
       fit_level: fitScore >= 80 ? '高度适合' : fitScore >= 60 ? '适合' : fitScore >= 40 ? '中等' : '不太适合',
       full_analysis: analysis,
       summary: extractSummary(analysis),
       strengths: extractStrengths(analysis),
       weaknesses: extractWeaknesses(analysis),
-      recommendations: extractRecommendations(analysis)
-    });
+      recommendations: extractRecommendations(analysis),
+      answers: answers
+    };
+
+    // 保存结果到数据存储
+    const savedRecord = dataStore.saveResult(resultData);
+    resultData.id = savedRecord.id;
+
+    res.json(resultData);
 
   } catch (error) {
     console.error(`[${requestId}] Error:`, error.message);
@@ -564,6 +603,110 @@ Day 3-7：初步接触
     complete: true
   };
 }
+
+// 支付确认API (用户点击"我已支付"时调用)
+app.post('/api/confirm-payment', (req, res) => {
+  const { result_id, wechat_id } = req.body;
+  if (!result_id || !wechat_id) {
+    return res.status(400).json({ error: '缺少必要参数' });
+  }
+  dataStore.updatePayment(result_id, wechat_id);
+  res.json({ success: true, message: '支付已确认' });
+});
+
+// 获取统计数据
+app.get('/api/stats', (req, res) => {
+  const stats = dataStore.getStats();
+  res.json(stats);
+});
+
+// 获取所有测试结果 (后台用)
+app.get('/api/admin/results', (req, res) => {
+  const results = dataStore.getAllResults();
+  res.json({
+    success: true,
+    data: results,
+    total: results.length,
+    paid: results.filter(r => r.paid).length,
+    unpaid: results.filter(r => !r.paid).length
+  });
+});
+
+// 获取单个结果详情
+app.get('/api/result/:id', (req, res) => {
+  const result = dataStore.getResultById(req.params.id);
+  if (!result) {
+    return res.status(404).json({ error: '结果不存在' });
+  }
+  res.json(result);
+});
+
+// 节点内容生成API
+app.post('/api/generate-node-content', async (req, res) => {
+  const { node_id, title, summary } = req.body;
+
+  if (!node_id || !title) {
+    return res.status(400).json({ error: '缺少必要参数' });
+  }
+
+  try {
+    const prompt = `请为以下OPC创业节点生成详细的内容摘要：
+
+节点：${title}
+简要说明：${summary}
+
+请生成500字左右的详细摘要，包含：
+1. 为什么这个节点重要
+2. 常见错误和避坑指南
+3. 推荐的操作步骤
+4. 相关资源和工具
+
+格式要求：使用Markdown格式，层次清晰`;
+
+    // 检查 API Key
+    if (!API_KEY) {
+      // 降级：返回原始摘要
+      return res.json({
+        content: `# ${title}\n\n${summary}\n\n---\n*AI内容生成暂时不可用，请稍后重试*`,
+        node_id,
+        generated_at: new Date().toISOString()
+      });
+    }
+
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${API_KEY}`
+      },
+      body: JSON.stringify({
+        model: 'deepseek-v4-flash',
+        messages: [
+          { role: 'system', content: '你是一个专业的OPC创业顾问，擅长用简洁清晰的语言解释复杂的创业知识。' },
+          { role: 'user', content: prompt }
+        ],
+        temperature: 0.7,
+        max_tokens: 1000
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error('AI API调用失败');
+    }
+
+    const data = await response.json();
+    const content = data.choices?.[0]?.message?.content || summary;
+
+    res.json({
+      content,
+      node_id,
+      generated_at: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('Generate node content error:', error);
+    res.status(500).json({ error: '生成失败，请稍后重试' });
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`OPC API running on http://localhost:${PORT}`);

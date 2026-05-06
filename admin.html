@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="OPC数据管理后台">
+  <meta name="theme-color" content="#111110">
+  <title>OPC管理后台</title>
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --bg: #111110;
+      --surface: #1A1A18;
+      --text-primary: #F0EDE6;
+      --text-secondary: #7A7670;
+      --text-tertiary: #4A4644;
+      --accent: #C0392B;
+      --line: #2A2A28;
+      --success: #22c55e;
+      --warning: #eab308;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .text-label {
+      font-size: 0.625rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    .text-display {
+      font-size: clamp(2.5rem, 10vw, 6rem);
+      font-weight: 200;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+    }
+
+    .stat-number {
+      font-size: clamp(2rem, 8vw, 4rem);
+      font-weight: 100;
+      letter-spacing: -0.03em;
+      color: var(--text-primary);
+    }
+
+    /* Layout */
+    .admin-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      padding: 0 1.25rem;
+      gap: 0;
+      min-height: 100vh;
+    }
+
+    @media (min-width: 768px) {
+      .admin-layout {
+        padding: 0 clamp(2rem, 5vw, 4rem);
+      }
+    }
+
+    /* Header */
+    .admin-header {
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .admin-title {
+      font-size: 0.6875rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+    }
+
+    .refresh-btn {
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--text-secondary);
+      padding: 0.5rem 1rem;
+      font-size: 0.6875rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .refresh-btn:hover {
+      border-color: var(--text-secondary);
+      color: var(--text-primary);
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--line);
+      margin: 2rem 0;
+    }
+
+    @media (min-width: 640px) {
+      .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .stat-cell {
+      background: var(--bg);
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .stat-cell .value {
+      font-size: clamp(1.5rem, 6vw, 3rem);
+      font-weight: 100;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+
+    .stat-cell.accent .value {
+      color: var(--accent);
+    }
+
+    .stat-cell.success .value {
+      color: var(--success);
+    }
+
+    .stat-cell .label {
+      font-size: 0.5625rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-top: 0.5rem;
+    }
+
+    /* Score Distribution */
+    .score-dist {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--line);
+      margin: 1.5rem 0 2rem;
+    }
+
+    .score-bar {
+      background: var(--bg);
+      padding: 1rem 0.75rem;
+      text-align: center;
+    }
+
+    .score-bar .bar {
+      height: 4px;
+      background: var(--text-tertiary);
+      margin-bottom: 0.75rem;
+      position: relative;
+    }
+
+    .score-bar .bar-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      background: var(--accent);
+    }
+
+    .score-bar .count {
+      font-size: 1.25rem;
+      font-weight: 300;
+      color: var(--text-primary);
+    }
+
+    .score-bar .range {
+      font-size: 0.5625rem;
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+      margin-top: 0.25rem;
+    }
+
+    /* Table */
+    .results-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8125rem;
+    }
+
+    .results-table th {
+      text-align: left;
+      padding: 1rem 0.75rem;
+      border-bottom: 1px solid var(--line);
+      font-size: 0.5625rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      font-weight: 400;
+    }
+
+    .results-table td {
+      padding: 1rem 0.75rem;
+      border-bottom: 1px solid var(--line);
+      color: var(--text-secondary);
+    }
+
+    .results-table tr:hover td {
+      background: rgba(255,255,255,0.02);
+    }
+
+    .results-table .score {
+      font-size: 1.25rem;
+      font-weight: 300;
+      color: var(--accent);
+    }
+
+    .results-table .paid-badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.5625rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: var(--success);
+      color: #000;
+    }
+
+    .results-table .unpaid-badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.5625rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: var(--text-tertiary);
+      color: var(--bg);
+    }
+
+    .results-table .wechat-id {
+      font-family: 'Geist Mono', monospace;
+      color: var(--accent);
+    }
+
+    .results-table .time {
+      font-size: 0.6875rem;
+      color: var(--text-tertiary);
+    }
+
+    .level-tag {
+      font-size: 0.5625rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.125rem 0.375rem;
+      border: 1px solid var(--line);
+    }
+
+    /* Level indicator dots */
+    .level-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .level-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .level-dot.high { background: var(--success); }
+    .level-dot.medium-high { background: #eab308; }
+    .level-dot.medium { background: #f97316; }
+    .level-dot.low { background: var(--danger); }
+
+    /* Loading */
+    .loading {
+      text-align: center;
+      padding: 3rem;
+      color: var(--text-tertiary);
+    }
+
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 1px solid var(--line);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: rotate 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+
+    @keyframes rotate { to { transform: rotate(360deg); } }
+
+    /* Empty */
+    .empty {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-tertiary);
+    }
+
+    .empty-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0.3;
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-layout">
+    <div style="max-width: 1200px; margin: 0 auto;">
+
+      <!-- Header -->
+      <div class="admin-header">
+        <div>
+          <div class="admin-title">OPC适配自测</div>
+          <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">数据管理后台</div>
+        </div>
+        <button class="refresh-btn" onclick="loadData()">刷新数据</button>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid" id="stats-grid">
+        <div class="stat-cell">
+          <div class="value" id="stat-total">-</div>
+          <div class="label">总测试数</div>
+        </div>
+        <div class="stat-cell success">
+          <div class="value" id="stat-paid">-</div>
+          <div class="label">已付款</div>
+        </div>
+        <div class="stat-cell">
+          <div class="value" id="stat-unpaid">-</div>
+          <div class="label">未付款</div>
+        </div>
+        <div class="stat-cell accent">
+          <div class="value" id="stat-rate">-%</div>
+          <div class="label">转化率</div>
+        </div>
+      </div>
+
+      <!-- Score Distribution -->
+      <div style="margin-bottom: 1rem;">
+        <div class="text-label" style="margin-bottom: 0.75rem;">分数分布</div>
+        <div class="score-dist" id="score-dist">
+          <div class="score-bar">
+            <div class="bar"><div class="bar-fill" id="bar-80" style="width: 0%"></div></div>
+            <div class="count" id="count-80">0</div>
+            <div class="range">80-100</div>
+          </div>
+          <div class="score-bar">
+            <div class="bar"><div class="bar-fill" id="bar-60" style="width: 0%"></div></div>
+            <div class="count" id="count-60">0</div>
+            <div class="range">60-79</div>
+          </div>
+          <div class="score-bar">
+            <div class="bar"><div class="bar-fill" id="bar-40" style="width: 0%"></div></div>
+            <div class="count" id="count-40">0</div>
+            <div class="range">40-59</div>
+          </div>
+          <div class="score-bar">
+            <div class="bar"><div class="bar-fill" id="bar-0" style="width: 0%"></div></div>
+            <div class="count" id="count-0">0</div>
+            <div class="range">0-39</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Table -->
+      <div style="margin-top: 2rem;">
+        <div class="text-label" style="margin-bottom: 1rem;">测试记录</div>
+
+        <div id="loading" class="loading">
+          <div class="spinner"></div>
+          <div style="font-size: 0.6875rem; letter-spacing: 0.1em; text-transform: uppercase;">加载中</div>
+        </div>
+
+        <div id="empty" class="empty" style="display: none;">
+          <div class="empty-icon">—</div>
+          <div style="font-size: 0.75rem;">暂无测试数据</div>
+        </div>
+
+        <div id="table-container" style="overflow-x: auto;" style="display: none;">
+          <table class="results-table" id="results-table">
+            <thead>
+              <tr>
+                <th>分数</th>
+                <th>等级</th>
+                <th>优势</th>
+                <th>付款</th>
+                <th>微信</th>
+                <th>时间</th>
+              </tr>
+            </thead>
+            <tbody id="results-body">
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    let allResults = [];
+
+    async function loadData() {
+      document.getElementById('loading').style.display = 'block';
+      document.getElementById('empty').style.display = 'none';
+      document.getElementById('table-container').style.display = 'none';
+
+      try {
+        const [statsRes, resultsRes] = await Promise.all([
+          fetch('/api/stats'),
+          fetch('/api/admin/results')
+        ]);
+
+        const stats = await statsRes.json();
+        const resultsData = await resultsRes.json();
+
+        allResults = resultsData.data || [];
+
+        // 更新统计
+        document.getElementById('stat-total').textContent = stats.totalTests || 0;
+        document.getElementById('stat-paid').textContent = stats.paidTests || 0;
+        document.getElementById('stat-unpaid').textContent = stats.unpaidTests || 0;
+        document.getElementById('stat-rate').textContent = (stats.conversionRate || 0) + '%';
+
+        // 更新分数分布
+        const dist = stats.scoreDistribution || {};
+        const maxCount = Math.max(
+          dist['80-100'] || 0,
+          dist['60-79'] || 0,
+          dist['40-59'] || 0,
+          dist['0-39'] || 0,
+          1
+        );
+
+        ['80-100', '60-79', '40-59', '0-39'].forEach(range => {
+          const count = dist[range] || 0;
+          const barId = range === '80-100' ? 'bar-80' : range === '60-79' ? 'bar-60' : range === '40-59' ? 'bar-40' : 'bar-0';
+          const countId = range === '80-100' ? 'count-80' : range === '60-79' ? 'count-60' : range === '40-59' ? 'count-40' : 'count-0';
+          document.getElementById(countId).textContent = count;
+          document.getElementById(barId).style.width = (count / maxCount * 100) + '%';
+        });
+
+        // 渲染表格
+        renderTable(allResults);
+
+      } catch (error) {
+        console.error('Load error:', error);
+        document.getElementById('empty').style.display = 'block';
+        document.querySelector('#empty div:last-child').textContent = '数据加载失败';
+      }
+
+      document.getElementById('loading').style.display = 'none';
+    }
+
+    function renderTable(results) {
+      if (!results || results.length === 0) {
+        document.getElementById('empty').style.display = 'block';
+        document.getElementById('table-container').style.display = 'none';
+        return;
+      }
+
+      document.getElementById('empty').style.display = 'none';
+      document.getElementById('table-container').style.display = 'block';
+
+      const tbody = document.getElementById('results-body');
+      tbody.innerHTML = results.map(r => {
+        const date = new Date(r.timestamp);
+        const timeStr = date.toLocaleString('zh-CN', {
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+
+        const levelMap = {
+          '高度适合': { class: 'high', label: '高度适合' },
+          '适合': { class: 'medium-high', label: '适合' },
+          '中等': { class: 'medium', label: '中等' },
+          '不太适合': { class: 'low', label: '不太适合' }
+        };
+
+        const levelInfo = levelMap[r.fit_level] || { class: 'low', label: r.fit_level };
+
+        return `
+          <tr>
+            <td><span class="score">${r.fit_score}</span></td>
+            <td>
+              <span class="level-indicator">
+                <span class="level-dot ${levelInfo.class}"></span>
+                <span class="level-tag">${levelInfo.label}</span>
+              </span>
+            </td>
+            <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+              ${(r.strengths || []).slice(0, 2).join(', ')}
+            </td>
+            <td>
+              ${r.paid
+                ? '<span class="paid-badge">已付</span>'
+                : '<span class="unpaid-badge">未付</span>'}
+            </td>
+            <td class="wechat-id">${r.wechat_id || '—'}</td>
+            <td class="time">${timeStr}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // 初始加载
+    loadData();
+
+    // 每30秒自动刷新
+    setInterval(loadData, 30000);
+  </script>
+</body>
+</html>
