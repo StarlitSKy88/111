@@ -26,7 +26,10 @@
       --text-secondary: #7A7670;
       --text-tertiary: #4A4644;
       --accent: #C0392B;
+      --accent-dark: #a33025;
       --line: #2A2A28;
+      --success: #22c55e;
+      --danger: #ef4444;
     }
 
     /* === Reset & Base === */
@@ -362,7 +365,7 @@
     }
 
     .btn-pdf:hover {
-      background: #a33025;
+      background: var(--accent-dark);
     }
 
     @media (min-width: 640px) {
@@ -370,6 +373,30 @@
         font-size: 0.75rem;
         letter-spacing: 0.15em;
       }
+    }
+
+    /* === Hidden === */
+    .hidden {
+      display: none;
+    }
+
+    /* === Error State === */
+    .input-error {
+      border-color: var(--danger) !important;
+    }
+
+    .error-message {
+      color: var(--danger);
+      font-size: 0.75rem;
+      margin-top: 0.5rem;
+      text-align: center;
+    }
+
+    /* === Button Disabled === */
+    .btn-disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
     }
 
     /* === Animations === */
@@ -410,6 +437,27 @@
       color: #fff;
     }
 
+    /* === Skip Link (Accessibility) === */
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: 0;
+      background: var(--accent);
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      z-index: 9999;
+      text-decoration: none;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: top 0.3s ease;
+    }
+
+    .skip-link:focus {
+      top: 0;
+      outline: none;
+    }
+
     /* === Scrollbar === */
     ::-webkit-scrollbar {
       width: 2px;
@@ -439,7 +487,9 @@
   </style>
 </head>
 <body>
-  <div id="app"></div>
+  <!-- Skip to main content for accessibility -->
+  <a href="#main-content" class="skip-link">跳转到主要内容</a>
+  <div id="app" tabindex="-1"></div>
   <script src="app.js"></script>
 </body>
 </html>
