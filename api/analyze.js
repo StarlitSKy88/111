@@ -641,6 +641,63 @@ app.get('/api/result/:id', (req, res) => {
   res.json(result);
 });
 
+// 节点内容生成API
+app.post('/api/generate-node-content', async (req, res) => {
+  const { node_id, title, summary } = req.body;
+
+  if (!node_id || !title) {
+    return res.status(400).json({ error: '缺少必要参数' });
+  }
+
+  try {
+    const prompt = `请为以下OPC创业节点生成详细的内容摘要：
+
+节点：${title}
+简要说明：${summary}
+
+请生成500字左右的详细摘要，包含：
+1. 为什么这个节点重要
+2. 常见错误和避坑指南
+3. 推荐的操作步骤
+4. 相关资源和工具
+
+格式要求：使用Markdown格式，层次清晰`;
+
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${API_KEY}`
+      },
+      body: JSON.stringify({
+        model: 'deepseek-v4-flash',
+        messages: [
+          { role: 'system', content: '你是一个专业的OPC创业顾问，擅长用简洁清晰的语言解释复杂的创业知识。' },
+          { role: 'user', content: prompt }
+        ],
+        temperature: 0.7,
+        max_tokens: 1000
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error('AI API调用失败');
+    }
+
+    const data = await response.json();
+    const content = data.choices?.[0]?.message?.content || summary;
+
+    res.json({
+      content,
+      node_id,
+      generated_at: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('Generate node content error:', error);
+    res.status(500).json({ error: '生成失败，请稍后重试' });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`OPC API running on http://localhost:${PORT}`);
   console.log(`Model: deepseek-v4-flash (腾讯TokenHub)`);
