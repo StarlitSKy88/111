@@ -1,6 +1,6 @@
 {
   "name": "opcone",
-  "version": "1.0.0",
+  "version": "1.0.0.0",
   "description": "OPC适配自测 + AI分析演示 - Hackathon项目",
   "main": "app.js",
   "scripts": {
@@ -14,7 +14,11 @@
     "type": "git",
     "url": "git+https://github.com/StarlitSKy88/111.git"
   },
-  "keywords": ["opc", "ai", "hackathon"],
+  "keywords": [
+    "opc",
+    "ai",
+    "hackathon"
+  ],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
