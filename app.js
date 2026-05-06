@@ -692,3 +692,72 @@ function restart() {
 }
 
 document.addEventListener('DOMContentLoaded', render);
+
+// 节点模态框
+function openNodeModal(nodeId) {
+  const modal = document.getElementById('node-modal');
+  const nodesGrid = document.getElementById('nodes-grid');
+
+  // 查找节点数据
+  const node = window.NODES.find(n => n.id === nodeId);
+  if (!node) return;
+
+  window.SELECTED_NODE = node;
+
+  // 填充标题和分类
+  document.getElementById('modal-category').textContent =
+    `${node.difficulty} · ${node.category}`;
+  document.getElementById('modal-title').textContent = node.title;
+
+  // 显示loading
+  document.getElementById('modal-content').innerHTML =
+    '<div class="spinner" style="margin: 2rem auto;"></div>';
+
+  // 显示模态框
+  modal.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+
+  // 调用AI生成内容
+  generateNodeContent(node);
+}
+
+function closeNodeModal() {
+  const modal = document.getElementById('node-modal');
+  modal.classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+async function generateNodeContent(node) {
+  const contentEl = document.getElementById('modal-content');
+
+  try {
+    const response = await fetch('/api/generate-node-content', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        node_id: node.id,
+        title: node.title,
+        summary: node.summary
+      })
+    });
+
+    if (!response.ok) throw new Error('生成失败');
+
+    const data = await response.json();
+    contentEl.innerHTML = data.content;
+  } catch (error) {
+    // 降级：显示节点摘要
+    contentEl.innerHTML = `
+      <p style="margin-bottom: 1rem;">${node.summary}</p>
+      <p class="text-label" style="color: var(--text-tertiary);">AI内容生成中...</p>
+    `;
+  }
+}
+
+function consultForNode() {
+  const node = window.SELECTED_NODE;
+  if (!node) return;
+
+  closeNodeModal();
+  selectService('needs-mapping');
+}
