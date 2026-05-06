@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 // API Key 从环境变量读取
-const API_KEY = process.env.OPENAI_API_KEY || '';
+const API_KEY = process.env.API_KEY || '';
 const API_URL = 'https://tokenhub.tencentmaas.com/v1/chat/completions';
 
 // 系统提示词
