@@ -319,6 +319,20 @@ function confirmPayment() {
   const container = document.getElementById('manual-content');
   if (!container) return;
 
+  const service = state.selectedService;
+  const serviceName = service === 'company-registration' ? '公司注册代办' : '需求梳理';
+  const nextSteps = service === 'company-registration'
+    ? [
+        '添加微信后，发送你的公司名称',
+        '我们会在3-5个工作日内完成注册',
+        '完成前会与你确认营业执照副本'
+      ]
+    : [
+        '添加微信后，告诉我你目前卡在哪一步',
+        '我会与你预约45-60分钟的视频通话时间',
+        '通话前会发送问题清单给你准备'
+      ];
+
   // 提交支付信息到后台
   if (state.results && state.results.id && state.userWechatId) {
     fetch('/api/confirm-payment', {
@@ -326,35 +340,34 @@ function confirmPayment() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         result_id: state.results.id,
-        wechat_id: state.userWechatId
+        wechat_id: state.userWechatId,
+        service_type: service,
+        amount: 299
       })
     }).catch(err => console.error('Payment confirm error:', err));
   }
 
   container.innerHTML = `
     <div style="padding: 1.5rem 0; text-align: center;">
-      <div class="text-label" style="margin-bottom: 1rem; color: var(--success);">✓ 等待发送</div>
+      <div class="text-label" style="margin-bottom: 1rem; color: var(--success);">✓ 购买成功</div>
 
       <div style="margin-bottom: 1.5rem;">
         <p class="text-body" style="color: var(--text-secondary);">
-          手册将发送至：<br>
-          <span style="color: var(--accent); font-size: 1.125rem;">${state.userWechatId}</span>
+          服务：<br>
+          <span style="color: var(--accent); font-size: 1.125rem;">${serviceName}</span>
         </p>
       </div>
 
       <div style="padding: 1.5rem; border: 1px solid var(--line); text-align: left; margin-bottom: 1.5rem;">
         <div class="text-label" style="margin-bottom: 0.75rem; color: var(--text-tertiary);">接下来</div>
         <ol style="list-style: decimal; padding-left: 1.25rem; font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.8;">
-          <li>截图此页面</li>
-          <li>打开微信，添加 <span style="color: var(--accent);">bcrf2025</span></li>
-          <li>发送截图和你的微信号</li>
-          <li>等待我发送手册（24小时内）</li>
+          ${nextSteps.map(step => `<li>${step}</li>`).join('')}
         </ol>
       </div>
 
       <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
         <button onclick="showWechatQR()" class="action">查看我的微信</button>
-        <button onclick="restart()" class="action">重新测试</button>
+        <button onclick="backToLanding()" class="action">返回首页</button>
       </div>
     </div>
   `;
@@ -678,6 +691,12 @@ async function render() {
     const q = questions.questions[state.currentQuestion];
     app.innerHTML = renderQuestion(q, state.currentQuestion, questions.questions.length);
   }
+}
+
+function backToLanding() {
+  state.selectedService = null;
+  state.showLanding = true;
+  render();
 }
 
 function restart() {
