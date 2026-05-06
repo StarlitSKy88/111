@@ -489,7 +489,36 @@
 <body>
   <!-- Skip to main content for accessibility -->
   <a href="#main-content" class="skip-link">跳转到主要内容</a>
-  <div id="app" tabindex="-1"></div>
+  <!-- 节点百科区块 -->
+<section id="nodes-section" style="padding: 4rem 0; background: var(--surface);">
+  <div class="ma-layout">
+    <div class="ma-center">
+      <div style="margin-bottom: 2rem;">
+        <div class="text-label" style="margin-bottom: 0.5rem; color: var(--accent);">OPC节点百科</div>
+        <h2 class="text-headline" style="margin-bottom: 0.5rem;">21个创业节点</h2>
+        <p class="text-body" style="color: var(--text-secondary);">
+          从0到1，你需要解决21个节点。<br>
+          点击任意节点，获取AI整理的详细攻略。
+        </p>
+      </div>
+
+      <!-- 难度筛选 -->
+      <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+        <button class="action" onclick="filterNodes('all')" id="filter-all">全部</button>
+        <button class="action" onclick="filterNodes('入门')" id="filter-入门">入门</button>
+        <button class="action" onclick="filterNodes('进阶')" id="filter-进阶">进阶</button>
+        <button class="action" onclick="filterNodes('高级')" id="filter-高级">高级</button>
+      </div>
+
+      <!-- 节点网格 -->
+      <div id="nodes-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1px; background: var(--line);">
+        <!-- 动态生成 -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="app" tabindex="-1"></div>
   <script src="app.js"></script>
 </body>
 </html>
