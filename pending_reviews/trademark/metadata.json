@@ -1,0 +1,66 @@
+{
+  "nodeId": 26,
+  "slug": "trademark",
+  "title": "商标申请",
+  "generatedAt": "2026-05-07T12:05:59.873Z",
+  "blocks": [
+    {
+      "id": "B1",
+      "title": "概述",
+      "success": true,
+      "length": 687
+    },
+    {
+      "id": "B2",
+      "title": "详细说明（一）",
+      "success": true,
+      "length": 1322
+    },
+    {
+      "id": "B3",
+      "title": "详细说明（二）",
+      "success": true,
+      "length": 1259
+    },
+    {
+      "id": "B4",
+      "title": "详细说明（三）",
+      "success": true,
+      "length": 1971
+    },
+    {
+      "id": "B5",
+      "title": "详细说明（四）",
+      "success": true,
+      "length": 1323
+    },
+    {
+      "id": "B6",
+      "title": "详细说明（五）",
+      "success": true,
+      "length": 2373
+    },
+    {
+      "id": "B7",
+      "title": "常见问题 Q1-Q4",
+      "success": true,
+      "length": 1418
+    },
+    {
+      "id": "B8",
+      "title": "常见问题 Q5-Q8",
+      "success": true,
+      "length": 1414
+    },
+    {
+      "id": "B9",
+      "title": "相关资源",
+      "success": true,
+      "length": 1429
+    }
+  ],
+  "searchResults": {
+    "success": true,
+    "contentLength": 2299
+  }
+}

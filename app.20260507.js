@@ -6,7 +6,7 @@ const state = {
   userWechatId: '',
   paid: false,
   error: null,
-  showLanding: false, // 初始不显示欢迎页，节点列表为主页
+  showLanding: true,
   selectedService: null,
   // 用户认证状态
   user: null, // { email, token }
@@ -93,7 +93,7 @@ function renderLanding() {
 
 function startTest() {
   state.showLanding = false;
-  state.currentQuestion = 1; // 从第一题开始
+  state.currentQuestion = 0;
   state.answers = {};
   state.results = null;
   render();
@@ -694,25 +694,20 @@ async function render() {
         animateScore(state.results.fit_score, () => {});
       }
     }, 100);
-  } else if (state.currentQuestion > 0) {
-    // currentQuestion 从 1 开始（1 = 第一题）
-    const q = questions.questions[state.currentQuestion - 1];
-    app.innerHTML = renderQuestion(q, state.currentQuestion, questions.questions.length);
   } else {
-    // 首页：#app 保持空白，节点列表通过静态 HTML 展示
-    app.innerHTML = '';
+    const q = questions.questions[state.currentQuestion];
+    app.innerHTML = renderQuestion(q, state.currentQuestion, questions.questions.length);
   }
 }
 
 function backToLanding() {
   state.selectedService = null;
-  state.showLanding = false;
-  state.currentQuestion = 0;
+  state.showLanding = true;
   render();
 }
 
 function restart() {
-  state.showLanding = false;
+  state.showLanding = true;
   state.currentQuestion = 0;
   state.answers = {};
   state.results = null;
@@ -1042,173 +1037,53 @@ async function loadNodes() {
   }
 }
 
-// OPC 阶段分组 - Ma 设计：单色系 + 描述文字
-const PHASES = [
-  {
-    percent: '10%',
-    title: '创业准备',
-    description: '评估自我，认识创业的本质',
-    nodes: [1, 2, 3]
-  },
-  {
-    percent: '25%',
-    title: '基石搭建',
-    description: '选定方向，完成基础设施',
-    nodes: [4, 5, 6, 7, 8]
-  },
-  {
-    percent: '40%',
-    title: '合规与支付',
-    description: '合法合规经营，收钱是根本',
-    nodes: [9, 10, 11, 12, 13]
-  },
-  {
-    percent: '55%',
-    title: '运营基础',
-    description: '财务与定价，生存的保障',
-    nodes: [14, 15, 16, 17]
-  },
-  {
-    percent: '70%',
-    title: '获客增长',
-    description: '从0到1，获取第一批客户',
-    nodes: [18, 19, 20, 21]
-  },
-  {
-    percent: '85%',
-    title: '规模化',
-    description: '扩大规模，建立壁垒',
-    nodes: [22, 23, 24, 25, 26, 27]
-  },
-  {
-    percent: '95%',
-    title: '保障体系',
-    description: '安全与保障，长期发展',
-    nodes: [28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38]
-  },
-  {
-    percent: '99%',
-    title: '最终阶段',
-    description: '政府补贴与客户关系，登顶之路',
-    nodes: [39, 40]
-  },
-];
-
-function renderNodeCard(node) {
-  return `
-    <div style="
-      background: var(--surface);
-      padding: 1.5rem;
-      cursor: pointer;
-      border: 1px solid var(--line);
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      height: 100%;
-      transition: border-color 0.4s ease;
-    "
-         onclick="${node.id === 1 ? 'startTest()' : 'openNodeModalWithAccess(' + node.id + ')'}"
-         onmouseenter="this.style.borderColor='var(--accent)'"
-         onmouseleave="this.style.borderColor='var(--line)'">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <span class="text-label" style="color: var(--accent); letter-spacing: 0.15em;">
-          ${String(node.id).padStart(2, '0')}
-        </span>
-        <span style="font-size: 0.5625rem; color: var(--text-tertiary); letter-spacing: 0.1em; text-transform: uppercase;">
-          ${node.difficulty}
-        </span>
-      </div>
-      <h3 style="font-size: 0.9375rem; font-weight: 400; color: var(--text-primary); letter-spacing: -0.01em; line-height: 1.5;">
-        ${node.title}
-      </h3>
-      <p style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.7; flex: 1;">
-        ${node.summary}
-      </p>
-    </div>
-  `;
-}
-
-function renderPhaseSection(phase, nodes) {
-  const phaseNodes = nodes.filter(n => phase.nodes.includes(n.id));
-  if (phaseNodes.length === 0) return '';
-
-  return `
-    <section style="
-      padding: 6rem 0;
-      border-top: 1px solid var(--line);
-    ">
-      <!-- 阶段标题与描述 - 左对齐不对称布局 -->
-      <div style="
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-        margin-bottom: 4rem;
-      " class="phase-header">
-        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-          <div style="display: flex; align-items: center; gap: 1.5rem;">
-            <span style="
-              font-size: 0.6875rem;
-              font-weight: 500;
-              color: var(--accent);
-              letter-spacing: 0.2em;
-              text-transform: uppercase;
-              border: 1px solid var(--accent);
-              padding: 0.25rem 0.75rem;
-            ">${phase.percent}</span>
-            <h2 style="
-              font-size: 1.5rem;
-              font-weight: 300;
-              color: var(--text-primary);
-              letter-spacing: -0.02em;
-            ">${phase.title}</h2>
-          </div>
-          <p style="
-            font-size: 0.8125rem;
-            color: var(--text-secondary);
-            letter-spacing: 0.04em;
-            line-height: 1.8;
-            max-width: 48ch;
-          ">${phase.description}</p>
-        </div>
-        <div style="
-          font-size: 0.5625rem;
-          color: var(--text-tertiary);
-          letter-spacing: 0.15em;
-          text-transform: uppercase;
-          align-self: end;
-        ">${phaseNodes.length} 节点</div>
-      </div>
-
-      <!-- 节点网格 -->
-      <div style="
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1px;
-        background: var(--surface);
-      " class="phase-grid">
-        ${phaseNodes.map(n => renderNodeCard(n)).join('')}
-      </div>
-    </section>
-  `;
-}
-
 function renderNodesGrid(nodes, filter) {
   const grid = document.getElementById('nodes-grid');
   if (!grid) return;
 
-  // 如果有难度筛选，使用新的卡片布局
-  if (filter && filter !== 'all') {
-    const filtered = nodes.filter(n => n.difficulty === filter);
-    grid.innerHTML = `
-      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;" class="phase-grid">
-        ${filtered.map(node => renderNodeCard(node)).join('')}
-      </div>
-    `;
-    return;
-  }
+  const filtered = filter && filter !== 'all'
+    ? nodes.filter(n => n.difficulty === filter)
+    : nodes;
 
-  // 默认：按阶段分组显示
-  grid.innerHTML = PHASES.map(phase => renderPhaseSection(phase, nodes)).join('');
+  // Japanese Ma 不对称卡片 — 无gap，用border分割
+  grid.innerHTML = filtered.map((node, idx) => {
+    // 偶数行特殊尺寸制造不对称感
+    const isWide = idx % 3 === 0;
+    return `
+    <div style="
+      background: var(--surface);
+      padding: 2rem 1.5rem;
+      cursor: pointer;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      transition: background 0.4s ease;
+      ${isWide ? 'grid-column: span 2;' : ''}
+    "
+         onclick="openNodeModalWithAccess(${node.id})"
+         onmouseenter="this.style.background='rgba(192,57,43,0.03)'"
+         onmouseleave="this.style.background='var(--surface)'">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+        <div class="text-label" style="color: var(--accent); letter-spacing: 0.15em;">
+          ${String(node.id).padStart(2, '0')}
+        </div>
+        <div class="text-label" style="color: var(--text-tertiary);">
+          ${node.difficulty}
+        </div>
+      </div>
+      <h3 style="font-size: 1.125rem; font-weight: 300; color: var(--text-primary); margin-bottom: 0.75rem; letter-spacing: -0.01em;">
+        ${node.title}
+      </h3>
+      <p class="text-body" style="font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.8;">
+        ${node.summary}
+      </p>
+      ${node.price_consult ? `
+        <div style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--line);">
+          <span class="text-label" style="color: var(--text-tertiary);">咨询 </span>
+          <span style="color: var(--accent); font-weight: 300;">¥${node.price_consult}</span>
+        </div>
+      ` : ''}
+    </div>
+  `}).join('');
 }
 
 function filterNodes(difficulty) {

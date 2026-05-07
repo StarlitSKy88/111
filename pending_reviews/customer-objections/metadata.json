@@ -1,0 +1,66 @@
+{
+  "nodeId": 40,
+  "slug": "customer-objections",
+  "title": "OPC客户异议应对",
+  "generatedAt": "2026-05-07T13:53:37.128Z",
+  "blocks": [
+    {
+      "id": "B1",
+      "title": "概述",
+      "success": true,
+      "length": 540
+    },
+    {
+      "id": "B2",
+      "title": "详细说明（一）",
+      "success": true,
+      "length": 1482
+    },
+    {
+      "id": "B3",
+      "title": "详细说明（二）",
+      "success": true,
+      "length": 1545
+    },
+    {
+      "id": "B4",
+      "title": "详细说明（三）",
+      "success": true,
+      "length": 1574
+    },
+    {
+      "id": "B5",
+      "title": "详细说明（四）",
+      "success": true,
+      "length": 1888
+    },
+    {
+      "id": "B6",
+      "title": "详细说明（五）",
+      "success": true,
+      "length": 1327
+    },
+    {
+      "id": "B7",
+      "title": "常见问题 Q1-Q4",
+      "success": true,
+      "length": 1380
+    },
+    {
+      "id": "B8",
+      "title": "常见问题 Q5-Q8",
+      "success": true,
+      "length": 1982
+    },
+    {
+      "id": "B9",
+      "title": "相关资源",
+      "success": true,
+      "length": 2126
+    }
+  ],
+  "searchResults": {
+    "success": true,
+    "contentLength": 2148
+  }
+}

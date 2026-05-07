@@ -1,0 +1,66 @@
+{
+  "nodeId": 34,
+  "slug": "tax-planning",
+  "title": "年度税务筹划",
+  "generatedAt": "2026-05-07T13:08:21.771Z",
+  "blocks": [
+    {
+      "id": "B1",
+      "title": "概述",
+      "success": true,
+      "length": 582
+    },
+    {
+      "id": "B2",
+      "title": "详细说明（一）",
+      "success": true,
+      "length": 1647
+    },
+    {
+      "id": "B3",
+      "title": "详细说明（二）",
+      "success": true,
+      "length": 2656
+    },
+    {
+      "id": "B4",
+      "title": "详细说明（三）",
+      "success": true,
+      "length": 2543
+    },
+    {
+      "id": "B5",
+      "title": "详细说明（四）",
+      "success": true,
+      "length": 1791
+    },
+    {
+      "id": "B6",
+      "title": "详细说明（五）",
+      "success": true,
+      "length": 1572
+    },
+    {
+      "id": "B7",
+      "title": "常见问题 Q1-Q4",
+      "success": true,
+      "length": 1349
+    },
+    {
+      "id": "B8",
+      "title": "常见问题 Q5-Q8",
+      "success": true,
+      "length": 1037
+    },
+    {
+      "id": "B9",
+      "title": "相关资源",
+      "success": true,
+      "length": 2025
+    }
+  ],
+  "searchResults": {
+    "success": true,
+    "contentLength": 2782
+  }
+}

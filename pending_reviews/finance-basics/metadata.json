@@ -1,0 +1,66 @@
+{
+  "nodeId": 15,
+  "slug": "finance-basics",
+  "title": "创业财务基础",
+  "generatedAt": "2026-05-07T10:42:43.863Z",
+  "blocks": [
+    {
+      "id": "B1",
+      "title": "概述",
+      "success": true,
+      "length": 744
+    },
+    {
+      "id": "B2",
+      "title": "详细说明（一）",
+      "success": true,
+      "length": 1722
+    },
+    {
+      "id": "B3",
+      "title": "详细说明（二）",
+      "success": true,
+      "length": 1544
+    },
+    {
+      "id": "B4",
+      "title": "详细说明（三）",
+      "success": true,
+      "length": 2842
+    },
+    {
+      "id": "B5",
+      "title": "详细说明（四）",
+      "success": true,
+      "length": 2077
+    },
+    {
+      "id": "B6",
+      "title": "详细说明（五）",
+      "success": true,
+      "length": 2155
+    },
+    {
+      "id": "B7",
+      "title": "常见问题 Q1-Q4",
+      "success": true,
+      "length": 1175
+    },
+    {
+      "id": "B8",
+      "title": "常见问题 Q5-Q8",
+      "success": true,
+      "length": 1263
+    },
+    {
+      "id": "B9",
+      "title": "相关资源",
+      "success": true,
+      "length": 2290
+    }
+  ],
+  "searchResults": {
+    "success": true,
+    "contentLength": 2908
+  }
+}

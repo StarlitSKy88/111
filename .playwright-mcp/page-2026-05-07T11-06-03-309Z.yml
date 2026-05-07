@@ -1,0 +1,304 @@
+- generic [active] [ref=e1]:
+  - link "跳转到主要内容" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - navigation [ref=e3]:
+    - generic [ref=e4]: OPC节点百科
+    - button "登录" [ref=e6] [cursor=pointer]
+  - generic [ref=e9]:
+    - generic [ref=e10]:
+      - generic [ref=e11]: OPC节点百科
+      - heading "21个创业节点" [level=2] [ref=e12]
+      - paragraph [ref=e13]:
+        - text: 从0到1，你需要解决21个节点。
+        - text: 点击任意节点，获取详细攻略。
+    - generic [ref=e14]:
+      - button "全部" [ref=e15] [cursor=pointer]
+      - button "入门" [ref=e16] [cursor=pointer]
+      - button "进阶" [ref=e17] [cursor=pointer]
+      - button "高级" [ref=e18] [cursor=pointer]
+    - generic [ref=e19]:
+      - generic [ref=e45] [cursor=pointer]:
+        - generic [ref=e46]:
+          - generic [ref=e47]: "01"
+          - generic [ref=e48]: 入门
+        - heading "OPC适配测试" [level=3] [ref=e49]
+        - paragraph [ref=e50]: 入口节点，测试你是否适合做OPC，AI推荐最适合你的创业路径
+      - generic [ref=e51] [cursor=pointer]:
+        - generic [ref=e52]:
+          - generic [ref=e53]: "02"
+          - generic [ref=e54]: 入门
+        - heading "个人能力与资源盘点" [level=3] [ref=e55]
+        - paragraph [ref=e56]: 技能清单、时间投入、资源盘点，OPC成功90%取决于你自己
+      - generic [ref=e57] [cursor=pointer]:
+        - generic [ref=e58]:
+          - generic [ref=e59]: "03"
+          - generic [ref=e60]: 入门
+        - heading "创业想法筛选与验证" [level=3] [ref=e61]
+        - paragraph [ref=e62]: 痛点强度验证、付费意愿测试、3天快速验证法，融合GStack需求梳理方法论
+      - generic [ref=e63] [cursor=pointer]:
+        - generic [ref=e64]:
+          - generic [ref=e65]: "04"
+          - generic [ref=e66]: 入门
+        - heading "个体户vs有限公司选择" [level=3] [ref=e67]
+        - paragraph [ref=e68]: 第一个重大决策：90%的OPC首选个体户，简单、成本低、合规风险小
+      - generic [ref=e69] [cursor=pointer]:
+        - generic [ref=e70]:
+          - generic [ref=e71]: "05"
+          - generic [ref=e72]: 进阶
+        - heading "AI编码工具选型" [level=3] [ref=e73]
+        - paragraph [ref=e74]: Claude Code/Trae/豆包编程/Opus对比，选对工具开发效率提升10倍
+      - generic [ref=e75] [cursor=pointer]:
+        - generic [ref=e76]:
+          - generic [ref=e77]: "06"
+          - generic [ref=e78]: 入门
+        - heading "MVP范围锁定" [level=3] [ref=e79]
+        - paragraph [ref=e80]: 砍到只剩一个核心功能，先上线再迭代，OPC的核心优势是快
+      - generic [ref=e81] [cursor=pointer]:
+        - generic [ref=e82]:
+          - generic [ref=e83]: "07"
+          - generic [ref=e84]: 进阶
+        - heading "核心功能技术验证" [level=3] [ref=e85]
+        - paragraph [ref=e86]: TDD测试驱动开发、最小可运行原型，不要上来就写完整项目
+      - generic [ref=e87] [cursor=pointer]:
+        - generic [ref=e88]:
+          - generic [ref=e89]: "08"
+          - generic [ref=e90]: 入门
+        - heading "公司注册全流程" [level=3] [ref=e91]
+        - paragraph [ref=e92]: 核名、经营范围、注册地址、刻章，全程线上办理1天搞定
+      - generic [ref=e93] [cursor=pointer]:
+        - generic [ref=e94]:
+          - generic [ref=e95]: "09"
+          - generic [ref=e96]: 入门
+        - heading "银行开户与商户号申请" [level=3] [ref=e97]
+        - paragraph [ref=e98]: 对公账户、微信支付、支付宝，能收钱才是真正的生意
+      - generic [ref=e99] [cursor=pointer]:
+        - generic [ref=e100]:
+          - generic [ref=e101]: "10"
+          - generic [ref=e102]: 入门
+        - heading "税务报到与发票管理" [level=3] [ref=e103]
+        - paragraph [ref=e104]: 税务登记、小规模纳税人、开票，金税四期下合规第一
+      - generic [ref=e105] [cursor=pointer]:
+        - generic [ref=e106]:
+          - generic [ref=e107]: "11"
+          - generic [ref=e108]: 入门
+        - heading "域名购买与ICP备案" [level=3] [ref=e109]
+        - paragraph [ref=e110]: 域名选择、DNS解析、ICP备案，提前做需要7-14天审核
+      - generic [ref=e111] [cursor=pointer]:
+        - generic [ref=e112]:
+          - generic [ref=e113]: "12"
+          - generic [ref=e114]: 进阶
+        - heading "网站部署与SSL" [level=3] [ref=e115]
+        - paragraph [ref=e116]: 云服务器、一键部署、HTTPS，10分钟搞定上线
+      - generic [ref=e117] [cursor=pointer]:
+        - generic [ref=e118]:
+          - generic [ref=e119]: "13"
+          - generic [ref=e120]: 进阶
+        - heading "国内支付接入" [level=3] [ref=e121]
+        - paragraph [ref=e122]: 微信支付、支付宝、聚合支付，优先申请微信支付覆盖率最高
+      - generic [ref=e123] [cursor=pointer]:
+        - generic [ref=e124]:
+          - generic [ref=e125]: "14"
+          - generic [ref=e126]: 入门
+        - heading "OPC现金流管理" [level=3] [ref=e127]
+        - paragraph [ref=e128]: 收入预测、支出控制、6个月应急储备，80%的OPC死于现金流断裂
+      - generic [ref=e129] [cursor=pointer]:
+        - generic [ref=e130]:
+          - generic [ref=e131]: "15"
+          - generic [ref=e132]: 入门
+        - heading "创业财务基础" [level=3] [ref=e133]
+        - paragraph [ref=e134]: 记账工具、票据管理、无票支出处理，每天花10分钟记账
+      - generic [ref=e135] [cursor=pointer]:
+        - generic [ref=e136]:
+          - generic [ref=e137]: "16"
+          - generic [ref=e138]: 进阶
+        - heading "定价策略" [level=3] [ref=e139]
+        - paragraph [ref=e140]: 成本定价、价值定价、价格测试，定价比产品功能更重要
+      - generic [ref=e141] [cursor=pointer]:
+        - generic [ref=e142]:
+          - generic [ref=e143]: "17"
+          - generic [ref=e144]: 入门
+        - heading "上线前检查清单" [level=3] [ref=e145]
+        - paragraph [ref=e146]: 功能测试、支付测试、合规检查，不要带bug或合规风险上线
+      - generic [ref=e147] [cursor=pointer]:
+        - generic [ref=e148]:
+          - generic [ref=e149]: "18"
+          - generic [ref=e150]: 进阶
+        - heading "冷启动获客" [level=3] [ref=e151]
+        - paragraph [ref=e152]: 朋友圈、小红书、垂直社群，从认识的人开始拿到第一单
+      - generic [ref=e153] [cursor=pointer]:
+        - generic [ref=e154]:
+          - generic [ref=e155]: "19"
+          - generic [ref=e156]: 进阶
+        - heading "AI客户服务体系" [level=3] [ref=e157]
+        - paragraph [ref=e158]: 自动回复、常见问题、AI客服，用自动化解决80%的客服问题
+      - generic [ref=e159] [cursor=pointer]:
+        - generic [ref=e160]:
+          - generic [ref=e161]: "20"
+          - generic [ref=e162]: 进阶
+        - heading "客户体验与口碑管理" [level=3] [ref=e163]
+        - paragraph [ref=e164]: 快速响应、专业交付、复购激励，打造让客户惊艳的服务体验
+      - generic [ref=e165] [cursor=pointer]:
+        - generic [ref=e166]:
+          - generic [ref=e167]: "21"
+          - generic [ref=e168]: 进阶
+        - heading "内容营销与SEO" [level=3] [ref=e169]
+        - paragraph [ref=e170]: 公众号、小红书、抖音、搜索优化，有第一单后开始建立内容资产
+      - generic [ref=e171] [cursor=pointer]:
+        - generic [ref=e172]:
+          - generic [ref=e173]: "22"
+          - generic [ref=e174]: 进阶
+        - heading "广告投放入门" [level=3] [ref=e175]
+        - paragraph [ref=e176]: 信息流广告、搜索广告、ROI测试，验证自然流量后再放大
+      - generic [ref=e177] [cursor=pointer]:
+        - generic [ref=e178]:
+          - generic [ref=e179]: "23"
+          - generic [ref=e180]: 进阶
+        - heading "私域流量运营" [level=3] [ref=e181]
+        - paragraph [ref=e182]: 微信好友、社群、朋友圈，有100+付费用户后深耕私域
+      - generic [ref=e183] [cursor=pointer]:
+        - generic [ref=e184]:
+          - generic [ref=e185]: "24"
+          - generic [ref=e186]: 进阶
+        - heading "用户转介绍机制" [level=3] [ref=e187]
+        - paragraph [ref=e188]: 推荐奖励、分销体系，产品口碑好复购率高时启动
+      - generic [ref=e189] [cursor=pointer]:
+        - generic [ref=e190]:
+          - generic [ref=e191]: "25"
+          - generic [ref=e192]: 进阶
+        - heading "外包策略与执行" [level=3] [ref=e193]
+        - paragraph [ref=e194]: 外包时机、平台选择、避坑指南，把不擅长不想做的事情外包出去
+      - generic [ref=e195] [cursor=pointer]:
+        - generic [ref=e196]:
+          - generic [ref=e197]: "26"
+          - generic [ref=e198]: 进阶
+        - heading "商标申请" [level=3] [ref=e199]
+        - paragraph [ref=e200]: 商标分类、申请流程、异议处理，月收入稳定1万+后开始品牌保护
+      - generic [ref=e201] [cursor=pointer]:
+        - generic [ref=e202]:
+          - generic [ref=e203]: "27"
+          - generic [ref=e204]: 进阶
+        - heading "软件著作权登记" [level=3] [ref=e205]
+        - paragraph [ref=e206]: 申请流程、材料准备、加急办理，需要上架应用商店或申请补贴时办理
+      - generic [ref=e207] [cursor=pointer]:
+        - generic [ref=e208]:
+          - generic [ref=e209]: "28"
+          - generic [ref=e210]: 入门
+        - heading "广告合规" [level=3] [ref=e211]
+        - paragraph [ref=e212]: 广告用词、禁止用语、风险规避，2026年监管最严领域之一
+      - generic [ref=e213] [cursor=pointer]:
+        - generic [ref=e214]:
+          - generic [ref=e215]: "29"
+          - generic [ref=e216]: 入门
+        - heading "企业邮箱搭建" [level=3] [ref=e217]
+        - paragraph [ref=e218]: 品牌邮箱、域名邮箱，提升品牌专业度时办理
+      - generic [ref=e219] [cursor=pointer]:
+        - generic [ref=e220]:
+          - generic [ref=e221]: "30"
+          - generic [ref=e222]: 进阶
+        - heading "数据备份与恢复" [level=3] [ref=e223]
+        - paragraph [ref=e224]: 自动备份、异地容灾、恢复测试，有100+用户数据后必须做
+      - generic [ref=e225] [cursor=pointer]:
+        - generic [ref=e226]:
+          - generic [ref=e227]: "31"
+          - generic [ref=e228]: 高级
+        - heading "服务器安全防护" [level=3] [ref=e229]
+        - paragraph [ref=e230]: 防火墙配置、安全监控、漏洞修复，网站上线后就应该做
+      - generic [ref=e231] [cursor=pointer]:
+        - generic [ref=e232]:
+          - generic [ref=e233]: "32"
+          - generic [ref=e234]: 进阶
+        - heading "海外支付方案" [level=3] [ref=e235]
+        - paragraph [ref=e236]: Stripe、PayPal、Wise，想做海外市场时接入
+      - generic [ref=e237] [cursor=pointer]:
+        - generic [ref=e238]:
+          - generic [ref=e239]: "33"
+          - generic [ref=e240]: 入门
+        - heading "个人精力管理" [level=3] [ref=e241]
+        - paragraph [ref=e242]: 时间块、番茄工作法、精力分配，OPC最宝贵资源，很多人3个月就burnout
+      - generic [ref=e243] [cursor=pointer]:
+        - generic [ref=e244]:
+          - generic [ref=e245]: "34"
+          - generic [ref=e246]: 进阶
+        - heading "年度税务筹划" [level=3] [ref=e247]
+        - paragraph [ref=e248]: 企业所得税、个人所得税、合理避税，年收入超过100万时需要
+      - generic [ref=e249] [cursor=pointer]:
+        - generic [ref=e250]:
+          - generic [ref=e251]: "35"
+          - generic [ref=e252]: 进阶
+        - heading "微信小程序部署" [level=3] [ref=e253]
+        - paragraph [ref=e254]: 小程序开发、审核、上线，网站流量稳定后需要更便捷用户体验时做
+      - generic [ref=e255] [cursor=pointer]:
+        - generic [ref=e256]:
+          - generic [ref=e257]: "36"
+          - generic [ref=e258]: 入门
+        - heading "产品迭代与复盘" [level=3] [ref=e259]
+        - paragraph [ref=e260]: 用户反馈收集、每周复盘、功能迭代，每周花2小时持续优化
+      - generic [ref=e261] [cursor=pointer]:
+        - generic [ref=e262]:
+          - generic [ref=e263]: "37"
+          - generic [ref=e264]: 进阶
+        - heading "收入多元化" [level=3] [ref=e265]
+        - paragraph [ref=e266]: 数字产品、课程、咨询多线并行，有稳定基础后开始打造被动收入
+      - generic [ref=e267] [cursor=pointer]:
+        - generic [ref=e268]:
+          - generic [ref=e269]: "38"
+          - generic [ref=e270]: 入门
+        - heading "项目退出机制" [level=3] [ref=e271]
+        - paragraph [ref=e272]: 公司注销、数据处理、用户通知，项目结束时体面地离开
+      - generic [ref=e273] [cursor=pointer]:
+        - generic [ref=e274]:
+          - generic [ref=e275]: "39"
+          - generic [ref=e276]: 入门
+        - heading "政府政策与创业补贴" [level=3] [ref=e277]
+        - paragraph [ref=e278]: 创业扶持政策、税收优惠、创业补贴申请，联合办公与政府资源对接
+      - generic [ref=e279] [cursor=pointer]:
+        - generic [ref=e280]:
+          - generic [ref=e281]: "40"
+          - generic [ref=e282]: 进阶
+        - heading "OPC客户异议应对" [level=3] [ref=e283]
+        - paragraph [ref=e284]: 客户常见异议的标准应答、投诉处理、危机公关，已建立完整应对网站
+  - generic [ref=e22]:
+    - generic [ref=e23]:
+      - generic [ref=e24]: 服务市场
+      - heading "需要帮助？" [level=2] [ref=e25]
+      - paragraph [ref=e26]: 标准化代办 or 1对1咨询，选择适合你的服务方式
+    - generic [ref=e27]:
+      - generic [ref=e28]:
+        - generic [ref=e29]:
+          - generic [ref=e30]:
+            - generic [ref=e31]: 标准化服务
+            - heading "公司注册代办" [level=3] [ref=e32]
+          - generic [ref=e33]: ¥299
+        - paragraph [ref=e34]:
+          - text: 专业团队代办，最快3个工作日完成。
+          - text: 含：名称核准、营业执照、税务登记。
+        - button "立即购买" [ref=e35] [cursor=pointer]
+      - generic [ref=e36]:
+        - generic [ref=e37]: 推荐
+        - generic [ref=e38]:
+          - generic [ref=e39]:
+            - generic [ref=e40]: 非标准化服务
+            - heading "需求梳理" [level=3] [ref=e41]
+          - generic [ref=e42]: ¥299
+        - paragraph [ref=e43]:
+          - text: 1对1视频通话，45-60分钟。
+          - text: 帮你梳理当前卡点，找到最适合你的OPC路径。
+        - button "立即预约" [ref=e44] [cursor=pointer]
+  - generic [ref=e288]:
+    - generic [ref=e291]:
+      - generic [ref=e292]: 02 / 10
+      - generic [ref=e293]: 10%
+    - heading "你现在最想解决的问题是什么？" [level=2] [ref=e294]
+    - generic [ref=e295]:
+      - button "A 收入太低，想找个副业" [ref=e296] [cursor=pointer]:
+        - generic [ref=e297]: A
+        - text: 收入太低，想找个副业
+      - button "B 被裁员/担心被裁员，想找后路" [ref=e298] [cursor=pointer]:
+        - generic [ref=e299]: B
+        - text: 被裁员/担心被裁员，想找后路
+      - button "C 想做副业但不知道做什么" [ref=e300] [cursor=pointer]:
+        - generic [ref=e301]: C
+        - text: 想做副业但不知道做什么
+      - button "D 已经有想法，想找人指导落地" [ref=e302] [cursor=pointer]:
+        - generic [ref=e303]: D
+        - text: 已经有想法，想找人指导落地

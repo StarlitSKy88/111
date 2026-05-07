@@ -1,0 +1,54 @@
+- generic [active] [ref=e1]:
+  - link "跳转到主要内容" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - navigation [ref=e3]:
+    - generic [ref=e4]: OPC节点百科
+    - button "登录" [ref=e6] [cursor=pointer]
+  - generic [ref=e8]:
+    - generic [ref=e9]: OPC节点百科
+    - heading "40个创业节点 从0到1完整导航" [level=1] [ref=e10]:
+      - text: 40个创业节点
+      - text: 从0到1完整导航
+    - paragraph [ref=e11]:
+      - text: 一人公司创业从想法到赚钱的完整攻略
+      - text: 点击节点，开始你的创业旅程
+    - button "开始测试 · 免费" [ref=e12] [cursor=pointer]
+  - generic [ref=e15]:
+    - generic [ref=e16]:
+      - generic [ref=e17]: OPC节点百科
+      - heading "21个创业节点" [level=2] [ref=e18]
+      - paragraph [ref=e19]:
+        - text: 从0到1，你需要解决21个节点。
+        - text: 点击任意节点，获取详细攻略。
+    - generic [ref=e20]:
+      - button "全部" [ref=e21] [cursor=pointer]
+      - button "入门" [ref=e22] [cursor=pointer]
+      - button "进阶" [ref=e23] [cursor=pointer]
+      - button "高级" [ref=e24] [cursor=pointer]
+  - generic [ref=e28]:
+    - generic [ref=e29]:
+      - generic [ref=e30]: 服务市场
+      - heading "需要帮助？" [level=2] [ref=e31]
+      - paragraph [ref=e32]: 标准化代办 or 1对1咨询，选择适合你的服务方式
+    - generic [ref=e33]:
+      - generic [ref=e34]:
+        - generic [ref=e35]:
+          - generic [ref=e36]:
+            - generic [ref=e37]: 标准化服务
+            - heading "公司注册代办" [level=3] [ref=e38]
+          - generic [ref=e39]: ¥299
+        - paragraph [ref=e40]:
+          - text: 专业团队代办，最快3个工作日完成。
+          - text: 含：名称核准、营业执照、税务登记。
+        - button "立即购买" [ref=e41] [cursor=pointer]
+      - generic [ref=e42]:
+        - generic [ref=e43]: 推荐
+        - generic [ref=e44]:
+          - generic [ref=e45]:
+            - generic [ref=e46]: 非标准化服务
+            - heading "需求梳理" [level=3] [ref=e47]
+          - generic [ref=e48]: ¥299
+        - paragraph [ref=e49]:
+          - text: 1对1视频通话，45-60分钟。
+          - text: 帮你梳理当前卡点，找到最适合你的OPC路径。
+        - button "立即预约" [ref=e50] [cursor=pointer]
