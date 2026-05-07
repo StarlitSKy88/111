@@ -9,11 +9,16 @@ const state = {
   showLanding: false, // 初始不显示欢迎页，节点列表为主页
   selectedService: null,
   // 用户认证状态
-  user: null, // { email, token }
+  user: null, // { phone, email, token }
   // 订阅状态
   subscription: null, // { plan: 'monthly' | 'yearly', paid: boolean }
   // 订阅弹窗选择
-  selectedPlan: null
+  selectedPlan: null,
+  // 认证流程状态
+  authMode: 'login', // 'login' | 'register' | 'code-sent'
+  authStep: 'phone', // 'phone' | 'code' | 'register' | 'set-password'
+  pendingPhone: null,
+  tempPassword: null
 };
 
 async function loadQuestions() {
@@ -1253,10 +1258,11 @@ function initAuth() {
   // 从 localStorage 恢复登录状态
   const savedToken = localStorage.getItem('opc_token');
   const savedEmail = localStorage.getItem('opc_email');
+  const savedPhone = localStorage.getItem('opc_phone');
   const savedSubscription = localStorage.getItem('opc_subscription');
 
-  if (savedToken && savedEmail) {
-    state.user = { email: savedEmail, token: savedToken };
+  if (savedToken && (savedEmail || savedPhone)) {
+    state.user = { email: savedEmail, phone: savedPhone, token: savedToken };
   }
 
   if (savedSubscription) {
@@ -1277,7 +1283,7 @@ function renderAuthSection() {
   if (state.user) {
     authSection.innerHTML = `
       <div style="display: flex; align-items: center; gap: 1rem;">
-        <span style="font-size: 0.75rem; color: var(--text-secondary);">${state.user.email}</span>
+        <span style="font-size: 0.75rem; color: var(--text-secondary);">${state.user.phone || state.user.email || ''}</span>
         <button onclick="logout()" style="
           background: none;
           border: 1px solid var(--line);
@@ -1329,9 +1335,69 @@ function closeAuthModal() {
   state.authMode = 'login';
 }
 
+// 验证码倒计时状态
+let codeCountdown = 0;
+let countdownTimer = null;
+
 function renderAuthForm() {
   const isLogin = state.authMode === 'login';
+  const isCodeSent = state.authMode === 'code-sent';
 
+  if (isCodeSent) {
+    // 显示验证码输入界面
+    return `
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.125rem; font-weight: 400; color: var(--text-primary); margin-bottom: 0.25rem;">
+          输入验证码
+        </h3>
+        <p class="text-label" style="color: var(--text-tertiary);">
+          验证码已发送至 ${state.pendingPhone || ''}
+        </p>
+      </div>
+
+      <form onsubmit="handleCodeVerify(event)">
+        <input
+          type="text"
+          id="auth-code"
+          class="auth-input"
+          placeholder="6位验证码"
+          maxlength="6"
+          required
+          style="margin-bottom: 0.75rem; letter-spacing: 0.2em; text-align: center; font-size: 1.25rem;"
+        >
+        <div id="auth-error" class="error-message" style="margin-bottom: 1rem; display: none;"></div>
+        <button type="submit" class="btn-pdf" style="width: 100%; margin-bottom: 0.75rem;">
+          验证
+        </button>
+        <div style="display: flex; gap: 1rem;">
+          <button type="button" onclick="backToPhoneInput()" style="
+            flex: 1;
+            background: none;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            padding: 0.75rem;
+            cursor: pointer;
+          ">
+            返回
+          </button>
+          <button type="button" id="resend-btn" onclick="resendCode()" style="
+            flex: 1;
+            background: none;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            padding: 0.75rem;
+            cursor: pointer;
+          ">
+            重新获取 ${codeCountdown > 0 ? `(${codeCountdown}s)` : ''}
+          </button>
+        </div>
+      </form>
+    `;
+  }
+
+  // 显示手机号输入界面
   return `
     <div style="margin-bottom: 1.5rem;">
       <h3 style="font-size: 1.125rem; font-weight: 400; color: var(--text-primary); margin-bottom: 0.25rem;">
@@ -1342,33 +1408,25 @@ function renderAuthForm() {
       </p>
     </div>
 
-    <form onsubmit="handleAuthSubmit(event)">
+    <form onsubmit="handleSendCode(event)">
       <input
-        type="email"
-        id="auth-email"
+        type="tel"
+        id="auth-phone"
         class="auth-input"
-        placeholder="邮箱地址"
+        placeholder="手机号"
         required
+        maxlength="11"
         style="margin-bottom: 0.75rem;"
-      >
-      <input
-        type="password"
-        id="auth-password"
-        class="auth-input"
-        placeholder="密码"
-        required
-        minlength="6"
       >
       <div id="auth-error" class="error-message" style="margin-bottom: 1rem; display: none;"></div>
       <button type="submit" class="btn-pdf" style="width: 100%; margin-bottom: 1rem;">
-        ${isLogin ? '登录' : '注册'}
+        ${isLogin ? '发送验证码登录' : '发送验证码注册'}
       </button>
     </form>
 
+    ${isLogin ? `
     <div style="text-align: center; padding-top: 1rem; border-top: 1px solid var(--line);">
-      <span class="text-label" style="color: var(--text-tertiary); margin-right: 0.5rem;">
-        ${isLogin ? '还没有账号？' : '已有账号？'}
-      </span>
+      <span class="text-label" style="color: var(--text-tertiary); margin-right: 0.5rem;">还没有账号？</span>
       <button onclick="toggleAuthMode()" style="
         background: none;
         border: none;
@@ -1377,22 +1435,272 @@ function renderAuthForm() {
         cursor: pointer;
         text-decoration: underline;
       ">
-        ${isLogin ? '立即注册' : '立即登录'}
+        立即注册
       </button>
     </div>
+    ` : `
+    <div style="text-align: center; padding-top: 1rem; border-top: 1px solid var(--line);">
+      <span class="text-label" style="color: var(--text-tertiary); margin-right: 0.5rem;">已有账号？</span>
+      <button onclick="toggleAuthMode()" style="
+        background: none;
+        border: none;
+        color: var(--accent);
+        font-size: 0.75rem;
+        cursor: pointer;
+        text-decoration: underline;
+      ">
+        立即登录
+      </button>
+    </div>
+    `}
   `;
 }
 
 function toggleAuthMode() {
   state.authMode = state.authMode === 'login' ? 'register' : 'login';
+  state.pendingPhone = null;
+  state.authStep = 'phone';
   const content = document.getElementById('auth-modal-content');
   content.innerHTML = renderAuthForm();
+}
+
+function backToPhoneInput() {
+  state.authMode = 'login';
+  state.pendingPhone = null;
+  state.authStep = 'phone';
+  codeCountdown = 0;
+  if (countdownTimer) {
+    clearInterval(countdownTimer);
+    countdownTimer = null;
+  }
+  const content = document.getElementById('auth-modal-content');
+  content.innerHTML = renderAuthForm();
+}
+
+async function resendCode() {
+  if (codeCountdown > 0) return;
+  const phone = state.pendingPhone;
+  if (!phone) {
+    backToPhoneInput();
+    return;
+  }
+  await sendCodeRequest(phone);
+}
+
+async function sendCodeRequest(phone) {
+  const errorEl = document.getElementById('auth-error');
+  errorEl.style.display = 'none';
+
+  try {
+    const response = await fetch('http://localhost:3001/api/auth/send-code', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ phone })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.error || '发送失败');
+    }
+
+    // 发送成功，进入验证码输入界面
+    state.authMode = 'code-sent';
+    state.pendingPhone = phone;
+    state.authStep = 'code';
+    codeCountdown = 60;
+
+    const content = document.getElementById('auth-modal-content');
+    content.innerHTML = renderAuthForm();
+
+    // 开始倒计时
+    countdownTimer = setInterval(() => {
+      codeCountdown--;
+      const btn = document.getElementById('resend-btn');
+      if (btn) {
+        btn.textContent = `重新获取 ${codeCountdown > 0 ? `(${codeCountdown}s)` : ''}`;
+        btn.style.cursor = codeCountdown > 0 ? 'not-allowed' : 'pointer';
+        btn.style.opacity = codeCountdown > 0 ? '0.5' : '1';
+      }
+      if (codeCountdown <= 0 && countdownTimer) {
+        clearInterval(countdownTimer);
+        countdownTimer = null;
+      }
+    }, 1000);
+
+  } catch (error) {
+    errorEl.textContent = error.message;
+    errorEl.style.display = 'block';
+  }
+}
+
+async function handleSendCode(event) {
+  event.preventDefault();
+
+  const phoneInput = document.getElementById('auth-phone');
+  const phone = phoneInput.value.trim();
+
+  // 验证手机号格式
+  if (!/^1[3-9]\d{9}$/.test(phone)) {
+    const errorEl = document.getElementById('auth-error');
+    errorEl.textContent = '请输入正确的手机号';
+    errorEl.style.display = 'block';
+    return;
+  }
+
+  await sendCodeRequest(phone);
+}
+
+async function handleCodeVerify(event) {
+  event.preventDefault();
+
+  const codeInput = document.getElementById('auth-code');
+  const code = codeInput.value.trim();
+  const errorEl = document.getElementById('auth-error');
+  errorEl.style.display = 'none';
+
+  if (!state.pendingPhone) {
+    backToPhoneInput();
+    return;
+  }
+
+  const isRegister = state.authStep === 'register';
+
+  try {
+    let endpoint, body;
+
+    if (isRegister) {
+      // 注册需要密码
+      endpoint = '/api/auth/verify-register';
+      body = { phone: state.pendingPhone, code, password: state.tempPassword };
+    } else {
+      // 登录
+      endpoint = '/api/auth/verify-login';
+      body = { phone: state.pendingPhone, code };
+    }
+
+    const response = await fetch('http://localhost:3001' + endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.error || '验证失败');
+    }
+
+    // 清理倒计时
+    if (countdownTimer) {
+      clearInterval(countdownTimer);
+      countdownTimer = null;
+    }
+
+    // 检查是否需要设置密码（注册后首次登录）
+    if (isRegister && !data.hasPassword) {
+      // 需要设置密码
+      state.authStep = 'set-password';
+      const content = document.getElementById('auth-modal-content');
+      content.innerHTML = `
+        <div style="margin-bottom: 1.5rem;">
+          <h3 style="font-size: 1.125rem; font-weight: 400; color: var(--text-primary); margin-bottom: 0.25rem;">
+            设置密码
+          </h3>
+          <p class="text-label" style="color: var(--text-tertiary);">
+            设置密码后可以使用密码登录
+          </p>
+        </div>
+        <form onsubmit="handleSetPassword(event)">
+          <input
+            type="password"
+            id="auth-password"
+            class="auth-input"
+            placeholder="设置密码（至少6位）"
+            required
+            minlength="6"
+            style="margin-bottom: 0.75rem;"
+          >
+          <input
+            type="password"
+            id="auth-password-confirm"
+            class="auth-input"
+            placeholder="确认密码"
+            required
+            minlength="6"
+            style="margin-bottom: 0.75rem;"
+          >
+          <div id="auth-error" class="error-message" style="margin-bottom: 1rem; display: none;"></div>
+          <button type="submit" class="btn-pdf" style="width: 100%;">
+            完成注册
+          </button>
+        </form>
+      `;
+      return;
+    }
+
+    // 登录成功
+    state.user = { phone: state.pendingPhone, token: data.token };
+    localStorage.setItem('opc_token', data.token);
+    localStorage.setItem('opc_phone', state.pendingPhone);
+
+    closeAuthModal();
+    renderAuthSection();
+
+  } catch (error) {
+    errorEl.textContent = error.message;
+    errorEl.style.display = 'block';
+  }
+}
+
+async function handleSetPassword(event) {
+  event.preventDefault();
+
+  const password = document.getElementById('auth-password').value;
+  const passwordConfirm = document.getElementById('auth-password-confirm').value;
+  const errorEl = document.getElementById('auth-error');
+
+  if (password !== passwordConfirm) {
+    errorEl.textContent = '两次密码不一致';
+    errorEl.style.display = 'block';
+    return;
+  }
+
+  if (password.length < 6) {
+    errorEl.textContent = '密码至少6位';
+    errorEl.style.display = 'block';
+    return;
+  }
+
+  try {
+    const response = await fetch('http://localhost:3001/api/auth/set-password', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('opc_token')
+      },
+      body: JSON.stringify({ password })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.error || '设置失败');
+    }
+
+    closeAuthModal();
+    renderAuthSection();
+
+  } catch (error) {
+    errorEl.textContent = error.message;
+    errorEl.style.display = 'block';
+  }
 }
 
 async function handleAuthSubmit(event) {
   event.preventDefault();
 
-  const email = document.getElementById('auth-email').value.trim();
+  const phone = document.getElementById('auth-phone').value.trim();
   const password = document.getElementById('auth-password').value;
   const errorEl = document.getElementById('auth-error');
   const isLogin = state.authMode === 'login';
@@ -1400,27 +1708,40 @@ async function handleAuthSubmit(event) {
   errorEl.style.display = 'none';
   errorEl.textContent = '';
 
+  // 验证手机号
+  if (!/^1[3-9]\d{9}$/.test(phone)) {
+    errorEl.textContent = '请输入正确的手机号';
+    errorEl.style.display = 'block';
+    return;
+  }
+
   try {
-    const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
-    const response = await fetch('http://localhost:3001' + endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    });
+    if (isLogin) {
+      // 密码登录
+      const response = await fetch('http://localhost:3001/api/auth/password-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone, password })
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (!response.ok) {
-      throw new Error(data.error || (isLogin ? '登录失败' : '注册失败'));
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || '登录失败');
+      }
+
+      state.user = { phone, token: data.token };
+      localStorage.setItem('opc_token', data.token);
+      localStorage.setItem('opc_phone', phone);
+
+      closeAuthModal();
+      renderAuthSection();
+    } else {
+      // 注册流程：先发送验证码
+      state.tempPassword = password;
+      state.authStep = 'register';
+      await sendCodeRequest(phone);
     }
-
-    // 登录成功后保存状态
-    state.user = { email, token: data.token };
-    localStorage.setItem('opc_token', data.token);
-    localStorage.setItem('opc_email', email);
-
-    closeAuthModal();
-    renderAuthSection();
 
   } catch (error) {
     errorEl.textContent = error.message;
@@ -1432,6 +1753,7 @@ function logout() {
   state.user = null;
   localStorage.removeItem('opc_token');
   localStorage.removeItem('opc_email');
+  localStorage.removeItem('opc_phone');
   renderAuthSection();
 }
 
