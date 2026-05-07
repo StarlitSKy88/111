@@ -63,7 +63,7 @@
     }
 
     function mdToHtml(md) {
-      if (!md) return "<p style="color:var(--text-secondary)">内容加载中...</p>";
+      if (!md) return '<p style="color:var(--text-secondary)">内容加载中...</p>';
       let html = md
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
