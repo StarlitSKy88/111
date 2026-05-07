@@ -63,7 +63,7 @@
     }
 
     function mdToHtml(md) {
-      if (!md) return "<p style="color:var(--text-secondary)">内容加载中...</p>";
+      if (!md) return '<p style="color:var(--text-secondary)">内容加载中...</p>';
       let html = md
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
@@ -73,8 +73,8 @@
         .replace(/^# (.+)$/gm, "<h1>$1</h1>")
         .replace(/**(.+?)**/g, "<strong>$1</strong>")
         .replace(/^- (.+)$/gm, "<li>$1</li>")
-        .replace(/^\[ \] (.+)$/gm, "<div><input type="checkbox" disabled> $1</div>")
-        .replace(/^\[x\] (.+)$/gm, "<div><input type="checkbox" checked disabled> $1</div>")
+        .replace(/^\[ \] (.+)$/gm, '<div><input type="checkbox" disabled> $1</div>')
+        .replace(/^\[x\] (.+)$/gm, '<div><input type="checkbox" checked disabled> $1</div>')
         .replace(/^\d+\. (.+)$/gm, "<li>$1</li>")
         .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
         .replace(/^(?!<[a-z])(.+)$/gm, "<p>$1</p>")
