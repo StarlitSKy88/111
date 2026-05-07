@@ -1,0 +1,13 @@
+{
+  "id": "task-c2",
+  "type": "feature",
+  "title": "支付 API 占位符",
+  "description": "POST /api/pay/subscribe 返回 mock 成功响应",
+  "verification": {
+    "type": "api",
+    "command": "curl -X POST http://localhost:3001/api/pay/subscribe",
+    "expected": "返回 mock 支付成功"
+  },
+  "files": ["api/analyze.js"],
+  "status": "completed"
+}

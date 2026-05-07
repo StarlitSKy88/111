@@ -1,0 +1,13 @@
+{
+  "active": true,
+  "iteration": 1,
+  "minIterations": 1,
+  "maxIterations": 100,
+  "completionPromise": "COMPLETE",
+  "tasksMode": false,
+  "taskPromise": "READY_FOR_NEXT_TASK",
+  "prompt": "监控 OPC内容生成任务：每分钟检查 /Users/opc-1/Downloads/O/opcone/pending_reviews/ 目录，如果发现任何节点数量变化或者生成器进程卡住，就输出报告。如果一切正常，每10分钟输出一次进度摘要。持续循环直到所有40个节点生成完成或被手动停止。",
+  "startedAt": "2026-05-07T08:50:46.803Z",
+  "model": "",
+  "agent": "claude-code"
+}

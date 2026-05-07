@@ -1,0 +1,14 @@
+{
+  "id": "task-007",
+  "type": "feature",
+  "title": "节点选择器组件",
+  "description": "创建 NodeSelector 组件，用于编辑器页顶部的节点切换\n\n组件结构 src/components/NodeSelector.jsx：\n```jsx\nimport { useEffect, useState } from 'react'\n\nexport default function NodeSelector({ currentSlug, onSelect }) {\n  const [nodes, setNodes] = useState([])\n  const [isOpen, setIsOpen] = useState(false)\n\n  useEffect(() => {\n    fetch('/api/nodes')\n      .then(res => res.json())\n      .then(data => setNodes(data.data || []))\n  }, [])\n\n  const currentNode = nodes.find(n => n.slug === currentSlug)\n\n  return (\n    <div className=\"relative\">\n      <button\n        onClick={() => setIsOpen(!isOpen)}\n        className=\"flex items-center gap-2 px-4 py-2 bg-[#1A1A18] border border-[#2A2A28] text-[#F0EDE6] text-sm hover:border-[#C0392B] transition-colors\"\n      >\n        <span className=\"text-[#C0392B]\">{currentNode ? String(currentNode.id).padStart(2, '0') : '--'}</span>\n        <span>{currentNode?.title || '选择节点'}</span>\n        <span className=\"text-[#8A8A85]\">{isOpen ? '▲' : '▼'}</span>\n      </button>\n\n      {isOpen && (\n        <div className=\"absolute top-full left-0 mt-1 w-80 max-h-96 overflow-y-auto bg-[#1A1A18] border border-[#2A2A28] z-50\">\n          {nodes.map(node => (\n            <button\n              key={node.id}\n              onClick={() => {\n                onSelect(node.slug)\n                setIsOpen(false)\n              }}\n              className={`w-full px-4 py-2 text-left text-sm hover:bg-[#2A2A28] flex gap-3 ${\n                node.slug === currentSlug ? 'text-[#C0392B]' : 'text-[#F0EDE6]'\n              }`}\n            >\n              <span className=\"text-[#8A8A85] w-6\">{String(node.id).padStart(2, '0')}</span>\n              <span className=\"flex-1 truncate\">{node.title}</span>\n            </button>\n          ))}\n        </div>\n      )}\n    </div>\n  )\n}\n```\n\n使用方式：在 NodeEditor 中导入并使用\n```jsx\n<NodeSelector currentSlug={slug} onSelect={(slug) => navigate(`/editor/${slug}`)} />\n```",
+  "verification": {
+    "type": "manual",
+    "command": "访问 /editor/opc-fit-test，点击节点选择器，验证下拉列表显示所有节点",
+    "expected": "选择不同节点后页面内容切换"
+  },
+  "files": ["admin-app/src/components/NodeSelector.jsx"],
+  "status": "pending",
+  "dependencies": ["task-005"]
+}

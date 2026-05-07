@@ -1,0 +1,13 @@
+{
+  "id": "task-a3",
+  "type": "feature",
+  "title": "登录 API",
+  "description": "POST /api/auth/login - 返回 JWT token",
+  "verification": {
+    "type": "api",
+    "command": "curl -X POST http://localhost:3001/api/auth/login -H 'Content-Type: application/json' -d '{\"email\":\"test@example.com\",\"password\":\"test123\"}'",
+    "expected": "返回 {success: true, token: '...', user: {id, email}}"
+  },
+  "files": ["api/auth/index.js"],
+  "status": "completed"
+}

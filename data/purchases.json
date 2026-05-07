@@ -1,0 +1,23 @@
+[
+  {
+    "id": "1778143827819",
+    "user_id": "1778143817382",
+    "node_slug": "personal-resources",
+    "status": "completed",
+    "purchased_at": "2026-05-07T08:50:27.819Z",
+    "payment": {
+      "method": "wechat",
+      "order_id": "TEST123"
+    }
+  },
+  {
+    "id": "1778143838229",
+    "user_id": "1778143838192",
+    "node_slug": "personal-resources",
+    "status": "completed",
+    "purchased_at": "2026-05-07T08:50:38.229Z",
+    "payment": {
+      "method": "wechat"
+    }
+  }
+]

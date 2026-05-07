@@ -1,0 +1,17 @@
+{
+  "id": "task-d2",
+  "type": "feature",
+  "title": "admin-app 节点定价配置",
+  "description": "admin-app 中添加节点内收费配置页面 /pricing",
+  "verification": {
+    "type": "manual",
+    "command": "访问 http://localhost:5173/pricing",
+    "expected": "可配置节点内收费项目"
+  },
+  "files": [
+    "admin-app/src/pages/PricingConfig.jsx",
+    "admin-app/src/App.jsx",
+    "admin-app/src/pages/NodeList.jsx"
+  ],
+  "status": "completed"
+}

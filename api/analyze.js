@@ -2,13 +2,224 @@ require('dotenv').config({ path: __dirname + '/.env' });
 const express = require('express');
 const cors = require('cors');
 const crypto = require('crypto');
+const path = require('path');
 const dataStore = require('./data-store');
+const auth = require('./auth');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
+
+// 静态文件服务 - pending_reviews 目录
+app.use('/pending_reviews', express.static(path.join(__dirname, '..', 'pending_reviews')));
+
+// ========== 用户认证 API ==========
+
+// 注册
+app.post('/api/auth/register', (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).json({ success: false, error: '邮箱和密码不能为空' });
+  }
+  const result = auth.register(email, password);
+  if (!result.success) {
+    return res.status(400).json(result);
+  }
+  res.json(result);
+});
+
+// 登录
+app.post('/api/auth/login', (req, res) => {
+  const { email, password } = req.body;
+  const result = auth.login(email, password);
+  if (!result.success) {
+    return res.status(401).json(result);
+  }
+  res.json(result);
+});
+
+// 获取当前用户订阅状态
+app.get('/api/subscription', (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: '未登录' });
+  }
+
+  const token = authHeader.split(' ')[1];
+  const payload = auth.verifyToken(token);
+  if (!payload) {
+    return res.status(401).json({ error: 'token无效或已过期' });
+  }
+
+  const status = auth.getSubscriptionStatus(payload.userId);
+  res.json({ success: true, ...status });
+});
+
+// 检查节点访问权限
+app.get('/api/access/:slug', (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: '未登录' });
+  }
+
+  const token = authHeader.split(' ')[1];
+  const payload = auth.verifyToken(token);
+  if (!payload) {
+    return res.status(401).json({ error: 'token无效或已过期' });
+  }
+
+  const access = auth.canAccessNode(payload.userId, req.params.slug);
+  res.json({ success: true, ...access });
+});
+
+// 订阅
+app.post('/api/subscribe', (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: '未登录' });
+  }
+
+  const token = authHeader.split(' ')[1];
+  const payload = auth.verifyToken(token);
+  if (!payload) {
+    return res.status(401).json({ error: 'token无效或已过期' });
+  }
+
+  const { plan } = req.body;
+  if (!['monthly', 'yearly'].includes(plan)) {
+    return res.status(400).json({ error: '无效的订阅计划' });
+  }
+
+  const result = auth.createSubscription(payload.userId, plan);
+  res.json(result);
+});
+
+// 支付占位符
+app.post('/api/pay/subscribe', (req, res) => {
+  // 占位符：实际支付对接时替换
+  res.json({
+    success: true,
+    message: '支付mock成功',
+    mock: true,
+    order_id: 'MOCK_' + Date.now()
+  });
+});
+
+// 微信支付配置
+const WXPAY_MCH_ID = process.env.WXPAY_MCH_ID || '';
+const WXPAY_MCH_KEY = process.env.WXPAY_MCH_KEY || '';
+const WXPAY_APP_ID = process.env.WXPAY_APP_ID || '';
+
+// 微信支付回调处理
+app.post('/api/pay/callback', (req, res) => {
+  // 微信支付回调通知使用 application/xml
+  const { mch_id, order_id, out_trade_no, transaction_id, total_fee, result_code, sign } = req.body;
+
+  // 如果是 mock 模式，直接返回成功
+  if (!WXPAY_MCH_ID || !WXPAY_MCH_KEY) {
+    console.log('[WeChat Pay] Mock mode callback received:', req.body);
+    // 标记为 mock 回调处理
+    return res.json({ success: true, mock: true });
+  }
+
+  // 验证签名
+  const crypto = require('crypto');
+  const params = { ...req.body };
+  delete params.sign;
+  const signStr = Object.keys(params).sort()
+    .map(k => `${k}=${params[k]}`)
+    .join('&') + `&key=${WXPAY_MCH_KEY}`;
+  const calculatedSign = crypto.createHash('md5')
+    .update(signStr)
+    .digest('hex')
+    .toUpperCase();
+
+  if (calculatedSign !== sign) {
+    console.error('[WeChat Pay] Sign verification failed');
+    return res.status(400).json({ error: '签名验证失败' });
+  }
+
+  // 处理支付结果
+  if (result_code === 'SUCCESS') {
+    console.log(`[WeChat Pay] Payment success: ${out_trade_no}, transaction: ${transaction_id}`);
+    // TODO: 根据 out_trade_no 更新对应的订单状态
+    // - 如果是订阅订单：更新 subscriptions 表
+    // - 如果是节点购买订单：更新 purchases 表
+  }
+
+  // 返回 SUCCESS 确认收到
+  res.send('<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>');
+});
+
+// 微信支付统一下单接口（创建支付订单）
+app.post('/api/pay/create-order', (req, res) => {
+  const { type, user_id, plan, node_slug } = req.body;
+
+  if (!WXPAY_MCH_ID || !WXPAY_MCH_KEY) {
+    // Mock 模式
+    return res.json({
+      success: true,
+      mock: true,
+      order_id: `MOCK_${Date.now()}`,
+      message: 'Mock支付订单创建成功'
+    });
+  }
+
+  // 实际微信支付统一下单逻辑需要：
+  // 1. 生成商户订单号
+  // 2. 调用微信支付统一下单API
+  // 3. 返回支付参数给前端
+  res.status(501).json({ error: '微信支付正式对接需要配置 WXPAY_MCH_ID 和 WXPAY_MCH_KEY' });
+});
+
+// ========== 定价配置 API ==========
+
+// 获取定价配置
+app.get('/api/admin/pricing', (req, res) => {
+  try {
+    const pricing = dataStore.getPricing();
+    res.json({ success: true, pricing });
+  } catch (error) {
+    console.error('Get pricing error:', error);
+    res.status(500).json({ error: '获取定价失败' });
+  }
+});
+
+// 更新定价配置
+app.put('/api/admin/pricing', (req, res) => {
+  try {
+    const newPricing = req.body;
+    if (!newPricing || typeof newPricing !== 'object') {
+      return res.status(400).json({ error: '无效的定价数据' });
+    }
+    const updated = dataStore.updatePricing(newPricing);
+    res.json({ success: true, pricing: updated });
+  } catch (error) {
+    console.error('Update pricing error:', error);
+    res.status(500).json({ error: '更新定价失败' });
+  }
+});
+
+// 购买单个节点
+app.post('/api/nodes/:slug/purchase', (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: '未登录' });
+  }
+
+  const token = authHeader.split(' ')[1];
+  const payload = auth.verifyToken(token);
+  if (!payload) {
+    return res.status(401).json({ error: 'token无效或已过期' });
+  }
+
+  const result = auth.addNodePurchase(payload.userId, req.params.slug, req.body.payment || {});
+  res.json(result);
+});
+
+// ========== 原有 OPC 测试 API ==========
 
 // API Key 从环境变量读取
 const API_KEY = process.env.API_KEY || '';
@@ -705,6 +916,144 @@ app.post('/api/generate-node-content', async (req, res) => {
   } catch (error) {
     console.error('Generate node content error:', error);
     res.status(500).json({ error: '生成失败，请稍后重试' });
+  }
+});
+
+// ========== 节点子项目 API ==========
+
+const fs = require('fs');
+
+const NODES_BASE = path.join(__dirname, '..', 'nodes');
+
+// 查找节点目录 (匹配 *-{slug})
+function findNodeDir(slug) {
+  try {
+    const entries = fs.readdirSync(NODES_BASE);
+    return entries.find(dir => dir.endsWith(`-${slug}`)) || null;
+  } catch {
+    return null;
+  }
+}
+
+// 获取所有节点
+app.get('/api/nodes', (req, res) => {
+  try {
+    const entries = fs.readdirSync(NODES_BASE).filter(d => {
+      try {
+        return fs.statSync(path.join(NODES_BASE, d)).isDirectory();
+      } catch {
+        return false;
+      }
+    });
+
+    const nodes = entries.map(dir => {
+      const dataPath = path.join(NODES_BASE, dir, 'data.json');
+      try {
+        const data = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
+        return data;
+      } catch {
+        return null;
+      }
+    }).filter(Boolean);
+
+    res.json({
+      success: true,
+      data: nodes,
+      total: nodes.length
+    });
+  } catch (error) {
+    console.error('Get nodes error:', error);
+    res.status(500).json({ error: '获取节点列表失败' });
+  }
+});
+
+// 获取单个节点
+app.get('/api/nodes/:slug', (req, res) => {
+  const { slug } = req.params;
+  const dir = findNodeDir(slug);
+
+  if (!dir) {
+    return res.status(404).json({ error: '节点不存在' });
+  }
+
+  try {
+    const dataPath = path.join(NODES_BASE, dir, 'data.json');
+    const mdPath = path.join(NODES_BASE, dir, 'index.md');
+    const data = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
+    let content = '';
+    try {
+      content = fs.readFileSync(mdPath, 'utf-8');
+    } catch (e) {
+      // index.md may not exist yet
+    }
+    res.json({
+      success: true,
+      data,
+      content
+    });
+  } catch (error) {
+    console.error('Get node error:', error);
+    res.status(500).json({ error: '获取节点失败' });
+  }
+});
+
+// 获取节点 index.md
+app.get('/api/nodes/:slug/index-md', (req, res) => {
+  const { slug } = req.params;
+  const dir = findNodeDir(slug);
+
+  if (!dir) {
+    return res.status(404).json({ error: '节点不存在' });
+  }
+
+  try {
+    const mdPath = path.join(NODES_BASE, dir, 'index.md');
+    const content = fs.readFileSync(mdPath, 'utf-8');
+    res.json({
+      success: true,
+      content
+    });
+  } catch (error) {
+    console.error('Get index.md error:', error);
+    res.status(500).json({ error: '获取文档失败' });
+  }
+});
+
+// 更新节点 data.json
+app.put('/api/nodes/:slug/data', (req, res) => {
+  const { slug } = req.params;
+  const dir = findNodeDir(slug);
+
+  if (!dir) {
+    return res.status(404).json({ error: '节点不存在' });
+  }
+
+  try {
+    const dataPath = path.join(NODES_BASE, dir, 'data.json');
+    fs.writeFileSync(dataPath, JSON.stringify(req.body, null, 2));
+    res.json({ success: true, message: '更新成功' });
+  } catch (error) {
+    console.error('Update node data error:', error);
+    res.status(500).json({ error: '更新失败' });
+  }
+});
+
+// 更新节点 index.md
+app.put('/api/nodes/:slug/index-md', (req, res) => {
+  const { slug } = req.params;
+  const dir = findNodeDir(slug);
+
+  if (!dir) {
+    return res.status(404).json({ error: '节点不存在' });
+  }
+
+  try {
+    const mdPath = path.join(NODES_BASE, dir, 'index.md');
+    fs.writeFileSync(mdPath, req.body.content);
+    res.json({ success: true, message: '更新成功' });
+  } catch (error) {
+    console.error('Update index.md error:', error);
+    res.status(500).json({ error: '更新失败' });
   }
 });
 

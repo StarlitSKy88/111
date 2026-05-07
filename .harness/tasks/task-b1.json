@@ -1,0 +1,13 @@
+{
+  "id": "task-b1",
+  "type": "feature",
+  "title": "订阅表设计",
+  "description": "subscriptions 表，使用 JSON 文件存储",
+  "verification": {
+    "type": "api",
+    "command": "curl -X POST http://localhost:3001/api/subscribe -H 'Content-Type: application/json' -H 'Authorization: Bearer <TOKEN>' -d '{\"plan\":\"monthly\"}'",
+    "expected": "返回订阅成功"
+  },
+  "files": ["api/auth/index.js"],
+  "status": "completed"
+}

@@ -1,0 +1,58 @@
+{
+  "project": "opcone",
+  "plan_id": "phase-3-user-system-content",
+  "last_updated": "2026-05-07",
+  "phase": "Phase 3",
+  "progress": {
+    "a_tasks": {
+      "total": 5,
+      "completed": 5,
+      "status": "completed",
+      "description": "user auth system"
+    },
+    "b_tasks": {
+      "total": 5,
+      "completed": 5,
+      "status": "completed",
+      "description": "subscription system"
+    },
+    "c_tasks": {
+      "total": 4,
+      "completed": 4,
+      "status": "completed",
+      "description": "payment placeholders"
+    },
+    "d_tasks": {
+      "total": 3,
+      "completed": 3,
+      "status": "completed",
+      "description": "node pricing config"
+    },
+    "e_tasks": {
+      "total": 40,
+      "completed": 40,
+      "status": "completed",
+      "description": "content generation infrastructure"
+    }
+  },
+  "completed_features": [
+    "user registration/login API (POST /api/auth/register, /api/auth/login)",
+    "JWT authentication middleware",
+    "subscription system (monthly: 9.9元, yearly: 99元)",
+    "frontend login/register UI + subscription modal",
+    "node access control (01 free for logged-in, 02-40 require subscription)",
+    "payment placeholder APIs (POST /api/pay/subscribe, /api/pay/callback)",
+    "search-service.js - DeepSeek联网搜索",
+    "ai-content-generator.js - AI内容生成脚本",
+    "admin-app ReviewQueue - 内容审批队列页面 (/review)",
+    "API - GET /api/nodes/:slug 返回完整content",
+    "API - static file serving for pending_reviews",
+    "scripts/generate-node-index-html.js - 生成所有节点index.html",
+    "admin-app vite proxy for /pending_reviews"
+  ],
+  "pending_features": [
+    "run full content generation (40 nodes x 9 blocks - requires API budget)",
+    "admin review and publish content via /review queue",
+    "Phase 4: 优化与验证"
+  ]
+}

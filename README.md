@@ -1,21 +1,23 @@
-# OPC适配自测 Hackathon
+# OPC节点百科3.0
 
-> AI不会淘汰任何人，它只会淘汰所有把自己当工具的人。
+> 让一个人公司创业变得简单。
 
 ## 项目概述
 
-OPC适配自测 + AI分析演示Hackathon项目。通过10道测试题，真AI生成个性化分析报告。
+OPC节点百科 — 纯OPC（一人公司）创业从0到1的完整节点导航系统。
 
-## 核心功能
+**核心原则**：
+- 绝对纯OPC：删除所有需要员工、合伙人、融资的内容
+- 生死线前置：所有能导致项目死亡的节点放在最前面
+- 严格线性：按照"想法→工具→开发→注册→支付→上线→赚钱"顺序排列
 
-- ✅ 10道OPC适配测试题
-- ✅ 动画分数揭示（从0滚动到最终分数）
-- ✅ AI个性化分析报告（DeepSeek V4）
-- ✅ 可分享结果卡片生成
-- ✅ 个人OPC项目手册AI生成
-- ✅ PDF报告导出
-- ✅ 视频脚本v2.0
-- ✅ 管理后台数据追踪（测试数/付款/微信ID）
+## 40个节点体系
+
+| 分类 | 数量 | 说明 |
+|:---|:---|:---|
+| 核心必做（0-1阶段） | 22个 | 30天上线赚钱必须完成 |
+| 扩展可选（1-10阶段） | 12个 | 按需选择 |
+| 扩展可选（10+阶段） | 6个 | 规模化后考虑 |
 
 ## 快速启动
 
@@ -23,42 +25,41 @@ OPC适配自测 + AI分析演示Hackathon项目。通过10道测试题，真AI�
 # 1. 安装依赖
 npm install
 
-# 2. 启动服务（一键启动）
+# 2. 启动服务
 bash start.sh
 
 # 3. 访问
-http://localhost:3000
+http://localhost:3001
 ```
+
+## 技术栈
+
+- 前端: Vanilla JS + Tailwind CDN
+- 后端: Node.js + Express
+- AI: DeepSeek V4 Flash (腾讯TokenHub)
+- 支付: 微信支付 (人工确认)
 
 ## 项目结构
 
 ```
 opcone/
-├── index.html          # 单页落地页
-├── app.js              # 前端逻辑
-├── questions.json      # 10道测试题
+├── index.html              # 落地页（节点百科首页）
+├── app.js                   # 前端逻辑
 ├── api/
-│   ├── analyze.js      # AI分析API
-│   └── .env.example    # 环境变量模板
-├── start.sh            # 一键启动脚本
-├── proxy.js            # 本地代理
-├── tests/              # 测试文件
-├── 内容库/脚本/         # 视频脚本
-└── docs/               # 设计文档
+│   ├── analyze.js           # Express API服务器
+│   └── data-store.js        # JSON数据存储
+├── data/
+│   ├── nodes.json           # 40个节点数据
+│   ├── results.json          # 测试结果
+│   └── payments.json         # 支付记录
+├── questions.json           # OPC适配测试题
+├── admin.html               # 管理后台
+└── docs/
+    ├── SPEC.md              # 需求规格
+    ├── opc-launch-map.md    # 节点路线图
+    └── harness-ready.md     # 部署文档
 ```
-
-## 技术栈
-
-- 前端: HTML + Tailwind CDN + Vanilla JS
-- 后端: Express.js
-- AI: DeepSeek V4 (腾讯TokenHub)
-- 预览图生成: html2canvas
-- PDF导出: jsPDF
-
-## 环境变量
-
-复制 `api/.env.example` 到 `api/.env`，填入API Key。
 
 ---
 
-*做AI的老板，让AI变成你的免费员工。*
+*OPC节点百科3.0 | Phase 1.5 Planning*

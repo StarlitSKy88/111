@@ -7,7 +7,13 @@ const state = {
   paid: false,
   error: null,
   showLanding: true,
-  selectedService: null
+  selectedService: null,
+  // 用户认证状态
+  user: null, // { email, token }
+  // 订阅状态
+  subscription: null, // { plan: 'monthly' | 'yearly', paid: boolean }
+  // 订阅弹窗选择
+  selectedPlan: null
 };
 
 async function loadQuestions() {
@@ -29,7 +35,7 @@ function renderLanding() {
               你适合做<br>一人公司吗？
             </h1>
             <p class="text-body" style="color: var(--text-secondary); max-width: 36ch;">
-              10道题，5分钟，AI告诉你是否适合做OPC（一人公司）。<br>
+              10道题，5分钟，测试你是否适合做OPC（一人公司）。<br>
               基于2026年最新创业模型评估。
             </p>
           </div>
@@ -41,8 +47,8 @@ function renderLanding() {
                 <div style="display: flex; align-items: center; gap: 1rem;">
                   <span style="font-size: 1.5rem; color: var(--accent); font-weight: 200;">01</span>
                   <div>
-                    <div style="font-size: 0.875rem; color: var(--text-primary); margin-bottom: 0.25rem;">AI个性分析</div>
-                    <div style="font-size: 0.75rem; color: var(--text-tertiary);">DeepSeek V4 深度解读</div>
+                    <div style="font-size: 0.875rem; color: var(--text-primary); margin-bottom: 0.25rem;">个性分析</div>
+                    <div style="font-size: 0.75rem; color: var(--text-tertiary);">创始人核心能力诊断</div>
                   </div>
                 </div>
               </div>
@@ -166,7 +172,7 @@ async function submitForAnalysis() {
   const timeoutId = setTimeout(() => controller.abort(), ABORT_TIMEOUT);
 
   try {
-    const response = await fetch('/api/analyze', {
+    const response = await fetch('http://localhost:3001/api/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ answers: state.answers }),
@@ -202,7 +208,7 @@ function generateMockResults() {
     summary: "你是一个非常适合做OPC的人选。有强烈的动机和行动力，具备一定副业经验。",
     strengths: ["动机强，行动力足", "有一定副业经验", "时间投入可保证"],
     weaknesses: ["资本储备不足", "人脉资源有限", "耐心需要加强"],
-    recommendations: ["优先选择轻资产OPC项目", "利用AI工具降低启动成本", "3个月内先跑通最小闭环"]
+    recommendations: ["优先选择轻资产OPC项目", "利用工具降低启动成本", "3个月内先跑通最小闭环"]
   };
 }
 
@@ -713,6 +719,7 @@ function restart() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+  initAuth(); // 初始化用户认证状态
   await loadNodes();
   render();
 });
@@ -954,6 +961,11 @@ function openNodeModal(nodeId) {
 
   window.SELECTED_NODE = node;
 
+  // 同步URL到 hash
+  if (node.slug) {
+    history.replaceState(null, '', '#/nodes/' + node.slug);
+  }
+
   // 填充标题和分类
   document.getElementById('modal-category').textContent =
     `${node.difficulty} · ${node.category}`;
@@ -975,13 +987,14 @@ function closeNodeModal() {
   const modal = document.getElementById('node-modal');
   modal.classList.add('hidden');
   document.body.style.overflow = '';
+  history.replaceState(null, '', '#/');
 }
 
 async function generateNodeContent(node) {
   const contentEl = document.getElementById('modal-content');
 
   try {
-    const response = await fetch('/api/generate-node-content', {
+    const response = await fetch('http://localhost:3001/api/generate-node-content', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -999,7 +1012,7 @@ async function generateNodeContent(node) {
     // 降级：显示节点摘要
     contentEl.innerHTML = `
       <p style="margin-bottom: 1rem;">${node.summary}</p>
-      <p class="text-label" style="color: var(--text-tertiary);">AI内容生成中...</p>
+      <p class="text-label" style="color: var(--text-tertiary);">内容生成中...</p>
     `;
   }
 }
@@ -1015,10 +1028,10 @@ function consultForNode() {
 // 节点网格渲染
 async function loadNodes() {
   try {
-    const response = await fetch('data/nodes.json');
-    const data = await response.json();
-    window.NODES = data.nodes;
-    renderNodesGrid(data.nodes);
+    const response = await fetch('http://localhost:3001/api/nodes');
+    const json = await response.json();
+    window.NODES = json.data;
+    renderNodesGrid(json.data);
   } catch (error) {
     console.error('Load nodes error:', error);
   }
@@ -1032,44 +1045,437 @@ function renderNodesGrid(nodes, filter) {
     ? nodes.filter(n => n.difficulty === filter)
     : nodes;
 
-  grid.innerHTML = filtered.map(node => `
-    <div style="background: var(--surface); padding: 1.25rem; cursor: pointer;"
-         onclick="openNodeModal(${node.id})">
-      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
-        <div class="text-label" style="color: var(--accent);">
+  // Japanese Ma 不对称卡片 — 无gap，用border分割
+  grid.innerHTML = filtered.map((node, idx) => {
+    // 偶数行特殊尺寸制造不对称感
+    const isWide = idx % 3 === 0;
+    return `
+    <div style="
+      background: var(--surface);
+      padding: 2rem 1.5rem;
+      cursor: pointer;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      transition: background 0.4s ease;
+      ${isWide ? 'grid-column: span 2;' : ''}
+    "
+         onclick="openNodeModalWithAccess(${node.id})"
+         onmouseenter="this.style.background='rgba(192,57,43,0.03)'"
+         onmouseleave="this.style.background='var(--surface)'">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+        <div class="text-label" style="color: var(--accent); letter-spacing: 0.15em;">
           ${String(node.id).padStart(2, '0')}
         </div>
         <div class="text-label" style="color: var(--text-tertiary);">
           ${node.difficulty}
         </div>
       </div>
-      <h3 style="font-size: 1rem; font-weight: 400; color: var(--text-primary); margin-bottom: 0.5rem;">
+      <h3 style="font-size: 1.125rem; font-weight: 300; color: var(--text-primary); margin-bottom: 0.75rem; letter-spacing: -0.01em;">
         ${node.title}
       </h3>
-      <p class="text-body" style="font-size: 0.8125rem; color: var(--text-secondary);">
+      <p class="text-body" style="font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.8;">
         ${node.summary}
       </p>
       ${node.price_consult ? `
-        <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--line);">
+        <div style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--line);">
           <span class="text-label" style="color: var(--text-tertiary);">咨询 </span>
-          <span style="color: var(--accent);">¥${node.price_consult}</span>
+          <span style="color: var(--accent); font-weight: 300;">¥${node.price_consult}</span>
         </div>
       ` : ''}
     </div>
-  `).join('');
+  `}).join('');
 }
 
 function filterNodes(difficulty) {
-  // 更新按钮状态
+  // 更新按钮状态 — Japanese Ma 左对齐风格
   document.querySelectorAll('[id^="filter-"]').forEach(btn => {
     btn.style.color = 'var(--text-secondary)';
-    btn.style.borderBottomColor = 'var(--line)';
+    btn.style.borderBottom = '1px solid var(--line)';
   });
   const activeBtn = document.getElementById('filter-' + difficulty);
   if (activeBtn) {
     activeBtn.style.color = 'var(--text-primary)';
-    activeBtn.style.borderBottomColor = 'var(--accent)';
+    activeBtn.style.borderBottom = '1px solid var(--accent)';
   }
 
   renderNodesGrid(window.NODES, difficulty);
 }
+
+// Hash 路由系统
+function navigateTo(path) {
+  window.location.hash = '#/' + path;
+}
+
+window.addEventListener('hashchange', handleHashRoute);
+
+function handleHashRoute() {
+  const hash = window.location.hash || '#/';
+  if (hash.startsWith('#/nodes/')) {
+    const slug = hash.replace('#/nodes/', '');
+    const node = window.NODES?.find(n => n.slug === slug);
+    if (node) {
+      window.SELECTED_NODE = node;
+      openNodeModal(node.id);
+    }
+  }
+}
+
+// ============================================
+// 用户认证系统
+// ============================================
+
+function initAuth() {
+  // 从 localStorage 恢复登录状态
+  const savedToken = localStorage.getItem('opc_token');
+  const savedEmail = localStorage.getItem('opc_email');
+  const savedSubscription = localStorage.getItem('opc_subscription');
+
+  if (savedToken && savedEmail) {
+    state.user = { email: savedEmail, token: savedToken };
+  }
+
+  if (savedSubscription) {
+    try {
+      state.subscription = JSON.parse(savedSubscription);
+    } catch (e) {
+      state.subscription = null;
+    }
+  }
+
+  renderAuthSection();
+}
+
+function renderAuthSection() {
+  const authSection = document.getElementById('auth-section');
+  if (!authSection) return;
+
+  if (state.user) {
+    authSection.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <span style="font-size: 0.75rem; color: var(--text-secondary);">${state.user.email}</span>
+        <button onclick="logout()" style="
+          background: none;
+          border: 1px solid var(--line);
+          color: var(--text-secondary);
+          font-size: 0.625rem;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          padding: 0.375rem 0.75rem;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        " onmouseenter="this.style.borderColor='var(--accent)'" onmouseleave="this.style.borderColor='var(--line)'">
+          登出
+        </button>
+      </div>
+    `;
+  } else {
+    authSection.innerHTML = `
+      <button onclick="openAuthModal('login')" style="
+        background: none;
+        border: 1px solid var(--line);
+        color: var(--text-secondary);
+        font-size: 0.625rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 0.375rem 0.75rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      " onmouseenter="this.style.borderColor='var(--accent)'" onmouseleave="this.style.borderColor='var(--line)'">
+        登录
+      </button>
+    `;
+  }
+}
+
+function openAuthModal(mode) {
+  state.authMode = mode || 'login';
+  const modal = document.getElementById('auth-modal');
+  const content = document.getElementById('auth-modal-content');
+
+  content.innerHTML = renderAuthForm();
+  modal.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAuthModal() {
+  const modal = document.getElementById('auth-modal');
+  modal.classList.add('hidden');
+  document.body.style.overflow = '';
+  state.authMode = 'login';
+}
+
+function renderAuthForm() {
+  const isLogin = state.authMode === 'login';
+
+  return `
+    <div style="margin-bottom: 1.5rem;">
+      <h3 style="font-size: 1.125rem; font-weight: 400; color: var(--text-primary); margin-bottom: 0.25rem;">
+        ${isLogin ? '登录' : '注册'}
+      </h3>
+      <p class="text-label" style="color: var(--text-tertiary);">
+        ${isLogin ? '登录后访问更多节点' : '创建账号开始使用'}
+      </p>
+    </div>
+
+    <form onsubmit="handleAuthSubmit(event)">
+      <input
+        type="email"
+        id="auth-email"
+        class="auth-input"
+        placeholder="邮箱地址"
+        required
+        style="margin-bottom: 0.75rem;"
+      >
+      <input
+        type="password"
+        id="auth-password"
+        class="auth-input"
+        placeholder="密码"
+        required
+        minlength="6"
+      >
+      <div id="auth-error" class="error-message" style="margin-bottom: 1rem; display: none;"></div>
+      <button type="submit" class="btn-pdf" style="width: 100%; margin-bottom: 1rem;">
+        ${isLogin ? '登录' : '注册'}
+      </button>
+    </form>
+
+    <div style="text-align: center; padding-top: 1rem; border-top: 1px solid var(--line);">
+      <span class="text-label" style="color: var(--text-tertiary); margin-right: 0.5rem;">
+        ${isLogin ? '还没有账号？' : '已有账号？'}
+      </span>
+      <button onclick="toggleAuthMode()" style="
+        background: none;
+        border: none;
+        color: var(--accent);
+        font-size: 0.75rem;
+        cursor: pointer;
+        text-decoration: underline;
+      ">
+        ${isLogin ? '立即注册' : '立即登录'}
+      </button>
+    </div>
+  `;
+}
+
+function toggleAuthMode() {
+  state.authMode = state.authMode === 'login' ? 'register' : 'login';
+  const content = document.getElementById('auth-modal-content');
+  content.innerHTML = renderAuthForm();
+}
+
+async function handleAuthSubmit(event) {
+  event.preventDefault();
+
+  const email = document.getElementById('auth-email').value.trim();
+  const password = document.getElementById('auth-password').value;
+  const errorEl = document.getElementById('auth-error');
+  const isLogin = state.authMode === 'login';
+
+  errorEl.style.display = 'none';
+  errorEl.textContent = '';
+
+  try {
+    const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
+    const response = await fetch('http://localhost:3001' + endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || (isLogin ? '登录失败' : '注册失败'));
+    }
+
+    // 登录成功后保存状态
+    state.user = { email, token: data.token };
+    localStorage.setItem('opc_token', data.token);
+    localStorage.setItem('opc_email', email);
+
+    closeAuthModal();
+    renderAuthSection();
+
+  } catch (error) {
+    errorEl.textContent = error.message;
+    errorEl.style.display = 'block';
+  }
+}
+
+function logout() {
+  state.user = null;
+  localStorage.removeItem('opc_token');
+  localStorage.removeItem('opc_email');
+  renderAuthSection();
+}
+
+// ============================================
+// 订阅系统
+// ============================================
+
+function openSubscriptionModal() {
+  state.selectedPlan = null;
+  const modal = document.getElementById('subscription-modal');
+  const confirmBtn = document.getElementById('confirm-subscription-btn');
+
+  // 重置选择状态
+  document.querySelectorAll('#plan-monthly, #plan-yearly').forEach(el => {
+    el.classList.remove('selected');
+  });
+  confirmBtn.disabled = true;
+  confirmBtn.style.opacity = '0.5';
+  confirmBtn.style.cursor = 'not-allowed';
+  confirmBtn.textContent = '选择订阅方案';
+
+  modal.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSubscriptionModal() {
+  const modal = document.getElementById('subscription-modal');
+  modal.classList.add('hidden');
+  document.body.style.overflow = '';
+  state.selectedPlan = null;
+}
+
+function selectSubscriptionPlan(plan) {
+  state.selectedPlan = plan;
+
+  // 更新选中状态
+  document.querySelectorAll('#plan-monthly, #plan-yearly').forEach(el => {
+    el.classList.remove('selected');
+  });
+  document.getElementById('plan-' + plan).classList.add('selected');
+
+  // 启用确认按钮
+  const confirmBtn = document.getElementById('confirm-subscription-btn');
+  confirmBtn.disabled = false;
+  confirmBtn.style.opacity = '1';
+  confirmBtn.style.cursor = 'pointer';
+
+  const planName = plan === 'monthly' ? '月付 ¥9.9' : '年付 ¥99';
+  confirmBtn.textContent = '确认订阅 · ' + planName;
+}
+
+async function confirmSubscription() {
+  if (!state.selectedPlan) return;
+
+  const confirmBtn = document.getElementById('confirm-subscription-btn');
+  confirmBtn.disabled = true;
+  confirmBtn.textContent = '处理中...';
+
+  // Mock 支付 API
+  await new Promise(resolve => setTimeout(resolve, 1500));
+
+  // 保存订阅状态
+  state.subscription = {
+    plan: state.selectedPlan,
+    paid: true,
+    startDate: new Date().toISOString()
+  };
+  localStorage.setItem('opc_subscription', JSON.stringify(state.subscription));
+
+  closeSubscriptionModal();
+
+  // 提示成功并刷新节点
+  showToast('订阅成功！开始探索全部节点');
+}
+
+function showToast(message) {
+  const existing = document.getElementById('toast-message');
+  if (existing) existing.remove();
+
+  const toast = document.createElement('div');
+  toast.id = 'toast-message';
+  toast.innerHTML = `
+    <div style="
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--surface);
+      border: 1px solid var(--success);
+      color: var(--text-primary);
+      padding: 1rem 1.5rem;
+      font-size: 0.875rem;
+      z-index: 9999;
+      animation: fadeUp 0.3s ease;
+    ">
+      ${message}
+    </div>
+  `;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
+
+// ============================================
+// 节点访问控制
+// ============================================
+
+function checkNodeAccess(nodeId) {
+  // 节点 01 是免费的（OPC适配测试）
+  if (nodeId === 1) {
+    return { allowed: true, requiresSubscription: false };
+  }
+
+  // 其他节点（02-40）需要订阅
+  if (state.subscription && state.subscription.paid) {
+    return { allowed: true, requiresSubscription: false };
+  }
+
+  return { allowed: false, requiresSubscription: true };
+}
+
+function openNodeModalWithAccess(nodeId) {
+  const access = checkNodeAccess(nodeId);
+
+  if (!access.allowed && access.requiresSubscription) {
+    // 需要登录或订阅
+    if (!state.user) {
+      openAuthModal('login');
+    } else {
+      openSubscriptionModal();
+    }
+    return false;
+  }
+
+  openNodeModal(nodeId);
+  return true;
+}
+
+// 覆盖原有的 openNodeModal
+const originalOpenNodeModal = openNodeModal;
+function openNodeModal(nodeId) {
+  // 如果未登录，先引导登录
+  if (!state.user) {
+    openAuthModal('login');
+    return;
+  }
+
+  // 检查订阅状态（节点 02-40）
+  const access = checkNodeAccess(nodeId);
+  if (!access.allowed && access.requiresSubscription) {
+    openSubscriptionModal();
+    return;
+  }
+
+  // 执行原来的打开模态框逻辑
+  originalOpenNodeModal(nodeId);
+}
+
+// ============================================
+// API 请求拦截器
+// ============================================
+
+const originalFetch = window.fetch;
+window.fetch = async function(url, options = {}) {
+  // 添加 token 到请求头
+  if (state.user && state.user.token) {
+    options.headers = options.headers || {};
+    if (typeof options.headers === 'object' && !Array.isArray(options.headers)) {
+      options.headers['Authorization'] = 'Bearer ' + state.user.token;
+    }
+  }
+  return originalFetch(url, options);
+};

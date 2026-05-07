@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const DATA_DIR = path.join(__dirname, '..');
 const RESULTS_FILE = path.join(DATA_DIR, 'data', 'results.json');
 const PAYMENTS_FILE = path.join(DATA_DIR, 'data', 'payments.json');
+const PRICING_FILE = path.join(DATA_DIR, 'data', 'pricing.json');
 
 // 确保数据目录存在
 function ensureDataDir() {
@@ -176,11 +177,44 @@ function getResultById(id) {
   };
 }
 
+// ========== 定价配置读写 ==========
+
+function readPricing() {
+  ensureDataDir();
+  if (!fs.existsSync(PRICING_FILE)) {
+    return {};
+  }
+  try {
+    const data = fs.readFileSync(PRICING_FILE, 'utf-8');
+    return JSON.parse(data);
+  } catch (e) {
+    return {};
+  }
+}
+
+function writePricing(pricing) {
+  ensureDataDir();
+  fs.writeFileSync(PRICING_FILE, JSON.stringify(pricing, null, 2));
+}
+
+function getPricing() {
+  return readPricing();
+}
+
+function updatePricing(newPricing) {
+  const current = readPricing();
+  const merged = { ...current, ...newPricing };
+  writePricing(merged);
+  return merged;
+}
+
 module.exports = {
   saveResult,
   savePayment,
   updatePayment,
   getStats,
   getAllResults,
-  getResultById
+  getResultById,
+  getPricing,
+  updatePricing
 };

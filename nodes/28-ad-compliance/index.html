@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="广告用词、禁止用语、风险规避，2026年监管最严领域之一">
+  <meta name="theme-color" content="#111110">
+  <title>广告合规 - OPC节点百科</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg: #111110;
+      --surface: #1A1A18;
+      --text-primary: #F0EDE6;
+      --text-secondary: #7A7670;
+      --accent: #C0392B;
+      --line: #2A2A28;
+    }
+    body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; }
+    .loading { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .loading-bar { width: 100%; height: 1px; background: var(--line); position: relative; overflow: hidden; max-width: 200px; }
+    .loading-bar::after { content: ''; position: absolute; left: -50%; top: 0; width: 50%; height: 100%; background: var(--accent); animation: loading-slide 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite; }
+    @keyframes loading-slide { from { left: -50%; } to { left: 100%; } }
+    .content h1 { font-size: 1.75rem; font-weight: 300; margin-bottom: 1rem; }
+    .content h2 { font-size: 1.25rem; font-weight: 400; margin: 1.5rem 0 0.75rem; color: var(--text-primary); }
+    .content h3 { font-size: 1rem; font-weight: 500; margin: 1.25rem 0 0.5rem; color: var(--text-primary); }
+    .content p { line-height: 1.9; margin-bottom: 1rem; color: var(--text-secondary); }
+    .content ul, .content ol { margin: 1rem 0; padding-left: 1.5rem; color: var(--text-secondary); }
+    .content li { line-height: 1.8; margin-bottom: 0.5rem; }
+    .content strong { color: var(--text-primary); font-weight: 500; }
+    .content code { background: var(--surface); padding: 0.125rem 0.375rem; border-radius: 0.25rem; font-size: 0.875rem; }
+    .content pre { background: var(--surface); padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin: 1rem 0; }
+    .content pre code { background: none; padding: 0; }
+    .content blockquote { border-left: 3px solid var(--accent); padding-left: 1rem; margin: 1rem 0; color: var(--text-secondary); font-style: italic; }
+    .content hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+    .content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    .content th, .content td { border: 1px solid var(--line); padding: 0.75rem; text-align: left; }
+    .content th { background: var(--surface); color: var(--text-primary); }
+    .content td { color: var(--text-secondary); }
+    .content a { color: var(--accent); text-decoration: underline; }
+    .content input[type="checkbox"] { margin-right: 0.5rem; }
+  </style>
+</head>
+<body>
+  <div id="app" data-slug="ad-compliance">
+    <div class="loading">
+      <div class="loading-bar"></div>
+    </div>
+  </div>
+  <script type="module">
+    const SLUG = "ad-compliance";
+
+    async function loadNode() {
+      try {
+        const res = await fetch("/api/nodes/" + SLUG);
+        if (!res.ok) throw new Error("Failed to load");
+        const data = await res.json();
+        renderNode(data);
+      } catch (e) {
+        document.getElementById("app").innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text-secondary)">加载失败</div>';
+      }
+    }
+
+    function mdToHtml(md) {
+      if (!md) return "<p style="color:var(--text-secondary)">内容加载中...</p>";
+      let html = md
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/^### (.+)$/gm, "<h3>$1</h3>")
+        .replace(/^## (.+)$/gm, "<h2>$1</h2>")
+        .replace(/^# (.+)$/gm, "<h1>$1</h1>")
+        .replace(/**(.+?)**/g, "<strong>$1</strong>")
+        .replace(/^- (.+)$/gm, "<li>$1</li>")
+        .replace(/^\[ \] (.+)$/gm, "<div><input type="checkbox" disabled> $1</div>")
+        .replace(/^\[x\] (.+)$/gm, "<div><input type="checkbox" checked disabled> $1</div>")
+        .replace(/^\d+\. (.+)$/gm, "<li>$1</li>")
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
+        .replace(/^(?!<[a-z])(.+)$/gm, "<p>$1</p>")
+        .replace(/\n\n+/g, "\n");
+      html = html.replace(/(<li>.*<\/li>\n?)+/g, "<ul>$&</ul>");
+      return html;
+    }
+
+    function renderNode(node) {
+      const content = node.content || "";
+      const contentHtml = mdToHtml(content);
+      document.getElementById("app").innerHTML = `
+        <div style="max-width:800px;margin:0 auto;padding:2rem 1.25rem;">
+          <a href="/" style="color:var(--text-secondary);font-size:0.75rem;letter-spacing:0.1em;text-decoration:none;">← 返回首页</a>
+          <div style="margin-top:2rem;">
+            <div style="color:var(--accent);font-size:0.625rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;">${node.data?.category || ""} · ${node.data?.difficulty || ""}</div>
+            <h1 style="font-size:clamp(1.5rem,5vw,2.5rem);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;">${node.data?.title || ""}</h1>
+            <p style="color:var(--text-secondary);line-height:1.9;">${node.data?.summary || ""}</p>
+          </div>
+          <div class="content" style="margin-top:2rem;padding-top:2rem;border-top:1px solid var(--line);">
+            ${contentHtml}
+          </div>
+        </div>
+      `;
+    }
+
+    loadNode();
+  </script>
+</body>
+</html>

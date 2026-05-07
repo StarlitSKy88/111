@@ -1,0 +1,13 @@
+{
+  "id": "task-a5",
+  "type": "feature",
+  "title": "前端登录/注册页面",
+  "description": "在 index.html 添加登录注册UI + 订阅弹窗",
+  "verification": {
+    "type": "manual",
+    "command": "打开 http://localhost:3000 点击登录",
+    "expected": "显示登录注册表单，能正常提交"
+  },
+  "files": ["index.html", "app.js"],
+  "status": "completed"
+}

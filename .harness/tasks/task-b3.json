@@ -1,0 +1,13 @@
+{
+  "id": "task-b3",
+  "type": "feature",
+  "title": "付费节点访问逻辑",
+  "description": "节点 02-40 必须付费订阅才能访问",
+  "verification": {
+    "type": "api",
+    "command": "curl http://localhost:3001/api/access/personal-resources -H 'Authorization: Bearer <TOKEN>'",
+    "expected": "未订阅返回 can_access: false"
+  },
+  "files": ["api/auth/index.js"],
+  "status": "completed"
+}

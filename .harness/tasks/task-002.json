@@ -1,0 +1,10 @@
+{
+  "task_id": "task-002",
+  "file_path": "app.js",
+  "description": "更新 openNodeModal 函数，同步 hash URL",
+  "requirements": [
+    "在 openNodeModal(nodeId) 函数开头添加 history.replaceState(null, '', '#/nodes/' + node.slug)",
+    "只修改第 955 行附近，在 window.SELECTED_NODE = node 之后添加"
+  ],
+  "dependencies": ["task-001"]
+}

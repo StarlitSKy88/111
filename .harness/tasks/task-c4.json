@@ -1,0 +1,13 @@
+{
+  "id": "task-c4",
+  "type": "feature",
+  "title": "自动续费逻辑占位符",
+  "description": "订阅过期检查和自动续费标记",
+  "verification": {
+    "type": "api",
+    "command": "GET /api/subscription 返回过期状态",
+    "expected": "过期订阅返回 status: 'expired'"
+  },
+  "files": ["api/auth/index.js"],
+  "status": "completed"
+}

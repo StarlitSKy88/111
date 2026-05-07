@@ -1,0 +1,13 @@
+{
+  "id": "task-a2",
+  "type": "feature",
+  "title": "注册 API",
+  "description": "POST /api/auth/register - 验证 email 格式、密码加密存储",
+  "verification": {
+    "type": "api",
+    "command": "curl -X POST http://localhost:3001/api/auth/register -H 'Content-Type: application/json' -d '{\"email\":\"test@example.com\",\"password\":\"test123\"}'",
+    "expected": "成功注册，返回用户信息"
+  },
+  "files": ["api/auth/index.js"],
+  "status": "completed"
+}

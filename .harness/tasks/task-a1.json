@@ -1,0 +1,13 @@
+{
+  "id": "task-a1",
+  "type": "feature",
+  "title": "用户表设计",
+  "description": "设计 users 表，使用 JSON 文件存储 (data/users.json)",
+  "verification": {
+    "type": "api",
+    "command": "curl -X POST http://localhost:3001/api/auth/register -H 'Content-Type: application/json' -d '{\"email\":\"test2@example.com\",\"password\":\"test123\"}'",
+    "expected": "返回 {success: true, user: {id, email}}"
+  },
+  "files": ["api/auth/index.js", "api/db/schema.sql"],
+  "status": "completed"
+}

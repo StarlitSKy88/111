@@ -1,0 +1,11 @@
+{
+  "id": 13,
+  "title": "国内支付接入",
+  "slug": "payment接入",
+  "summary": "微信支付、支付宝、聚合支付，优先申请微信支付覆盖率最高",
+  "difficulty": "进阶",
+  "category": "0-1",
+  "price_standard": null,
+  "price_consult": 299,
+  "ai_summary": null
+}

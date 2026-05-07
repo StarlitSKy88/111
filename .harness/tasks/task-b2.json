@@ -1,0 +1,13 @@
+{
+  "id": "task-b2",
+  "type": "feature",
+  "title": "免费节点访问逻辑",
+  "description": "节点 01 (opc-fit-test) 对已登录用户免费开放",
+  "verification": {
+    "type": "api",
+    "command": "curl http://localhost:3001/api/access/opc-fit-test -H 'Authorization: Bearer <TOKEN>'",
+    "expected": "已登录用户返回 can_access: true"
+  },
+  "files": ["api/auth/index.js"],
+  "status": "completed"
+}

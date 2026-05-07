@@ -1,0 +1,10 @@
+{
+  "task_id": "task-003",
+  "file_path": "app.js",
+  "description": "更新 closeNodeModal 函数，恢复 hash URL",
+  "requirements": [
+    "在 closeNodeModal() 函数末尾添加 history.replaceState(null, '', '#/')",
+    "只修改现有函数，不添加新函数"
+  ],
+  "dependencies": ["task-002"]
+}

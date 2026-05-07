@@ -1,0 +1,23 @@
+[
+  {
+    "id": "1778123977198",
+    "email": "test@example.com",
+    "password_hash": "faf9f91659d0aa68c2a9e3e9631676cd:5e0a35e13f4422d289b851dce114b00fae9c14ea102291098b314feceb0fd0e7",
+    "created_at": "2026-05-07T03:19:37.200Z",
+    "updated_at": "2026-05-07T03:19:37.205Z"
+  },
+  {
+    "id": "1778143817382",
+    "email": "test@pua.com",
+    "password_hash": "83b5befe0c38c2ee3da0fbef115495c2:1e19e7a077f73b90d5bc29f1cc1afda081835333e290f16043bfcb9cd8c4cda4",
+    "created_at": "2026-05-07T08:50:17.383Z",
+    "updated_at": "2026-05-07T08:50:17.388Z"
+  },
+  {
+    "id": "1778143838192",
+    "email": "test2@pua.com",
+    "password_hash": "f368975ebd8f6ceb49cc96c9ea80bb66:520f4523ae1d559419469b8920a98124572470de97ee7b05327e69c2f05cd1bb",
+    "created_at": "2026-05-07T08:50:38.193Z",
+    "updated_at": "2026-05-07T08:50:38.193Z"
+  }
+]

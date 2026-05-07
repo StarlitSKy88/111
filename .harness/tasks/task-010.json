@@ -1,0 +1,14 @@
+{
+  "id": "task-010",
+  "type": "feature",
+  "title": "NodeEditor 页面整合",
+  "description": "创建 NodeEditor 页面，整合节点选择器、data.json 编辑器和 index.md 编辑器\n\n组件结构 src/pages/NodeEditor.jsx：\n```jsx\nimport { useEffect, useState } from 'react'\nimport { useParams, useNavigate } from 'react-router-dom'\nimport NodeSelector from '../components/NodeSelector'\nimport JsonEditor from '../components/JsonEditor'\nimport MarkdownEditor from '../components/MarkdownEditor'\n\nexport default function NodeEditor() {\n  const { slug } = useParams()\n  const navigate = useNavigate()\n  const [activeTab, setActiveTab] = useState('data')\n  const [saveStatus, setSaveStatus] = useState('')\n\n  const handleSave = (type) => {\n    setSaveStatus(`${type === 'data' ? 'data.json' : 'index.md'} 已保存`)\n    setTimeout(() => setSaveStatus(''), 2000)\n  }\n\n  return (\n    <div className=\"flex flex-col h-screen\">\n      {/* Header */}\n      <header className=\"flex items-center justify-between px-6 py-4 border-b border-[#2A2A28]\">\n        <div className=\"flex items-center gap-4\">\n          <button\n            onClick={() => navigate('/')}\n            className=\"text-[#8A8A85] hover:text-[#F0EDE6] transition-colors\"\n          >\n            ← 返回\n          </button>\n          <NodeSelector currentSlug={slug} onSelect={(s) => navigate(`/editor/${s}`)} />\n        </div>\n        {saveStatus && (\n          <span className=\"text-sm text-[#C0392B]\">{saveStatus}</span>\n        )}\n      </header>\n\n      {/* Tabs */}\n      <div className=\"flex border-b border-[#2A2A28]\">\n        <button\n          onClick={() => setActiveTab('data')}\n          className={`px-6 py-3 text-sm transition-colors ${\n            activeTab === 'data'\n              ? 'text-[#F0EDE6] border-b-2 border-[#C0392B]'\n              : 'text-[#8A8A85] hover:text-[#F0EDE6]'\n          }`}\n        >\n          data.json\n        </button>\n        <button\n          onClick={() => setActiveTab('index-md')}\n          className={`px-6 py-3 text-sm transition-colors ${\n            activeTab === 'index-md'\n              ? 'text-[#F0EDE6] border-b-2 border-[#C0392B]'\n              : 'text-[#8A8A85] hover:text-[#F0EDE6]'\n          }`}\n        >\n          index.md\n        </button>\n      </div>\n\n      {/* Content */}\n      <div className=\"flex-1 overflow-hidden p-6\">\n        {activeTab === 'data' ? (\n          <JsonEditor key={slug} slug={slug} onSave={handleSave} />\n        ) : (\n          <MarkdownEditor key={slug} slug={slug} onSave={handleSave} />\n        )}\n      </div>\n    </div>\n  )\n}\n```",
+  "verification": {
+    "type": "manual",
+    "command": "访问 /editor/opc-fit-test，切换 tab，编辑并保存",
+    "expected": "保存后显示提示，内容通过 API 持久化"
+  },
+  "files": ["admin-app/src/pages/NodeEditor.jsx"],
+  "status": "pending",
+  "dependencies": ["task-007", "task-008", "task-009"]
+}

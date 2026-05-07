@@ -1,0 +1,11 @@
+{
+  "id": 17,
+  "title": "上线前检查清单",
+  "slug": "launch-checklist",
+  "summary": "功能测试、支付测试、合规检查，不要带bug或合规风险上线",
+  "difficulty": "入门",
+  "category": "0-1",
+  "price_standard": null,
+  "price_consult": 199,
+  "ai_summary": null
+}

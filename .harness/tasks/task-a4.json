@@ -1,0 +1,13 @@
+{
+  "id": "task-a4",
+  "type": "feature",
+  "title": "认证中间件",
+  "description": "verifyToken 中间件和订阅状态检查",
+  "verification": {
+    "type": "api",
+    "command": "curl http://localhost:3001/api/access/opc-fit-test -H 'Authorization: Bearer invalid'",
+    "expected": "返回 401 Unauthorized"
+  },
+  "files": ["api/auth/index.js"],
+  "status": "completed"
+}

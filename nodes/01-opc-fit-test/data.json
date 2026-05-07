@@ -1,0 +1,11 @@
+{
+  "id": 1,
+  "title": "OPC适配测试",
+  "slug": "opc-fit-test",
+  "summary": "入口节点，测试你是否适合做OPC，AI推荐最适合你的创业路径",
+  "difficulty": "入门",
+  "category": "0-1",
+  "price_standard": null,
+  "price_consult": 299,
+  "ai_summary": null
+}
