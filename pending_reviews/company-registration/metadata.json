@@ -1,0 +1,66 @@
+{
+  "nodeId": 8,
+  "slug": "company-registration",
+  "title": "公司注册全流程",
+  "generatedAt": "2026-05-07T09:48:06.968Z",
+  "blocks": [
+    {
+      "id": "B1",
+      "title": "概述",
+      "success": true,
+      "length": 863
+    },
+    {
+      "id": "B2",
+      "title": "详细说明（一）",
+      "success": true,
+      "length": 1832
+    },
+    {
+      "id": "B3",
+      "title": "详细说明（二）",
+      "success": true,
+      "length": 2587
+    },
+    {
+      "id": "B4",
+      "title": "详细说明（三）",
+      "success": true,
+      "length": 1996
+    },
+    {
+      "id": "B5",
+      "title": "详细说明（四）",
+      "success": true,
+      "length": 2238
+    },
+    {
+      "id": "B6",
+      "title": "详细说明（五）",
+      "success": true,
+      "length": 1704
+    },
+    {
+      "id": "B7",
+      "title": "常见问题 Q1-Q4",
+      "success": true,
+      "length": 1230
+    },
+    {
+      "id": "B8",
+      "title": "常见问题 Q5-Q8",
+      "success": true,
+      "length": 1418
+    },
+    {
+      "id": "B9",
+      "title": "相关资源",
+      "success": true,
+      "length": 1612
+    }
+  ],
+  "searchResults": {
+    "success": true,
+    "contentLength": 2375
+  }
+}
