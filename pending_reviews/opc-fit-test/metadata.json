@@ -2,52 +2,52 @@
   "nodeId": 1,
   "slug": "opc-fit-test",
   "title": "OPC适配测试",
-  "generatedAt": "2026-05-07T14:50:38.889Z",
+  "generatedAt": "2026-05-07T15:02:57.105Z",
   "blocks": [
     {
       "id": "B1",
       "success": true,
-      "length": 1875
+      "length": 2068
     },
     {
       "id": "B2",
       "success": true,
-      "length": 2147
+      "length": 2993
     },
     {
       "id": "B3",
       "success": true,
-      "length": 2170
+      "length": 2394
     },
     {
       "id": "B4",
       "success": true,
-      "length": 1947
+      "length": 1719
     },
     {
       "id": "B5",
       "success": true,
-      "length": 2589
+      "length": 2288
     },
     {
       "id": "B6",
       "success": true,
-      "length": 1845
+      "length": 2351
     },
     {
       "id": "B7",
       "success": true,
-      "length": 2558
+      "length": 2591
     },
     {
       "id": "B8",
       "success": true,
-      "length": 2614
+      "length": 2309
     },
     {
       "id": "B9",
       "success": true,
-      "length": 3587
+      "length": 3497
     }
   ]
 }
