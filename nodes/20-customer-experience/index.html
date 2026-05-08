@@ -450,8 +450,8 @@ body {
 .stats-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-lg);
-  margin-top: var(--space-xl);
+  gap: var(--space-xl);
+  margin-top: var(--space-2xl);
   padding-top: var(--space-xl);
   border-top: 1px solid var(--line);
 }
@@ -461,8 +461,11 @@ body {
 }
 
 .card-block {
-  padding: var(--space-lg);
+  padding: var(--space-xl);
   border: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  min-height: 180px;
 }
 
 .card-label {
@@ -470,6 +473,15 @@ body {
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--accent);
+  margin-bottom: var(--space-md);
+}
+
+.card-number {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 48px;
+  font-weight: 300;
+  color: var(--accent);
+  line-height: 1;
   margin-bottom: var(--space-sm);
 }
 
@@ -477,13 +489,14 @@ body {
   font-size: 15px;
   font-weight: 500;
   color: var(--text-primary);
-  margin-bottom: var(--space-xs);
+  margin-bottom: var(--space-sm);
 }
 
 .card-desc {
   font-size: 13px;
   color: var(--text-secondary);
-  line-height: 1.7;
+  line-height: 1.6;
+  margin-top: auto;
 }
 
 /* Dimension 4: 情绪资产 */
@@ -1030,17 +1043,17 @@ body {
           <div class="stats-row">
             <div class="card-block">
               <div class="card-label">LTV提升</div>
-              <div style="font-family: 'Noto Serif JP', serif; font-size: 28px; font-weight: 300; color: var(--accent);">+37%</div>
+              <div class="card-number">+37%</div>
               <div class="card-desc">被推荐客户的留存率高于普通客户</div>
             </div>
             <div class="card-block">
               <div class="card-label">转化倍数</div>
-              <div style="font-family: 'Noto Serif JP', serif; font-size: 28px; font-weight: 300; color: var(--accent);">3x</div>
+              <div class="card-number">3x</div>
               <div class="card-desc">推荐线索vs其他渠道的转化率</div>
             </div>
             <div class="card-block">
               <div class="card-label">获客降低</div>
-              <div style="font-family: 'Noto Serif JP', serif; font-size: 28px; font-weight: 300; color: var(--accent);">-80%</div>
+              <div class="card-number">-80%</div>
               <div class="card-desc">推荐获客成本相比广告投放</div>
             </div>
           </div>
