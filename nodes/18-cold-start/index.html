@@ -535,9 +535,6 @@ body {
 }
 
 .ai-flywheel {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
   padding: var(--space-xl);
   background: var(--surface);
   border: 1px solid var(--line);
@@ -549,32 +546,32 @@ body {
   font-size: 18px;
   font-weight: 300;
   color: var(--text-primary);
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-lg);
 }
 
 .flywheel-steps {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--space-sm);
 }
 
 .flywheel-step {
   display: flex;
   align-items: flex-start;
-  gap: var(--space-md);
-  padding: var(--space-sm) 0;
-  font-size: 13px;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+  font-size: 12px;
   color: var(--text-secondary);
-  border-bottom: 1px solid var(--line-light);
+  background: var(--bg);
+  border: 1px solid var(--line-light);
 }
-
-.flywheel-step:last-child { border-bottom: none; }
 
 .flywheel-num {
   font-family: 'Noto Serif JP', serif;
   font-size: 14px;
   color: var(--accent);
   font-weight: 300;
+  flex-shrink: 0;
 }
 
 /* 维度三：获客四条路径 - 瀑布流变体 */
@@ -694,15 +691,12 @@ body {
 }
 
 .flywheel-nodes {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--space-md);
 }
 
 .flywheel-node {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-lg);
   padding: var(--space-lg);
   background: var(--surface);
   border: 1px solid var(--line);
@@ -733,9 +727,10 @@ body {
 /* 维度五：转化漏斗 - 左重不对称 */
 .dim5-funnel {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: var(--space-3xl);
+  grid-template-columns: 1.3fr 1fr;
+  gap: var(--space-2xl);
   margin-top: var(--space-xl);
+  align-items: start;
 }
 
 .funnel-steps {
@@ -746,9 +741,9 @@ body {
 
 .funnel-step {
   display: grid;
-  grid-template-columns: 60px 1fr;
-  gap: var(--space-lg);
-  padding: var(--space-lg);
+  grid-template-columns: 48px 1fr;
+  gap: var(--space-md);
+  padding: var(--space-md);
   background: var(--surface);
   border: 1px solid var(--line);
   position: relative;
@@ -766,7 +761,7 @@ body {
 
 .funnel-num {
   font-family: 'Noto Serif JP', serif;
-  font-size: 32px;
+  font-size: 24px;
   font-weight: 200;
   color: var(--text-primary);
   opacity: 0.15;
@@ -800,28 +795,28 @@ body {
 .funnel-visual {
   display: flex;
   flex-direction: column;
-  gap: var(--space-lg);
-  padding-top: var(--space-md);
+  gap: var(--space-md);
+  padding-top: 0;
 }
 
 .funnel-metric {
   background: var(--surface);
   border: 1px solid var(--line);
-  padding: var(--space-lg);
+  padding: var(--space-md);
   text-align: center;
 }
 
 .funnel-metric-value {
   font-family: 'Noto Serif JP', serif;
-  font-size: 48px;
+  font-size: 36px;
   font-weight: 200;
   color: var(--accent);
   line-height: 1;
-  margin-bottom: var(--space-xs);
+  margin-bottom: 4px;
 }
 
 .funnel-metric-label {
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--text-tertiary);
