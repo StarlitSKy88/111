@@ -1334,20 +1334,28 @@ body {
           </div>
           <div class="chart-area">
             <div class="chart-title">预期管理时间线</div>
-            <div class="objection-block green">
-              <div class="objection-label">T+0</div>
-              <div class="objection-title">支持邮箱 + 帮助中心</div>
-              <div class="objection-desc">专用支持邮箱和FAQ页面是底限</div>
-            </div>
-            <div class="objection-block green">
-              <div class="objection-label">T+1min</div>
-              <div class="objection-title">1分钟内自动回复</div>
-              <div class="objection-desc">明确告知回复时间承诺，消除用户焦虑</div>
-            </div>
-            <div class="objection-block muted">
-              <div class="objection-label">T+24h</div>
-              <div class="objection-title">人工跟进</div>
-              <div class="objection-desc">复杂问题由你亲自跟进</div>
+            <div style="display:flex;flex-direction:column;gap:var(--space-md);">
+              <div style="display:grid;grid-template-columns:56px 1fr;gap:var(--space-md);padding:var(--space-md) 0;border-bottom:1px solid var(--line-light);">
+                <div style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:#4CAF50;font-weight:500;">T+0</div>
+                <div>
+                  <div style="font-size:14px;font-weight:500;color:var(--text-primary);margin-bottom:2px;">支持邮箱 + 帮助中心</div>
+                  <div style="font-size:13px;color:var(--text-secondary);line-height:1.5;">专用支持邮箱和FAQ页面是底限</div>
+                </div>
+              </div>
+              <div style="display:grid;grid-template-columns:56px 1fr;gap:var(--space-md);padding:var(--space-md) 0;border-bottom:1px solid var(--line-light);">
+                <div style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:#4CAF50;font-weight:500;">T+1min</div>
+                <div>
+                  <div style="font-size:14px;font-weight:500;color:var(--text-primary);margin-bottom:2px;">1分钟内自动回复</div>
+                  <div style="font-size:13px;color:var(--text-secondary);line-height:1.5;">明确告知回复时间承诺，消除用户焦虑</div>
+                </div>
+              </div>
+              <div style="display:grid;grid-template-columns:56px 1fr;gap:var(--space-md);padding:var(--space-md) 0;">
+                <div style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-tertiary);font-weight:500;">T+24h</div>
+                <div>
+                  <div style="font-size:14px;font-weight:500;color:var(--text-primary);margin-bottom:2px;">人工跟进</div>
+                  <div style="font-size:13px;color:var(--text-secondary);line-height:1.5;">复杂问题由你亲自跟进</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
