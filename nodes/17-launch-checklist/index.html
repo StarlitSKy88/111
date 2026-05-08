@@ -1151,32 +1151,21 @@ body {
             </div>
           </div>
           <div class="chart-area">
-            <div class="chart-title" style="margin-bottom:var(--space-xl);">风险矩阵</div>
-            <div class="risk-list">
-              <div class="risk-item risk-item--critical">
-                <div class="risk-indicator"></div>
-                <div class="risk-content">
-                  <div class="risk-label">致命风险</div>
-                  <div class="risk-title">营业执照无效或异常</div>
-                  <div class="risk-desc">支付账户无法开通，商户账号风控审核失败，业务直接停摆</div>
-                </div>
-              </div>
-              <div class="risk-item risk-item--critical">
-                <div class="risk-indicator"></div>
-                <div class="risk-content">
-                  <div class="risk-label">致命风险</div>
-                  <div class="risk-title">超范围经营被标记</div>
-                  <div class="risk-desc">AI自动比对系统触发异常经营名录，影响支付通道正常结算</div>
-                </div>
-              </div>
-              <div class="risk-item risk-item--safe">
-                <div class="risk-indicator"></div>
-                <div class="risk-content">
-                  <div class="risk-label">通过标准</div>
-                  <div class="risk-title">MoR模式税务合规</div>
-                  <div class="risk-desc">使用Paddle/Lemon Squeezy等MoR服务，手续费换税务合规完全外包</div>
-                </div>
-              </div>
+            <div class="chart-title">风险矩阵</div>
+            <div class="objection-block red">
+              <div class="objection-label">致命风险</div>
+              <div class="objection-title">营业执照无效或异常</div>
+              <div class="objection-desc">支付账户无法开通，商户账号风控审核失败，业务直接停摆</div>
+            </div>
+            <div class="objection-block red">
+              <div class="objection-label">致命风险</div>
+              <div class="objection-title">超范围经营被标记</div>
+              <div class="objection-desc">AI自动比对系统触发异常经营名录，影响支付通道正常结算</div>
+            </div>
+            <div class="objection-block green">
+              <div class="objection-label">通过标准</div>
+              <div class="objection-title">MoR模式税务合规</div>
+              <div class="objection-desc">使用Paddle/Lemon Squeezy等MoR服务，手续费换税务合规完全外包</div>
             </div>
           </div>
         </div>
@@ -1209,23 +1198,22 @@ body {
               <div class="answer-desc">资源减负（图片压缩+懒加载）、代码精简（移除非必要第三方脚本）、缓存策略（静态资源设置合理浏览器缓存）。Core Web Vitals标准：首屏主要内容(LCP)加载时间需在2.5秒以内。</div>
             </div>
           </div>
-          <div class="product-grid">
-            <div class="product-test-card tall">
-              <div class="product-test-label">核心指标</div>
-              <div class="product-test-title">2.5秒内LCP</div>
-              <div class="product-test-desc">首屏加载在2.5秒内完成，图片压缩、代码精简、缓存配置到位。核心回路必须在30分钟内走通无阻。</div>
+          <div class="chart-area">
+            <div class="chart-title">产品检验清单</div>
+            <div class="objection-block red">
+              <div class="objection-label">危险信号</div>
+              <div class="objection-title">注册流程断点</div>
+              <div class="objection-desc">验证邮件未送达、激活链接失效、社交账号授权失败——流量在第一步就开始流失</div>
             </div>
-            <div>
-              <div class="product-test-card">
-                <div class="product-test-label">危险信号</div>
-                <div class="product-test-title">注册流程断点</div>
-                <div class="product-test-desc">验证邮件未送达、激活链接失效——流量在第一步开始流失</div>
-              </div>
-              <div class="product-test-card">
-                <div class="product-test-label">危险信号</div>
-                <div class="product-test-title">白屏无引导</div>
-                <div class="product-test-desc">空状态是刺眼的白屏，没有任何文案和行动按钮</div>
-              </div>
+            <div class="objection-block red">
+              <div class="objection-label">危险信号</div>
+              <div class="objection-title">白屏无引导</div>
+              <div class="objection-desc">空状态是刺眼的白屏，没有任何文案和行动按钮——用户不知道下一步该做什么</div>
+            </div>
+            <div class="objection-block green">
+              <div class="objection-label">达标标准</div>
+              <div class="objection-title">2.5秒内LCP</div>
+              <div class="objection-desc">首屏加载在2.5秒内完成，图片压缩、代码精简、缓存配置到位</div>
             </div>
           </div>
         </div>
@@ -1282,49 +1270,42 @@ body {
         <span class="dimension-badge">维度四</span>
         <h2 class="dimension-question">数据丢失即业务终结——如何设计单人可执行的恢复体系？</h2>
         
-        <div class="backup-ring-section">
-          <div class="backup-ring">
-            <svg width="180" height="180" viewBox="0 0 180 180">
-              <circle class="backup-ring-bg" cx="90" cy="90" r="70"/>
-              <circle class="backup-ring-fill" cx="90" cy="90" r="70"/>
-            </svg>
-            <div class="backup-ring-text">
-              <div class="backup-ring-pct">60</div>
-              <div class="backup-ring-label">备份就绪</div>
+        <div class="dimension-layout">
+          <div class="answer-section">
+            <div class="answer-block">
+              <div class="answer-label">备份策略</div>
+              <div class="answer-title">每日全量备份，保留7天历史版本</div>
+              <div class="answer-desc">备份文件异地存储（云存储跨区域复制），上线前完成隔离环境恢复演练。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">部署安全</div>
+              <div class="answer-title">代码部署配置Git管理</div>
+              <div class="answer-desc">环境变量加密存储，外部监控探活，异常5分钟内Telegram告警。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">恢复目标</div>
+              <div class="answer-title">4小时内可恢复</div>
+              <div class="answer-desc">若超过4小时则说明自动化程度不足，需要强化。</div>
             </div>
           </div>
-          <div class="backup-checklist">
-            <div class="backup-check-item">
-              <div class="check-icon"></div>
-              <span>每日全量备份，保留7天历史版本</span>
+          <div class="chart-area">
+            <div class="chart-title">备份就绪度</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md);margin-bottom:var(--space-lg);">
+              <div style="background:var(--bg);padding:var(--space-lg);text-align:center;border:1px solid var(--line);">
+                <div style="font-family:'Noto Serif JP',serif;font-size:36px;font-weight:200;color:var(--accent);">60%</div>
+                <div style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-tertiary);margin-top:4px;">当前进度</div>
+              </div>
+              <div style="background:var(--bg);padding:var(--space-lg);text-align:center;border:1px solid var(--line);">
+                <div style="font-family:'Noto Serif JP',serif;font-size:36px;font-weight:200;color:var(--text-primary);">4h</div>
+                <div style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-tertiary);margin-top:4px;">恢复目标</div>
+              </div>
             </div>
-            <div class="backup-check-item">
-              <div class="check-icon"></div>
-              <span>备份文件异地存储（云存储跨区域复制）</span>
-            </div>
-            <div class="backup-check-item">
-              <div class="check-icon"></div>
-              <span>上线前完成隔离环境恢复演练</span>
-            </div>
-            <div class="backup-check-item">
-              <div class="check-icon"></div>
-              <span>代码部署配置Git管理，环境变量加密存储</span>
-            </div>
-            <div class="backup-check-item">
-              <div class="check-icon"></div>
-              <span>外部监控探活，异常5分钟内Telegram告警</span>
+            <div class="objection-block muted">
+              <div class="objection-label">恢复时间目标</div>
+              <div class="objection-title">4小时内可恢复</div>
+              <div class="objection-desc">若超过4小时则说明自动化程度不足，需要强化</div>
             </div>
           </div>
-        </div>
-
-        <div class="objection-block muted" style="margin-top:var(--space-xl);">
-          <div class="objection-label">恢复时间目标</div>
-          <div class="answer-title">4小时内可恢复</div>
-          <div class="answer-desc">若超过4小时则说明自动化程度不足，需要强化</div>
-        </div>
-
-        <div class="core-insight">
-          <p class="core-insight-text">你不可能24小时盯着仪表盘，但你可以设计一个能在第一时间感知异常并推送信号的系统。</p>
         </div>
       </div>
 
@@ -1333,30 +1314,42 @@ body {
         <span class="dimension-badge">维度五</span>
         <h2 class="dimension-question">一人公司无法提供7x24小时客服，如何管理用户预期？</h2>
         
-        <div class="support-vertical">
-          <div class="support-time-axis">
-            <div class="support-time-marker">T+0</div>
-            <div class="support-time-marker active">T+1min</div>
-            <div class="support-time-marker">T+24h</div>
-          </div>
-          <div class="support-content-grid">
-            <div class="support-content-item">
-              <div class="support-content-title">支持邮箱 + 帮助中心</div>
-              <div class="support-content-desc">一个公开的专用支持邮箱（support@你的域名.com）和结构清晰的FAQ页面是不可妥协的底线</div>
+        <div class="dimension-layout">
+          <div class="answer-section">
+            <div class="answer-block">
+              <div class="answer-label">基础配置</div>
+              <div class="answer-title">支持邮箱 + 帮助中心</div>
+              <div class="answer-desc">一个公开的专用支持邮箱（support@你的域名.com）和结构清晰的FAQ页面是不可妥协的底线。</div>
             </div>
-            <div class="support-content-item highlight">
-              <div class="support-content-title">1分钟内自动回复</div>
-              <div class="support-content-desc">用户发出支持邮件后，必须在1分钟内收到自动回执，明确告知回复时间承诺</div>
+            <div class="answer-block">
+              <div class="answer-label">自动回复</div>
+              <div class="answer-title">1分钟内自动回复</div>
+              <div class="answer-desc">用户发出支持邮件后，必须在1分钟内收到自动回执，明确告知回复时间承诺。</div>
             </div>
-            <div class="support-content-item">
-              <div class="support-content-title">公开反馈入口</div>
-              <div class="support-content-desc">在应用内固定位置设置反馈按钮，链接到公开产品路线图页面</div>
+            <div class="answer-block">
+              <div class="answer-label">持续优化</div>
+              <div class="answer-title">公开反馈入口</div>
+              <div class="answer-desc">在应用内固定位置设置反馈按钮，链接到公开产品路线图页面。</div>
             </div>
           </div>
-        </div>
-
-        <div class="core-insight" style="margin-top:var(--space-xl);">
-          <p class="core-insight-text">用自动化逻辑处理80%的重复询问，仅将20%的复杂问题留给你的深度工作时间。</p>
+          <div class="chart-area">
+            <div class="chart-title">预期管理时间线</div>
+            <div class="objection-block green">
+              <div class="objection-label">T+0</div>
+              <div class="objection-title">支持邮箱 + 帮助中心</div>
+              <div class="objection-desc">专用支持邮箱和FAQ页面是底限</div>
+            </div>
+            <div class="objection-block green">
+              <div class="objection-label">T+1min</div>
+              <div class="objection-title">1分钟内自动回复</div>
+              <div class="objection-desc">明确告知回复时间承诺，消除用户焦虑</div>
+            </div>
+            <div class="objection-block muted">
+              <div class="objection-label">T+24h</div>
+              <div class="objection-title">人工跟进</div>
+              <div class="objection-desc">复杂问题由你亲自跟进</div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1365,42 +1358,47 @@ body {
         <span class="dimension-badge">维度六</span>
         <h2 class="dimension-question">上线不是终点——冷启动获客与法律风险如何同步准备？</h2>
 
-        <div class="marketing-dashboard">
-          <div class="dashboard-panel">
-            <div class="dashboard-panel-title">上线前检查清单</div>
-            <div class="dashboard-metrics">
-              <div class="dashboard-metric">
-                <span class="metric-label">法律实体</span>
-                <span class="metric-status danger">未完成</span>
-              </div>
-              <div class="dashboard-metric">
-                <span class="metric-label">域名+HTTPS</span>
-                <span class="metric-status danger">未完成</span>
-              </div>
-              <div class="dashboard-metric">
-                <span class="metric-label">核心回路</span>
-                <span class="metric-status pass">已完成</span>
-              </div>
-              <div class="dashboard-metric">
-                <span class="metric-label">备份恢复</span>
-                <span class="metric-status pass">已完成</span>
-              </div>
+        <div class="dimension-layout">
+          <div class="answer-section">
+            <div class="answer-block">
+              <div class="answer-label">法律</div>
+              <div class="answer-title">法律实体与支付合规</div>
+              <div class="answer-desc">MoR模式（如Paddle/Lemon Squeezy）税务合规完全外包，手续费换安心。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">基础设施</div>
+              <div class="answer-title">域名所有权与HTTPS</div>
+              <div class="answer-desc">域名自动续费，HTTPS全程加密，用户信任的基础保障。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">产品</div>
+              <div class="answer-title">核心回路完整可走通</div>
+              <div class="answer-desc">从注册到付费的路径无断点，30分钟内完成验证。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">安全</div>
+              <div class="answer-title">关键流程单人可恢复</div>
+              <div class="answer-desc">备份就绪，4小时内恢复，监控告警配置完毕。</div>
             </div>
           </div>
-          <div>
-            <div class="dashboard-alert" style="margin-bottom:var(--space-lg);">
-              <div class="alert-title">致命风险</div>
-              <div class="alert-desc">法律实体残缺导致无限连带责任。域名+HTTPS未完成导致用户信任归零。</div>
+          <div class="chart-area">
+            <div class="chart-title">上线前检查清单</div>
+            <div class="objection-block red">
+              <div class="objection-label">致命风险</div>
+              <div class="objection-title">法律实体残缺</div>
+              <div class="objection-desc">导致无限连带责任</div>
             </div>
-            <div class="dashboard-alert" style="background:rgba(76,175,80,0.05);border-color:#4CAF50;">
-              <div class="alert-title" style="color:#4CAF50;">通过标准</div>
-              <div class="alert-desc">MoR模式税务合规完全外包，手续费换安心。</div>
+            <div class="objection-block red">
+              <div class="objection-label">致命风险</div>
+              <div class="objection-title">域名+HTTPS未完成</div>
+              <div class="objection-desc">用户信任归零</div>
+            </div>
+            <div class="objection-block green">
+              <div class="objection-label">通过标准</div>
+              <div class="objection-title">核心回路 + 备份恢复</div>
+              <div class="objection-desc">完成这两项可大幅降低上线风险</div>
             </div>
           </div>
-        </div>
-
-        <div class="core-insight" style="margin-top:var(--space-xl);">
-          <p class="core-insight-text">完成这份检查，能让你在上线前把80%的合规与安全风险主动化解。</p>
         </div>
       </div>
 
