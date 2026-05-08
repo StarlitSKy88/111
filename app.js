@@ -1,3 +1,8 @@
+// API Base URL — 开发环境用 localhost:3001，生产环境用同源
+const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:3001'
+  : window.location.origin;
+
 const state = {
   currentQuestion: 0,
   answers: {},
@@ -177,7 +182,7 @@ async function submitForAnalysis() {
   const timeoutId = setTimeout(() => controller.abort(), ABORT_TIMEOUT);
 
   try {
-    const response = await fetch('http://localhost:3001/api/analyze', {
+    const response = await fetch(`${API_BASE}/api/analyze`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ answers: state.answers }),
@@ -306,14 +311,14 @@ function showPaymentQR() {
 
       <div style="margin-bottom: 1.5rem;">
         <div class="text-label" style="margin-bottom: 0.5rem; color: var(--text-tertiary);">我的微信</div>
-        <div style="font-size: 1rem; color: var(--accent); letter-spacing: 0.1em;">bcrf2025</div>
+        <div style="font-size: 1rem; color: var(--accent); letter-spacing: 0.1em;">bcrf2026</div>
       </div>
 
       <div style="padding: 1rem; border: 1px solid var(--line); margin-bottom: 1.5rem; text-align: left;">
         <div class="text-label" style="margin-bottom: 0.5rem; color: var(--text-tertiary);">支付后请完成</div>
         <ol style="list-style: decimal; padding-left: 1.25rem; font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.8;">
           <li>截图付款凭证</li>
-          <li>添加微信 <span style="color: var(--accent);">bcrf2025</span></li>
+          <li>添加微信 <span style="color: var(--accent);">bcrf2026</span></li>
           <li>发送截图给我</li>
           <li>我会发送完整手册给你</li>
         </ol>
@@ -394,7 +399,7 @@ function showWechatQR() {
     <div style="padding: 2rem 0; text-align: center;">
       <div class="text-label" style="margin-bottom: 1rem; color: var(--text-tertiary);">添加我的微信</div>
       <div style="font-size: 1.5rem; font-weight: 300; color: var(--text-primary); margin-bottom: 1.5rem; letter-spacing: 0.1em;">
-        <span style="color: var(--accent);">bcrf2025</span>
+        <span style="color: var(--accent);">bcrf2026</span>
       </div>
       <div style="margin-top: 2rem; padding: 0.75rem; border: 1px solid var(--line); display: inline-block; background: #fff;">
         <img src="wechat-qr.jpg" alt="微信二维码" style="width: 180px; height: auto;">
@@ -950,14 +955,14 @@ function showPaymentQR() {
 
           <div style="margin-bottom: 1.5rem;">
             <div class="text-label" style="margin-bottom: 0.5rem; color: var(--text-tertiary);">我的微信</div>
-            <div style="font-size: 1rem; color: var(--accent); letter-spacing: 0.1em;">bcrf2025</div>
+            <div style="font-size: 1rem; color: var(--accent); letter-spacing: 0.1em;">bcrf2026</div>
           </div>
 
           <div style="padding: 1rem; border: 1px solid var(--line); margin-bottom: 1.5rem; text-align: left;">
             <div class="text-label" style="margin-bottom: 0.5rem; color: var(--text-tertiary);">支付后请完成</div>
             <ol style="list-style: decimal; padding-left: 1.25rem; font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.8;">
               <li>截图付款凭证</li>
-              <li>添加微信 <span style="color: var(--accent);">bcrf2025</span></li>
+              <li>添加微信 <span style="color: var(--accent);">bcrf2026</span></li>
               <li>发送截图和服务类型</li>
               <li>我会确认并进入服务流程</li>
             </ol>
@@ -1018,7 +1023,7 @@ async function generateNodeContent(node) {
 
   try {
     // 直接从API获取节点内容（包含AI生成内容）
-    const response = await fetch('http://localhost:3001/api/nodes/' + node.slug);
+    const response = await fetch(`${API_BASE}/api/nodes/` + node.slug);
     if (!response.ok) throw new Error('Failed to load');
 
     const data = await response.json();
@@ -1046,7 +1051,7 @@ function consultForNode() {
 // 节点网格渲染
 async function loadNodes() {
   try {
-    const response = await fetch('http://localhost:3001/api/nodes');
+    const response = await fetch(`${API_BASE}/api/nodes`);
     const json = await response.json();
     window.NODES = json.data;
     renderNodesGrid(json.data);
@@ -1502,7 +1507,7 @@ async function sendCodeRequest(phone) {
   errorEl.style.display = 'none';
 
   try {
-    const response = await fetch('http://localhost:3001/api/auth/send-code', {
+    const response = await fetch(`${API_BASE}/api/auth/send-code`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ phone })
@@ -1589,7 +1594,7 @@ async function handleCodeVerify(event) {
       body = { phone: state.pendingPhone, code };
     }
 
-    const response = await fetch('http://localhost:3001' + endpoint, {
+    const response = await fetch(`${API_BASE}${endpoint}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
@@ -1683,7 +1688,7 @@ async function handleSetPassword(event) {
   }
 
   try {
-    const response = await fetch('http://localhost:3001/api/auth/set-password', {
+    const response = await fetch(`${API_BASE}/api/auth/set-password`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -1728,7 +1733,7 @@ async function handleAuthSubmit(event) {
   try {
     if (isLogin) {
       // 密码登录
-      const response = await fetch('http://localhost:3001/api/auth/password-login', {
+      const response = await fetch(`${API_BASE}/api/auth/password-login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phone, password })

@@ -95,7 +95,7 @@
       "options": [
         { "key": "A", "text": "听说很赚钱，想试试", "scores": { "opc_fit": 2, "motivation": 1 } },
         { "key": "B", "text": "不想上班，想自由职业", "scores": { "opc_fit": 4, "motivation": 3 } },
-        { "key": "C", "text": "被AI浪潮席卷，想转型", "scores": { "opc_fit": 5, "motivation": 4 } },
+        { "key": "C", "text": "不想被AI淘汰，想掌握主动权", "scores": { "opc_fit": 5, "motivation": 4 } },
         { "key": "D", "text": "已经有客户/订单，只差执行", "scores": { "opc_fit": 5, "motivation": 5 } }
       ]
     },
