@@ -6,7 +6,7 @@
   <meta name="description" content="客户体验与口碑管理 - OPC节点百科">
   <meta name="theme-color" content="#111110">
   <title>客户体验与口碑管理 - OPC节点百科</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
+  <link rel="icon" data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -15,12 +15,12 @@
   --bg: #111110;
   --surface: #1A1A18;
   --text-primary: #F0EDE6;
-  --text-secondary: #B8B4AE;
-  --text-tertiary: #A8A49E;
+  --text-secondary: #A8A49E;
+  --text-tertiary: #6B6862;
   --accent: #C0392B;
+  --accent-dim: rgba(192, 57, 43, 0.15);
   --line: #2A2A28;
-  --line-light: rgba(255,255,255,0.06);
-
+  --line-light: rgba(255,255,255,0.04);
   --space-xs: 8px;
   --space-sm: 16px;
   --space-md: 24px;
@@ -33,53 +33,50 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+html { font-size: 16px; }
+
 body {
   background: var(--bg);
   color: var(--text-primary);
   font-family: 'Noto Sans SC', sans-serif;
   font-weight: 400;
-  line-height: 1.9;
+  line-height: 2;
   letter-spacing: 0.04em;
   -webkit-font-smoothing: antialiased;
 }
 
-.page {
-  position: relative;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 clamp(24px, 8vw, 120px);
-  min-height: 100vh;
+.ma-layout {
+  display: grid;
+  grid-template-columns: 1fr min(65ch, 100%) 1fr;
+  padding: 0 clamp(1.5rem, 5vw, 6rem);
 }
 
-.page::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: clamp(24px, 8vw, 120px);
-  right: clamp(24px, 8vw, 120px);
-  height: 1px;
-  background: var(--line);
-}
+.ma-center { grid-column: 2; }
+.ma-full { grid-column: 1 / -1; }
 
+.page { position: relative; min-height: 100vh; }
+
+/* Section number watermark */
 .section-number {
   position: absolute;
-  top: var(--space-2xl);
-  right: clamp(24px, 8vw, 120px);
-  font-size: clamp(100px, 22vw, 280px);
+  top: var(--space-3xl);
+  right: clamp(1.5rem, 5vw, 6rem);
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(120px, 25vw, 320px);
   font-weight: 100;
   color: var(--text-primary);
   opacity: 0.03;
   line-height: 1;
   letter-spacing: -0.05em;
-  font-family: 'Noto Serif JP', serif;
   pointer-events: none;
   user-select: none;
 }
 
+/* Back link */
 .back-link {
   position: fixed;
   top: var(--space-xl);
-  left: clamp(24px, 8vw, 120px);
+  left: clamp(1.5rem, 5vw, 6rem);
   z-index: 100;
 }
 
@@ -92,21 +89,18 @@ body {
   text-transform: uppercase;
   color: var(--text-tertiary);
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .back-link a:hover { color: var(--text-primary); }
 
+/* Hero */
 .hero {
   padding: var(--space-4xl) 0 var(--space-3xl);
   position: relative;
 }
 
-.hero-content {
-  position: relative;
-  z-index: 1;
-  max-width: 800px;
-}
+.hero-content { position: relative; z-index: 1; }
 
 .hero-label {
   font-size: 13px;
@@ -128,20 +122,23 @@ body {
 
 .hero-title {
   font-family: 'Noto Serif JP', serif;
-  font-size: clamp(48px, 10vw, 96px);
+  font-size: clamp(3rem, 9vw, 7rem);
   font-weight: 300;
   letter-spacing: -0.03em;
-  line-height: 0.95;
+  line-height: 0.92;
   margin-bottom: var(--space-xl);
+  max-width: 12em;
 }
 
 .hero-desc {
   font-size: 16px;
   color: var(--text-secondary);
-  line-height: 1.8;
+  line-height: 1.9;
   max-width: 44ch;
+  margin-top: var(--space-lg);
 }
 
+/* Content sections */
 .content-section {
   padding: var(--space-3xl) 0;
   border-top: 1px solid var(--line);
@@ -165,65 +162,108 @@ body {
   background: var(--accent);
 }
 
+/* Dimension blocks */
+.dimension-block {
+  margin-bottom: var(--space-3xl);
+}
+
+.dimension-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xl);
+}
+
+.dimension-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+.dimension-tag {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+}
+
+.dimension-question {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  margin-bottom: var(--space-2xl);
+  max-width: 18em;
+}
+
+/* Grid layouts */
 .grid-asymmetric {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
-  gap: var(--space-3xl);
+  gap: var(--space-2xl);
   align-items: start;
 }
 
 @media (max-width: 900px) {
-  .grid-asymmetric {
-    grid-template-columns: 1fr;
-    gap: var(--space-2xl);
-  }
+  .grid-asymmetric { grid-template-columns: 1fr; gap: var(--space-xl); }
 }
 
-.chapter-heading {
-  font-family: 'Noto Serif JP', serif;
-  font-size: clamp(28px, 5vw, 48px);
-  font-weight: 300;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-  margin-bottom: var(--space-xl);
-  max-width: 16em;
+.grid-reverse {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: var(--space-2xl);
+  align-items: start;
 }
 
+@media (max-width: 900px) {
+  .grid-reverse { grid-template-columns: 1fr; gap: var(--space-xl); }
+}
+
+/* Body text */
 .body-text {
   font-size: 15px;
-  line-height: 1.9;
+  line-height: 2;
   color: var(--text-secondary);
-  max-width: 44ch;
-  margin-bottom: var(--space-md);
+  max-width: 58ch;
+  margin-bottom: var(--space-lg);
 }
 
 .body-text strong { color: var(--text-primary); font-weight: 500; }
 .body-text .accent { color: var(--accent); font-weight: 500; }
 
+/* Quote block */
 .quote-block {
-  padding-left: var(--space-md);
+  padding-left: var(--space-lg);
   border-left: 1px solid var(--accent);
   margin: var(--space-xl) 0;
 }
 
 .quote-text {
-  font-size: 16px;
-  line-height: 1.8;
+  font-size: 15px;
+  line-height: 1.9;
   color: var(--text-secondary);
-  max-width: 40ch;
+  max-width: 44ch;
+  font-style: italic;
 }
 
+/* Insight tag */
 .insight-tag {
   display: inline-block;
-  font-size: 12px;
+  font-size: 11px;
   color: var(--accent);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-md);
   border: 1px solid var(--accent);
   padding: 4px 12px;
 }
 
+/* Data card */
 .data-card {
   background: var(--surface);
   border: 1px solid var(--line);
@@ -240,7 +280,7 @@ body {
 .data-card-row:last-child { border-bottom: none; }
 
 .data-label {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-tertiary);
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -254,11 +294,12 @@ body {
 
 .data-value.accent { color: var(--accent); font-weight: 600; }
 
+/* List items */
 .list-item {
   padding: var(--space-lg) 0;
   border-bottom: 1px solid var(--line);
   display: grid;
-  grid-template-columns: 64px 1fr;
+  grid-template-columns: 56px 1fr;
   gap: var(--space-lg);
 }
 
@@ -266,14 +307,14 @@ body {
 
 .list-num {
   font-family: 'Noto Serif JP', serif;
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 300;
   color: var(--text-tertiary);
   line-height: 1;
 }
 
 .list-title {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   color: var(--text-primary);
   margin-bottom: var(--space-xs);
@@ -283,184 +324,21 @@ body {
   font-size: 14px;
   color: var(--text-secondary);
   line-height: 1.7;
-  max-width: 40ch;
+  max-width: 44ch;
 }
 
+/* Core insight */
 .core-insight {
   margin: var(--space-xl) 0;
-  padding-left: var(--space-md);
+  padding-left: var(--space-lg);
   border-left: 1px solid var(--accent);
 }
 
 .core-insight-text {
-  font-size: 15px;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  max-width: 40ch;
-}
-
-.balance-section-title {
-  font-family: 'Noto Serif JP', serif;
-  font-size: clamp(28px, 5vw, 48px);
-  font-weight: 300;
-  letter-spacing: -0.02em;
-  margin-bottom: var(--space-xl);
-}
-
-.balance-intro {
-  font-size: 15px;
+  font-size: 14px;
   color: var(--text-secondary);
   line-height: 1.8;
-  max-width: 46ch;
-  margin-bottom: var(--space-2xl);
-}
-
-.balance-intro strong { color: var(--text-primary); font-weight: 500; }
-
-.balance-grid {
-  display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  gap: var(--space-2xl);
-}
-
-@media (max-width: 768px) {
-  .balance-grid { grid-template-columns: 1fr; gap: var(--space-xl); }
-}
-
-.balance-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  padding: var(--space-lg);
-}
-
-.balance-card-label {
-  font-size: 13px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  margin-bottom: var(--space-md);
-  padding-bottom: var(--space-sm);
-  border-bottom: 1px solid var(--line);
-}
-
-.balance-card-label.positive { color: var(--accent); }
-.balance-card-label.negative { color: var(--text-tertiary); }
-
-.balance-item {
-  padding: var(--space-sm) 0;
-  border-bottom: 1px solid var(--line-light);
-  font-size: 14px;
-  color: var(--text-secondary);
-}
-
-.balance-item:last-child { border-bottom: none; }
-.balance-item.dim { color: var(--text-tertiary); }
-
-.summary-grid {
-  display: grid;
-  grid-template-columns: 1.5fr 1.2fr 0.8fr;
-  gap: var(--space-xl);
-}
-
-@media (max-width: 900px) {
-  .summary-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
-}
-
-.summary-card {
-  padding: var(--space-lg) 0;
-  border-top: 1px solid var(--line);
-}
-
-.summary-num {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 36px;
-  font-weight: 300;
-  color: var(--accent);
-  margin-bottom: var(--space-sm);
-}
-
-.summary-title {
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xs);
-}
-
-.summary-desc {
-  font-size: 14px;
-  color: var(--text-secondary);
-  line-height: 1.7;
-}
-
-.footer-nav {
-  padding: var(--space-2xl) 0;
-  border-top: 1px solid var(--line);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.nav-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.75rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.nav-link:hover { color: var(--text-primary); }
-.nav-arrow { font-size: 0.75rem; }
-
-.fade-section {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.fade-section.visible { opacity: 1; transform: translateY(0); }
-
-* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-
-/* Dimension blocks */
-.dimension-block {
-  margin-bottom: var(--space-3xl);
-}
-
-.dimension-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-sm);
-  margin-bottom: var(--space-lg);
-}
-
-.dimension-num {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--accent);
-  letter-spacing: 0.1em;
-}
-
-.dimension-tag {
-  font-size: 12px;
-  color: var(--text-tertiary);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  padding: 4px 10px;
-  border: 1px solid var(--line);
-}
-
-.dimension-question {
-  font-family: 'Noto Serif JP', serif;
-  font-size: clamp(24px, 4vw, 40px);
-  font-weight: 300;
-  letter-spacing: -0.02em;
-  line-height: 1.3;
-  margin-bottom: var(--space-xl);
-  max-width: 18em;
+  max-width: 40ch;
 }
 
 /* Answer blocks */
@@ -474,15 +352,10 @@ body {
   background: var(--surface);
   border: 1px solid var(--line);
   padding: var(--space-lg);
-  transition: border-color 0.3s ease;
-}
-
-.answer-block:hover {
-  border-color: var(--text-tertiary);
 }
 
 .answer-label {
-  font-size: 13px;
+  font-size: 10px;
   color: var(--accent);
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -490,7 +363,7 @@ body {
 }
 
 .answer-title {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   color: var(--text-primary);
   margin-bottom: var(--space-xs);
@@ -515,7 +388,7 @@ body {
 
 .objection-block.success {
   background: rgba(39, 174, 96, 0.08);
-  border-left: 2px solid var(--accent);
+  border-left: 2px solid var(--text-secondary);
 }
 
 .objection-block.data {
@@ -532,11 +405,11 @@ body {
 }
 
 .objection-block.error .objection-label { color: var(--accent); }
-.objection-block.success .objection-label { color: var(--accent); }
+.objection-block.success .objection-label { color: var(--text-secondary); }
 .objection-block.data .objection-label { color: var(--text-tertiary); }
 
 .objection-title {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--text-primary);
   margin-bottom: var(--space-xs);
@@ -546,6 +419,51 @@ body {
   font-size: 13px;
   color: var(--text-secondary);
   line-height: 1.6;
+}
+
+/* Metrics table */
+.metrics-table {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  margin-bottom: var(--space-xl);
+}
+
+.metrics-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--line);
+  align-items: center;
+}
+
+.metrics-row:last-child { border-bottom: none; }
+
+.metrics-row.header {
+  background: var(--bg);
+}
+
+.metrics-name {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.metrics-value {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 24px;
+  font-weight: 300;
+  color: var(--accent);
+}
+
+.metrics-benchmark {
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+@media (max-width: 768px) {
+  .metrics-row { grid-template-columns: 1fr; gap: var(--space-xs); }
 }
 
 /* Decision table */
@@ -565,8 +483,10 @@ body {
 
 .decision-row:last-child { border-bottom: none; }
 
+.decision-row:nth-child(even) { background: rgba(255,255,255,0.02); }
+
 .decision-condition {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-secondary);
 }
 
@@ -577,70 +497,215 @@ body {
 }
 
 .decision-result {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-tertiary);
 }
 
 @media (max-width: 768px) {
-  .decision-row {
-    grid-template-columns: 1fr;
-    gap: var(--space-xs);
-  }
+  .decision-row { grid-template-columns: 1fr; gap: var(--space-xs); }
 }
 
-/* FIN section */
-.fin-section {
-  margin-top: var(--space-3xl);
-  padding-top: var(--space-2xl);
-  border-top: 1px solid var(--line);
-}
-
-.fin-title {
-  font-family: 'Noto Serif JP', serif;
-  font-size: clamp(32px, 6vw, 56px);
-  font-weight: 300;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
-  margin-bottom: var(--space-xl);
-}
-
-.fin-grid {
+/* Balance grid */
+.balance-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr 1fr;
   gap: var(--space-xl);
 }
 
 @media (max-width: 768px) {
-  .fin-grid { grid-template-columns: 1fr; }
+  .balance-grid { grid-template-columns: 1fr; }
 }
 
-.fin-card {
+.balance-card-label {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+}
+
+.balance-card-label.positive { color: var(--accent); }
+.balance-card-label.negative { color: var(--text-tertiary); }
+
+.balance-item {
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--line-light);
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.balance-item:last-child { border-bottom: none; }
+
+/* Flow chart */
+.flow-chart {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin: var(--space-xl) 0;
+}
+
+.flow-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.flow-arrow {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin: var(--space-sm) 0;
+  padding-left: var(--space-lg);
+}
+
+.flow-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--accent);
+  min-width: 40px;
+}
+
+.flow-content { flex: 1; }
+
+.flow-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.flow-desc {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+/* Timeline */
+.timeline-item {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xl);
+  position: relative;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: 40px;
+  top: 40px;
+  bottom: -var(--space-xl);
+  width: 1px;
+  background: var(--line);
+}
+
+.timeline-date {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 13px;
+  color: var(--text-tertiary);
+  padding-top: 2px;
+}
+
+.timeline-content { flex: 1; }
+
+.timeline-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.timeline-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* Stats block */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-xl);
+  margin: var(--space-xl) 0;
+}
+
+@media (max-width: 768px) {
+  .stats-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
+}
+
+.stat-item {
   padding: var(--space-lg);
   background: var(--surface);
   border: 1px solid var(--line);
 }
 
-.fin-label {
-  font-size: 10px;
+.stat-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 36px;
+  font-weight: 300;
   color: var(--accent);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-sm);
 }
 
-.fin-value {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 28px;
-  font-weight: 300;
-  color: var(--text-primary);
+.stat-label {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   margin-bottom: var(--space-xs);
 }
 
-.fin-desc {
+.stat-desc {
   font-size: 13px;
-  color: var(--text-tertiary);
+  color: var(--text-secondary);
 }
-</style>
+
+/* Footer nav */
+.footer-nav {
+  padding: var(--space-2xl) 0;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.nav-link:hover { color: var(--text-primary); }
+.nav-arrow { font-size: 0.75rem; }
+
+/* Fade animation */
+.fade-section {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.fade-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .back-link { position: relative; top: 0; left: 0; padding: var(--space-lg) 0; }
+  .section-number { display: none; }
+}
+  </style>
 </head>
 <body>
   <div class="back-link">
@@ -649,349 +714,617 @@ body {
   <div class="section-number">20</div>
 
   <div class="page">
+    <!-- Hero -->
     <header class="hero">
-      <div class="hero-content">
-        <div class="hero-label">节点 20 · 运营维护</div>
-        <h1 class="hero-title">客户体验与口碑管理</h1>
-        <p class="hero-desc">体验即品牌，交付即口碑。个体户的资源上限决定了你必须把每一分信任都转化为复购和转介绍。</p>
+      <div class="ma-layout">
+        <div class="hero-content">
+          <div class="hero-label">节点 20 · 运营维护</div>
+          <h1 class="hero-title">客户体验<br>与口碑管理</h1>
+          <p class="hero-desc">体验即品牌，交付即口碑。个体户的资源上限决定了你必须把每一分信任都转化为复购和转介绍。</p>
+        </div>
       </div>
     </header>
 
-    <!-- Dimension 1: 体验即品牌 -->
+    <!-- Dimension 1: CX指标体系 -->
     <section class="content-section fade-section">
-      <div class="dimension-block">
-        <div class="dimension-badge">
-          <span class="dimension-num">01</span>
-          <span class="dimension-tag">信任资产</span>
-        </div>
-        <h2 class="dimension-question">体验即品牌——你的每一次交付都在定义你是谁</h2>
-
-        <div class="grid-asymmetric">
-          <div class="answer-section">
-            <div class="answer-block">
-              <div class="answer-label">核心原则</div>
-              <div class="answer-title">产品是体验的容器，服务是体验的灵魂</div>
-              <div class="answer-desc">用户不记得功能列表，只记得感受。对OPC来说，每一个对话、每一份文档、每一次回复都是品牌的一部分。不是「做完」，是「做到心里去」。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">执行要点</div>
-              <div class="answer-title">建立「体验检查清单」</div>
-              <div class="answer-desc">交付前问自己：我愿意把这件事发到朋友圈吗？这份文档我自己看着舒服吗？这个回复如果是我收到我会满意吗？标准只有一个——己所不欲，勿施于人。</div>
-            </div>
+      <div class="ma-layout">
+        <div class="dimension-block">
+          <div class="dimension-badge">
+            <span class="dimension-num">01</span>
+            <span class="dimension-tag">测量体系</span>
           </div>
+          <h2 class="dimension-question">2026年的客户体验管理，不能只靠「感觉好」</h2>
 
-          <div>
-            <div class="insight-tag">数据洞察</div>
-            <div class="data-card">
-              <div class="data-card-row">
-                <span class="data-label">客户留存率</span>
-                <span class="data-value accent">+35%</span>
-              </div>
-              <div class="data-card-row">
-                <span class="data-label">复购转化</span>
-                <span class="data-value accent">28%</span>
-              </div>
-              <div class="data-card-row">
-                <span class="data-label">转介绍意愿</span>
-                <span class="data-value">43%</span>
-              </div>
-              <div class="data-card-row">
-                <span class="data-label">净推荐值 NPS</span>
-                <span class="data-value accent">52</span>
+          <div class="grid-asymmetric">
+            <div>
+              <p class="body-text">
+                在2026年，CX（Customer Experience）管理已经从「定性感受」进化为<strong>数据驱动的精确测量</strong>。个体户没有大厂的资源，但可以聚焦少数核心指标，获得远超平均的洞察深度。
+              </p>
+              <p class="body-text">
+                <strong>NPS（净推荐值）</strong>测量长期忠诚度，<strong>CSAT（客户满意度）</strong>捕捉每次交互的瞬间感受，<strong>CES（客户努力分数）</strong>揭示流程摩擦点。三个指标各司其职，共同构成完整的体验测量体系。
+              </p>
+
+              <div class="quote-block">
+                <p class="quote-text">没有测量就没有管理。2026年的CX赢家，是那些能把「客户感觉如何」转化为「指标是多少」的人。</p>
               </div>
             </div>
 
-            <div class="core-insight">
-              <p class="core-insight-text">品牌不是VI设计，是所有体验的总和。每一次低预期交付都在透支你的信任储蓄。</p>
+            <div>
+              <div class="insight-tag">2026 核心指标</div>
+              <div class="metrics-table">
+                <div class="metrics-row header">
+                  <span class="metrics-name">指标</span>
+                  <span class="metrics-name">目标值</span>
+                  <span class="metrics-name">测量时机</span>
+                </div>
+                <div class="metrics-row">
+                  <span class="metrics-name">NPS</span>
+                  <span class="metrics-value">50+</span>
+                  <span class="metrics-benchmark">季度/里程碑</span>
+                </div>
+                <div class="metrics-row">
+                  <span class="metrics-name">CSAT</span>
+                  <span class="metrics-value">90%+</span>
+                  <span class="metrics-benchmark">每次交互后</span>
+                </div>
+                <div class="metrics-row">
+                  <span class="metrics-name">CES</span>
+                  <span class="metrics-value">5.5+/7</span>
+                  <span class="metrics-benchmark">任务完成后</span>
+                </div>
+                <div class="metrics-row">
+                  <span class="metrics-name">FCR</span>
+                  <span class="metrics-value">85%+</span>
+                  <span class="metrics-benchmark">持续监控</span>
+                </div>
+              </div>
+
+              <div class="core-insight">
+                <p class="core-insight-text">CES是2026年最受关注的指标。Gartner研究显示，96%的高摩擦客户会变得更不忠诚——降低摩擦比提升惊喜更有价值。</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Dimension 2: 情绪资产管理 -->
+    <!-- Dimension 2: 客户旅程四阶段 -->
     <section class="content-section fade-section">
-      <div class="dimension-block">
-        <div class="dimension-badge">
-          <span class="dimension-num">02</span>
-          <span class="dimension-tag">情感连接</span>
-        </div>
-        <h2 class="dimension-question">情绪资产管理——让客户记住你这个人</h2>
-
-        <div class="grid-asymmetric">
-          <div class="answer-section">
-            <div class="answer-block">
-              <div class="answer-label">核心理念</div>
-              <div class="answer-title">客户购买的不是服务，是「爽」的感觉</div>
-              <div class="answer-desc">满意的客户不一定复购，但「愉悦」的客户一定复购，还会告诉你他的朋友。情绪价值是OPC最有竞争力的武器——因为你可以在每个客户身上花大厂不可能花的时间。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">实践方法</div>
-              <div class="answer-title">「记得我」系统</div>
-              <div class="answer-desc">记录每个客户的偏好、痛点、上次对话的关键信息。下次沟通时自然提起：「上次您提到担心备案时间，这次我们加快了三周。」这种细节让人感觉被重视。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">升维策略</div>
-              <div class="answer-title">成为「最懂我的那个」</div>
-              <div class="answer-desc">你的竞争对手是大厂标准化服务。唯一胜出的方式：比他们更懂这个客户。客户的第一个问题你记得，第三个问题你理解他的处境，第五个问题你主动帮他想到第七个。</div>
-            </div>
+      <div class="ma-layout">
+        <div class="dimension-block">
+          <div class="dimension-badge">
+            <span class="dimension-num">02</span>
+            <span class="dimension-tag">忠诚度阶梯</span>
           </div>
+          <h2 class="dimension-question">客户旅程不是线性流程，是一座忠诚度阶梯</h2>
 
-          <div>
-            <div class="objection-block success">
-              <div class="objection-label">正确示范</div>
-              <div class="objection-title">主动预警+情感确认</div>
-              <div class="objection-desc">「王总，您的域名备案估还需要5个工作日。我帮您盯着的，有任何进展第一时间通知您。这段时间您先准备其他上线材料，别耽误整体进度。」——既专业又温暖。</div>
+          <div class="grid-asymmetric">
+            <div>
+              <p class="body-text">
+                2026年的客户旅程研究显示，忠诚客户不是「突然出现」的，而是沿着一条清晰的阶梯逐步升级。每一级都有独特的情感触发点和行为特征。
+              </p>
+
+              <div class="flow-chart">
+                <div class="flow-item">
+                  <span class="flow-num">01</span>
+                  <div class="flow-content">
+                    <div class="flow-title">初次接触</div>
+                    <div class="flow-desc">发现价值，建立基本信任</div>
+                  </div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-item">
+                  <span class="flow-num">02</span>
+                  <div class="flow-content">
+                    <div class="flow-title">持续使用</div>
+                    <div class="flow-desc">体验核心价值，验证承诺</div>
+                  </div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-item">
+                  <span class="flow-num">03</span>
+                  <div class="flow-content">
+                    <div class="flow-title">主动推荐</div>
+                    <div class="flow-desc">超出预期，情感绑定</div>
+                  </div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-item">
+                  <span class="flow-num">04</span>
+                  <div class="flow-content">
+                    <div class="flow-title">生态共建</div>
+                    <div class="flow-desc">成为价值网络的一部分</div>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div class="objection-block error">
-              <div class="objection-label">错误示范</div>
-              <div class="objection-title">机械流程式回复</div>
-              <div class="objection-desc">「您的工单已受理，预计5-7个工作日处理，请耐心等待。」——冰冷的自动回复，客户感觉自己是队列里的一个数字。</div>
-            </div>
+            <div>
+              <p class="body-text">
+                <strong>关键洞察：</strong>从「客户」到「推荐者」的转化，发生在他们体验到「超预期价值」的那一刻。这不是随机的，而是可以通过精心设计的「惊喜时刻」来触发的。
+              </p>
 
-            <div class="objection-block data">
-              <div class="objection-label">客户原声</div>
-              <div class="objection-title">「他记得我说过的话」</div>
-              <div class="objection-desc">「很多服务商都是我这说完就忘，但他不一样。上次我说担心政策变化，他后来主动给我发了一篇分析。这种人被信任是理所当然的。」——某企业主评价其代办服务商</div>
+              <div class="objection-block data">
+                <div class="objection-label">数据来源</div>
+                <div class="objection-title">推荐转化率基准（2026）</div>
+                <div class="objection-desc">
+                  推荐线索转化率：<strong>20-40%</strong><br>
+                  推荐客户LTV增幅：<strong>+16-25%</strong><br>
+                  推荐获客成本降低：<strong>50-80%</strong>
+                </div>
+              </div>
+
+              <div class="objection-block success">
+                <div class="objection-label">实践要点</div>
+                <div class="objection-title">在最愉悦的时刻请求推荐</div>
+                <div class="objection-desc">客户刚完成第一次成功体验、刚收到超预期结果、刚留下正面评价——这些「情绪高峰」时刻是请求推荐的最佳时机，转化率比其他时刻高出3-5倍。</div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Dimension 3: 交付即口碑四重奏 -->
+    <!-- Dimension 3: 推荐计划设计 -->
     <section class="content-section fade-section">
-      <div class="dimension-block">
-        <div class="dimension-badge">
-          <span class="dimension-num">03</span>
-          <span class="dimension-tag">交付体系</span>
-        </div>
-        <h2 class="dimension-question">交付即口碑——四重奏打造自动传播飞轮</h2>
-
-        <div class="grid-asymmetric">
-          <div>
-            <div class="list-item">
-              <span class="list-num">01</span>
-              <div>
-                <div class="list-title">预期管理（交付前）</div>
-                <div class="list-desc">在开始前明确告知：时间线、交付标准、可能的坑。宁可说得保守，不要承诺过度。超标交付是惊喜，低于承诺是背叛。</div>
-              </div>
-            </div>
-            <div class="list-item">
-              <span class="list-num">02</span>
-              <div>
-                <div class="list-title">过程透明（交付中）</div>
-                <div class="list-desc">主动汇报进度，不必等客户问。遇到问题第一时间说，不要等客户自己发现。透明是信任的放大器。</div>
-              </div>
-            </div>
-            <div class="list-item">
-              <span class="list-num">03</span>
-              <div>
-                <div class="list-title">超预期收尾（交付时）</div>
-                <div class="list-desc">在约定交付物之外，主动提供「隐藏福利」：一份操作指南、一种更优方案、一条后续建议。不在价格上让利，在价值上溢出。</div>
-              </div>
-            </div>
-            <div class="list-item">
-              <span class="list-num">04</span>
-              <div>
-                <div class="list-title">复盘跟进（交付后）</div>
-                <div class="list-desc">一周后主动问使用感受，一个月后提醒注意事项，三个月后分享相关更新。复购和转介绍都在这个窗口发生。</div>
-              </div>
-            </div>
+      <div class="ma-layout">
+        <div class="dimension-block">
+          <div class="dimension-badge">
+            <span class="dimension-num">03</span>
+            <span class="dimension-tag">增长飞轮</span>
           </div>
+          <h2 class="dimension-question">推荐计划不是「给优惠」，而是一种系统化的价值传递</h2>
 
-          <div>
-            <div class="quote-block">
-              <p class="quote-text">口碑不是「客户满意」就够了，是「客户愉悦到想告诉别人」。每个客户背后有7个潜在客户，你在服务的同时就在获客。</p>
+          <div class="grid-reverse">
+            <div>
+              <p class="body-text">
+                2026年的推荐计划数据显示，<strong>双侧奖励（双方都有奖励）</strong>的转化率比单侧奖励高出30-50%。这是因为推荐行为同时解决了「推荐人动机」和「被推荐人信任」两个问题。
+              </p>
+
+              <div class="stats-grid">
+                <div class="stat-item">
+                  <div class="stat-num">92%</div>
+                  <div class="stat-label">信任率</div>
+                  <div class="stat-desc">人们更信任来自熟人的推荐而非广告</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-num">37%</div>
+                  <div class="stat-label">留存提升</div>
+                  <div class="stat-desc">被推荐客户的留存率高于普通客户</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-num">3x</div>
+                  <div class="stat-label">转化倍数</div>
+                  <div class="stat-desc">推荐线索vs其他渠道的转化率</div>
+                </div>
+              </div>
             </div>
 
-            <div class="insight-tag">飞轮效应</div>
-            <div class="data-card">
-              <div class="data-card-row">
-                <span class="data-label">满意→推荐</span>
-                <span class="data-value accent">68%</span>
-              </div>
-              <div class="data-card-row">
-                <span class="data-label">推荐→转化</span>
-                <span class="data-value">24%</span>
-              </div>
-              <div class="data-card-row">
-                <span class="data-label">获客成本</span>
-                <span class="data-value accent">¥8</span>
-              </div>
-              <div class="data-card-row">
-                <span class="data-label">vs 广告投放</span>
-                <span class="data-value">¥127</span>
-              </div>
-            </div>
+            <div>
+              <div class="answer-section">
+                <div class="answer-block">
+                  <div class="answer-label">奖励设计</div>
+                  <div class="answer-title">推荐计划的双侧激励模型</div>
+                  <div class="answer-desc">
+                    奖励推荐人：折扣、服务积分、现金奖励<br>
+                    奖励被推荐人：首单优惠、额外服务、会员升级<br>
+                    <strong>OPC实操：</strong>对于高毛利的服务业务，提供价值¥100-300的推荐奖励（给双方各¥50-150等价服务）最为有效。门槛要低，让推荐成为自然而然的行为。
+                  </div>
+                </div>
 
-            <div class="core-insight">
-              <p class="core-insight-text">转介绍是OPC最低成本的获客方式。你的服务质量直接决定了这条渠道的流量大小。</p>
+                <div class="answer-block">
+                  <div class="answer-label">技术实现</div>
+                  <div class="answer-title">推荐追踪的最小化方案</div>
+                  <div class="answer-desc">
+                    使用唯一推荐码或链接追踪每一个推荐来源。即使是个体户，也可以通过简单的表格记录+微信沟通来追踪推荐效果。关键是要<strong>闭环推荐人和被推荐人的关系</strong>。
+                  </div>
+                </div>
+
+                <div class="answer-block">
+                  <div class="answer-label">时机选择</div>
+                  <div class="answer-title">不要等客户开口，在最佳时刻主动提出</div>
+                  <div class="answer-desc">
+                    「价值峰值时刻」请求推荐的成功率最高：刚完成交付、刚解决问题、刚获得超出预期的结果。不要在客户遇到问题时请求推荐——那时他们正在「评估」你，而不是「推荐」你。
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Dimension 4: AI恐怖谷陷阱 -->
+    <!-- Dimension 4: 情绪资产管理 -->
     <section class="content-section fade-section">
-      <div class="dimension-block">
-        <div class="dimension-badge">
-          <span class="dimension-num">04</span>
-          <span class="dimension-tag">认知陷阱</span>
-        </div>
-        <h2 class="dimension-question">AI恐怖谷——用AI服务客户反而伤害客户体验</h2>
-
-        <div class="grid-asymmetric">
-          <div class="answer-section">
-            <div class="answer-block">
-              <div class="answer-label">陷阱描述</div>
-              <div class="answer-title">效率高了，温度没了</div>
-              <div class="answer-desc">AI客服可以7×24小时秒回，但客户感受到的是「在跟机器说话」。当客户知道你用了AI，他们反而更敏感——每一个「假惺惺」的关心都会被识破，每一个「模板化」的回复都在积累反感。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">陷阱信号</div>
-              <div class="answer-title">三种AI恐怖谷症状</div>
-              <div class="answer-desc">1. 客户问「你是AI吗」——说明回复太标准化<br>2. 客户反复问同一问题——说明AI没理解上下文<br>3. 客户突然转向「人工客服」——信任已崩</div>
-            </div>
+      <div class="ma-layout">
+        <div class="dimension-block">
+          <div class="dimension-badge">
+            <span class="dimension-num">04</span>
+            <span class="dimension-tag">情感连接</span>
           </div>
+          <h2 class="dimension-question">情绪价值是OPC对抗大厂标准化服务的唯一武器</h2>
 
-          <div>
-            <div class="objection-block error">
-              <div class="objection-label">错误示范</div>
-              <div class="objection-title">全AI覆盖的错误逻辑</div>
-              <div class="objection-desc">「我们用AI提升了80%的响应速度，客户满意度大幅提升。」——数据漂亮，但没说的是：那些没被服务的20%才是创造80%营收的核心客户。</div>
+          <div class="grid-asymmetric">
+            <div>
+              <p class="body-text">
+                大厂的AI客服可以7×24小时秒回，但客户知道自己在跟机器说话。当你的客户感受到「被记得」「被理解」「被重视」时，你就已经赢过了大厂的系统。
+              </p>
+
+              <div class="list-item">
+                <span class="list-num">记</span>
+                <div>
+                  <div class="list-title">记住客户说过的话</div>
+                  <div class="list-desc">上次通话中客户提到的担忧、目标、家庭情况——这些都是「记得我」的素材。下次沟通时自然提起：「您上次提到担心备案时间，我特意帮您查了一下最新进度……」</div>
+                </div>
+              </div>
+
+              <div class="list-item">
+                <span class="list-num">懂</span>
+                <div>
+                  <div class="list-title">理解客户的处境</div>
+                  <div class="list-desc">不只是知道客户要什么，而是理解他们为什么需要。遇到问题的焦虑、资金周转的压力、第一次创业的迷茫——这些都是你能提供真正帮助的前提。</div>
+                </div>
+              </div>
+
+              <div class="list-item">
+                <span class="list-num">预</span>
+                <div>
+                  <div class="list-title">预判客户的下一步</div>
+                  <div class="list-desc">在你服务的领域，客户通常会遇到的下一个问题是什么？主动提供信息，而不是等客户来问。客户会觉得「他比我还了解我」。</div>
+                </div>
+              </div>
             </div>
 
-            <div class="objection-block success">
-              <div class="objection-label">正确示范</div>
-              <div class="objection-title">AI是辅助，不是替代</div>
-              <div class="objection-desc">「常规问题我来之前让AI先接住，给客户提供初步方向。但关键沟通和复杂问题，一定是我本人。每个客户都知道怎么直接找到我。」——分层服务，效率与温度并存。</div>
-            </div>
+            <div>
+              <div class="objection-block success">
+                <div class="objection-label">正确示范</div>
+                <div class="objection-title">主动预警 + 情感确认</div>
+                <div class="objection-desc">「王总，您的域名备案估计还需要5个工作日。我帮您盯着，有任何进展第一时间通知您。这段时间您先准备其他上线材料，别耽误整体进度。」——既专业又温暖。</div>
+              </div>
 
-            <div class="core-insight">
-              <p class="core-insight-text">对于高净值客户，人工服务是护城河。AI负责标准化，你的精力留给VIP。</p>
+              <div class="objection-block error">
+                <div class="objection-label">错误示范</div>
+                <div class="objection-title">机械流程式回复</div>
+                <div class="objection-desc">「您的工单已受理，预计5-7个工作日处理，请耐心等待。」——冰冷的自动回复，客户感觉自己是队列里的一个数字。</div>
+              </div>
+
+              <div class="objection-block data">
+                <div class="objection-label">客户原声</div>
+                <div class="objection-title">「他记得我说过的话」</div>
+                <div class="objection-desc">「很多服务商都是我这说完就忘，但他不一样。上次我说担心政策变化，他后来主动给我发了一篇分析。这种人被信任是理所当然的。」——某企业主评价其代办服务商</div>
+              </div>
+
+              <div class="core-insight">
+                <p class="core-insight-text">情绪资产是你最重要的无形资产。每一次「记得我」都在积累信任储蓄，每一次「懂我」都在加深情感绑定。</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Dimension 5: 履约崩盘陷阱 -->
+    <!-- Dimension 5: 交付即口碑四重奏 -->
     <section class="content-section fade-section">
-      <div class="dimension-block">
-        <div class="dimension-badge">
-          <span class="dimension-num">05</span>
-          <span class="dimension-tag">风险规避</span>
-        </div>
-        <h2 class="dimension-question">履约崩盘——一次烂交付摧毁你积累的所有信任</h2>
-
-        <div class="grid-asymmetric">
-          <div class="answer-section">
-            <div class="answer-block">
-              <div class="answer-label">核心风险</div>
-              <div class="answer-title">OPC的资源上限决定了承载边界</div>
-              <div class="answer-desc">你一个人同时服务20个客户，和同时服务40个客户，质量一定不同。当订单超过承载能力，交付质量下滑是必然的。但客户不会理解「太忙了」——他们只记得「没做好」。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">预防机制</div>
-              <div class="answer-title">「接单容量」硬限制</div>
-              <div class="answer-desc">设置你的最大同时服务量，达到上限后必须暂停接新单。这是保护你的服务质量和客户体验的底线，不是借口。同时，服务能力是有定价的——当你发现忙不过来，正是涨价的理由。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">危机处理</div>
-              <div class="answer-title">出问题时第一时间道歉</div>
-              <div class="answer-desc">不要解释、不要理由、不要借口。直接承认「这次没做好，我很抱歉」，然后给出解决方案。客户要的是态度和结果，不是借口和理由。</div>
-            </div>
+      <div class="ma-layout">
+        <div class="dimension-block">
+          <div class="dimension-badge">
+            <span class="dimension-num">05</span>
+            <span class="dimension-tag">交付体系</span>
           </div>
+          <h2 class="dimension-question">每一次交付都在定义你是谁——交付即口碑四重奏</h2>
 
-          <div>
-            <div class="objection-block error">
-              <div class="objection-label">错误示范</div>
-              <div class="objection-title">找借口 → 信任崩塌</div>
-              <div class="objection-desc">「最近太忙了」「这个流程我第一次做」「那个不是我负责的」——每一个借口都在告诉客户：你不靠谱。</div>
+          <div class="grid-asymmetric">
+            <div>
+              <div class="list-item">
+                <span class="list-num">01</span>
+                <div>
+                  <div class="list-title">预期管理（交付前）</div>
+                  <div class="list-desc">在开始前明确告知：时间线、交付标准、可能的坑。宁可说得保守，不要承诺过度。超标交付是惊喜，低于承诺是背叛。</div>
+                </div>
+              </div>
+
+              <div class="list-item">
+                <span class="list-num">02</span>
+                <div>
+                  <div class="list-title">过程透明（交付中）</div>
+                  <div class="list-desc">主动汇报进度，不必等客户问。遇到问题第一时间说，不要等客户自己发现。透明是信任的放大器。</div>
+                </div>
+              </div>
+
+              <div class="list-item">
+                <span class="list-num">03</span>
+                <div>
+                  <div class="list-title">超预期收尾（交付时）</div>
+                  <div class="list-desc">在约定交付物之外，主动提供「隐藏福利」：一份操作指南、一种更优方案、一条后续建议。不在价格上让利，在价值上溢出。</div>
+                </div>
+              </div>
+
+              <div class="list-item">
+                <span class="list-num">04</span>
+                <div>
+                  <div class="list-title">复盘跟进（交付后）</div>
+                  <div class="list-desc">一周后主动问使用感受，一个月后提醒注意事项，三个月后分享相关更新。复购和转介绍都在这个窗口发生。</div>
+                </div>
+              </div>
             </div>
 
-            <div class="objection-block success">
-              <div class="objection-label">正确示范</div>
-              <div class="objection-title">道歉 → 行动 → 补偿</div>
-              <div class="objection-desc">「对不起，这次交付延期了。我这边全力赶工，争取后天之前完成。另外，为了表达歉意，下次服务给您打9折。」——承担责任，客户反而可能成为铁粉。</div>
-            </div>
+            <div>
+              <div class="quote-block">
+                <p class="quote-text">口碑不是「客户满意」就够了，是「客户愉悦到想告诉别人」。每个客户背后有7个潜在客户，你在服务的同时就在获客。</p>
+              </div>
 
-            <div class="objection-block data">
-              <div class="objection-label">数据洞察</div>
-              <div class="objection-title">危机处理 vs 危机预防</div>
-              <div class="objection-desc">危机预防：投入1元，口碑保护价值10元<br>危机处理：投入10元，只能挽回3元口碑<br>结论：预防永远比补救便宜</div>
+              <div class="insight-tag">飞轮效应数据</div>
+              <div class="data-card">
+                <div class="data-card-row">
+                  <span class="data-label">满意→推荐</span>
+                  <span class="data-value accent">68%</span>
+                </div>
+                <div class="data-card-row">
+                  <span class="data-label">推荐→转化</span>
+                  <span class="data-value">24%</span>
+                </div>
+                <div class="data-card-row">
+                  <span class="data-label">转介绍获客成本</span>
+                  <span class="data-value accent">¥8</span>
+                </div>
+                <div class="data-card-row">
+                  <span class="data-label">vs 广告投放</span>
+                  <span class="data-value">¥127</span>
+                </div>
+              </div>
+
+              <div class="core-insight">
+                <p class="core-insight-text">转介绍是OPC最低成本的获客方式。你的服务质量直接决定了这条渠道的流量大小。</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Dimension 6: 口碑运营决策 -->
+    <!-- Dimension 6: AI恐怖谷陷阱 -->
     <section class="content-section fade-section">
-      <div class="dimension-block">
-        <div class="dimension-badge">
-          <span class="dimension-num">06</span>
-          <span class="dimension-tag">决策框架</span>
-        </div>
-        <h2 class="dimension-question">口碑运营决策表——什么时候做什么事</h2>
+      <div class="ma-layout">
+        <div class="dimension-block">
+          <div class="dimension-badge">
+            <span class="dimension-num">06</span>
+            <span class="dimension-tag">认知陷阱</span>
+          </div>
+          <h2 class="dimension-question">AI可以提升效率，但「过度AI化」正在伤害客户体验</h2>
 
-        <div class="grid-asymmetric">
-          <div>
-            <div class="decision-table">
-              <div class="decision-row" style="background: var(--surface);">
-                <span class="decision-condition">客户首次合作</span>
-                <span class="decision-action">建立「记得我」档案</span>
-                <span class="decision-result">记录偏好、痛点、承诺，为复购埋伏笔</span>
+          <div class="grid-asymmetric">
+            <div>
+              <p class="body-text">
+                2026年的研究显示了一个反直觉的现象：<strong>AI客服覆盖率越高，客户满意度反而可能下降</strong>——前提是客户知道你在用AI。客户对「被机器服务」的敏感度在上升。
+              </p>
+
+              <div class="objection-block error">
+                <div class="objection-label">陷阱描述</div>
+                <div class="objection-title">AI恐怖谷症状</div>
+                <div class="objection-desc">
+                  1. 客户问「你是AI吗」——说明回复太标准化<br>
+                  2. 客户反复问同一问题——说明AI没理解上下文<br>
+                  3. 客户突然转向「人工客服」——信任已崩<br>
+                  4. 客户不再回复——已沉默流失
+                </div>
               </div>
-              <div class="decision-row">
-                <span class="decision-condition">客户满意</span>
-                <span class="decision-action">主动请求转介绍</span>
-                <span class="decision-result">满意度峰值时提出，成功率最高</span>
+
+              <div class="objection-block success">
+                <div class="objection-label">正确策略</div>
+                <div class="objection-title">AI是辅助，不是替代——分层服务模型</div>
+                <div class="objection-desc">
+                  「常规问题让AI先接住，给客户提供初步方向。但关键沟通和复杂问题，一定是我本人。每个客户都知道怎么直接找到我。」<br><br>
+                  对于高净值客户，人工服务是护城河。AI负责标准化，你的精力留给VIP。
+                </div>
               </div>
-              <div class="decision-row" style="background: var(--surface);">
-                <span class="decision-condition">交付超预期</span>
-                <span class="decision-action">请客户写一条评价</span>
-                <span class="decision-result">文字比口头传播更持久</span>
+            </div>
+
+            <div>
+              <p class="body-text">
+                <strong>2026年的客户期望已经改变：</strong>他们接受AI处理常规问题，但他们期望在关键时刻能接触到「真人」。这种期望在B2B服务领域尤为强烈。
+              </p>
+
+              <div class="answer-section">
+                <div class="answer-block">
+                  <div class="answer-label">执行要点</div>
+                  <div class="answer-title">「AI辅助，人工把关」模式</div>
+                  <div class="answer-desc">
+                    AI处理：常见问题、状态查询、预约确认、文档发送<br>
+                    人工处理：复杂问题、投诉处理、关系维护、成交谈判<br>
+                    关键原则：让客户感知到「AI为我服务」而不是「AI在应付我」
+                  </div>
+                </div>
+
+                <div class="answer-block">
+                  <div class="answer-label"> OPC实操</div>
+                  <div class="answer-title">在你的服务流程中标注「人工介入点」</div>
+                  <div class="answer-desc">
+                    设定规则：客户连续3次消息未解决、AI回复客户明显不满意、涉及退款或赔偿——自动切换人工。每个切换点都是优化AI服务的机会。
+                  </div>
+                </div>
               </div>
-              <div class="decision-row">
-                <span class="decision-condition">客户提出投诉</span>
-                <span class="decision-action">24小时内处理</span>
-                <span class="decision-result">响应速度比解决方案更重要</span>
-              </div>
-              <div class="decision-row" style="background: var(--surface);">
-                <span class="decision-condition">转介绍转化</span>
-                <span class="decision-action">给介绍人一定奖励</span>
-                <span class="decision-result">人情债要还，利益链要闭环</span>
+
+              <div class="core-insight">
+                <p class="core-insight-text">AI的KPI是效率，人的KPI是温度。2026年最成功的CX模式是让AI处理80%的流量，让人工专注20%的高价值交互。</p>
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
 
-          <div>
-            <div class="insight-tag">决策原则</div>
-            <div class="balance-grid">
-              <div>
-                <div class="balance-card-label positive">做</div>
-                <div class="balance-item">主动问客户使用感受</div>
-                <div class="balance-item">在满意时请求推荐</div>
-                <div class="balance-item">记录每个客户的特点</div>
-                <div class="balance-item">超预期交付额外价值</div>
-                <div class="balance-item">出了问题第一时间担责</div>
-              </div>
-              <div>
-                <div class="balance-card-label negative">不做</div>
-                <div class="balance-item">用AI完全替代人工</div>
-                <div class="balance-item">接超过承载力的单</div>
-                <div class="balance-item">给客户找借口</div>
-                <div class="balance-item">忽视投诉</div>
-                <div class="balance-item">忘记客户的名字</div>
+    <!-- Dimension 7: 履约崩盘风险 -->
+    <section class="content-section fade-section">
+      <div class="ma-layout">
+        <div class="dimension-block">
+          <div class="dimension-badge">
+            <span class="dimension-num">07</span>
+            <span class="dimension-tag">风险规避</span>
+          </div>
+          <h2 class="dimension-question">一次烂交付摧毁你积累的所有信任——履约崩盘的代价</h2>
+
+          <div class="grid-asymmetric">
+            <div>
+              <p class="body-text">
+                OPC的资源上限决定了承载边界。你一个人同时服务20个客户，和同时服务40个客户，质量一定不同。当订单超过承载能力，交付质量下滑是必然的。
+              </p>
+
+              <div class="answer-section">
+                <div class="answer-block">
+                  <div class="answer-label">核心风险</div>
+                  <div class="answer-title">「接单容量」硬限制</div>
+                  <div class="answer-desc">设置你的最大同时服务量，达到上限后必须暂停接新单。这是保护你的服务质量和客户体验的底线，不是借口。当忙不过来时，正是涨价的理由。</div>
+                </div>
+
+                <div class="answer-block">
+                  <div class="answer-label">危机处理</div>
+                  <div class="answer-title">出问题时第一时间担责</div>
+                  <div class="answer-desc">不要解释、不要理由、不要借口。直接承认「这次没做好，我很抱歉」，然后给出解决方案。客户要的是态度和结果，不是借口和理由。</div>
+                </div>
               </div>
             </div>
 
-            <div class="quote-block" style="margin-top: var(--space-xl);">
-              <p class="quote-text">口碑是你最好的广告，也是你唯一的护城河。个体户的竞争力，就在于你比大厂更懂你的每一个客户。</p>
+            <div>
+              <div class="objection-block error">
+                <div class="objection-label">错误示范</div>
+                <div class="objection-title">找借口 → 信任崩塌</div>
+                <div class="objection-desc">「最近太忙了」「这个流程我第一次做」「那个不是我负责的」——每一个借口都在告诉客户：你不靠谱。</div>
+              </div>
+
+              <div class="objection-block success">
+                <div class="objection-label">正确示范</div>
+                <div class="objection-title">道歉 → 行动 → 补偿</div>
+                <div class="objection-desc">「对不起，这次交付延期了。我这边全力赶工，争取后天之前完成。另外，为了表达歉意，下次服务给您打9折。」——承担责任，客户反而可能成为铁粉。</div>
+              </div>
+
+              <div class="objection-block data">
+                <div class="objection-label">数据洞察</div>
+                <div class="objection-title">危机预防 vs 危机处理</div>
+                <div class="objection-desc">
+                  危机预防：投入1元，口碑保护价值10元<br>
+                  危机处理：投入10元，只能挽回3元口碑<br>
+                  <strong>结论：预防永远比补救便宜</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dimension 8: 口碑运营决策表 -->
+    <section class="content-section fade-section">
+      <div class="ma-layout">
+        <div class="dimension-block">
+          <div class="dimension-badge">
+            <span class="dimension-num">08</span>
+            <span class="dimension-tag">决策框架</span>
+          </div>
+          <h2 class="dimension-question">口碑运营决策表——什么时候做什么事</h2>
+
+          <div class="grid-asymmetric">
+            <div>
+              <div class="decision-table">
+                <div class="decision-row">
+                  <span class="decision-condition">客户首次合作</span>
+                  <span class="decision-action">建立「记住我」档案</span>
+                  <span class="decision-result">记录偏好、痛点、承诺，为复购埋伏笔</span>
+                </div>
+                <div class="decision-row">
+                  <span class="decision-condition">客户满意</span>
+                  <span class="decision-action">主动请求转介绍</span>
+                  <span class="decision-result">满意度峰值时提出，成功率最高</span>
+                </div>
+                <div class="decision-row">
+                  <span class="decision-condition">交付超预期</span>
+                  <span class="decision-action">请客户写一条评价</span>
+                  <span class="decision-result">文字比口头传播更持久</span>
+                </div>
+                <div class="decision-row">
+                  <span class="decision-condition">客户提出投诉</span>
+                  <span class="decision-action">24小时内处理</span>
+                  <span class="decision-result">响应速度比解决方案更重要</span>
+                </div>
+                <div class="decision-row">
+                  <span class="decision-condition">转介绍转化</span>
+                  <span class="decision-action">给介绍人一定奖励</span>
+                  <span class="decision-result">人情债要还，利益链要闭环</span>
+                </div>
+                <div class="decision-row">
+                  <span class="decision-condition">NPS下降</span>
+                  <span class="decision-action">深度回访核心客户</span>
+                  <span class="decision-result">挖掘真实原因，系统性修复</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="insight-tag">决策原则</div>
+              <div class="balance-grid">
+                <div>
+                  <div class="balance-card-label positive">做</div>
+                  <div class="balance-item">主动问客户使用感受</div>
+                  <div class="balance-item">在满意时请求推荐</div>
+                  <div class="balance-item">记录每个客户的特点</div>
+                  <div class="balance-item">超预期交付额外价值</div>
+                  <div class="balance-item">出了问题第一时间担责</div>
+                  <div class="balance-item">定期回访VIP客户</div>
+                </div>
+                <div>
+                  <div class="balance-card-label negative">不做</div>
+                  <div class="balance-item">用AI完全替代人工</div>
+                  <div class="balance-item">接超过承载力的单</div>
+                  <div class="balance-item">给客户找借口</div>
+                  <div class="balance-item">忽视投诉</div>
+                  <div class="balance-item">忘记客户的名字</div>
+                  <div class="balance-item">只在有问题时联系客户</div>
+                </div>
+              </div>
+
+              <div class="quote-block" style="margin-top: var(--space-xl);">
+                <p class="quote-text">口碑是你最好的广告，也是你唯一的护城河。个体户的竞争力，就在于你比大厂更懂你的每一个客户。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Timeline: 口碑建设路线图 -->
+    <section class="content-section fade-section">
+      <div class="ma-layout">
+        <div class="dimension-block">
+          <div class="section-label">口碑建设路线图</div>
+
+          <div class="timeline-item">
+            <span class="timeline-date">Day 1-7</span>
+            <div class="timeline-content">
+              <div class="timeline-title">建立测量基线</div>
+              <div class="timeline-desc">选择1个核心指标（如CSAT），开始每次交互后收集反馈。记录前10个客户的体验数据，建立你自己的基线。</div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <span class="timeline-date">Week 2-4</span>
+            <div class="timeline-content">
+              <div class="timeline-title">设计「记住我」系统</div>
+              <div class="timeline-desc">用简单的表格或笔记工具记录每个客户的偏好和历史。建立标准化的客户档案格式。</div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <span class="timeline-date">Month 2</span>
+            <div class="timeline-content">
+              <div class="timeline-title">启动推荐计划</div>
+              <div class="timeline-desc">设计双侧激励的推荐机制。在高满意度时刻主动请求推荐。追踪推荐转化率。</div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <span class="timeline-date">Month 3</span>
+            <div class="timeline-content">
+              <div class="timeline-title">建立交付四重奏</div>
+              <div class="timeline-desc">标准化预期管理→过程透明→超预期收尾→复盘跟进的流程。将口碑建设从「凭感觉」变为「可复制」。</div>
             </div>
           </div>
         </div>
@@ -1000,43 +1333,72 @@ body {
 
     <!-- FIN: 财务健康 -->
     <section class="content-section fade-section">
-      <div class="section-label">FIN · 财务健康指标</div>
-      <div class="fin-section">
-        <h2 class="fin-title">口碑的财务意义</h2>
-        <div class="fin-grid">
-          <div class="fin-card">
-            <div class="fin-label">客户终身价值</div>
-            <div class="fin-value">¥4,800</div>
-            <div class="fin-desc">平均复购3次 × 平均客单价¥1,600</div>
+      <div class="ma-layout">
+        <div class="section-label">FIN · 财务健康指标</div>
+
+        <div style="margin-top: var(--space-2xl);">
+          <h2 class="dimension-question" style="margin-bottom: var(--space-2xl);">口碑的财务意义</h2>
+
+          <div class="stats-grid" style="margin-bottom: var(--space-2xl);">
+            <div class="stat-item">
+              <div class="stat-num">¥4,800</div>
+              <div class="stat-label">客户终身价值</div>
+              <div class="stat-desc">平均复购3次 × 平均客单价¥1,600</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num">¥8</div>
+              <div class="stat-label">转介绍获客成本</div>
+              <div class="stat-desc">vs 广告投放获客成本约¥127</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num">+6%</div>
+              <div class="stat-label">NPS每提升1点</div>
+              <div class="stat-desc">转介绍意愿提升（Bain & Company）</div>
+            </div>
           </div>
-          <div class="fin-card">
-            <div class="fin-label">转介绍获客成本</div>
-            <div class="fin-value">¥8</div>
-            <div class="fin-desc">vs 广告投放获客成本约¥127</div>
-          </div>
-          <div class="fin-card">
-            <div class="fin-label">NPS每提升1点</div>
-            <div class="fin-value">+6%</div>
-            <div class="fin-desc">转介绍意愿提升（数据来源：Bain & Company）</div>
-          </div>
-          <div class="fin-card">
-            <div class="fin-label">投资回报比</div>
-            <div class="fin-value">16:1</div>
-            <div class="fin-desc">优质口碑服务 vs 广告投放</div>
+
+          <div class="grid-asymmetric">
+            <div>
+              <div class="quote-block">
+                <p class="quote-text">投资回报比16:1——优质口碑服务vs广告投放。每一分口碑投入，产出是广告投放的16倍。</p>
+              </div>
+            </div>
+            <div>
+              <div class="data-card">
+                <div class="data-card-row">
+                  <span class="data-label">推荐客户LTV溢价</span>
+                  <span class="data-value accent">+16-25%</span>
+                </div>
+                <div class="data-card-row">
+                  <span class="data-label">推荐线索转化率</span>
+                  <span class="data-value">20-40%</span>
+                </div>
+                <div class="data-card-row">
+                  <span class="data-label">推荐获客成本降低</span>
+                  <span class="data-value accent">50-80%</span>
+                </div>
+                <div class="data-card-row">
+                  <span class="data-label">忠诚客户获客成本</span>
+                  <span class="data-value">降低70%</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
     <footer class="footer-nav">
-      <a href="/nodes/19-ai-customer-service/index.html" class="nav-link">
-        <span class="nav-arrow">←</span>
-        节点19：AI客户服务体系
-      </a>
-      <a href="/nodes/39-government-policy/index.html" class="nav-link">
-        节点39：政府政策与创业补贴
-        <span class="nav-arrow">→</span>
-      </a>
+      <div class="ma-layout">
+        <a href="/nodes/19-ai-customer-service/index.html" class="nav-link">
+          <span class="nav-arrow">←</span>
+          节点19：AI客户服务体系
+        </a>
+        <a href="/nodes/39-government-policy/index.html" class="nav-link">
+          节点39：政府政策与创业补贴
+          <span class="nav-arrow">→</span>
+        </a>
+      </div>
     </footer>
   </div>
 
@@ -1045,7 +1407,7 @@ body {
       entries.forEach(entry => {
         if (entry.isIntersecting) entry.target.classList.add('visible');
       });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    }, { threshold: 0.1, rootMargin: '0px 0px -80px 0px' });
     document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
   </script>
 </body>
