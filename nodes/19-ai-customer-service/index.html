@@ -144,176 +144,479 @@ body {
 
 .content-section {
   padding: var(--space-3xl) 0;
+}
+
+/* 维度区块基础 */
+.dim-section {
+  padding: var(--space-3xl) 0;
   border-top: 1px solid var(--line);
+  position: relative;
 }
 
-.section-label {
-  font-size: 13px;
-  color: var(--accent);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  margin-bottom: var(--space-lg);
-  display: flex;
-  align-items: center;
-  gap: var(--space-md);
-}
-
-.section-label::before {
-  content: '';
-  width: 24px;
-  height: 1px;
-  background: var(--accent);
-}
-
-.dimension-section {
-  margin-bottom: var(--space-4xl);
-}
-
-.dimension-badge {
+.dim-badge {
   display: inline-block;
-  font-size: 12px;
+  font-size: 11px;
   color: var(--accent);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   margin-bottom: var(--space-lg);
   border: 1px solid var(--accent);
-  padding: 4px 12px;
+  padding: 3px 10px;
 }
 
-.dimension-question {
+.dim-question {
   font-family: 'Noto Serif JP', serif;
-  font-size: clamp(28px, 5vw, 48px);
+  font-size: clamp(24px, 4vw, 40px);
   font-weight: 300;
   letter-spacing: -0.02em;
-  line-height: 1.2;
-  margin-bottom: var(--space-xl);
-  max-width: 16em;
+  line-height: 1.25;
+  margin-bottom: var(--space-2xl);
+  max-width: 18em;
   color: var(--text-primary);
 }
 
-.dimension-layout {
+/* 维度一：三层架构 - 左题右三层堆叠 */
+.dim1-layout {
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
+  grid-template-columns: 1fr 1.5fr;
   gap: var(--space-3xl);
   align-items: start;
 }
 
 @media (max-width: 900px) {
-  .dimension-layout {
-    grid-template-columns: 1fr;
-    gap: var(--space-2xl);
-  }
+  .dim1-layout { grid-template-columns: 1fr; }
 }
 
-.answer-section {
-  position: relative;
-}
-
-.answer-block {
+.dim1-insight {
   padding: var(--space-lg) 0;
   border-bottom: 1px solid var(--line);
 }
 
-.answer-block:last-child {
-  border-bottom: none;
-}
+.dim1-insight:last-child { border-bottom: none; }
 
-.answer-label {
-  font-size: 12px;
+.insight-label {
+  font-size: 11px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  margin-bottom: var(--space-sm);
-  color: var(--text-tertiary);
+  margin-bottom: var(--space-xs);
+  color: var(--accent);
 }
 
-.answer-title {
-  font-size: 16px;
+.insight-title {
+  font-size: 15px;
   font-weight: 500;
   color: var(--text-primary);
   margin-bottom: var(--space-xs);
   line-height: 1.4;
 }
 
-.answer-desc {
-  font-size: 14px;
+.insight-desc {
+  font-size: 13px;
   color: var(--text-secondary);
-  line-height: 1.7;
+  line-height: 1.65;
 }
 
-.chart-area {
+.layer-stack {
   position: relative;
 }
 
-.chart-title {
-  font-size: 12px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  margin-bottom: var(--space-lg);
-  padding-bottom: var(--space-sm);
-  border-bottom: 1px solid var(--line);
-}
-
-.objection-block {
+.layer-card {
   padding: var(--space-lg);
-  margin-bottom: var(--space-md);
   border: 1px solid var(--line);
-}
-
-.objection-block:last-child { margin-bottom: 0; }
-
-.objection-block.red {
-  border-left: 2px solid var(--accent);
-  background: rgba(224, 90, 71, 0.03);
-}
-
-.objection-block.green {
-  border-left: 2px solid #4CAF50;
-  background: rgba(76, 175, 80, 0.03);
-}
-
-.objection-block.muted {
-  border-left: 2px solid var(--text-tertiary);
-  background: rgba(168, 164, 158, 0.03);
-}
-
-.objection-label {
-  font-size: 12px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
   margin-bottom: var(--space-sm);
+  position: relative;
 }
 
-.objection-block.red .objection-label { color: var(--accent); }
-.objection-block.green .objection-label { color: #4CAF50; }
-.objection-block.muted .objection-label { color: var(--text-tertiary); }
+.layer-card:last-child { margin-bottom: 0; }
 
-.objection-title {
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--text-primary);
+.layer-card.green { border-left: 2px solid #4CAF50; background: rgba(76,175,80,0.03); }
+.layer-card.muted { border-left: 2px solid var(--text-tertiary); background: rgba(168,164,158,0.03); }
+
+.layer-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
   margin-bottom: var(--space-xs);
 }
 
-.objection-text {
+.layer-card.green .layer-label { color: #4CAF50; }
+.layer-card.muted .layer-label { color: var(--text-tertiary); }
+
+.layer-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.layer-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* 维度二：五层工具 - 垂直堆叠卡片 */
+.dim2-layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.tool-row {
+  display: grid;
+  grid-template-columns: 80px 1fr 1fr;
+  gap: var(--space-lg);
+  padding: var(--space-md) 0;
+  border-bottom: 1px solid var(--line);
+  align-items: start;
+}
+
+.tool-row:last-child { border-bottom: none; }
+
+@media (max-width: 768px) {
+  .tool-row {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+  }
+}
+
+.tool-index {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--text-primary);
+  opacity: 0.15;
+  line-height: 1;
+}
+
+.tool-content {
+  min-width: 0;
+}
+
+.tool-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  color: var(--accent);
+}
+
+.tool-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.tool-desc {
   font-size: 13px;
   color: var(--text-secondary);
   line-height: 1.6;
 }
 
-.core-insight {
-  margin-top: var(--space-xl);
-  padding-left: var(--space-md);
-  border-left: 1px solid var(--accent);
+.tool-tools {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  padding-top: var(--space-xs);
 }
 
-.core-insight-text {
+.tool-tools span {
+  display: inline-block;
+  margin-right: var(--space-sm);
+}
+
+/* 维度三：成本控制 - 大数字+两栏 */
+.dim3-layout {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+  gap: var(--space-2xl);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .dim3-layout {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+}
+
+.cost-highlight {
+  text-align: left;
+}
+
+.cost-number {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 8vw, 80px);
+  font-weight: 300;
+  color: var(--accent);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.cost-unit {
+  font-size: 14px;
+  color: var(--text-tertiary);
+  margin-top: var(--space-xs);
+}
+
+.cost-target {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: var(--space-sm);
+  max-width: 12ch;
+}
+
+.pitfall-block {
+  padding: var(--space-lg);
+  border: 1px solid var(--line);
+}
+
+.pitfall-block.red { border-left: 2px solid var(--accent); }
+.pitfall-block.green { border-left: 2px solid #4CAF50; }
+.pitfall-block.muted { border-left: 2px solid var(--text-tertiary); }
+
+.pitfall-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-xs);
+}
+
+.pitfall-block.red .pitfall-label { color: var(--accent); }
+.pitfall-block.green .pitfall-label { color: #4CAF50; }
+.pitfall-block.muted .pitfall-label { color: var(--text-tertiary); }
+
+.pitfall-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.pitfall-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* 维度四：信任信号 - 三列原则 */
+.dim4-layout {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+}
+
+@media (max-width: 768px) {
+  .dim4-layout { grid-template-columns: 1fr; }
+}
+
+.trust-card {
+  padding: var(--space-lg) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.trust-card:last-child { border-bottom: none; }
+
+.trust-icon {
+  font-size: 24px;
+  margin-bottom: var(--space-md);
+  color: var(--text-tertiary);
+}
+
+.trust-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-xs);
+}
+
+.trust-title {
   font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+  line-height: 1.4;
+}
+
+.trust-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+/* 维度五：知识库 - 流程图布局 */
+.dim5-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-3xl);
+}
+
+@media (max-width: 900px) {
+  .dim5-layout { grid-template-columns: 1fr; }
+}
+
+.cycle-section {
+  border: 1px solid var(--line);
+  padding: var(--space-xl);
+}
+
+.cycle-header {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.cycle-header::before {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.cycle-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: var(--space-md);
+}
+
+.cycle-desc {
+  font-size: 13px;
   color: var(--text-secondary);
   line-height: 1.7;
-  max-width: 40ch;
 }
 
+.cycle-items {
+  margin-top: var(--space-xl);
+  border-top: 1px solid var(--line);
+  padding-top: var(--space-lg);
+}
+
+.cycle-item {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.cycle-item:last-child { margin-bottom: 0; }
+
+.cycle-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  margin-top: 6px;
+}
+
+.sidebar-notes {
+  padding-top: var(--space-lg);
+}
+
+.note-block {
+  padding: var(--space-md);
+  margin-bottom: var(--space-sm);
+  border: 1px solid var(--line);
+}
+
+.note-block.red { border-left: 2px solid var(--accent); }
+.note-block.green { border-left: 2px solid #4CAF50; }
+.note-block.muted { border-left: 2px solid var(--text-tertiary); }
+
+.note-label {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.note-block.red .note-label { color: var(--accent); }
+.note-block.green .note-label { color: #4CAF50; }
+.note-block.muted .note-label { color: var(--text-tertiary); }
+
+.note-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.note-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* 维度六：人机分工 - 左右对比 */
+.dim6-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2xl);
+}
+
+@media (max-width: 768px) {
+  .dim6-layout { grid-template-columns: 1fr; }
+}
+
+.human-side, .ai-side {
+  padding: var(--space-xl);
+  border: 1px solid var(--line);
+}
+
+.human-side { border-top: 2px solid #4CAF50; }
+.ai-side { border-top: 2px solid var(--text-tertiary); }
+
+.side-header {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+}
+
+.human-side .side-header { color: #4CAF50; }
+.ai-side .side-header { color: var(--text-tertiary); }
+
+.side-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: var(--space-lg);
+}
+
+.task-list {
+  list-style: none;
+}
+
+.task-item {
+  padding: var(--space-md) 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+
+.task-item:last-child { border-bottom: none; }
+
+.task-name {
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.task-reason {
+  color: var(--text-tertiary);
+  font-size: 12px;
+}
+
+/* 核心结论 */
 .fin-section {
   padding: var(--space-3xl) 0;
   border-top: 1px solid var(--line);
@@ -411,292 +714,265 @@ body {
       </div>
     </header>
 
-    <section class="content-section fade-section">
-      <div class="section-label">节点内容</div>
-
-      <!-- 维度一：服务代理网络的三层架构 -->
-      <div class="dimension-section">
-        <span class="dimension-badge">维度一</span>
-        <h2 class="dimension-question">AI客服体系不是"自动回复插件"，是什么？</h2>
-        <div class="dimension-layout">
-          <div class="answer-section">
-            <div class="answer-block">
-              <div class="answer-label">认知跃迁</div>
-              <div class="answer-title">从"客服工具"到"服务代理网络"</div>
-              <div class="answer-desc">2025-2026年的AI服务体系是由LLM、垂直AI Agent、低代码自动化管线、创始人决策中枢共同构成的有机生命体。它克隆并延展了创始人的感官与执行力。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">第一层</div>
-              <div class="answer-title">全域触达与感知层</div>
-              <div class="answer-desc">全渠道聚合器，实时监听WhatsApp、邮箱、微信、官网。能区分"新合作意向"还是"账单问询"，解决"一个人无法同时出现在多个地点"的物理限制。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">第二层</div>
-              <div class="answer-title">认知与推理中枢</div>
-              <div class="answer-desc">基于RAG技术的"第二大脑"。读取Notion、Google Drive里的产品文档、合同模板、FAQ进行实时语义理解。客户说"那个东西又不行了"，AI结合上下文判断是"授权码"还是"税务问题"，直接调取解决方案。</div>
-            </div>
+    <!-- 维度一：三层架构 -->
+    <section class="dim-section fade-section">
+      <span class="dim-badge">维度一</span>
+      <h2 class="dim-question">AI客服体系不是"自动回复插件"，是什么？</h2>
+      <div class="dim1-layout">
+        <div class="insight-col">
+          <div class="dim1-insight">
+            <div class="insight-label">认知跃迁</div>
+            <div class="insight-title">从"客服工具"到"服务代理网络"</div>
+            <div class="insight-desc">2025-2026年的AI服务体系是由LLM、垂直AI Agent、低代码自动化管线、创始人决策中枢共同构成的有机生命体。它克隆并延展了创始人的感官与执行力。</div>
           </div>
-          <div class="chart-area">
-            <div class="chart-title">AI服务代理网络架构</div>
-            <div class="objection-block green">
-              <div class="objection-label">全域感知层</div>
-              <div class="objection-title">全渠道聚合器</div>
-              <div class="objection-text">同时监听所有数字触点，区分意图类型，打上生命周期标签。</div>
-            </div>
-            <div class="objection-block green">
-              <div class="objection-label">认知中枢层</div>
-              <div class="objection-title">RAG + 意图识别</div>
-              <div class="objection-text">语义理解 + 知识库检索 + API执行，将回答和动作在对话中完成闭环。</div>
-            </div>
-            <div class="objection-block muted">
-              <div class="objection-label">人类终决层</div>
-              <div class="objection-title">阈值触发接管</div>
-              <div class="objection-text">置信度低于85%、检测到愤怒情绪、涉及大额交易时，召唤创始人介入。</div>
-            </div>
+          <div class="dim1-insight">
+            <div class="insight-label">第一层 · 全域触达</div>
+            <div class="insight-title">全渠道感知层</div>
+            <div class="insight-desc">全渠道聚合器，实时监听WhatsApp、邮箱、微信、官网。能区分"新合作意向"还是"账单问询"，解决"一个人无法同时出现在多个地点"的物理限制。</div>
+          </div>
+          <div class="dim1-insight">
+            <div class="insight-label">第二层 · 认知中枢</div>
+            <div class="insight-title">RAG推理引擎</div>
+            <div class="insight-desc">基于RAG技术的"第二大脑"。读取Notion、Google Drive里的产品文档、合同模板、FAQ进行实时语义理解。客户说"那个东西又不行了"，AI直接调取解决方案。</div>
+          </div>
+        </div>
+        <div class="layer-stack">
+          <div class="layer-card green">
+            <div class="layer-label">全域感知层</div>
+            <div class="layer-name">全渠道聚合器</div>
+            <div class="layer-desc">同时监听所有数字触点，区分意图类型，打上生命周期标签。</div>
+          </div>
+          <div class="layer-card green">
+            <div class="layer-label">认知中枢层</div>
+            <div class="layer-name">RAG + 意图识别</div>
+            <div class="layer-desc">语义理解 + 知识库检索 + API执行，将回答和动作在对话中完成闭环。</div>
+          </div>
+          <div class="layer-card muted">
+            <div class="layer-label">人类终决层</div>
+            <div class="layer-name">阈值触发接管</div>
+            <div class="layer-desc">置信度低于85%、检测到愤怒情绪、涉及大额交易时，召唤创始人介入。</div>
           </div>
         </div>
       </div>
+    </section>
 
-      <!-- 维度二：五层工具配置 -->
-      <div class="dimension-section">
-        <span class="dimension-badge">维度二</span>
-        <h2 class="dimension-question">五层工具如何像血管一样互相连通？</h2>
-        <div class="dimension-layout">
-          <div class="answer-section">
-            <div class="answer-block">
-              <div class="answer-label">第一层</div>
-              <div class="answer-title">全渠道收件箱</div>
-              <div class="answer-desc">Missive或Crisp，把邮件、即时聊天、社媒私信熔铸在单一界面。告别多后台切换，让客户信息汇入同一条河流。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">第二层</div>
-              <div class="answer-title">AI大脑</div>
-              <div class="answer-desc">GPT-4o自定义助手训练你的思维印迹。配合Lindy AI或Zapier，自动判断询价/技术支持/合作邀约，分别给出草稿甚至直接回复。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">第三层</div>
-              <div class="answer-title">自动化工作流</div>
-              <div class="answer-desc">Make和n8n是传统公司的运营经理、项目助理、客服主管。"客户签约→自动开票→AI发送onboarding材料→7天后AI跟进"，全程无需打开后台。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">第四层</div>
-              <div class="answer-title">知识库</div>
-              <div class="answer-desc">Notion AI是管理活水的闸门。HelpKit将Notion转化为对外知识库网站。AI回答可溯源至Notion具体段落，避免"一本正经胡说八道"。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">第五层</div>
-              <div class="answer-title">高光时刻工具</div>
-              <div class="answer-desc">Loom AI录制个性化视频，Bonjoro AI批量发送定制化祝福。AI负责守住底线，人在关键时刻创造峰值。</div>
-            </div>
+    <!-- 维度二：五层工具 -->
+    <section class="dim-section fade-section">
+      <span class="dim-badge">维度二</span>
+      <h2 class="dim-question">五层工具如何像血管一样互相连通？</h2>
+      <div class="dim2-layout">
+        <div class="tool-row">
+          <div class="tool-index">一</div>
+          <div class="tool-content">
+            <div class="tool-label">收件箱</div>
+            <div class="tool-name">全渠道聚合</div>
+            <div class="tool-desc">Missive或Crisp，把邮件、即时聊天、社媒私信熔铸在单一界面。告别多后台切换。</div>
           </div>
-          <div class="chart-area">
-            <div class="chart-title">工具组合核心逻辑</div>
-            <div class="objection-block muted">
-              <div class="objection-label">收件箱</div>
-              <div class="objection-title">Missive / Crisp</div>
-              <div class="objection-text">邮件+聊天+社媒合一，无需切换后台。</div>
-            </div>
-            <div class="objection-block muted">
-              <div class="objection-label">AI引擎</div>
-              <div class="objection-title">GPT-4o + Lindy</div>
-              <div class="objection-text">专属知识库训练，7×24小时以设定语气回答。</div>
-            </div>
-            <div class="objection-block muted">
-              <div class="objection-label">自动化</div>
-              <div class="objection-title">Make / n8n</div>
-              <div class="objection-text">串联所有工具，实现无人值守流程。</div>
-            </div>
-            <div class="objection-block muted">
-              <div class="objection-label">语音+CRM</div>
-              <div class="objection-title">Vapi + Folk</div>
-              <div class="objection-text">拟人化电话代理，AI驱动联系人管理。</div>
-            </div>
+          <div class="tool-tools">
+            <span>Missive</span>
+            <span>Crisp</span>
+          </div>
+        </div>
+        <div class="tool-row">
+          <div class="tool-index">二</div>
+          <div class="tool-content">
+            <div class="tool-label">AI大脑</div>
+            <div class="tool-name">GPT-4o定制助手</div>
+            <div class="tool-desc">专属知识库训练，7×24小时以设定语气回答。自动判断询价/技术支持/合作邀约。</div>
+          </div>
+          <div class="tool-tools">
+            <span>GPT-4o</span>
+            <span>Lindy AI</span>
+            <span>Zapier</span>
+          </div>
+        </div>
+        <div class="tool-row">
+          <div class="tool-index">三</div>
+          <div class="tool-content">
+            <div class="tool-label">自动化</div>
+            <div class="tool-name">工作流引擎</div>
+            <div class="tool-desc">"客户签约→自动开票→AI发送onboarding材料→7天后AI跟进"，全程无需打开后台。</div>
+          </div>
+          <div class="tool-tools">
+            <span>Make</span>
+            <span>n8n</span>
+          </div>
+        </div>
+        <div class="tool-row">
+          <div class="tool-index">四</div>
+          <div class="tool-content">
+            <div class="tool-label">知识库</div>
+            <div class="tool-name">Notion + HelpKit</div>
+            <div class="tool-desc">Notion管理内部文档，HelpKit一键生成对外知识库网站。AI回答可溯源至具体段落。</div>
+          </div>
+          <div class="tool-tools">
+            <span>Notion</span>
+            <span>HelpKit</span>
+            <span>Pinecone</span>
+          </div>
+        </div>
+        <div class="tool-row">
+          <div class="tool-index">五</div>
+          <div class="tool-content">
+            <div class="tool-label">高光时刻</div>
+            <div class="tool-name">个性化触达工具</div>
+            <div class="tool-desc">Loom AI录制个性化视频，Bonjoro AI批量发送定制化祝福。AI守底线，人创峰值。</div>
+          </div>
+          <div class="tool-tools">
+            <span>Loom AI</span>
+            <span>Bonjoro</span>
           </div>
         </div>
       </div>
+    </section>
 
-      <!-- 维度三：成本控制 -->
-      <div class="dimension-section">
-        <span class="dimension-badge">维度三</span>
-        <h2 class="dimension-question">一人公司如何把成本控制在50美元/月以内？</h2>
-        <div class="dimension-layout">
-          <div class="answer-section">
-            <div class="answer-block">
-              <div class="answer-label">目标</div>
-              <div class="answer-title">500+月均对话，50美元以内</div>
-              <div class="answer-desc">前端收件箱用Crisp免费版；AI引擎用GPT-4o API按量计费，设置每日上限10美元；Make免费额度每月1000次操作；Vapi月费30美元起。</div>
+    <!-- 维度三：成本控制 -->
+    <section class="dim-section fade-section">
+      <span class="dim-badge">维度三</span>
+      <h2 class="dim-question">一人公司如何把成本控制在50美元/月以内？</h2>
+      <div class="dim3-layout">
+        <div class="cost-highlight">
+          <div class="cost-number">$50</div>
+          <div class="cost-unit">美元 / 月</div>
+          <div class="cost-target">500+月均对话</div>
+        </div>
+        <div class="pitfall-block red">
+          <div class="pitfall-label">陷阱</div>
+          <div class="pitfall-title">Token计费线性飙升</div>
+          <div class="pitfall-desc">单次对话中，如果AI调取的知识库片段过长、对话轮次无节制，费用会不知不觉飙升。必须设置硬性每日/每月消费上限。</div>
+        </div>
+        <div class="pitfall-block green">
+          <div class="pitfall-label">解法</div>
+          <div class="pitfall-title">语义缓存机制</div>
+          <div class="pitfall-desc">对高频相似问询（如"怎么重置密码？"），启用语义缓存。当余弦相似度达95%以上时，直接返回已生成的历史回答，不再重新调用模型。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 维度四：信任信号 -->
+    <section class="dim-section fade-section">
+      <span class="dim-badge">维度四</span>
+      <h2 class="dim-question">如何让客户接受并信任AI服务体系？</h2>
+      <div class="dim4-layout">
+        <div class="trust-card">
+          <div class="trust-icon">◉</div>
+          <div class="trust-label">透明</div>
+          <div class="trust-title">永远不伪装AI为真人</div>
+          <div class="trust-desc">客户不反感AI，客户反感的是"被欺骗"和"没人管"。透明声明反而提升信任，因为给了客户确定感。</div>
+        </div>
+        <div class="trust-card">
+          <div class="trust-icon">◈</div>
+          <div class="trust-label">掌控</div>
+          <div class="trust-title">标准信任信号话术</div>
+          <div class="trust-desc">AI首句："我是[创始人姓名]的AI助理，他/她随时能看到我们的记录"。服务界面常驻"转人工"按钮。</div>
+        </div>
+        <div class="trust-card">
+          <div class="trust-icon">◇</div>
+          <div class="trust-label">接管</div>
+          <div class="trust-title">负面情绪阈值触发</div>
+          <div class="trust-desc">当AI检测到客户连续两次表达不满，立即暂停自动化，发送"创始人将亲自在2小时内回复"，同时推送完整上下文到你手机。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 维度五：知识库运营 -->
+    <section class="dim-section fade-section">
+      <span class="dim-badge">维度五</span>
+      <h2 class="dim-question">知识库如何成为"活水"而非一次性摆设？</h2>
+      <div class="dim5-layout">
+        <div class="cycle-section">
+          <div class="cycle-header">每周巡检闭环</div>
+          <div class="cycle-title">周日30分钟知识栈审查</div>
+          <div class="cycle-desc">审阅AI自动标记的"无法回答问题"、"低置信度回答"、"客户负面反馈指向的对话"，批处理作答并同步回Notion。</div>
+          <div class="cycle-items">
+            <div class="cycle-item">
+              <div class="cycle-dot"></div>
+              <div>AI标记无法回答的问题</div>
             </div>
-            <div class="answer-block">
-              <div class="answer-label">陷阱一</div>
-              <div class="answer-title">Token计费线性飙升</div>
-              <div class="answer-desc">单次对话中，如果AI调取的知识库片段过长、对话轮次无节制，费用会不知不觉飙升。必须设置硬性每日/每月消费上限。</div>
+            <div class="cycle-item">
+              <div class="cycle-dot"></div>
+              <div>审阅低置信度回答</div>
             </div>
-            <div class="answer-block">
-              <div class="answer-label">陷阱二</div>
-              <div class="answer-title">重复问询无缓存</div>
-              <div class="answer-desc">对高频相似问询（如"怎么重置密码？"），启用语义缓存机制。当余弦相似度达95%以上时，直接返回已生成的历史回答，不再重新调用模型。</div>
+            <div class="cycle-item">
+              <div class="cycle-dot"></div>
+              <div>处理客户负面反馈对话</div>
             </div>
-          </div>
-          <div class="chart-area">
-            <div class="chart-title">成本控制机制</div>
-            <div class="objection-block green">
-              <div class="objection-label">语义缓存</div>
-              <div class="objection-title">削减30%-50%重复成本</div>
-              <div class="objection-text">当客户问高度相似问题时，系统优先匹配已生成答案。</div>
-            </div>
-            <div class="objection-block red">
-              <div class="objection-label">账单爆炸</div>
-              <div class="objection-title">没有设置消费上限</div>
-              <div class="objection-text">没有做缓存、或者让AI每次都重读全部历史记录，是账单爆炸的主要原因。</div>
-            </div>
-            <div class="objection-block muted">
-              <div class="objection-label">每月审查</div>
-              <div class="objection-title">账单复核</div>
-              <div class="objection-text">每月初审查各AI工具账单，关闭试用后未取消的隐形订阅。</div>
+            <div class="cycle-item">
+              <div class="cycle-dot"></div>
+              <div>同步更新至Notion</div>
             </div>
           </div>
         </div>
-      </div>
-
-      <!-- 维度四：信任信号体系 -->
-      <div class="dimension-section">
-        <span class="dimension-badge">维度四</span>
-        <h2 class="dimension-question">如何让客户接受并信任AI服务体系？</h2>
-        <div class="dimension-layout">
-          <div class="answer-section">
-            <div class="answer-block">
-              <div class="answer-label">原则</div>
-              <div class="answer-title">永远不伪装AI为真人</div>
-              <div class="answer-desc">客户不反感AI，客户反感的是"被欺骗"和"没人管"。透明声明反而提升信任，因为给了客户确定感。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">话术</div>
-              <div class="answer-title">标准信任信号</div>
-              <div class="answer-desc">AI首句："我是[创始人姓名]的AI助理，他/她随时能看到我们的记录"。服务界面常驻"转人工"按钮。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">接管</div>
-              <div class="answer-title">负面情绪阈值触发</div>
-              <div class="answer-desc">当AI检测到客户连续两次表达不满，立即暂停自动化，发送"创始人将亲自在2小时内回复"，同时推送完整上下文到你手机。</div>
-            </div>
+        <div class="sidebar-notes">
+          <div class="note-block red">
+            <div class="note-label">陷阱</div>
+            <div class="note-title">知识库衰减</div>
+            <div class="note-desc">一份过时的退款政策文档，会导致AI作出错误承诺，给一人公司带来法律与金钱风险。</div>
           </div>
-          <div class="chart-area">
-            <div class="chart-title">信任建设机制</div>
-            <div class="objection-block green">
-              <div class="objection-label">透明声明</div>
-              <div class="objection-title">明确告知AI存在</div>
-              <div class="objection-text">"我是创始人的AI助手，7×24小时在线，他会定期查看我们的记录"——坦诚带来安全感。</div>
-            </div>
-            <div class="objection-block green">
-              <div class="objection-label">一键转人工</div>
-              <div class="objection-title">清晰掌控路径</div>
-              <div class="objection-text">置信度低于85%时自动暂停，客户知道真人在后台兜底，容忍度大幅提升40%以上。</div>
-            </div>
-            <div class="objection-block muted">
-              <div class="objection-label">知识溯源</div>
-              <div class="objection-title">展示AI知识来源</div>
-              <div class="objection-text">回答后附注"本条信息来自我们的帮助文档第3章"，给回答增加可验证性。</div>
-            </div>
+          <div class="note-block green">
+            <div class="note-label">目标</div>
+            <div class="note-title">人工介入率降至5%</div>
+            <div class="note-desc">三个月后，人工介入率可从初期的20%降至5%以下。</div>
+          </div>
+          <div class="note-block muted">
+            <div class="note-label">护城河</div>
+            <div class="note-title">AI无法回答的 → 你的价值</div>
+            <div class="note-desc">那些需要创始人独特洞察的问题，正是服务体系的差异化所在。</div>
           </div>
         </div>
       </div>
+    </section>
 
-      <!-- 维度五：知识库运营 -->
-      <div class="dimension-section">
-        <span class="dimension-badge">维度五</span>
-        <h2 class="dimension-question">知识库如何成为"活水"而非一次性摆设？</h2>
-        <div class="dimension-layout">
-          <div class="answer-section">
-            <div class="answer-block">
-              <div class="answer-label">闭环</div>
-              <div class="answer-title">每周知识栈巡检</div>
-              <div class="answer-desc">每周日晚上30分钟，审阅AI自动标记的"无法回答问题"、"低置信度回答"、"客户负面反馈指向的对话"，批处理作答并同步回Notion。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">不可替代</div>
-              <div class="answer-title">创始人亲自作答</div>
-              <div class="answer-desc">AI无法回答的，恰恰是你作为创始人独特洞察和隐性知识所在，这是你业务的护城河。这个环节不能用AI自动生成。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">同步</div>
-              <div class="answer-title">HelpKit一键同步</div>
-              <div class="answer-desc">更新后的Notion页面通过HelpKit或GitBook集成，一键同步到Pinecone向量数据库。设置时间戳标记，让AI优先检索最新版本。</div>
-            </div>
-          </div>
-          <div class="chart-area">
-            <div class="chart-title">知识库更新流程</div>
-            <div class="objection-block red">
-              <div class="objection-label">陷阱</div>
-              <div class="objection-title">知识库衰减</div>
-              <div class="objection-text">一份过时的退款政策文档，会导致AI作出错误承诺，给一人公司带来法律与金钱风险。</div>
-            </div>
-            <div class="objection-block green">
-              <div class="objection-label">活化</div>
-              <div class="objection-title">持续进化机制</div>
-              <div class="objection-text">三个月后，人工介入率可从初期的20%降至5%以下。</div>
-            </div>
-            <div class="objection-block muted">
-              <div class="objection-label">目标</div>
-              <div class="objection-title">AI无法回答的 → 你的护城河</div>
-              <div class="objection-text">那些需要创始人独特洞察的问题，正是服务体系的差异化所在。</div>
-            </div>
-          </div>
+    <!-- 维度六：人机分工 -->
+    <section class="dim-section fade-section">
+      <span class="dim-badge">维度六</span>
+      <h2 class="dim-question">哪些关键环节必须由创始人亲自处理？</h2>
+      <div class="dim6-layout">
+        <div class="ai-side">
+          <div class="side-header">AI 处理</div>
+          <div class="side-title">常规服务常态</div>
+          <ul class="task-list">
+            <li class="task-item">
+              <div class="task-name">常见问题回复</div>
+              <div class="task-reason">可标准化，重复性高</div>
+            </li>
+            <li class="task-item">
+              <div class="task-name">密码重置 / 退款触发</div>
+              <div class="task-reason">固定逻辑，API可执行</div>
+            </li>
+            <li class="task-item">
+              <div class="task-name">订单状态查询</div>
+              <div class="task-reason">数据查询，即时响应</div>
+            </li>
+            <li class="task-item">
+              <div class="task-name">文档资料发送</div>
+              <div class="task-reason">自动化流程，节省人力</div>
+            </li>
+          </ul>
+        </div>
+        <div class="human-side">
+          <div class="side-header">创始人</div>
+          <div class="side-title">关键时刻峰值</div>
+          <ul class="task-list">
+            <li class="task-item">
+              <div class="task-name">重要签约协商</div>
+              <div class="task-reason">需要商业嗅觉和灵活性</div>
+            </li>
+            <li class="task-item">
+              <div class="task-name">严重故障道歉</div>
+              <div class="task-reason">情感修复需要人的温度</div>
+            </li>
+            <li class="task-item">
+              <div class="task-name">客户周年庆祝</div>
+              <div class="task-reason">定制化表达无可替代</div>
+            </li>
+            <li class="task-item">
+              <div class="task-name">VIP客户深度维护</div>
+              <div class="task-reason">高价值客户的情感连接</div>
+            </li>
+          </ul>
         </div>
       </div>
-
-      <!-- 维度六：人类高光时刻 -->
-      <div class="dimension-section">
-        <span class="dimension-badge">维度六</span>
-        <h2 class="dimension-question">哪些关键环节必须由创始人亲自处理？</h2>
-        <div class="dimension-layout">
-          <div class="answer-section">
-            <div class="answer-block">
-              <div class="answer-label">原则</div>
-              <div class="answer-title">AI负责常态效率，人负责峰终体验</div>
-              <div class="answer-desc">客户对公司的最终评价，不取决于所有环节的平均值，而取决于体验的最高点和终点。AI守住底线，人创造峰值。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">人类高光</div>
-              <div class="answer-title">必须亲自出马</div>
-              <div class="answer-desc">重要客户的签约协商与价格谈判；严重服务故障后的真诚道歉（一封你亲口录音的语音留言远比AI文字有修复力）；客户周年祝贺或里程碑庆祝。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">执行</div>
-              <div class="answer-title">AI扩展带宽，人铸就护城河</div>
-              <div class="answer-desc">AI负责可标准化的、大规模的常态服务，将你彻底解放。你将节省的精力精准投入能创造极致客户体验的"峰终时刻"——手写卡片、定制视频、亲自致电。</div>
-            </div>
-          </div>
-          <div class="chart-area">
-            <div class="chart-title">人机分工决策表</div>
-            <div class="objection-block muted">
-              <div class="objection-label">AI处理</div>
-              <div class="objection-title">常规咨询回复</div>
-              <div class="objection-text">可标准化，重复性高</div>
-            </div>
-            <div class="objection-block muted">
-              <div class="objection-label">AI处理</div>
-              <div class="objection-title">密码重置/退款触发</div>
-              <div class="objection-text">固定逻辑，API可执行</div>
-            </div>
-            <div class="objection-block green">
-              <div class="objection-label">创始人</div>
-              <div class="objection-title">重要签约协商</div>
-              <div class="objection-text">需要商业嗅觉和灵活性</div>
-            </div>
-            <div class="objection-block green">
-              <div class="objection-label">创始人</div>
-              <div class="objection-title">严重故障道歉</div>
-              <div class="objection-text">情感修复需要人的温度</div>
-            </div>
-            <div class="objection-block green">
-              <div class="objection-label">创始人</div>
-              <div class="objection-title">客户周年庆祝</div>
-              <div class="objection-text">定制化表达无可替代</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </section>
 
     <section class="fin-section fade-section">
