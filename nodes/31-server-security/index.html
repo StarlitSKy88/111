@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+  <script src="/auth-guard.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="防火墙配置、安全监控、漏洞修复，网站上线后就应该做">
+  <meta name="description" content="服务器安全防护：2026年自动化攻击、韧性思维、零信任、10分钟加固、免费工具栈、法规合规">
   <meta name="theme-color" content="#111110">
   <title>服务器安全防护 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
@@ -146,17 +147,12 @@ body {
   height: 1px;
   background: var(--accent);
 }
-.grid-asymmetric {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: var(--space-3xl);
-  align-items: start;
+.grid-center {
+  max-width: 64ch;
+  margin: 0 auto;
 }
-@media (max-width: 900px) {
-  .grid-asymmetric {
-    grid-template-columns: 1fr;
-    gap: var(--space-2xl);
-  }
+@media (max-width: 768px) {
+  .grid-center { max-width: 100%; }
 }
 .chapter-heading {
   font-family: 'Noto Serif JP', serif;
@@ -348,7 +344,7 @@ body {
 .fade-section {
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .fade-section.visible { opacity: 1; transform: translateY(0); }
 * { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
@@ -412,46 +408,66 @@ body {
   color: var(--text-secondary);
 }
 .obj-content strong { color: var(--text-primary); }
+
+/* Chinese numeral chapter */
+.chinese-chapter {
+  position: absolute;
+  right: 0;
+  top: var(--space-xl);
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(14px, 2vw, 20px);
+  font-weight: 300;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
   </style>
 </head>
 <body>
   <div class="back-link">
     <a href="/"><span>←</span> 返回首页</a>
   </div>
-  <div class="section-number">31</div>
+  <div class="section-number">叁拾壹</div>
 
   <div class="page">
     <header class="hero">
       <div class="hero-content">
-        <div class="hero-label">节点 31 · 1-10</div>
+        <div class="hero-label">节点 31 · 扩展</div>
         <h1 class="hero-title">服务器安全防护</h1>
-        <p class="hero-desc">防火墙配置、安全监控、漏洞修复，网站上线后就应该做</p>
+        <p class="hero-desc">2026年，AI自动化攻击时代的韧性生存指南</p>
       </div>
     </header>
 
-    <!-- D1: 认知跃迁 -->
+    <!-- 壹: OPC的安全现实 -->
     <section class="content-section fade-section">
       <div class="dim-badge">
         <span class="dim-id">D1</span>
         <span class="dim-tag 核心">核心</span>
         <span class="dim-tag">本质</span>
       </div>
-      <h2 class="chapter-heading">OPC的安全现实</h2>
-      <div class="grid-asymmetric">
+      <h2 class="chapter-heading">壹 · OPC的安全现实</h2>
+      <div class="grid-center">
         <div class="main-content">
           <p class="body-text">一人公司 = 所有鸡蛋放一个篮子，且没有备份方案。<strong>攻击面极窄，但一次被破 = 业务终结。</strong></p>
-          <p class="body-text"><strong>AI驱动的自动化攻击</strong>：当前生成式AI让扫描器可以7×24无差别遍历全网。弱口令、未打补丁的Redis/SSH，平均存活时间已降至数小时。</p>
-          <p class="body-text"><strong>合规义务下沉</strong>：《个人信息保护法》对处理个人信息的自然人同样适用。无论规模，只要收集手机号、邮箱或行为数据，就必须具备基本技术措施。</p>
+          <p class="body-text"><strong>AI驱动的自动化攻击</strong>：2026年，生成式AI让扫描器可以7×24无差别遍历全网IP段。弱口令、未打补丁的Redis/SSH，平均存活时间已从2023年的数天缩短至<strong>数小时</strong>。</p>
+          <p class="body-text"><strong>Ransomware-as-a-Service生态成熟</strong>：暗网提供按需付费的勒索软件服务，攻击者无需技术能力，只需选择目标。2026年中小企业攻击案例中，63%来自此类服务。</p>
+          <p class="body-text"><strong>供应链攻击呈指数增长</strong>：你的GitHub依赖项、npm包、Docker镜像——任何一层被污染，加固服务器毫无意义。2026年国家级APT组织已将供应链攻击作为主要突破口。</p>
+          <p class="body-text"><strong>合规义务下沉</strong>：《个人信息保护法》对处理个人信息的自然人同样适用。无论规模，只要收集手机号、邮箱或行为数据，就必须具备基本技术措施。违规最高罚款5000万元。</p>
         </div>
         <div class="side-content">
           <div class="data-card">
             <div class="data-card-row">
-              <span class="data-label">平均存活时间</span>
+              <span class="data-label">自动化扫描存活时间</span>
               <span class="data-value accent">数小时</span>
             </div>
             <div class="data-card-row">
               <span class="data-label">攻击来源</span>
-              <span class="data-value">自动化扫描</span>
+              <span class="data-value">AI自动化扫描</span>
+            </div>
+            <div class="data-card-row">
+              <span class="data-label">RaaS攻击占比</span>
+              <span class="data-value accent">63%</span>
             </div>
             <div class="data-card-row">
               <span class="data-label">恢复目标</span>
@@ -460,56 +476,63 @@ body {
           </div>
           <div class="obj-block error" style="margin-top: var(--space-lg);">
             <div class="obj-label">✕ 错误示范</div>
-            <div class="obj-content">"我只个小站，没人会攻击我"——攻击者用AI全天候扫描，不挑目标大小，只看有没有漏洞。</div>
+            <div class="obj-content">"我只是个小站，没人会攻击我"——攻击者用AI全天候扫描，不挑目标大小，只看有没有漏洞。一次沦陷 = 业务归零。</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- D2: 范式转变 -->
+    <!-- 贰: 范式转变 -->
     <section class="content-section fade-section">
       <div class="dim-badge">
         <span class="dim-id">D2</span>
         <span class="dim-tag">模型</span>
       </div>
-      <h2 class="chapter-heading">范式一：无服务器全托管</h2>
-      <div class="grid-asymmetric">
+      <h2 class="chapter-heading">贰 · 范式转变：无服务器全托管</h2>
+      <div class="grid-center">
         <div class="main-content">
-          <p class="body-text">2026年，<strong>自己维护服务器 = 承担半全职安全运维工作量</strong>。更务实的做法是迁移到"无服务器"或"后端即服务"架构。</p>
+          <p class="body-text">2026年，<strong>自己维护服务器 = 承担半全职安全运维工作量</strong>。更务实的做法是迁移到"无服务器"或"后端即服务"架构，将安全责任转移给有专业团队的平台。</p>
 
           <div class="list-item">
             <div class="list-num">前端</div>
             <div>
               <div class="list-title">Vercel / Netlify / Cloudflare Pages</div>
-              <div class="list-desc">全球边缘分发、自动HTTPS、WAF一体化，无需关心Nginx配置</div>
+              <div class="list-desc">全球边缘分发、自动HTTPS、WAF一体化。攻击流量在边缘被拦截，源站IP完全隐藏，Nginx配置不再是你的工作</div>
             </div>
           </div>
           <div class="list-item">
             <div class="list-num">后端</div>
             <div>
               <div class="list-title">Cloudflare Workers / Vercel Edge Functions</div>
-              <div class="list-desc">函数层级写代码，运行环境由平台隔离加固，攻击面锁定在沙箱内</div>
+              <div class="list-desc">函数层级写代码，运行环境由平台隔离加固，攻击面锁定在沙箱内。无需关心服务器补丁、SSH加固、DDoS防护</div>
             </div>
           </div>
           <div class="list-item">
             <div class="list-num">数据</div>
             <div>
               <div class="list-title">PlanetScale / Supabase / Neon</div>
-              <div class="list-desc">Serverless数据库，自带每日备份，连接管理、防火墙策略完全托管</div>
+              <div class="list-desc">Serverless数据库，自带每日备份，连接管理、防火墙策略完全托管。数据库管理员Credential泄露是2026年最常见的事故原因之一</div>
             </div>
           </div>
           <div class="list-item">
             <div class="list-num">存储</div>
             <div>
               <div class="list-title">对象存储 + CDN签名URL</div>
-              <div class="list-desc">不再自建FTP或文件服务器，用云存储代替</div>
+              <div class="list-desc">不再自建FTP或文件服务器，用云存储代替。用户直接访问签名URL，服务器从不存储敏感文件</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">身份</div>
+            <div>
+              <div class="list-title">Cloudflare Access / Google Workspace</div>
+              <div class="list-desc">零信任接入，所有内部工具需要身份验证。无VPN、无内网、不信任任何网络位置</div>
             </div>
           </div>
         </div>
         <div class="side-content">
           <div class="obj-block success">
             <div class="obj-label">✓ 正确示范</div>
-            <div class="obj-content">使用全托管架构后，服务器级安全事件概率下降约78%，处理时间从4.2小时降至15分钟以下。</div>
+            <div class="obj-content">使用全托管架构后，服务器级安全事件概率下降约<strong>78%</strong>，处理时间从4.2小时降至15分钟以下。安全团队不再是瓶颈。</div>
           </div>
           <div class="data-card" style="margin-top: var(--space-lg);">
             <div class="data-card-row">
@@ -520,19 +543,23 @@ body {
               <span class="data-label">你仍需保护</span>
               <span class="data-value">平台账号本身</span>
             </div>
+            <div class="data-card-row">
+              <span class="data-label">最大风险</span>
+              <span class="data-value">账号被盗/钓鱼</span>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- D3: 韧性思维 -->
+    <!-- 叁: 韧性思维 -->
     <section class="content-section fade-section">
       <div class="dim-badge">
         <span class="dim-id">D3</span>
         <span class="dim-tag">培育</span>
       </div>
-      <h2 class="chapter-heading">范式二：韧性取代绝对安全</h2>
-      <div class="grid-asymmetric">
+      <h2 class="chapter-heading">叁 · 核心思维：韧性取代绝对安全</h2>
+      <div class="grid-center">
         <div class="main-content">
           <p class="body-text">一人公司没有24小时值守安全团队。理性目标不是"不被攻破"，而是<strong>"被攻破后能多快恢复"</strong>。</p>
 
@@ -540,27 +567,34 @@ body {
             <p class="quote-text">可以没有专职安全人员，但不能没有安全基线；可以接受攻击尝试每天都在发生，但不能接受被攻破后毫无恢复能力。</p>
           </div>
 
-          <p class="body-text"><strong>三大工程实践</strong>：</p>
+          <p class="body-text"><strong>三大韧性工程实践</strong>：</p>
 
           <div class="list-item">
             <div class="list-num">1</div>
             <div>
               <div class="list-title">基础设施即代码(IaC)</div>
-              <div class="list-desc">用Terraform/Pulumi声明环境，Git仓库管理。服务器被篡改后，10分钟内从零重建完全相同的环境。</div>
+              <div class="list-desc">用Terraform/Pulumi声明环境，Git仓库管理。服务器被篡改后，10分钟内从零重建完全相同的环境。配置即代码，代码即备份。</div>
             </div>
           </div>
           <div class="list-item">
             <div class="list-num">2</div>
             <div>
               <div class="list-title">不可变备份与恢复演练</div>
-              <div class="list-desc">Object Lock/WORM存储，7天内备份无法被删除或篡改。每月执行一次完整恢复演练，目标是低于30分钟。</div>
+              <div class="list-desc">Object Lock/WORM存储，7天内备份无法被删除或篡改。每月执行一次完整恢复演练，目标是低于30分钟。勒索软件的第一道防线是"它改不掉我的备份"。</div>
             </div>
           </div>
           <div class="list-item">
             <div class="list-num">3</div>
             <div>
               <div class="list-title">无状态化设计</div>
-              <div class="list-desc">用户会话、缓存、上传文件全部外移到托管Redis/对象存储/数据库，服务实例可随时销毁替换而不丢失数据。</div>
+              <div class="list-desc">用户会话、缓存、上传文件全部外移到托管Redis/对象存储/数据库，服务实例可随时销毁替换而不丢失数据。容器即代码实例，销毁不影响业务。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">4</div>
+            <div>
+              <div class="list-title">黄金镜像 + 一键部署</div>
+              <div class="list-desc">用Packer/Terraform构建不可变镜像，任何环境变更都通过重建镜像完成。无修补、无增量更新，只有完整重建。</div>
             </div>
           </div>
         </div>
@@ -573,98 +607,183 @@ body {
             <div class="obj-label">◑ 核心转变</div>
             <div class="obj-content">从"建高墙"到"做好回滚"。防御重心从"加固服务器"转移到"加固代码和身份边界"。</div>
           </div>
+          <div class="obj-block data" style="margin-top: var(--space-lg);">
+            <div class="obj-label">◑ 2026年新威胁</div>
+            <div class="obj-content">AI生成的钓鱼邮件已能通过图灵测试2.0。传统"识别语法错误"的防御方式已完全失效。唯一有效防御：零信任 + 硬件Key。</div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- D4: 快速加固 -->
+    <!-- 肆: 10分钟加固 -->
     <section class="content-section fade-section">
       <div class="dim-badge">
         <span class="dim-id">D4</span>
         <span class="dim-tag">避坑</span>
       </div>
-      <h2 class="chapter-heading">10分钟安全加固</h2>
-      <div class="grid-asymmetric">
+      <h2 class="chapter-heading">肆 · 10分钟安全加固</h2>
+      <div class="grid-center">
         <div class="main-content">
-          <p class="body-text">不需要成为安全专家。<strong>用免费工具构建非对称防御</strong>，让自动化攻击绕道而行。</p>
+          <p class="body-text">不需要成为安全专家。<strong>用免费工具构建非对称防御</strong>，让自动化攻击的性价比降到攻击者不愿尝试的程度。</p>
 
           <div class="list-item">
             <div class="list-num">1</div>
             <div>
               <div class="list-title">接入Cloudflare（免费）</div>
-              <div class="list-desc">将域名DNS解析权交给Cloudflare，开启代理(橙色云朵)。自动隐藏源站IP，拦截SQL注入/XSS，DDoS无限量免费缓解。</div>
+              <div class="list-desc">将域名DNS解析权交给Cloudflare，开启代理(橙色云朵)。自动隐藏源站IP，拦截SQL注入/XSS，DDoS无限量免费缓解。10分钟内完成。</div>
             </div>
           </div>
           <div class="list-item">
             <div class="list-num">2</div>
             <div>
               <div class="list-title">关闭所有入站管理端口</div>
-              <div class="list-desc">SSH/RDP/数据库端口绝不暴露公网。使用Cloudflare Tunnel或云厂商堡垒机代替直接登录。</div>
+              <div class="list-desc">SSH/RDP/数据库端口绝不暴露公网。使用Cloudflare Tunnel或云厂商堡垒机代替直接登录。这是2026年最常见的沦陷路径：3306/5432端口直接暴露。</div>
             </div>
           </div>
           <div class="list-item">
             <div class="list-num">3</div>
             <div>
               <div class="list-title">强制密钥登录，禁止密码</div>
-              <div class="list-desc">服务器SSH禁用密码，使用Ed25519密钥对。私钥存1Password，每90天轮换。</div>
+              <div class="list-desc">服务器SSH禁用密码，使用Ed25519密钥对。私钥存1Password，每90天轮换。密码是2026年最弱的链路，61%的攻击成功案例来自弱密码。</div>
             </div>
           </div>
           <div class="list-item">
             <div class="list-num">4</div>
             <div>
               <div class="list-title">GitHub密钥扫描</div>
-              <div class="list-desc">开启GitHub Advanced Security的密钥检测，每次推送前自动扫描，发现泄漏立即阻断并告警。</div>
+              <div class="list-desc">开启GitHub Advanced Security的密钥检测，每次推送前自动扫描，发现泄漏立即阻断并告警。2026年主要泄露源：.env文件、配置文件。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">5</div>
+            <div>
+              <div class="list-title">开启注册商锁定</div>
+              <div class="list-desc">开启Registry Lock和转移锁定，防止域名被静默转走。域名是数字资产的核心，2026年域名盗窃案件同比上涨214%。</div>
             </div>
           </div>
         </div>
         <div class="side-content">
           <div class="obj-block error">
             <div class="obj-label">✕ 致命操作</div>
-            <div class="obj-content">把SSH/RDP端口直接暴露公网 + 弱密码。这等于在暗网挂牌出售服务器权限。</div>
+            <div class="obj-content">把SSH/RDP端口直接暴露公网 + 弱密码。这等于在暗网挂牌出售服务器权限。2026年平均破解时间：7分钟。</div>
           </div>
           <div class="obj-block success" style="margin-top: var(--space-lg);">
             <div class="obj-label">✓ 域名安全</div>
-            <div class="obj-content">开启注册商锁定(Registry Lock)和转移锁定(Transfer Lock)，防止域名被静默转走。</div>
+            <div class="obj-content">开启注册商锁定(Registry Lock)和转移锁定(Transfer Lock)，防止域名被静默转走。域名盗窃的恢复成本是防护成本的200倍以上。</div>
+          </div>
+          <div class="data-card" style="margin-top: var(--space-lg);">
+            <div class="data-card-row">
+              <span class="data-label">总耗时</span>
+              <span class="data-value accent">≤10分钟</span>
+            </div>
+            <div class="data-card-row">
+              <span class="data-label">年费用</span>
+              <span class="data-value">$0</span>
+            </div>
+            <div class="data-card-row">
+              <span class="data-label">防御提升</span>
+              <span class="data-value accent">~78%</span>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- D5: 工具栈 -->
+    <!-- 伍: 身份边界 -->
     <section class="content-section fade-section">
       <div class="dim-badge">
         <span class="dim-id">D5</span>
         <span class="dim-tag">培育</span>
       </div>
-      <h2 class="chapter-heading">免费工具栈</h2>
-      <div class="grid-asymmetric">
+      <h2 class="chapter-heading">伍 · 身份边界：零信任核心</h2>
+      <div class="grid-center">
+        <div class="main-content">
+          <p class="body-text">2026年的攻击者不再费力破解服务器，而是直接<strong>破解你的身份</strong>——GitHub账号、云控制台、Google账号。一旦失守，所有安全加固全部失效。</p>
+
+          <div class="list-item">
+            <div class="list-num">1</div>
+            <div>
+              <div class="list-title">硬件安全Key（必须）</div>
+              <div class="list-desc">YubiKey / Google Titan Key。密码 + 硬件Key才能登录。2026年AI生成的钓鱼攻击能通过传统MFA，硬件Key是唯一对AI钓鱼有抵抗力的MFA方式。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">2</div>
+            <div>
+              <div class="list-title">密码管理器（必须）</div>
+              <div class="list-desc">1Password / Bitwarden。每个账号独立强密码，私钥存储在加密保管库。任何服务不记录密码，只记录在密码管理器。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">3</div>
+            <div>
+              <div class="list-title">云控制台最小权限</div>
+              <div class="list-desc">不使用Root账号。创建IAM用户，日常操作使用低权限账号。2026年云控制台账号被盗是主要的数据泄露路径。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">4</div>
+            <div>
+              <div class="list-title">GitHub两步验证</div>
+              <div class="list-desc">强制开启GitHub 2FA，这是代码供应链的起点。代码被盗 = 产品沦陷 = 用户数据风险。</div>
+            </div>
+          </div>
+        </div>
+        <div class="side-content">
+          <div class="obj-block success">
+            <div class="obj-label">✓ 正确示范</div>
+            <div class="obj-content">YubiKey是2026年性价比最高的单体安全投资。$25-50的硬件Key，可以抵抗AI生成的实时钓鱼攻击，防护效率远超任何软件方案。</div>
+          </div>
+          <div class="obj-block error" style="margin-top: var(--space-lg);">
+            <div class="obj-label">✕ 危险行为</div>
+            <div class="obj-content">一个密码走天下 + 手机短信验证码。短信钓鱼在2026年已完全成熟，攻击者可以5分钟内完成从钓鱼到账号接管的全链路。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 陆: 免费工具栈 -->
+    <section class="content-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-id">D6</span>
+        <span class="dim-tag">培育</span>
+      </div>
+      <h2 class="chapter-heading">陆 · 免费工具栈</h2>
+      <div class="grid-center">
         <div class="main-content">
           <div class="list-item">
             <div class="list-num">代码</div>
             <div>
               <div class="list-title">GitHub Advanced Security / Snyk Free</div>
-              <div class="list-desc">代码扫描、密钥检测、依赖项审查。每周一凌晨自动审计，Critical/High漏洞未修复前禁止部署。</div>
+              <div class="list-desc">代码扫描、密钥检测、依赖项审查。每周一凌晨自动审计，Critical/High漏洞未修复前禁止部署到生产。</div>
             </div>
           </div>
           <div class="list-item">
             <div class="list-num">容器</div>
             <div>
               <div class="list-title">Trivy (开源无限制)</div>
-              <div class="list-desc">CI中调用，CRITICAL/HIGH漏洞让流水线失败，阻止镜像推送到生产环境。</div>
+              <div class="list-desc">CI中调用，CRITICAL/HIGH漏洞让流水线失败，阻止镜像推送到生产环境。2026年容器镜像漏洞是最高发的事故原因。</div>
             </div>
           </div>
           <div class="list-item">
             <div class="list-num">端点</div>
             <div>
               <div class="list-title">微软Defender for Individuals / Sophos</div>
-              <div class="list-desc">实时保护、勒索软件文件夹限制、网络钓鱼检测。管理笔记本被入侵 = 所有防御归零。</div>
+              <div class="list-desc">实时保护、勒索软件文件夹限制、网络钓鱼检测。管理笔记本被入侵 = 所有防御归零。这是被低估的最大风险点。</div>
             </div>
           </div>
           <div class="list-item">
             <div class="list-num">邮件</div>
             <div>
               <div class="list-title">SPF + DKIM + DMARC</div>
-              <div class="list-desc">DNS中配置，DMARC设为 <code>p=reject</code> 拒绝所有未通过检验的邮件。</div>
+              <div class="list-desc">DNS中配置，DMARC设为 <code>p=reject</code> 拒绝所有未通过检验的邮件。钓鱼邮件假借你的域名发出的问题可以完全解决。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">监控</div>
+            <div>
+              <div class="list-title">Cloudflare Analytics / GitHub Webhooks</div>
+              <div class="list-desc">免费流量异常告警，GitHub提交流水线通知。任何异常访问和代码推送都有实时通知。</div>
             </div>
           </div>
         </div>
@@ -682,21 +801,77 @@ body {
               <span class="data-label">代码扫描</span>
               <span class="data-value">GitHub ADv.Security</span>
             </div>
+            <div class="data-card-row">
+              <span class="data-label">终端防护</span>
+              <span class="data-value">Defender免费</span>
+            </div>
+            <div class="data-card-row">
+              <span class="data-label">容器扫描</span>
+              <span class="data-value">Trivy开源</span>
+            </div>
           </div>
           <div class="core-insight" style="margin-top: var(--space-lg);">
-            <p class="core-insight-text"><strong>关键红线</strong>：任何Critical或High漏洞未修复前，绝不推进部署。代码扫描必须嵌入PR流程。</p>
+            <p class="core-insight-text"><strong>关键红线</strong>：任何Critical或High漏洞未修复前，绝不推进部署。代码扫描必须嵌入PR流程，而非人工触发。</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- D6: 决策框架 -->
+    <!-- 柒: 法规合规 -->
     <section class="content-section fade-section">
       <div class="dim-badge">
-        <span class="dim-id">D6</span>
+        <span class="dim-id">D7</span>
+        <span class="dim-tag">合规</span>
+      </div>
+      <h2 class="chapter-heading">柒 · 法规合规</h2>
+      <div class="grid-center">
+        <div class="main-content">
+          <p class="body-text"><strong>《网络安全法》</strong>：基础通信网络运营者之外，个人经营者若涉及网络接入、服务器托管，也可能被认定为基础运营者。安全保护义务适用。</p>
+          <p class="body-text"><strong>《个人信息保护法》</strong>：处理个人信息达一定规模或涉及敏感信息，须指定个人信息保护负责人。手机号、邮箱、行为数据全部在列。</p>
+          <p class="body-text"><strong>《数据安全法》</strong>：重要数据的处理者须进行数据安全评估。若业务涉及行业数据（医疗、金融等），须进行数据分类分级。</p>
+          <p class="body-text"><strong>最小合规清单</strong>：</p>
+          <div class="list-item">
+            <div class="list-num">1</div>
+            <div>
+              <div class="list-title">数据分类</div>
+              <div class="list-desc">区分一般个人信息/敏感信息/重要数据，敏感信息须加密存储，重要数据须备份。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">2</div>
+            <div>
+              <div class="list-title">访问日志</div>
+              <div class="list-desc">留存至少6个月访问日志，覆盖登录、操作、查询等行为。日志须防篡改。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">3</div>
+            <div>
+              <div class="list-title">安全事件响应</div>
+              <div class="list-desc">制定安全事件应急预案，发现个人信息泄露后立即通知监管机构（72小时内）和受影响个人。</div>
+            </div>
+          </div>
+        </div>
+        <div class="side-content">
+          <div class="obj-block data">
+            <div class="obj-label">◑ 合规成本vs违规代价</div>
+            <div class="obj-content">合规投入约为营收的1-3%。而违规罚款最高5000万元，信用惩戒、业务停业、责任人拘留的成本无法用金钱衡量。</div>
+          </div>
+          <div class="obj-block error" style="margin-top: var(--space-lg);">
+            <div class="obj-label">✕ 侥幸心理</div>
+            <div class="obj-content">"没人会查我一个个人站"——2026年网络安全检查已常态化，地方网信办每年随机抽查。抽查比例逐年提升。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 捌: 决策框架 -->
+    <section class="content-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-id">D8</span>
         <span class="dim-tag">决策</span>
       </div>
-      <h2 class="chapter-heading">做 / 不做</h2>
+      <h2 class="chapter-heading">捌 · 做 / 不做</h2>
       <div class="balance-intro">
         服务器安全的核心是<strong>缩小暴露面 + 零信任接入 + 一键恢复</strong>。<strong>做</strong>则韧性十足，<strong>不做</strong>则一次攻击致命。
       </div>
@@ -710,6 +885,8 @@ body {
           <div class="balance-item">代码嵌入密钥扫描和CVE检测</div>
           <div class="balance-item">每月执行恢复演练，目标≤30分钟</div>
           <div class="balance-item">开启域名Registry Lock</div>
+          <div class="balance-item">使用YubiKey硬件MFA</div>
+          <div class="balance-item">笔记本安装端点防护</div>
         </div>
         <div class="balance-card">
           <div class="balance-card-label negative">✕ 不做</div>
@@ -720,28 +897,105 @@ body {
           <div class="balance-item">从不执行恢复演练</div>
           <div class="balance-item">忽略域名锁定</div>
           <div class="balance-item">管理笔记本不装终端防护</div>
+          <div class="balance-item">使用短信MFA而非硬件Key</div>
+          <div class="balance-item">共用密码或复用密码</div>
         </div>
       </div>
     </section>
 
-    <!-- FIN -->
+    <!-- 玖: 30天路线图 -->
+    <section class="content-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-id">D9</span>
+        <span class="dim-tag">行动</span>
+      </div>
+      <h2 class="chapter-heading">玖 · 30天路线图</h2>
+      <div class="grid-center">
+        <div class="main-content">
+          <div class="list-item">
+            <div class="list-num">第1周</div>
+            <div>
+              <div class="list-title">域名 + DNS接入Cloudflare</div>
+              <div class="list-desc">将域名DNS迁移到Cloudflare，开启代理，隐藏源站IP。关闭所有非必要端口。完成后攻击面减少约60%。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">第2周</div>
+            <div>
+              <div class="list-title">身份加固</div>
+              <div class="list-desc">注册1Password，购买YubiKey 5 NFC。云控制台创建IAM用户，日常操作不使用Root。开启GitHub 2FA硬件Key。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">第3周</div>
+            <div>
+              <div class="list-title">代码安全流程</div>
+              <div class="list-desc">在GitHub仓库开启Advanced Security，配置密钥扫描。CI流水线接入Trivy，CRITICAL漏洞阻断部署。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">第4周</div>
+            <div>
+              <div class="list-title">备份 + 演练</div>
+              <div class="list-desc">配置Object Lock备份策略。执行首次完整恢复演练，计时。记录耗时，迭代优化到30分钟以内。</div>
+            </div>
+          </div>
+        </div>
+        <div class="side-content">
+          <div class="data-card">
+            <div class="data-card-row">
+              <span class="data-label">第1周结束时</span>
+              <span class="data-value accent">攻击面 -60%</span>
+            </div>
+            <div class="data-card-row">
+              <span class="data-label">第2周结束时</span>
+              <span class="data-value">身份安全</span>
+            </div>
+            <div class="data-card-row">
+              <span class="data-label">第3周结束时</span>
+              <span class="data-value">代码安全流程</span>
+            </div>
+            <div class="data-card-row">
+              <span class="data-label">第4周结束时</span>
+              <span class="data-value accent">可恢复</span>
+            </div>
+          </div>
+          <div class="obj-block success" style="margin-top: var(--space-lg);">
+            <div class="obj-label">✓ 里程碑</div>
+            <div class="obj-content">4周后，你将拥有一个<strong>30分钟内可恢复</strong>的安全基线。攻击者看到的是一块难啃的骨头，而非毫无防备的目标。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 拾: 财务健康指标 -->
     <section class="content-section fade-section">
       <div class="section-label">财务健康指标</div>
       <div class="summary-grid">
         <div class="summary-card">
           <div class="summary-num">$0</div>
           <div class="summary-title">安全工具年费</div>
-          <div class="summary-desc">Cloudflare免费 + GitHub免费层</div>
+          <div class="summary-desc">Cloudflare免费 + GitHub免费层 + Defender免费 + Trivy开源</div>
         </div>
         <div class="summary-card">
           <div class="summary-num">10分钟</div>
           <div class="summary-title">基础加固时间</div>
-          <div class="summary-desc">Cloudflare接入 + 端口收敛 + 密钥登录</div>
+          <div class="summary-desc">Cloudflare接入 + 端口收敛 + 密钥登录 + 域名锁定</div>
         </div>
         <div class="summary-card">
           <div class="summary-num">30分钟</div>
           <div class="summary-title">恢复时间目标</div>
-          <div class="summary-desc">从零重建全部服务</div>
+          <div class="summary-desc">从零重建全部服务（IaC + 黄金镜像）</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num">$25</div>
+          <div class="summary-title">最高ROI单品</div>
+          <div class="summary-desc">YubiKey 5 NFC，抵抗AI钓鱼的唯一有效手段</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num">78%</div>
+          <div class="summary-title">风险降低</div>
+          <div class="summary-desc">全托管架构 vs 自管服务器（平均数据）</div>
         </div>
       </div>
     </section>
@@ -763,7 +1017,7 @@ body {
       entries.forEach(entry => {
         if (entry.isIntersecting) entry.target.classList.add('visible');
       });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
     document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
   </script>
 </body>

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+  <script src="/auth-guard.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="数据备份与恢复 - OPC节点百科30 - 2026年最新备份策略与工具">
@@ -173,19 +174,13 @@ body {
   background: var(--accent);
 }
 
-/* Asymmetric grid */
-.grid-asymmetric {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: var(--space-3xl);
-  align-items: start;
+/* Center layout */
+.grid-center {
+  max-width: 64ch;
+  margin: 0 auto;
 }
-
-@media (max-width: 900px) {
-  .grid-asymmetric {
-    grid-template-columns: 1fr;
-    gap: var(--space-2xl);
-  }
+@media (max-width: 768px) {
+  .grid-center { max-width: 100%; }
 }
 
 /* Chapter heading */
@@ -545,7 +540,7 @@ body {
     <section class="content-section fade-section">
       <div class="chapter-marker">壹</div>
       <h2 class="chapter-heading">为什么2026年备份是生死线？</h2>
-      <div class="grid-asymmetric">
+      <div class="grid-center">
         <div class="main-content">
           <p class="body-text">OPC没有团队分摊风险，没有IT部门处理故障。<strong>所有客户资料、设计源文件、财务凭证、AI生成内容、系统配置——都沉淀在你的设备里。</strong>这本该是优势，因为数据都在你手中。但换个角度：崩溃点也只有一个。</p>
           <p class="body-text"><strong>攻击者已精准锁定个体创业者。</strong>2024-2025年，勒索软件即服务（RaaS）模式让攻击成本降至极低。攻击者用AI扫描全网寻找开放端口、弱口令和未打补丁的Redis/SSH。OPC的存活窗口已从过去的"可能一周没事"缩短至"数小时"。</p>
@@ -579,7 +574,7 @@ body {
     <section class="content-section fade-section">
       <div class="chapter-marker">贰</div>
       <h2 class="chapter-heading">3-2-1-0法则：适配OPC的备份公理</h2>
-      <div class="grid-asymmetric">
+      <div class="grid-center">
         <div class="main-content">
           <p class="body-text">这不是企业级方案，是<strong>单人可执行到位的具体动作</strong>。3-2-1-0法则已存在数十年，但在2026年需要新的解读。</p>
 
@@ -632,7 +627,7 @@ body {
     <section class="content-section fade-section">
       <div class="chapter-marker">叁</div>
       <h2 class="chapter-heading">工具选型：四层架构</h2>
-      <div class="grid-asymmetric">
+      <div class="grid-center">
         <div class="main-content">
           <p class="body-text">一人公司不需要复杂方案，要的是<strong>"设置后即忘"的智能工具链</strong>。按职责分层选择：</p>
 
@@ -698,7 +693,7 @@ body {
     <section class="content-section fade-section">
       <div class="chapter-marker">肆</div>
       <h2 class="chapter-heading">四大致命误区</h2>
-      <div class="grid-asymmetric">
+      <div class="grid-center">
         <div class="main-content">
           <div class="obj-block error">
             <div class="obj-label">✕ 误区一：云端=安全</div>
@@ -747,7 +742,7 @@ body {
     <section class="content-section fade-section">
       <div class="chapter-marker">伍</div>
       <h2 class="chapter-heading">恢复即服务：验证才是终点</h2>
-      <div class="grid-asymmetric">
+      <div class="grid-center">
         <div class="main-content">
           <p class="body-text"><strong>备份不算完成，能恢复才算。</strong>OPC必须建立可验证的恢复能力，而非堆积"看起来有备份"的虚假安全感。</p>
 
@@ -797,7 +792,7 @@ body {
     <section class="content-section fade-section">
       <div class="chapter-marker">陆</div>
       <h2 class="chapter-heading">成本与ROI分析</h2>
-      <div class="grid-asymmetric">
+      <div class="grid-center">
         <div class="main-content">
           <p class="body-text">OPC的资源是时间与金钱。<strong>备份的投入应与业务风险相匹配。</strong>不是为了复杂而复杂，是为了在灾难发生时能用最小代价恢复。</p>
 
@@ -852,7 +847,7 @@ body {
     <section class="content-section fade-section">
       <div class="chapter-marker">柒</div>
       <h2 class="chapter-heading">AI时代的新挑战</h2>
-      <div class="grid-asymmetric">
+      <div class="grid-center">
         <div class="main-content">
           <p class="body-text">2025-2026年，AI已深度嵌入OPC的工作流。这带来了新型数据风险：</p>
 
@@ -926,7 +921,7 @@ body {
     <section class="content-section fade-section">
       <div class="chapter-marker">玖</div>
       <h2 class="chapter-heading">30天执行清单</h2>
-      <div class="grid-asymmetric">
+      <div class="grid-center">
         <div class="main-content">
           <p class="body-text"><strong>第一周：建立基础备份</strong></p>
           <ul class="checklist">

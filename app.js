@@ -1271,10 +1271,11 @@ function initAuth() {
   const savedToken = localStorage.getItem('opc_token');
   const savedUsername = localStorage.getItem('opc_username');
   const savedPhone = localStorage.getItem('opc_phone');
+  const savedRole = localStorage.getItem('opc_role');
   const savedSubscription = localStorage.getItem('opc_subscription');
 
   if (savedToken && (savedUsername || savedPhone)) {
-    state.user = { username: savedUsername || savedPhone, token: savedToken };
+    state.user = { username: savedUsername || savedPhone, token: savedToken, role: savedRole || 'free' };
   }
 
   if (savedSubscription) {
@@ -1297,9 +1298,24 @@ function renderAuthSection() {
   if (!authSection) return;
 
   if (state.user) {
+    const role = state.user.role || 'free';
+    const roleLabels = { guest: '游客', free: '免费用户', paid: '付费用户', admin: '管理员' };
+    const roleLabel = roleLabels[role] || role;
+    const roleColor = role === 'admin' ? 'var(--accent)' : 'var(--text-tertiary)';
+
     authSection.innerHTML = `
       <div style="display: flex; align-items: center; gap: 1rem;">
+        ${role === 'admin' ? `<a href="/admin.html" style="
+          font-size: 0.625rem;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: var(--accent);
+          text-decoration: none;
+          padding: 0.375rem 0.75rem;
+          border: 1px solid var(--accent);
+        ">管理后台</a>` : ''}
         <span style="font-size: 0.75rem; color: var(--text-secondary);">${state.user.username || state.user.phone || ''}</span>
+        <span style="font-size: 0.5625rem; color: ${roleColor}; border: 1px solid var(--line); padding: 0.125rem 0.5rem;">${roleLabel}</span>
         <button onclick="logout()" style="
           background: none;
           border: 1px solid var(--line);
@@ -1471,9 +1487,11 @@ async function handleAuthSubmit(event) {
     }
 
     // 成功
-    state.user = { username: username, token: data.token };
+    const role = data.user?.role || 'free';
+    state.user = { username: username, token: data.token, role: role };
     localStorage.setItem('opc_token', data.token);
     localStorage.setItem('opc_username', username);
+    localStorage.setItem('opc_role', role);
 
     closeAuthModal();
     renderAuthSection();
@@ -1489,6 +1507,7 @@ function logout() {
   localStorage.removeItem('opc_token');
   localStorage.removeItem('opc_phone');
   localStorage.removeItem('opc_username');
+  localStorage.removeItem('opc_role');
   renderAuthSection();
 }
 // 订阅系统
@@ -1590,77 +1609,64 @@ function showToast(message) {
 }
 
 // ============================================
-// 节点访问控制
+// ============================================
+// 节点访问控制（基于角色）
 // ============================================
 
-// 测试模式：跳过登录验证，所有节点均可访问
-const TEST_MODE = true;
+function getUserRole() {
+  if (!state.user) return 'guest';
+  return state.user.role || 'free';
+}
 
 function checkNodeAccess(nodeId) {
-  // 测试模式：所有节点均可访问
-  if (TEST_MODE) {
-    return { allowed: true, requiresSubscription: false };
-  }
-
-  // 节点 01 是免费的（OPC适配测试）
-  if (nodeId === 1) {
-    return { allowed: true, requiresSubscription: false };
-  }
-
-  // 其他节点（02-40）需要订阅
-  if (state.subscription && state.subscription.paid) {
-    return { allowed: true, requiresSubscription: false };
-  }
-
-  return { allowed: false, requiresSubscription: true };
+  const role = getUserRole();
+  // 管理员全通
+  if (role === 'admin') return { allowed: true, reason: 'admin' };
+  // 付费用户全通
+  if (role === 'paid') return { allowed: true, reason: 'paid' };
+  // 节点01所有人都可以访问（含游客）
+  if (nodeId === 1) return { allowed: true, reason: 'free_node' };
+  // 免费用户不能访问节点02-40
+  if (role === 'free') return { allowed: false, reason: 'subscription_required' };
+  // 游客不能访问节点02-40
+  return { allowed: false, reason: 'login_required' };
 }
 
 function openNodeModalWithAccess(nodeId) {
-  // 测试模式：直接打开
-  if (TEST_MODE) {
-    openNodeModal(nodeId);
+  const access = checkNodeAccess(nodeId);
+  
+  if (access.allowed) {
+    doOpenNodeModal(nodeId);
     return true;
   }
 
+  // 根据原因引导用户
+  if (access.reason === 'login_required') {
+    openAuthModal('login');
+  } else if (access.reason === 'subscription_required') {
+    openSubscriptionModal();
+  }
+  return false;
+}
+
+// openNodeModal：带访问控制的节点打开
+function openNodeModal(nodeId) {
   const access = checkNodeAccess(nodeId);
 
-  if (!access.allowed && access.requiresSubscription) {
-    // 需要登录或订阅
+  if (access.allowed) {
+    doOpenNodeModal(nodeId);
+    return;
+  }
+
+  if (access.reason === 'login_required') {
+    openAuthModal('login');
+  } else if (access.reason === 'subscription_required') {
     if (!state.user) {
       openAuthModal('login');
     } else {
       openSubscriptionModal();
     }
-    return false;
   }
-
-  openNodeModal(nodeId);
-  return true;
-}
-
-// 覆盖原有的 openNodeModal
-const originalOpenNodeModal = openNodeModal;
-function openNodeModal(nodeId) {
-  // 测试模式：跳过登录
-  if (TEST_MODE) {
-    doOpenNodeModal(nodeId);
-    return;
-  }
-
-  // 如果未登录，先引导登录
-  if (!state.user) {
-    openAuthModal('login');
-    return;
-  }
-
-  // 检查订阅状态（节点 02-40）
-  const access = checkNodeAccess(nodeId);
-  if (!access.allowed && access.requiresSubscription) {
-    openSubscriptionModal();
-    return;
-  }
-
-  doOpenNodeModal(nodeId);
 }
 
 function doOpenNodeModal(nodeId) {

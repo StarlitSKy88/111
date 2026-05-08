@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+  <script src="/auth-guard.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="用户反馈收集、每周复盘、功能迭代，每周花2小时持续优化">
+  <meta name="description" content="2026 OPC产品迭代与复盘：触发式迭代、KISS-KIM法、双循环归因、实验墓园、30天死亡线">
   <meta name="theme-color" content="#111110">
   <title>产品迭代与复盘 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
@@ -29,9 +30,8 @@
   --space-3xl: 96px;
   --space-4xl: 128px;
 }
-
 * { margin: 0; padding: 0; box-sizing: border-box; }
-
+html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--text-primary);
@@ -41,47 +41,35 @@ body {
   letter-spacing: 0.04em;
   -webkit-font-smoothing: antialiased;
 }
-
 .page {
   position: relative;
-  max-width: 1200px;
+  max-width: 680px;
   margin: 0 auto;
-  padding: 0 clamp(24px, 8vw, 120px);
+  padding: 0 clamp(20px, 6vw, 60px);
   min-height: 100vh;
 }
-
-.page::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: clamp(24px, 8vw, 120px);
-  right: clamp(24px, 8vw, 120px);
-  height: 1px;
-  background: var(--line);
-}
-
 .section-number {
-  position: absolute;
-  top: var(--space-2xl);
-  right: clamp(24px, 8vw, 120px);
-  font-size: clamp(100px, 22vw, 280px);
+  position: fixed;
+  top: 50%;
+  right: 5%;
+  transform: translateY(-50%);
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(120px, 25vw, 320px);
   font-weight: 100;
   color: var(--text-primary);
-  opacity: 0.03;
+  opacity: 0.025;
   line-height: 1;
   letter-spacing: -0.05em;
-  font-family: 'Noto Serif JP', serif;
   pointer-events: none;
   user-select: none;
+  z-index: 0;
 }
-
 .back-link {
   position: fixed;
   top: var(--space-xl);
-  left: clamp(24px, 8vw, 120px);
+  left: clamp(20px, 6vw, 60px);
   z-index: 100;
 }
-
 .back-link a {
   display: inline-flex;
   align-items: center;
@@ -93,22 +81,14 @@ body {
   text-decoration: none;
   transition: color 0.3s ease;
 }
-
 .back-link a:hover { color: var(--text-primary); }
-
 .hero {
   padding: var(--space-4xl) 0 var(--space-3xl);
   position: relative;
-}
-
-.hero-content {
-  position: relative;
   z-index: 1;
-  max-width: 800px;
 }
-
 .hero-label {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--accent);
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -117,322 +97,307 @@ body {
   align-items: center;
   gap: var(--space-md);
 }
-
 .hero-label::before {
   content: '';
-  width: 32px;
+  width: 28px;
   height: 1px;
   background: var(--accent);
 }
-
 .hero-title {
   font-family: 'Noto Serif JP', serif;
-  font-size: clamp(48px, 10vw, 96px);
+  font-size: clamp(42px, 9vw, 80px);
   font-weight: 300;
   letter-spacing: -0.03em;
-  line-height: 0.95;
+  line-height: 1;
   margin-bottom: var(--space-xl);
 }
-
 .hero-desc {
-  font-size: 16px;
+  font-size: 15px;
   color: var(--text-secondary);
   line-height: 1.8;
   max-width: 44ch;
 }
-
 .content-section {
   padding: var(--space-3xl) 0;
   border-top: 1px solid var(--line);
+  position: relative;
+  z-index: 1;
 }
-
 .section-label {
-  font-size: 13px;
+  font-size: 11px;
   color: var(--accent);
-  letter-spacing: 0.2em;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-xl);
   display: flex;
   align-items: center;
   gap: var(--space-md);
 }
-
 .section-label::before {
   content: '';
-  width: 24px;
+  width: 20px;
   height: 1px;
   background: var(--accent);
 }
-
-/* D1-D6 Dimension Badges */
-.dimensions-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: var(--space-sm);
-  margin-bottom: var(--space-3xl);
-}
-
-@media (max-width: 1100px) {
-  .dimensions-grid { grid-template-columns: 1.5fr 1fr 1fr; }
-}
-
-@media (max-width: 600px) {
-  .dimensions-grid { grid-template-columns: repeat(2, 1fr); }
-}
-
-.dim-badge {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: var(--space-md);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  position: relative;
-  overflow: hidden;
-}
-
-.dim-badge::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 3px;
-  height: 100%;
-}
-
-.dim-badge.d1::before { background: #C0392B; }
-.dim-badge.d2::before { background: #E05A47; }
-.dim-badge.d3::before { background: var(--accent); }
-.dim-badge.d4::before { background: var(--accent); }
-.dim-badge.d5::before { background: #3498DB; }
-.dim-badge.d6::before { background: #9B59B6; }
-
-.dim-num {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--text-tertiary);
-  line-height: 1;
-}
-
-.dim-tag {
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-}
-
-.dim-title {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-primary);
-  margin-top: 4px;
-}
-
-/* Asymmetric Grid */
-.grid-asymmetric {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: var(--space-3xl);
-  align-items: start;
-}
-
-@media (max-width: 900px) {
-  .grid-asymmetric {
-    grid-template-columns: 1fr;
-    gap: var(--space-2xl);
-  }
-}
-
 .chapter-heading {
   font-family: 'Noto Serif JP', serif;
-  font-size: clamp(28px, 5vw, 48px);
+  font-size: clamp(24px, 4.5vw, 40px);
   font-weight: 300;
   letter-spacing: -0.02em;
-  line-height: 1.2;
+  line-height: 1.25;
   margin-bottom: var(--space-xl);
-  max-width: 16em;
+  max-width: 18em;
 }
-
 .body-text {
   font-size: 15px;
   line-height: 1.9;
   color: var(--text-secondary);
-  max-width: 44ch;
   margin-bottom: var(--space-md);
 }
-
+.body-text:last-child { margin-bottom: 0; }
 .body-text strong { color: var(--text-primary); font-weight: 500; }
 .body-text .accent { color: var(--accent); font-weight: 500; }
-
-/* Objection Blocks */
-.objection-block {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  margin-bottom: var(--space-lg);
-}
-
-.objection-header {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  padding: var(--space-md) var(--space-lg);
-  border-bottom: 1px solid var(--line);
-}
-
-.objection-tag {
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  padding: 3px 10px;
-}
-
-.objection-tag.error {
-  background: rgba(192, 57, 43, 0.15);
-  color: var(--accent);
-  border: 1px solid var(--accent);
-}
-
-.objection-tag.success {
-  background: rgba(39, 174, 96, 0.15);
-  color: var(--accent);
-  border: 1px solid var(--accent);
-}
-
-.objection-tag.data {
-  background: rgba(52, 152, 219, 0.15);
-  color: #3498DB;
-  border: 1px solid #3498DB;
-}
-
-.objection-title {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text-primary);
-}
-
-.objection-content {
-  padding: var(--space-lg);
-}
-
-.objection-item {
-  font-size: 14px;
-  line-height: 1.7;
-  color: var(--text-secondary);
-  margin-bottom: var(--space-sm);
-}
-
-.objection-item:last-child { margin-bottom: 0; }
-
-/* Core Insight */
 .core-insight {
   margin: var(--space-xl) 0;
   padding-left: var(--space-md);
   border-left: 1px solid var(--accent);
 }
-
 .core-insight-text {
   font-size: 15px;
   color: var(--text-secondary);
-  line-height: 1.7;
-  max-width: 40ch;
-}
-
-/* Balance Grid */
-.balance-section-title {
-  font-family: 'Noto Serif JP', serif;
-  font-size: clamp(28px, 5vw, 48px);
-  font-weight: 300;
-  letter-spacing: -0.02em;
-  margin-bottom: var(--space-xl);
-}
-
-.balance-intro {
-  font-size: 15px;
-  color: var(--text-secondary);
   line-height: 1.8;
-  max-width: 46ch;
-  margin-bottom: var(--space-2xl);
 }
-
-.balance-intro strong { color: var(--text-primary); font-weight: 500; }
-
-.balance-grid {
-  display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  gap: var(--space-2xl);
-}
-
-@media (max-width: 768px) {
-  .balance-grid { grid-template-columns: 1fr; gap: var(--space-xl); }
-}
-
-.balance-card {
+.data-block {
   background: var(--surface);
   border: 1px solid var(--line);
   padding: var(--space-lg);
+  margin: var(--space-lg) 0;
 }
-
-.balance-card-label {
-  font-size: 13px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
+.data-block-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
   margin-bottom: var(--space-md);
   padding-bottom: var(--space-sm);
   border-bottom: 1px solid var(--line);
 }
-
-.balance-card-label.positive { color: var(--accent); }
-.balance-card-label.negative { color: var(--text-tertiary); }
-
-.balance-item {
-  padding: var(--space-sm) 0;
+.data-tag {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  background: rgba(52, 152, 219, 0.15);
+  color: #3498DB;
+  border: 1px solid #3498DB;
+}
+.data-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+.data-item {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xs);
+}
+.data-item:last-child { margin-bottom: 0; }
+.error-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+  margin: var(--space-lg) 0;
+}
+.error-block-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+}
+.error-tag {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  background: rgba(192, 57, 43, 0.15);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+.error-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+.error-item {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xs);
+}
+.error-item:last-child { margin-bottom: 0; }
+.success-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+  margin: var(--space-lg) 0;
+}
+.success-block-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+}
+.success-tag {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  background: rgba(39, 174, 96, 0.15);
+  color: #27AE60;
+  border: 1px solid #27AE60;
+}
+.success-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+.success-item {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xs);
+}
+.success-item:last-child { margin-bottom: 0; }
+.signal-list {
+  margin: var(--space-lg) 0;
+}
+.signal-item {
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-md) 0;
   border-bottom: 1px solid var(--line-light);
   font-size: 14px;
+  line-height: 1.7;
   color: var(--text-secondary);
 }
-
-.balance-item:last-child { border-bottom: none; }
-.balance-item.dim { color: var(--text-tertiary); }
-
-/* Summary Grid (FIN) */
+.signal-item:last-child { border-bottom: none; }
+.signal-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 18px;
+  font-weight: 300;
+  color: var(--accent);
+  min-width: 24px;
+}
+.signal-text strong { color: var(--text-primary); font-weight: 500; }
+.kim-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+  margin: var(--space-lg) 0;
+}
+.kim-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+}
+.kim-row {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-sm);
+}
+.kim-row:last-child { margin-bottom: 0; }
+.kim-highlight {
+  color: var(--accent);
+  font-weight: 500;
+}
+.grave-item {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-md);
+  margin-bottom: var(--space-sm);
+}
+.grave-label {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-xs);
+}
+.grave-value {
+  font-size: 14px;
+  color: var(--text-primary);
+}
+.decision-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+  margin: var(--space-xl) 0;
+}
+@media (max-width: 600px) {
+  .decision-grid { grid-template-columns: 1fr; }
+}
+.decision-card {
+  padding: var(--space-lg);
+  border-top: 2px solid;
+}
+.decision-card.positive { border-color: var(--accent); }
+.decision-card.negative { border-color: var(--line); }
+.decision-label {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+}
+.decision-card.positive .decision-label { color: var(--accent); }
+.decision-card.negative .decision-label { color: var(--text-tertiary); }
+.decision-item {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-sm);
+  padding-left: var(--space-sm);
+  border-left: 1px solid var(--line-light);
+}
+.decision-item:last-child { margin-bottom: 0; }
 .summary-grid {
   display: grid;
-  grid-template-columns: 1.5fr 1.2fr 0.8fr;
-  gap: var(--space-xl);
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+  margin: var(--space-xl) 0;
 }
-
-@media (max-width: 900px) {
-  .summary-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
+@media (max-width: 600px) {
+  .summary-grid { grid-template-columns: 1fr; }
 }
-
 .summary-card {
   padding: var(--space-lg) 0;
   border-top: 1px solid var(--line);
 }
-
 .summary-num {
   font-family: 'Noto Serif JP', serif;
-  font-size: 36px;
+  font-size: 32px;
   font-weight: 300;
   color: var(--accent);
-  margin-bottom: var(--space-sm);
+  margin-bottom: var(--space-xs);
 }
-
 .summary-title {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--text-primary);
   margin-bottom: var(--space-xs);
 }
-
 .summary-desc {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-secondary);
-  line-height: 1.7;
+  line-height: 1.6;
 }
-
-/* Footer Nav */
 .footer-nav {
   padding: var(--space-2xl) 0;
   border-top: 1px solid var(--line);
@@ -440,7 +405,6 @@ body {
   justify-content: space-between;
   align-items: center;
 }
-
 .nav-link {
   display: inline-flex;
   align-items: center;
@@ -452,288 +416,278 @@ body {
   text-decoration: none;
   transition: color 0.3s ease;
 }
-
 .nav-link:hover { color: var(--text-primary); }
 .nav-arrow { font-size: 0.75rem; }
-
-/* Fade Animation */
 .fade-section {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transform: translateY(16px);
+  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-
 .fade-section.visible { opacity: 1; transform: translateY(0); }
-
-* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-  </style>
+</style>
 </head>
 <body>
   <div class="back-link">
     <a href="/"><span>←</span> 返回首页</a>
   </div>
-  <div class="section-number">36</div>
+  <div class="section-number">叁拾陆</div>
 
   <div class="page">
     <header class="hero">
-      <div class="hero-content">
-        <div class="hero-label">节点 36 · 1-10</div>
-        <h1 class="hero-title">产品迭代与复盘</h1>
-        <p class="hero-desc">用户反馈收集、每周复盘、功能迭代，每周花2小时持续优化</p>
-      </div>
+      <div class="hero-label">节点 36 · 1-10</div>
+      <h1 class="hero-title">产品迭代与复盘</h1>
+      <p class="hero-desc">用户反馈收集、每周复盘、功能迭代，每周花2小时持续优化</p>
     </header>
 
-    <!-- D1-D6 Dimensions -->
+    <!-- 壹：触发式迭代 -->
     <section class="content-section fade-section">
-      <div class="section-label">六维结构</div>
-      <div class="dimensions-grid">
-        <div class="dim-badge d1">
-          <span class="dim-num">D1</span>
-          <span class="dim-tag">核心</span>
-          <span class="dim-title">触发式迭代</span>
+      <div class="section-label">壹 · 迭代范式</div>
+      <h2 class="chapter-heading">从"周期复盘"到"触发式迭代"：2026 OPC迭代范式转移</h2>
+      <p class="body-text">传统迭代模型（Scrum回顾会议）在OPC场景下<strong>彻底失灵</strong>。它假设存在可以相互校验、分担认知负荷的团队，但一人公司中你既是飞行员又是地勤还是空管。</p>
+      <p class="body-text"><strong>触发式迭代</strong>：不是被计划出来的，而是被三个硬核信号"逼"出来的。</p>
+      <div class="signal-list">
+        <div class="signal-item">
+          <span class="signal-num">①</span>
+          <span class="signal-text"><strong>用户行为异常信号</strong>：当本应完成核心路径的用户在某环节表现出犹豫、折返或愤怒点击时，触发"微复盘事件"，15分钟回放录屏后立即部署修复</span>
         </div>
-        <div class="dim-badge d2">
-          <span class="dim-num">D2</span>
-          <span class="dim-tag">模型</span>
-          <span class="dim-title">双循环归因</span>
+        <div class="signal-item">
+          <span class="signal-num">②</span>
+          <span class="signal-text"><strong>创始人HRV衰减信号</strong>：智能手表检测到心率变异性（HRV）连续下降，或AI日记发现消极语言模式，触发"红色复盘"——复盘问题不是"增长为何停滞"而是"我是否在用战术勤奋掩盖战略倦怠"</span>
         </div>
-        <div class="dim-badge d3">
-          <span class="dim-num">D3</span>
-          <span class="dim-tag">培育</span>
-          <span class="dim-title">KISS-KIM法</span>
+        <div class="signal-item">
+          <span class="signal-num">③</span>
+          <span class="signal-text"><strong>财务边界压力信号</strong>：当维护某旧功能投入的时间折算时薪跌破"生存底线时薪"，立即触发"杀留决策点"</span>
         </div>
-        <div class="dim-badge d4">
-          <span class="dim-num">D4</span>
-          <span class="dim-tag">避坑</span>
-          <span class="dim-title">复盘成瘾与伪工作</span>
+      </div>
+      <div class="core-insight">
+        <p class="core-insight-text">OPC的有效迭代不取决于复盘文档写得多好，取决于你对这些信号的触发器有多灵敏，以及你是否在这些时刻拥有按下暂停键的决断力。</p>
+      </div>
+      <div class="data-block">
+        <div class="data-block-header">
+          <span class="data-tag">信号</span>
+          <span class="data-title">三大触发信号清单</span>
         </div>
-        <div class="dim-badge d5">
-          <span class="dim-num">D5</span>
-          <span class="dim-tag">培育</span>
-          <span class="dim-title">微型退出与墓园</span>
+        <p class="data-item"><strong>异常会话</strong>：用户完成核心路径前突然静止/折返</p>
+        <p class="data-item"><strong>HRV连续下降</strong>：智能手表连续3天检测到压力指标上升</p>
+        <p class="data-item"><strong>HEP告负</strong>：(收入-成本)/实际工时跌破底线</p>
+        <p class="data-item"><strong>30天无变化</strong>：某功能上线30天核心指标未动</p>
+      </div>
+    </section>
+
+    <!-- 贰：双循环归因 -->
+    <section class="content-section fade-section">
+      <div class="section-label">贰 · 双循环归因</div>
+      <h2 class="chapter-heading">双循环归因：用户数据与创始人状态的深度耦合</h2>
+      <p class="body-text"><strong>外循环（用户反馈驱动）</strong>：只关注"口头反馈与实际行为发生矛盾"的时刻。用户嘴上说"需要这个功能"，但点击率持续为零，这就是行为冲突，是复盘的黄金原点。</p>
+      <p class="body-text"><strong>内循环（自我认知驱动）</strong>：将"分心指数"和"能量值恢复率"纳入复盘。如果连续两周"停止"栏都有"深夜优化CSS动画导致次日判断力下降"，下周唯一关键行动是"晚上10点后禁止打开代码编辑器"。</p>
+      <p class="body-text"><strong>双轨归因原则</strong>：产品表现不佳往往不是代码逻辑出错，而是决策疲劳或情绪透支。复盘结论必须同时包含"硬数据"和"软指标"。</p>
+      <div class="core-insight">
+        <p class="core-insight-text">北极星指标（激活率/首日留存/支付转化率）是外循环的唯一目的。如果复盘结论无法对应北极星指标的微动，该迭代点就是"无效劳动"。</p>
+      </div>
+      <div class="error-block">
+        <div class="error-block-header">
+          <span class="error-tag">错误</span>
+          <span class="error-title">无效复盘模式</span>
         </div>
-        <div class="dim-badge d6">
-          <span class="dim-num">D6</span>
-          <span class="dim-tag">决策</span>
-          <span class="dim-title">公开复盘转化</span>
+        <p class="error-item">❌ 写流水账"今天做了什么"（无提炼）</p>
+        <p class="error-item">❌ 只看最终转化率，不追踪"微流失"节点</p>
+        <p class="error-item">❌ 复盘结论无法对应北极星指标</p>
+        <p class="error-item">❌ 情绪透支后继续强撑"战术勤奋"</p>
+      </div>
+      <div class="success-block">
+        <div class="success-block-header">
+          <span class="success-tag">正确</span>
+          <span class="success-title">双轨归因执行</span>
+        </div>
+        <p class="success-item">✓ 会话回放定位"微流失"：超过3秒无操作视为异常</p>
+        <p class="success-item">✓ HEP复核：时薪=（收入-成本）/实际工时</p>
+        <p class="success-item">✓ 分心指数自评：1-5分追踪"伪工作"时长</p>
+        <p class="success-item">✓ 每次复盘产出可执行的次日改动</p>
+      </div>
+    </section>
+
+    <!-- 叁：KISS-KIM -->
+    <section class="content-section fade-section">
+      <div class="section-label">叁 · KISS-KIM</div>
+      <h2 class="chapter-heading">KISS-KIM法：让复盘从流水账变成决策资产</h2>
+      <p class="body-text"><strong>KISS原则</strong>（四象限）：保持/提升/停止/开始。关键在"停止"栏——必须列出消耗时间却无产出的活动，如"过度优化服务器响应时间"、"讨好非目标用户的定制需求"。</p>
+      <p class="body-text"><strong>KIM关键洞察备忘录</strong>：强制输出格式——"我之前以为______，现在发现______，所以下周我决定______。" 必须包含认知转弯。</p>
+      <div class="kim-block">
+        <div class="kim-title">KIM标准模板</div>
+        <p class="kim-row"><strong>我之前以为：</strong>______</p>
+        <p class="kim-row"><strong>现在发现：</strong>______（行为数据揭示）</p>
+        <p class="kim-row"><strong>所以下周我决定：</strong>______（<span class="kim-highlight">唯一实验</span>）</p>
+      </div>
+      <div class="error-block">
+        <div class="error-block-header">
+          <span class="error-tag">错误</span>
+          <span class="error-title">错误示例</span>
+        </div>
+        <p class="error-item">❌ 错误：流量跌了，下周要发小红书。</p>
+        <p class="error-item">✓ KIM：我之前以为产品功能强大流量就会自然增长，<strong>现在发现</strong>在不进行内容分发的情况下新访客获取归零，<strong>所以下周我决定</strong>砍掉深色模式适配，把精力全投入撰写一篇硬核解决痛点的长文。</p>
+      </div>
+      <div class="core-insight">
+        <p class="core-insight-text">KIM自动沉淀为知识资产。3个月后当你头脑发热想加"排行榜"时，AI助手会自动弹出："根据2026年3月的实验墓园记录，用户对公开排名功能表现出强烈排斥。"</p>
+      </div>
+    </section>
+
+    <!-- 肆：两大陷阱 -->
+    <section class="content-section fade-section">
+      <div class="section-label">肆 · 避坑</div>
+      <h2 class="chapter-heading">两大致命陷阱：复盘成瘾与伪工作</h2>
+      <p class="body-text"><strong>陷阱一：复盘成瘾</strong>——把复盘文档写得像博士论文，本质是在逃避写代码或做销售这一真正痛苦的事情。<strong>止损线</strong>：单人每周复盘总时长上限2小时，触及红线立即终止并强制产出。</p>
+      <p class="body-text"><strong>陷阱二：伪工作（Tactical勤奋）</strong>——用战术上的客服答疑、日工作业来掩盖对产品核心价值已不再笃定的战略倦怠。深夜优化Logo、反复刷后台数据都是典型症状。</p>
+      <p class="body-text"><strong>精准定义"停止"</strong>：低价值自动化洁癖（如花3小时调试每月节省10分钟的Zapier工作流）、免费用户过度服务（80%沟通时长消耗在仅贡献5%收入的免费用户身上）。</p>
+      <div class="error-block">
+        <div class="error-block-header">
+          <span class="error-tag">伪工作</span>
+          <span class="error-title">伪工作清单</span>
+        </div>
+        <p class="error-item">❌ 反复刷后台数据而非联系用户</p>
+        <p class="error-item">❌ 花3小时调试每月省10分钟的自动化</p>
+        <p class="error-item">❌ 为非目标用户定制复杂功能</p>
+        <p class="error-item">❌ 深夜优化CSS动画导致次日判断力下降</p>
+      </div>
+      <div class="success-block">
+        <div class="success-block-header">
+          <span class="success-tag">正确</span>
+          <span class="success-title">破除伪工作</span>
+        </div>
+        <p class="success-item">✓ 每次复盘只问：这个改动能让北极星指标挪动多少？</p>
+        <p class="success-item">✓ 低于5%的优化一律暂缓</p>
+        <p class="success-item">✓ 联系3名用户比刷后台数据更有价值</p>
+        <p class="success-item">✓ 晚上10点后禁止打开代码编辑器</p>
+      </div>
+    </section>
+
+    <!-- 伍：微型退出 -->
+    <section class="content-section fade-section">
+      <div class="section-label">伍 · 功能断舍离</div>
+      <h2 class="chapter-heading">微型退出与30天死亡线：一人公司的功能断舍离</h2>
+      <p class="body-text">一人公司最大的债务不是代码债，而是<strong>功能债</strong>。每一个多余的功能都在持续征收维护精力和服务器成本。</p>
+      <p class="body-text"><strong>30天死亡线原则</strong>：对于A/B测试未达显著性的小功能，或凭直觉新增的"锦上添花"功能，直接问自己："如果现在毙掉它，用户会痛骂我吗？"如果答案是模糊的，<strong>立刻砍掉</strong>。</p>
+      <p class="body-text"><strong>实验墓园</strong>：每次被毙的功能不能直接删除，必须记录：假设→实际衰减→沉没时间→认知萃取。这份"墓碑"会在AI辅助下自动沉淀，3个月后当你头脑发热想加同类功能时，AI会弹出警告。</p>
+      <div class="core-insight">
+        <p class="core-insight-text">复盘时如果发现连续两周的KIM都在说"没时间做营销"，那要反思的不是时间管理，而是你的产品本质上可能缺乏让用户自发传播的基因。</p>
+      </div>
+      <div class="success-block">
+        <div class="success-block-header">
+          <span class="success-tag">墓园</span>
+          <span class="success-title">被毙功能存档格式</span>
+        </div>
+        <p class="success-item"><strong>假设</strong>：当时以为加入社交推荐能带来病毒传播</p>
+        <p class="success-item"><strong>实际</strong>：0.3%用户点击，服务器成本暴增</p>
+        <p class="success-item"><strong>沉没</strong>：23小时</p>
+        <p class="success-item"><strong>萃取</strong>：我的用户是极度注重隐私的内向型人群</p>
+      </div>
+      <div class="data-block">
+        <div class="data-block-header">
+          <span class="data-tag">公式</span>
+          <span class="data-title">HEP单位时间利润</span>
+        </div>
+        <p class="data-item">HEP =（本周收入 - 本周工具成本）/ 本周实际工时</p>
+        <p class="data-item">如果某功能导致运维咨询量暴增使投入时间翻倍，即使收入涨10%，HEP下降 = 失败迭代，需回滚</p>
+      </div>
+    </section>
+
+    <!-- 陆：每周节奏 -->
+    <section class="content-section fade-section">
+      <div class="section-label">陆 · 每周节奏</div>
+      <h2 class="chapter-heading">OPC每周复盘节奏：2小时上限的精确执行</h2>
+      <p class="body-text">对于OPC而言，<strong>行动永远是最高级别的复盘</strong>。把复盘文档写得像博士论文，本质上是在逃避真正痛苦的事情。</p>
+      <div class="success-block">
+        <div class="success-block-header">
+          <span class="success-tag">节奏</span>
+          <span class="success-title">每周复盘时间分配</span>
+        </div>
+        <p class="success-item"><strong>周五 16:00-16:30</strong>：数据回顾（打开后台，标红异常指标，不超过30分钟）</p>
+        <p class="success-item"><strong>周五 16:30-17:00</strong>：KIM输出（用KIM模板强制输出三个认知转弯）</p>
+        <p class="success-item"><strong>周五 17:00-17:30</strong>：下周的"唯一实验"决策（只看KIM的"所以下周我决定"栏）</p>
+        <p class="success-item"><strong>17:30</strong>：强制终止，开始执行，不再回头</p>
+      </div>
+      <div class="error-block">
+        <div class="error-block-header">
+          <span class="error-tag">警告</span>
+          <span class="error-title">复盘超时红线</span>
+        </div>
+        <p class="error-item">⚠️ 单人每周复盘总时长上限2小时</p>
+        <p class="error-item">⚠️ 触及红线立即终止并强制产出</p>
+        <p class="error-item">⚠️ 写流水账等于没复盘</p>
+      </div>
+    </section>
+
+    <!-- 柒：公开复盘 -->
+    <section class="content-section fade-section">
+      <div class="section-label">柒 · 公开复盘</div>
+      <h2 class="chapter-heading">将复盘转化为获客内容：一次劳动双重产出</h2>
+      <p class="body-text">结构化复盘本身就是最强获客内容。KIM格式的洞察、实验墓园的萃取、30天死亡线的决策——这些内容在社交媒体上具有极高的信任度构建价值。</p>
+      <p class="body-text">你的目标用户想看到的不是你多成功，而是你怎么思考的。<strong>公开复盘</strong>是最诚实的信任资产，也是最精准的用户筛选机制。</p>
+      <div class="success-block">
+        <div class="success-block-header">
+          <span class="success-tag">转化</span>
+          <span class="success-title">复盘内容获客公式</span>
+        </div>
+        <p class="success-item">KIM洞察 → 微博/小红书 thread（每周1篇）</p>
+        <p class="success-item">实验墓园 → GitHub README更新（季度1次）</p>
+        <p class="success-item">30天死亡线 → 产品更新日志（每月1次）</p>
+        <p class="success-item">失败案例 → newsletter（或播客邀约素材）</p>
+      </div>
+    </section>
+
+    <!-- 捌：北极星指标 -->
+    <section class="content-section fade-section">
+      <div class="section-label">捌 · 北极星</div>
+      <h2 class="chapter-heading">北极星指标：OPC唯一应该追踪的指标</h2>
+      <p class="body-text">对于OPC而言，<strong>一个产品只需要一个北极星指标</strong>。它应该是最直接反映"用户是否获得了核心价值"的数字。</p>
+      <div class="data-block">
+        <div class="data-block-header">
+          <span class="data-tag">定义</span>
+          <span class="data-title">OPC常见产品北极星指标</span>
+        </div>
+        <p class="data-item"><strong>工具类产品</strong>：激活率（完成核心功能配置）</p>
+        <p class="data-item"><strong>内容产品</strong>：7日留存率</p>
+        <p class="data-item"><strong>交易产品</strong>：支付转化率</p>
+        <p class="data-item"><strong>SaaS产品</strong>：周活跃率</p>
+      </div>
+      <p class="body-text">一旦选定，<strong>不许更换</strong>。除非产品本质发生了转型，否则北极星指标的改变本身就是一种战略信号——可能意味着你正在偏离初心。</p>
+      <div class="core-insight">
+        <p class="core-insight-text">每次复盘的第一句话必须是："这周北极星指标是多少，比上周涨了还是跌了？"如果答不上来，这周复盘就是无效的。</p>
+      </div>
+    </section>
+
+    <!-- 玖：决策矩阵 -->
+    <section class="content-section fade-section">
+      <div class="section-label">玖 · 决策矩阵</div>
+      <h2 class="chapter-heading">做 / 不做：复盘与迭代的红线</h2>
+      <div class="decision-grid">
+        <div class="decision-card positive">
+          <div class="decision-label">✓ 应该做</div>
+          <p class="decision-item">每周≤2小时复盘，到点立即转向执行</p>
+          <p class="decision-item">用KIM格式输出，强制包含认知转弯</p>
+          <p class="decision-item">微复盘事件：15分钟录屏回放+即时部署修复</p>
+          <p class="decision-item">建立"实验墓园"，每个被毙功能存档</p>
+          <p class="decision-item">追踪分心指数和能量值，纳入周复盘</p>
+          <p class="decision-item">KISS"停止"栏列伪工作，"开始"栏只填唯一实验</p>
+          <p class="decision-item">将结构化复盘转化为社交媒体获客内容</p>
+          <p class="decision-item">30天死亡线：无显著变化的功能立即砍掉</p>
+        </div>
+        <div class="decision-card negative">
+          <div class="decision-label">✗ 不应该做</div>
+          <p class="decision-item">把复盘写成流水账或博士论文</p>
+          <p class="decision-item">复盘超时（单人每周>2小时）</p>
+          <p class="decision-item">凭感情保留"亲儿子"功能（用数据说话）</p>
+          <p class="decision-item">同时做5个功能迭代（带宽分散）</p>
+          <p class="decision-item">为非目标用户定制复杂功能</p>
+          <p class="decision-item">深夜优化CSS动画导致次日判断力下降</p>
+          <p class="decision-item">闭门造车开发伪需求而不联系用户验证</p>
+          <p class="decision-item">把复盘变情绪宣泄而非诊断工具</p>
         </div>
       </div>
     </section>
 
-    <!-- D1: 核心 -->
+    <!-- 拾：FIN -->
     <section class="content-section fade-section">
-      <div class="grid-asymmetric">
-        <div class="main-content">
-          <h2 class="chapter-heading">从"周期复盘"到"触发式迭代"：2026 OPC迭代范式转移</h2>
-          <p class="body-text">传统迭代模型（Scrum回顾会议）在OPC场景下<strong>彻底失灵</strong>。它假设存在可以相互校验、分担认知负荷的团队，但一人公司中你既是飞行员又是地勤还是空管。</p>
-          <p class="body-text"><strong>触发式迭代</strong>：不是被计划出来的，而是被三个硬核信号"逼"出来的。</p>
-          <p class="body-text">① <strong>用户行为异常信号</strong>：当本应完成核心路径的用户在某环节表现出犹豫、折返或愤怒点击时，触发"微复盘事件"，15分钟回放录屏后立即部署修复。</p>
-          <p class="body-text">② <strong>创始人HRV衰减信号</strong>：智能手表检测到心率变异性（HRV）连续下降，或AI日记发现消极语言模式，触发"红色复盘"——复盘问题不是"增长为何停滞"而是"我是否在用战术勤奋掩盖战略倦怠"。</p>
-          <p class="body-text">③ <strong>财务边界压力信号</strong>：当维护某旧功能投入的时间折算时薪跌破"生存底线时薪"，立即触发"杀留决策点"。</p>
-          <div class="core-insight">
-            <p class="core-insight-text">OPC的有效迭代不取决于复盘文档写得多好，取决于你对这些信号的触发器有多灵敏，以及你是否在这些时刻拥有按下暂停键的决断力。</p>
-          </div>
-        </div>
-        <div class="sub-content">
-          <div class="objection-block">
-            <div class="objection-header">
-              <span class="objection-tag data">信号清单</span>
-              <span class="objection-title">三大触发信号</span>
-            </div>
-            <div class="objection-content">
-              <p class="objection-item"><strong>异常会话</strong>：用户完成核心路径前突然静止/折返</p>
-              <p class="objection-item"><strong>HRV连续下降</strong>：智能手表连续3天检测到压力指标上升</p>
-              <p class="objection-item"><strong>HEP告负</strong>：(收入-成本)/实际工时跌破底线</p>
-              <p class="objection-item"><strong>30天无变化</strong>：某功能上线30天核心指标未动</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- D2: 模型 -->
-    <section class="content-section fade-section">
-      <div class="grid-asymmetric">
-        <div class="main-content">
-          <h2 class="chapter-heading">双循环归因：用户数据与创始人状态的深度耦合</h2>
-          <p class="body-text"><strong>外循环（用户反馈驱动）</strong>：只关注"口头反馈与实际行为发生矛盾"的时刻。用户嘴上说"需要这个功能"，但点击率持续为零，这就是行为冲突，是复盘的黄金原点。</p>
-          <p class="body-text"><strong>内循环（自我认知驱动）</strong>：将"分心指数"和"能量值恢复率"纳入复盘。如果连续两周"停止"栏都有"深夜优化CSS动画导致次日判断力下降"，下周唯一关键行动是"晚上10点后禁止打开代码编辑器"。</p>
-          <p class="body-text"><strong>双轨归因原则</strong>：产品表现不佳往往不是代码逻辑出错，而是决策疲劳或情绪透支。复盘结论必须同时包含"硬数据"和"软指标"。</p>
-          <div class="core-insight">
-            <p class="core-insight-text">北极星指标（激活率/首日留存/支付转化率）是外循环的唯一目的。如果复盘结论无法对应北极星指标的微动，该迭代点就是"无效劳动"。</p>
-          </div>
-        </div>
-        <div class="sub-content">
-          <div class="objection-block">
-            <div class="objection-header">
-              <span class="objection-tag error">错误</span>
-              <span class="objection-title">无效复盘模式</span>
-            </div>
-            <div class="objection-content">
-              <p class="objection-item">❌ 写流水账"今天做了什么"（无提炼）</p>
-              <p class="objection-item">❌ 只看最终转化率，不追踪"微流失"节点</p>
-              <p class="objection-item">❌ 复盘结论无法对应北极星指标</p>
-              <p class="objection-item">❌ 情绪透支后继续强撑"战术勤奋"</p>
-            </div>
-          </div>
-          <div class="objection-block">
-            <div class="objection-header">
-              <span class="objection-tag success">正确</span>
-              <span class="objection-title">双轨归因执行</span>
-            </div>
-            <div class="objection-content">
-              <p class="objection-item">✓ 会话回放定位"微流失"：超过3秒无操作视为异常</p>
-              <p class="objection-item">✓ HEP复核：时薪=（收入-成本）/实际工时</p>
-              <p class="objection-item">✓ 分心指数自评：1-5分追踪"伪工作"时长</p>
-              <p class="objection-item">✓ 每次复盘产出可执行的次日改动</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- D3: 培育 - KISS-KIM -->
-    <section class="content-section fade-section">
-      <div class="grid-asymmetric">
-        <div class="main-content">
-          <h2 class="chapter-heading">KISS-KIM法：让复盘从流水账变成决策资产</h2>
-          <p class="body-text"><strong>KISS原则</strong>（四象限）：保持/提升/停止/开始。关键在"停止"栏——必须列出消耗时间却无产出的活动，如"过度优化服务器响应时间"、"讨好非目标用户的定制需求"。</p>
-          <p class="body-text"><strong>KIM关键洞察备忘录</strong>：强制输出格式——"我之前以为______，现在发现______，所以下周我决定______。" 必须包含认知转弯。</p>
-          <p class="body-text"><strong>示例</strong>：</p>
-          <p class="body-text">❌ 错误：流量跌了，下周要发小红书。</p>
-          <p class="body-text">✓ KIM：我之前以为产品功能强大流量就会自然增长，<strong>现在发现</strong>在不进行内容分发的情况下新访客获取归零，<strong>所以下周我决定</strong>砍掉深色模式适配，把精力全投入撰写一篇硬核解决痛点的长文。</p>
-          <div class="core-insight">
-            <p class="core-insight-text">KIM自动沉淀为知识资产。3个月后当你头脑发热想加"排行榜"时，AI助手会自动弹出："根据2026年3月的实验墓园记录，用户对公开排名功能表现出强烈排斥。"</p>
-          </div>
-        </div>
-        <div class="sub-content">
-          <div class="objection-block">
-            <div class="objection-header">
-              <span class="objection-tag data">格式</span>
-              <span class="objection-title">KIM标准模板</span>
-            </div>
-            <div class="objection-content">
-              <p class="objection-item">我之前以为：______</p>
-              <p class="objection-item">现在发现：______（行为数据揭示）</p>
-              <p class="objection-item">所以下周我决定：______（唯一实验）</p>
-            </div>
-          </div>
-          <div class="objection-block">
-            <div class="objection-header">
-              <span class="objection-tag data">实验墓园</span>
-              <span class="objection-title">被毙功能的存档格式</span>
-            </div>
-            <div class="objection-content">
-              <p class="objection-item"><strong>假设</strong>：当时以为加入社交推荐能带来病毒传播</p>
-              <p class="objection-item"><strong>实际</strong>：0.3%用户点击，服务器成本暴增</p>
-              <p class="objection-item"><strong>沉没</strong>：23小时</p>
-              <p class="objection-item"><strong>萃取</strong>：我的用户是极度注重隐私的内向型人群</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- D4: 避坑 -->
-    <section class="content-section fade-section">
-      <div class="grid-asymmetric">
-        <div class="main-content">
-          <h2 class="chapter-heading">两大致命陷阱：复盘成瘾与伪工作</h2>
-          <p class="body-text"><strong>陷阱一：复盘成瘾</strong>——把复盘文档写得像博士论文，本质是在逃避写代码或做销售这一真正痛苦的事情。<strong>止损线</strong>：单人每周复盘总时长上限2小时，触及红线立即终止并强制产出。</p>
-          <p class="body-text"><strong>陷阱二：伪工作（Tactical勤奋）</strong>——用战术上的客服答疑、日工作业来掩盖对产品核心价值已不再笃定的战略倦怠。深夜优化Logo、反复刷后台数据都是典型症状。</p>
-          <p class="body-text"><strong>精准定义"停止"</strong>：低价值自动化洁癖（如花3小时调试每月节省10分钟的Zapier工作流）、免费用户过度服务（80%沟通时长消耗在仅贡献5%收入的免费用户身上）。</p>
-          <div class="objection-block">
-            <div class="objection-header">
-              <span class="objection-tag error">错误</span>
-              <span class="objection-title">伪工作清单</span>
-            </div>
-            <div class="objection-content">
-              <p class="objection-item">❌ 反复刷后台数据而非联系用户</p>
-              <p class="objection-item">❌ 花3小时调试每月省10分钟的自动化</p>
-              <p class="objection-item">❌ 为非目标用户定制复杂功能</p>
-              <p class="objection-item">❌ 深夜优化CSS动画导致次日判断力下降</p>
-            </div>
-          </div>
-        </div>
-        <div class="sub-content">
-          <div class="objection-block">
-            <div class="objection-header">
-              <span class="objection-tag success">正确</span>
-              <span class="objection-title">破除伪工作</span>
-            </div>
-            <div class="objection-content">
-              <p class="objection-item">✓ 每次复盘只问：这个改动能让北极星指标挪动多少？</p>
-              <p class="objection-item">✓ 低于5%的优化一律暂缓</p>
-              <p class="objection-item">✓ 联系3名用户比刷后台数据更有价值</p>
-              <p class="objection-item">✓ 晚上10点后禁止打开代码编辑器</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- D5: 培育 - 微型退出 -->
-    <section class="content-section fade-section">
-      <div class="grid-asymmetric">
-        <div class="main-content">
-          <h2 class="chapter-heading">微型退出与30天死亡线：一人公司的功能断舍离</h2>
-          <p class="body-text">一人公司最大的债务不是代码债，而是<strong>功能债</strong>。每一个多余的功能都在持续征收维护精力和服务器成本。</p>
-          <p class="body-text"><strong>30天死亡线原则</strong>：对于A/B测试未达显著性的小功能，或凭直觉新增的"锦上添花"功能，直接问自己："如果现在毙掉它，用户会痛骂我吗？"如果答案是模糊的，<strong>立刻砍掉</strong>。</p>
-          <p class="body-text"><strong>实验墓园</strong>：每次被毙的功能不能直接删除，必须记录：假设→实际衰减→沉没时间→认知萃取。这份"墓碑"会在AI辅助下自动沉淀，3个月后当你头脑发热想加同类功能时，AI会弹出警告。</p>
-          <p class="body-text"><strong>杀留决心态</strong>：从"做功能"转向"解决用户问题"。保留低效功能的技术债会挤占开发下一个更有钱景功能的精力。</p>
-          <div class="core-insight">
-            <p class="core-insight-text">复盘时如果发现连续两周的KIM都在说"没时间做营销"，那要反思的不是时间管理，而是你的产品本质上可能缺乏让用户自发传播的基因。</p>
-          </div>
-        </div>
-        <div class="sub-content">
-          <div class="objection-block">
-            <div class="objection-header">
-              <span class="objection-tag data">成本公式</span>
-              <span class="objection-title">HEP单位时间利润</span>
-            </div>
-            <div class="objection-content">
-              <p class="objection-item">HEP =（本周收入 - 本周工具成本）/ 本周实际工时</p>
-              <p class="objection-item">如果某功能导致运维咨询量暴增使投入时间翻倍，即使收入涨10%，HEP下降 = 失败迭代，需回滚</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- D6: 决策 -->
-    <section class="content-section fade-section">
-      <div class="section-label">决策矩阵</div>
-      <h2 class="balance-section-title">做 / 不做</h2>
-      <p class="balance-intro">对于OPC而言，<strong>行动永远是最高级别的复盘</strong>。把复盘文档写得像博士论文，本质上是在逃避真正痛苦的事情。</p>
-      <div class="balance-grid">
-        <div class="balance-card">
-          <div class="balance-card-label positive">✓ 应该做</div>
-          <div class="balance-item">每周≤2小时复盘，到点立即转向执行</div>
-          <div class="balance-item">用KIM格式输出，强制包含认知转弯</div>
-          <div class="balance-item">微复盘事件：15分钟录屏回放+即时部署修复</div>
-          <div class="balance-item">建立"实验墓园"，每个被毙功能存档</div>
-          <div class="balance-item">追踪分心指数和能量值，纳入周复盘</div>
-          <div class="balance-item">KISS"停止"栏列伪工作，"开始"栏只填唯一实验</div>
-          <div class="balance-item">将结构化复盘转化为社交媒体获客内容</div>
-          <div class="balance-item">30天死亡线：无显著变化的功能立即砍掉</div>
-        </div>
-        <div class="balance-card">
-          <div class="balance-card-label negative">✗ 不应该做</div>
-          <div class="balance-item dim">把复盘写成流水账或博士论文</div>
-          <div class="balance-item dim">复盘超时（单人每周>2小时）</div>
-          <div class="balance-item dim">凭感情保留"亲儿子"功能（用数据说话）</div>
-          <div class="balance-item dim">同时做5个功能迭代（带宽分散）</div>
-          <div class="balance-item dim">为非目标用户定制复杂功能</div>
-          <div class="balance-item dim">深夜优化CSS动画导致次日判断力下降</div>
-          <div class="balance-item dim">闭门造车开发伪需求而不联系用户验证</div>
-          <div class="balance-item dim">把复盘变情绪宣泄而非诊断工具</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FIN Section -->
-    <section class="content-section fade-section">
-      <div class="section-label">FIN</div>
+      <div class="section-label">拾 · FIN</div>
       <div class="summary-grid">
         <div class="summary-card">
           <div class="summary-num">2小时</div>

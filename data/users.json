@@ -1,5 +1,13 @@
 [
   {
+    "id": "0",
+    "username": "admin",
+    "password_hash": "2973336b5ae8078241a633748f336a39:538b4414906f6ffab5590ef4fd59f0c9151a37083680a03974194fce79c4c4e4",
+    "role": "admin",
+    "created_at": "2026-05-08T20:15:39.890Z",
+    "updated_at": "2026-05-08T20:15:39.895Z"
+  },
+  {
     "id": "1778123977198",
     "email": "test@example.com",
     "password_hash": "faf9f91659d0aa68c2a9e3e9631676cd:5e0a35e13f4422d289b851dce114b00fae9c14ea102291098b314feceb0fd0e7",

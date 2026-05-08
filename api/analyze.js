@@ -15,13 +15,13 @@ app.use(express.json());
 // 静态文件服务 - pending_reviews 目录
 // ========== 用户认证 API — 用户名+密码 ==========
 
+// ========== 用户认证 API — 用户名+密码 + 角色体系 ==========
+
 // 注册
 app.post('/api/auth/register', (req, res) => {
   const { username, password } = req.body;
   const result = auth.handleRegister(username, password);
-  if (!result.success) {
-    return res.status(400).json(result);
-  }
+  if (!result.success) return res.status(400).json(result);
   res.json(result);
 });
 
@@ -29,139 +29,79 @@ app.post('/api/auth/register', (req, res) => {
 app.post('/api/auth/login', (req, res) => {
   const { username, password } = req.body;
   const result = auth.handleLogin(username, password);
-  if (!result.success) {
-    return res.status(401).json(result);
-  }
+  if (!result.success) return res.status(401).json(result);
   res.json(result);
 });
 
-// 设置密码（已废弃，注册时即设密码）
-app.post('/api/auth/set-password', (req, res) => {
-  res.status(410).json({ success: false, error: '注册时已设置密码，无需再次设置' });
-});
-
-// 鉴权检查（返回当前用户状态）
-app.get('/api/auth/me', (req, res) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ') || authHeader === 'Bearer test') {
-    return res.json({ user: null });
-  }
-  const token = authHeader.split(' ')[1];
-  const payload = auth.verifyToken(token);
-  if (!payload) {
-    return res.json({ user: null });
-  }
-  const status = auth.getSubscriptionStatus(payload.userId);
+// 当前用户信息（游客也可调用）
+app.get('/api/auth/me', auth.requireRole('guest'), (req, res) => {
+  if (!req.user) return res.json({ user: null, role: 'guest' });
+  const status = auth.getSubscriptionStatus(req.user.userId);
   res.json({
-    user: { id: payload.userId, username: payload.username },
+    user: { id: req.user.userId, username: req.user.username, role: req.userRole },
     subscription: status
   });
 });
 
-// 兼容旧API — 手机验证码（已废弃）
-app.post('/api/auth/send-code', (req, res) => {
-  res.status(410).json({ success: false, error: '已改用用户名+密码注册，请使用 /api/auth/register' });
-});
-app.post('/api/auth/verify-register', (req, res) => {
-  res.status(410).json({ success: false, error: '已改用用户名+密码注册，请使用 /api/auth/register' });
-});
-app.post('/api/auth/verify-login', (req, res) => {
-  res.status(410).json({ success: false, error: '已改用用户名+密码登录，请使用 /api/auth/login' });
-});
-app.post('/api/auth/password-login', (req, res) => {
-  res.status(410).json({ success: false, error: '已改用用户名+密码登录，请使用 /api/auth/login' });
-});
-
-// 获取订阅状态
-app.get('/api/auth/status', (req, res) => {
-  const authHeader = req.headers.authorization;
-  // 测试模式：无需token，返回已订阅
-  if (!authHeader || !authHeader.startsWith('Bearer ') || authHeader === 'Bearer test') {
-    return res.json({
-      success: true,
-      subscribed: true,
-      plan: 'monthly',
-      expires_at: '2099-12-31',
-      reason: 'test_mode'
-    });
-  }
-
-  const token = authHeader.split(' ')[1];
-  const payload = auth.verifyToken(token);
-  if (!payload) {
-    return res.status(401).json({ error: 'token无效或已过期' });
-  }
-
-  const status = auth.getSubscriptionStatus(payload.userId);
-  res.json({ success: true, ...status });
-});
-
-// 检查节点访问权限
-// 测试模式：无需登录，所有节点均可访问
-app.get('/api/access/:slug', (req, res) => {
-  const authHeader = req.headers.authorization;
-
-  // 测试模式：无token时允许访问所有节点
-  if (!authHeader || !authHeader.startsWith('Bearer ') || authHeader === 'Bearer test') {
-    return res.json({
-      success: true,
-      can_access: true,
-      reason: 'test_mode'
-    });
-  }
-
-  const token = authHeader.split(' ')[1];
-  const payload = auth.verifyToken(token);
-  if (!payload) {
-    return res.status(401).json({ error: 'token无效或已过期' });
-  }
-
-  const access = auth.canAccessNode(payload.userId, req.params.slug);
+// 检查节点访问权限（游客也可调用）
+app.get('/api/access/:nodeId', auth.requireRole('guest'), (req, res) => {
+  const nodeId = parseInt(req.params.nodeId);
+  if (isNaN(nodeId)) return res.status(400).json({ success: false, error: '无效的节点ID' });
+  const access = auth.canAccessNode(req.user?.userId, nodeId);
   res.json({ success: true, ...access });
 });
 
-// 订阅
-// 测试模式：无需真实登录，提交任意plan即可
-app.post('/api/subscribe', (req, res) => {
-  const authHeader = req.headers.authorization;
-
-  // 测试模式：无需token，直接返回订阅成功
-  if (!authHeader || !authHeader.startsWith('Bearer ') || authHeader === 'Bearer test') {
-    return res.json({
-      success: true,
-      subscribed: true,
-      plan: req.body.plan || 'monthly',
-      reason: 'test_mode'
-    });
-  }
-
-  const token = authHeader.split(' ')[1];
-  const payload = auth.verifyToken(token);
-  if (!payload) {
-    return res.status(401).json({ error: 'token无效或已过期' });
-  }
-
+// 订阅（需要 free 以上）
+app.post('/api/subscribe', auth.requireRole('free'), (req, res) => {
   const { plan } = req.body;
   if (!['monthly', 'yearly'].includes(plan)) {
-    return res.status(400).json({ error: '无效的订阅计划' });
+    return res.status(400).json({ success: false, error: '无效的订阅计划' });
   }
-
-  const result = auth.createSubscription(payload.userId, plan);
+  const result = auth.createSubscription(req.user.userId, plan);
   res.json(result);
 });
 
-// 支付占位符
-app.post('/api/pay/subscribe', (req, res) => {
-  // 占位符：实际支付对接时替换
-  res.json({
-    success: true,
-    message: '支付mock成功',
-    mock: true,
-    order_id: 'MOCK_' + Date.now()
-  });
+// 用户列表（仅管理员）
+app.get('/api/admin/users', auth.requireRole('admin'), (req, res) => {
+  const fs = require('fs');
+  const path = require('path');
+  const usersPath = path.join(__dirname, '..', 'data', 'users.json');
+  const users = JSON.parse(fs.readFileSync(usersPath, 'utf-8'));
+  const safe = users.map(u => ({ id: u.id, username: u.username, role: u.role, created_at: u.created_at }));
+  res.json({ success: true, data: safe });
 });
 
-// 微信支付配置
+// 设置用户角色（仅管理员）
+app.post('/api/admin/set-role', auth.requireRole('admin'), (req, res) => {
+  const { userId, role } = req.body;
+  if (!['free', 'paid', 'admin'].includes(role)) {
+    return res.status(400).json({ success: false, error: '无效的角色' });
+  }
+  const fs = require('fs');
+  const path = require('path');
+  const usersPath = path.join(__dirname, '..', 'data', 'users.json');
+  const users = JSON.parse(fs.readFileSync(usersPath, 'utf-8'));
+  const user = users.find(u => u.id === userId);
+  if (!user) return res.status(404).json({ success: false, error: '用户不存在' });
+  user.role = role;
+  user.updated_at = new Date().toISOString();
+  fs.writeFileSync(usersPath, JSON.stringify(users, null, 2));
+  res.json({ success: true });
+});
+
+// 兼容旧API（已废弃）
+app.post('/api/auth/send-code', (req, res) => {
+  res.status(410).json({ success: false, error: '已改用用户名+密码，请使用 /api/auth/register' });
+});
+app.post('/api/auth/verify-register', (req, res) => {
+  res.status(410).json({ success: false, error: '已改用用户名+密码，请使用 /api/auth/register' });
+});
+app.post('/api/auth/verify-login', (req, res) => {
+  res.status(410).json({ success: false, error: '已改用用户名+密码，请使用 /api/auth/login' });
+});
+app.post('/api/auth/password-login', (req, res) => {
+  res.status(410).json({ success: false, error: '已改用用户名+密码，请使用 /api/auth/login' });
+});
 const WXPAY_MCH_ID = process.env.WXPAY_MCH_ID || '';
 const WXPAY_MCH_KEY = process.env.WXPAY_MCH_KEY || '';
 const WXPAY_APP_ID = process.env.WXPAY_APP_ID || '';
