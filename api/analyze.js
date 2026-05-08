@@ -13,96 +13,68 @@ app.use(cors());
 app.use(express.json());
 
 // 静态文件服务 - pending_reviews 目录
-app.use('/pending_reviews', express.static(path.join(__dirname, '..', 'pending_reviews')));
+// ========== 用户认证 API — 用户名+密码 ==========
 
-// ========== 用户认证 API ==========
-
-// 发送验证码
-app.post('/api/auth/send-code', async (req, res) => {
-  const { phone } = req.body;
-  if (!phone) {
-    return res.status(400).json({ success: false, error: '手机号不能为空' });
-  }
-  const result = await auth.handleSendCode(phone);
+// 注册
+app.post('/api/auth/register', (req, res) => {
+  const { username, password } = req.body;
+  const result = auth.handleRegister(username, password);
   if (!result.success) {
     return res.status(400).json(result);
   }
   res.json(result);
 });
 
-// 验证码注册
-app.post('/api/auth/verify-register', async (req, res) => {
-  const { phone, code, password } = req.body;
-  if (!phone || !code) {
-    return res.status(400).json({ success: false, error: '手机号和验证码不能为空' });
-  }
-  const result = await auth.handleVerifyAndRegister(phone, code, password);
-  if (!result.success) {
-    return res.status(400).json(result);
-  }
-  res.json(result);
-});
-
-// 验证码登录
-app.post('/api/auth/verify-login', async (req, res) => {
-  const { phone, code } = req.body;
-  if (!phone || !code) {
-    return res.status(400).json({ success: false, error: '手机号和验证码不能为空' });
-  }
-  const result = await auth.handleVerifyAndLogin(phone, code);
+// 登录
+app.post('/api/auth/login', (req, res) => {
+  const { username, password } = req.body;
+  const result = auth.handleLogin(username, password);
   if (!result.success) {
     return res.status(401).json(result);
   }
   res.json(result);
 });
 
-// 密码登录（已有账号）
-app.post('/api/auth/password-login', async (req, res) => {
-  const { phone, password } = req.body;
-  if (!phone || !password) {
-    return res.status(400).json({ success: false, error: '手机号和密码不能为空' });
-  }
-  const result = await auth.handlePasswordLogin(phone, password);
-  if (!result.success) {
-    return res.status(401).json(result);
-  }
-  res.json(result);
+// 设置密码（已废弃，注册时即设密码）
+app.post('/api/auth/set-password', (req, res) => {
+  res.status(410).json({ success: false, error: '注册时已设置密码，无需再次设置' });
 });
 
-// 设置密码
-app.post('/api/auth/set-password', async (req, res) => {
-  const { password } = req.body;
+// 鉴权检查（返回当前用户状态）
+app.get('/api/auth/me', (req, res) => {
   const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: '未登录' });
+  if (!authHeader || !authHeader.startsWith('Bearer ') || authHeader === 'Bearer test') {
+    return res.json({ user: null });
   }
   const token = authHeader.split(' ')[1];
   const payload = auth.verifyToken(token);
   if (!payload) {
-    return res.status(401).json({ error: 'token无效或已过期' });
+    return res.json({ user: null });
   }
-  const result = await auth.handleSetPassword(payload.userId, password);
-  if (!result.success) {
-    return res.status(400).json(result);
-  }
-  res.json(result);
+  const status = auth.getSubscriptionStatus(payload.userId);
+  res.json({
+    user: { id: payload.userId, username: payload.username },
+    subscription: status
+  });
 });
 
-// 兼容旧API - 邮箱注册（保留但废弃）
-app.post('/api/auth/register', (req, res) => {
-  res.status(410).json({ success: false, error: '此接口已废弃，请使用手机号+验证码注册' });
+// 兼容旧API — 手机验证码（已废弃）
+app.post('/api/auth/send-code', (req, res) => {
+  res.status(410).json({ success: false, error: '已改用用户名+密码注册，请使用 /api/auth/register' });
+});
+app.post('/api/auth/verify-register', (req, res) => {
+  res.status(410).json({ success: false, error: '已改用用户名+密码注册，请使用 /api/auth/register' });
+});
+app.post('/api/auth/verify-login', (req, res) => {
+  res.status(410).json({ success: false, error: '已改用用户名+密码登录，请使用 /api/auth/login' });
+});
+app.post('/api/auth/password-login', (req, res) => {
+  res.status(410).json({ success: false, error: '已改用用户名+密码登录，请使用 /api/auth/login' });
 });
 
-// 兼容旧API - 邮箱登录（保留但废弃）
-app.post('/api/auth/login', (req, res) => {
-  res.status(410).json({ success: false, error: '此接口已废弃，请使用手机号+验证码登录' });
-});
-
-// 获取当前用户订阅状态
-// 测试模式：无需登录，返回已订阅状态
-app.get('/api/subscription', (req, res) => {
+// 获取订阅状态
+app.get('/api/auth/status', (req, res) => {
   const authHeader = req.headers.authorization;
-
   // 测试模式：无需token，返回已订阅
   if (!authHeader || !authHeader.startsWith('Bearer ') || authHeader === 'Bearer test') {
     return res.json({

@@ -27,8 +27,6 @@
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
-    "marked": "^18.0.3",
-    "redis": "^5.12.1",
-    "tencentcloud-sdk-nodejs": "^4.1.226"
+    "marked": "^18.0.3"
   }
 }
