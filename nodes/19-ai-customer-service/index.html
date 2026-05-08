@@ -503,7 +503,6 @@ body {
   display: grid;
   grid-template-columns: 24px 1fr;
   gap: var(--space-md);
-  margin-bottom: var(--space-md);
   font-size: 13px;
   color: var(--text-secondary);
   line-height: 1.5;
@@ -711,47 +710,47 @@ body {
       <div class="hero-content">
         <div class="hero-label">节点 19 · 0-1</div>
         <h1 class="hero-title">AI客户服务体系</h1>
-        <p class="hero-desc">自动回复、常见问题、AI客服，用自动化解决80%的客服问题</p>
+        <p class="hero-desc">用Agentic AI + RAG自动化解决80%客服问题，2026年成本仅需$15-50/月</p>
       </div>
     </header>
 
     <!-- 维度一：三层架构 -->
     <section class="dim-section fade-section">
       <span class="dim-badge">维度一</span>
-      <h2 class="dim-question">AI客服体系不是"自动回复插件"，是什么？</h2>
+      <h2 class="dim-question">2026年AI客服体系的核心架构是什么？</h2>
       <div class="dim1-layout">
         <div class="insight-col">
           <div class="dim1-insight">
             <div class="insight-label">认知跃迁</div>
-            <div class="insight-title">从"客服工具"到"服务代理网络"</div>
-            <div class="insight-desc">2025-2026年的AI服务体系是由LLM、垂直AI Agent、低代码自动化管线、创始人决策中枢共同构成的有机生命体。它克隆并延展了创始人的感官与执行力。</div>
+            <div class="insight-title">从"自动回复"到"Agentic AI"</div>
+            <div class="insight-desc">2026年的AI客服已从规则引擎转向Agentic AI + RAG + Tool Calling。GPT-4.1、Claude Opus 4.6、Gemini 3.1成为主流，幻觉率从8%降至1%以下。70-85%的L1 ticket可自动处理，平均解决时间90秒 vs 人类的12-24小时。</div>
           </div>
           <div class="dim1-insight">
-            <div class="insight-label">第一层 · 全域触达</div>
-            <div class="insight-title">全渠道感知层</div>
-            <div class="insight-desc">全渠道聚合器，实时监听WhatsApp、邮箱、微信、官网。能区分"新合作意向"还是"账单问询"，解决"一个人无法同时出现在多个地点"的物理限制。</div>
+            <div class="insight-label">第一层 · 感知</div>
+            <div class="insight-title">全渠道聚合</div>
+            <div class="insight-desc">Web Chat + Email + WhatsApp + 电话 + 短信 + 社媒，一个后台聚合所有触点。AI同时处理5+渠道，不漏掉任何客户接触。</div>
           </div>
           <div class="dim1-insight">
-            <div class="insight-label">第二层 · 认知中枢</div>
-            <div class="insight-title">RAG推理引擎</div>
-            <div class="insight-desc">基于RAG技术的"第二大脑"。读取Notion、Google Drive里的产品文档、合同模板、FAQ进行实时语义理解。客户说"那个东西又不行了"，AI直接调取解决方案。</div>
+            <div class="insight-label">第二层 · 认知</div>
+            <div class="insight-title">RAG + 意图识别引擎</div>
+            <div class="insight-desc">混合检索（BM25 + 向量 + Reranking）确保答案准确。读取知识库文档、FAQ、历史工单，语义理解后生成回复，附带信息来源。</div>
           </div>
         </div>
         <div class="layer-stack">
           <div class="layer-card green">
-            <div class="layer-label">全域感知层</div>
-            <div class="layer-name">全渠道聚合器</div>
-            <div class="layer-desc">同时监听所有数字触点，区分意图类型，打上生命周期标签。</div>
+            <div class="layer-label">执行层</div>
+            <div class="layer-name">Tool Calling 自动化</div>
+            <div class="layer-desc">退款、修改地址、重置密码、创建工单——AI直接执行操作，无需人工介入。全链路自动化，4-8步Tool调用不幻觉。</div>
           </div>
           <div class="layer-card green">
-            <div class="layer-label">认知中枢层</div>
+            <div class="layer-label">认知层</div>
             <div class="layer-name">RAG + 意图识别</div>
-            <div class="layer-desc">语义理解 + 知识库检索 + API执行，将回答和动作在对话中完成闭环。</div>
+            <div class="layer-desc">语义理解 + 知识库检索 + 多轮对话，复杂问题也能自动推理解决。</div>
           </div>
           <div class="layer-card muted">
-            <div class="layer-label">人类终决层</div>
-            <div class="layer-name">阈值触发接管</div>
-            <div class="layer-desc">置信度低于85%、检测到愤怒情绪、涉及大额交易时，召唤创始人介入。</div>
+            <div class="layer-label">终决层</div>
+            <div class="layer-name">置信度阈值触发</div>
+            <div class="layer-desc">置信度低于85%、涉及情绪、敏感话题、大额交易——自动召唤创始人，附完整上下文。</div>
           </div>
         </div>
       </div>
@@ -760,68 +759,71 @@ body {
     <!-- 维度二：五层工具 -->
     <section class="dim-section fade-section">
       <span class="dim-badge">维度二</span>
-      <h2 class="dim-question">五层工具如何像血管一样互相连通？</h2>
+      <h2 class="dim-question">2026年OPC的AI客服工具栈怎么搭？</h2>
       <div class="dim2-layout">
         <div class="tool-row">
           <div class="tool-index">一</div>
           <div class="tool-content">
             <div class="tool-label">收件箱</div>
-            <div class="tool-name">全渠道聚合</div>
-            <div class="tool-desc">Missive或Crisp，把邮件、即时聊天、社媒私信熔铸在单一界面。告别多后台切换。</div>
+            <div class="tool-name">全渠道统一管理</div>
+            <div class="tool-desc">一个后台聚合所有客户触点：网页聊天、邮件、微信、WhatsApp、电话。告别多后台切换，所有对话统一管理。</div>
           </div>
           <div class="tool-tools">
-            <span>Missive</span>
+            <span>Intercom</span>
             <span>Crisp</span>
+            <span>Zendesk</span>
           </div>
         </div>
         <div class="tool-row">
           <div class="tool-index">二</div>
           <div class="tool-content">
-            <div class="tool-label">AI大脑</div>
-            <div class="tool-name">GPT-4o定制助手</div>
-            <div class="tool-desc">专属知识库训练，7×24小时以设定语气回答。自动判断询价/技术支持/合作邀约。</div>
+            <div class="tool-label">AI引擎</div>
+            <div class="tool-name">Agentic RAG 系统</div>
+            <div class="tool-desc">基于私有知识库的AI客服，能检索、会话、查上下文。接入GPT-4.1/Claude 4/Gemini 3，答案附来源可追溯。</div>
           </div>
           <div class="tool-tools">
-            <span>GPT-4o</span>
-            <span>Lindy AI</span>
-            <span>Zapier</span>
+            <span>OpenClaw</span>
+            <span>Coze</span>
+            <span>LangChain</span>
           </div>
         </div>
         <div class="tool-row">
           <div class="tool-index">三</div>
           <div class="tool-content">
-            <div class="tool-label">自动化</div>
-            <div class="tool-name">工作流引擎</div>
-            <div class="tool-desc">"客户签约→自动开票→AI发送onboarding材料→7天后AI跟进"，全程无需打开后台。</div>
+            <div class="tool-label">知识库</div>
+            <div class="tool-name">RAG向量数据库</div>
+            <div class="tool-desc">FAQ、产品文档、政策条款、历史工单全部向量化。相似问题语义匹配，95%+准确检索。</div>
           </div>
           <div class="tool-tools">
-            <span>Make</span>
-            <span>n8n</span>
+            <span>Pinecone</span>
+            <span>Milvus</span>
+            <span>Weaviate</span>
           </div>
         </div>
         <div class="tool-row">
           <div class="tool-index">四</div>
           <div class="tool-content">
-            <div class="tool-label">知识库</div>
-            <div class="tool-name">Notion + HelpKit</div>
-            <div class="tool-desc">Notion管理内部文档，HelpKit一键生成对外知识库网站。AI回答可溯源至具体段落。</div>
+            <div class="tool-label">自动化</div>
+            <div class="tool-name">工作流编排</div>
+            <div class="tool-desc">线索清洗→AI跟进→工单创建→自动路由，全流程无需人工。n8n/Zapier串联所有工具。</div>
           </div>
           <div class="tool-tools">
-            <span>Notion</span>
-            <span>HelpKit</span>
-            <span>Pinecone</span>
+            <span>n8n</span>
+            <span>Zapier</span>
+            <span>Make</span>
           </div>
         </div>
         <div class="tool-row">
           <div class="tool-index">五</div>
           <div class="tool-content">
-            <div class="tool-label">高光时刻</div>
-            <div class="tool-name">个性化触达工具</div>
-            <div class="tool-desc">Loom AI录制个性化视频，Bonjoro AI批量发送定制化祝福。AI守底线，人创峰值。</div>
+            <div class="tool-label">语音+电话</div>
+            <div class="tool-name">AI电话接待（可选）</div>
+            <div class="tool-desc">24/7电话AI接待，漏接来电自动补呼。$49/月起，适合高频电话业务。</div>
           </div>
           <div class="tool-tools">
-            <span>Loom AI</span>
-            <span>Bonjoro</span>
+            <span>Trillet</span>
+            <span>Vapi</span>
+            <span>Twilio</span>
           </div>
         </div>
       </div>
@@ -830,22 +832,22 @@ body {
     <!-- 维度三：成本控制 -->
     <section class="dim-section fade-section">
       <span class="dim-badge">维度三</span>
-      <h2 class="dim-question">一人公司如何把成本控制在50美元/月以内？</h2>
+      <h2 class="dim-question">2026年OPC的AI客服真实成本是多少？</h2>
       <div class="dim3-layout">
         <div class="cost-highlight">
           <div class="cost-number">$50</div>
-          <div class="cost-unit">美元 / 月</div>
-          <div class="cost-target">500+月均对话</div>
+          <div class="cost-unit">美元 / 月起</div>
+          <div class="cost-target">覆盖80%客服量</div>
+        </div>
+        <div class="pitfall-block green">
+          <div class="pitfall-label">2026新价格</div>
+          <div class="pitfall-title">全栈方案 $99-299/月</div>
+          <div class="pitfall-desc">ConvoCore/Autoflowly等平台提供完整AI客服：收件箱+AI+RAG+自动化+数据分析，一站式解决。</div>
         </div>
         <div class="pitfall-block red">
           <div class="pitfall-label">陷阱</div>
-          <div class="pitfall-title">Token计费线性飙升</div>
-          <div class="pitfall-desc">单次对话中，如果AI调取的知识库片段过长、对话轮次无节制，费用会不知不觉飙升。必须设置硬性每日/每月消费上限。</div>
-        </div>
-        <div class="pitfall-block green">
-          <div class="pitfall-label">解法</div>
-          <div class="pitfall-title">语义缓存机制</div>
-          <div class="pitfall-desc">对高频相似问询（如"怎么重置密码？"），启用语义缓存。当余弦相似度达95%以上时，直接返回已生成的历史回答，不再重新调用模型。</div>
+          <div class="pitfall-title">Token成本失控</div>
+          <div class="pitfall-desc">无限制对话、不做缓存、每次重读全部历史——月度账单可能从$50飙到$500。必须设置消费上限。</div>
         </div>
       </div>
     </section>
@@ -853,25 +855,25 @@ body {
     <!-- 维度四：信任信号 -->
     <section class="dim-section fade-section">
       <span class="dim-badge">维度四</span>
-      <h2 class="dim-question">如何让客户接受并信任AI服务体系？</h2>
+      <h2 class="dim-question">如何让客户接受并信任AI客服？</h2>
       <div class="dim4-layout">
         <div class="trust-card">
           <div class="trust-icon">◉</div>
-          <div class="trust-label">透明</div>
-          <div class="trust-title">永远不伪装AI为真人</div>
-          <div class="trust-desc">客户不反感AI，客户反感的是"被欺骗"和"没人管"。透明声明反而提升信任，因为给了客户确定感。</div>
+          <div class="trust-label">透明声明</div>
+          <div class="trust-title">主动告知AI身份</div>
+          <div class="trust-desc">"我是[姓名]的AI助理，7×24小时在线，他会定期查看我们的记录"——透明带来信任，而非反感。</div>
         </div>
         <div class="trust-card">
           <div class="trust-icon">◈</div>
-          <div class="trust-label">掌控</div>
-          <div class="trust-title">标准信任信号话术</div>
-          <div class="trust-desc">AI首句："我是[创始人姓名]的AI助理，他/她随时能看到我们的记录"。服务界面常驻"转人工"按钮。</div>
+          <div class="trust-label">实时掌控</div>
+          <div class="trust-title">"转人工"按钮常驻</div>
+          <div class="trust-desc">客户知道真人在后台兜底，容忍度提升40%以上。置信度低于85%时自动暂停，等待人工确认。</div>
         </div>
         <div class="trust-card">
           <div class="trust-icon">◇</div>
-          <div class="trust-label">接管</div>
-          <div class="trust-title">负面情绪阈值触发</div>
-          <div class="trust-desc">当AI检测到客户连续两次表达不满，立即暂停自动化，发送"创始人将亲自在2小时内回复"，同时推送完整上下文到你手机。</div>
+          <div class="trust-label">情绪检测</div>
+          <div class="trust-title">负面情绪自动升级</div>
+          <div class="trust-desc">AI检测到连续负面表达，立即暂停自动化，发送"创始人将在2小时内亲自回复"，附完整上下文推送。</div>
         </div>
       </div>
     </section>
@@ -879,12 +881,12 @@ body {
     <!-- 维度五：知识库运营 -->
     <section class="dim-section fade-section">
       <span class="dim-badge">维度五</span>
-      <h2 class="dim-question">知识库如何成为"活水"而非一次性摆设？</h2>
+      <h2 class="dim-question">知识库如何保持"活水"而非衰减？</h2>
       <div class="dim5-layout">
         <div class="cycle-section">
           <div class="cycle-header">每周巡检闭环</div>
-          <div class="cycle-title">周日30分钟知识栈审查</div>
-          <div class="cycle-desc">审阅AI自动标记的"无法回答问题"、"低置信度回答"、"客户负面反馈指向的对话"，批处理作答并同步回Notion。</div>
+          <div class="cycle-title">周日30分钟知识栈维护</div>
+          <div class="cycle-desc">AI自动标记"无法回答问题"、"低置信度回答"、"客户负面反馈指向的对话"，批处理作答并同步回知识库。</div>
           <div class="cycle-items">
             <div class="cycle-item">
               <div class="cycle-dot"></div>
@@ -896,29 +898,29 @@ body {
             </div>
             <div class="cycle-item">
               <div class="cycle-dot"></div>
-              <div>处理客户负面反馈对话</div>
+              <div>处理客户负面反馈</div>
             </div>
             <div class="cycle-item">
               <div class="cycle-dot"></div>
-              <div>同步更新至Notion</div>
+              <div>同步更新至向量数据库</div>
             </div>
           </div>
         </div>
         <div class="sidebar-notes">
           <div class="note-block red">
-            <div class="note-label">陷阱</div>
+            <div class="note-label">致命陷阱</div>
             <div class="note-title">知识库衰减</div>
-            <div class="note-desc">一份过时的退款政策文档，会导致AI作出错误承诺，给一人公司带来法律与金钱风险。</div>
+            <div class="note-desc">过时的退款政策+AI客服=错误承诺=法律风险。知识库必须与实际业务同步更新。</div>
           </div>
           <div class="note-block green">
             <div class="note-label">目标</div>
-            <div class="note-title">人工介入率降至5%</div>
-            <div class="note-desc">三个月后，人工介入率可从初期的20%降至5%以下。</div>
+            <div class="note-title">3个月达85%自动化</div>
+            <div class="note-desc">人工介入率从初期20%降至5%以下。AI越学越聪明，知识库越用越准。</div>
           </div>
           <div class="note-block muted">
             <div class="note-label">护城河</div>
-            <div class="note-title">AI无法回答的 → 你的价值</div>
-            <div class="note-desc">那些需要创始人独特洞察的问题，正是服务体系的差异化所在。</div>
+            <div class="note-title">AI无法答的=你的价值</div>
+            <div class="note-desc">需要创始人独特洞察的问题，是服务体系的差异化所在——这才是护城河。</div>
           </div>
         </div>
       </div>
@@ -927,27 +929,27 @@ body {
     <!-- 维度六：人机分工 -->
     <section class="dim-section fade-section">
       <span class="dim-badge">维度六</span>
-      <h2 class="dim-question">哪些关键环节必须由创始人亲自处理？</h2>
+      <h2 class="dim-question">哪些必须创始人亲自处理？</h2>
       <div class="dim6-layout">
         <div class="ai-side">
           <div class="side-header">AI 处理</div>
           <div class="side-title">常规服务常态</div>
           <ul class="task-list">
             <li class="task-item">
-              <div class="task-name">常见问题回复</div>
+              <div class="task-name">FAQ问答</div>
               <div class="task-reason">可标准化，重复性高</div>
             </li>
             <li class="task-item">
               <div class="task-name">密码重置 / 退款触发</div>
-              <div class="task-reason">固定逻辑，API可执行</div>
+              <div class="task-reason">固定逻辑，API执行</div>
             </li>
             <li class="task-item">
-              <div class="task-name">订单状态查询</div>
+              <div class="task-name">订单状态 / 物流查询</div>
               <div class="task-reason">数据查询，即时响应</div>
             </li>
             <li class="task-item">
-              <div class="task-name">文档资料发送</div>
-              <div class="task-reason">自动化流程，节省人力</div>
+              <div class="task-name">线索清洗 / 分类评级</div>
+              <div class="task-reason">自动打分，转CRM</div>
             </li>
           </ul>
         </div>
@@ -956,20 +958,20 @@ body {
           <div class="side-title">关键时刻峰值</div>
           <ul class="task-list">
             <li class="task-item">
-              <div class="task-name">重要签约协商</div>
+              <div class="task-name">重要签约 / 价格谈判</div>
               <div class="task-reason">需要商业嗅觉和灵活性</div>
             </li>
             <li class="task-item">
-              <div class="task-name">严重故障道歉</div>
-              <div class="task-reason">情感修复需要人的温度</div>
+              <div class="task-name">严重故障 · 真诚道歉</div>
+              <div class="task-reason">一封语音留言远比AI文字有温度</div>
             </li>
             <li class="task-item">
-              <div class="task-name">客户周年庆祝</div>
-              <div class="task-reason">定制化表达无可替代</div>
-            </li>
-            <li class="task-item">
-              <div class="task-name">VIP客户深度维护</div>
+              <div class="task-name">VIP客户 · 深度维护</div>
               <div class="task-reason">高价值客户的情感连接</div>
+            </li>
+            <li class="task-item">
+              <div class="task-name">AI失误 · 亲自补救</div>
+              <div class="task-reason">AI犯错时创始人出面，信任修复</div>
             </li>
           </ul>
         </div>
@@ -980,7 +982,7 @@ body {
       <div class="fin-number">FIN</div>
       <div class="fin-text">
         <div class="fin-label">核心结论</div>
-        <h2 class="fin-title">AI负责守住日常，人在关键时刻制造惊喜。客户真正记住的，从来不是AI回答问题有多快，而是创业者在他们焦虑时打来的那通电话</h2>
+        <h2 class="fin-title">AI负责守住日常，人在关键时刻制造峰值体验。2026年的Agentic AI已能处理85%的常规客服，创始人终于可以从"客服地狱"中解放出来</h2>
       </div>
     </section>
 
