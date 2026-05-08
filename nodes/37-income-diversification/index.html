@@ -7,101 +7,323 @@
   <meta name="theme-color" content="#111110">
   <title>收入多元化 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #111110;
-      --surface: #1A1A18;
-      --text-primary: #F0EDE6;
-      --text-secondary: #7A7670;
-      --accent: #C0392B;
-      --line: #2A2A28;
-    }
-    body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; }
-    .loading { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-    .loading-bar { width: 100%; height: 1px; background: var(--line); position: relative; overflow: hidden; max-width: 200px; }
-    .loading-bar::after { content: ''; position: absolute; left: -50%; top: 0; width: 50%; height: 100%; background: var(--accent); animation: loading-slide 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite; }
-    @keyframes loading-slide { from { left: -50%; } to { left: 100%; } }
-    .content h1 { font-size: 1.75rem; font-weight: 300; margin-bottom: 1rem; }
-    .content h2 { font-size: 1.25rem; font-weight: 400; margin: 1.5rem 0 0.75rem; color: var(--text-primary); }
-    .content h3 { font-size: 1rem; font-weight: 500; margin: 1.25rem 0 0.5rem; color: var(--text-primary); }
-    .content p { line-height: 1.9; margin-bottom: 1rem; color: var(--text-secondary); }
-    .content ul, .content ol { margin: 1rem 0; padding-left: 1.5rem; color: var(--text-secondary); }
-    .content li { line-height: 1.8; margin-bottom: 0.5rem; }
-    .content strong { color: var(--text-primary); font-weight: 500; }
-    .content code { background: var(--surface); padding: 0.125rem 0.375rem; border-radius: 0.25rem; font-size: 0.875rem; }
-    .content pre { background: var(--surface); padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin: 1rem 0; }
-    .content pre code { background: none; padding: 0; }
-    .content blockquote { border-left: 3px solid var(--accent); padding-left: 1rem; margin: 1rem 0; color: var(--text-secondary); font-style: italic; }
-    .content hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
-    .content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-    .content th, .content td { border: 1px solid var(--line); padding: 0.75rem; text-align: left; }
-    .content th { background: var(--surface); color: var(--text-primary); }
-    .content td { color: var(--text-secondary); }
-    .content a { color: var(--accent); text-decoration: underline; }
-    .content input[type="checkbox"] { margin-right: 0.5rem; }
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #B8B4AE;
+  --text-tertiary: #A8A49E;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; font-weight: 400; line-height: 1.9; letter-spacing: 0.04em; -webkit-font-smoothing: antialiased; }
+
+.page { position: relative; max-width: 1200px; margin: 0 auto; padding: 0 clamp(24px, 8vw, 120px); min-height: 100vh; }
+.page::before { content: ''; position: absolute; top: 0; left: clamp(24px, 8vw, 120px); right: clamp(24px, 8vw, 120px); height: 1px; background: var(--line); }
+
+.section-number { position: absolute; top: var(--space-2xl); right: clamp(24px, 8vw, 120px); font-size: clamp(100px, 22vw, 280px); font-weight: 100; color: var(--text-primary); opacity: 0.03; line-height: 1; letter-spacing: -0.05em; font-family: 'Noto Serif JP', serif; pointer-events: none; user-select: none; }
+
+.back-link { position: fixed; top: var(--space-xl); left: clamp(24px, 8vw, 120px); z-index: 100; }
+.back-link a { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: color 0.3s ease; }
+.back-link a:hover { color: var(--text-primary); }
+
+.hero { padding: var(--space-4xl) 0 var(--space-3xl); position: relative; }
+.hero-content { position: relative; z-index: 1; max-width: 800px; }
+.hero-label { font-size: 13px; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-md); }
+.hero-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+.hero-title { font-family: 'Noto Serif JP', serif; font-size: clamp(48px, 10vw, 96px); font-weight: 300; letter-spacing: -0.03em; line-height: 0.95; margin-bottom: var(--space-xl); }
+.hero-desc { font-size: 16px; color: var(--text-secondary); line-height: 1.8; max-width: 44ch; }
+
+.dimensions-section { padding: var(--space-2xl) 0; border-top: 1px solid var(--line); }
+.section-label { font-size: 13px; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-md); }
+.section-label::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+
+.dimensions-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: var(--space-md); margin-bottom: var(--space-2xl); }
+@media (max-width: 900px) { .dimensions-grid { grid-template-columns: 1fr; } }
+
+.dim-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-md); position: relative; overflow: hidden; }
+.dim-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--accent); }
+.dim-badge { display: inline-block; font-size: 9px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-sm); border: 1px solid var(--accent); padding: 2px 8px; }
+.dim-title { font-family: 'Noto Serif JP', serif; font-size: 18px; font-weight: 400; color: var(--text-primary); margin-bottom: var(--space-xs); line-height: 1.3; }
+.dim-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+.content-section { padding: var(--space-3xl) 0; border-top: 1px solid var(--line); }
+.grid-asymmetric { display: grid; grid-template-columns: 1.2fr 1fr; gap: var(--space-3xl); align-items: start; }
+@media (max-width: 900px) { .grid-asymmetric { grid-template-columns: 1fr; gap: var(--space-2xl); } }
+
+.chapter-heading { font-family: 'Noto Serif JP', serif; font-size: clamp(28px, 5vw, 48px); font-weight: 300; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: var(--space-xl); max-width: 16em; }
+.body-text { font-size: 15px; line-height: 1.9; color: var(--text-secondary); max-width: 44ch; margin-bottom: var(--space-md); }
+.body-text strong { color: var(--text-primary); font-weight: 500; }
+.body-text .accent { color: var(--accent); font-weight: 500; }
+
+.answer-block { margin-bottom: var(--space-xl); }
+.answer-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: var(--space-sm); padding-bottom: var(--space-xs); border-bottom: 1px solid var(--line); }
+.answer-label.red { color: #E74C3C; border-color: rgba(231,76,60,0.3); }
+.answer-label.green { color: var(--accent); border-color: rgba(39,174,96,0.3); }
+.answer-label.blue { color: #3498DB; border-color: rgba(52,152,219,0.3); }
+
+.answer-content { padding-left: var(--space-md); border-left: 1px solid var(--line); }
+.answer-title { font-size: 15px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-xs); }
+.answer-text { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+
+.core-insight { margin: var(--space-xl) 0; padding-left: var(--space-md); border-left: 1px solid var(--accent); }
+.core-insight-text { font-size: 15px; color: var(--text-secondary); line-height: 1.7; max-width: 40ch; }
+
+.balance-section-title { font-family: 'Noto Serif JP', serif; font-size: clamp(28px, 5vw, 48px); font-weight: 300; letter-spacing: -0.02em; margin-bottom: var(--space-xl); }
+.balance-intro { font-size: 15px; color: var(--text-secondary); line-height: 1.8; max-width: 46ch; margin-bottom: var(--space-2xl); }
+.balance-intro strong { color: var(--text-primary); font-weight: 500; }
+
+.balance-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: var(--space-2xl); }
+@media (max-width: 768px) { .balance-grid { grid-template-columns: 1fr; gap: var(--space-xl); } }
+
+.balance-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-lg); }
+.balance-card-label { font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-md); padding-bottom: var(--space-sm); border-bottom: 1px solid var(--line); }
+.balance-card-label.positive { color: var(--accent); }
+.balance-card-label.negative { color: var(--text-tertiary); }
+
+.balance-item { padding: var(--space-sm) 0; border-bottom: 1px solid var(--line-light); font-size: 14px; color: var(--text-secondary); }
+.balance-item:last-child { border-bottom: none; }
+.balance-item.dim { color: var(--text-tertiary); }
+
+.summary-grid { display: grid; grid-template-columns: 1.5fr 1.2fr 0.8fr; gap: var(--space-xl); }
+@media (max-width: 900px) { .summary-grid { grid-template-columns: 1fr; gap: var(--space-lg); } }
+
+.summary-card { padding: var(--space-lg) 0; border-top: 1px solid var(--line); }
+.summary-num { font-family: 'Noto Serif JP', serif; font-size: 36px; font-weight: 300; color: var(--accent); margin-bottom: var(--space-sm); }
+.summary-title { font-size: 15px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-xs); }
+.summary-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+
+.footer-nav { padding: var(--space-2xl) 0; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
+.nav-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: color 0.3s ease; }
+.nav-link:hover { color: var(--text-primary); }
+.nav-arrow { font-size: 0.75rem; }
+
+.fade-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.fade-section.visible { opacity: 1; transform: translateY(0); }
+* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
   </style>
 </head>
 <body>
-  <div id="app" data-slug="income-diversification">
-    <div class="loading">
-      <div class="loading-bar"></div>
-    </div>
+  <div class="back-link">
+    <a href="/"><span>←</span> 返回首页</a>
   </div>
-  <script type="module">
-    const SLUG = "income-diversification";
+  <div class="section-number">37</div>
 
-    async function loadNode() {
-      try {
-        const res = await fetch("/api/nodes/" + SLUG);
-        if (!res.ok) throw new Error("Failed to load");
-        const data = await res.json();
-        renderNode(data);
-      } catch (e) {
-        document.getElementById("app").innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text-secondary)">加载失败</div>';
-      }
-    }
+  <div class="page">
+    <header class="hero">
+      <div class="hero-content">
+        <div class="hero-label">节点 37 · 10+</div>
+        <h1 class="hero-title">收入多元化</h1>
+        <p class="hero-desc">数字产品、课程、咨询多线并行，有稳定基础后开始打造被动收入</p>
+      </div>
+    </header>
 
-    function mdToHtml(md) {
-      if (!md) return '<p style="color:var(--text-secondary)">内容加载中...</p>';
-      let html = md
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/^### (.+)$/gm, "<h3>$1</h3>")
-        .replace(/^## (.+)$/gm, "<h2>$1</h2>")
-        .replace(/^# (.+)$/gm, "<h1>$1</h1>")
-        .replace(/**(.+?)**/g, "<strong>$1</strong>")
-        .replace(/^- (.+)$/gm, "<li>$1</li>")
-        .replace(/^\[ \] (.+)$/gm, "<div><input type="checkbox" disabled> $1</div>")
-        .replace(/^\[x\] (.+)$/gm, "<div><input type="checkbox" checked disabled> $1</div>")
-        .replace(/^\d+\. (.+)$/gm, "<li>$1</li>")
-        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
-        .replace(/^(?!<[a-z])(.+)$/gm, "<p>$1</p>")
-        .replace(/\n\n+/g, "\n");
-      html = html.replace(/(<li>.*<\/li>\n?)+/g, "<ul>$&</ul>");
-      return html;
-    }
+    <section class="dimensions-section fade-section">
+      <div class="section-label">核心维度</div>
+      <div class="dimensions-grid">
+        <div class="dim-card">
+          <span class="dim-badge">D1 核心</span>
+          <h3 class="dim-title">核心交付锁定</h3>
+          <p class="dim-desc">砍到只剩一个动作，锁定你能为客户解决的不变深层问题</p>
+        </div>
+        <div class="dim-card">
+          <span class="dim-badge">D2 本质</span>
+          <h3 class="dim-title">能力产品化矩阵</h3>
+          <p class="dim-desc">服务→模板→课程→社群，四种形态一次开发</p>
+        </div>
+        <div class="dim-card">
+          <span class="dim-badge">D3 模型</span>
+          <h3 class="dim-title">渠道分发模型</h3>
+          <p class="dim-desc">1个深度平台+N个分发渠道，内容一次生产多态输出</p>
+        </div>
+        <div class="dim-card">
+          <span class="dim-badge">D4 培育</span>
+          <h3 class="dim-title">多元收入陷阱</h3>
+          <p class="dim-desc">散、浅、急三大致命陷阱，同心圆扩展法则</p>
+        </div>
+        <div class="dim-card">
+          <span class="dim-badge">D5 避坑</span>
+          <h3 class="dim-title">同心圆扩展法则</h3>
+          <p class="dim-desc">90%深度+10%探索，新项目必须复用已有技能</p>
+        </div>
+        <div class="dim-card">
+          <span class="dim-badge">D6 决策</span>
+          <h3 class="dim-title">40/30/20/10法则</h3>
+          <p class="dim-desc">产品40%+服务30%+被动20%+实验10%，反脆弱收入结构</p>
+        </div>
+      </div>
+    </section>
 
-    function renderNode(node) {
-      const content = node.content || "";
-      const contentHtml = mdToHtml(content);
-      document.getElementById("app").innerHTML = `
-        <div style="max-width:800px;margin:0 auto;padding:2rem 1.25rem;">
-          <a href="/" style="color:var(--text-secondary);font-size:0.75rem;letter-spacing:0.1em;text-decoration:none;">← 返回首页</a>
-          <div style="margin-top:2rem;">
-            <div style="color:var(--accent);font-size:0.625rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;">${node.data?.category || ""} · ${node.data?.difficulty || ""}</div>
-            <h1 style="font-size:clamp(1.5rem,5vw,2.5rem);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;">${node.data?.title || ""}</h1>
-            <p style="color:var(--text-secondary);line-height:1.9;">${node.data?.summary || ""}</p>
+    <section class="content-section fade-section">
+      <div class="section-label">节点内容</div>
+      <div class="grid-asymmetric">
+        <div>
+          <h2 class="chapter-heading">从混乱到系统：五步构建你的收入画布</h2>
+          <p class="body-text">一人公司创业的收入多元化，不是多打几份工，而是一次核心资产的深度复利。构建一个能自我造血、自我扩张的"有机体"。</p>
+
+          <div class="answer-block">
+            <div class="answer-label">节点一：核心交付</div>
+            <div class="answer-content">
+              <p class="answer-title">砍到只剩一个动作</p>
+              <p class="answer-text">2026年市场对泛泛之辈的容忍度已趋近于零。你需要把解决问题的能力压缩到一个具体的、可描述的动作上。"我帮助（特定人群）解决（一个具体问题），让他们获得（一个可衡量的结果）。"</p>
+            </div>
           </div>
-          <div class="content" style="margin-top:2rem;padding-top:2rem;border-top:1px solid var(--line);">
-            ${contentHtml}
+
+          <div class="answer-block">
+            <div class="answer-label">节点二：产品化</div>
+            <div class="answer-content">
+              <p class="answer-title">让核心交付脱离你的时间</p>
+              <p class="answer-text">产品化的本质不是"做一个课程"，而是把你服务中的共性部分提取出来，形成可复用的载体。记录你最近10次咨询中被问到的前三个重复问题，把答案做成操作清单、计算表格或10分钟录屏讲解。</p>
+            </div>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">节点三：流量管道</div>
+            <div class="answer-content">
+              <p class="answer-title">做透一个，再复制三个</p>
+              <p class="answer-text">选定一个平台，每周产出2-3条深度内容，坚持12周。当主要渠道流量开始稳定转化，才进入分发阶段，用AI工具将一篇长文转写为短视频脚本、图文卡片、播客要点。</p>
+            </div>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">节点四：信任与转化</div>
+            <div class="answer-content">
+              <p class="answer-title">用成果案例代替推销</p>
+              <p class="answer-text">最有效的载体是"客户成果复盘"：客户最初的卡点是什么，你用了什么方法，最终产生了什么量化改变。每服务完一个客户，第一件事就是完成这份复盘文档。</p>
+            </div>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">节点五：复购与第二曲线</div>
+            <div class="answer-content">
+              <p class="answer-title">围绕同一批客户做延伸</p>
+              <p class="answer-text">"同心圆扩展"：以内核交付为中心，第一圈是消耗品（如执行工具包），第二圈是升级版（如进阶训练营），第三圈是会员服务（如行业情报解读），最外圈是跨界合作。</p>
+            </div>
           </div>
         </div>
-      `;
-    }
 
-    loadNode();
+        <div>
+          <div class="answer-block">
+            <div class="answer-label red">错误示范</div>
+            <div class="answer-content">
+              <p class="answer-title">把"多管闲事"当"多元收入"</p>
+              <p class="answer-text">看到他人做数码评测获得可观收入，便轻易放弃了自己深耕多年的出海合规咨询主业，转型去做流量评测。这种离心式跳跃会让你瞬间丧失所有累积的信用资产。</p>
+            </div>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label red">错误示范</div>
+            <div class="answer-content">
+              <p class="answer-title">产品未验证前过度依赖自动化</p>
+              <p class="answer-text">花费一个月精心设置复杂的邮件自动营销序列和AI聊天机器人，结果第一个付费客户反馈你的标准品根本没解决他的核心痛点。先有人工交付的完美原型，才可能有自动交付的规模。</p>
+            </div>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label green">正确示范</div>
+            <div class="answer-content">
+              <p class="answer-title">同心圆式扩展</p>
+              <p class="answer-text">专做海外社媒代运营的OPC，第二收入曲线可以是：社媒内容模板包（复用技能）、社媒数据分析看板（工具延伸）、面向同批客户的付费教程（知识变现）。所有管道共享同一个内核。</p>
+            </div>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label blue">数据洞察</div>
+            <div class="answer-content">
+              <p class="answer-title">2026年OPC收入结构</p>
+              <p class="answer-text">40%产品收入（数字商品与会员费，利润最高）<br>30%服务收入（高价咨询，现金流压舱石）<br>20%被动合作收入（联盟营销、授权费，边际成本趋近于零）<br>10%实验性收入（新赛道最小可行性测试）</p>
+            </div>
+          </div>
+
+          <div class="core-insight">
+            <p class="core-insight-text"><strong>核心洞察：</strong>收入多元化不是给你自己找更多的工作，而是为你唯一的资产——你脑子里的知识——打造多个无需你亲自值守就能运转的收银台。你依然独自一人，但你创造的价值开始在不同的时区、以不同的货币、24小时不间断地为你工作。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section fade-section">
+      <div class="section-label">决策矩阵</div>
+      <h2 class="balance-section-title">做与不做的balance grid</h2>
+      <p class="balance-intro">收入多元化的关键不在于项目数量，而在于扩展方式。<strong>"同心圆式扩展"</strong>是唯一安全的多元化路径。</p>
+
+      <div class="balance-grid">
+        <div class="balance-card">
+          <div class="balance-card-label positive">做</div>
+          <div class="balance-item">核心交付已连续三个月满负荷</div>
+          <div class="balance-item">客户开始自发推荐你</div>
+          <div class="balance-item">新项目复用已有技能或客户群</div>
+          <div class="balance-item">单位时间回报率高于核心服务</div>
+          <div class="balance-item">AI工具能承接80%重复事务</div>
+          <div class="balance-item">拥有6个月生活成本现金储备</div>
+        </div>
+        <div class="balance-card">
+          <div class="balance-card-label negative">不做</div>
+          <div class="balance-item dim">核心交付还未标准化（60%流程靠你亲自处理）</div>
+          <div class="balance-item dim">客户获取依赖偶然爆款或人脉</div>
+          <div class="balance-item dim">新项目与原有核心能力完全割裂</div>
+          <div class="balance-item dim">增长完全依赖你持续投入新劳动时间</div>
+          <div class="balance-item dim">用"未来可能上市"的股权抵扣全部咨询费</div>
+          <div class="balance-item dim">在现金流不稳时追逐股权长尾收益</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section fade-section">
+      <div class="section-label">FIN 健康指标</div>
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="summary-num">40/30/20</div>
+          <h3 class="summary-title">收入结构黄金比例</h3>
+          <p class="summary-desc">产品40%+服务30%+被动合作20%，任何一块突然下滑，其他三块足以让你从容调整</p>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num">3个</div>
+          <h3 class="summary-title">收入引擎验证</h3>
+          <p class="summary-desc">新项目月收入超过核心引擎20%时，才考虑为它分配更多资源</p>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num">90%+10%</div>
+          <h3 class="summary-title">时间分配法则</h3>
+          <p class="summary-desc">90%精力投入核心引擎，10%测试新模式。抵抗诱惑，把一件事做透再自然裂变</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer-nav">
+      <a href="/nodes/36-product-iteration/index.html" class="nav-link">
+        <span class="nav-arrow">←</span>
+        节点36：产品迭代与复盘
+      </a>
+      <a href="/nodes/38-exit-plan/index.html" class="nav-link">
+        节点38：项目退出机制
+        <span class="nav-arrow">→</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
   </script>
 </body>
 </html>

@@ -732,6 +732,18 @@ document.addEventListener('DOMContentLoaded', async () => {
   initAuth(); // 初始化用户认证状态
   await loadNodes();
   render();
+
+  // 导航栏滚动状态变化
+  const nav = document.getElementById('main-nav');
+  if (nav) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        nav.style.background = 'rgba(17, 17, 16, 0.95)';
+      } else {
+        nav.style.background = 'rgba(17, 17, 16, 0.8)';
+      }
+    }, { passive: true });
+  }
 });
 
 // 服务选择流程
@@ -1002,27 +1014,23 @@ function closeNodeModal() {
 
 async function generateNodeContent(node) {
   const contentEl = document.getElementById('modal-content');
+  if (!contentEl) return;
 
   try {
-    const response = await fetch('http://localhost:3001/api/generate-node-content', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        node_id: node.id,
-        title: node.title,
-        summary: node.summary
-      })
-    });
-
-    if (!response.ok) throw new Error('生成失败');
+    // 直接从API获取节点内容（包含AI生成内容）
+    const response = await fetch('http://localhost:3001/api/nodes/' + node.slug);
+    if (!response.ok) throw new Error('Failed to load');
 
     const data = await response.json();
-    contentEl.innerHTML = data.content;
+    // API返回结构：{ success, data: {...metadata}, content: "...AI内容..." }
+    const content = data.content || data.data?.ai_summary || data.data?.content || '';
+    contentEl.innerHTML = content || '<p style="color:var(--text-tertiary)">内容加载中...</p>';
   } catch (error) {
+    console.error('Load content error:', error);
     // 降级：显示节点摘要
     contentEl.innerHTML = `
-      <p style="margin-bottom: 1rem;">${node.summary}</p>
-      <p class="text-label" style="color: var(--text-tertiary);">内容生成中...</p>
+      <p style="margin-bottom: 1rem;">${node.summary || ''}</p>
+      <p class="text-label" style="color: var(--text-tertiary);">内容加载中...</p>
     `;
   }
 }
@@ -1102,19 +1110,21 @@ const PHASES = [
 function renderNodeCard(node) {
   return `
     <div style="
-      background: var(--surface);
+      background: rgba(26, 26, 24, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       padding: 1.5rem;
       cursor: pointer;
-      border: 1px solid var(--line);
+      border: 1px solid rgba(42, 42, 40, 0.8);
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
       height: 100%;
-      transition: border-color 0.4s ease;
+      transition: all 0.4s ease;
     "
          onclick="${node.id === 1 ? 'startTest()' : 'openNodeModalWithAccess(' + node.id + ')'}"
-         onmouseenter="this.style.borderColor='var(--accent)'"
-         onmouseleave="this.style.borderColor='var(--line)'">
+         onmouseenter="this.style.borderColor='var(--accent)'; this.style.background='rgba(26, 26, 24, 0.9)';"
+         onmouseleave="this.style.borderColor='rgba(42, 42, 40, 0.8)'; this.style.background='rgba(26, 26, 24, 0.7)';">
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <span class="text-label" style="color: var(--accent); letter-spacing: 0.15em;">
           ${String(node.id).padStart(2, '0')}
@@ -1363,7 +1373,7 @@ function renderAuthForm() {
           placeholder="6位验证码"
           maxlength="6"
           required
-          style="margin-bottom: 0.75rem; letter-spacing: 0.2em; text-align: center; font-size: 1.25rem;"
+          style="margin-bottom: 0.75rem; letter-spacing: 0.2em; text-align: center; font-size: 1rem;"
         >
         <div id="auth-error" class="error-message" style="margin-bottom: 1rem; display: none;"></div>
         <button type="submit" class="btn-pdf" style="width: 100%; margin-bottom: 0.75rem;">
@@ -1860,7 +1870,15 @@ function showToast(message) {
 // 节点访问控制
 // ============================================
 
+// 测试模式：跳过登录验证，所有节点均可访问
+const TEST_MODE = true;
+
 function checkNodeAccess(nodeId) {
+  // 测试模式：所有节点均可访问
+  if (TEST_MODE) {
+    return { allowed: true, requiresSubscription: false };
+  }
+
   // 节点 01 是免费的（OPC适配测试）
   if (nodeId === 1) {
     return { allowed: true, requiresSubscription: false };
@@ -1875,6 +1893,12 @@ function checkNodeAccess(nodeId) {
 }
 
 function openNodeModalWithAccess(nodeId) {
+  // 测试模式：直接打开
+  if (TEST_MODE) {
+    openNodeModal(nodeId);
+    return true;
+  }
+
   const access = checkNodeAccess(nodeId);
 
   if (!access.allowed && access.requiresSubscription) {
@@ -1894,6 +1918,12 @@ function openNodeModalWithAccess(nodeId) {
 // 覆盖原有的 openNodeModal
 const originalOpenNodeModal = openNodeModal;
 function openNodeModal(nodeId) {
+  // 测试模式：跳过登录
+  if (TEST_MODE) {
+    doOpenNodeModal(nodeId);
+    return;
+  }
+
   // 如果未登录，先引导登录
   if (!state.user) {
     openAuthModal('login');
@@ -1907,8 +1937,17 @@ function openNodeModal(nodeId) {
     return;
   }
 
-  // 执行原来的打开模态框逻辑
-  originalOpenNodeModal(nodeId);
+  doOpenNodeModal(nodeId);
+}
+
+function doOpenNodeModal(nodeId) {
+  // 查找节点数据
+  const node = window.NODES?.find(n => n.id === nodeId);
+  if (!node) return;
+
+  // 跳转到节点独立页面（目录格式：01-slug）
+  const dirName = String(node.id).padStart(2, '0') + '-' + node.slug;
+  window.location.href = '/nodes/' + dirName + '/index.html';
 }
 
 // ============================================

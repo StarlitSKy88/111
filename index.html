@@ -577,10 +577,93 @@
 
     .auth-input:focus {
       border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.15);
+      transform: translateY(-1px);
     }
 
     .auth-input::placeholder {
       color: var(--text-tertiary);
+    }
+
+    /* === Hero Entrance Animation === */
+    #hero-section .text-label,
+    #hero-section h1,
+    #hero-section p,
+    #hero-section button {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: ma-reveal 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+
+    #hero-section .text-label {
+      animation-delay: 0.1s;
+    }
+
+    #hero-section h1 {
+      animation-delay: 0.25s;
+    }
+
+    #hero-section > div > p {
+      animation-delay: 0.4s;
+    }
+
+    #hero-section > div > button {
+      animation-delay: 0.55s;
+    }
+
+    @keyframes ma-reveal {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* === Scroll Indicator === */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      opacity: 0;
+      animation: ma-reveal 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+      animation-delay: 0.8s;
+    }
+
+    .scroll-indicator-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      animation: scroll-pulse 2s ease-in-out infinite;
+    }
+
+    .scroll-indicator-text {
+      font-size: 0.5625rem;
+      letter-spacing: 0.2em;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+    }
+
+    @keyframes scroll-pulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(0.8); }
+      50% { opacity: 1; transform: scaleY(1); }
+    }
+
+    /* === Service Promise Responsive === */
+    @media (max-width: 480px) {
+      #hero-section .service-promises {
+        gap: 1.5rem !important;
+      }
+    }
+
+    /* === Pricing Card Mobile Responsive === */
+    @media (max-width: 640px) {
+      #plan-monthly, #plan-yearly {
+        aspect-ratio: 1/1 !important;
+      }
     }
   </style>
 </head>
@@ -595,12 +678,15 @@
     left: 0;
     right: 0;
     z-index: 100;
-    background: var(--bg);
+    background: rgba(17, 17, 16, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--line);
     padding: 0.75rem 1.25rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    transition: background 0.3s ease;
   ">
     <div style="font-size: 0.75rem; letter-spacing: 0.1em; color: var(--text-secondary);">
       OPC节点百科
@@ -674,7 +760,7 @@
       </button>
 
       <!-- 服务承诺 — 更醒目的位置和样式 -->
-      <div style="margin-top: 4rem; padding: 1.5rem 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); display: flex; gap: 3rem; flex-wrap: wrap;">
+      <div class="service-promises" style="margin-top: 4rem; padding: 1.5rem 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); display: flex; gap: 3rem; flex-wrap: wrap;">
         <div style="display: flex; align-items: center; gap: 0.75rem;">
           <span style="width: 8px; height: 8px; background: var(--accent); flex-shrink: 0;"></span>
           <span style="font-size: 0.875rem; color: var(--text-secondary); letter-spacing: 0.03em;">7×24小时不间断更新</span>
@@ -684,10 +770,12 @@
           <span style="font-size: 0.875rem; color: var(--text-secondary); letter-spacing: 0.03em;">支持付费1对1服务</span>
         </div>
       </div>
-    </div>
 
-    <!-- 右侧留白 — Ma 的负空间 -->
-    <div style="position: absolute; right: 5%; top: 50%; transform: translateY(-50%); width: 40%; height: 70%; pointer-events: none; display: none;">
+      <!-- 滚动引导 -->
+      <div class="scroll-indicator">
+        <span class="scroll-indicator-text">向下滚动</span>
+        <div class="scroll-indicator-line"></div>
+      </div>
     </div>
   </section>
 
@@ -983,6 +1071,6 @@
   </div>
 </div>
 
-  <script src="app.js?v=20260508"></script>
+  <script src="app.js?v=20260508e"></script>
 </body>
 </html>

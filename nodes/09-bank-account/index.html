@@ -7,101 +7,384 @@
   <meta name="theme-color" content="#111110">
   <title>银行开户与商户号申请 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #111110;
-      --surface: #1A1A18;
-      --text-primary: #F0EDE6;
-      --text-secondary: #7A7670;
-      --accent: #C0392B;
-      --line: #2A2A28;
-    }
-    body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; }
-    .loading { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-    .loading-bar { width: 100%; height: 1px; background: var(--line); position: relative; overflow: hidden; max-width: 200px; }
-    .loading-bar::after { content: ''; position: absolute; left: -50%; top: 0; width: 50%; height: 100%; background: var(--accent); animation: loading-slide 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite; }
-    @keyframes loading-slide { from { left: -50%; } to { left: 100%; } }
-    .content h1 { font-size: 1.75rem; font-weight: 300; margin-bottom: 1rem; }
-    .content h2 { font-size: 1.25rem; font-weight: 400; margin: 1.5rem 0 0.75rem; color: var(--text-primary); }
-    .content h3 { font-size: 1rem; font-weight: 500; margin: 1.25rem 0 0.5rem; color: var(--text-primary); }
-    .content p { line-height: 1.9; margin-bottom: 1rem; color: var(--text-secondary); }
-    .content ul, .content ol { margin: 1rem 0; padding-left: 1.5rem; color: var(--text-secondary); }
-    .content li { line-height: 1.8; margin-bottom: 0.5rem; }
-    .content strong { color: var(--text-primary); font-weight: 500; }
-    .content code { background: var(--surface); padding: 0.125rem 0.375rem; border-radius: 0.25rem; font-size: 0.875rem; }
-    .content pre { background: var(--surface); padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin: 1rem 0; }
-    .content pre code { background: none; padding: 0; }
-    .content blockquote { border-left: 3px solid var(--accent); padding-left: 1rem; margin: 1rem 0; color: var(--text-secondary); font-style: italic; }
-    .content hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
-    .content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-    .content th, .content td { border: 1px solid var(--line); padding: 0.75rem; text-align: left; }
-    .content th { background: var(--surface); color: var(--text-primary); }
-    .content td { color: var(--text-secondary); }
-    .content a { color: var(--accent); text-decoration: underline; }
-    .content input[type="checkbox"] { margin-right: 0.5rem; }
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #B8B4AE;
+  --text-tertiary: #A8A49E;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; font-weight: 400; line-height: 1.9; letter-spacing: 0.04em; -webkit-font-smoothing: antialiased; }
+
+.page { position: relative; max-width: 1200px; margin: 0 auto; padding: 0 clamp(24px, 8vw, 120px); min-height: 100vh; }
+.page::before { content: ''; position: absolute; top: 0; left: clamp(24px, 8vw, 120px); right: clamp(24px, 8vw, 120px); height: 1px; background: var(--line); }
+
+.section-number { position: absolute; top: var(--space-2xl); right: clamp(24px, 8vw, 120px); font-size: clamp(100px, 22vw, 280px); font-weight: 100; color: var(--text-primary); opacity: 0.03; line-height: 1; letter-spacing: -0.05em; font-family: 'Noto Serif JP', serif; pointer-events: none; user-select: none; }
+
+.back-link { position: fixed; top: var(--space-xl); left: clamp(24px, 8vw, 120px); z-index: 100; }
+.back-link a { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: color 0.3s ease; }
+.back-link a:hover { color: var(--text-primary); }
+
+.hero { padding: var(--space-4xl) 0 var(--space-3xl); position: relative; }
+.hero-content { position: relative; z-index: 1; max-width: 800px; }
+.hero-label { font-size: 13px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-md); }
+.hero-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+.hero-title { font-family: 'Noto Serif JP', serif; font-size: clamp(48px, 10vw, 96px); font-weight: 300; letter-spacing: -0.03em; line-height: 0.95; margin-bottom: var(--space-xl); }
+.hero-desc { font-size: 16px; color: var(--text-secondary); line-height: 1.8; max-width: 44ch; }
+
+.content-section { padding: var(--space-3xl) 0; border-top: 1px solid var(--line); }
+.section-label { font-size: 13px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-md); }
+.section-label::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+
+.step-header { display: flex; align-items: baseline; gap: var(--space-lg); margin-bottom: var(--space-lg); }
+.step-num { font-family: 'Noto Serif JP', serif; font-size: 64px; font-weight: 300; color: var(--accent); opacity: 0.3; line-height: 1; }
+.step-title { font-family: 'Noto Serif JP', serif; font-size: clamp(24px, 4vw, 36px); font-weight: 400; line-height: 1.2; }
+
+.three-col { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: var(--space-md); }
+@media (max-width: 900px) { .three-col { grid-template-columns: 1fr; } }
+
+.info-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-lg); position: relative; }
+.info-card.danger { border-color: var(--accent); }
+.info-card.danger::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--accent); }
+.info-card.success { border-color: var(--accent); opacity: 0.8; }
+.info-card.success::before { background: var(--accent); opacity: 0.6; }
+.info-label { font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-sm); }
+.info-card.danger .info-label { color: var(--accent); }
+.info-card.success .info-label { color: var(--accent); }
+.info-title { font-size: 15px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-xs); }
+.info-text { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+
+.data-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: var(--space-md) 0; }
+.data-table th { text-align: left; color: var(--accent); font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; padding: var(--space-sm); border-bottom: 1px solid var(--line); font-size: 12px; }
+.data-table td { padding: var(--space-sm); border-bottom: 1px solid var(--line-light); color: var(--text-secondary); }
+.data-table td:first-child { color: var(--text-primary); font-weight: 500; width: 30%; }
+
+.timeline { position: relative; padding-left: var(--space-2xl); margin: var(--space-xl) 0; }
+.timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 1px; background: var(--line); }
+.timeline-item { position: relative; margin-bottom: var(--space-lg); }
+.timeline-item::before { content: ''; position: absolute; left: calc(-1 * var(--space-2xl) + 4px); top: 8px; width: 9px; height: 9px; background: var(--accent); }
+.timeline-label { font-size: 12px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: var(--space-xs); }
+.timeline-title { font-size: 15px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-xs); }
+.timeline-text { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+
+.highlight-box { background: var(--surface); border: 1px solid var(--accent); padding: var(--space-lg); margin: var(--space-xl) 0; }
+.highlight-label { font-size: 12px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-sm); }
+.highlight-text { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+
+.quote-block { border-left: 2px solid var(--accent); padding-left: var(--space-md); margin: var(--space-xl) 0; }
+.quote-text { font-size: 15px; color: var(--text-secondary); font-style: italic; line-height: 1.7; }
+
+.flow-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-lg); text-align: center; position: relative; }
+.flow-card::after { content: '→'; position: absolute; right: -20px; top: 50%; transform: translateY(-50%); font-size: 20px; color: var(--accent); }
+.flow-card:last-child::after { display: none; }
+.flow-step { font-family: 'Noto Serif JP', serif; font-size: 32px; font-weight: 300; color: var(--accent); opacity: 0.4; margin-bottom: var(--space-xs); }
+.flow-name { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+.flow-desc { font-size: 12px; color: var(--text-tertiary); margin-top: 4px; }
+
+.footer-nav { padding: var(--space-2xl) 0; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
+.nav-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: color 0.3s ease; }
+.nav-link:hover { color: var(--text-primary); }
+.nav-arrow { font-size: 0.75rem; }
+
+.fade-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.fade-section.visible { opacity: 1; transform: translateY(0); }
+* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
   </style>
 </head>
 <body>
-  <div id="app" data-slug="bank-account">
-    <div class="loading">
-      <div class="loading-bar"></div>
-    </div>
+  <div class="back-link">
+    <a href="/"><span>←</span> 返回首页</a>
   </div>
-  <script type="module">
-    const SLUG = "bank-account";
+  <div class="section-number">09</div>
 
-    async function loadNode() {
-      try {
-        const res = await fetch("/api/nodes/" + SLUG);
-        if (!res.ok) throw new Error("Failed to load");
-        const data = await res.json();
-        renderNode(data);
-      } catch (e) {
-        document.getElementById("app").innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text-secondary)">加载失败</div>';
-      }
-    }
+  <div class="page">
+    <header class="hero fade-section">
+      <div class="hero-content">
+        <div class="hero-label">节点 09 · 0-1</div>
+        <h1 class="hero-title">银行开户与<br>商户号申请</h1>
+        <p class="hero-desc">对公账户、微信支付、支付宝，能收钱才是真正的生意。工商注册与金融基建必须并行推进。</p>
+      </div>
+    </header>
 
-    function mdToHtml(md) {
-      if (!md) return '<p style="color:var(--text-secondary)">内容加载中...</p>';
-      let html = md
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/^### (.+)$/gm, "<h3>$1</h3>")
-        .replace(/^## (.+)$/gm, "<h2>$1</h2>")
-        .replace(/^# (.+)$/gm, "<h1>$1</h1>")
-        .replace(/**(.+?)**/g, "<strong>$1</strong>")
-        .replace(/^- (.+)$/gm, "<li>$1</li>")
-        .replace(/^\[ \] (.+)$/gm, "<div><input type="checkbox" disabled> $1</div>")
-        .replace(/^\[x\] (.+)$/gm, "<div><input type="checkbox" checked disabled> $1</div>")
-        .replace(/^\d+\. (.+)$/gm, "<li>$1</li>")
-        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
-        .replace(/^(?!<[a-z])(.+)$/gm, "<p>$1</p>")
-        .replace(/\n\n+/g, "\n");
-      html = html.replace(/(<li>.*<\/li>\n?)+/g, "<ul>$&</ul>");
-      return html;
-    }
-
-    function renderNode(node) {
-      const content = node.content || "";
-      const contentHtml = mdToHtml(content);
-      document.getElementById("app").innerHTML = `
-        <div style="max-width:800px;margin:0 auto;padding:2rem 1.25rem;">
-          <a href="/" style="color:var(--text-secondary);font-size:0.75rem;letter-spacing:0.1em;text-decoration:none;">← 返回首页</a>
-          <div style="margin-top:2rem;">
-            <div style="color:var(--accent);font-size:0.625rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;">${node.data?.category || ""} · ${node.data?.difficulty || ""}</div>
-            <h1 style="font-size:clamp(1.5rem,5vw,2.5rem);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;">${node.data?.title || ""}</h1>
-            <p style="color:var(--text-secondary);line-height:1.9;">${node.data?.summary || ""}</p>
-          </div>
-          <div class="content" style="margin-top:2rem;padding-top:2rem;border-top:1px solid var(--line);">
-            ${contentHtml}
-          </div>
+    <section class="content-section fade-section">
+      <div class="section-label">两步并行策略</div>
+      <div style="display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: var(--space-sm); margin: var(--space-xl) 0;">
+        <div class="flow-card">
+          <div class="flow-step">01</div>
+          <div class="flow-name">提交工商</div>
+          <div class="flow-desc">提交设立申请</div>
         </div>
-      `;
-    }
+        <div class="flow-card">
+          <div class="flow-step">02</div>
+          <div class="flow-name">预约银行</div>
+          <div class="flow-desc">同步预约开户</div>
+        </div>
+        <div class="flow-card">
+          <div class="flow-step">03</div>
+          <div class="flow-name">领取执照</div>
+          <div class="flow-desc">激活对公账户</div>
+        </div>
+        <div class="flow-card">
+          <div class="flow-step">04</div>
+          <div class="flow-name">申请商户</div>
+          <div class="flow-desc">微信/支付宝</div>
+        </div>
+      </div>
+    </section>
 
-    loadNode();
+    <section class="content-section fade-section">
+      <div class="section-label">开户前置准备</div>
+      <div class="step-header">
+        <span class="step-num">01</span>
+        <h2 class="step-title">必备材料清单</h2>
+      </div>
+      <div class="three-col">
+        <div class="info-card">
+          <div class="info-label">基础材料</div>
+          <div class="info-title">营业执照、身份证、印章</div>
+          <div class="info-text">营业执照正副本（部分地区支持电子营业执照扫码核验）、法定代表人身份证原件、公章、财务章、法人名章。</div>
+        </div>
+        <div class="info-card">
+          <div class="info-label">经营场所</div>
+          <div class="info-title">最大的变量</div>
+          <div class="info-text">托管地址：工位租赁合同+托管协议。实体地址：租赁合同+房产证。家庭地址：提前拍摄清晰的办公区域照片。</div>
+        </div>
+        <div class="info-card">
+          <div class="info-label">受益所有人</div>
+          <div class="info-title">持股100%的实际控制人</div>
+          <div class="info-text">2024年新规要求采集受益所有人信息。作为持股100%的唯一股东，这一项填报极为简单，但不可省略。</div>
+        </div>
+      </div>
+      <div class="highlight-box">
+        <div class="highlight-label">并行预约策略</div>
+        <div class="highlight-text">在工商系统提交设立申请的同时，登录目标银行官网完成开户预约。2025年后多数银行支持"预开户"或"意向登记"，用统一社会信用代码前9位即可锁定开户通道。</div>
+      </div>
+    </section>
+
+    <section class="content-section fade-section">
+      <div class="section-label">银行尽职调查</div>
+      <div class="step-header">
+        <span class="step-num">02</span>
+        <h2 class="step-title">如何证明"真实经营"而非空壳</h2>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-label">核心逻辑</div>
+          <div class="timeline-title">银行最在意的是"你像不像在做真实生意"</div>
+          <div class="timeline-text">客户经理最在意的不是场地豪华度，而是"你看起来像不像在做真实生意"。与其准备一堆纸质租赁合同，不如一个实时拉取的测试订单更有说服力。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-label">佐证材料</div>
+          <div class="timeline-title">无正式合同时的破解之道</div>
+          <div class="timeline-text">电商平台店铺后台截图+实时数据、服务协议框架、意向客户沟通邮件、与知名平台的交易记录。一份加盖公章的《业务说明》描述商业模式和预计流水规模，同样有效。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-label">核验重点</div>
+          <div class="timeline-title">银行问什么？</div>
+          <div class="timeline-text">做什么业务？主要客户是谁？如何收款？有无实际经营地址？如实回答，不要夸大。</div>
+        </div>
+      </div>
+      <div class="three-col" style="margin-top: var(--space-xl);">
+        <div class="info-card danger">
+          <div class="info-label">错误示范</div>
+          <div class="info-title">空手去，说"我有执照就行"</div>
+          <div class="info-text">没有商业佐证材料，触发反欺诈拦截，直接导致开户失败或账户功能受限。</div>
+        </div>
+        <div class="info-card success">
+          <div class="info-label">正确回答</div>
+          <div class="info-title">带上"三件套"去开户</div>
+          <div class="info-text">①后台数据截图（实时）②业务说明（加盖公章）③意向合同或沟通记录。</div>
+        </div>
+        <div class="info-card">
+          <div class="info-label">推荐银行</div>
+          <div class="info-title">生态型银行选择</div>
+          <div class="info-text">网商银行（打通支付宝）、平安数字口袋（聚合支付）、招行小企业e家（税银互动）。选内置SaaS服务的。</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section fade-section">
+      <div class="section-label">简易开户通道</div>
+      <div class="step-header">
+        <span class="step-num">03</span>
+        <h2 class="step-title">小微企业的最优选择与升级路径</h2>
+      </div>
+      <div class="three-col">
+        <div class="info-card">
+          <div class="info-label">什么是简易开户</div>
+          <div class="info-title">功能精简，门槛更低</div>
+          <div class="info-text">针对小微企业设计的精简账户。初期仅限基础收款和限额转账，不收取高昂账户管理费，对日均余额要求非常低。</div>
+        </div>
+        <div class="info-card">
+          <div class="info-label">初期限制</div>
+          <div class="info-title">单日收款额度上限</div>
+          <div class="info-text">简易账户通常有收款额度限制（如单日累计收款不超过5万元），但对于初创业务测试阶段已经足够。1-3个月观察期后即可申请升级。</div>
+        </div>
+        <div class="info-card">
+          <div class="info-label">全线上开户</div>
+          <div class="info-title">2026年的首选路径</div>
+          <div class="info-text">部分互联网银行及传统银行直销银行部推出专属"生意卡"或数字化对公钱包，支持电子营业执照+法人远程视频完成全线上开户。</div>
+        </div>
+      </div>
+      <div class="highlight-box" style="border-color: var(--accent);">
+        <div class="highlight-label" style="color: var(--accent);">升级路径</div>
+        <div class="highlight-text">先用简易通道下户 → 1-3个月后用真实流水和合同申请升级全功能账户。比一开始就死磕全功能账户通过率高出许多。</div>
+      </div>
+    </section>
+
+    <section class="content-section fade-section">
+      <div class="section-label">商户号申请</div>
+      <div class="step-header">
+        <span class="step-num">04</span>
+        <h2 class="step-title">微信/支付宝/聚合支付的一次性打通</h2>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-label">并行申请</div>
+          <div class="timeline-title">对公账户激活当天同步发起商户申请</div>
+          <div class="timeline-text">微信支付、支付宝均允许"凭营业执照预开通商户号"，仅结算打款环节需要填写银行账户验证。开户等待期间即可完成商户号实名认证、费率签约和技术对接。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-label">审核周期</div>
+          <div class="timeline-title">T+1到T+3</div>
+          <div class="timeline-text">支付宝企业认证通常T+1，微信支付普遍T+2至T+3。等待商户号下发的空档，正好用来完成技术侧的接口预埋。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-label">小额打款验证</div>
+          <div class="timeline-title">最终的所有权校验</div>
+          <div class="timeline-text">平台向你的对公账户打一笔随机金额，完成账户所有权验证。验证完成后，立即绑定财税软件，设置收款流水自动同步规则。</div>
+        </div>
+      </div>
+      <div class="highlight-box">
+        <div class="highlight-label">聚合支付优势</div>
+        <div class="highlight-text">找一家具备央行支付牌照的聚合服务商，一次性开通微信、支付宝，云闪付，数字人民币。一个收银链接或固定二维码，接收所有支付方式。</div>
+      </div>
+    </section>
+
+    <section class="content-section fade-section">
+      <div class="section-label">公私账户隔离</div>
+      <div class="step-header">
+        <span class="step-num">05</span>
+        <h2 class="step-title">资金流转的合规红线与正确姿势</h2>
+      </div>
+      <div class="info-card danger" style="margin-bottom: var(--space-lg);">
+        <div class="info-label">核心原则</div>
+        <div class="info-title">对公账户与个人账户必须完全分离</div>
+        <div class="info-text">所有经营收入必须先进入公司对公账户，再通过正规渠道提取至个人卡。哪怕是一笔几十元的小额收款。一旦被认定为财产混同，将刺破公司面纱，股东承担无限连带责任。</div>
+      </div>
+      <div class="data-table">
+        <thead>
+          <tr>
+            <th>合规提取方式</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>发放工资</td>
+            <td>需签订劳动合同，依法代扣个税</td>
+          </tr>
+          <tr>
+            <td>税后利润分红</td>
+            <td>需有股东决定书</td>
+          </tr>
+          <tr>
+            <td>借款</td>
+            <td>需签订借款协议，约定还款期限和利率</td>
+          </tr>
+        </tbody>
+      </div>
+      <div class="quote-block">
+        <p class="quote-text">用个人卡隐匿经营收入极易触发预警，被认定为隐匿收入面临补税+滞纳金。更严重的是：公私混同会刺破有限责任保护，债务责任扩张至个人家庭资产。</p>
+      </div>
+    </section>
+
+    <section class="content-section fade-section">
+      <div class="section-label">持续合规维护</div>
+      <div class="step-header">
+        <span class="step-num">06</span>
+        <h2 class="step-title">季度自查清单与风控要点</h2>
+      </div>
+      <div class="data-table">
+        <thead>
+          <tr>
+            <th>事项</th>
+            <th>时间要求</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>地址变更同步</td>
+            <td>10个工作日内</td>
+            <td>营业执照地址变动后，银行预留信息和支付平台商户资料需同步更新</td>
+          </tr>
+          <tr>
+            <td>商户号风控</td>
+            <td>3-6个月观察期</td>
+            <td>避免深夜时段集中大额收款、避免IP频繁跳变、避免相同金额多笔入账</td>
+          </tr>
+          <tr>
+            <td>年度复评</td>
+            <td>每年</td>
+            <td>银行自动调取年报状态和税务信用评级，未按时公示→账户转为"只收不付"</td>
+          </tr>
+          <tr>
+            <td>季度自查</td>
+            <td>每季度</td>
+            <td>证照信息一致性、账户活动、商户号状态、财务报表与商户收款匹配</td>
+          </tr>
+        </tbody>
+      </div>
+      <div class="highlight-box">
+        <div class="highlight-label">监控红线</div>
+        <div class="highlight-text">单月公转私超过50笔或20万元 → 触发预警。金税四期重点关注公私互转。</div>
+      </div>
+    </section>
+
+    <section class="content-section fade-section">
+      <div class="section-label">总纲</div>
+      <div class="quote-block" style="border-left-width: 3px;">
+        <p class="quote-text" style="font-size: 18px; color: var(--text-primary);">收款能力才是真正的商业闭环。<br><br>金融基础设施的搭建不是"开户-申请商户号-接入支付"的线性流程，而是需要并行推进、持续维护的系统工程。把这套体系搭建好，你的OPC才能真正开始运转。</p>
+      </div>
+    </section>
+
+    <footer class="footer-nav fade-section">
+      <a href="/nodes/08-company-registration/index.html" class="nav-link">
+        <span class="nav-arrow">←</span>
+        节点08：公司注册全流程
+      </a>
+      <a href="/nodes/10-tax-invoice/index.html" class="nav-link">
+        节点10：税务报到与发票管理
+        <span class="nav-arrow">→</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
   </script>
 </body>
 </html>

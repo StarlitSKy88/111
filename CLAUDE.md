@@ -132,14 +132,17 @@
 ### Phase 3 当前进度
 
 **已完成**：
-- ✅ 用户注册/登录 API (POST /api/auth/register, POST /api/auth/login)
-- ✅ JWT token 认证中间件
+- ✅ 用户注册/登录 API (手机号 + 短信验证码)
+- ✅ JWT token 认证中间件 (jsonwebtoken)
 - ✅ 订阅系统 (月付9.9元/月，年付99元/年)
 - ✅ 前端登录注册 UI + 订阅弹窗
 - ✅ 节点访问控制 (01免费，02-40需订阅)
 - ✅ 支付占位符 API
+- ✅ 腾讯云短信服务集成 (API已实现，待配置凭证)
+- ✅ 腾讯云Redis集成 (验证码存储，API已实现，待配置)
 
 **待完成**：
+- ⬜ 腾讯云凭证配置 (短信 + Redis)
 - ⬜ 节点内付费配置 (admin-app 定价配置页)
 - ⬜ 40节点内容生成 (每个≥5000字)
 - ⬜ 节点 index.html 更新
@@ -151,11 +154,24 @@
 - AI模型：deepseek-v4-flash (腾讯TokenHub)
 
 ### API 端点
-- POST /api/auth/register - 用户注册
-- POST /api/auth/login - 用户登录
+
+**认证 API（手机号 + 短信验证码）**：
+- POST /api/auth/send-code - 发送短信验证码
+- POST /api/auth/verify-register - 验证码注册（需设密码）
+- POST /api/auth/verify-login - 验证码登录
+- POST /api/auth/password-login - 密码登录（已有账号）
+- POST /api/auth/set-password - 设置密码
+- POST /api/auth/register - ⚠️ 已废弃（保留返回410）
+- POST /api/auth/login - ⚠️ 已废弃（保留返回410）
+
+**订阅 API**：
 - GET /api/subscription - 获取订阅状态
 - POST /api/subscribe - 创建订阅
+
+**节点访问 API**：
 - GET /api/access/:slug - 检查节点访问权限
+
+**支付 API**：
 - POST /api/pay/subscribe - 支付占位符
 - POST /api/pay/callback - 支付回调占位符
 
@@ -168,8 +184,31 @@
 - API端点：`https://tokenhub.tencentmaas.com/v1/chat/completions`
 - Key：`sk-UX6ezaZKGktnbbino4FJahcQRtYp3yomoZnHOHbdtZ1xh4Vp`
 
+### 腾讯云配置（待配置）
+
+#### 短信服务
+| 配置项 | 说明 | 状态 |
+|:---|:---|:---:|
+| TENCENT_SECRET_ID | SecretId | ⬜ 待填写 |
+| TENCENT_SECRET_KEY | SecretKey | ⬜ 待填写 |
+| TENCENT_SMS_APP_ID | SdkAppId | ⬜ 待填写 |
+| TENCENT_SMS_SIGN | 签名 | ⬜ 待填写 |
+| TENCENT_SMS_TEMPLATE_ID | 模板ID | ⬜ 待填写 |
+
+#### Redis（验证码存储）
+| 配置项 | 说明 | 状态 |
+|:---|:---|:---:|
+| REDIS_URL | Redis连接地址 | ⬜ 待填写（本地或腾讯云） |
+
+**配置步骤**：
+1. 开通 [腾讯云短信服务](https://cloud.tencent.com/document/product/382)
+2. 创建签名（需上传营业执照）
+3. 创建模板：`您的验证码是{1}，{2}分钟内有效`
+4. 获取 SecretId/SecretKey
+5. 可选：开通 [腾讯云Redis](https://cloud.tencent.com/document/product/239)
+
 ### 启动步骤
-1. 填入API Key到 `api/.env`
+1. 填入腾讯云凭证到 `api/.env`
 2. 执行 `bash start.sh`
 
 ---
@@ -190,6 +229,41 @@
 
 ---
 
+## 认证系统设计
+
+### 登录/注册流程
+
+**注册流程**：
+```
+滑动验证 → 手机号 → 发送验证码 → 填验证码 → 设置密码 → 注册成功
+```
+
+**登录流程**：
+```
+滑动验证 → 手机号 → 发送验证码 → 填验证码 → 登录成功
+```
+
+**备选登录**（设置密码后）：
+```
+手机号 → 密码 → 直接登录
+```
+
+### 防刷机制
+
+| 限制 | 规则 |
+|:---|:---|
+| 发送频率 | 同一手机号60秒后才能再次发送 |
+| 每日次数 | 同一手机号每天最多发送10次 |
+| 验证码错误 | 3次错误后验证码失效 |
+| 有效期 | 验证码5分钟内有效 |
+
+### JWT Token
+- 有效期：7天
+- 存储：localStorage
+- 刷新：需要重新登录
+
+---
+
 ## 阶段里程碑
 
 | 时间 | 检查点 | 通过标准 |
@@ -200,4 +274,4 @@
 
 ---
 
-*本项目文档由 OPC节点百科3.0 规划流程生成 | 更新: 2026-05-06*
+*本项目文档由 OPC节点百科3.0 规划流程生成 | 更新: 2026-05-07*

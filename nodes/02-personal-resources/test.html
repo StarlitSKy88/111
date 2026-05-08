@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>API Test</title>
+</head>
+<body>
+<pre id="output">Testing...</pre>
+<script type="module">
+const output = document.getElementById('output');
+const SLUG = "personal-resources";
+
+try {
+  const res = await fetch("http://localhost:3001/api/nodes/" + SLUG);
+  output.textContent += "\nStatus: " + res.status;
+  const data = await res.json();
+  output.textContent += "\nSuccess: " + data.success;
+  output.textContent += "\nTitle: " + (data.data?.title || "N/A");
+  output.textContent += "\nContent length: " + (data.content?.length || 0);
+} catch(e) {
+  output.textContent += "\nError: " + e.message;
+}
+</script>
+</body>
+</html>

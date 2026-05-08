@@ -53,15 +53,15 @@
 
     async function loadNode() {
       try {
-        const res = await fetch("/api/nodes/" + SLUG);
-        if (!res.ok) throw new Error("Failed to load");
-        const data = await res.json();
-        renderNode(data);
+        const res = await fetch("http://localhost:3001/api/nodes/" + SLUG);
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const result = await res.json();
+        renderNode(result);
       } catch (e) {
-        document.getElementById("app").innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text-secondary)">加载失败</div>';
+        console.error("Load error:", e);
+        document.getElementById("app").innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text-secondary)">加载失败: ' + e.message + '</div>';
       }
     }
-
     function mdToHtml(md) {
       if (!md) return '<p style="color:var(--text-secondary)">内容加载中...</p>';
       let html = md
@@ -71,7 +71,7 @@
         .replace(/^### (.+)$/gm, "<h3>$1</h3>")
         .replace(/^## (.+)$/gm, "<h2>$1</h2>")
         .replace(/^# (.+)$/gm, "<h1>$1</h1>")
-        .replace(/**(.+?)**/g, "<strong>$1</strong>")
+        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
         .replace(/^- (.+)$/gm, "<li>$1</li>")
         .replace(/^\[ \] (.+)$/gm, '<div><input type="checkbox" disabled> $1</div>')
         .replace(/^\[x\] (.+)$/gm, '<div><input type="checkbox" checked disabled> $1</div>')

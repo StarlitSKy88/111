@@ -7,101 +7,428 @@
   <meta name="theme-color" content="#111110">
   <title>创业想法筛选与验证 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #111110;
-      --surface: #1A1A18;
-      --text-primary: #F0EDE6;
-      --text-secondary: #7A7670;
-      --accent: #C0392B;
-      --line: #2A2A28;
-    }
-    body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; }
-    .loading { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-    .loading-bar { width: 100%; height: 1px; background: var(--line); position: relative; overflow: hidden; max-width: 200px; }
-    .loading-bar::after { content: ''; position: absolute; left: -50%; top: 0; width: 50%; height: 100%; background: var(--accent); animation: loading-slide 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite; }
-    @keyframes loading-slide { from { left: -50%; } to { left: 100%; } }
-    .content h1 { font-size: 1.75rem; font-weight: 300; margin-bottom: 1rem; }
-    .content h2 { font-size: 1.25rem; font-weight: 400; margin: 1.5rem 0 0.75rem; color: var(--text-primary); }
-    .content h3 { font-size: 1rem; font-weight: 500; margin: 1.25rem 0 0.5rem; color: var(--text-primary); }
-    .content p { line-height: 1.9; margin-bottom: 1rem; color: var(--text-secondary); }
-    .content ul, .content ol { margin: 1rem 0; padding-left: 1.5rem; color: var(--text-secondary); }
-    .content li { line-height: 1.8; margin-bottom: 0.5rem; }
-    .content strong { color: var(--text-primary); font-weight: 500; }
-    .content code { background: var(--surface); padding: 0.125rem 0.375rem; border-radius: 0.25rem; font-size: 0.875rem; }
-    .content pre { background: var(--surface); padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin: 1rem 0; }
-    .content pre code { background: none; padding: 0; }
-    .content blockquote { border-left: 3px solid var(--accent); padding-left: 1rem; margin: 1rem 0; color: var(--text-secondary); font-style: italic; }
-    .content hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
-    .content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-    .content th, .content td { border: 1px solid var(--line); padding: 0.75rem; text-align: left; }
-    .content th { background: var(--surface); color: var(--text-primary); }
-    .content td { color: var(--text-secondary); }
-    .content a { color: var(--accent); text-decoration: underline; }
-    .content input[type="checkbox"] { margin-right: 0.5rem; }
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #B8B4AE;
+  --text-tertiary: #A8A49E;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; font-weight: 400; line-height: 1.9; letter-spacing: 0.04em; -webkit-font-smoothing: antialiased; }
+
+.page { position: relative; max-width: 1200px; margin: 0 auto; padding: 0 clamp(24px, 8vw, 120px); min-height: 100vh; }
+.page::before { content: ''; position: absolute; top: 0; left: clamp(24px, 8vw, 120px); right: clamp(24px, 8vw, 120px); height: 1px; background: var(--line); }
+
+.section-number { position: absolute; top: var(--space-2xl); right: clamp(24px, 8vw, 120px); font-size: clamp(100px, 22vw, 280px); font-weight: 100; color: var(--text-primary); opacity: 0.03; line-height: 1; letter-serif: 'Noto Serif JP', serif; pointer-events: none; user-select: none; }
+
+.back-link { position: fixed; top: var(--space-xl); left: clamp(24px, 8vw, 120px); z-index: 100; }
+.back-link a { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: color 0.3s ease; }
+.back-link a:hover { color: var(--text-primary); }
+
+/* Hero - 非对称大字布局 */
+.hero { padding: var(--space-4xl) 0 var(--space-3xl); position: relative; overflow: hidden; }
+.hero-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: var(--space-3xl); align-items: center; }
+@media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
+
+.hero-left { position: relative; z-index: 1; }
+.hero-label { font-size: 13px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-md); }
+.hero-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+.hero-title { font-family: 'Noto Serif JP', serif; font-size: clamp(48px, 10vw, 96px); font-weight: 300; letter-spacing: -0.03em; line-height: 0.95; margin-bottom: var(--space-xl); }
+
+.hero-right { padding-left: var(--space-xl); border-left: 1px solid var(--line); }
+.hero-statement { font-family: 'Noto Serif JP', serif; font-size: clamp(24px, 3vw, 36px); font-weight: 300; line-height: 1.4; color: var(--text-primary); }
+.hero-statement em { color: var(--accent); font-style: normal; }
+.hero-meta { margin-top: var(--space-xl); font-size: 14px; color: var(--text-tertiary); line-height: 1.8; }
+
+/* 验证漏斗 - 不同于节点02的能力仪表盘 */
+.validation-section { padding: var(--space-3xl) 0; border-top: 1px solid var(--line); }
+.section-label { font-size: 13px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-md); }
+.section-label::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+
+/* 漏斗阶段样式 - 非等比布局，突出核心 */
+.funnel-grid { display: grid; grid-template-columns: 1.5fr 1fr 0.8fr; gap: var(--space-md); }
+@media (max-width: 900px) { .funnel-grid { grid-template-columns: 1fr; } }
+
+.funnel-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-lg); position: relative; }
+.funnel-card::before { content: ''; position: absolute; top: 0; right: 0; width: 0; height: 0; border-style: solid; border-width: 0 0 40px 40px; border-color: transparent transparent var(--bg) transparent; }
+.funnel-card:first-child { border-color: var(--accent); }
+.funnel-card:first-child::after { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--accent); }
+
+.funnel-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-md); }
+.funnel-num { font-family: 'Noto Serif JP', serif; font-size: 32px; font-weight: 300; color: var(--accent); opacity: 0.4; }
+.funnel-status { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; padding: 2px 8px; border: 1px solid; }
+.funnel-status.pass { color: var(--accent); border-color: var(--accent); }
+.funnel-status.fail { color: var(--text-tertiary); border-color: var(--line); }
+
+.funnel-title { font-family: 'Noto Serif JP', serif; font-size: 18px; font-weight: 400; color: var(--text-primary); margin-bottom: var(--space-xs); line-height: 1.3; }
+.funnel-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+.funnel-metric { margin-top: var(--space-md); padding-top: var(--space-sm); border-top: 1px solid var(--line-light); font-size: 12px; color: var(--text-tertiary); }
+
+/* 内容区 - 验证清单样式 */
+.content-section { padding: var(--space-3xl) 0; border-top: 1px solid var(--line); }
+
+.content-block { margin-bottom: var(--space-3xl); }
+.content-block:last-child { margin-bottom: 0; }
+
+.block-header { display: grid; grid-template-columns: 64px 1fr; gap: var(--space-lg); margin-bottom: var(--space-xl); align-items: center; }
+.block-num { font-family: 'Noto Serif JP', serif; font-size: 48px; font-weight: 300; color: var(--accent); opacity: 0.4; line-height: 1; }
+.block-title { font-family: 'Noto Serif JP', serif; font-size: clamp(20px, 3vw, 28px); font-weight: 400; color: var(--text-primary); line-height: 1.3; }
+
+/* 验证检查表 - 不同于流程图 */
+.checklist { border: 1px solid var(--line); }
+.check-item { display: grid; grid-template-columns: 48px 1fr; gap: var(--space-lg); padding: var(--space-lg); border-bottom: 1px solid var(--line); }
+.check-item:last-child { border-bottom: none; }
+
+.check-icon { width: 32px; height: 32px; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--text-tertiary); }
+.check-icon.pass { border-color: var(--accent); color: var(--accent); }
+.check-icon.fail { border-color: var(--line); color: var(--text-tertiary); }
+
+.check-content { padding-left: var(--space-sm); }
+.check-title { font-size: 15px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-xs); }
+.check-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+/* 信号指示器 - 统一为单一朱红色调，Ma风格 */
+.signal-grid { display: grid; grid-template-columns: 1.2fr 1fr 0.8fr; gap: var(--space-md); margin: var(--space-xl) 0; }
+@media (max-width: 768px) { .signal-grid { grid-template-columns: 1fr; } }
+
+.signal-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-lg); text-align: center; position: relative; }
+.signal-card:first-child { border-color: var(--accent); }
+.signal-card:first-child::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--accent); }
+.signal-icon { font-size: 24px; margin-bottom: var(--space-sm); opacity: 0.8; }
+.signal-icon { color: var(--accent); }
+
+.signal-label { font-size: 13px; color: var(--text-secondary); margin-bottom: var(--space-xs); }
+.signal-value { font-family: 'Noto Serif JP', serif; font-size: 20px; font-weight: 400; color: var(--text-primary); }
+
+/* 对比区域 - Ma风格统一为朱红色调 */
+.compare-section { margin: var(--space-xl) 0; }
+.compare-title { font-size: 12px; color: var(--text-tertiary); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: var(--space-md); }
+.compare-row { display: flex; align-items: center; gap: var(--space-md); padding: var(--space-md) 0; border-bottom: 1px solid var(--line); border-left: 3px solid var(--accent); padding-left: var(--space-md); }
+.compare-row:last-child { border-bottom: none; }
+.compare-marker { display: none; }
+.compare-text { font-size: 14px; color: var(--text-secondary); flex: 1; }
+.compare-text strong { color: var(--text-primary); font-weight: 500; }
+.compare-result { font-size: 12px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; }
+
+/* 决策流程 */
+.decision-flow { background: var(--surface); border: 1px solid var(--line); padding: var(--space-xl); margin: var(--space-xl) 0; }
+.decision-title { font-size: 12px; color: var(--text-tertiary); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: var(--space-lg); }
+.decision-chain { display: flex; align-items: center; gap: var(--space-sm); flex-wrap: wrap; }
+.decision-node { padding: var(--space-sm) var(--space-md); background: var(--bg); border: 1px solid var(--line); font-size: 12px; color: var(--text-secondary); }
+.decision-node.highlight { border-color: var(--accent); color: var(--accent); }
+.decision-node.stop { border-color: var(--accent); background: rgba(192, 57, 43, 0.1); color: var(--accent); }
+.decision-arrow { color: var(--text-tertiary); font-size: 12px; }
+
+/* 引用块 */
+.quote-block { padding: var(--space-lg) 0; padding-left: var(--space-md); border-left: 1px solid var(--accent); margin: var(--space-xl) 0; }
+.quote-text { font-size: 15px; color: var(--text-secondary); line-height: 1.8; max-width: 44ch; }
+.quote-text strong { color: var(--text-primary); }
+
+/* 底部导航 */
+.footer-nav { padding: var(--space-2xl) 0; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
+.nav-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: color 0.3s ease; }
+.nav-link:hover { color: var(--text-primary); }
+.nav-arrow { font-size: 0.75rem; }
+
+.fade-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.fade-section.visible { opacity: 1; transform: translateY(0); }
+* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
   </style>
 </head>
 <body>
-  <div id="app" data-slug="idea-validation">
-    <div class="loading">
-      <div class="loading-bar"></div>
-    </div>
+  <div class="back-link">
+    <a href="/"><span>←</span> 返回首页</a>
   </div>
-  <script type="module">
-    const SLUG = "idea-validation";
+  <div class="section-number">03</div>
 
-    async function loadNode() {
-      try {
-        const res = await fetch("/api/nodes/" + SLUG);
-        if (!res.ok) throw new Error("Failed to load");
-        const data = await res.json();
-        renderNode(data);
-      } catch (e) {
-        document.getElementById("app").innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text-secondary)">加载失败</div>';
-      }
-    }
-
-    function mdToHtml(md) {
-      if (!md) return '<p style="color:var(--text-secondary)">内容加载中...</p>';
-      let html = md
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/^### (.+)$/gm, "<h3>$1</h3>")
-        .replace(/^## (.+)$/gm, "<h2>$1</h2>")
-        .replace(/^# (.+)$/gm, "<h1>$1</h1>")
-        .replace(/**(.+?)**/g, "<strong>$1</strong>")
-        .replace(/^- (.+)$/gm, "<li>$1</li>")
-        .replace(/^\[ \] (.+)$/gm, "<div><input type="checkbox" disabled> $1</div>")
-        .replace(/^\[x\] (.+)$/gm, "<div><input type="checkbox" checked disabled> $1</div>")
-        .replace(/^\d+\. (.+)$/gm, "<li>$1</li>")
-        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
-        .replace(/^(?!<[a-z])(.+)$/gm, "<p>$1</p>")
-        .replace(/\n\n+/g, "\n");
-      html = html.replace(/(<li>.*<\/li>\n?)+/g, "<ul>$&</ul>");
-      return html;
-    }
-
-    function renderNode(node) {
-      const content = node.content || "";
-      const contentHtml = mdToHtml(content);
-      document.getElementById("app").innerHTML = `
-        <div style="max-width:800px;margin:0 auto;padding:2rem 1.25rem;">
-          <a href="/" style="color:var(--text-secondary);font-size:0.75rem;letter-spacing:0.1em;text-decoration:none;">← 返回首页</a>
-          <div style="margin-top:2rem;">
-            <div style="color:var(--accent);font-size:0.625rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;">${node.data?.category || ""} · ${node.data?.difficulty || ""}</div>
-            <h1 style="font-size:clamp(1.5rem,5vw,2.5rem);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;">${node.data?.title || ""}</h1>
-            <p style="color:var(--text-secondary);line-height:1.9;">${node.data?.summary || ""}</p>
+  <div class="page">
+    <!-- Hero -->
+    <header class="hero fade-section">
+      <div class="hero-grid">
+        <div class="hero-left">
+          <div class="hero-label">节点 03 · 核心必做</div>
+          <h1 class="hero-title">创业想法<br>筛选与验证</h1>
+        </div>
+        <div class="hero-right">
+          <div class="hero-statement">
+            62%的OPC在18个月内注销——<em>大多数不是败于市场，而是败于从未验证想法本身</em>。
           </div>
-          <div class="content" style="margin-top:2rem;padding-top:2rem;border-top:1px solid var(--line);">
-            ${contentHtml}
+          <div class="hero-meta">
+            核心问题：这个想法是否值得以一个人的全部投入和连带责任去成立公司？
           </div>
         </div>
-      `;
-    }
+      </div>
+    </header>
 
-    loadNode();
+    <!-- 验证漏斗 - 与节点02的能力仪表盘区分 -->
+    <section class="validation-section fade-section">
+      <div class="section-label">验证漏斗</div>
+      <div class="funnel-grid">
+        <div class="funnel-card">
+          <div class="funnel-header">
+            <span class="funnel-num">01</span>
+            <span class="funnel-status pass">进行中</span>
+          </div>
+          <h3 class="funnel-title">痛点验证</h3>
+          <p class="funnel-desc">认知套利与抗AI替代性，你的想法是否具备非结构化互动特征</p>
+          <div class="funnel-metric">虚假门测试：30%登记率 = 刚性痛点</div>
+        </div>
+        <div class="funnel-card">
+          <div class="funnel-header">
+            <span class="funnel-num">02</span>
+            <span class="funnel-status pass">进行中</span>
+          </div>
+          <h3 class="funnel-title">付费意愿测试</h3>
+          <p class="funnel-desc">行为经济学"沉没成本效应"——真实支付比口头承诺更具预测力</p>
+          <div class="funnel-metric">48小时转化测试 · 无转化即伪需求</div>
+        </div>
+        <div class="funnel-card">
+          <div class="funnel-header">
+            <span class="funnel-num">03</span>
+            <span class="funnel-status fail">待验证</span>
+          </div>
+          <h3 class="funnel-title">单人交付模型</h3>
+          <p class="funnel-desc">时间成本核算：获客+交付+售后，是否在8小时工作制内可承受</p>
+          <div class="funnel-metric">月收入上限 = 单价 × (200h / 单次耗时)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 01 认知套利 - 验证检查表 -->
+    <section class="content-section fade-section">
+      <div class="content-block">
+        <div class="block-header">
+          <span class="block-num">01</span>
+          <h2 class="block-title">筛选维度：认知套利与抗AI替代性</h2>
+        </div>
+        <div class="checklist">
+          <div class="check-item">
+            <div class="check-icon pass">✓</div>
+            <div class="check-content">
+              <div class="check-title">认知套利能力</div>
+              <div class="check-desc">利用独有的行业经验、审美或逻辑整合能力，将公开信息重构成高客单价的解决方案</div>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon pass">✓</div>
+            <div class="check-content">
+              <div class="check-title">抗AI替代性</div>
+              <div class="check-desc">涉及深度情绪共鸣、高度定制化策略的服务，而非纯知识交付型咨询</div>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon fail">✗</div>
+            <div class="check-content">
+              <div class="check-title">若核心价值仅是汇总公开知识</div>
+              <div class="check-desc">在小微创业场景下缺乏长期维系的价值，需重新审视</div>
+            </div>
+          </div>
+        </div>
+        <div class="quote-block">
+          <p class="quote-text">2026机会方向：<strong>实物材料包 + 加密教程</strong>——不易随手买到的特殊材料 + 只能通过特定链接观看的详细教程</p>
+        </div>
+      </div>
+
+      <!-- 02 痛点验证 - 信号指示器 -->
+      <div class="content-block">
+        <div class="block-header">
+          <span class="block-num">02</span>
+          <h2 class="block-title">痛点验证：付费意愿 > 点赞意愿</h2>
+        </div>
+        <div class="signal-grid">
+          <div class="signal-card">
+            <div class="signal-icon">!</div>
+            <div class="signal-label">仅点赞无转化</div>
+            <div class="signal-value">伪需求信号</div>
+          </div>
+          <div class="signal-card">
+            <div class="signal-icon">~</div>
+            <div class="signal-label">30%主动登记</div>
+            <div class="signal-value">刚性痛点</div>
+          </div>
+          <div class="signal-card">
+            <div class="signal-icon">$</div>
+            <div class="signal-label">愿意提前付费</div>
+            <div class="signal-value">真实痛点</div>
+          </div>
+        </div>
+        <div class="decision-flow">
+          <div class="decision-title">48小时付费测试</div>
+          <div class="decision-chain">
+            <div class="decision-node">发布预售页</div>
+            <span class="decision-arrow">→</span>
+            <div class="decision-node">设置小额预付款</div>
+            <span class="decision-arrow">→</span>
+            <div class="decision-node">48小时后评估</div>
+            <span class="decision-arrow">→</span>
+            <div class="decision-node highlight">零转化 = 转向</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03 单人交付 - 时间公式 -->
+      <div class="content-block">
+        <div class="block-header">
+          <span class="block-num">03</span>
+          <h2 class="block-title">单人交付模型：时间与收益的博弈</h2>
+        </div>
+        <div class="checklist">
+          <div class="check-item">
+            <div class="check-icon pass">✓</div>
+            <div class="check-content">
+              <div class="check-title">时间核算公式</div>
+              <div class="check-desc"><strong>月收入上限 = 单价 × (200h / 单次耗时)</strong><br>工时 = 25天 × 8小时 = 200小时</div>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon pass">✓</div>
+            <div class="check-content">
+              <div class="check-title">案例：海外公司注册咨询</div>
+              <div class="check-desc">每单5000元，获客5h + 交付10h + 售后2h = 17h/单<br>月极限收入：5000 × (200÷17) ≈ 59,000元</div>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon fail">✗</div>
+            <div class="check-content">
+              <div class="check-title">警示：无法标准化</div>
+              <div class="check-desc">规模不经济将导致业务陷入"手停口停"的陷阱</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 04 三阶段验证 -->
+      <div class="content-block">
+        <div class="block-header">
+          <span class="block-num">04</span>
+          <h2 class="block-title">三阶段验证：从假设到增长</h2>
+        </div>
+        <div class="signal-grid">
+          <div class="signal-card">
+            <div class="signal-icon yellow">①</div>
+            <div class="signal-label">假设验证</div>
+            <div class="signal-value">假MVP · 视觉层面产品页</div>
+          </div>
+          <div class="signal-card">
+            <div class="signal-icon yellow">②</div>
+            <div class="signal-label">单点价值验证</div>
+            <div class="signal-value">礼宾式交付 · 本人充当AI</div>
+          </div>
+          <div class="signal-card">
+            <div class="signal-icon green">③</div>
+            <div class="signal-label">增长验证</div>
+            <div class="signal-value">对公发票 + 独立法人格</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 05 无情止损 -->
+      <div class="content-block">
+        <div class="block-header">
+          <span class="block-num">05</span>
+          <h2 class="block-title">无情止损：三个必须终止的信号</h2>
+        </div>
+        <div class="compare-section">
+          <div class="compare-title">停止指标</div>
+          <div class="compare-row">
+            <span class="compare-marker"></span>
+            <span class="compare-text"><strong>获客成本 > 首单毛利</strong> — 时间折算工资已高于用户终身价值</span>
+            <span class="compare-result">终止</span>
+          </div>
+          <div class="compare-row">
+            <span class="compare-marker"></span>
+            <span class="compare-text"><strong>复购率 ≈ 0</strong> — 一人公司缺乏地推，增长引擎迅速熄火</span>
+            <span class="compare-result">终止</span>
+          </div>
+          <div class="compare-row">
+            <span class="compare-marker"></span>
+            <span class="compare-text"><strong>超出法律界定</strong> — 需专职人员/前置许可/重资产 → 不符合OPC</span>
+            <span class="compare-result">终止</span>
+          </div>
+        </div>
+        <div class="decision-flow">
+          <div class="decision-title">验证周期起点预设</div>
+          <div class="decision-chain">
+            <div class="decision-node">预设逆向指标</div>
+            <span class="decision-arrow">→</span>
+            <div class="decision-node">设定验证周期</div>
+            <span class="decision-arrow">→</span>
+            <div class="decision-node stop">触发红线立即停止</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 06 法律前置验证 -->
+      <div class="content-block">
+        <div class="block-header">
+          <span class="block-num">06</span>
+          <h2 class="block-title">法律前置验证：人格独立与财产隔离</h2>
+        </div>
+        <div class="checklist">
+          <div class="check-item">
+            <div class="check-icon pass">✓</div>
+            <div class="check-content">
+              <div class="check-title">对公发票能力</div>
+              <div class="check-desc">第一笔B2B交易时验证能否开具对公发票</div>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon pass">✓</div>
+            <div class="check-content">
+              <div class="check-title">资金流独立性</div>
+              <div class="check-desc">资金流是否完全进入对公账户而非个人微信/支付宝</div>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon fail">✗</div>
+            <div class="check-content">
+              <div class="check-title">法人格否认风险</div>
+              <div class="check-desc">若业务极度依赖个人账户，"独立性"验证即为不合格</div>
+            </div>
+          </div>
+        </div>
+        <div class="quote-block">
+          <p class="quote-text"><strong>三核心证据：</strong>① 年度审计报告 ② 公私账户交易记录 ③ 合同/发票/收付主体一致</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer-nav">
+      <a href="/nodes/02-personal-resources/index.html" class="nav-link">
+        <span class="nav-arrow">←</span>
+        节点02：个人能力与资源盘点
+      </a>
+      <a href="/nodes/04-business-structure/index.html" class="nav-link">
+        节点04：个体户vs有限公司选择
+        <span class="nav-arrow">→</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
   </script>
 </body>
 </html>

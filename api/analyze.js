@@ -99,10 +99,19 @@ app.post('/api/auth/login', (req, res) => {
 });
 
 // 获取当前用户订阅状态
+// 测试模式：无需登录，返回已订阅状态
 app.get('/api/subscription', (req, res) => {
   const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: '未登录' });
+
+  // 测试模式：无需token，返回已订阅
+  if (!authHeader || !authHeader.startsWith('Bearer ') || authHeader === 'Bearer test') {
+    return res.json({
+      success: true,
+      subscribed: true,
+      plan: 'monthly',
+      expires_at: '2099-12-31',
+      reason: 'test_mode'
+    });
   }
 
   const token = authHeader.split(' ')[1];
@@ -116,10 +125,17 @@ app.get('/api/subscription', (req, res) => {
 });
 
 // 检查节点访问权限
+// 测试模式：无需登录，所有节点均可访问
 app.get('/api/access/:slug', (req, res) => {
   const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: '未登录' });
+
+  // 测试模式：无token时允许访问所有节点
+  if (!authHeader || !authHeader.startsWith('Bearer ') || authHeader === 'Bearer test') {
+    return res.json({
+      success: true,
+      can_access: true,
+      reason: 'test_mode'
+    });
   }
 
   const token = authHeader.split(' ')[1];
@@ -133,10 +149,18 @@ app.get('/api/access/:slug', (req, res) => {
 });
 
 // 订阅
+// 测试模式：无需真实登录，提交任意plan即可
 app.post('/api/subscribe', (req, res) => {
   const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: '未登录' });
+
+  // 测试模式：无需token，直接返回订阅成功
+  if (!authHeader || !authHeader.startsWith('Bearer ') || authHeader === 'Bearer test') {
+    return res.json({
+      success: true,
+      subscribed: true,
+      plan: req.body.plan || 'monthly',
+      reason: 'test_mode'
+    });
   }
 
   const token = authHeader.split(' ')[1];
@@ -261,10 +285,18 @@ app.put('/api/admin/pricing', (req, res) => {
 });
 
 // 购买单个节点
+// 测试模式：无需登录，直接购买成功
 app.post('/api/nodes/:slug/purchase', (req, res) => {
   const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: '未登录' });
+
+  // 测试模式：无需token，直接购买成功
+  if (!authHeader || !authHeader.startsWith('Bearer ') || authHeader === 'Bearer test') {
+    return res.json({
+      success: true,
+      purchased: true,
+      node_slug: req.params.slug,
+      reason: 'test_mode'
+    });
   }
 
   const token = authHeader.split(' ')[1];

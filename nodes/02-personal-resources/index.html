@@ -3,105 +3,423 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="技能清单、时间投入、资源盘点，OPC成功90%取决于你自己">
+  <meta name="description" content="个人能力与资源盘点 - OPC节点百科">
   <meta name="theme-color" content="#111110">
   <title>个人能力与资源盘点 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #111110;
-      --surface: #1A1A18;
-      --text-primary: #F0EDE6;
-      --text-secondary: #7A7670;
-      --accent: #C0392B;
-      --line: #2A2A28;
-    }
-    body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; }
-    .loading { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-    .loading-bar { width: 100%; height: 1px; background: var(--line); position: relative; overflow: hidden; max-width: 200px; }
-    .loading-bar::after { content: ''; position: absolute; left: -50%; top: 0; width: 50%; height: 100%; background: var(--accent); animation: loading-slide 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite; }
-    @keyframes loading-slide { from { left: -50%; } to { left: 100%; } }
-    .content h1 { font-size: 1.75rem; font-weight: 300; margin-bottom: 1rem; }
-    .content h2 { font-size: 1.25rem; font-weight: 400; margin: 1.5rem 0 0.75rem; color: var(--text-primary); }
-    .content h3 { font-size: 1rem; font-weight: 500; margin: 1.25rem 0 0.5rem; color: var(--text-primary); }
-    .content p { line-height: 1.9; margin-bottom: 1rem; color: var(--text-secondary); }
-    .content ul, .content ol { margin: 1rem 0; padding-left: 1.5rem; color: var(--text-secondary); }
-    .content li { line-height: 1.8; margin-bottom: 0.5rem; }
-    .content strong { color: var(--text-primary); font-weight: 500; }
-    .content code { background: var(--surface); padding: 0.125rem 0.375rem; border-radius: 0.25rem; font-size: 0.875rem; }
-    .content pre { background: var(--surface); padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin: 1rem 0; }
-    .content pre code { background: none; padding: 0; }
-    .content blockquote { border-left: 3px solid var(--accent); padding-left: 1rem; margin: 1rem 0; color: var(--text-secondary); font-style: italic; }
-    .content hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
-    .content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-    .content th, .content td { border: 1px solid var(--line); padding: 0.75rem; text-align: left; }
-    .content th { background: var(--surface); color: var(--text-primary); }
-    .content td { color: var(--text-secondary); }
-    .content a { color: var(--accent); text-decoration: underline; }
-    .content input[type="checkbox"] { margin-right: 0.5rem; }
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #B8B4AE;
+  --text-tertiary: #A8A49E;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; font-weight: 400; line-height: 1.9; letter-spacing: 0.04em; -webkit-font-smoothing: antialiased; }
+
+/* 页面基础 */
+.page { position: relative; max-width: 1200px; margin: 0 auto; padding: 0 clamp(24px, 8vw, 120px); min-height: 100vh; }
+.page::before { content: ''; position: absolute; top: 0; left: clamp(24px, 8vw, 120px); right: clamp(24px, 8vw, 120px); height: 1px; background: var(--line); }
+
+/* 大号背景数字 */
+.section-number { position: absolute; top: var(--space-2xl); right: clamp(24px, 8vw, 120px); font-size: clamp(100px, 22vw, 280px); font-weight: 100; color: var(--text-primary); opacity: 0.03; line-height: 1; letter-spacing: -0.05em; font-family: 'Noto Serif JP', serif; pointer-events: none; user-select: none; }
+
+/* 返回链接 */
+.back-link { position: fixed; top: var(--space-xl); left: clamp(24px, 8vw, 120px); z-index: 100; }
+.back-link a { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: color 0.3s ease; }
+.back-link a:hover { color: var(--text-primary); }
+
+/* Hero区域 - 非对称大字布局 */
+.hero { padding: var(--space-4xl) 0 var(--space-3xl); position: relative; overflow: hidden; }
+.hero-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: var(--space-3xl); align-items: center; }
+@media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
+
+.hero-left { position: relative; z-index: 1; }
+.hero-label { font-size: 13px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-md); }
+.hero-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+.hero-title { font-family: 'Noto Serif JP', serif; font-size: clamp(48px, 10vw, 96px); font-weight: 300; letter-spacing: -0.03em; line-height: 0.95; margin-bottom: var(--space-xl); }
+
+.hero-right { padding-left: var(--space-xl); border-left: 1px solid var(--line); }
+.hero-statement { font-family: 'Noto Serif JP', serif; font-size: clamp(24px, 3vw, 36px); font-weight: 300; line-height: 1.4; color: var(--text-primary); }
+.hero-statement em { color: var(--accent); font-style: normal; }
+.hero-meta { margin-top: var(--space-xl); font-size: 14px; color: var(--text-tertiary); line-height: 1.8; }
+
+/* 能力仪表盘区域 */
+.capability-section { padding: var(--space-3xl) 0; border-top: 1px solid var(--line); }
+.section-label { font-size: 13px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-md); }
+.section-label::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+
+.capability-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: var(--space-md); }
+@media (max-width: 900px) { .capability-grid { grid-template-columns: 1fr; } }
+
+.cap-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-lg); position: relative; overflow: hidden; }
+.cap-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--accent); }
+
+.cap-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-md); }
+.cap-badge { font-size: 9px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; border: 1px solid var(--accent); padding: 2px 8px; }
+.cap-score { font-family: 'Noto Serif JP', serif; font-size: 28px; font-weight: 300; color: var(--accent); }
+
+.cap-title { font-family: 'Noto Serif JP', serif; font-size: 18px; font-weight: 400; color: var(--text-primary); margin-bottom: var(--space-xs); line-height: 1.3; }
+.cap-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+/* 进度条样式 */
+.cap-bar { height: 4px; background: var(--line); margin-top: var(--space-md); overflow: hidden; }
+.cap-bar-fill { height: 100%; background: var(--accent); transition: width 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+
+/* 内容区 - 流程图样式 */
+.content-section { padding: var(--space-3xl) 0; border-top: 1px solid var(--line); }
+
+.content-block { margin-bottom: var(--space-3xl); }
+.content-block:last-child { margin-bottom: 0; }
+
+.block-header { display: grid; grid-template-columns: 64px 1fr; gap: var(--space-lg); margin-bottom: var(--space-xl); align-items: center; }
+.block-num { font-family: 'Noto Serif JP', serif; font-size: 48px; font-weight: 300; color: var(--accent); opacity: 0.4; line-height: 1; }
+.block-title { font-family: 'Noto Serif JP', serif; font-size: clamp(20px, 3vw, 28px); font-weight: 400; color: var(--text-primary); line-height: 1.3; }
+
+/* 流程线布局 - 不同于其他节点 */
+.process-flow { display: flex; flex-direction: column; gap: 0; }
+.process-item { display: grid; grid-template-columns: 48px 1fr; gap: var(--space-lg); padding: var(--space-lg) 0; border-bottom: 1px solid var(--line); position: relative; }
+.process-item:last-child { border-bottom: none; }
+.process-icon { width: 40px; height: 40px; background: var(--surface); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; font-family: 'Noto Serif JP', serif; font-size: 14px; color: var(--accent); position: relative; z-index: 1; }
+.process-icon::after { content: ''; position: absolute; left: 50%; top: 100%; width: 1px; height: var(--space-lg); background: var(--accent); opacity: 0.3; }
+.process-item:last-child .process-icon::after { display: none; }
+
+.process-content { padding-left: var(--space-md); }
+.process-title { font-size: 15px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-xs); }
+.process-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+
+/* 对比卡片 - 用于法律形式选择 */
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2xl); }
+@media (max-width: 768px) { .compare-grid { grid-template-columns: 1fr; gap: var(--space-xl); } }
+
+.compare-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-xl); }
+.compare-label { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-md); padding-bottom: var(--space-sm); border-bottom: 1px solid var(--line); }
+.compare-label.positive { color: var(--accent); }
+.compare-label.negative { color: var(--text-tertiary); }
+
+.compare-item { padding: var(--space-sm) 0; border-bottom: 1px solid var(--line-light); font-size: 14px; color: var(--text-secondary); display: flex; align-items: center; gap: var(--space-sm); }
+.compare-item:last-child { border-bottom: none; }
+.compare-item::before { content: '→'; font-size: 12px; color: var(--text-tertiary); }
+.compare-item.dim { color: var(--text-tertiary); }
+.compare-item.dim::before { content: '—'; }
+
+/* 引用块 */
+.quote-block { padding: var(--space-lg) 0; padding-left: var(--space-md); border-left: 1px solid var(--accent); margin: var(--space-xl) 0; }
+.quote-text { font-size: 16px; color: var(--text-secondary); line-height: 1.8; max-width: 40ch; }
+.quote-text strong { color: var(--text-primary); }
+
+/* 决策流程图 */
+.decision-flow { background: var(--surface); border: 1px solid var(--line); padding: var(--space-xl); margin: var(--space-xl) 0; }
+.decision-title { font-size: 12px; color: var(--text-tertiary); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: var(--space-lg); }
+.decision-nodes { display: flex; align-items: center; gap: var(--space-md); flex-wrap: wrap; }
+.decision-node { padding: var(--space-md) var(--space-lg); background: var(--bg); border: 1px solid var(--line); font-size: 13px; color: var(--text-secondary); }
+.decision-node.highlight { border-color: var(--accent); color: var(--accent); }
+.decision-arrow { color: var(--text-tertiary); font-size: 12px; }
+
+/* 底部导航 */
+.footer-nav { padding: var(--space-2xl) 0; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
+.nav-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: color 0.3s ease; }
+.nav-link:hover { color: var(--text-primary); }
+.nav-arrow { font-size: 0.75rem; }
+
+/* 动画 */
+.fade-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.fade-section.visible { opacity: 1; transform: translateY(0); }
+* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
   </style>
 </head>
 <body>
-  <div id="app" data-slug="personal-resources">
-    <div class="loading">
-      <div class="loading-bar"></div>
-    </div>
+  <div class="back-link">
+    <a href="/"><span>←</span> 返回首页</a>
   </div>
-  <script type="module">
-    const SLUG = "personal-resources";
+  <div class="section-number">02</div>
 
-    async function loadNode() {
-      try {
-        const res = await fetch("/api/nodes/" + SLUG);
-        if (!res.ok) throw new Error("Failed to load");
-        const data = await res.json();
-        renderNode(data);
-      } catch (e) {
-        document.getElementById("app").innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text-secondary)">加载失败</div>';
-      }
-    }
-
-    function mdToHtml(md) {
-      if (!md) return '<p style="color:var(--text-secondary)">内容加载中...</p>';
-      let html = md
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/^### (.+)$/gm, "<h3>$1</h3>")
-        .replace(/^## (.+)$/gm, "<h2>$1</h2>")
-        .replace(/^# (.+)$/gm, "<h1>$1</h1>")
-        .replace(/**(.+?)**/g, "<strong>$1</strong>")
-        .replace(/^- (.+)$/gm, "<li>$1</li>")
-        .replace(/^\[ \] (.+)$/gm, "<div><input type="checkbox" disabled> $1</div>")
-        .replace(/^\[x\] (.+)$/gm, "<div><input type="checkbox" checked disabled> $1</div>")
-        .replace(/^\d+\. (.+)$/gm, "<li>$1</li>")
-        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
-        .replace(/^(?!<[a-z])(.+)$/gm, "<p>$1</p>")
-        .replace(/\n\n+/g, "\n");
-      html = html.replace(/(<li>.*<\/li>\n?)+/g, "<ul>$&</ul>");
-      return html;
-    }
-
-    function renderNode(node) {
-      const content = node.content || "";
-      const contentHtml = mdToHtml(content);
-      document.getElementById("app").innerHTML = `
-        <div style="max-width:800px;margin:0 auto;padding:2rem 1.25rem;">
-          <a href="/" style="color:var(--text-secondary);font-size:0.75rem;letter-spacing:0.1em;text-decoration:none;">← 返回首页</a>
-          <div style="margin-top:2rem;">
-            <div style="color:var(--accent);font-size:0.625rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;">${node.data?.category || ""} · ${node.data?.difficulty || ""}</div>
-            <h1 style="font-size:clamp(1.5rem,5vw,2.5rem);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;">${node.data?.title || ""}</h1>
-            <p style="color:var(--text-secondary);line-height:1.9;">${node.data?.summary || ""}</p>
+  <div class="page">
+    <!-- Hero - 非对称大字布局 -->
+    <header class="hero fade-section">
+      <div class="hero-grid">
+        <div class="hero-left">
+          <div class="hero-label">节点 02 · 核心必做</div>
+          <h1 class="hero-title">个人能力与<br>资源盘点</h1>
+        </div>
+        <div class="hero-right">
+          <div class="hero-statement">
+            OPC的生死线，不在于市场，而在于<em>你是否有能力独立完成价值闭环</em>。
           </div>
-          <div class="content" style="margin-top:2rem;padding-top:2rem;border-top:1px solid var(--line);">
-            ${contentHtml}
+          <div class="hero-meta">
+            第二个核心节点。完成自我审计，才有资格上场。
           </div>
         </div>
-      `;
-    }
+      </div>
+    </header>
 
-    loadNode();
+    <!-- 能力仪表盘 - 替代原来的6卡片 -->
+    <section class="capability-section fade-section">
+      <div class="section-label">能力自检</div>
+      <div class="capability-grid">
+        <div class="cap-card">
+          <div class="cap-header">
+            <span class="cap-badge">D1 核心</span>
+            <span class="cap-score">65%</span>
+          </div>
+          <h3 class="cap-title">最小商业闭环</h3>
+          <p class="cap-desc">从引流到售后的全链路能力，你能否独立完成一个完整商业交付</p>
+          <div class="cap-bar"><div class="cap-bar-fill" style="width: 65%"></div></div>
+        </div>
+        <div class="cap-card">
+          <div class="cap-header">
+            <span class="cap-badge">D2 本质</span>
+            <span class="cap-score">40%</span>
+          </div>
+          <h3 class="cap-title">能力T型/π型结构</h3>
+          <p class="cap-desc">一项精深技能 + 周边知识广度 + AI协同能力</p>
+          <div class="cap-bar"><div class="cap-bar-fill" style="width: 40%"></div></div>
+        </div>
+        <div class="cap-card">
+          <div class="cap-header">
+            <span class="cap-badge">D3 模型</span>
+            <span class="cap-score">55%</span>
+          </div>
+          <h3 class="cap-title">资源连接性评估</h3>
+          <p class="cap-desc">从"占有"转向"可连接"，弱关系网络与非对称资源</p>
+          <div class="cap-bar"><div class="cap-bar-fill" style="width: 55%"></div></div>
+        </div>
+        <div class="cap-card">
+          <div class="cap-header">
+            <span class="cap-badge">D4 培育</span>
+            <span class="cap-score">30%</span>
+          </div>
+          <h3 class="cap-title">AI领导力养成</h3>
+          <p class="cap-desc">定义问题、拆解任务、指挥多个AI智能体协同</p>
+          <div class="cap-bar"><div class="cap-bar-fill" style="width: 30%"></div></div>
+        </div>
+        <div class="cap-card">
+          <div class="cap-header">
+            <span class="cap-badge">D5 避坑</span>
+            <span class="cap-score">80%</span>
+          </div>
+          <h3 class="cap-title">财务隔离红线</h3>
+          <p class="cap-desc">公私账户混同的无限连带责任陷阱</p>
+          <div class="cap-bar"><div class="cap-bar-fill" style="width: 80%"></div></div>
+        </div>
+        <div class="cap-card">
+          <div class="cap-header">
+            <span class="cap-badge">D6 决策</span>
+            <span class="cap-score">50%</span>
+          </div>
+          <h3 class="cap-title">法律形式选择</h3>
+          <p class="cap-desc">个体工商户与一人有限公司的决策框架</p>
+          <div class="cap-bar"><div class="cap-bar-fill" style="width: 50%"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 01 核心专业能力 - 流程图样式 -->
+    <section class="content-section fade-section">
+      <div class="content-block">
+        <div class="block-header">
+          <span class="block-num">01</span>
+          <h2 class="block-title">核心专业能力：你的最小商业闭环在哪里？</h2>
+        </div>
+        <div class="process-flow">
+          <div class="process-item">
+            <div class="process-icon">①</div>
+            <div class="process-content">
+              <div class="process-title">获取第一批付费用户</div>
+              <div class="process-desc">在任何平台，通过内容或服务，证明有人愿意为你付费。这是商业验证的起点。</div>
+            </div>
+          </div>
+          <div class="process-item">
+            <div class="process-icon">②</div>
+            <div class="process-content">
+              <div class="process-title">核心交付（产品/服务）</div>
+              <div class="process-desc">你能独立完成对用户的价值承诺，不依赖外部团队或外包。</div>
+            </div>
+          </div>
+          <div class="process-item">
+            <div class="process-icon">③</div>
+            <div class="process-content">
+              <div class="process-title">收款与售后维护</div>
+              <div class="process-desc">建立收款通道和维护体系，确保现金流的持续健康。</div>
+            </div>
+          </div>
+        </div>
+        <div class="quote-block">
+          <p class="quote-text">83%的一人公司在启动阶段失败，并非因为创始人专业能力不强，而是因为其能力存在关键断层，无法完成完整的商业价值交换。</p>
+        </div>
+      </div>
+
+      <!-- 02 资源盘点 - 改为连接图示意 -->
+      <div class="content-block">
+        <div class="block-header">
+          <span class="block-num">02</span>
+          <h2 class="block-title">资源盘点：从"占有"到"可连接"</h2>
+        </div>
+        <div class="decision-flow">
+          <div class="decision-title">资源连接性评估</div>
+          <div class="decision-nodes">
+            <div class="decision-node">盘点弱关系</div>
+            <span class="decision-arrow">→</span>
+            <div class="decision-node">发现非对称资源</div>
+            <span class="decision-arrow">→</span>
+            <div class="decision-node highlight">建立连接</div>
+            <span class="decision-arrow">→</span>
+            <div class="decision-node">资源中台化</div>
+          </div>
+        </div>
+        <div class="quote-block">
+          <p class="quote-text">盘点不是罗列名单，而是评估<strong>你被别人需要的程度</strong>。你是否已建立系统化、可检索、可调度的资源网络？</p>
+        </div>
+      </div>
+
+      <!-- 03 付费验证 - 改为验证流程 -->
+      <div class="content-block">
+        <div class="block-header">
+          <span class="block-num">03</span>
+          <h2 class="block-title">付费验证：83%失败的根源</h2>
+        </div>
+        <div class="decision-flow">
+          <div class="decision-title">数字摆摊验证法</div>
+          <div class="decision-nodes">
+            <div class="decision-node">100条内容</div>
+            <span class="decision-arrow">→</span>
+            <div class="decision-node">10个付费用户</div>
+            <span class="decision-arrow">→</span>
+            <div class="decision-node highlight">验证成功</div>
+            <span class="decision-arrow">→</span>
+            <div class="decision-node">正式注册</div>
+          </div>
+        </div>
+        <div class="quote-block">
+          <p class="quote-text"><strong>没有经过付费验证的想法，仅能视为待测试的假设。</strong>据抖音电商2025年度报告，采用"内容MVP"验证模式的一人公司，其首年存活率较未验证者提升了约40%。</p>
+        </div>
+      </div>
+
+      <!-- 04 能量管理 - 改为三维度图 -->
+      <div class="content-block">
+        <div class="block-header">
+          <span class="block-num">04</span>
+          <h2 class="block-title">能量管理：一人公司最大的倒闭风险</h2>
+        </div>
+        <div class="capability-grid">
+          <div class="cap-card">
+            <div class="cap-header">
+              <span class="cap-badge">心力</span>
+              <span class="cap-score">◐</span>
+            </div>
+            <h3 class="cap-title">情绪韧性</h3>
+            <p class="cap-desc">高情绪粒度识别 + 明确的解压路径</p>
+          </div>
+          <div class="cap-card">
+            <div class="cap-header">
+              <span class="cap-badge">体力</span>
+              <span class="cap-score">◐</span>
+            </div>
+            <h3 class="cap-title">深度专注</h3>
+            <p class="cap-desc">日程中保护深度专注时间的机制</p>
+          </div>
+          <div class="cap-card">
+            <div class="cap-header">
+              <span class="cap-badge">信息</span>
+              <span class="cap-score">◐</span>
+            </div>
+            <h3 class="cap-title">数字戒断</h3>
+            <p class="cap-desc">保护深度思考的时间</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 05 财税防火墙 - 改为对比卡片 -->
+      <div class="content-block">
+        <div class="block-header">
+          <span class="block-num">05</span>
+          <h2 class="block-title">财税防火墙：公私不分的无限责任陷阱</h2>
+        </div>
+        <div class="compare-grid">
+          <div class="compare-card">
+            <div class="compare-label positive">个体工商户</div>
+            <div class="compare-item">无限责任</div>
+            <div class="compare-item">税负低（减半征收）</div>
+            <div class="compare-item">政策利好延续至2027年</div>
+            <div class="compare-item">财务合规要求低</div>
+          </div>
+          <div class="compare-card">
+            <div class="compare-label negative">一人有限公司</div>
+            <div class="compare-item dim">有条件的有限责任</div>
+            <div class="compare-item dim">需严格财务合规</div>
+            <div class="compare-item dim">5年内实缴注册资本</div>
+            <div class="compare-item dim">揭开面纱原则风险</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 06 能力资产化 - 保持路径列表但精简 -->
+      <div class="content-block">
+        <div class="block-header">
+          <span class="block-num">06</span>
+          <h2 class="block-title">能力资产化：从隐性知识到显性价值</h2>
+        </div>
+        <div class="process-flow">
+          <div class="process-item">
+            <div class="process-icon">A</div>
+            <div class="process-content">
+              <div class="process-title">方法论 → 标准化服务</div>
+              <div class="process-desc">将经验固化为可复用的服务流程，如"企业谈判顾问服务包"</div>
+            </div>
+          </div>
+          <div class="process-item">
+            <div class="process-icon">B</div>
+            <div class="process-content">
+              <div class="process-title">知识体系 → 数字产品</div>
+              <div class="process-desc">封装为录播课程或训练营，实现一次生产多次销售</div>
+            </div>
+          </div>
+          <div class="process-item">
+            <div class="process-icon">C</div>
+            <div class="process-content">
+              <div class="process-title">综合能力 → 个人品牌</div>
+              <div class="process-desc">持续输出行业洞见，建立专业认知壁垒</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer-nav">
+      <a href="/nodes/01-opc-fit-test/index.html" class="nav-link">
+        <span class="nav-arrow">←</span>
+        节点01：OPC适配测试
+      </a>
+      <a href="/nodes/03-idea-validation/index.html" class="nav-link">
+        节点03：创业想法筛选与验证
+        <span class="nav-arrow">→</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
   </script>
 </body>
 </html>

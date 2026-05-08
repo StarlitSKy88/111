@@ -3,105 +3,1050 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="快速响应、专业交付、复购激励，打造让客户惊艳的服务体验">
+  <meta name="description" content="客户体验与口碑管理 - OPC节点百科">
   <meta name="theme-color" content="#111110">
   <title>客户体验与口碑管理 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #111110;
-      --surface: #1A1A18;
-      --text-primary: #F0EDE6;
-      --text-secondary: #7A7670;
-      --accent: #C0392B;
-      --line: #2A2A28;
-    }
-    body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; }
-    .loading { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-    .loading-bar { width: 100%; height: 1px; background: var(--line); position: relative; overflow: hidden; max-width: 200px; }
-    .loading-bar::after { content: ''; position: absolute; left: -50%; top: 0; width: 50%; height: 100%; background: var(--accent); animation: loading-slide 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite; }
-    @keyframes loading-slide { from { left: -50%; } to { left: 100%; } }
-    .content h1 { font-size: 1.75rem; font-weight: 300; margin-bottom: 1rem; }
-    .content h2 { font-size: 1.25rem; font-weight: 400; margin: 1.5rem 0 0.75rem; color: var(--text-primary); }
-    .content h3 { font-size: 1rem; font-weight: 500; margin: 1.25rem 0 0.5rem; color: var(--text-primary); }
-    .content p { line-height: 1.9; margin-bottom: 1rem; color: var(--text-secondary); }
-    .content ul, .content ol { margin: 1rem 0; padding-left: 1.5rem; color: var(--text-secondary); }
-    .content li { line-height: 1.8; margin-bottom: 0.5rem; }
-    .content strong { color: var(--text-primary); font-weight: 500; }
-    .content code { background: var(--surface); padding: 0.125rem 0.375rem; border-radius: 0.25rem; font-size: 0.875rem; }
-    .content pre { background: var(--surface); padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin: 1rem 0; }
-    .content pre code { background: none; padding: 0; }
-    .content blockquote { border-left: 3px solid var(--accent); padding-left: 1rem; margin: 1rem 0; color: var(--text-secondary); font-style: italic; }
-    .content hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
-    .content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-    .content th, .content td { border: 1px solid var(--line); padding: 0.75rem; text-align: left; }
-    .content th { background: var(--surface); color: var(--text-primary); }
-    .content td { color: var(--text-secondary); }
-    .content a { color: var(--accent); text-decoration: underline; }
-    .content input[type="checkbox"] { margin-right: 0.5rem; }
-  </style>
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #B8B4AE;
+  --text-tertiary: #A8A49E;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 400;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 8vw, 120px);
+  min-height: 100vh;
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: clamp(24px, 8vw, 120px);
+  right: clamp(24px, 8vw, 120px);
+  height: 1px;
+  background: var(--line);
+}
+
+.section-number {
+  position: absolute;
+  top: var(--space-2xl);
+  right: clamp(24px, 8vw, 120px);
+  font-size: clamp(100px, 22vw, 280px);
+  font-weight: 100;
+  color: var(--text-primary);
+  opacity: 0.03;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-family: 'Noto Serif JP', serif;
+  pointer-events: none;
+  user-select: none;
+}
+
+.back-link {
+  position: fixed;
+  top: var(--space-xl);
+  left: clamp(24px, 8vw, 120px);
+  z-index: 100;
+}
+
+.back-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.back-link a:hover { color: var(--text-primary); }
+
+.hero {
+  padding: var(--space-4xl) 0 var(--space-3xl);
+  position: relative;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+}
+
+.hero-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.hero-label::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.hero-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  margin-bottom: var(--space-xl);
+}
+
+.hero-desc {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 44ch;
+}
+
+.content-section {
+  padding: var(--space-3xl) 0;
+  border-top: 1px solid var(--line);
+}
+
+.section-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.section-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.grid-asymmetric {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-3xl);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .grid-asymmetric {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+}
+
+.chapter-heading {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: var(--space-xl);
+  max-width: 16em;
+}
+
+.body-text {
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--text-secondary);
+  max-width: 44ch;
+  margin-bottom: var(--space-md);
+}
+
+.body-text strong { color: var(--text-primary); font-weight: 500; }
+.body-text .accent { color: var(--accent); font-weight: 500; }
+
+.quote-block {
+  padding-left: var(--space-md);
+  border-left: 1px solid var(--accent);
+  margin: var(--space-xl) 0;
+}
+
+.quote-text {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  max-width: 40ch;
+}
+
+.insight-tag {
+  display: inline-block;
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  border: 1px solid var(--accent);
+  padding: 4px 12px;
+}
+
+.data-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.data-card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--line);
+}
+
+.data-card-row:last-child { border-bottom: none; }
+
+.data-label {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.data-value {
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.data-value.accent { color: var(--accent); font-weight: 600; }
+
+.list-item {
+  padding: var(--space-lg) 0;
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: var(--space-lg);
+}
+
+.list-item:last-child { border-bottom: none; }
+
+.list-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--text-tertiary);
+  line-height: 1;
+}
+
+.list-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.list-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 40ch;
+}
+
+.core-insight {
+  margin: var(--space-xl) 0;
+  padding-left: var(--space-md);
+  border-left: 1px solid var(--accent);
+}
+
+.core-insight-text {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 40ch;
+}
+
+.balance-section-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-xl);
+}
+
+.balance-intro {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 46ch;
+  margin-bottom: var(--space-2xl);
+}
+
+.balance-intro strong { color: var(--text-primary); font-weight: 500; }
+
+.balance-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: var(--space-2xl);
+}
+
+@media (max-width: 768px) {
+  .balance-grid { grid-template-columns: 1fr; gap: var(--space-xl); }
+}
+
+.balance-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+}
+
+.balance-card-label {
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+}
+
+.balance-card-label.positive { color: var(--accent); }
+.balance-card-label.negative { color: var(--text-tertiary); }
+
+.balance-item {
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--line-light);
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.balance-item:last-child { border-bottom: none; }
+.balance-item.dim { color: var(--text-tertiary); }
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1.2fr 0.8fr;
+  gap: var(--space-xl);
+}
+
+@media (max-width: 900px) {
+  .summary-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
+}
+
+.summary-card {
+  padding: var(--space-lg) 0;
+  border-top: 1px solid var(--line);
+}
+
+.summary-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 36px;
+  font-weight: 300;
+  color: var(--accent);
+  margin-bottom: var(--space-sm);
+}
+
+.summary-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.summary-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.footer-nav {
+  padding: var(--space-2xl) 0;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover { color: var(--text-primary); }
+.nav-arrow { font-size: 0.75rem; }
+
+.fade-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-section.visible { opacity: 1; transform: translateY(0); }
+
+* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+
+/* Dimension blocks */
+.dimension-block {
+  margin-bottom: var(--space-3xl);
+}
+
+.dimension-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+
+.dimension-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+.dimension-tag {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+}
+
+.dimension-question {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(24px, 4vw, 40px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  margin-bottom: var(--space-xl);
+  max-width: 18em;
+}
+
+/* Answer blocks */
+.answer-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.answer-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+  transition: border-color 0.3s ease;
+}
+
+.answer-block:hover {
+  border-color: var(--text-tertiary);
+}
+
+.answer-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+}
+
+.answer-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.answer-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* Objection blocks */
+.objection-block {
+  padding: var(--space-lg);
+  margin-bottom: var(--space-md);
+}
+
+.objection-block.error {
+  background: rgba(192, 57, 43, 0.08);
+  border-left: 2px solid var(--accent);
+}
+
+.objection-block.success {
+  background: rgba(39, 174, 96, 0.08);
+  border-left: 2px solid var(--accent);
+}
+
+.objection-block.data {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--text-tertiary);
+}
+
+.objection-label {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+}
+
+.objection-block.error .objection-label { color: var(--accent); }
+.objection-block.success .objection-label { color: var(--accent); }
+.objection-block.data .objection-label { color: var(--text-tertiary); }
+
+.objection-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.objection-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Decision table */
+.decision-table {
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.decision-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--line);
+  align-items: center;
+}
+
+.decision-row:last-child { border-bottom: none; }
+
+.decision-condition {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.decision-action {
+  font-size: 13px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.decision-result {
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+@media (max-width: 768px) {
+  .decision-row {
+    grid-template-columns: 1fr;
+    gap: var(--space-xs);
+  }
+}
+
+/* FIN section */
+.fin-section {
+  margin-top: var(--space-3xl);
+  padding-top: var(--space-2xl);
+  border-top: 1px solid var(--line);
+}
+
+.fin-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(32px, 6vw, 56px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: var(--space-xl);
+}
+
+.fin-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-xl);
+}
+
+@media (max-width: 768px) {
+  .fin-grid { grid-template-columns: 1fr; }
+}
+
+.fin-card {
+  padding: var(--space-lg);
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.fin-label {
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+}
+
+.fin-value {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.fin-desc {
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+</style>
 </head>
 <body>
-  <div id="app" data-slug="customer-experience">
-    <div class="loading">
-      <div class="loading-bar"></div>
-    </div>
+  <div class="back-link">
+    <a href="/"><span>←</span> 返回首页</a>
   </div>
-  <script type="module">
-    const SLUG = "customer-experience";
+  <div class="section-number">20</div>
 
-    async function loadNode() {
-      try {
-        const res = await fetch("/api/nodes/" + SLUG);
-        if (!res.ok) throw new Error("Failed to load");
-        const data = await res.json();
-        renderNode(data);
-      } catch (e) {
-        document.getElementById("app").innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text-secondary)">加载失败</div>';
-      }
-    }
+  <div class="page">
+    <header class="hero">
+      <div class="hero-content">
+        <div class="hero-label">节点 20 · 运营维护</div>
+        <h1 class="hero-title">客户体验与口碑管理</h1>
+        <p class="hero-desc">体验即品牌，交付即口碑。个体户的资源上限决定了你必须把每一分信任都转化为复购和转介绍。</p>
+      </div>
+    </header>
 
-    function mdToHtml(md) {
-      if (!md) return '<p style="color:var(--text-secondary)">内容加载中...</p>';
-      let html = md
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/^### (.+)$/gm, "<h3>$1</h3>")
-        .replace(/^## (.+)$/gm, "<h2>$1</h2>")
-        .replace(/^# (.+)$/gm, "<h1>$1</h1>")
-        .replace(/**(.+?)**/g, "<strong>$1</strong>")
-        .replace(/^- (.+)$/gm, "<li>$1</li>")
-        .replace(/^\[ \] (.+)$/gm, "<div><input type="checkbox" disabled> $1</div>")
-        .replace(/^\[x\] (.+)$/gm, "<div><input type="checkbox" checked disabled> $1</div>")
-        .replace(/^\d+\. (.+)$/gm, "<li>$1</li>")
-        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
-        .replace(/^(?!<[a-z])(.+)$/gm, "<p>$1</p>")
-        .replace(/\n\n+/g, "\n");
-      html = html.replace(/(<li>.*<\/li>\n?)+/g, "<ul>$&</ul>");
-      return html;
-    }
+    <!-- Dimension 1: 体验即品牌 -->
+    <section class="content-section fade-section">
+      <div class="dimension-block">
+        <div class="dimension-badge">
+          <span class="dimension-num">01</span>
+          <span class="dimension-tag">信任资产</span>
+        </div>
+        <h2 class="dimension-question">体验即品牌——你的每一次交付都在定义你是谁</h2>
 
-    function renderNode(node) {
-      const content = node.content || "";
-      const contentHtml = mdToHtml(content);
-      document.getElementById("app").innerHTML = `
-        <div style="max-width:800px;margin:0 auto;padding:2rem 1.25rem;">
-          <a href="/" style="color:var(--text-secondary);font-size:0.75rem;letter-spacing:0.1em;text-decoration:none;">← 返回首页</a>
-          <div style="margin-top:2rem;">
-            <div style="color:var(--accent);font-size:0.625rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;">${node.data?.category || ""} · ${node.data?.difficulty || ""}</div>
-            <h1 style="font-size:clamp(1.5rem,5vw,2.5rem);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;">${node.data?.title || ""}</h1>
-            <p style="color:var(--text-secondary);line-height:1.9;">${node.data?.summary || ""}</p>
+        <div class="grid-asymmetric">
+          <div class="answer-section">
+            <div class="answer-block">
+              <div class="answer-label">核心原则</div>
+              <div class="answer-title">产品是体验的容器，服务是体验的灵魂</div>
+              <div class="answer-desc">用户不记得功能列表，只记得感受。对OPC来说，每一个对话、每一份文档、每一次回复都是品牌的一部分。不是「做完」，是「做到心里去」。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">执行要点</div>
+              <div class="answer-title">建立「体验检查清单」</div>
+              <div class="answer-desc">交付前问自己：我愿意把这件事发到朋友圈吗？这份文档我自己看着舒服吗？这个回复如果是我收到我会满意吗？标准只有一个——己所不欲，勿施于人。</div>
+            </div>
           </div>
-          <div class="content" style="margin-top:2rem;padding-top:2rem;border-top:1px solid var(--line);">
-            ${contentHtml}
+
+          <div>
+            <div class="insight-tag">数据洞察</div>
+            <div class="data-card">
+              <div class="data-card-row">
+                <span class="data-label">客户留存率</span>
+                <span class="data-value accent">+35%</span>
+              </div>
+              <div class="data-card-row">
+                <span class="data-label">复购转化</span>
+                <span class="data-value accent">28%</span>
+              </div>
+              <div class="data-card-row">
+                <span class="data-label">转介绍意愿</span>
+                <span class="data-value">43%</span>
+              </div>
+              <div class="data-card-row">
+                <span class="data-label">净推荐值 NPS</span>
+                <span class="data-value accent">52</span>
+              </div>
+            </div>
+
+            <div class="core-insight">
+              <p class="core-insight-text">品牌不是VI设计，是所有体验的总和。每一次低预期交付都在透支你的信任储蓄。</p>
+            </div>
           </div>
         </div>
-      `;
-    }
+      </div>
+    </section>
 
-    loadNode();
+    <!-- Dimension 2: 情绪资产管理 -->
+    <section class="content-section fade-section">
+      <div class="dimension-block">
+        <div class="dimension-badge">
+          <span class="dimension-num">02</span>
+          <span class="dimension-tag">情感连接</span>
+        </div>
+        <h2 class="dimension-question">情绪资产管理——让客户记住你这个人</h2>
+
+        <div class="grid-asymmetric">
+          <div class="answer-section">
+            <div class="answer-block">
+              <div class="answer-label">核心理念</div>
+              <div class="answer-title">客户购买的不是服务，是「爽」的感觉</div>
+              <div class="answer-desc">满意的客户不一定复购，但「愉悦」的客户一定复购，还会告诉你他的朋友。情绪价值是OPC最有竞争力的武器——因为你可以在每个客户身上花大厂不可能花的时间。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">实践方法</div>
+              <div class="answer-title">「记得我」系统</div>
+              <div class="answer-desc">记录每个客户的偏好、痛点、上次对话的关键信息。下次沟通时自然提起：「上次您提到担心备案时间，这次我们加快了三周。」这种细节让人感觉被重视。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">升维策略</div>
+              <div class="answer-title">成为「最懂我的那个」</div>
+              <div class="answer-desc">你的竞争对手是大厂标准化服务。唯一胜出的方式：比他们更懂这个客户。客户的第一个问题你记得，第三个问题你理解他的处境，第五个问题你主动帮他想到第七个。</div>
+            </div>
+          </div>
+
+          <div>
+            <div class="objection-block success">
+              <div class="objection-label">正确示范</div>
+              <div class="objection-title">主动预警+情感确认</div>
+              <div class="objection-desc">「王总，您的域名备案估还需要5个工作日。我帮您盯着的，有任何进展第一时间通知您。这段时间您先准备其他上线材料，别耽误整体进度。」——既专业又温暖。</div>
+            </div>
+
+            <div class="objection-block error">
+              <div class="objection-label">错误示范</div>
+              <div class="objection-title">机械流程式回复</div>
+              <div class="objection-desc">「您的工单已受理，预计5-7个工作日处理，请耐心等待。」——冰冷的自动回复，客户感觉自己是队列里的一个数字。</div>
+            </div>
+
+            <div class="objection-block data">
+              <div class="objection-label">客户原声</div>
+              <div class="objection-title">「他记得我说过的话」</div>
+              <div class="objection-desc">「很多服务商都是我这说完就忘，但他不一样。上次我说担心政策变化，他后来主动给我发了一篇分析。这种人被信任是理所当然的。」——某企业主评价其代办服务商</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dimension 3: 交付即口碑四重奏 -->
+    <section class="content-section fade-section">
+      <div class="dimension-block">
+        <div class="dimension-badge">
+          <span class="dimension-num">03</span>
+          <span class="dimension-tag">交付体系</span>
+        </div>
+        <h2 class="dimension-question">交付即口碑——四重奏打造自动传播飞轮</h2>
+
+        <div class="grid-asymmetric">
+          <div>
+            <div class="list-item">
+              <span class="list-num">01</span>
+              <div>
+                <div class="list-title">预期管理（交付前）</div>
+                <div class="list-desc">在开始前明确告知：时间线、交付标准、可能的坑。宁可说得保守，不要承诺过度。超标交付是惊喜，低于承诺是背叛。</div>
+              </div>
+            </div>
+            <div class="list-item">
+              <span class="list-num">02</span>
+              <div>
+                <div class="list-title">过程透明（交付中）</div>
+                <div class="list-desc">主动汇报进度，不必等客户问。遇到问题第一时间说，不要等客户自己发现。透明是信任的放大器。</div>
+              </div>
+            </div>
+            <div class="list-item">
+              <span class="list-num">03</span>
+              <div>
+                <div class="list-title">超预期收尾（交付时）</div>
+                <div class="list-desc">在约定交付物之外，主动提供「隐藏福利」：一份操作指南、一种更优方案、一条后续建议。不在价格上让利，在价值上溢出。</div>
+              </div>
+            </div>
+            <div class="list-item">
+              <span class="list-num">04</span>
+              <div>
+                <div class="list-title">复盘跟进（交付后）</div>
+                <div class="list-desc">一周后主动问使用感受，一个月后提醒注意事项，三个月后分享相关更新。复购和转介绍都在这个窗口发生。</div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="quote-block">
+              <p class="quote-text">口碑不是「客户满意」就够了，是「客户愉悦到想告诉别人」。每个客户背后有7个潜在客户，你在服务的同时就在获客。</p>
+            </div>
+
+            <div class="insight-tag">飞轮效应</div>
+            <div class="data-card">
+              <div class="data-card-row">
+                <span class="data-label">满意→推荐</span>
+                <span class="data-value accent">68%</span>
+              </div>
+              <div class="data-card-row">
+                <span class="data-label">推荐→转化</span>
+                <span class="data-value">24%</span>
+              </div>
+              <div class="data-card-row">
+                <span class="data-label">获客成本</span>
+                <span class="data-value accent">¥8</span>
+              </div>
+              <div class="data-card-row">
+                <span class="data-label">vs 广告投放</span>
+                <span class="data-value">¥127</span>
+              </div>
+            </div>
+
+            <div class="core-insight">
+              <p class="core-insight-text">转介绍是OPC最低成本的获客方式。你的服务质量直接决定了这条渠道的流量大小。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dimension 4: AI恐怖谷陷阱 -->
+    <section class="content-section fade-section">
+      <div class="dimension-block">
+        <div class="dimension-badge">
+          <span class="dimension-num">04</span>
+          <span class="dimension-tag">认知陷阱</span>
+        </div>
+        <h2 class="dimension-question">AI恐怖谷——用AI服务客户反而伤害客户体验</h2>
+
+        <div class="grid-asymmetric">
+          <div class="answer-section">
+            <div class="answer-block">
+              <div class="answer-label">陷阱描述</div>
+              <div class="answer-title">效率高了，温度没了</div>
+              <div class="answer-desc">AI客服可以7×24小时秒回，但客户感受到的是「在跟机器说话」。当客户知道你用了AI，他们反而更敏感——每一个「假惺惺」的关心都会被识破，每一个「模板化」的回复都在积累反感。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">陷阱信号</div>
+              <div class="answer-title">三种AI恐怖谷症状</div>
+              <div class="answer-desc">1. 客户问「你是AI吗」——说明回复太标准化<br>2. 客户反复问同一问题——说明AI没理解上下文<br>3. 客户突然转向「人工客服」——信任已崩</div>
+            </div>
+          </div>
+
+          <div>
+            <div class="objection-block error">
+              <div class="objection-label">错误示范</div>
+              <div class="objection-title">全AI覆盖的错误逻辑</div>
+              <div class="objection-desc">「我们用AI提升了80%的响应速度，客户满意度大幅提升。」——数据漂亮，但没说的是：那些没被服务的20%才是创造80%营收的核心客户。</div>
+            </div>
+
+            <div class="objection-block success">
+              <div class="objection-label">正确示范</div>
+              <div class="objection-title">AI是辅助，不是替代</div>
+              <div class="objection-desc">「常规问题我来之前让AI先接住，给客户提供初步方向。但关键沟通和复杂问题，一定是我本人。每个客户都知道怎么直接找到我。」——分层服务，效率与温度并存。</div>
+            </div>
+
+            <div class="core-insight">
+              <p class="core-insight-text">对于高净值客户，人工服务是护城河。AI负责标准化，你的精力留给VIP。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dimension 5: 履约崩盘陷阱 -->
+    <section class="content-section fade-section">
+      <div class="dimension-block">
+        <div class="dimension-badge">
+          <span class="dimension-num">05</span>
+          <span class="dimension-tag">风险规避</span>
+        </div>
+        <h2 class="dimension-question">履约崩盘——一次烂交付摧毁你积累的所有信任</h2>
+
+        <div class="grid-asymmetric">
+          <div class="answer-section">
+            <div class="answer-block">
+              <div class="answer-label">核心风险</div>
+              <div class="answer-title">OPC的资源上限决定了承载边界</div>
+              <div class="answer-desc">你一个人同时服务20个客户，和同时服务40个客户，质量一定不同。当订单超过承载能力，交付质量下滑是必然的。但客户不会理解「太忙了」——他们只记得「没做好」。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">预防机制</div>
+              <div class="answer-title">「接单容量」硬限制</div>
+              <div class="answer-desc">设置你的最大同时服务量，达到上限后必须暂停接新单。这是保护你的服务质量和客户体验的底线，不是借口。同时，服务能力是有定价的——当你发现忙不过来，正是涨价的理由。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">危机处理</div>
+              <div class="answer-title">出问题时第一时间道歉</div>
+              <div class="answer-desc">不要解释、不要理由、不要借口。直接承认「这次没做好，我很抱歉」，然后给出解决方案。客户要的是态度和结果，不是借口和理由。</div>
+            </div>
+          </div>
+
+          <div>
+            <div class="objection-block error">
+              <div class="objection-label">错误示范</div>
+              <div class="objection-title">找借口 → 信任崩塌</div>
+              <div class="objection-desc">「最近太忙了」「这个流程我第一次做」「那个不是我负责的」——每一个借口都在告诉客户：你不靠谱。</div>
+            </div>
+
+            <div class="objection-block success">
+              <div class="objection-label">正确示范</div>
+              <div class="objection-title">道歉 → 行动 → 补偿</div>
+              <div class="objection-desc">「对不起，这次交付延期了。我这边全力赶工，争取后天之前完成。另外，为了表达歉意，下次服务给您打9折。」——承担责任，客户反而可能成为铁粉。</div>
+            </div>
+
+            <div class="objection-block data">
+              <div class="objection-label">数据洞察</div>
+              <div class="objection-title">危机处理 vs 危机预防</div>
+              <div class="objection-desc">危机预防：投入1元，口碑保护价值10元<br>危机处理：投入10元，只能挽回3元口碑<br>结论：预防永远比补救便宜</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dimension 6: 口碑运营决策 -->
+    <section class="content-section fade-section">
+      <div class="dimension-block">
+        <div class="dimension-badge">
+          <span class="dimension-num">06</span>
+          <span class="dimension-tag">决策框架</span>
+        </div>
+        <h2 class="dimension-question">口碑运营决策表——什么时候做什么事</h2>
+
+        <div class="grid-asymmetric">
+          <div>
+            <div class="decision-table">
+              <div class="decision-row" style="background: var(--surface);">
+                <span class="decision-condition">客户首次合作</span>
+                <span class="decision-action">建立「记得我」档案</span>
+                <span class="decision-result">记录偏好、痛点、承诺，为复购埋伏笔</span>
+              </div>
+              <div class="decision-row">
+                <span class="decision-condition">客户满意</span>
+                <span class="decision-action">主动请求转介绍</span>
+                <span class="decision-result">满意度峰值时提出，成功率最高</span>
+              </div>
+              <div class="decision-row" style="background: var(--surface);">
+                <span class="decision-condition">交付超预期</span>
+                <span class="decision-action">请客户写一条评价</span>
+                <span class="decision-result">文字比口头传播更持久</span>
+              </div>
+              <div class="decision-row">
+                <span class="decision-condition">客户提出投诉</span>
+                <span class="decision-action">24小时内处理</span>
+                <span class="decision-result">响应速度比解决方案更重要</span>
+              </div>
+              <div class="decision-row" style="background: var(--surface);">
+                <span class="decision-condition">转介绍转化</span>
+                <span class="decision-action">给介绍人一定奖励</span>
+                <span class="decision-result">人情债要还，利益链要闭环</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="insight-tag">决策原则</div>
+            <div class="balance-grid">
+              <div>
+                <div class="balance-card-label positive">做</div>
+                <div class="balance-item">主动问客户使用感受</div>
+                <div class="balance-item">在满意时请求推荐</div>
+                <div class="balance-item">记录每个客户的特点</div>
+                <div class="balance-item">超预期交付额外价值</div>
+                <div class="balance-item">出了问题第一时间担责</div>
+              </div>
+              <div>
+                <div class="balance-card-label negative">不做</div>
+                <div class="balance-item">用AI完全替代人工</div>
+                <div class="balance-item">接超过承载力的单</div>
+                <div class="balance-item">给客户找借口</div>
+                <div class="balance-item">忽视投诉</div>
+                <div class="balance-item">忘记客户的名字</div>
+              </div>
+            </div>
+
+            <div class="quote-block" style="margin-top: var(--space-xl);">
+              <p class="quote-text">口碑是你最好的广告，也是你唯一的护城河。个体户的竞争力，就在于你比大厂更懂你的每一个客户。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FIN: 财务健康 -->
+    <section class="content-section fade-section">
+      <div class="section-label">FIN · 财务健康指标</div>
+      <div class="fin-section">
+        <h2 class="fin-title">口碑的财务意义</h2>
+        <div class="fin-grid">
+          <div class="fin-card">
+            <div class="fin-label">客户终身价值</div>
+            <div class="fin-value">¥4,800</div>
+            <div class="fin-desc">平均复购3次 × 平均客单价¥1,600</div>
+          </div>
+          <div class="fin-card">
+            <div class="fin-label">转介绍获客成本</div>
+            <div class="fin-value">¥8</div>
+            <div class="fin-desc">vs 广告投放获客成本约¥127</div>
+          </div>
+          <div class="fin-card">
+            <div class="fin-label">NPS每提升1点</div>
+            <div class="fin-value">+6%</div>
+            <div class="fin-desc">转介绍意愿提升（数据来源：Bain & Company）</div>
+          </div>
+          <div class="fin-card">
+            <div class="fin-label">投资回报比</div>
+            <div class="fin-value">16:1</div>
+            <div class="fin-desc">优质口碑服务 vs 广告投放</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer-nav">
+      <a href="/nodes/19-ai-customer-service/index.html" class="nav-link">
+        <span class="nav-arrow">←</span>
+        节点19：AI客户服务体系
+      </a>
+      <a href="/nodes/39-government-policy/index.html" class="nav-link">
+        节点39：政府政策与创业补贴
+        <span class="nav-arrow">→</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
   </script>
 </body>
 </html>

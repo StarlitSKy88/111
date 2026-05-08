@@ -3,105 +3,827 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="功能测试、支付测试、合规检查，不要带bug或合规风险上线">
+  <meta name="description" content="一人公司上线前检查清单：法律合规、产品测试、AI特检、备份恢复、客户支持、营销准备，2026年OPC上线安全网">
   <meta name="theme-color" content="#111110">
   <title>上线前检查清单 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #111110;
-      --surface: #1A1A18;
-      --text-primary: #F0EDE6;
-      --text-secondary: #7A7670;
-      --accent: #C0392B;
-      --line: #2A2A28;
-    }
-    body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; }
-    .loading { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-    .loading-bar { width: 100%; height: 1px; background: var(--line); position: relative; overflow: hidden; max-width: 200px; }
-    .loading-bar::after { content: ''; position: absolute; left: -50%; top: 0; width: 50%; height: 100%; background: var(--accent); animation: loading-slide 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite; }
-    @keyframes loading-slide { from { left: -50%; } to { left: 100%; } }
-    .content h1 { font-size: 1.75rem; font-weight: 300; margin-bottom: 1rem; }
-    .content h2 { font-size: 1.25rem; font-weight: 400; margin: 1.5rem 0 0.75rem; color: var(--text-primary); }
-    .content h3 { font-size: 1rem; font-weight: 500; margin: 1.25rem 0 0.5rem; color: var(--text-primary); }
-    .content p { line-height: 1.9; margin-bottom: 1rem; color: var(--text-secondary); }
-    .content ul, .content ol { margin: 1rem 0; padding-left: 1.5rem; color: var(--text-secondary); }
-    .content li { line-height: 1.8; margin-bottom: 0.5rem; }
-    .content strong { color: var(--text-primary); font-weight: 500; }
-    .content code { background: var(--surface); padding: 0.125rem 0.375rem; border-radius: 0.25rem; font-size: 0.875rem; }
-    .content pre { background: var(--surface); padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin: 1rem 0; }
-    .content pre code { background: none; padding: 0; }
-    .content blockquote { border-left: 3px solid var(--accent); padding-left: 1rem; margin: 1rem 0; color: var(--text-secondary); font-style: italic; }
-    .content hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
-    .content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-    .content th, .content td { border: 1px solid var(--line); padding: 0.75rem; text-align: left; }
-    .content th { background: var(--surface); color: var(--text-primary); }
-    .content td { color: var(--text-secondary); }
-    .content a { color: var(--accent); text-decoration: underline; }
-    .content input[type="checkbox"] { margin-right: 0.5rem; }
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #7A7670;
+  --text-tertiary: #A8A49E;
+  --accent: #E05A47;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 400;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 8vw, 120px);
+  min-height: 100vh;
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: clamp(24px, 8vw, 120px);
+  right: clamp(24px, 8vw, 120px);
+  height: 1px;
+  background: var(--line);
+}
+
+.section-number {
+  position: absolute;
+  top: var(--space-2xl);
+  right: clamp(24px, 8vw, 120px);
+  font-size: clamp(100px, 22vw, 280px);
+  font-weight: 100;
+  color: var(--text-primary);
+  opacity: 0.03;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-family: 'Noto Serif JP', serif;
+  pointer-events: none;
+  user-select: none;
+}
+
+.back-link {
+  position: fixed;
+  top: var(--space-xl);
+  left: clamp(24px, 8vw, 120px);
+  z-index: 100;
+}
+
+.back-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.back-link a:hover { color: var(--text-primary); }
+
+.hero {
+  padding: var(--space-4xl) 0 var(--space-3xl);
+  position: relative;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+}
+
+.hero-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.hero-label::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.hero-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  margin-bottom: var(--space-xl);
+}
+
+.hero-desc {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 44ch;
+}
+
+.content-section {
+  padding: var(--space-3xl) 0;
+  border-top: 1px solid var(--line);
+}
+
+.section-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.section-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.dimension-section {
+  margin-bottom: var(--space-4xl);
+}
+
+.dimension-badge {
+  display: inline-block;
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  border: 1px solid var(--accent);
+  padding: 4px 12px;
+}
+
+.dimension-question {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: var(--space-xl);
+  max-width: 16em;
+  color: var(--text-primary);
+}
+
+.dimension-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-3xl);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .dimension-layout {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+}
+
+.answer-section {
+  position: relative;
+}
+
+.answer-block {
+  padding: var(--space-lg) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.answer-block:last-child {
+  border-bottom: none;
+}
+
+.answer-label {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+  color: var(--text-tertiary);
+}
+
+.answer-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+  line-height: 1.4;
+}
+
+.answer-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.chart-area {
+  position: relative;
+}
+
+.chart-title {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+}
+
+.objection-block {
+  padding: var(--space-lg);
+  margin-bottom: var(--space-md);
+  border: 1px solid var(--line);
+}
+
+.objection-block.red {
+  border-left: 2px solid var(--accent);
+  background: rgba(224, 90, 71, 0.03);
+}
+
+.objection-block.green {
+  border-left: 2px solid #4CAF50;
+  background: rgba(76, 175, 80, 0.03);
+}
+
+.objection-block.muted {
+  border-left: 2px solid var(--text-tertiary);
+  background: rgba(168, 164, 158, 0.03);
+}
+
+.objection-label {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+}
+
+.objection-block.red .objection-label { color: var(--accent); }
+.objection-block.green .objection-label { color: #4CAF50; }
+.objection-block.muted .objection-label { color: var(--text-tertiary); }
+
+.objection-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.objection-text {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.core-insight {
+  margin-top: var(--space-xl);
+  padding-left: var(--space-md);
+  border-left: 1px solid var(--accent);
+}
+
+.core-insight-text {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 40ch;
+}
+
+.decision-table {
+  margin-top: var(--space-xl);
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.decision-row {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 1px;
+  background: var(--line);
+}
+
+.decision-cell {
+  padding: var(--space-md) var(--space-lg);
+  background: var(--surface);
+}
+
+.decision-cell.header {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  border-bottom: 1px solid var(--line);
+}
+
+.decision-cell.content {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.decision-cell.highlight {
+  background: rgba(224, 90, 71, 0.05);
+  color: var(--accent);
+}
+
+.checklist-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: var(--space-md) 0;
+  border-bottom: 1px solid var(--line-light);
+}
+
+.checklist-item:last-child { border-bottom: none; }
+
+.checklist-marker {
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--text-tertiary);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.checklist-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.fin-section {
+  padding: var(--space-3xl) 0;
+  border-top: 1px solid var(--line);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.fin-number {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(120px, 30vw, 400px);
+  font-weight: 100;
+  color: var(--text-primary);
+  opacity: 0.04;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  user-select: none;
+}
+
+.fin-text {
+  position: relative;
+  z-index: 1;
+}
+
+.fin-label {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-md);
+}
+
+.fin-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  max-width: 20em;
+  margin: 0 auto;
+  line-height: 1.3;
+}
+
+.footer-nav {
+  padding: var(--space-2xl) 0;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover { color: var(--text-primary); }
+.nav-arrow { font-size: 0.75rem; }
+
+.fade-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-section.visible { opacity: 1; transform: translateY(0); }
+
+* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
   </style>
 </head>
 <body>
-  <div id="app" data-slug="launch-checklist">
-    <div class="loading">
-      <div class="loading-bar"></div>
-    </div>
+  <div class="back-link">
+    <a href="/"><span>←</span> 返回首页</a>
   </div>
-  <script type="module">
-    const SLUG = "launch-checklist";
+  <div class="section-number">17</div>
 
-    async function loadNode() {
-      try {
-        const res = await fetch("/api/nodes/" + SLUG);
-        if (!res.ok) throw new Error("Failed to load");
-        const data = await res.json();
-        renderNode(data);
-      } catch (e) {
-        document.getElementById("app").innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text-secondary)">加载失败</div>';
-      }
-    }
+  <div class="page">
+    <header class="hero fade-section">
+      <div class="hero-content">
+        <div class="hero-label">节点 17 · 1-10</div>
+        <h1 class="hero-title">上线前检查清单</h1>
+        <p class="hero-desc">你作为一人公司创始人的上线安全网与长期续航的保险单。系统性地清点每一个关键模块，防止你成为最薄弱的单点故障源。</p>
+      </div>
+    </header>
 
-    function mdToHtml(md) {
-      if (!md) return '<p style="color:var(--text-secondary)">内容加载中...</p>';
-      let html = md
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/^### (.+)$/gm, "<h3>$1</h3>")
-        .replace(/^## (.+)$/gm, "<h2>$1</h2>")
-        .replace(/^# (.+)$/gm, "<h1>$1</h1>")
-        .replace(/**(.+?)**/g, "<strong>$1</strong>")
-        .replace(/^- (.+)$/gm, "<li>$1</li>")
-        .replace(/^\[ \] (.+)$/gm, "<div><input type="checkbox" disabled> $1</div>")
-        .replace(/^\[x\] (.+)$/gm, "<div><input type="checkbox" checked disabled> $1</div>")
-        .replace(/^\d+\. (.+)$/gm, "<li>$1</li>")
-        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
-        .replace(/^(?!<[a-z])(.+)$/gm, "<p>$1</p>")
-        .replace(/\n\n+/g, "\n");
-      html = html.replace(/(<li>.*<\/li>\n?)+/g, "<ul>$&</ul>");
-      return html;
-    }
+    <section class="content-section fade-section">
+      <div class="section-label">节点内容</div>
 
-    function renderNode(node) {
-      const content = node.content || "";
-      const contentHtml = mdToHtml(content);
-      document.getElementById("app").innerHTML = `
-        <div style="max-width:800px;margin:0 auto;padding:2rem 1.25rem;">
-          <a href="/" style="color:var(--text-secondary);font-size:0.75rem;letter-spacing:0.1em;text-decoration:none;">← 返回首页</a>
-          <div style="margin-top:2rem;">
-            <div style="color:var(--accent);font-size:0.625rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;">${node.data?.category || ""} · ${node.data?.difficulty || ""}</div>
-            <h1 style="font-size:clamp(1.5rem,5vw,2.5rem);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;">${node.data?.title || ""}</h1>
-            <p style="color:var(--text-secondary);line-height:1.9;">${node.data?.summary || ""}</p>
+      <!-- 维度一：法律实体与合规基础 -->
+      <div class="dimension-section">
+        <span class="dimension-badge">维度一</span>
+        <h2 class="dimension-question">一人公司的法律根基，哪些有一票否决效力？</h2>
+        <div class="dimension-layout">
+          <div class="answer-section">
+            <div class="answer-block">
+              <div class="answer-label">A</div>
+              <div class="answer-title">确认法律实体有效性</div>
+              <div class="answer-desc">确保公司注册手续完成并持有有效营业执照。检查：营业执照名称与对外品牌名是否一致、公司状态在工商系统显示"存续"无经营异常。这是将个人无限责任限制在公司资产范围内的核心屏障。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">B</div>
+              <div class="answer-title">经营范围匹配度复核</div>
+              <div class="answer-desc">拿着营业执照正本逐字对照经营范围与产品服务。在线工具订阅需含"互联网信息服务"或"软件销售"；付费咨询或课程需含"教育咨询服务"或"信息技术咨询"。2025-2026年监管已用AI自动比对，发现超范围经营可能触发异常名录标记。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">C</div>
+              <div class="answer-title">数字服务法规适配（面向欧盟）</div>
+              <div class="answer-desc">设立"欧盟单一联络点"页面接收合规通知；建立透明度报告模板；关注PSD3对强客户认证(SCA)的要求。若使用Stripe或Paddle作为MoR，通常会替你承担这部分合规。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">D</div>
+              <div class="answer-title">隐私政策与Cookie同意更新</div>
+              <div class="answer-desc">隐私政策必须包含AI功能数据处理逻辑的独立条款：AI是否使用用户输入训练、生成内容是否缓存、用户如何请求删除AI交互记录。Cookie弹窗必须让用户能以同等步骤点击"拒绝全部"，可用Google Consent Mode v2或Osano部署。</div>
+            </div>
           </div>
-          <div class="content" style="margin-top:2rem;padding-top:2rem;border-top:1px solid var(--line);">
-            ${contentHtml}
+          <div class="chart-area">
+            <div class="chart-title">法律合规底线检查</div>
+            <div class="objection-block red">
+              <div class="objection-label">致命风险</div>
+              <div class="answer-title">营业执照无效或异常</div>
+              <div class="answer-desc">支付账户无法开通，商户账号风控审核失败，业务直接停摆</div>
+            </div>
+            <div class="objection-block red">
+              <div class="objection-label">致命风险</div>
+              <div class="answer-title">超范围经营被标记</div>
+              <div class="answer-desc">AI自动比对系统触发异常经营名录，影响支付通道正常结算</div>
+            </div>
+            <div class="objection-block green">
+              <div class="objection-label">通过标准</div>
+              <div class="answer-title">MoR模式税务合规</div>
+              <div class="answer-desc">使用Paddle/Lemon Squeezy等MoR服务，手续费换税务合规完全外包，非常值得</div>
+            </div>
+            <div class="core-insight">
+              <p class="core-insight-text">对于OPC来说，法律实体的残缺可能导致个人承担无限连带责任。隐私政策、服务条款、AI功能条款不仅是合规要求，更是向用户透明宣告你在数据上的权力边界。</p>
+            </div>
           </div>
         </div>
-      `;
-    }
+      </div>
 
-    loadNode();
+      <!-- 维度二：产品核心功能完整性 -->
+      <div class="dimension-section">
+        <span class="dimension-badge">维度二</span>
+        <h2 class="dimension-question">MVP是否真的"可行"？从注册到付费的无阻塞验证</h2>
+        <div class="dimension-layout">
+          <div class="answer-section">
+            <div class="answer-block">
+              <div class="answer-label">A</div>
+              <div class="answer-title">核心回路走通测试</div>
+              <div class="answer-desc">将自己置于完全陌生的用户视角：注册与激活（验证邮件10秒内送达且不在垃圾箱）、关键功能使用（从登录到体验核心价值的路径是否极短）、价值兑现与付费引导（免费额度耗尽提示是否清晰、付费入口是否顺畅）。30分钟内心流不间断完成，记录每一个犹豫或困惑的瞬间。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">B</div>
+              <div class="answer-title">空状态与边界错误处理</div>
+              <div class="answer-desc">空状态设计：每一个列表页在初始无数据时必须有明确占位图示、引导性文案和突出行动按钮。错误反馈：关键操作失败时用通俗语句解释原因并提供恢复路径，穷举所有可能失败点并设计"致歉方案"。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">C</div>
+              <div class="answer-title">移动端基础可用性</div>
+              <div class="answer-desc">2025年移动端流量占比普遍超过60%。触控友好（按钮点击区域符合拇指热区）、布局适配（文字不溢出、排版不错乱）、关键路径可用（注册、付费、查看核心结果在移动端能完整走通）。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">D</div>
+              <div class="answer-title">加载速度生死线：2.5秒内</div>
+              <div class="answer-desc">资源减负（图片压缩+懒加载）、代码精简（移除非必要第三方脚本）、缓存策略（静态资源设置合理浏览器缓存）。Core Web Vitals标准：首屏主要内容(LCP)加载时间需在2.5秒以内。</div>
+            </div>
+          </div>
+          <div class="chart-area">
+            <div class="chart-title">产品检验清单</div>
+            <div class="objection-block red">
+              <div class="objection-label">危险信号</div>
+              <div class="answer-title">注册流程断点</div>
+              <div class="answer-desc">验证邮件未送达、激活链接失效、社交账号授权失败——流量在第一步就开始流失</div>
+            </div>
+            <div class="objection-block red">
+              <div class="objection-label">危险信号</div>
+              <div class="answer-title">白屏无引导</div>
+              <div class="answer-desc">空状态是刺眼的白屏，没有任何文案和行动按钮——用户不知道下一步该做什么</div>
+            </div>
+            <div class="objection-block green">
+              <div class="objection-label">达标标准</div>
+              <div class="answer-title">2.5秒内LCP</div>
+              <div class="answer-desc">首屏加载在2.5秒内完成，图片压缩、代码精简、缓存配置到位</div>
+            </div>
+            <div class="core-insight">
+              <p class="core-insight-text">产品逻辑的任何一丝断裂，都会直接转化为你的客服负担和收入损失。不关乎功能的多少，而关乎每一个现有功能是否足够健壮、贴心。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 维度三：AI功能特检 -->
+      <div class="dimension-section">
+        <span class="dimension-badge">维度三</span>
+        <h2 class="dimension-question">AI功能上线前，最容易忽略的三个风险是什么？</h2>
+        <div class="dimension-layout">
+          <div class="answer-section">
+            <div class="answer-block">
+              <div class="answer-label">风险一</div>
+              <div class="answer-title">成本失控</div>
+              <div class="answer-desc">你无法预见用户会以什么方式调用AI接口，单个重度用户可能在一小时内消耗掉整月利润。必须在后端设置硬性用量上限和缓存策略，对重复请求直接返回缓存结果而不是每次调用API。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">风险二</div>
+              <div class="answer-title">内容合规标识义务</div>
+              <div class="answer-desc">中国《生成式人工智能服务管理暂行办法》要求对AI生成内容显著标识；欧盟《AI法案》要求告知用户正在与AI交互。追求"拟人化体验"而刻意隐藏AI身份可能构成违规。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">风险三</div>
+              <div class="answer-title">安全过滤缺失</div>
+              <div class="answer-desc">即使没有团队做深度内容审核，也必须接入基础的敏感词或NSFW过滤接口，自动拦截明显违规的输出，标注可疑内容等待抽检。这是防止你承担法律责任的关键护栏。</div>
+            </div>
+          </div>
+          <div class="chart-area">
+            <div class="chart-title">AI合规与成本控制</div>
+            <div class="objection-block red">
+              <div class="objection-label">成本失控案例</div>
+              <div class="answer-title">API账单超客单价</div>
+              <div class="answer-desc">单个用户无限制生成内容，一夜之间API账单远超客单价。必须设置硬顶和用户配额。</div>
+            </div>
+            <div class="objection-block red">
+              <div class="objection-label">合规违规</div>
+              <div class="answer-title">隐藏AI身份</div>
+              <div class="answer-desc">刻意隐藏AI身份追求拟人化体验，可能违反DSA透明度条款和各国AI法规</div>
+            </div>
+            <div class="objection-block green">
+              <div class="objection-label">正确做法</div>
+              <div class="answer-title">三层防护</div>
+              <div class="answer-desc">成本上限+缓存策略、内容标识+反馈入口、安全过滤+可疑标注</div>
+            </div>
+            <div class="core-insight">
+              <p class="core-insight-text">AI功能上线不是终点，而是需要预设护栏的起点。若未设置API调用上限和缓存机制，可能遭遇恶意刷量导致API账单远超利润。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 维度四：自动备份与灾难恢复 -->
+      <div class="dimension-section">
+        <span class="dimension-badge">维度四</span>
+        <h2 class="dimension-question">数据丢失即业务终结——如何设计单人可执行的恢复体系？</h2>
+        <div class="dimension-layout">
+          <div class="answer-section">
+            <div class="answer-block">
+              <div class="answer-label">A</div>
+              <div class="answer-title">数据库自动备份与异地存储</div>
+              <div class="answer-desc">每日至少执行一次全量备份，保留最近7天备份文件。绝对不要将备份文件只存放在生产服务器或个人电脑上。使用AWS S3、Cloudflare R2、Backblaze B2的跨区域复制，成本极低。多数数据库托管服务（PlanetScale、Supabase）已设为默认项，但必须自行验证运行状态。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">B</div>
+              <div class="answer-title">备份恢复演练</div>
+              <div class="answer-desc">未经测试的备份等同于没有备份。在完全隔离环境中完整执行一次恢复流程，记录"恢复数据库耗时X分钟、重新部署应用容器耗时Y分钟、DNS配置生效Z分钟"。这个记录就是灾难发生时的操作手册。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">C</div>
+              <div class="answer-title">关键资产冗余</div>
+              <div class="answer-desc">代码仓库、应用配置文件、环境变量文件必须以加密形式离线存储在至少一个其他位置。2026年实践：代码与部署配置一律在Git仓库中管理，所有敏感环境变量存储在加密的密钥管理服务中（Infisical、Pulumi ESC），本地终端不留存任何生产凭证。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">D</div>
+              <div class="answer-title">可观测性与报警系统</div>
+              <div class="answer-desc">使用Better Stack、UptimeRobot对核心API端点探活，报警通道选择Telegram Bot或Slack Connect绕过静音模式。接入Sentry追踪错误，设置阈值：某API端点5分钟内错误率超10%自动触发报警。</div>
+            </div>
+          </div>
+          <div class="chart-area">
+            <div class="chart-title">备份与恢复检查表</div>
+            <div class="checklist-item">
+              <div class="checklist-marker"></div>
+              <div class="checklist-text">每日全量备份，保留7天历史版本</div>
+            </div>
+            <div class="checklist-item">
+              <div class="checklist-marker"></div>
+              <div class="checklist-text">备份文件异地存储（云存储跨区域复制）</div>
+            </div>
+            <div class="checklist-item">
+              <div class="checklist-marker"></div>
+              <div class="checklist-text">上线前完成隔离环境恢复演练</div>
+            </div>
+            <div class="checklist-item">
+              <div class="checklist-marker"></div>
+              <div class="checklist-text">代码部署配置Git管理，环境变量加密存储</div>
+            </div>
+            <div class="checklist-item">
+              <div class="checklist-marker"></div>
+              <div class="checklist-text">外部监控探活，异常5分钟内Telegram告警</div>
+            </div>
+            <div class="objection-block muted">
+              <div class="objection-label">恢复时间目标</div>
+              <div class="answer-title">4小时内可恢复</div>
+              <div class="answer-desc">若超过4小时则说明自动化程度不足，需要强化</div>
+            </div>
+            <div class="core-insight">
+              <p class="core-insight-text">你不可能24小时盯着仪表盘，但你可以设计一个能在第一时间感知异常并推送信号的系统。2026年，一行嵌入式代码即可集成Stripe数据面板或Plausible自定义事件目标看板。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 维度五：客户沟通与支持通道 -->
+      <div class="dimension-section">
+        <span class="dimension-badge">维度五</span>
+        <h2 class="dimension-question">一人公司无法提供7x24小时客服，如何管理用户预期？</h2>
+        <div class="dimension-layout">
+          <div class="answer-section">
+            <div class="answer-block">
+              <div class="answer-label">A</div>
+              <div class="answer-title">最小化支持系统</div>
+              <div class="answer-desc">一个公开的专用支持邮箱（support@你的域名.com）和结构清晰的帮助中心/FAQ页面是不可妥协的底线。对于常见一人SaaS，嵌入基于文档训练的AI聊天机器人（Danswer、SiteGPT）处理"如何重置密码""如何导出数据"等重复性问题，性价比很高。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">B</div>
+              <div class="answer-title">自动回复已配置</div>
+              <div class="answer-desc">用户发出支持邮件后，必须在1分钟内收到自动回执。内容模板："已收到您的邮件（标题：{{subject}}）。我会在每个工作日的固定时间集中处理，通常24小时内给予明确回复。"这比你匆忙做出不成熟的承诺效果更好。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">C</div>
+              <div class="answer-title">公开反馈入口</div>
+              <div class="answer-desc">在应用内固定位置设置反馈按钮，链接到公开产品路线图页面（FeatureOS、Hellnext）。给用户提供除直接抱怨之外的建设性出口，让他们感觉自己的声音在塑造产品，从而提升容忍度。</div>
+            </div>
+          </div>
+          <div class="chart-area">
+            <div class="chart-title">支持通道配置状态</div>
+            <div class="objection-block red">
+              <div class="objection-label">未配置</div>
+              <div class="answer-title">无自动回执</div>
+              <div class="answer-desc">用户发出邮件后石沉大海，焦虑感大幅上升，信任度下降</div>
+            </div>
+            <div class="objection-block green">
+              <div class="objection-label">已配置</div>
+              <div class="answer-title">1分钟内自动回复</div>
+              <div class="answer-desc">三重信息：亲切问候、明确时间承诺、引导自助链接</div>
+            </div>
+            <div class="objection-block green">
+              <div class="objection-label">推荐</div>
+              <div class="answer-title">AI聊天机器人</div>
+              <div class="answer-desc">处理80%重复询问，20%复杂问题留给深度工作时间</div>
+            </div>
+            <div class="core-insight">
+              <p class="core-insight-text">用自动化逻辑处理80%的重复询问，仅将20%的复杂问题留给你的深度工作时间。用户知道了确切的等待时间后，焦虑感会大幅下降——这是预期管理的关键。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 维度六：营销获客与法律保护 -->
+      <div class="dimension-section">
+        <span class="dimension-badge">维度六</span>
+        <h2 class="dimension-question">上线不是终点——冷启动获客与法律风险如何同步准备？</h2>
+        <div class="dimension-layout">
+          <div class="answer-section">
+            <div class="answer-block">
+              <div class="answer-label">A</div>
+              <div class="answer-title">落地页信息完整性</div>
+              <div class="answer-desc">首屏必须清晰回答四个问题：你提供什么（价值主张）、谁在用且说好（社会证明）、要花多少钱（清晰定价）、更深度的信息在哪（FAQ）。2026年趋势：将定价、社会证明、FAQ集成在一个设计精良的长页面上，减少用户点击离开。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">B</div>
+              <div class="answer-title">关键转化路径埋点</div>
+              <div class="answer-desc">使用隐私友好的分析工具（Plausible、Umami）追踪核心事件：网站访问、注册尝试、注册完成、进入付费页面、付费成功。无需Cookies同意的方案在2026年是首选，从源头避免合规风险。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">C</div>
+              <div class="answer-title">商标初步查询</div>
+              <div class="answer-desc">在核心市场（至少包括你注册公司的国家）使用官方商标数据库查询产品名称。这不是为立刻完成注册，而是排查"业务被迫改名"的致命风险。使用Bonafide、Trama等法律科技工具，成本比传统律所低很多。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">D</div>
+              <div class="answer-title">开源协议合规审查</div>
+              <div class="answer-desc">运行npm list或使用FOSSA、Snyk扫描依赖许可证。重点标记所有采用GPL或AGPL许可证的代码——AGPL对SaaS服务极其危险，若在服务器端使用并提供网络服务，必须开源你的整个项目源代码。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">E</div>
+              <div class="answer-title">图像与字体授权检查</div>
+              <div class="answer-desc">网站、产品图文、社交媒体上使用的每张图片、每个图标、每款商用字体必须有明确授权来源或购买记录。将授权文件统一归档。这能防止做大后被图片公司追溯索赔——那种费用对一人公司是灾难性的。</div>
+            </div>
+          </div>
+          <div class="chart-area">
+            <div class="chart-title">上线前底线检查</div>
+            <div class="decision-table">
+              <div class="decision-row">
+                <div class="decision-cell header">模块</div>
+                <div class="decision-cell header">未完成风险</div>
+                <div class="decision-cell header">推荐工具</div>
+              </div>
+              <div class="decision-row">
+                <div class="decision-cell content">法律实体</div>
+                <div class="decision-cell content highlight">无限连带责任</div>
+                <div class="decision-cell content">MoR服务</div>
+              </div>
+              <div class="decision-row">
+                <div class="decision-cell content">域名+HTTPS</div>
+                <div class="decision-cell content highlight">用户信任归零</div>
+                <div class="decision-cell content">自动续费</div>
+              </div>
+              <div class="decision-row">
+                <div class="decision-cell content">核心回路</div>
+                <div class="decision-cell content highlight">流量白白流失</div>
+                <div class="decision-cell content">人工测试</div>
+              </div>
+              <div class="decision-row">
+                <div class="decision-cell content">备份恢复</div>
+                <div class="decision-cell content highlight">业务终结</div>
+                <div class="decision-cell content">S3跨区域</div>
+              </div>
+            </div>
+            <div class="core-insight">
+              <p class="core-insight-text">完成这份检查，能让你在上线前把80%的合规与安全风险主动化解，从而腾出宝贵的注意力去经营用户、打磨产品，而非充当一名疲于奔命的消防员。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <section class="fin-section fade-section">
+      <div class="fin-number">FIN</div>
+      <div class="fin-text">
+        <div class="fin-label">核心掌握</div>
+        <h2 class="fin-title">你只需要守住四条底线：法律实体与支付合规、域名所有权与HTTPS、核心回路完整可走通、关键流程单人可恢复。其余模块按业务优先级分批迭代。</h2>
+      </div>
+    </section>
+
+    <footer class="footer-nav">
+      <a href="/nodes/16-pricing/index.html" class="nav-link">
+        <span class="nav-arrow">←</span>
+        节点16：定价策略
+      </a>
+      <a href="/nodes/18-cold-start/index.html" class="nav-link">
+        节点18：冷启动获客
+        <span class="nav-arrow">→</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
   </script>
 </body>
 </html>

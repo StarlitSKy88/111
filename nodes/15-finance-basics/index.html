@@ -3,105 +3,1153 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="记账工具、票据管理、无票支出处理，每天花10分钟记账">
+  <meta name="description" content="一人公司创业财务基础完整指南：收入确认、支出三桶模型、三账户隔离、税务规划、60天现金流预测">
   <meta name="theme-color" content="#111110">
   <title>创业财务基础 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #111110;
-      --surface: #1A1A18;
-      --text-primary: #F0EDE6;
-      --text-secondary: #7A7670;
-      --accent: #C0392B;
-      --line: #2A2A28;
-    }
-    body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; }
-    .loading { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-    .loading-bar { width: 100%; height: 1px; background: var(--line); position: relative; overflow: hidden; max-width: 200px; }
-    .loading-bar::after { content: ''; position: absolute; left: -50%; top: 0; width: 50%; height: 100%; background: var(--accent); animation: loading-slide 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite; }
-    @keyframes loading-slide { from { left: -50%; } to { left: 100%; } }
-    .content h1 { font-size: 1.75rem; font-weight: 300; margin-bottom: 1rem; }
-    .content h2 { font-size: 1.25rem; font-weight: 400; margin: 1.5rem 0 0.75rem; color: var(--text-primary); }
-    .content h3 { font-size: 1rem; font-weight: 500; margin: 1.25rem 0 0.5rem; color: var(--text-primary); }
-    .content p { line-height: 1.9; margin-bottom: 1rem; color: var(--text-secondary); }
-    .content ul, .content ol { margin: 1rem 0; padding-left: 1.5rem; color: var(--text-secondary); }
-    .content li { line-height: 1.8; margin-bottom: 0.5rem; }
-    .content strong { color: var(--text-primary); font-weight: 500; }
-    .content code { background: var(--surface); padding: 0.125rem 0.375rem; border-radius: 0.25rem; font-size: 0.875rem; }
-    .content pre { background: var(--surface); padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin: 1rem 0; }
-    .content pre code { background: none; padding: 0; }
-    .content blockquote { border-left: 3px solid var(--accent); padding-left: 1rem; margin: 1rem 0; color: var(--text-secondary); font-style: italic; }
-    .content hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
-    .content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-    .content th, .content td { border: 1px solid var(--line); padding: 0.75rem; text-align: left; }
-    .content th { background: var(--surface); color: var(--text-primary); }
-    .content td { color: var(--text-secondary); }
-    .content a { color: var(--accent); text-decoration: underline; }
-    .content input[type="checkbox"] { margin-right: 0.5rem; }
-  </style>
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #7A7670;
+  --text-tertiary: #A8A49E;
+  --accent: #E05A47;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 400;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 8vw, 120px);
+  min-height: 100vh;
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: clamp(24px, 8vw, 120px);
+  right: clamp(24px, 8vw, 120px);
+  height: 1px;
+  background: var(--line);
+}
+
+.section-number {
+  position: absolute;
+  top: var(--space-2xl);
+  right: clamp(24px, 8vw, 120px);
+  font-size: clamp(100px, 22vw, 280px);
+  font-weight: 100;
+  color: var(--text-primary);
+  opacity: 0.03;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-family: 'Noto Serif JP', serif;
+  pointer-events: none;
+  user-select: none;
+}
+
+.back-link {
+  position: fixed;
+  top: var(--space-xl);
+  left: clamp(24px, 8vw, 120px);
+  z-index: 100;
+}
+
+.back-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.back-link a:hover { color: var(--text-primary); }
+
+.hero {
+  padding: var(--space-4xl) 0 var(--space-3xl);
+  position: relative;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+}
+
+.hero-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.hero-label::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.hero-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  margin-bottom: var(--space-xl);
+}
+
+.hero-desc {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 44ch;
+}
+
+.content-section {
+  padding: var(--space-3xl) 0;
+  border-top: 1px solid var(--line);
+}
+
+.section-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.section-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.grid-asymmetric {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-3xl);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .grid-asymmetric {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+}
+
+.chapter-heading {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: var(--space-xl);
+  max-width: 16em;
+}
+
+.body-text {
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--text-secondary);
+  max-width: 44ch;
+  margin-bottom: var(--space-md);
+}
+
+.body-text strong { color: var(--text-primary); font-weight: 500; }
+.body-text .accent { color: var(--accent); font-weight: 500; }
+
+.quote-block {
+  padding-left: var(--space-md);
+  border-left: 1px solid var(--accent);
+  margin: var(--space-xl) 0;
+}
+
+.quote-text {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  max-width: 40ch;
+}
+
+.insight-tag {
+  display: inline-block;
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  border: 1px solid var(--accent);
+  padding: 4px 12px;
+}
+
+.data-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.data-card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--line);
+}
+
+.data-card-row:last-child { border-bottom: none; }
+
+.data-label {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.data-value {
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.data-value.accent { color: var(--accent); font-weight: 600; }
+
+.list-item {
+  padding: var(--space-lg) 0;
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: var(--space-lg);
+}
+
+.list-item:last-child { border-bottom: none; }
+
+.list-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--text-tertiary);
+  line-height: 1;
+}
+
+.list-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.list-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 40ch;
+}
+
+.core-insight {
+  margin: var(--space-xl) 0;
+  padding-left: var(--space-md);
+  border-left: 1px solid var(--accent);
+}
+
+.core-insight-text {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 40ch;
+}
+
+.balance-section-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-xl);
+}
+
+.balance-intro {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 46ch;
+  margin-bottom: var(--space-2xl);
+}
+
+.balance-intro strong { color: var(--text-primary); font-weight: 500; }
+
+.balance-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: var(--space-2xl);
+}
+
+@media (max-width: 768px) {
+  .balance-grid { grid-template-columns: 1fr; gap: var(--space-xl); }
+}
+
+.balance-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+}
+
+.balance-card-label {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+}
+
+.balance-card-label.positive { color: var(--accent); }
+.balance-card-label.negative { color: var(--text-tertiary); }
+
+.balance-item {
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--line-light);
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.balance-item:last-child { border-bottom: none; }
+.balance-item.dim { color: var(--text-tertiary); }
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 0.8fr;
+  gap: var(--space-xl);
+}
+
+@media (max-width: 900px) {
+  .summary-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
+}
+
+.summary-card {
+  padding: var(--space-lg) 0;
+  border-top: 1px solid var(--line);
+}
+
+.summary-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 36px;
+  font-weight: 300;
+  color: var(--accent);
+  margin-bottom: var(--space-sm);
+}
+
+.summary-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.summary-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.footer-nav {
+  padding: var(--space-2xl) 0;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover { color: var(--text-primary); }
+.nav-arrow { font-size: 0.75rem; }
+
+.fade-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-section.visible { opacity: 1; transform: translateY(0); }
+
+* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+
+.dimension-section {
+  padding: var(--space-3xl) 0;
+  border-top: 1px solid var(--line);
+}
+
+.dimension-badge {
+  display: inline-block;
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  border: 1px solid var(--accent);
+  padding: 4px 12px;
+}
+
+.dimension-question {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(24px, 4vw, 40px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  margin-bottom: var(--space-xl);
+  max-width: 18em;
+}
+
+.dimension-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-3xl);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .dimension-layout {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+}
+
+.answer-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.answer-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+}
+
+.answer-label {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+}
+
+.answer-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.answer-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.chart-area {
+  position: sticky;
+  top: var(--space-xl);
+}
+
+.objection-block {
+  padding: var(--space-md);
+  border: 1px solid var(--line);
+  margin-bottom: var(--space-md);
+}
+
+.objection-block.red {
+  border-left: 3px solid var(--accent);
+  background: rgba(224, 90, 71, 0.05);
+}
+
+.objection-block.green {
+  border-left: 3px solid #4CAF50;
+  background: rgba(76, 175, 80, 0.05);
+}
+
+.objection-block.muted {
+  border-left: 3px solid var(--text-tertiary);
+  background: rgba(168, 164, 158, 0.05);
+}
+
+.objection-label {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+}
+
+.objection-block.red .objection-label { color: var(--accent); }
+.objection-block.green .objection-label { color: #4CAF50; }
+.objection-block.muted .objection-label { color: var(--text-tertiary); }
+
+.objection-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.objection-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.decision-table {
+  margin-top: var(--space-3xl);
+  padding-top: var(--space-2xl);
+  border-top: 1px solid var(--line);
+}
+
+.decision-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(20px, 3vw, 28px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-xl);
+}
+
+.decision-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-lg);
+}
+
+@media (max-width: 768px) {
+  .decision-grid { grid-template-columns: 1fr; }
+}
+
+.decision-item {
+  padding: var(--space-lg);
+  border: 1px solid var(--line);
+}
+
+.decision-condition {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+}
+
+.decision-choice {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.decision-result {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.fin-section {
+  padding: var(--space-4xl) 0;
+  text-align: center;
+  border-top: 1px solid var(--line);
+}
+
+.fin-number {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(120px, 25vw, 300px);
+  font-weight: 100;
+  color: var(--text-primary);
+  opacity: 0.05;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  margin-bottom: var(--space-xl);
+}
+
+.fin-text {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(24px, 5vw, 48px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: var(--space-md);
+}
+
+.fin-subtext {
+  font-size: 14px;
+  color: var(--text-tertiary);
+  max-width: 40ch;
+  margin: 0 auto;
+}
+
+.markdown-content h1 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: var(--space-xl);
+  color: var(--text-primary);
+}
+
+.markdown-content h2 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  margin: var(--space-xl) 0 var(--space-lg);
+  color: var(--text-primary);
+}
+
+.markdown-content h3 {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin: var(--space-lg) 0 var(--space-sm);
+}
+
+.markdown-content p {
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--text-secondary);
+  max-width: 44ch;
+  margin-bottom: var(--space-md);
+}
+
+.markdown-content ul, .markdown-content ol {
+  margin: var(--space-lg) 0;
+  padding-left: var(--space-xl);
+}
+
+.markdown-content li {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-sm);
+}
+
+.markdown-content li strong { color: var(--text-primary); }
+
+.markdown-content blockquote {
+  padding-left: var(--space-md);
+  border-left: 1px solid var(--accent);
+  margin: var(--space-xl) 0;
+}
+
+.markdown-content blockquote p {
+  font-size: 16px;
+  color: var(--text-secondary);
+}
+
+.markdown-content pre {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+  margin: var(--space-xl) 0;
+  overflow-x: auto;
+}
+
+.markdown-content code {
+  font-family: 'Geist Mono', monospace;
+  font-size: 13px;
+  color: var(--text-primary);
+}
+
+.markdown-content hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: var(--space-2xl) 0;
+}
+
+.markdown-content a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent);
+}
+
+.markdown-content a:hover { opacity: 0.7; }
+</style>
 </head>
 <body>
-  <div id="app" data-slug="finance-basics">
-    <div class="loading">
-      <div class="loading-bar"></div>
-    </div>
+  <div class="back-link">
+    <a href="/"><span>←</span> 返回首页</a>
   </div>
-  <script type="module">
-    const SLUG = "finance-basics";
+  <div class="section-number">15</div>
 
-    async function loadNode() {
-      try {
-        const res = await fetch("/api/nodes/" + SLUG);
-        if (!res.ok) throw new Error("Failed to load");
-        const data = await res.json();
-        renderNode(data);
-      } catch (e) {
-        document.getElementById("app").innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text-secondary)">加载失败</div>';
-      }
-    }
+  <div class="page">
+    <header class="hero">
+      <div class="hero-content">
+        <div class="hero-label">节点 15 · 1-10</div>
+        <h1 class="hero-title">创业财务基础</h1>
+        <p class="hero-desc">收入确认、支出三桶模型、三账户隔离、税务规划——一人公司的财务生存底线</p>
+      </div>
+    </header>
 
-    function mdToHtml(md) {
-      if (!md) return '<p style="color:var(--text-secondary)">内容加载中...</p>';
-      let html = md
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/^### (.+)$/gm, "<h3>$1</h3>")
-        .replace(/^## (.+)$/gm, "<h2>$1</h2>")
-        .replace(/^# (.+)$/gm, "<h1>$1</h1>")
-        .replace(/**(.+?)**/g, "<strong>$1</strong>")
-        .replace(/^- (.+)$/gm, "<li>$1</li>")
-        .replace(/^\[ \] (.+)$/gm, "<div><input type="checkbox" disabled> $1</div>")
-        .replace(/^\[x\] (.+)$/gm, "<div><input type="checkbox" checked disabled> $1</div>")
-        .replace(/^\d+\. (.+)$/gm, "<li>$1</li>")
-        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
-        .replace(/^(?!<[a-z])(.+)$/gm, "<p>$1</p>")
-        .replace(/\n\n+/g, "\n");
-      html = html.replace(/(<li>.*<\/li>\n?)+/g, "<ul>$&</ul>");
-      return html;
-    }
+    <!-- 维度一：收入确认与权责发生制 -->
+    <section class="dimension-section fade-section">
+      <div class="dimension-badge">维度一</div>
+      <h2 class="dimension-question">预收款不是收入：权责发生制vs收付实现制</h2>
 
-    function renderNode(node) {
-      const content = node.content || "";
-      const contentHtml = mdToHtml(content);
-      document.getElementById("app").innerHTML = `
-        <div style="max-width:800px;margin:0 auto;padding:2rem 1.25rem;">
-          <a href="/" style="color:var(--text-secondary);font-size:0.75rem;letter-spacing:0.1em;text-decoration:none;">← 返回首页</a>
-          <div style="margin-top:2rem;">
-            <div style="color:var(--accent);font-size:0.625rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;">${node.data?.category || ""} · ${node.data?.difficulty || ""}</div>
-            <h1 style="font-size:clamp(1.5rem,5vw,2.5rem);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;">${node.data?.title || ""}</h1>
-            <p style="color:var(--text-secondary);line-height:1.9;">${node.data?.summary || ""}</p>
+      <div class="dimension-layout">
+        <div class="answer-section">
+          <div class="answer-block">
+            <div class="answer-label">核心概念</div>
+            <div class="answer-title">税法遵循"权责发生制"</div>
+            <div class="answer-desc">营业收入确认以"服务完成时点"为准，而非银行余额变动。2025年数字服务收入确认标准已明确：你2025年12月收到1200元年费，12月只能确认100元收入，其余1100元是负债。</div>
           </div>
-          <div class="content" style="margin-top:2rem;padding-top:2rem;border-top:1px solid var(--line);">
-            ${contentHtml}
+
+          <div class="answer-block">
+            <div class="answer-label">致命陷阱</div>
+            <div class="answer-title">按全额预收款报税 = 为没赚到的利润交税</div>
+            <div class="answer-desc">如果按1200元全额报税，利润虚增，企业所得税无谓提前缴纳，白白占用现金流。年费、月度服务预付款都存在这个陷阱。</div>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">多币种</div>
+            <div class="answer-title">Stripe/PayPal/Payoneer汇算易断裂</div>
+            <div class="answer-desc">海外平台打款链路数据极易断裂，手动统计漏报几乎是必然。金税四期对非银行支付机构大额交易报送已成常态，漏报是定时炸弹。</div>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">工具</div>
+            <div class="answer-title">支持多币种自动抓取的记账系统</div>
+            <div class="answer-desc">微信/支付宝经营收款直接拉取流水生成凭证，电子发票直连。2025年起，经营性收入数据上报与税务端已初步打通。</div>
+          </div>
+
+          <div class="core-insight">
+            <div class="insight-tag">核心洞察</div>
+            <p class="core-insight-text">"钱到账就是赚了"是OPC最危险的幻觉。预收款是负债，服务分12个月交付，你分12个月确认收入。</p>
           </div>
         </div>
-      `;
-    }
 
-    loadNode();
+        <div class="chart-area">
+          <div class="objection-block red">
+            <div class="objection-label">危险操作</div>
+            <div class="objection-title">收到预收款就当"收入"花了</div>
+            <div class="objection-desc">1200元年费到账，立刻花了800元。实际上这800元是"借"的——你还欠着12个月的服务。服务交付时现金流已耗尽。</div>
+          </div>
+
+          <div class="objection-block green">
+            <div class="objection-label">正确做法</div>
+            <div class="answer-title">预收款进入"预收账款"账户</div>
+            <div class="objection-desc">每月服务交付后，从"预收账款"转为"已确认收入"。只有真正完成交付的部分才是你的利润。</div>
+          </div>
+
+          <div class="objection-block muted">
+            <div class="objection-label">记账工具</div>
+            <div class="objection-title">用账本/随手记自动分期确认</div>
+            <div class="objection-desc">主流SaaS记账工具已能自动拆分预收款，在收入实现时分期确认。妈妈再也不用担心我预缴税了。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 维度二：支出三桶模型 -->
+    <section class="dimension-section fade-section">
+      <div class="dimension-badge">维度二</div>
+      <h2 class="dimension-question">刚性/弹性/隐性：拆开你的每一笔支出</h2>
+
+      <div class="dimension-layout">
+        <div class="answer-section">
+          <div class="answer-block">
+            <div class="answer-label">刚性支出</div>
+            <div class="answer-title">公司存在就必须支付的费用</div>
+            <div class="answer-desc">域名+云服务器年费(3000-15000元)、合规注册地址(3000-8000元)、代理记账(2400-4800元)、基础SaaS订阅(月均300-800元)。年付锁定折扣，固定可控。</div>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">弹性支出</div>
+            <div class="answer-title">随项目波动的增长性投入</div>
+            <div class="answer-desc">广告投流、外包设计、AI出图按次付费。核心原则：每笔弹性支出必须关联明确项目，并设置上限。超支即停，ROI连续两个月低于1直接砍掉。</div>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">隐性支出</div>
+            <div class="answer-title">最容易被忽略的三大杀手</div>
+            <div class="answer-desc">自雇社保(年18000-40000元)、个税预提、付费课程与设备折旧。这些钱花的时候不觉得多，汇总到一年就是一个月利润缺口。</div>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">管控原则</div>
+            <div class="answer-title">弹性支出设"现金流红线"</div>
+            <div class="answer-desc">当账上现金低于3个月刚性支出总和时，除维生项目外所有弹性支出一律暂停。这条纪律在收入枯竭期为你强行续命。</div>
+          </div>
+
+          <div class="core-insight">
+            <div class="insight-tag">核心洞察</div>
+            <p class="core-insight-text">隐性支出是OPC年底资金断裂的元凶。预提制度是唯一解药：每月收入到账，立刻将20%-25%转入专门的"税款与储备账户"。</p>
+          </div>
+        </div>
+
+        <div class="chart-area">
+          <div class="objection-block red">
+            <div class="objection-label">典型陷阱</div>
+            <div class="objection-title">"反正不多，先订阅了"</div>
+            <div class="objection-desc">月均59美元的工具×12个月=708美元/年。15-20个SaaS中30%功能重叠或长期闲置，订阅膨胀在不经意间每月放血5%-8%。</div>
+          </div>
+
+          <div class="objection-block green">
+            <div class="objection-label">管控工具</div>
+            <div class="objection-title">TrackMySubs / 随手记</div>
+            <div class="objection-desc">统一管理所有订阅，设置到期提醒。每季度做一次"停用测试"——暂停两周看业务是否受影响，无感知则永久删除。</div>
+          </div>
+
+          <div class="objection-block muted">
+            <div class="objection-label">2026更新</div>
+            <div class="objection-title">AI订阅需要定期评估ROI</div>
+            <div class="objection-desc">AI工具迭代极快，上个月的必备工具可能本月已被更优替代。每季度评估AI订阅的产出比，保留真正提升效率的。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 维度三：现金流的深入管控 -->
+    <section class="dimension-section fade-section">
+      <div class="dimension-badge">维度三</div>
+      <h2 class="dimension-question">"账上赚钱"不等于"兜里有钱"：现金流管控</h2>
+
+      <div class="dimension-layout">
+        <div class="answer-section">
+          <div class="answer-block">
+            <div class="answer-label">陷阱一</div>
+            <div class="answer-title">虚假繁荣：收入确认≠现金到账</div>
+            <div class="answer-desc">合同签了，活儿干完了，会计算了5万收入。但客户账期90天，账面上赚钱，口袋里没钱付本月的服务器和社保。这就是权责发生制的幻觉。</div>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">陷阱二</div>
+            <div class="answer-title">预收款提前花光</div>
+            <div class="answer-desc">提前收到一年服务费，当"利润"花掉了。服务要分12个月交付，但钱已经在第一个月花完了。后续履约成本和退款风险集中爆发。</div>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">并行台账</div>
+            <div class="answer-title">时刻并行"收付实现制"台账</div>
+            <div class="answer-desc">只看银行卡余额和工作台待开发票毫无意义。你必须同时追踪"已确认收入"和"实际到账现金"两套数字。</div>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">弹性红线</div>
+            <div class="answer-title">现金流红线：当余额 < 3个月刚性支出</div>
+            <div class="answer-desc">好月份下意识增加投放，差月份舍不得砍弹性支出。正确做法：当账上现金低于3个月刚性支出总和，除维生项目外所有弹性支出暂停。</div>
+          </div>
+
+          <div class="core-insight">
+            <div class="insight-tag">核心洞察</div>
+            <p class="core-insight-text">对于OPC，利润是纸面的，现金流才是真实的。你必须并行两套账：权责发生制（税务合规）和收付实现制（生存真实）。</p>
+          </div>
+        </div>
+
+        <div class="chart-area">
+          <div class="objection-block red">
+            <div class="objection-label">危险信号</div>
+            <div class="objection-title">账面利润可观，但连税费都交不起</div>
+            <div class="objection-desc">这是虚假繁荣的典型症状。账面上赚了50万，但实际到账只有20万，剩余30万还在90天账期里。季末要交税了，才发现没钱。</div>
+          </div>
+
+          <div class="objection-block green">
+            <div class="objection-label">正确姿势</div>
+            <div class="objection-title">每周并行检查两套数字</div>
+            <div class="objection-desc">已确认未到账应收账款有多少？实际银行卡余额是多少？两套数字的差距就是你的"账期风险敞口"。</div>
+          </div>
+
+          <div class="objection-block muted">
+            <div class="objection-label">解法</div>
+            <div class="objection-title">50%预收款起步</div>
+            <div class="objection-desc">启动项目收取50%预付款，覆盖至少50%的预期成本。剩余50%按里程碑分期收取，降低"交付完但没收钱"的风险。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 维度四：税务规划与主体选择 -->
+    <section class="dimension-section fade-section">
+      <div class="dimension-badge">维度四</div>
+      <h2 class="dimension-question">一人有限公司vs个体户：税种联动与身份穿透</h2>
+
+      <div class="dimension-layout">
+        <div class="answer-section">
+          <div class="answer-block">
+            <div class="answer-label">案例对比</div>
+            <div class="answer-title">年利润100万：两种主体的税负</div>
+            <div class="answer-desc">一人有限：企业所得税5%(小微优惠)约5万 + 分红个税20%约19万 = 合计24万。个人独资：经营所得个税35%约28.45万（无企税）。看似差不多，但风险在公私混同。</div>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">公私混同</div>
+            <div class="answer-title">借款、报销长期占用公司资金是定时炸弹</div>
+            <div class="answer-desc">金税四期扫描公私大额频繁往来。认定为股东分红则追缴20%个税；穿透认定为实质个人劳务则剥夺税收优惠，面临补税风险。</div>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">解法</div>
+            <div class="answer-title">给自己发符合市场水平的工资</div>
+            <div class="answer-desc">工资作为经营成本可税前扣除，降低公司利润。个人取得工资按综合所得3%-45%累进税率，可享受6万元基本费用扣除和专项附加扣除。</div>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">2026趋势</div>
+            <div class="answer-title">税务系统比对更紧密</div>
+            <div class="answer-desc">企业人工成本列支与个人申报比对更紧密。正确的工资列支不仅能节税，更是构建合规防火墙的核心砖石。</div>
+          </div>
+
+          <div class="core-insight">
+            <div class="insight-tag">核心洞察</div>
+            <p class="core-insight-text">税务上犯的错不是少缴了税，而是一开始就选错了主体身份，导致结构性的多缴税或被穿透追缴。主体选择在注册公司那一刻就已锁定。</p>
+          </div>
+        </div>
+
+        <div class="chart-area">
+          <div class="objection-block red">
+            <div class="objection-label">危险操作</div>
+            <div class="objection-title">以借款、报销名义长期占用公司资金</div>
+            <div class="objection-desc">金税四期自动扫描公私大额往来。一旦被认定分红，追缴20%个税+滞纳金。如果穿透认定为个人劳务，公司壳的税收优惠全部剥夺。</div>
+          </div>
+
+          <div class="objection-block green">
+            <div class="objection-label">正确姿势</div>
+            <div class="objection-title">工资+分红的合理比例</div>
+            <div class="objection-desc">给自己发合理工资（降低公司利润税基）+ 留存利润通过正规分红（享受小微优惠）。两道所得税横向平衡，综合税负最优。</div>
+          </div>
+
+          <div class="objection-block muted">
+            <div class="objection-label">主体选择</div>
+            <div class="objection-title">年利润50万是个分水岭</div>
+            <div class="objection-desc">50万以下：个体户/个人独资综合税负更低。50万以上：一人有限小微优惠叠加，分红个税20%可能更优。具体计算需结合业务场景。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 维度五：三账户隔离法 -->
+    <section class="dimension-section fade-section">
+      <div class="dimension-badge">维度五</div>
+      <h2 class="dimension-question">运营/储备/税务：物理隔离是财务纪律的基石</h2>
+
+      <div class="dimension-layout">
+        <div class="answer-section">
+          <div class="answer-block">
+            <div class="answer-label">运营账户</div>
+            <div class="answer-title">日常收入和经营支出</div>
+            <div class="answer-desc">客户付款进入此账户，服务器续费、工具订阅从此扣款。每周核查，确保余额始终覆盖未来30天预计支出。超出安全线的金额按55/35/10分流。</div>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">储备账户</div>
+            <div class="answer-title">8个月刚性支出安全垫</div>
+            <div class="answer-desc">目标金额为8个月刚性支出(含社保+最低生活费)。达到目标前每月强制划转30%-40%；达到后仅在重大消耗时才补充。设"只进不出"锁定期，用摩擦对抗挪用冲动。</div>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">税务账户</div>
+            <div class="answer-title">每月预提15%-25%，绝不挪用</div>
+            <div class="answer-desc">无论发生什么情况，税务账户资金绝不挪用。金税四期银行流水与申报数据自动交叉比对，拖欠税款产生滞纳金+拉低企业信用评分。</div>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">分流比例</div>
+            <div class="answer-title">55/35/10：超出安全线资金的分配</div>
+            <div class="answer-desc">55%进储备账户（积累8个月安全垫）；35%用于投资性支出（测试新渠道、购买效率工具）；10%作为个人生活提取。激励与约束并存。</div>
+          </div>
+
+          <div class="core-insight">
+            <div class="insight-tag">核心洞察</div>
+            <p class="core-insight-text">大脑在单一账户余额面前容易产生"资源充裕"的幻觉。三账户分割后，每个账户清晰传递"可动用资金还剩多少"的信号。</p>
+          </div>
+        </div>
+
+        <div class="chart-area">
+          <div class="objection-block green">
+            <div class="objection-label">工具支持</div>
+            <div class="objection-title">数字银行子账户</div>
+            <div class="objection-desc">2026年多数数字银行支持在线秒开子账户。运营/储备/税务三账户物理隔离，挪用时增加摩擦成本，比意志力可靠得多。</div>
+          </div>
+
+          <div class="objection-block red">
+            <div class="objection-label">危险心理</div>
+            <div class="objection-title">"都是我的钱，只是放在不同账户"</div>
+            <div class="objection-desc">单一账户余额高时，大脑产生"资源充裕"幻觉，容易冲动消费或过度投资。分割后的账户数字更真实反映"可动用资金"。</div>
+          </div>
+
+          <div class="objection-block muted">
+            <div class="objection-label">储备目标</div>
+            <div class="objection-title">8个月刚性支出 = 安全跑道</div>
+            <div class="objection-desc">OPC最脆弱的是现金流断裂。8个月储备意味着：即使完全零收入，也能撑8个月。这是你独立决策权的物理保证。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 维度六：未来60天滚动预测 -->
+    <section class="dimension-section fade-section">
+      <div class="dimension-badge">维度六</div>
+      <h2 class="dimension-question">每周60天滚动预测：你的现金流仪表盘</h2>
+
+      <div class="dimension-layout">
+        <div class="answer-section">
+          <div class="answer-block">
+            <div class="answer-label">预测表</div>
+            <div class="answer-title">Excel或Notion数据库搭建</div>
+            <div class="answer-desc">核心字段：周次、预计收款(已签约)、预计收款(洽谈中×概率)、刚性支出、弹性支出、期末余额。每周维护一次，贴在显示器边缘。</div>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">关键数字</div>
+            <div class="answer-title">两个数字必须每周更新</div>
+            <div class="answer-desc">未来60天每日预估最低余额 + 当前最大单一客户回款占比。前者看生存空间，后者看单点依赖风险。</div>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">红线触发</div>
+            <div class="answer-title">当任一指标突破预设红线</div>
+            <div class="answer-desc">最低余额 < 2个月支出，或单一客户占比 > 50%。触发动作：暂停非必要支出、立刻催收、启动副流、与客户协商缩短账期。</div>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">季度动作</div>
+            <div class="answer-title">每季"压力测试"</div>
+            <div class="answer-desc">假设最大客户本月流失，现金跑道还剩多少？假设账期全部延长30天，现金流能否支撑？如果测试结果触发红线，防御动作立即启动。</div>
+          </div>
+
+          <div class="core-insight">
+            <div class="insight-tag">核心洞察</div>
+            <p class="core-insight-text">现金流管理不是月底回顾，而是嵌入日常的前哨系统。每周60天滚动预测，让你在问题发生前两周就有行动窗口。</p>
+          </div>
+        </div>
+
+        <div class="chart-area">
+          <div class="objection-block red">
+            <div class="objection-label">红线</div>
+            <div class="objection-title">最低余额 < 1个月支出</div>
+            <div class="objection-desc">这是紧急状态。立刻暂停所有非必要支出、催收在途款项、启动副流。任何拖延都可能导致无法挽回的现金流断裂。</div>
+          </div>
+
+          <div class="objection-block green">
+            <div class="objection-label">健康</div>
+            <div class="objection-title">最低余额 > 3个月 + 客户分散</div>
+            <div class="objection-desc">这是OPC的安全区间。可以适度扩张，不用过度保守。有足够缓冲应对波动，有分散的收入来源降低单点风险。</div>
+          </div>
+
+          <div class="objection-block muted">
+            <div class="objection-label">预测原则</div>
+            <div class="objection-title">洽谈中项目按概率打折</div>
+            <div class="objection-desc">新客户按30%-50%概率计算，老客户按70%-80%计算。不要高估自己的赢单率。悲观预测是稳健现金流管理的基础。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 决策表 -->
+    <section class="decision-table fade-section">
+      <h3 class="decision-title">场景决策表</h3>
+      <div class="decision-grid">
+        <div class="decision-item">
+          <div class="decision-condition">收到大额预收款</div>
+          <div class="decision-choice">进入"预收账款"账户</div>
+          <div class="decision-result">按服务交付进度分期确认收入，不当"利润"提前花掉。</div>
+        </div>
+        <div class="decision-item">
+          <div class="decision-condition">季度末账面利润高但现金少</div>
+          <div class="decision-choice">并行检查收付实现制台账</div>
+          <div class="decision-result">识别"已确认未到账"部分，预留税款，避免季末没钱交税。</div>
+        </div>
+        <div class="decision-item">
+          <div class="decision-condition">收入好的时候想扩张</div>
+          <div class="decision-choice">先确认储备账户是否达标</div>
+          <div class="decision-result">8个月刚性支出的安全垫是第一优先级。达到后再考虑弹性扩张。</div>
+        </div>
+        <div class="decision-item">
+          <div class="decision-condition">主体是一人有限公司</div>
+          <div class="decision-choice">给自己发合理工资</div>
+          <div class="decision-result">工资税前扣除降利润，综合所得税负更优。公私分离是合规防火墙。</div>
+        </div>
+        <div class="decision-item">
+          <div class="decision-condition">现金流低于3个月红线</div>
+          <div class="decision-choice">暂停所有弹性支出</div>
+          <div class="decision-result">除维系生存的必要支出外全部暂停。现金跑道恢复前不扩张。</div>
+        </div>
+        <div class="decision-item">
+          <div class="decision-condition">每季度末</div>
+          <div class="decision-choice">做一次压力测试</div>
+          <div class="decision-result">假设最大客户流失、假设账期全部延长30天，测试现金流能否支撑。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FIN -->
+    <section class="fin-section fade-section">
+      <div class="fin-number">FIN</div>
+      <h2 class="fin-text">财务底线：一人公司的生存操作系统</h2>
+      <p class="fin-subtext">收入确认到位 + 支出结构清晰 + 三账户隔离 + 税务规划合理 + 60天滚动预测 = OPC的财务生存系统</p>
+    </section>
+
+    <footer class="footer-nav">
+      <a href="/nodes/14-cashflow/index.html" class="nav-link">
+        <span class="nav-arrow">←</span>
+        节点14：OPC现金流管理
+      </a>
+      <a href="/nodes/16-pricing/index.html" class="nav-link">
+        节点16：定价策略
+        <span class="nav-arrow">→</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
   </script>
 </body>
 </html>

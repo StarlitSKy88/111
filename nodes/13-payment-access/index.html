@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="一人公司国内支付接入完整指南：主体选择、微信支付宝接入、数字人民币、费率谈判、审核避坑">
+  <meta name="theme-color" content="#111110">
+  <title>国内支付接入 - OPC节点百科</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #7A7670;
+  --text-tertiary: #A8A49E;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; font-weight: 400; line-height: 1.9; letter-spacing: 0.04em; -webkit-font-smoothing: antialiased; }
+
+.page { position: relative; max-width: 1200px; margin: 0 auto; padding: 0 clamp(24px, 8vw, 120px); min-height: 100vh; }
+.page::before { content: ''; position: absolute; top: 0; left: clamp(24px, 8vw, 120px); right: clamp(24px, 8vw, 120px); height: 1px; background: var(--line); }
+
+.section-number { position: absolute; top: var(--space-2xl); right: clamp(24px, 8vw, 120px); font-size: clamp(100px, 22vw, 280px); font-weight: 100; color: var(--text-primary); opacity: 0.03; line-height: 1; letter-spacing: -0.05em; font-family: 'Noto Serif JP', serif; pointer-events: none; user-select: none; }
+
+.back-link { position: fixed; top: var(--space-xl); left: clamp(24px, 8vw, 120px); z-index: 100; }
+.back-link a { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: color 0.3s ease; }
+.back-link a:hover { color: var(--text-primary); }
+
+.hero { padding: var(--space-4xl) 0 var(--space-3xl); position: relative; }
+.hero-content { position: relative; z-index: 1; max-width: 800px; }
+.hero-label { font-size: 13px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-md); }
+.hero-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+.hero-title { font-family: 'Noto Serif JP', serif; font-size: clamp(48px, 10vw, 96px); font-weight: 300; letter-spacing: -0.03em; line-height: 0.95; margin-bottom: var(--space-xl); }
+.hero-desc { font-size: 16px; color: var(--text-secondary); line-height: 1.8; max-width: 44ch; }
+
+/* 费率对比区 */
+.rate-section { padding: var(--space-3xl) 0; border-top: 1px solid var(--line); }
+.section-header { display: flex; align-items: baseline; gap: var(--space-md); margin-bottom: var(--space-xl); }
+.section-num { font-family: 'Noto Serif JP', serif; font-size: 48px; font-weight: 300; color: var(--accent); opacity: 0.5; line-height: 1; }
+.section-title { font-family: 'Noto Serif JP', serif; font-size: clamp(24px, 4vw, 36px); font-weight: 300; letter-spacing: -0.02em; }
+
+/* 费率对比网格 */
+.rate-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: var(--space-md); }
+@media (max-width: 900px) { .rate-grid { grid-template-columns: 1fr; } }
+.rate-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-lg); text-align: center; }
+.rate-card.highlight { border-color: var(--accent); }
+.rate-channel { font-size: 12px; color: var(--text-tertiary); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: var(--space-sm); }
+.rate-value { font-family: 'Noto Serif JP', serif; font-size: 48px; font-weight: 300; color: var(--text-primary); line-height: 1; margin-bottom: var(--space-xs); }
+.rate-card.highlight .rate-value { color: var(--accent); }
+.rate-label { font-size: 11px; color: var(--text-tertiary); margin-bottom: var(--space-md); }
+.rate-save { font-size: 13px; color: var(--accent); margin-top: var(--space-sm); }
+
+/* 计算器区块 */
+.calc-box { background: var(--surface); border: 1px solid var(--line); padding: var(--space-xl); margin-top: var(--space-xl); }
+.calc-header { display: flex; align-items: baseline; gap: var(--space-md); margin-bottom: var(--space-lg); }
+.calc-title { font-family: 'Noto Serif JP', serif; font-size: 20px; font-weight: 300; }
+.calc-row { display: flex; justify-content: space-between; padding: var(--space-sm) 0; border-bottom: 1px solid var(--line-light); font-size: 14px; }
+.calc-row:last-child { border-bottom: none; }
+.calc-label { color: var(--text-secondary); }
+.calc-value { color: var(--text-primary); font-weight: 500; }
+.calc-value.highlight { color: var(--accent); }
+.calc-result { display: flex; justify-content: space-between; padding: var(--space-md) 0; margin-top: var(--space-md); border-top: 1px solid var(--line); }
+.calc-result-label { font-size: 14px; color: var(--text-primary); font-weight: 500; }
+.calc-result-value { font-family: 'Noto Serif JP', serif; font-size: 28px; font-weight: 300; color: var(--accent); }
+
+/* 主体选择 */
+.entity-section { padding: var(--space-3xl) 0; border-top: 1px solid var(--line); }
+.entity-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: var(--space-lg); margin-top: var(--space-xl); }
+@media (max-width: 768px) { .entity-grid { grid-template-columns: 1fr; } }
+.entity-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-lg); }
+.entity-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; }
+.entity-card.prime::before { background: var(--accent); }
+.entity-card.prime { position: relative; border-color: var(--accent); }
+.entity-tag { font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-sm); color: var(--accent); }
+.entity-name { font-size: 18px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-md); }
+.entity-pros { display: flex; flex-direction: column; gap: var(--space-xs); }
+.entity-pro { font-size: 13px; color: var(--text-secondary); padding-left: var(--space-md); position: relative; }
+.entity-pro::before { content: '✓'; position: absolute; left: 0; color: var(--accent); }
+.entity-con { font-size: 13px; color: var(--text-tertiary); padding-left: var(--space-md); position: relative; }
+.entity-con::before { content: '×'; position: absolute; left: 0; color: var(--accent); }
+
+/* 通道卡片 */
+.channel-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: var(--space-md); margin-top: var(--space-xl); }
+@media (max-width: 768px) { .channel-grid { grid-template-columns: 1fr; } }
+.channel-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-md); position: relative; }
+.channel-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; }
+.channel-card.wechat::before { background: #07C160; }
+.channel-card.alipay::before { background: #1677FF; }
+.channel-card.dcep::before { background: var(--accent); }
+.channel-name { font-size: 14px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-xs); }
+.channel-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+.channel-tag { display: inline-block; font-size: 12px; padding: 2px 8px; margin-top: var(--space-sm); border: 1px solid; }
+.channel-tag.green { color: var(--accent); border-color: var(--accent); }
+.channel-tag.red { color: var(--accent); border-color: var(--accent); }
+
+/* 清单区块 */
+.checklist-section { padding: var(--space-3xl) 0; border-top: 1px solid var(--line); }
+.checklist-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: var(--space-md); margin-top: var(--space-lg); }
+@media (max-width: 768px) { .checklist-grid { grid-template-columns: 1fr; } }
+.check-item { display: flex; align-items: flex-start; gap: var(--space-md); padding: var(--space-md); background: var(--surface); border: 1px solid var(--line); }
+.check-num { font-family: 'Noto Serif JP', serif; font-size: 24px; font-weight: 300; color: var(--accent); opacity: 0.5; line-height: 1; flex: 0 0 40px; }
+.check-content {}
+.check-title { font-size: 14px; font-weight: 500; color: var(--text-primary); margin-bottom: 4px; }
+.check-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+
+/* 警告区块 */
+.warning-box { background: rgba(192, 57, 43, 0.08); border: 1px solid var(--accent); padding: var(--space-lg); margin: var(--space-xl) 0; }
+.warning-label { font-size: 12px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-sm); }
+.warning-text { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+
+/* 底部导航 */
+.footer-nav { padding: var(--space-2xl) 0; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
+.nav-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: color 0.3s ease; }
+.nav-link:hover { color: var(--text-primary); }
+.nav-arrow { font-size: 0.75rem; }
+
+.fade-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.fade-section.visible { opacity: 1; transform: translateY(0); }
+* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+  </style>
+</head>
+<body>
+  <div class="back-link">
+    <a href="/"><span>←</span> 返回首页</a>
+  </div>
+  <div class="section-number">13</div>
+
+  <div class="page">
+    <header class="hero fade-section">
+      <div class="hero-content">
+        <div class="hero-label">节点 13 · 1-10</div>
+        <h1 class="hero-title">国内支付<br>接入</h1>
+        <p class="hero-desc">微信支付、支付宝、数字人民币——2026年一人公司收款闭环完整指南</p>
+      </div>
+    </header>
+
+    <!-- 费率对比 -->
+    <section class="rate-section fade-section">
+      <div class="section-header">
+        <span class="section-num">费率</span>
+        <h2 class="section-title">通道费率对比</h2>
+      </div>
+
+      <div class="rate-grid">
+        <div class="rate-card">
+          <div class="rate-channel">官方标准</div>
+          <div class="rate-value">0.6%</div>
+          <div class="rate-label">微信 / 支付宝</div>
+          <div class="rate-save">月流水10万 = 年省0元</div>
+        </div>
+        <div class="rate-card">
+          <div class="rate-channel">服务商谈判</div>
+          <div class="rate-value">0.38%</div>
+          <div class="rate-label">标准优惠费率</div>
+          <div class="rate-save">月流水10万 = 年省2640元</div>
+        </div>
+        <div class="rate-card highlight">
+          <div class="rate-channel">谈判低价</div>
+          <div class="rate-value">0.25%</div>
+          <div class="rate-label">极限压价</div>
+          <div class="rate-save">月流水10万 = 年省4200元</div>
+        </div>
+      </div>
+
+      <div class="calc-box">
+        <div class="calc-header">
+          <span class="calc-title">年手续费计算器</span>
+        </div>
+        <div class="calc-row">
+          <span class="calc-label">月流水</span>
+          <span class="calc-value">10万元</span>
+        </div>
+        <div class="calc-row">
+          <span class="calc-label">官方费率 0.6%</span>
+          <span class="calc-value">年手续费 ¥7,200</span>
+        </div>
+        <div class="calc-row">
+          <span class="calc-label">谈判费率 0.25%</span>
+          <span class="calc-value highlight">年手续费 ¥3,000</span>
+        </div>
+        <div class="calc-result">
+          <span class="calc-result-label">年节省</span>
+          <span class="calc-result-value">¥4,200</span>
+        </div>
+      </div>
+
+      <div class="warning-box">
+        <div class="warning-label">谈判话术</div>
+        <div class="warning-text">"我正在同步启用数字人民币收款（零费率），如果微信/支付宝费率降不下来，主要收款可以引导过去。"——用零费率作为压价筹码。</div>
+      </div>
+    </section>
+
+    <!-- 主体选择 -->
+    <section class="entity-section fade-section">
+      <div class="section-header">
+        <span class="section-num">主体</span>
+        <h2 class="section-title">个体户 vs 一人有限公司</h2>
+      </div>
+
+      <div class="entity-grid">
+        <div class="entity-card prime">
+          <div class="entity-tag">推荐起步</div>
+          <div class="entity-name">个体工商户</div>
+          <div class="entity-pros">
+            <div class="entity-pro">免对公账户，直接绑定个人银行卡</div>
+            <div class="entity-pro">审核周期短，1-3个工作日上线</div>
+            <div class="entity-pro">微信小微通道日限额5-10万</div>
+            <div class="entity-pro">2025年起支付宝全面免对公账户</div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-tag">进阶选择</div>
+          <div class="entity-name">一人有限公司</div>
+          <div class="entity-pros">
+            <div class="entity-pro">可开对公账户，满足大客户开票需求</div>
+            <div class="entity-pro">有利于未来股权融资</div>
+            </div>
+          <div class="entity-pros" style="margin-top: var(--space-md);">
+            <div class="entity-con">必须验证对公账户</div>
+            <div class="entity-con">公对私转账需完整账务记录</div>
+            <div class="entity-con">有一定维护成本</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 支付通道 -->
+    <section class="rate-section fade-section">
+      <div class="section-header">
+        <span class="section-num">通道</span>
+        <h2 class="section-title">三大支付通道</h2>
+      </div>
+
+      <div class="channel-grid">
+        <div class="channel-card dcep">
+          <div class="channel-name">数字人民币</div>
+          <div class="channel-desc">资金实时到账，无任何沉淀。2026年商户端零手续费，是对抗现金流压力的唯一正规途径。</div>
+          <span class="channel-tag green">零费率 · 实时到账</span>
+        </div>
+        <div class="channel-card wechat">
+          <div class="channel-name">微信支付</div>
+          <div class="channel-desc">小微商户通道免对公账户，直接绑定个人银行卡。日收款限额5-10万。</div>
+          <span class="channel-tag red">需服务商申请</span>
+        </div>
+        <div class="channel-card alipay">
+          <div class="channel-name">支付宝</div>
+          <div class="channel-desc">商户后台自主权更高，可自行配置支付后优惠券、会员卡系统，无需依赖服务商。</div>
+          <span class="channel-tag red">需服务商申请</span>
+        </div>
+        <div class="channel-card">
+          <div class="channel-name">银行聚合码</div>
+          <div class="channel-desc">2026年多家银行推"首年零费率"获取存款沉淀。代价是结算账户必须在该银行。</div>
+          <span class="channel-tag">T+1到账</span>
+        </div>
+      </div>
+
+      <div class="checklist-grid" style="margin-top: var(--space-xl);">
+        <div class="check-item">
+          <div class="check-num">01</div>
+          <div class="check-content">
+            <div class="check-title">ICP备案前置</div>
+            <div class="check-desc">任何网页或小程序的线上收款，审核时自动校验ICP备案号。没有备案，申请直接被拒。</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-num">02</div>
+          <div class="check-content">
+            <div class="check-title">经营范围含"互联网销售"</div>
+            <div class="check-desc">最高频拒绝理由。注册执照时加上：互联网销售（除需要许可的商品）、信息技术咨询服务。</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-num">03</div>
+          <div class="check-content">
+            <div class="check-title">对公账户先激活</div>
+            <div class="check-desc">一人有限公司必须验证对公账户。注册公司后第一时间开对公账户，每月至少一笔主动交易保持活跃。</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-num">04</div>
+          <div class="check-content">
+            <div class="check-title">虚拟商品需ICP证</div>
+            <div class="check-desc">软件授权码、在线课程、电子书等虚拟商品，微信支付要求提供《增值电信业务经营许可证》。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 结算周期 -->
+    <section class="entity-section fade-section">
+      <div class="section-header">
+        <span class="section-num">到账</span>
+        <h2 class="section-title">结算周期对比</h2>
+      </div>
+
+      <div class="calc-box" style="margin-top: 0;">
+        <div class="calc-row">
+          <span class="calc-label">传统T+1</span>
+          <span class="calc-value">周五收款，周一到账</span>
+        </div>
+        <div class="calc-row">
+          <span class="calc-label">网商银行/微众银行</span>
+          <span class="calc-value">365天实时清算，周末也到账</span>
+        </div>
+        <div class="calc-row">
+          <span class="calc-label">数字人民币</span>
+          <span class="calc-value highlight">实时到账，当天可用</span>
+        </div>
+      </div>
+
+      <div class="warning-box">
+        <div class="warning-label">合规红线</div>
+        <div class="warning-text">一人有限公司公对私转账必须通过"工资薪金"、"报销"或"分红"等规范名义操作，保留完整账务记录与完税凭证。否则触发关联交易误判和法人主体混同问题。</div>
+      </div>
+    </section>
+
+    <footer class="footer-nav fade-section">
+      <a href="/nodes/12-website-deployment/index.html" class="nav-link">
+        <span class="nav-arrow">←</span>
+        节点12：网站部署与SSL
+      </a>
+      <a href="/nodes/14-cashflow/index.html" class="nav-link">
+        节点14：OPC现金流管理
+        <span class="nav-arrow">→</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

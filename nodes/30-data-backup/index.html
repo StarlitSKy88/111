@@ -7,101 +7,789 @@
   <meta name="theme-color" content="#111110">
   <title>数据备份与恢复 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #111110;
-      --surface: #1A1A18;
-      --text-primary: #F0EDE6;
-      --text-secondary: #7A7670;
-      --accent: #C0392B;
-      --line: #2A2A28;
-    }
-    body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; }
-    .loading { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-    .loading-bar { width: 100%; height: 1px; background: var(--line); position: relative; overflow: hidden; max-width: 200px; }
-    .loading-bar::after { content: ''; position: absolute; left: -50%; top: 0; width: 50%; height: 100%; background: var(--accent); animation: loading-slide 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite; }
-    @keyframes loading-slide { from { left: -50%; } to { left: 100%; } }
-    .content h1 { font-size: 1.75rem; font-weight: 300; margin-bottom: 1rem; }
-    .content h2 { font-size: 1.25rem; font-weight: 400; margin: 1.5rem 0 0.75rem; color: var(--text-primary); }
-    .content h3 { font-size: 1rem; font-weight: 500; margin: 1.25rem 0 0.5rem; color: var(--text-primary); }
-    .content p { line-height: 1.9; margin-bottom: 1rem; color: var(--text-secondary); }
-    .content ul, .content ol { margin: 1rem 0; padding-left: 1.5rem; color: var(--text-secondary); }
-    .content li { line-height: 1.8; margin-bottom: 0.5rem; }
-    .content strong { color: var(--text-primary); font-weight: 500; }
-    .content code { background: var(--surface); padding: 0.125rem 0.375rem; border-radius: 0.25rem; font-size: 0.875rem; }
-    .content pre { background: var(--surface); padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin: 1rem 0; }
-    .content pre code { background: none; padding: 0; }
-    .content blockquote { border-left: 3px solid var(--accent); padding-left: 1rem; margin: 1rem 0; color: var(--text-secondary); font-style: italic; }
-    .content hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
-    .content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-    .content th, .content td { border: 1px solid var(--line); padding: 0.75rem; text-align: left; }
-    .content th { background: var(--surface); color: var(--text-primary); }
-    .content td { color: var(--text-secondary); }
-    .content a { color: var(--accent); text-decoration: underline; }
-    .content input[type="checkbox"] { margin-right: 0.5rem; }
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #B8B4AE;
+  --text-tertiary: #A8A49E;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 400;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+}
+.page {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 8vw, 120px);
+  min-height: 100vh;
+}
+.page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: clamp(24px, 8vw, 120px);
+  right: clamp(24px, 8vw, 120px);
+  height: 1px;
+  background: var(--line);
+}
+.section-number {
+  position: absolute;
+  top: var(--space-2xl);
+  right: clamp(24px, 8vw, 120px);
+  font-size: clamp(100px, 22vw, 280px);
+  font-weight: 100;
+  color: var(--text-primary);
+  opacity: 0.03;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-family: 'Noto Serif JP', serif;
+  pointer-events: none;
+  user-select: none;
+}
+.back-link {
+  position: fixed;
+  top: var(--space-xl);
+  left: clamp(24px, 8vw, 120px);
+  z-index: 100;
+}
+.back-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.back-link a:hover { color: var(--text-primary); }
+.hero {
+  padding: var(--space-4xl) 0 var(--space-3xl);
+  position: relative;
+}
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+}
+.hero-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+.hero-label::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--accent);
+}
+.hero-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  margin-bottom: var(--space-xl);
+}
+.hero-desc {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 44ch;
+}
+.content-section {
+  padding: var(--space-3xl) 0;
+  border-top: 1px solid var(--line);
+}
+.section-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+.section-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+}
+.grid-asymmetric {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-3xl);
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .grid-asymmetric {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+}
+.chapter-heading {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: var(--space-xl);
+  max-width: 16em;
+}
+.body-text {
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--text-secondary);
+  max-width: 44ch;
+  margin-bottom: var(--space-md);
+}
+.body-text strong { color: var(--text-primary); font-weight: 500; }
+.body-text .accent { color: var(--accent); font-weight: 500; }
+.quote-block {
+  padding-left: var(--space-md);
+  border-left: 1px solid var(--accent);
+  margin: var(--space-xl) 0;
+}
+.quote-text {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  max-width: 40ch;
+}
+.insight-tag {
+  display: inline-block;
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  border: 1px solid var(--accent);
+  padding: 4px 12px;
+}
+.data-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.data-card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--line);
+}
+.data-card-row:last-child { border-bottom: none; }
+.data-label {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.data-value {
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+.data-value.accent { color: var(--accent); font-weight: 600; }
+.list-item {
+  padding: var(--space-lg) 0;
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: var(--space-lg);
+}
+.list-item:last-child { border-bottom: none; }
+.list-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--text-tertiary);
+  line-height: 1;
+}
+.list-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+.list-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 40ch;
+}
+.core-insight {
+  margin: var(--space-xl) 0;
+  padding-left: var(--space-md);
+  border-left: 1px solid var(--accent);
+}
+.core-insight-text {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 40ch;
+}
+.balance-section-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-xl);
+}
+.balance-intro {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 46ch;
+  margin-bottom: var(--space-2xl);
+}
+.balance-intro strong { color: var(--text-primary); font-weight: 500; }
+.balance-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: var(--space-2xl);
+}
+@media (max-width: 768px) {
+  .balance-grid { grid-template-columns: 1fr; gap: var(--space-xl); }
+}
+.balance-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+}
+.balance-card-label {
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+}
+.balance-card-label.positive { color: var(--accent); }
+.balance-card-label.negative { color: var(--text-tertiary); }
+.balance-item {
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--line-light);
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+.balance-item:last-child { border-bottom: none; }
+.balance-item.dim { color: var(--text-tertiary); }
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1.2fr 0.8fr;
+  gap: var(--space-xl);
+}
+@media (max-width: 900px) {
+  .summary-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
+}
+.summary-card {
+  padding: var(--space-lg) 0;
+  border-top: 1px solid var(--line);
+}
+.summary-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 36px;
+  font-weight: 300;
+  color: var(--accent);
+  margin-bottom: var(--space-sm);
+}
+.summary-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+.summary-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+.footer-nav {
+  padding: var(--space-2xl) 0;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.nav-link:hover { color: var(--text-primary); }
+.nav-arrow { font-size: 0.75rem; }
+.fade-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-section.visible { opacity: 1; transform: translateY(0); }
+* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+
+/* Dimension badge */
+.dim-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: var(--space-sm);
+}
+.dim-badge .dim-id {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--accent);
+}
+.dim-badge .dim-tag {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  border: 1px solid var(--line);
+  padding: 2px 8px;
+}
+.dim-badge .dim-tag.核心 { color: var(--accent); border-color: var(--accent); }
+
+/* Objection blocks */
+.obj-block {
+  padding: var(--space-lg);
+  margin: var(--space-md) 0;
+  border-left: 2px solid;
+}
+.obj-block.error {
+  background: rgba(192, 57, 43, 0.08);
+  border-color: var(--accent);
+}
+.obj-block.success {
+  background: rgba(39, 174, 96, 0.08);
+  border-color: var(--accent);
+}
+.obj-block.data {
+  background: rgba(255,255,255,0.03);
+  border-color: var(--text-tertiary);
+}
+.obj-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.obj-block.error .obj-label { color: var(--accent); }
+.obj-block.success .obj-label { color: var(--accent); }
+.obj-block.data .obj-label { color: var(--text-tertiary); }
+.obj-content {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+.obj-content strong { color: var(--text-primary); }
+
+/* Checklist */
+.checklist {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-lg) 0;
+}
+.checklist li {
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+}
+.checklist li:last-child { border-bottom: none; }
+.checklist li::before {
+  content: '□';
+  color: var(--accent);
+  font-size: 16px;
+  line-height: 1.4;
+}
+.checklist li.checked::before {
+  content: '■';
+}
   </style>
 </head>
 <body>
-  <div id="app" data-slug="data-backup">
-    <div class="loading">
-      <div class="loading-bar"></div>
-    </div>
+  <div class="back-link">
+    <a href="/"><span>←</span> 返回首页</a>
   </div>
-  <script type="module">
-    const SLUG = "data-backup";
+  <div class="section-number">30</div>
 
-    async function loadNode() {
-      try {
-        const res = await fetch("/api/nodes/" + SLUG);
-        if (!res.ok) throw new Error("Failed to load");
-        const data = await res.json();
-        renderNode(data);
-      } catch (e) {
-        document.getElementById("app").innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text-secondary)">加载失败</div>';
-      }
-    }
+  <div class="page">
+    <header class="hero">
+      <div class="hero-content">
+        <div class="hero-label">节点 30 · 1-10</div>
+        <h1 class="hero-title">数据备份与恢复</h1>
+        <p class="hero-desc">自动备份、异地容灾、恢复测试，有100+用户数据后必须做</p>
+      </div>
+    </header>
 
-    function mdToHtml(md) {
-      if (!md) return '<p style="color:var(--text-secondary)">内容加载中...</p>';
-      let html = md
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/^### (.+)$/gm, "<h3>$1</h3>")
-        .replace(/^## (.+)$/gm, "<h2>$1</h2>")
-        .replace(/^# (.+)$/gm, "<h1>$1</h1>")
-        .replace(/**(.+?)**/g, "<strong>$1</strong>")
-        .replace(/^- (.+)$/gm, "<li>$1</li>")
-        .replace(/^\[ \] (.+)$/gm, "<div><input type="checkbox" disabled> $1</div>")
-        .replace(/^\[x\] (.+)$/gm, "<div><input type="checkbox" checked disabled> $1</div>")
-        .replace(/^\d+\. (.+)$/gm, "<li>$1</li>")
-        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
-        .replace(/^(?!<[a-z])(.+)$/gm, "<p>$1</p>")
-        .replace(/\n\n+/g, "\n");
-      html = html.replace(/(<li>.*<\/li>\n?)+/g, "<ul>$&</ul>");
-      return html;
-    }
-
-    function renderNode(node) {
-      const content = node.content || "";
-      const contentHtml = mdToHtml(content);
-      document.getElementById("app").innerHTML = `
-        <div style="max-width:800px;margin:0 auto;padding:2rem 1.25rem;">
-          <a href="/" style="color:var(--text-secondary);font-size:0.75rem;letter-spacing:0.1em;text-decoration:none;">← 返回首页</a>
-          <div style="margin-top:2rem;">
-            <div style="color:var(--accent);font-size:0.625rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;">${node.data?.category || ""} · ${node.data?.difficulty || ""}</div>
-            <h1 style="font-size:clamp(1.5rem,5vw,2.5rem);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;">${node.data?.title || ""}</h1>
-            <p style="color:var(--text-secondary);line-height:1.9;">${node.data?.summary || ""}</p>
+    <!-- D1: 认知跃迁 -->
+    <section class="content-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-id">D1</span>
+        <span class="dim-tag 核心">核心</span>
+        <span class="dim-tag">本质</span>
+      </div>
+      <h2 class="chapter-heading">为什么2026年备份是生存刚需？</h2>
+      <div class="grid-asymmetric">
+        <div class="main-content">
+          <p class="body-text">你的数据就是业务本身。OPC没有团队分摊风险，没有IT部门处理故障——<strong>所有客户资源、设计源文件、财务凭证、AI生成内容都沉淀在你的设备里</strong>。崩溃点只有一个。</p>
+          <p class="body-text"><strong>攻击者已下沉至单人创业者</strong>：勒索软件即服务(RaaS)让攻击成本极低。2025年针对自由职业者、独立开发者的加密勒索事件增长约170%。你是高性价比目标——支付意愿强，无备用系统。</p>
+          <p class="body-text"><strong>AI生成内容不可复现</strong>：同样是提示词，不同模型版本和随机种子下产出不同。丢失 = 永久损失，没有"重新生成"这个选项。</p>
+        </div>
+        <div class="side-content">
+          <div class="data-card">
+            <div class="data-card-row">
+              <span class="data-label">勒索攻击增长率</span>
+              <span class="data-value accent">+170%</span>
+            </div>
+            <div class="data-card-row">
+              <span class="data-label">可恢复时间目标</span>
+              <span class="data-value">≤4小时</span>
+            </div>
+            <div class="data-card-row">
+              <span class="data-label">备份验证频率</span>
+              <span class="data-value">每月1次</span>
+            </div>
           </div>
-          <div class="content" style="margin-top:2rem;padding-top:2rem;border-top:1px solid var(--line);">
-            ${contentHtml}
+          <div class="obj-block error" style="margin-top: var(--space-lg);">
+            <div class="obj-label">✕ 错误示范</div>
+            <div class="obj-content">"我的文件都在云端，很安全"——云同步是双向镜像，误删或勒索加密后云端同步消失，且账号被接管 = 备份入口沦陷。</div>
           </div>
         </div>
-      `;
-    }
+      </div>
+    </section>
 
-    loadNode();
+    <!-- D2: 核心原则 -->
+    <section class="content-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-id">D2</span>
+        <span class="dim-tag">模型</span>
+      </div>
+      <h2 class="chapter-heading">3-2-1-0 规则</h2>
+      <div class="grid-asymmetric">
+        <div class="main-content">
+          <p class="body-text">适配单人作战的备份法则。不是企业级方案，而是<strong>可执行到位的具体动作</strong>。</p>
+
+          <div class="list-item">
+            <div class="list-num">3</div>
+            <div>
+              <div class="list-title">三份总数据副本</div>
+              <div class="list-desc">1份日常使用 + 2份备份副本。关键：两份备份不可存入同一介质类型。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">2</div>
+            <div>
+              <div class="list-title">两种不同存储介质</div>
+              <div class="list-desc">本机外置固态硬盘 + 云端对象存储。或本地NAS + 云归档。避免单存储类型灾难性故障。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">1</div>
+            <div>
+              <div class="list-title">一份异地离线隔离副本</div>
+              <div class="list-desc">这是对抗勒索软件的实战关键。不可变快照、离线硬盘或启用对象锁定的云存储。备份盘直接挂载系统 = 勒索也会循路径感染。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">0</div>
+            <div>
+              <div class="list-title">零个未验证的静默错误</div>
+              <div class="list-desc">一份从未被验证可恢复的备份 = 占用空间的未知文件。使用带哈希校验的备份工具 + 定期自动试恢复。</div>
+            </div>
+          </div>
+        </div>
+        <div class="side-content">
+          <div class="obj-block success">
+            <div class="obj-label">✓ 正确示范</div>
+            <div class="obj-content">主设备工作 → 本地外置硬盘定时备份 → 云端冷存储自动加密上传。每月花10分钟检查一次。设置后即忘，自动化执行。</div>
+          </div>
+          <div class="obj-block data" style="margin-top: var(--space-lg);">
+            <div class="obj-label">◑ 数据洞察</div>
+            <div class="obj-content">2026年Backblaze等工具已内嵌AI异常检测——当监测到大规模文件扩展名异常变更时，自动挂起备份任务并告警，阻断勒索感染扩散至云端。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- D3: 工具选型 -->
+    <section class="content-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-id">D3</span>
+        <span class="dim-tag">培育</span>
+      </div>
+      <h2 class="chapter-heading">工具选型</h2>
+      <div class="grid-asymmetric">
+        <div class="main-content">
+          <p class="body-text">一人公司不需要复杂方案，要的是<strong>"设置后即忘"的智能工具</strong>。</p>
+
+          <div class="list-item">
+            <div class="list-num">01</div>
+            <div>
+              <div class="list-title">Backblaze Personal</div>
+              <div class="list-desc">固定年费单机无限备份，安装后自动运行。AI异常检测在勒索大批量加密时自动暂停任务。年费约$99。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">02</div>
+            <div>
+              <div class="list-title">macOS: Arq + Time Machine</div>
+              <div class="list-desc">Arq软件搭配Google Drive或OneDrive空间，自动加密增量上传。本地Time Machine做快照。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">03</div>
+            <div>
+              <div class="list-title">Windows: Veeam Agent免费版</div>
+              <div class="list-desc">系统级备份，代码和文档实时备份至个人Microsoft 365账户。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">04</div>
+            <div>
+              <div class="list-title">技术型: Restic / Kopia</div>
+              <div class="list-desc">开源自托管，对接Wasabi、Cloudflare R2等S3兼容冷存储。增量备份，带哈希校验。</div>
+            </div>
+          </div>
+        </div>
+        <div class="side-content">
+          <div class="data-card">
+            <div class="data-card-row">
+              <span class="data-label">选择标准</span>
+              <span class="data-value">端到端加密</span>
+            </div>
+            <div class="data-card-row">
+              <span class="data-label">增量备份</span>
+              <span class="data-value">自动</span>
+            </div>
+            <div class="data-card-row">
+              <span class="data-label">恢复验证提醒</span>
+              <span class="data-value">有</span>
+            </div>
+          </div>
+          <div class="core-insight" style="margin-top: var(--space-lg);">
+            <p class="core-insight-text"><strong>核心原则</strong>：同步盘是便利工具，版本快照才是保全底线。OneDrive/Google Drive必须配合独立备份层使用。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- D4: 避坑 -->
+    <section class="content-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-id">D4</span>
+        <span class="dim-tag">避坑</span>
+      </div>
+      <h2 class="chapter-heading">四大致命误区</h2>
+      <div class="grid-asymmetric">
+        <div class="main-content">
+          <div class="obj-block error">
+            <div class="obj-label">✕ 误区一：云端=安全</div>
+            <div class="obj-content">云同步是双向镜像，你删他也删，你被加密他也同步消失。账号被盗 = 备份入口沦陷。需要独立的备份层和硬件2FA。</div>
+          </div>
+
+          <div class="obj-block error">
+            <div class="obj-label">✕ 误区二：备份=完成</div>
+            <div class="obj-content">"备份完成"和"能成功恢复"之间有巨大鸿沟。静默数据损坏、密钥丢失、版本不兼容——都是坑。每月必须验证一次。</div>
+          </div>
+
+          <div class="obj-block error">
+            <div class="obj-label">✕ 误区三：备份盘直连系统</div>
+            <div class="obj-content">如果备份盘始终挂载为Z盘，勒索软件加密文件时会一并感染。隔离备份必须是物理断开或不可变存储。</div>
+          </div>
+
+          <div class="obj-block error">
+            <div class="obj-label">✕ 误区四：只依赖手机验证码</div>
+            <div class="obj-content">SIM交换攻击可绕过短信验证。备份账号必须使用硬件安全密钥(YubiKey)或通行密钥(Passkey)。</div>
+          </div>
+        </div>
+        <div class="side-content">
+          <div class="obj-block success">
+            <div class="obj-label">✓ 正确认知</div>
+            <div class="obj-content">备份的本质是建立一份<strong>与当前操作隔离、不可被实时修改</strong>的副本。这是在云端时代依然需要自己掌控的最后防线。</div>
+          </div>
+          <div class="data-card" style="margin-top: var(--space-lg);">
+            <div class="data-card-row">
+              <span class="data-label">勒索攻击目标</span>
+              <span class="data-value">单人创业者</span>
+            </div>
+            <div class="data-card-row">
+              <span class="data-label">攻击原因</span>
+              <span class="data-value">支付意愿强</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- D5: 恢复演练 -->
+    <section class="content-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-id">D5</span>
+        <span class="dim-tag">培育</span>
+      </div>
+      <h2 class="chapter-heading">恢复即服务</h2>
+      <div class="grid-asymmetric">
+        <div class="main-content">
+          <p class="body-text"><strong>备份不算完成，能恢复才算。</strong>必须建立可验证的恢复能力，而非堆积静默死档。</p>
+
+          <div class="quote-block">
+            <p class="quote-text">备份是成本，恢复才是资产。</p>
+          </div>
+
+          <p class="body-text"><strong>月度文件抽检</strong>（每月10分钟）：</p>
+          <ul class="checklist">
+            <li>随机抽取一个三天前的存档文件</li>
+            <li>执行一次无提示的独立还原</li>
+            <li>确认内容可读、结构完整、哈希一致</li>
+          </ul>
+
+          <p class="body-text"><strong>季度整机演练</strong>（每季度15分钟）：</p>
+          <ul class="checklist">
+            <li>用备用设备或虚拟机模拟"主设备彻底损毁"</li>
+            <li>从零开始依据恢复导航图重建核心业务环境</li>
+            <li>验证2小时内是否能恢复核心业务</li>
+          </ul>
+        </div>
+        <div class="side-content">
+          <div class="obj-block success">
+            <div class="obj-label">✓ 恢复导航图必备内容</div>
+            <div class="obj-content">
+              <ul style="list-style: none; padding: 0; margin: 0;">
+                <li style="padding: 4px 0; font-size: 13px; color: var(--text-secondary);">① 操作系统恢复途径</li>
+                <li style="padding: 4px 0; font-size: 13px; color: var(--text-secondary);">② BitLocker/FileVault恢复密钥</li>
+                <li style="padding: 4px 0; font-size: 13px; color: var(--text-secondary);">③ 备份集解密口令</li>
+                <li style="padding: 4px 0; font-size: 13px; color: var(--text-secondary);">④ 核心云端账户恢复码</li>
+                <li style="padding: 4px 0; font-size: 13px; color: var(--text-secondary);">⑤ 密码管理器紧急访问凭证</li>
+              </ul>
+            </div>
+          </div>
+          <div class="obj-block data" style="margin-top: var(--space-lg);">
+            <div class="obj-label">◑ 存放位置</div>
+            <div class="obj-content">存入云端密码管理器加密笔记区或打印后锁入保险柜。绝不能与生产环境共存。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- D6: 决策框架 -->
+    <section class="content-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-id">D6</span>
+        <span class="dim-tag">决策</span>
+      </div>
+      <h2 class="chapter-heading">做 / 不做</h2>
+      <div class="balance-intro">
+        数据备份与恢复是OPC业务连续性的基石。<strong>做</strong>则灾难可控，<strong>不做</strong>则一次攻击致命。
+      </div>
+      <div class="balance-grid">
+        <div class="balance-card">
+          <div class="balance-card-label positive">✓ 做</div>
+          <div class="balance-item">采用3-2-1-0备份规则</div>
+          <div class="balance-item">至少1份离线隔离备份</div>
+          <div class="balance-item">使用不可变存储(对象锁定)</div>
+          <div class="balance-item">备份账号启用硬件2FA</div>
+          <div class="balance-item">每月执行文件级恢复验证</div>
+          <div class="balance-item">每季度执行整机演练</div>
+          <div class="balance-item">恢复导航图离线保存</div>
+        </div>
+        <div class="balance-card">
+          <div class="balance-card-label negative">✕ 不做</div>
+          <div class="balance-item">仅依赖云同步(OneDrive/iCloud)</div>
+          <div class="balance-item">备份盘始终挂载系统</div>
+          <div class="balance-item">只备份从不验证</div>
+          <div class="balance-item">只用短信验证码保护备份账号</div>
+          <div class="balance-item">所有设备使用同一密码</div>
+          <div class="balance-item">恢复导航图存放在线文档</div>
+          <div class="balance-item">忽视AI生成内容的备份</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FIN -->
+    <section class="content-section fade-section">
+      <div class="section-label">财务健康指标</div>
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="summary-num">$99</div>
+          <div class="summary-title">年备份成本</div>
+          <div class="summary-desc">Backblaze单机无限备份，AI防护勒索</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num">2小时</div>
+          <div class="summary-title">恢复时间目标</div>
+          <div class="summary-desc">新设备上重建核心业务环境</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num">3份</div>
+          <div class="summary-title">备份副本</div>
+          <div class="summary-desc">本地+云端+离线隔离</div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer-nav">
+      <a href="/nodes/29-business-email/index.html" class="nav-link">
+        <span class="nav-arrow">←</span>
+        节点29：企业邮箱搭建
+      </a>
+      <a href="/nodes/31-server-security/index.html" class="nav-link">
+        节点31：服务器安全防护
+        <span class="nav-arrow">→</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
   </script>
 </body>
 </html>

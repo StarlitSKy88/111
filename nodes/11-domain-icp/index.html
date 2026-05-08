@@ -7,101 +7,481 @@
   <meta name="theme-color" content="#111110">
   <title>域名购买与ICP备案 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #111110;
-      --surface: #1A1A18;
-      --text-primary: #F0EDE6;
-      --text-secondary: #7A7670;
-      --accent: #C0392B;
-      --line: #2A2A28;
-    }
-    body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; }
-    .loading { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-    .loading-bar { width: 100%; height: 1px; background: var(--line); position: relative; overflow: hidden; max-width: 200px; }
-    .loading-bar::after { content: ''; position: absolute; left: -50%; top: 0; width: 50%; height: 100%; background: var(--accent); animation: loading-slide 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite; }
-    @keyframes loading-slide { from { left: -50%; } to { left: 100%; } }
-    .content h1 { font-size: 1.75rem; font-weight: 300; margin-bottom: 1rem; }
-    .content h2 { font-size: 1.25rem; font-weight: 400; margin: 1.5rem 0 0.75rem; color: var(--text-primary); }
-    .content h3 { font-size: 1rem; font-weight: 500; margin: 1.25rem 0 0.5rem; color: var(--text-primary); }
-    .content p { line-height: 1.9; margin-bottom: 1rem; color: var(--text-secondary); }
-    .content ul, .content ol { margin: 1rem 0; padding-left: 1.5rem; color: var(--text-secondary); }
-    .content li { line-height: 1.8; margin-bottom: 0.5rem; }
-    .content strong { color: var(--text-primary); font-weight: 500; }
-    .content code { background: var(--surface); padding: 0.125rem 0.375rem; border-radius: 0.25rem; font-size: 0.875rem; }
-    .content pre { background: var(--surface); padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin: 1rem 0; }
-    .content pre code { background: none; padding: 0; }
-    .content blockquote { border-left: 3px solid var(--accent); padding-left: 1rem; margin: 1rem 0; color: var(--text-secondary); font-style: italic; }
-    .content hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
-    .content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-    .content th, .content td { border: 1px solid var(--line); padding: 0.75rem; text-align: left; }
-    .content th { background: var(--surface); color: var(--text-primary); }
-    .content td { color: var(--text-secondary); }
-    .content a { color: var(--accent); text-decoration: underline; }
-    .content input[type="checkbox"] { margin-right: 0.5rem; }
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #7A7670;
+  --text-tertiary: #A8A49E;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; font-weight: 400; line-height: 1.9; letter-spacing: 0.04em; -webkit-font-smoothing: antialiased; }
+
+.page { position: relative; max-width: 1200px; margin: 0 auto; padding: 0 clamp(24px, 8vw, 120px); min-height: 100vh; }
+.page::before { content: ''; position: absolute; top: 0; left: clamp(24px, 8vw, 120px); right: clamp(24px, 8vw, 120px); height: 1px; background: var(--line); }
+
+.section-number { position: absolute; top: var(--space-2xl); right: clamp(24px, 8vw, 120px); font-size: clamp(100px, 22vw, 280px); font-weight: 100; color: var(--text-primary); opacity: 0.03; line-height: 1; letter-spacing: -0.05em; font-family: 'Noto Serif JP', serif; pointer-events: none; user-select: none; }
+
+.back-link { position: fixed; top: var(--space-xl); left: clamp(24px, 8vw, 120px); z-index: 100; }
+.back-link a { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: color 0.3s ease; }
+.back-link a:hover { color: var(--text-primary); }
+
+.hero { padding: var(--space-4xl) 0 var(--space-3xl); position: relative; }
+.hero-content { position: relative; z-index: 1; max-width: 800px; }
+.hero-label { font-size: 13px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-md); }
+.hero-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+.hero-title { font-family: 'Noto Serif JP', serif; font-size: clamp(48px, 10vw, 96px); font-weight: 300; letter-spacing: -0.03em; line-height: 0.95; margin-bottom: var(--space-xl); }
+.hero-desc { font-size: 16px; color: var(--text-secondary); line-height: 1.8; max-width: 44ch; }
+
+/* 时间线容器 */
+.timeline-container { padding: var(--space-3xl) 0; border-top: 1px solid var(--line); }
+.timeline-header { margin-bottom: var(--space-2xl); }
+.timeline-label { font-size: 13px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-md); display: flex; align-items: center; gap: var(--space-md); }
+.timeline-label::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+.timeline-title { font-family: 'Noto Serif JP', serif; font-size: clamp(24px, 4vw, 36px); font-weight: 300; letter-spacing: -0.02em; }
+
+/* 主时间线 */
+.timeline-main { position: relative; padding-left: var(--space-2xl); border-left: 1px solid var(--line); margin-left: 8px; }
+.timeline-item { position: relative; padding-bottom: var(--space-3xl); }
+.timeline-item:last-child { padding-bottom: 0; }
+.timeline-item::before { content: ''; position: absolute; left: calc(-1 * var(--space-2xl) - 1px); top: 8px; width: 9px; height: 9px; background: var(--accent); transform: translateX(-50%) rotate(45deg); }
+.timeline-item::after { content: ''; position: absolute; left: calc(-1 * var(--space-2xl) - 1px); top: 20px; bottom: 0; width: 1px; background: var(--line); }
+.timeline-item:last-child::after { display: none; }
+
+/* 时间标签 */
+.time-badge { display: inline-flex; align-items: baseline; gap: 6px; margin-bottom: var(--space-md); }
+.time-number { font-family: 'Noto Serif JP', serif; font-size: 36px; font-weight: 300; color: var(--accent); line-height: 1; }
+.time-unit { font-size: 12px; color: var(--text-tertiary); letter-spacing: 0.1em; text-transform: uppercase; }
+.time-title { font-family: 'Noto Serif JP', serif; font-size: 20px; font-weight: 400; margin-bottom: var(--space-md); }
+
+/* 卡片网格 */
+.card-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: var(--space-md); }
+@media (max-width: 768px) { .card-grid { grid-template-columns: 1fr; } }
+.info-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-md); position: relative; }
+.info-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; }
+.info-card.red::before { background: var(--accent); }
+.info-card.green::before { background: var(--accent); }
+.info-card.muted::before { background: var(--text-tertiary); }
+.card-tag { font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-xs); }
+.info-card.red .card-tag { color: var(--accent); }
+.info-card.green .card-tag { color: var(--accent); }
+.info-card.muted .card-tag { color: var(--text-tertiary); }
+.card-title { font-size: 14px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-xs); }
+.card-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+/* 合规要点 */
+.compliance-section { padding: var(--space-3xl) 0; border-top: 1px solid var(--line); }
+.section-header { display: flex; align-items: baseline; gap: var(--space-md); margin-bottom: var(--space-xl); }
+.section-num { font-family: 'Noto Serif JP', serif; font-size: 48px; font-weight: 300; color: var(--accent); opacity: 0.5; line-height: 1; }
+.section-title { font-family: 'Noto Serif JP', serif; font-size: clamp(24px, 4vw, 36px); font-weight: 300; letter-spacing: -0.02em; }
+
+/* 单列内容 */
+.content-single { max-width: 720px; }
+.attention-box { background: rgba(192, 57, 43, 0.08); border: 1px solid var(--accent); padding: var(--space-lg); margin: var(--space-xl) 0; }
+.attention-label { font-size: 12px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-sm); }
+.attention-text { font-size: 15px; color: var(--text-primary); line-height: 1.7; }
+
+/* 清单表格 */
+.checklist-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: var(--space-lg) 0; }
+.checklist-table th { text-align: left; color: var(--text-tertiary); font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; padding: var(--space-sm); border-bottom: 1px solid var(--line); font-size: 12px; }
+.checklist-table td { padding: var(--space-sm); border-bottom: 1px solid var(--line-light); color: var(--text-secondary); }
+.checklist-table td:first-child { color: var(--text-primary); font-weight: 500; width: 35%; }
+.checklist-table td:last-child { color: var(--text-tertiary); }
+
+/* 三位一体强调 */
+.identity-banner { background: var(--surface); border: 1px solid var(--line); padding: var(--space-xl); margin: var(--space-2xl) 0; text-align: center; position: relative; overflow: hidden; }
+.identity-banner::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent); }
+.identity-label { font-size: 12px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-md); }
+.identity-text { font-family: 'Noto Serif JP', serif; font-size: clamp(24px, 5vw, 42px); font-weight: 300; letter-spacing: -0.02em; line-height: 1.2; }
+.identity-text span { color: var(--accent); }
+.identity-sub { font-size: 13px; color: var(--text-tertiary); margin-top: var(--space-md); }
+
+/* 流程图 */
+.process-flow { display: flex; align-items: center; justify-content: center; gap: var(--space-md); margin: var(--space-xl) 0; flex-wrap: wrap; }
+.process-step { background: var(--surface); border: 1px solid var(--line); padding: var(--space-md) var(--space-lg); text-align: center; }
+.process-step-num { font-size: 12px; color: var(--text-tertiary); letter-spacing: 0.1em; margin-bottom: var(--space-xs); }
+.process-step-text { font-size: 14px; color: var(--text-primary); font-weight: 500; }
+.process-arrow { color: var(--text-tertiary); font-size: 20px; }
+
+/* 底部导航 */
+.footer-nav { padding: var(--space-2xl) 0; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
+.nav-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: color 0.3s ease; }
+.nav-link:hover { color: var(--text-primary); }
+.nav-arrow { font-size: 0.75rem; }
+
+.fade-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.fade-section.visible { opacity: 1; transform: translateY(0); }
+* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
   </style>
 </head>
 <body>
-  <div id="app" data-slug="domain-icp">
-    <div class="loading">
-      <div class="loading-bar"></div>
-    </div>
+  <div class="back-link">
+    <a href="/"><span>←</span> 返回首页</a>
   </div>
-  <script type="module">
-    const SLUG = "domain-icp";
+  <div class="section-number">11</div>
 
-    async function loadNode() {
-      try {
-        const res = await fetch("/api/nodes/" + SLUG);
-        if (!res.ok) throw new Error("Failed to load");
-        const data = await res.json();
-        renderNode(data);
-      } catch (e) {
-        document.getElementById("app").innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text-secondary)">加载失败</div>';
-      }
-    }
+  <div class="page">
+    <header class="hero fade-section">
+      <div class="hero-content">
+        <div class="hero-label">节点 11 · 0-1</div>
+        <h1 class="hero-title">域名购买<br>与ICP备案</h1>
+        <p class="hero-desc">域名持有者、备案主体、网站运营者必须三位一体。2026年的监管已不容任何灰色地带。</p>
+      </div>
+    </header>
 
-    function mdToHtml(md) {
-      if (!md) return '<p style="color:var(--text-secondary)">内容加载中...</p>';
-      let html = md
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/^### (.+)$/gm, "<h3>$1</h3>")
-        .replace(/^## (.+)$/gm, "<h2>$1</h2>")
-        .replace(/^# (.+)$/gm, "<h1>$1</h1>")
-        .replace(/**(.+?)**/g, "<strong>$1</strong>")
-        .replace(/^- (.+)$/gm, "<li>$1</li>")
-        .replace(/^\[ \] (.+)$/gm, "<div><input type="checkbox" disabled> $1</div>")
-        .replace(/^\[x\] (.+)$/gm, "<div><input type="checkbox" checked disabled> $1</div>")
-        .replace(/^\d+\. (.+)$/gm, "<li>$1</li>")
-        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
-        .replace(/^(?!<[a-z])(.+)$/gm, "<p>$1</p>")
-        .replace(/\n\n+/g, "\n");
-      html = html.replace(/(<li>.*<\/li>\n?)+/g, "<ul>$&</ul>");
-      return html;
-    }
+    <!-- 三位一体核心原则 -->
+    <section class="fade-section">
+      <div class="identity-banner">
+        <div class="identity-label">核心原则</div>
+        <div class="identity-text">域名持有者 <span>=</span> 备案主体 <span>=</span> 公司全称</div>
+        <div class="identity-sub">三位必须严格对应营业执照，任何偏差都会被管局数据比对拦截</div>
+      </div>
+    </section>
 
-    function renderNode(node) {
-      const content = node.content || "";
-      const contentHtml = mdToHtml(content);
-      document.getElementById("app").innerHTML = `
-        <div style="max-width:800px;margin:0 auto;padding:2rem 1.25rem;">
-          <a href="/" style="color:var(--text-secondary);font-size:0.75rem;letter-spacing:0.1em;text-decoration:none;">← 返回首页</a>
-          <div style="margin-top:2rem;">
-            <div style="color:var(--accent);font-size:0.625rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;">${node.data?.category || ""} · ${node.data?.difficulty || ""}</div>
-            <h1 style="font-size:clamp(1.5rem,5vw,2.5rem);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;">${node.data?.title || ""}</h1>
-            <p style="color:var(--text-secondary);line-height:1.9;">${node.data?.summary || ""}</p>
+    <!-- 时间线：域名注册 -->
+    <section class="timeline-container fade-section">
+      <div class="timeline-header">
+        <div class="timeline-label">阶段一 · 域名注册</div>
+        <h2 class="timeline-title">5天内必须完成企业实名认证</h2>
+      </div>
+
+      <div class="timeline-main">
+        <div class="timeline-item">
+          <div class="time-badge">
+            <span class="time-number">5</span>
+            <span class="time-unit">天 · 硬性时限</span>
           </div>
-          <div class="content" style="margin-top:2rem;padding-top:2rem;border-top:1px solid var(--line);">
-            ${contentHtml}
+          <h3 class="time-title">域名实名认证截止</h3>
+          <div class="card-grid">
+            <div class="info-card muted">
+              <div class="card-tag">持有者要求</div>
+              <div class="card-title">必须与营业执照公司全称完全一致</div>
+              <div class="card-desc">不得添加、删减或改写任何字。"有限公司"不能写成"有限责任公司"。</div>
+            </div>
+            <div class="info-card muted">
+              <div class="card-tag">注册渠道</div>
+              <div class="card-title">阿里云 / 腾讯云 / 华为云</div>
+              <div class="card-desc">选择同时持有ICANN国际授权与工信部国内许可的注册商。</div>
+            </div>
+            <div class="info-card red">
+              <div class="card-tag">错误</div>
+              <div class="card-title">先以个人身份注册，后过户给公司</div>
+              <div class="card-desc">过户记录会显示主体变更，部分管局视为不稳定状态。</div>
+            </div>
+            <div class="info-card green">
+              <div class="card-tag">正确</div>
+              <div class="card-title">执照到手当天，以公司全称注册</div>
+              <div class="card-desc">一次性完成购买+实名+备案准备。不留任何变更风险。</div>
+            </div>
           </div>
         </div>
-      `;
-    }
+      </div>
 
-    loadNode();
+      <div class="process-flow">
+        <div class="process-step">
+          <div class="process-step-num">STEP 1</div>
+          <div class="process-step-text">取得营业执照</div>
+        </div>
+        <span class="process-arrow">→</span>
+        <div class="process-step">
+          <div class="process-step-num">STEP 2</div>
+          <div class="process-step-text">以公司全称注册域名</div>
+        </div>
+        <span class="process-arrow">→</span>
+        <div class="process-step">
+          <div class="process-step-num">STEP 3</div>
+          <div class="process-step-text">5天内完成企业实名</div>
+        </div>
+      </div>
+
+      <div class="attention-box">
+        <div class="attention-label">超时后果</div>
+        <div class="attention-text">超期未完成，注册局强制设为 Serverhold，停止解析和访问。这5天是硬性时限，没有申诉空间。</div>
+      </div>
+    </section>
+
+    <!-- 时间线：备案材料 -->
+    <section class="timeline-container fade-section">
+      <div class="timeline-header">
+        <div class="timeline-label">阶段二 · 备案材料</div>
+        <h2 class="timeline-title">2026年清单与新增合规承诺书</h2>
+      </div>
+
+      <div class="timeline-main">
+        <div class="timeline-item">
+          <div class="time-badge">
+            <span class="time-number">1</span>
+            <span class="time-unit">次 · 完整性</span>
+          </div>
+          <h3 class="time-title">材料一次性准备齐全</h3>
+          <div class="card-grid">
+            <div class="info-card muted">
+              <div class="card-tag">必备材料</div>
+              <div class="card-title">营业执照 + 身份证 + 域名证书</div>
+              <div class="card-desc">营业执照彩色扫描件（确保年报已公示）。法定代表人身份证正反面（有效期内）。</div>
+            </div>
+            <div class="info-card muted">
+              <div class="card-tag">真实性核验</div>
+              <div class="card-title">电子签署核验单</div>
+              <div class="card-desc">电子签署《网站备案信息真实性核验单》。部分省份仍要求打印后盖章扫描。</div>
+            </div>
+            <div class="info-card muted">
+              <div class="card-tag">2026年新增</div>
+              <div class="card-title">《网站内容合规承诺书》</div>
+              <div class="card-desc">必须加盖公司鲜章后扫描上传。具有法律效力。</div>
+            </div>
+            <div class="info-card muted">
+              <div class="card-tag">人脸核验</div>
+              <div class="card-title">动态活体检测</div>
+              <div class="card-desc">通过接入商APP完成实时活体检测。不可沿用历史记录。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-grid" style="margin-top: var(--space-lg);">
+        <div class="info-card red">
+          <div class="card-tag">错误</div>
+          <div class="card-title">用过期营业执照或未公示年报的执照</div>
+          <div class="card-desc">系统会自动比对工商数据年报状态。未公示年报的执照会被直接退回。</div>
+        </div>
+        <div class="info-card green">
+          <div class="card-tag">正确</div>
+          <div class="card-title">先确认年报已公示，再提交备案</div>
+          <div class="card-desc">登录国家企业信用信息公示系统确认年报状态。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 时间线：备案流程 -->
+    <section class="timeline-container fade-section">
+      <div class="timeline-header">
+        <div class="timeline-label">阶段三 · 备案审核</div>
+        <h2 class="timeline-title">8-15个工作日的等待</h2>
+      </div>
+
+      <div class="timeline-main">
+        <div class="timeline-item">
+          <div class="time-badge">
+            <span class="time-number">8-15</span>
+            <span class="time-unit">工作日 · 整体周期</span>
+          </div>
+          <h3 class="time-title">从提交到备案号下发</h3>
+          <div class="card-grid">
+            <div class="info-card muted">
+              <div class="card-tag">接入商初审</div>
+              <div class="card-title">1-2个工作日</div>
+              <div class="card-desc">提交材料后1-2个工作日内收到初审结果。材料有问题会退回补充。</div>
+            </div>
+            <div class="info-card muted">
+              <div class="card-tag">管局终审</div>
+              <div class="card-title">7-10个工作日</div>
+              <div class="card-desc">流转至所在省通信管理局。可能电话抽查询问法人身份、网站名称、用途。</div>
+            </div>
+            <div class="info-card red">
+              <div class="card-tag">禁止</div>
+              <div class="card-title">备案期间让网站对中国用户开放</div>
+              <div class="card-desc">备案审核中域名不能解析至国内服务器。接入商监测到会立即阻断。</div>
+            </div>
+            <div class="info-card green">
+              <div class="card-tag">正确</div>
+              <div class="card-title">先做内部测试，备案通过后再上线</div>
+              <div class="card-desc">备案等待期间，用境外服务器或内网测试。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 48小时黄金窗口 -->
+    <section class="compliance-section fade-section">
+      <div class="section-header">
+        <span class="section-num">48h</span>
+        <h2 class="section-title">备案通过后的黄金窗口</h2>
+      </div>
+
+      <div class="content-single">
+        <div class="attention-box" style="margin-top: 0;">
+          <div class="attention-label">必须立即完成</div>
+          <div class="attention-text">48小时内必须完成以下三件事，否则接入商有权直接断开服务器访问。</div>
+        </div>
+
+        <table class="checklist-table">
+          <thead>
+            <tr>
+              <th>事项</th>
+              <th>说明</th>
+              <th>截止</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>备案号链接</td>
+              <td>备案号必须链接至工信部备案查询系统（可点击跳转）</td>
+              <td>48小时</td>
+            </tr>
+            <tr>
+              <td>隐私政策页面</td>
+              <td>隐私政策页面必须可访问，结合网站实际情况撰写</td>
+              <td>48小时</td>
+            </tr>
+            <tr>
+              <td>公安联网备案</td>
+              <td>登录全国公安机关互联网站安全服务平台完成备案</td>
+              <td>30日</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 备案 vs 经营许可证 -->
+    <section class="compliance-section fade-section">
+      <div class="section-header">
+        <span class="section-num">ICP</span>
+        <h2 class="section-title">备案与经营许可证的区别</h2>
+      </div>
+
+      <div class="content-single">
+        <div class="card-grid">
+          <div class="info-card muted">
+            <div class="card-tag">ICP备案</div>
+            <div class="card-title">非经营性互联网信息服务</div>
+            <div class="card-desc">几乎所有境内非经营性网站都必须做。属于告知性登记。官网、展示型页面只需备案。</div>
+          </div>
+          <div class="info-card muted">
+            <div class="card-tag">ICP经营许可证</div>
+            <div class="card-title">经营性互联网信息服务</div>
+            <div class="card-desc">涉及在线收费行为需要申请：商品交易、会员充值、付费订阅、广告分成、虚拟商品交易、SaaS订阅等。</div>
+          </div>
+        </div>
+
+        <div class="attention-box">
+          <div class="attention-label">2026年新动态</div>
+          <div class="attention-text">"经营性"认定范围已扩大：在线教育内容付费、虚拟商品交易、AI工具订阅等新场景已明确纳入经营许可管理范畴。</div>
+        </div>
+
+        <div class="card-grid">
+          <div class="info-card red">
+            <div class="card-tag">错误</div>
+            <div class="card-title">"我只收一点点钱，不用办许可证"</div>
+            <div class="card-desc">2026年监管已明确扩大"经营性"认定范围。无证经营会被责令关停并处罚款。</div>
+          </div>
+          <div class="info-card green">
+            <div class="card-tag">正确</div>
+            <div class="card-title">规划业务模式时，同步确认资质需求</div>
+            <div class="card-desc">有收费功能就提前申请，不要等上线后被查处。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 主体唯一性 -->
+    <section class="compliance-section fade-section">
+      <div class="section-header">
+        <span class="section-num">1:1</span>
+        <h2 class="section-title">主体唯一性原则</h2>
+      </div>
+
+      <div class="content-single">
+        <div class="info-card muted" style="margin-bottom: var(--space-lg);">
+          <div class="card-tag">约束</div>
+          <div class="card-title">一个自然人只能为一个备案主体负责</div>
+          <div class="card-desc">系统会自动与工商数据交叉比对。如果你以法人身份为一公司备案，就不能再为其他公司担任备案主体负责人。两家公司的备案都将被挂起核查。</div>
+        </div>
+
+        <div class="card-grid">
+          <div class="info-card muted">
+            <div class="card-tag">网站命名</div>
+            <div class="card-title">必须与公司经营范围和品牌有关联</div>
+            <div class="card-desc">不得含"中国""中华""全国""国家"等字眼。不得与公司名称毫无关联。</div>
+          </div>
+          <div class="info-card muted">
+            <div class="card-tag">AI内容标识</div>
+            <div class="card-title">必须显著标识AI生成内容</div>
+            <div class="card-desc">网站大量使用AI生成内容，必须在显著位置标注"本网站部分内容由AI生成"。</div>
+          </div>
+        </div>
+
+        <div class="attention-box">
+          <div class="attention-label">内容红线</div>
+          <div class="attention-text">新闻、出版、教育、医疗、药品、医疗器械、财经、区块链等 → 需要行业主管部门前置审批。一人公司无资质，不应发布此类内容。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 年度维护 -->
+    <section class="compliance-section fade-section">
+      <div class="section-header">
+        <span class="section-num">∞</span>
+        <h2 class="section-title">备案后年度维护</h2>
+      </div>
+
+      <div class="content-single">
+        <table class="checklist-table">
+          <thead>
+            <tr>
+              <th>事项</th>
+              <th>周期</th>
+              <th>说明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>备案信息更新</td>
+              <td>10个工作日内</td>
+              <td>营业执照信息变更、联系方式改动、法定代表人更换等</td>
+            </tr>
+            <tr>
+              <td>备案状态复核</td>
+              <td>每年</td>
+              <td>备案号是否正常、链接是否可访问、隐私政策是否更新</td>
+            </tr>
+            <tr>
+              <td>公安联网备案</td>
+              <td>年度</td>
+              <td>每年定期确认公网安备号有效</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="footer-nav fade-section">
+      <a href="/nodes/10-tax-invoice/index.html" class="nav-link">
+        <span class="nav-arrow">←</span>
+        节点10：税务报到与发票管理
+      </a>
+      <a href="/nodes/12-website-deployment/index.html" class="nav-link">
+        节点12：网站部署与SSL
+        <span class="nav-arrow">→</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
   </script>
 </body>
 </html>

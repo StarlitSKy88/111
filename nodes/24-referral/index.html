@@ -7,101 +7,844 @@
   <meta name="theme-color" content="#111110">
   <title>用户转介绍机制 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #111110;
-      --surface: #1A1A18;
-      --text-primary: #F0EDE6;
-      --text-secondary: #7A7670;
-      --accent: #C0392B;
-      --line: #2A2A28;
-    }
-    body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; }
-    .loading { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-    .loading-bar { width: 100%; height: 1px; background: var(--line); position: relative; overflow: hidden; max-width: 200px; }
-    .loading-bar::after { content: ''; position: absolute; left: -50%; top: 0; width: 50%; height: 100%; background: var(--accent); animation: loading-slide 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite; }
-    @keyframes loading-slide { from { left: -50%; } to { left: 100%; } }
-    .content h1 { font-size: 1.75rem; font-weight: 300; margin-bottom: 1rem; }
-    .content h2 { font-size: 1.25rem; font-weight: 400; margin: 1.5rem 0 0.75rem; color: var(--text-primary); }
-    .content h3 { font-size: 1rem; font-weight: 500; margin: 1.25rem 0 0.5rem; color: var(--text-primary); }
-    .content p { line-height: 1.9; margin-bottom: 1rem; color: var(--text-secondary); }
-    .content ul, .content ol { margin: 1rem 0; padding-left: 1.5rem; color: var(--text-secondary); }
-    .content li { line-height: 1.8; margin-bottom: 0.5rem; }
-    .content strong { color: var(--text-primary); font-weight: 500; }
-    .content code { background: var(--surface); padding: 0.125rem 0.375rem; border-radius: 0.25rem; font-size: 0.875rem; }
-    .content pre { background: var(--surface); padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin: 1rem 0; }
-    .content pre code { background: none; padding: 0; }
-    .content blockquote { border-left: 3px solid var(--accent); padding-left: 1rem; margin: 1rem 0; color: var(--text-secondary); font-style: italic; }
-    .content hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
-    .content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-    .content th, .content td { border: 1px solid var(--line); padding: 0.75rem; text-align: left; }
-    .content th { background: var(--surface); color: var(--text-primary); }
-    .content td { color: var(--text-secondary); }
-    .content a { color: var(--accent); text-decoration: underline; }
-    .content input[type="checkbox"] { margin-right: 0.5rem; }
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #B8B4AE;
+  --text-tertiary: #A8A49E;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 400;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 8vw, 120px);
+  min-height: 100vh;
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: clamp(24px, 8vw, 120px);
+  right: clamp(24px, 8vw, 120px);
+  height: 1px;
+  background: var(--line);
+}
+
+.section-number {
+  position: absolute;
+  top: var(--space-2xl);
+  right: clamp(24px, 8vw, 120px);
+  font-size: clamp(100px, 22vw, 280px);
+  font-weight: 100;
+  color: var(--text-primary);
+  opacity: 0.03;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-family: 'Noto Serif JP', serif;
+  pointer-events: none;
+  user-select: none;
+}
+
+.back-link {
+  position: fixed;
+  top: var(--space-xl);
+  left: clamp(24px, 8vw, 120px);
+  z-index: 100;
+}
+
+.back-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.back-link a:hover { color: var(--text-primary); }
+
+.hero {
+  padding: var(--space-4xl) 0 var(--space-3xl);
+  position: relative;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+}
+
+.hero-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.hero-label::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.hero-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  margin-bottom: var(--space-xl);
+}
+
+.hero-desc {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 44ch;
+}
+
+.content-section {
+  padding: var(--space-3xl) 0;
+  border-top: 1px solid var(--line);
+}
+
+.section-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.section-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.dimension-block {
+  margin-bottom: var(--space-3xl);
+}
+
+.dimension-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.dimension-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+.dimension-tag {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+}
+
+.dimension-question {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xl);
+  max-width: 18em;
+}
+
+.grid-asymmetric {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-3xl);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .grid-asymmetric {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+}
+
+.answer-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-md);
+}
+
+.answer-label {
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+}
+
+.answer-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.answer-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.objection-block {
+  padding: var(--space-lg);
+  margin-bottom: var(--space-md);
+  border-left: 1px solid;
+}
+
+.objection-block.error {
+  background: rgba(192, 57, 43, 0.08);
+  border-color: var(--accent);
+}
+
+.objection-block.success {
+  background: rgba(39, 174, 96, 0.08);
+  border-color: var(--accent);
+}
+
+.objection-block.data {
+  background: rgba(41, 128, 185, 0.08);
+  border-color: #2980b9;
+}
+
+.objection-label {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+}
+
+.objection-block.error .objection-label { color: var(--accent); }
+.objection-block.success .objection-label { color: var(--accent); }
+.objection-block.data .objection-label { color: #2980b9; }
+
+.objection-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.objection-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.chart-area {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+}
+
+.chart-title {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+}
+
+.core-insight {
+  margin: var(--space-xl) 0;
+  padding-left: var(--space-md);
+  border-left: 1px solid var(--accent);
+}
+
+.core-insight-text {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 40ch;
+}
+
+.balance-section-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-xl);
+}
+
+.balance-intro {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 46ch;
+  margin-bottom: var(--space-2xl);
+}
+
+.balance-intro strong { color: var(--text-primary); font-weight: 500; }
+
+.balance-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: var(--space-2xl);
+}
+
+@media (max-width: 768px) {
+  .balance-grid { grid-template-columns: 1fr; gap: var(--space-xl); }
+}
+
+.balance-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+}
+
+.balance-card-label {
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+}
+
+.balance-card-label.positive { color: var(--accent); }
+.balance-card-label.negative { color: var(--text-tertiary); }
+
+.balance-item {
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--line-light);
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.balance-item:last-child { border-bottom: none; }
+.balance-item.dim { color: var(--text-tertiary); }
+
+.fin-section {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-xl);
+  margin: var(--space-2xl) 0;
+}
+
+.fin-title {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.fin-title::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.fin-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1.2fr 0.8fr;
+  gap: var(--space-xl);
+}
+
+@media (max-width: 768px) {
+  .fin-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
+}
+
+.fin-item {
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--line);
+}
+
+.fin-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--accent);
+  margin-bottom: var(--space-xs);
+}
+
+.fin-label {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.footer-nav {
+  padding: var(--space-2xl) 0;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover { color: var(--text-primary); }
+.nav-arrow { font-size: 0.75rem; }
+
+.fade-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-section.visible { opacity: 1; transform: translateY(0); }
+
+* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
   </style>
 </head>
 <body>
-  <div id="app" data-slug="referral">
-    <div class="loading">
-      <div class="loading-bar"></div>
-    </div>
+  <div class="back-link">
+    <a href="/"><span>←</span> 返回首页</a>
   </div>
-  <script type="module">
-    const SLUG = "referral";
+  <div class="section-number">24</div>
 
-    async function loadNode() {
-      try {
-        const res = await fetch("/api/nodes/" + SLUG);
-        if (!res.ok) throw new Error("Failed to load");
-        const data = await res.json();
-        renderNode(data);
-      } catch (e) {
-        document.getElementById("app").innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text-secondary)">加载失败</div>';
-      }
-    }
+  <div class="page">
+    <header class="hero">
+      <div class="hero-content">
+        <div class="hero-label">节点 24 · 1-10</div>
+        <h1 class="hero-title">用户转介绍机制</h1>
+        <p class="hero-desc">推荐奖励、分销体系，产品口碑好复购率高时启动</p>
+      </div>
+    </header>
 
-    function mdToHtml(md) {
-      if (!md) return '<p style="color:var(--text-secondary)">内容加载中...</p>';
-      let html = md
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/^### (.+)$/gm, "<h3>$1</h3>")
-        .replace(/^## (.+)$/gm, "<h2>$1</h2>")
-        .replace(/^# (.+)$/gm, "<h1>$1</h1>")
-        .replace(/**(.+?)**/g, "<strong>$1</strong>")
-        .replace(/^- (.+)$/gm, "<li>$1</li>")
-        .replace(/^\[ \] (.+)$/gm, "<div><input type="checkbox" disabled> $1</div>")
-        .replace(/^\[x\] (.+)$/gm, "<div><input type="checkbox" checked disabled> $1</div>")
-        .replace(/^\d+\. (.+)$/gm, "<li>$1</li>")
-        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
-        .replace(/^(?!<[a-z])(.+)$/gm, "<p>$1</p>")
-        .replace(/\n\n+/g, "\n");
-      html = html.replace(/(<li>.*<\/li>\n?)+/g, "<ul>$&</ul>");
-      return html;
-    }
+    <!-- Dimension 1: 信任飞轮 -->
+    <section class="content-section fade-section">
+      <div class="dimension-block">
+        <div class="dimension-badge">
+          <span class="dimension-num">D1</span>
+          <span class="dimension-tag">本质</span>
+        </div>
+        <h2 class="dimension-question">转介绍的本质不是裂变，是精密的信任交接仪式</h2>
 
-    function renderNode(node) {
-      const content = node.content || "";
-      const contentHtml = mdToHtml(content);
-      document.getElementById("app").innerHTML = `
-        <div style="max-width:800px;margin:0 auto;padding:2rem 1.25rem;">
-          <a href="/" style="color:var(--text-secondary);font-size:0.75rem;letter-spacing:0.1em;text-decoration:none;">← 返回首页</a>
-          <div style="margin-top:2rem;">
-            <div style="color:var(--accent);font-size:0.625rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;">${node.data?.category || ""} · ${node.data?.difficulty || ""}</div>
-            <h1 style="font-size:clamp(1.5rem,5vw,2.5rem);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;">${node.data?.title || ""}</h1>
-            <p style="color:var(--text-secondary);line-height:1.9;">${node.data?.summary || ""}</p>
+        <div class="grid-asymmetric">
+          <div class="answer-col">
+            <div class="answer-block">
+              <div class="answer-label">支点一</div>
+              <div class="answer-title">个人品牌信用为基础</div>
+              <div class="answer-desc">客户转介绍是将自己的社交信用抵押在你的声誉上。任何激励手段过于商业化，都会污染这份纯粹的个人背书。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">支点二</div>
+              <div class="answer-title">超预期服务为支点</div>
+              <div class="answer-desc">转介绍不是"要"来的，而是客户获得超额价值后的自然溢出。诞生于三个"惊叹时刻"：隐性痛点被解决、成果远超合同、额外情感劳动。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">支点三</div>
+              <div class="answer-title">极简工具为链条</div>
+              <div class="answer-desc">AI监测到客户表达感谢时，自动生成零决策成本的推荐物料：精美卡片+可一键复制的推荐语。客户只需转发"价值包裹"。</div>
+            </div>
           </div>
-          <div class="content" style="margin-top:2rem;padding-top:2rem;border-top:1px solid var(--line);">
-            ${contentHtml}
+          <div class="chart-col">
+            <div class="chart-area">
+              <div class="chart-title">信任飞轮模型</div>
+              <div style="display: flex; flex-direction: column; gap: var(--space-sm);">
+                <div style="display: flex; align-items: center; gap: var(--space-md);">
+                  <div style="width: 8px; height: 8px; background: var(--accent); border-radius: 50%;"></div>
+                  <div style="font-size: 13px; color: var(--text-secondary);">极致个人交付 → 创造信任</div>
+                </div>
+                <div style="display: flex; align-items: center; gap: var(--space-md);">
+                  <div style="width: 8px; height: 8px; background: var(--text-tertiary); border-radius: 50%;"></div>
+                  <div style="font-size: 13px; color: var(--text-secondary);">系统设计 → 社交信任转化</div>
+                </div>
+                <div style="display: flex; align-items: center; gap: var(--space-md);">
+                  <div style="width: 8px; height: 8px; background: var(--text-tertiary); border-radius: 50%;"></div>
+                  <div style="font-size: 13px; color: var(--text-secondary);">熟人推荐 → 高信任度新客户</div>
+                </div>
+                <div style="display: flex; align-items: center; gap: var(--space-md);">
+                  <div style="width: 8px; height: 8px; background: var(--accent); border-radius: 50%;"></div>
+                  <div style="font-size: 13px; color: var(--text-primary);">高质量交付循环</div>
+                </div>
+              </div>
+            </div>
+            <div class="objection-block error">
+              <div class="objection-label">错误示范</div>
+              <div class="objection-title">把转介绍当成交换</div>
+              <div class="objection-desc">项目结束后发微信"帮我推荐一下"，这在2025年商业语境里是一种冒犯。必须在交付那一刻就把"社交货币"塞到客户手里。</div>
+            </div>
           </div>
         </div>
-      `;
-    }
+      </div>
+    </section>
 
-    loadNode();
+    <!-- Dimension 2: 社交货币 -->
+    <section class="content-section fade-section">
+      <div class="dimension-block">
+        <div class="dimension-badge">
+          <span class="dimension-num">D2</span>
+          <span class="dimension-tag">设计</span>
+        </div>
+        <h2 class="dimension-question">如何让交付物自带"私章"与"勋章"，被客户主动分享</h2>
+
+        <div class="grid-asymmetric">
+          <div class="answer-col">
+            <div class="answer-block">
+              <div class="answer-label">情绪峰值时刻</div>
+              <div class="answer-title">三类黄金分享点</div>
+              <div class="answer-desc">成果可视化时刻(客户第一次看到成果)；被深度理解时刻(精准指出隐性痛点)；超出预期惊喜时刻(合同外的贴心小事)。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">社交货币型交付物</div>
+              <div class="answer-title">三个特征</div>
+              <div class="answer-desc">可视化成果+客户个人印记+易于社交圈传播。例如：独立咨询师生成"个人竞争力雷达图"，客户分享的是自己的优秀，不是打广告。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">核心原则</div>
+              <div class="answer-title">让客户晒自己 > 推荐你</div>
+              <div class="answer-desc">去掉底部所有关于你的信息，客户还愿意分享吗？如果答案是肯定的，你就成功了。署名只是为已具备传播力的内容提供来源注脚。</div>
+            </div>
+          </div>
+          <div class="chart-col">
+            <div class="chart-area">
+              <div class="chart-title">客户情绪旅程峰值</div>
+              <div style="margin-bottom: var(--space-md);">
+                <div style="display: flex; justify-content: space-between; font-size: 12px; padding: var(--space-xs) 0; border-bottom: 1px solid var(--line-light);">
+                  <span style="color: var(--accent);">高峰1</span>
+                  <span style="color: var(--text-tertiary);">初稿方案超出预期</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 12px; padding: var(--space-xs) 0; border-bottom: 1px solid var(--line-light);">
+                  <span style="color: var(--accent);">高峰2</span>
+                  <span style="color: var(--text-tertiary);">收到完整品牌应用指南</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 12px; padding: var(--space-xs) 0;">
+                  <span style="color: var(--accent);">高峰3</span>
+                  <span style="color: var(--text-tertiary);">朋友圈获大量正面反馈</span>
+                </div>
+              </div>
+            </div>
+            <div class="objection-block success">
+              <div class="objection-label">正确示范</div>
+              <div class="objection-title">品牌设计师的"勋章"</div>
+              <div class="objection-desc">交付"品牌基因解码卡片"：核心审美偏好、色彩心理学诊断、应用效果预览。右下角"视觉顾问：[名字]"。客户分享的是高端卡片，不是收款码。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dimension 3: AI培育系统 -->
+    <section class="content-section fade-section">
+      <div class="dimension-block">
+        <div class="dimension-badge">
+          <span class="dimension-num">D3</span>
+          <span class="dimension-tag">工具</span>
+        </div>
+        <h2 class="dimension-question">AI如何成为转介绍培育师，一个人也能精准识别触发时机</h2>
+
+        <div class="grid-asymmetric">
+          <div class="answer-col">
+            <div class="answer-block">
+              <div class="answer-label">信号监听</div>
+              <div class="answer-title">客户信号监听器</div>
+              <div class="answer-desc">设定关键词监听("太棒了""超出预期""推荐给我的朋友")；互动频率异常时自动标记"高推荐意愿"并推送至手机。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">话术生成</div>
+              <div class="answer-title">AI生成三个版本</div>
+              <div class="answer-desc">A型(直接请求)、B型(价值提供)、C型(纯感谢)。你花30秒微调，选择最符合个人语气的一条发送。AI跨越"不知如何开口"的心理障碍。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">跟进备忘</div>
+              <div class="answer-title">AI二次触达建议</div>
+              <div class="answer-desc">每周自动汇总高意愿客户清单，附上最轻量二次触达建议。如："距离上次交付已过14天，建议发送行业趋势简报。"</div>
+            </div>
+          </div>
+          <div class="chart-col">
+            <div class="chart-area">
+              <div class="chart-title">AI培育流程</div>
+              <div style="display: flex; flex-direction: column; gap: var(--space-sm);">
+                <div style="display: flex; align-items: center; gap: var(--space-md);">
+                  <div style="width: 10px; height: 10px; background: var(--accent); border-radius: 50%;"></div>
+                  <div style="font-size: 13px; color: var(--text-secondary);">感知信号：关键词/频率监测</div>
+                </div>
+                <div style="display: flex; align-items: center; gap: var(--space-md);">
+                  <div style="width: 10px; height: 10px; background: var(--text-tertiary); border-radius: 50%;"></div>
+                  <div style="font-size: 13px; color: var(--text-secondary);">评估意愿：自动打标签</div>
+                </div>
+                <div style="display: flex; align-items: center; gap: var(--space-md);">
+                  <div style="width: 10px; height: 10px; background: var(--text-tertiary); border-radius: 50%;"></div>
+                  <div style="font-size: 13px; color: var(--text-secondary);">生成选项：三个版本话术</div>
+                </div>
+                <div style="display: flex; align-items: center; gap: var(--space-md);">
+                  <div style="width: 10px; height: 10px; background: var(--accent); border-radius: 50%;"></div>
+                  <div style="font-size: 13px; color: var(--text-primary);">等待确认：你最终决策发送</div>
+                </div>
+              </div>
+            </div>
+            <div class="objection-block data">
+              <div class="objection-label">数据洞察</div>
+              <div class="objection-title">单人运营也能精准</div>
+              <div class="objection-desc">AI处理"感知与整理"，你完成"判断与情感链接"。在数百乃至数千用户规模上，维持近似一对一手工服务的深度。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dimension 4: 数字微资产 -->
+    <section class="content-section fade-section">
+      <div class="dimension-block">
+        <div class="dimension-badge">
+          <span class="dimension-num">D4</span>
+          <span class="dimension-tag">资产</span>
+        </div>
+        <h2 class="dimension-question">如何让一次推荐携带足以成交的信息量</h2>
+
+        <div class="grid-asymmetric">
+          <div class="answer-col">
+            <div class="answer-block">
+              <div class="answer-label">微资产页面</div>
+              <div class="answer-title">三分钟极速认知路径</div>
+              <div class="answer-desc">一句话价值主张(10字)+3分钟创始人音频+微型价值验证工具+三组成果缩影+极低门槛行动入口(免费咨询/资料领取)。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">一键推荐工具</div>
+              <div class="answer-title">Tally表单+Make自动化</div>
+              <div class="answer-desc">表单收集推荐语+头像，自动生成精美推荐卡片并发送给客户。新客户点击链接即进入你精心设计的认知路径，无需主动询问。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">专属推荐语</div>
+              <div class="answer-title">AI生成个性化引荐</div>
+              <div class="answer-desc">"Hi [新客]，我听[老客户]说你在找[行业]解决方案，这是我的复盘模型先给你做个参考。"用极低精力消耗，复刻大公司豪华客服团队的尊享感。</div>
+            </div>
+          </div>
+          <div class="chart-col">
+            <div class="chart-area">
+              <div class="chart-title">微资产页面结构</div>
+              <div style="display: flex; flex-direction: column; gap: var(--space-xs); font-size: 13px;">
+                <div style="padding: var(--space-sm); background: var(--bg); border: 1px solid var(--line);">
+                  <span style="color: var(--accent);">1.</span> 一句话价值主张
+                </div>
+                <div style="padding: var(--space-sm); background: var(--bg); border: 1px solid var(--line);">
+                  <span style="color: var(--accent);">2.</span> 3分钟创始人音频
+                </div>
+                <div style="padding: var(--space-sm); background: var(--bg); border: 1px solid var(--line);">
+                  <span style="color: var(--accent);">3.</span> 微型验证工具
+                </div>
+                <div style="padding: var(--space-sm); background: var(--bg); border: 1px solid var(--line);">
+                  <span style="color: var(--accent);">4.</span> 三组成果缩影
+                </div>
+                <div style="padding: var(--space-sm); background: var(--bg); border: 1px solid var(--line);">
+                  <span style="color: var(--accent);">5.</span> 极低门槛入口
+                </div>
+              </div>
+            </div>
+            <div class="objection-block success">
+              <div class="objection-label">正确示范</div>
+              <div class="objection-title">老客户转发感觉像"捐赠"</div>
+              <div class="objection-desc">"我最近合作了一个XX专家，这是他为朋友们准备的诊断工具，测测看有没有启发。"不是在做销售，而是在捐赠对朋友圈有益的资源包。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dimension 5: 微型智囊圈 -->
+    <section class="content-section fade-section">
+      <div class="dimension-block">
+        <div class="dimension-badge">
+          <span class="dimension-num">D5</span>
+          <span class="dimension-tag">社群</span>
+        </div>
+        <h2 class="dimension-question">如何运营20-30人的核心老客户微型圈层</h2>
+
+        <div class="grid-asymmetric">
+          <div class="answer-col">
+            <div class="answer-block">
+              <div class="answer-label">圈子命名</div>
+              <div class="answer-title">"创始人私密圈"</div>
+              <div class="answer-desc">不是"VIP客户群"，而是"12人产品共创委员会"或"创始成员组"。名称决定成员心态：他们是来参与创造的，不是接受推销的。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">三项核心权益</div>
+              <div class="answer-title">单人可交付</div>
+              <div class="answer-desc">独家前沿情报(每周30分钟整理)；获得反馈与共同测试(新方案内测)；内部人脉对接(业务互补成员一对一引荐)。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">转介绍入口</div>
+              <div class="answer-title">稀缺性+筛选感</div>
+              <div class="answer-desc">"如果你身边有价值观接近的朋友，可以私下告诉我，我会单独聊聊邀请进来。"推荐行为本身变成身份彰显，而非任务摊派。</div>
+            </div>
+          </div>
+          <div class="chart-col">
+            <div class="chart-area">
+              <div class="chart-title">圈层权益结构</div>
+              <div style="margin-bottom: var(--space-md);">
+                <div style="padding: var(--space-sm); border-bottom: 1px solid var(--line); font-size: 13px;">
+                  <span style="color: var(--accent);">情报权</span>
+                  <span style="color: var(--text-tertiary); margin-left: var(--space-sm);">独家前沿动态</span>
+                </div>
+                <div style="padding: var(--space-sm); border-bottom: 1px solid var(--line); font-size: 13px;">
+                  <span style="color: var(--accent);">共创权</span>
+                  <span style="color: var(--text-tertiary); margin-left: var(--space-sm);">新方案内测反馈</span>
+                </div>
+                <div style="padding: var(--space-sm); font-size: 13px;">
+                  <span style="color: var(--accent);">对接权</span>
+                  <span style="color: var(--text-tertiary); margin-left: var(--space-sm);">业务互补引荐</span>
+                </div>
+              </div>
+            </div>
+            <div class="objection-block data">
+              <div class="objection-label">数据洞察</div>
+              <div class="objection-title">高认同感带来质变</div>
+              <div class="objection-desc">当客户感到自己是成长见证者和参与者时，向外推荐的动力会发生质变。推荐不再是任务，而是身份认同的自然延伸。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dimension 6: 激励禁区 -->
+    <section class="content-section fade-section">
+      <div class="dimension-block">
+        <div class="dimension-badge">
+          <span class="dimension-num">D6</span>
+          <span class="dimension-tag">边界</span>
+        </div>
+        <h2 class="dimension-question">转介绍激励的禁区与合规红线在哪里</h2>
+
+        <div class="balance-intro">
+          2025至2026年，消费者对营销手段免疫力极高，追求<strong>"真诚的利他"</strong>而非<strong>"被利用的收益"</strong>。一人公司必须严格区分"感谢"与"购买"。
+        </div>
+
+        <div class="balance-grid">
+          <div class="balance-card">
+            <div class="balance-card-label positive">做</div>
+            <div class="balance-item">双边增值权益替代现金</div>
+            <div class="balance-item">专属深度诊断/高阶工具包</div>
+            <div class="balance-item">创始人1对1深度咨询</div>
+            <div class="balance-item">绝版资料库访问权限</div>
+            <div class="balance-item">公开致谢强化身份感</div>
+            <div class="balance-item">允许不推荐的优雅退出</div>
+          </div>
+          <div class="balance-card">
+            <div class="balance-card-label negative">不做</div>
+            <div class="balance-item dim">"推荐一个朋友得50元"</div>
+            <div class="balance-item dim">设置推荐KPI压力</div>
+            <div class="balance-item dim">二级分销逻辑</div>
+            <div class="balance-item dim">代写/篡改客户见证</div>
+            <div class="balance-item dim">无资质推荐需要资质的服务</div>
+            <div class="balance-item dim">强迫或情感绑架式索取</div>
+          </div>
+        </div>
+
+        <div class="core-insight">
+          <div class="core-insight-text">
+            <strong>权益型激励的价值感知是现金的3倍以上。</strong>一旦明码标价，关系就会降级为纯粹的交易。一人公司的壁垒在于无可替代的深度关系。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FIN Section -->
+    <section class="fin-section fade-section">
+      <div class="fin-title">FIN · 转介绍健康度</div>
+      <div class="fin-grid">
+        <div class="fin-item">
+          <div class="fin-num">3</div>
+          <div class="fin-label">超预期时刻/人</div>
+        </div>
+        <div class="fin-item">
+          <div class="fin-num">30</div>
+          <div class="fin-label">核心圈子人数上限</div>
+        </div>
+        <div class="fin-item">
+          <div class="fin-num">0</div>
+          <div class="fin-label">边际流量成本</div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer-nav">
+      <a href="/nodes/23-private-traffic/index.html" class="nav-link">
+        <span class="nav-arrow">←</span>
+        节点23：私域流量运营
+      </a>
+      <a href="/nodes/25-outsourcing/index.html" class="nav-link">
+        节点25：外包策略与执行
+        <span class="nav-arrow">→</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
   </script>
 </body>
 </html>

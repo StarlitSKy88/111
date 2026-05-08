@@ -7,101 +7,325 @@
   <meta name="theme-color" content="#111110">
   <title>MVP范围锁定 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #111110;
-      --surface: #1A1A18;
-      --text-primary: #F0EDE6;
-      --text-secondary: #7A7670;
-      --accent: #C0392B;
-      --line: #2A2A28;
-    }
-    body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; }
-    .loading { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-    .loading-bar { width: 100%; height: 1px; background: var(--line); position: relative; overflow: hidden; max-width: 200px; }
-    .loading-bar::after { content: ''; position: absolute; left: -50%; top: 0; width: 50%; height: 100%; background: var(--accent); animation: loading-slide 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite; }
-    @keyframes loading-slide { from { left: -50%; } to { left: 100%; } }
-    .content h1 { font-size: 1.75rem; font-weight: 300; margin-bottom: 1rem; }
-    .content h2 { font-size: 1.25rem; font-weight: 400; margin: 1.5rem 0 0.75rem; color: var(--text-primary); }
-    .content h3 { font-size: 1rem; font-weight: 500; margin: 1.25rem 0 0.5rem; color: var(--text-primary); }
-    .content p { line-height: 1.9; margin-bottom: 1rem; color: var(--text-secondary); }
-    .content ul, .content ol { margin: 1rem 0; padding-left: 1.5rem; color: var(--text-secondary); }
-    .content li { line-height: 1.8; margin-bottom: 0.5rem; }
-    .content strong { color: var(--text-primary); font-weight: 500; }
-    .content code { background: var(--surface); padding: 0.125rem 0.375rem; border-radius: 0.25rem; font-size: 0.875rem; }
-    .content pre { background: var(--surface); padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin: 1rem 0; }
-    .content pre code { background: none; padding: 0; }
-    .content blockquote { border-left: 3px solid var(--accent); padding-left: 1rem; margin: 1rem 0; color: var(--text-secondary); font-style: italic; }
-    .content hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
-    .content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-    .content th, .content td { border: 1px solid var(--line); padding: 0.75rem; text-align: left; }
-    .content th { background: var(--surface); color: var(--text-primary); }
-    .content td { color: var(--text-secondary); }
-    .content a { color: var(--accent); text-decoration: underline; }
-    .content input[type="checkbox"] { margin-right: 0.5rem; }
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #B8B4AE;
+  --text-tertiary: #A8A49E;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; font-weight: 400; line-height: 1.9; letter-spacing: 0.04em; -webkit-font-smoothing: antialiased; }
+
+.page { position: relative; max-width: 1200px; margin: 0 auto; padding: 0 clamp(24px, 8vw, 120px); min-height: 100vh; }
+.page::before { content: ''; position: absolute; top: 0; left: clamp(24px, 8vw, 120px); right: clamp(24px, 8vw, 120px); height: 1px; background: var(--line); }
+
+.section-number { position: absolute; top: var(--space-2xl); right: clamp(24px, 8vw, 120px); font-size: clamp(100px, 22vw, 280px); font-weight: 100; color: var(--text-primary); opacity: 0.03; line-height: 1; letter-spacing: -0.05em; font-family: 'Noto Serif JP', serif; pointer-events: none; user-select: none; }
+
+.back-link { position: fixed; top: var(--space-xl); left: clamp(24px, 8vw, 120px); z-index: 100; }
+.back-link a { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: color 0.3s ease; }
+.back-link a:hover { color: var(--text-primary); }
+
+.hero { padding: var(--space-4xl) 0 var(--space-3xl); position: relative; }
+.hero-content { position: relative; z-index: 1; max-width: 800px; }
+.hero-label { font-size: 13px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-md); }
+.hero-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+.hero-title { font-family: 'Noto Serif JP', serif; font-size: clamp(48px, 10vw, 96px); font-weight: 300; letter-spacing: -0.03em; line-height: 0.95; margin-bottom: var(--space-xl); }
+.hero-desc { font-size: 16px; color: var(--text-secondary); line-height: 1.8; max-width: 44ch; }
+
+.content-section { padding: var(--space-3xl) 0; border-top: 1px solid var(--line); }
+.section-label { font-size: 13px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-md); }
+.section-label::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+
+.step-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-lg); margin-bottom: var(--space-md); position: relative; }
+.step-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--accent); }
+.step-header { display: flex; align-items: baseline; gap: var(--space-md); margin-bottom: var(--space-md); }
+.step-num { font-family: 'Noto Serif JP', serif; font-size: 48px; font-weight: 300; color: var(--accent); opacity: 0.5; line-height: 1; }
+.step-title { font-family: 'Noto Serif JP', serif; font-size: 22px; font-weight: 400; }
+.step-content { font-size: 14px; color: var(--text-secondary); line-height: 1.8; padding-left: 64px; }
+@media (max-width: 768px) { .step-content { padding-left: 0; } }
+.step-content p { margin-bottom: var(--space-sm); }
+.step-content strong { color: var(--text-primary); }
+
+.quote-block { border-left: 2px solid var(--accent); padding-left: var(--space-md); margin: var(--space-lg) 0; }
+.quote-text { font-size: 15px; color: var(--text-secondary); font-style: italic; }
+
+.two-col { display: grid; grid-template-columns: 1.3fr 1fr; gap: var(--space-lg); }
+@media (max-width: 768px) { .two-col { grid-template-columns: 1fr; } }
+.col-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-lg); }
+.col-label { font-size: 12px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-sm); }
+.col-title { font-size: 16px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-sm); }
+.col-text { font-size: 13px; color: var(--text-tertiary); line-height: 1.7; }
+.col-text.red { color: var(--accent); }
+.col-text.green { color: #4CAF50; }
+
+.data-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: var(--space-md) 0; }
+.data-table th { text-align: left; color: var(--accent); font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; padding: var(--space-sm); border-bottom: 1px solid var(--line); font-size: 12px; }
+.data-table td { padding: var(--space-sm); border-bottom: 1px solid var(--line-light); color: var(--text-secondary); }
+.data-table td:first-child { color: var(--text-primary); font-weight: 500; width: 30%; }
+
+.rule-list { margin-top: var(--space-xl); }
+.rule-item { padding: var(--space-lg); border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 48px 1fr; gap: var(--space-lg); }
+.rule-item:last-child { border-bottom: none; }
+.rule-num { font-family: 'Noto Serif JP', serif; font-size: 32px; font-weight: 300; color: var(--accent); opacity: 0.5; }
+.rule-title { font-size: 15px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-xs); }
+.rule-desc { font-size: 13px; color: var(--text-tertiary); line-height: 1.7; }
+
+.highlight-box { background: var(--surface); border: 1px solid var(--accent); padding: var(--space-lg); margin: var(--space-xl) 0; }
+.highlight-label { font-size: 12px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-sm); }
+.highlight-text { font-size: 15px; color: var(--text-primary); line-height: 1.7; }
+
+.footer-nav { padding: var(--space-2xl) 0; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
+.nav-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: color 0.3s ease; }
+.nav-link:hover { color: var(--text-primary); }
+.nav-arrow { font-size: 0.75rem; }
+
+.fade-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.fade-section.visible { opacity: 1; transform: translateY(0); }
+* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
   </style>
 </head>
 <body>
-  <div id="app" data-slug="mvp-scope">
-    <div class="loading">
-      <div class="loading-bar"></div>
-    </div>
+  <div class="back-link">
+    <a href="/"><span>←</span> 返回首页</a>
   </div>
-  <script type="module">
-    const SLUG = "mvp-scope";
+  <div class="section-number">06</div>
 
-    async function loadNode() {
-      try {
-        const res = await fetch("/api/nodes/" + SLUG);
-        if (!res.ok) throw new Error("Failed to load");
-        const data = await res.json();
-        renderNode(data);
-      } catch (e) {
-        document.getElementById("app").innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text-secondary)">加载失败</div>';
-      }
-    }
+  <div class="page">
+    <header class="hero fade-section">
+      <div class="hero-content">
+        <div class="hero-label">节点 06 · 核心必做</div>
+        <h1 class="hero-title">MVP范围<br>锁定</h1>
+        <p class="hero-desc">砍到只剩一个核心功能，先上线再迭代。OPC的核心优势是快</p>
+      </div>
+    </header>
 
-    function mdToHtml(md) {
-      if (!md) return '<p style="color:var(--text-secondary)">内容加载中...</p>';
-      let html = md
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/^### (.+)$/gm, "<h3>$1</h3>")
-        .replace(/^## (.+)$/gm, "<h2>$1</h2>")
-        .replace(/^# (.+)$/gm, "<h1>$1</h1>")
-        .replace(/**(.+?)**/g, "<strong>$1</strong>")
-        .replace(/^- (.+)$/gm, "<li>$1</li>")
-        .replace(/^\[ \] (.+)$/gm, "<div><input type="checkbox" disabled> $1</div>")
-        .replace(/^\[x\] (.+)$/gm, "<div><input type="checkbox" checked disabled> $1</div>")
-        .replace(/^\d+\. (.+)$/gm, "<li>$1</li>")
-        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
-        .replace(/^(?!<[a-z])(.+)$/gm, "<p>$1</p>")
-        .replace(/\n\n+/g, "\n");
-      html = html.replace(/(<li>.*<\/li>\n?)+/g, "<ul>$&</ul>");
-      return html;
-    }
+    <section class="content-section fade-section">
+      <div class="section-label">核心认知</div>
+      <div class="highlight-box">
+        <div class="highlight-label">2026年实战有效认知</div>
+        <div class="highlight-text">MVP是一个<strong>可被独立销售的实验品</strong>，哪怕它明天就停止迭代，今天的用户依然愿意为它付钱。</div>
+      </div>
+      <div class="two-col">
+        <div class="col-card">
+          <div class="col-label">假设检验</div>
+          <div class="col-title">无效假设</div>
+          <div class="col-text red">"用户有这个需求"<br>"用户会觉得好用"</div>
+        </div>
+        <div class="col-card">
+          <div class="col-label">假设检验</div>
+          <div class="col-title">有效假设</div>
+          <div class="col-text green">"用户愿意为X行为支付Y元"</div>
+        </div>
+      </div>
+      <div class="quote-block">
+        <p class="quote-text">"自由摄影师愿意为'一键生成包含用光建议的拍摄方案摘要'支付29元/次。" — 这才是一个有效的MVP假设。</p>
+      </div>
+    </section>
 
-    function renderNode(node) {
-      const content = node.content || "";
-      const contentHtml = mdToHtml(content);
-      document.getElementById("app").innerHTML = `
-        <div style="max-width:800px;margin:0 auto;padding:2rem 1.25rem;">
-          <a href="/" style="color:var(--text-secondary);font-size:0.75rem;letter-spacing:0.1em;text-decoration:none;">← 返回首页</a>
-          <div style="margin-top:2rem;">
-            <div style="color:var(--accent);font-size:0.625rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;">${node.data?.category || ""} · ${node.data?.difficulty || ""}</div>
-            <h1 style="font-size:clamp(1.5rem,5vw,2.5rem);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;">${node.data?.title || ""}</h1>
-            <p style="color:var(--text-secondary);line-height:1.9;">${node.data?.summary || ""}</p>
-          </div>
-          <div class="content" style="margin-top:2rem;padding-top:2rem;border-top:1px solid var(--line);">
-            ${contentHtml}
+    <section class="content-section fade-section">
+      <div class="section-label">六步执行流程</div>
+
+      <div class="step-card">
+        <div class="step-header">
+          <span class="step-num">01</span>
+          <h3 class="step-title">MVP再定义：从"简化版"到"可收费的实验品"</h3>
+        </div>
+        <div class="step-content">
+          <p>范围锁定的标准不是"能不能跑通一个简化流程"，而是<strong>"能不能立刻产生一次不可逆的价值交换"</strong>。</p>
+          <p>锁定范围的第一步，就是把这一轮实验约束为<strong>只验证一个核心假设</strong>。这个假设必须是指向付费行为的断言。</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header">
+          <span class="step-num">02</span>
+          <h3 class="step-title">功能二分法：砍掉它还能收费吗？</h3>
+        </div>
+        <div class="step-content">
+          <p>把每一个功能单独拎出来，问自己一个非常苛刻的问题——<strong>"砍掉它，我还能不能完成一单完整收费？"</strong></p>
+          <p>如果能，就直接划掉。你会发现，用户资料头像、密码修改、多语言切换、数据导出甚至管理后台，在这一刀面前全部倒下。</p>
+          <p style="color: var(--text-tertiary); margin-top: var(--space-md);">真正留下来的，往往是：<br>一个极窄的输入 + 一个核心处理逻辑 + 一个收费点 + 一个交付结果</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header">
+          <span class="step-num">03</span>
+          <h3 class="step-title">时间硬顶："仅此一周"极限剪裁法</h3>
+        </div>
+        <div class="step-content">
+          <p><strong>"仅此一周"倒计时法</strong>已经成为一种常见的反拖延机制。设定一个一定会到的最后期限，只要时间一到，无论产品做成什么样，都必须进入收费验证。</p>
+          <p>在倒计时的压力下，所有"优化一下""再加一个小功能"的冲动都会在时间耗尽面前自动破灭。</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header">
+          <span class="step-num">04</span>
+          <h3 class="step-title">人工后台：用Excel替代自动化</h3>
+        </div>
+        <div class="step-content">
+          <p>把"自动化开发"这部分工作从MVP范围里彻底砍掉。<strong>你的真实后台，可以就是你本人加一个Excel表格。</strong></p>
+          <p>用户在前端完成支付，收到提示："结果将在30分钟内发送至您的邮箱。"这30分钟里，你打开Google Sheets手动生成那份专属报告，然后邮件发给用户。</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header">
+          <span class="step-num">05</span>
+          <h3 class="step-title">边界工具登记表：防止范围悄悄蔓延</h3>
+        </div>
+        <div class="step-content">
+          <p>把每一个"我用人工替代"的节点写入《边界工具登记表》，并标注截止上线日前绝不改造。</p>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>功能需求</th>
+                <th>MVP替代方式</th>
+                <th>改造冻结至</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>用户发票</td>
+                <td>手动通过Gmail发送PDF</td>
+                <td>上线后14天</td>
+              </tr>
+              <tr>
+                <td>内容排版</td>
+                <td>用户粘贴至Notion模板</td>
+                <td>首笔验证完成</td>
+              </tr>
+              <tr>
+                <td>数据分析</td>
+                <td>每周导出CSV手动更新</td>
+                <td>活跃用户超50人</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="step-card" style="border-color: var(--accent);">
+        <div class="step-header">
+          <span class="step-num">06</span>
+          <h3 class="step-title">5-Day Rule：极限剪裁执行清单</h3>
+        </div>
+        <div class="step-content">
+          <p>如果一个MVP在5天内不能产生一次完整的价值交付，说明范围还是太大。注意这5天包含你手动处理后端流程的时间，不单是写代码。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section fade-section">
+      <div class="section-label">5-Day执行清单</div>
+      <div class="rule-list">
+        <div class="rule-item">
+          <span class="rule-num">01</span>
+          <div>
+            <div class="rule-title">写下必须完成的唯一结果</div>
+            <div class="rule-desc">格式："用户通过【一次操作】，得到【一个可用的输出】"</div>
           </div>
         </div>
-      `;
-    }
+        <div class="rule-item">
+          <span class="rule-num">02</span>
+          <div>
+            <div class="rule-title">功能三分：保留A类，砍掉B和C</div>
+            <div class="rule-desc">A类=没有结果就不成立；B类=删掉也能交付但会让用户麻烦；C类=纯体验</div>
+          </div>
+        </div>
+        <div class="rule-item">
+          <span class="rule-num">03</span>
+          <div>
+            <div class="rule-title">5天硬截止，不能延长时间</div>
+            <div class="rule-desc">5天做不完，只能继续砍功能，而不能延长时间</div>
+          </div>
+        </div>
+        <div class="rule-item">
+          <span class="rule-num">04</span>
+          <div>
+            <div class="rule-title">验收标准：有一个陌生用户完成了该结果</div>
+            <div class="rule-desc">这强迫你的范围必须窄到足以让你在用户面前全程跟进</div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    loadNode();
+    <section class="content-section fade-section">
+      <div class="section-label">首版不做清单</div>
+      <div class="two-col">
+        <div class="col-card">
+          <div class="col-label">自动划掉</div>
+          <div class="col-title">这些功能首版不做</div>
+          <div class="col-text">
+            用户资料头像<br>
+            密码修改功能<br>
+            多语言切换<br>
+            数据导出<br>
+            管理后台<br>
+            历史记录<br>
+            深色模式
+          </div>
+        </div>
+        <div class="col-card">
+          <div class="col-label">改造触发条件</div>
+          <div class="col-title">何时可以开始改造？</div>
+          <div class="col-text">
+            ① 付费用户超过N人<br>
+            ② 特定时间节点到达<br>
+            ③ 收到明确的用户请求<br>
+            ④ 人工处理已成为瓶颈
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section fade-section">
+      <div class="section-label">总纲</div>
+      <div class="quote-block" style="border-left-width: 3px;">
+        <p class="quote-text" style="font-size: 18px; color: var(--text-primary);">MVP范围锁定最终不是一个规划技巧，而是一种<strong style="color: var(--accent);">拒绝能力</strong>。每一次对功能说"是"，都等于对交付速度、资金续航和验证纯度说"否"。</p>
+      </div>
+      <p style="font-size: 13px; color: var(--text-tertiary); margin-top: var(--space-lg); letter-spacing: 0.05em;">
+        AI只用于加速已确定范围的功能实现，绝不用于生成新的功能方向。
+      </p>
+    </section>
+
+    <footer class="footer-nav fade-section">
+      <a href="/nodes/05-ai-tools/index.html" class="nav-link">
+        <span class="nav-arrow">←</span>
+        节点05：AI编码工具选型
+      </a>
+      <a href="/nodes/07-tech-validation/index.html" class="nav-link">
+        节点07：核心功能技术验证
+        <span class="nav-arrow">→</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, {  threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
   </script>
 </body>
 </html>

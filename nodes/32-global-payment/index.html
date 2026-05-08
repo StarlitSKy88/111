@@ -7,101 +7,723 @@
   <meta name="theme-color" content="#111110">
   <title>海外支付方案 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #111110;
-      --surface: #1A1A18;
-      --text-primary: #F0EDE6;
-      --text-secondary: #7A7670;
-      --accent: #C0392B;
-      --line: #2A2A28;
-    }
-    body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; }
-    .loading { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-    .loading-bar { width: 100%; height: 1px; background: var(--line); position: relative; overflow: hidden; max-width: 200px; }
-    .loading-bar::after { content: ''; position: absolute; left: -50%; top: 0; width: 50%; height: 100%; background: var(--accent); animation: loading-slide 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite; }
-    @keyframes loading-slide { from { left: -50%; } to { left: 100%; } }
-    .content h1 { font-size: 1.75rem; font-weight: 300; margin-bottom: 1rem; }
-    .content h2 { font-size: 1.25rem; font-weight: 400; margin: 1.5rem 0 0.75rem; color: var(--text-primary); }
-    .content h3 { font-size: 1rem; font-weight: 500; margin: 1.25rem 0 0.5rem; color: var(--text-primary); }
-    .content p { line-height: 1.9; margin-bottom: 1rem; color: var(--text-secondary); }
-    .content ul, .content ol { margin: 1rem 0; padding-left: 1.5rem; color: var(--text-secondary); }
-    .content li { line-height: 1.8; margin-bottom: 0.5rem; }
-    .content strong { color: var(--text-primary); font-weight: 500; }
-    .content code { background: var(--surface); padding: 0.125rem 0.375rem; border-radius: 0.25rem; font-size: 0.875rem; }
-    .content pre { background: var(--surface); padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin: 1rem 0; }
-    .content pre code { background: none; padding: 0; }
-    .content blockquote { border-left: 3px solid var(--accent); padding-left: 1rem; margin: 1rem 0; color: var(--text-secondary); font-style: italic; }
-    .content hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
-    .content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-    .content th, .content td { border: 1px solid var(--line); padding: 0.75rem; text-align: left; }
-    .content th { background: var(--surface); color: var(--text-primary); }
-    .content td { color: var(--text-secondary); }
-    .content a { color: var(--accent); text-decoration: underline; }
-    .content input[type="checkbox"] { margin-right: 0.5rem; }
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #B8B4AE;
+  --text-tertiary: #A8A49E;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 400;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+}
+.page {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 8vw, 120px);
+  min-height: 100vh;
+}
+.page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: clamp(24px, 8vw, 120px);
+  right: clamp(24px, 8vw, 120px);
+  height: 1px;
+  background: var(--line);
+}
+.section-number {
+  position: absolute;
+  top: var(--space-2xl);
+  right: clamp(24px, 8vw, 120px);
+  font-size: clamp(100px, 22vw, 280px);
+  font-weight: 100;
+  color: var(--text-primary);
+  opacity: 0.03;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-family: 'Noto Serif JP', serif;
+  pointer-events: none;
+  user-select: none;
+}
+.back-link {
+  position: fixed;
+  top: var(--space-xl);
+  left: clamp(24px, 8vw, 120px);
+  z-index: 100;
+}
+.back-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.back-link a:hover { color: var(--text-primary); }
+.hero {
+  padding: var(--space-4xl) 0 var(--space-3xl);
+  position: relative;
+}
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+}
+.hero-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+.hero-label::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--accent);
+}
+.hero-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  margin-bottom: var(--space-xl);
+}
+.hero-desc {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 44ch;
+}
+.content-section {
+  padding: var(--space-3xl) 0;
+  border-top: 1px solid var(--line);
+}
+.section-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+.section-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+}
+.grid-asymmetric {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-3xl);
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .grid-asymmetric {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+}
+.chapter-heading {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: var(--space-xl);
+  max-width: 16em;
+}
+.body-text {
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--text-secondary);
+  max-width: 44ch;
+  margin-bottom: var(--space-md);
+}
+.body-text strong { color: var(--text-primary); font-weight: 500; }
+.body-text .accent { color: var(--accent); font-weight: 500; }
+.quote-block {
+  padding-left: var(--space-md);
+  border-left: 1px solid var(--accent);
+  margin: var(--space-xl) 0;
+}
+.quote-text {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  max-width: 40ch;
+}
+.data-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.data-card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--line);
+}
+.data-card-row:last-child { border-bottom: none; }
+.data-label {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.data-value {
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+.data-value.accent { color: var(--accent); font-weight: 600; }
+.list-item {
+  padding: var(--space-lg) 0;
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: var(--space-lg);
+}
+.list-item:last-child { border-bottom: none; }
+.list-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--text-tertiary);
+  line-height: 1;
+}
+.list-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+.list-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 40ch;
+}
+.core-insight {
+  margin: var(--space-xl) 0;
+  padding-left: var(--space-md);
+  border-left: 1px solid var(--accent);
+}
+.core-insight-text {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 40ch;
+}
+.balance-section-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-xl);
+}
+.balance-intro {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 46ch;
+  margin-bottom: var(--space-2xl);
+}
+.balance-intro strong { color: var(--text-primary); font-weight: 500; }
+.balance-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: var(--space-2xl);
+}
+@media (max-width: 768px) {
+  .balance-grid { grid-template-columns: 1fr; gap: var(--space-xl); }
+}
+.balance-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+}
+.balance-card-label {
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+}
+.balance-card-label.positive { color: var(--accent); }
+.balance-card-label.negative { color: var(--text-tertiary); }
+.balance-item {
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--line-light);
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+.balance-item:last-child { border-bottom: none; }
+.balance-item.dim { color: var(--text-tertiary); }
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1.2fr 0.8fr;
+  gap: var(--space-xl);
+}
+@media (max-width: 900px) {
+  .summary-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
+}
+.summary-card {
+  padding: var(--space-lg) 0;
+  border-top: 1px solid var(--line);
+}
+.summary-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 36px;
+  font-weight: 300;
+  color: var(--accent);
+  margin-bottom: var(--space-sm);
+}
+.summary-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+.summary-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+.footer-nav {
+  padding: var(--space-2xl) 0;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.nav-link:hover { color: var(--text-primary); }
+.nav-arrow { font-size: 0.75rem; }
+.fade-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-section.visible { opacity: 1; transform: translateY(0); }
+* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+
+/* Dimension badge */
+.dim-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: var(--space-sm);
+}
+.dim-badge .dim-id {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--accent);
+}
+.dim-badge .dim-tag {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  border: 1px solid var(--line);
+  padding: 2px 8px;
+}
+.dim-badge .dim-tag.核心 { color: var(--accent); border-color: var(--accent); }
+
+/* Objection blocks */
+.obj-block {
+  padding: var(--space-lg);
+  margin: var(--space-md) 0;
+  border-left: 2px solid;
+}
+.obj-block.error {
+  background: rgba(192, 57, 43, 0.08);
+  border-color: var(--accent);
+}
+.obj-block.success {
+  background: rgba(39, 174, 96, 0.08);
+  border-color: var(--accent);
+}
+.obj-block.data {
+  background: rgba(255,255,255,0.03);
+  border-color: var(--text-tertiary);
+}
+.obj-label {
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.obj-block.error .obj-label { color: var(--accent); }
+.obj-block.success .obj-label { color: var(--accent); }
+.obj-block.data .obj-label { color: var(--text-tertiary); }
+.obj-content {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+.obj-content strong { color: var(--text-primary); }
   </style>
 </head>
 <body>
-  <div id="app" data-slug="global-payment">
-    <div class="loading">
-      <div class="loading-bar"></div>
-    </div>
+  <div class="back-link">
+    <a href="/"><span>←</span> 返回首页</a>
   </div>
-  <script type="module">
-    const SLUG = "global-payment";
+  <div class="section-number">32</div>
 
-    async function loadNode() {
-      try {
-        const res = await fetch("/api/nodes/" + SLUG);
-        if (!res.ok) throw new Error("Failed to load");
-        const data = await res.json();
-        renderNode(data);
-      } catch (e) {
-        document.getElementById("app").innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text-secondary)">加载失败</div>';
-      }
-    }
+  <div class="page">
+    <header class="hero">
+      <div class="hero-content">
+        <div class="hero-label">节点 32 · 1-10</div>
+        <h1 class="hero-title">海外支付方案</h1>
+        <p class="hero-desc">Stripe、PayPal、Wise，想做海外市场时接入</p>
+      </div>
+    </header>
 
-    function mdToHtml(md) {
-      if (!md) return '<p style="color:var(--text-secondary)">内容加载中...</p>';
-      let html = md
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/^### (.+)$/gm, "<h3>$1</h3>")
-        .replace(/^## (.+)$/gm, "<h2>$1</h2>")
-        .replace(/^# (.+)$/gm, "<h1>$1</h1>")
-        .replace(/**(.+?)**/g, "<strong>$1</strong>")
-        .replace(/^- (.+)$/gm, "<li>$1</li>")
-        .replace(/^\[ \] (.+)$/gm, "<div><input type="checkbox" disabled> $1</div>")
-        .replace(/^\[x\] (.+)$/gm, "<div><input type="checkbox" checked disabled> $1</div>")
-        .replace(/^\d+\. (.+)$/gm, "<li>$1</li>")
-        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
-        .replace(/^(?!<[a-z])(.+)$/gm, "<p>$1</p>")
-        .replace(/\n\n+/g, "\n");
-      html = html.replace(/(<li>.*<\/li>\n?)+/g, "<ul>$&</ul>");
-      return html;
-    }
-
-    function renderNode(node) {
-      const content = node.content || "";
-      const contentHtml = mdToHtml(content);
-      document.getElementById("app").innerHTML = `
-        <div style="max-width:800px;margin:0 auto;padding:2rem 1.25rem;">
-          <a href="/" style="color:var(--text-secondary);font-size:0.75rem;letter-spacing:0.1em;text-decoration:none;">← 返回首页</a>
-          <div style="margin-top:2rem;">
-            <div style="color:var(--accent);font-size:0.625rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;">${node.data?.category || ""} · ${node.data?.difficulty || ""}</div>
-            <h1 style="font-size:clamp(1.5rem,5vw,2.5rem);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;">${node.data?.title || ""}</h1>
-            <p style="color:var(--text-secondary);line-height:1.9;">${node.data?.summary || ""}</p>
+    <!-- D1: 认知跃迁 -->
+    <section class="content-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-id">D1</span>
+        <span class="dim-tag 核心">核心</span>
+        <span class="dim-tag">本质</span>
+      </div>
+      <h2 class="chapter-heading">为什么OPC需要海外支付？</h2>
+      <div class="grid-asymmetric">
+        <div class="main-content">
+          <p class="body-text">海外支付是OPC在没有法人实体、没有财务团队的情况下，<strong>独立完成跨境商业闭环的血管系统</strong>。</p>
+          <p class="body-text"><strong>现金流是生命线</strong>：客户遍布欧美、东南亚，却只靠电汇或PayPal个人账户收款？高额汇率损失和数天到账时间会严重侵蚀利润。</p>
+          <p class="body-text"><strong>本地化支付已成常态</strong>：欧洲iDEAL、东南亚GrabPay——不接受本地支付方式 = 高比例购物车弃单率。</p>
+          <p class="body-text"><strong>合规风险由你一人承担</strong>：OPC多为无限连带责任主体，一旦收款渠道不合规导致账户冻结，直接影响个人信用。</p>
+        </div>
+        <div class="side-content">
+          <div class="data-card">
+            <div class="data-card-row">
+              <span class="data-label">PayPal汇率成本</span>
+              <span class="data-value accent">~3%+</span>
+            </div>
+            <div class="data-card-row">
+              <span class="data-label">Wise/Airwallex成本</span>
+              <span class="data-value">~0.2-0.5%</span>
+            </div>
+            <div class="data-card-row">
+              <span class="data-label">到账时间</span>
+              <span class="data-value">数分钟~1天</span>
+            </div>
           </div>
-          <div class="content" style="margin-top:2rem;padding-top:2rem;border-top:1px solid var(--line);">
-            ${contentHtml}
+          <div class="obj-block error" style="margin-top: var(--space-lg);">
+            <div class="obj-label">✕ 错误示范</div>
+            <div class="obj-content">用个人账户收海外经营款项——个人与业务资金混同，税务风险极高，且无法享受公司主体的合规保护。</div>
           </div>
         </div>
-      `;
-    }
+      </div>
+    </section>
 
-    loadNode();
+    <!-- D2: 基础账户 -->
+    <section class="content-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-id">D2</span>
+        <span class="dim-tag">模型</span>
+      </div>
+      <h2 class="chapter-heading">基础收付层：三足鼎立</h2>
+      <div class="grid-asymmetric">
+        <div class="main-content">
+          <p class="body-text">基础收付层让你的海外资金<strong>收得进、持得住、转得出</strong>。2025-2026年的选择标准：能否作为你在海外的"虚拟总部"。</p>
+
+          <div class="list-item">
+            <div class="list-num">01</div>
+            <div>
+              <div class="list-title">Airwallex 空中云汇</div>
+              <div class="list-desc">支持国内个体工商户直接开立全球企业账户。美元/欧元/港元多币种本地收款，虚拟Visa卡直接支付海外订阅费。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">02</div>
+            <div>
+              <div class="list-title">Wise Business</div>
+              <div class="list-desc">提供真实的本地银行账户详情（英国Sort Code、香港FPS）。客户以为是本地转账，零中间行费用，即时到账。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">03</div>
+            <div>
+              <div class="list-title">Payoneer</div>
+              <div class="list-desc">连接全球零工经济平台的硬通货。Upwork/Fiverr/亚马逊收入提现路径，2025年支持原币持有欧元/英镑等待汇率时机。</div>
+            </div>
+          </div>
+        </div>
+        <div class="side-content">
+          <div class="obj-block success">
+            <div class="obj-label">✓ 正确示范</div>
+            <div class="obj-content">把基础收付层看作"数字游民身份下的财务底仓"——安全高效沉淀资金，为后续网关收单或结汇提供干净的源头。</div>
+          </div>
+          <div class="data-card" style="margin-top: var(--space-lg);">
+            <div class="data-card-row">
+              <span class="data-label">开户门槛</span>
+              <span class="data-value">个体工商户可申请</span>
+            </div>
+            <div class="data-card-row">
+              <span class="data-label">激活时间</span>
+              <span class="data-value">3-7个工作日</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- D3: 收单网关 -->
+    <section class="content-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-id">D3</span>
+        <span class="dim-tag">培育</span>
+      </div>
+      <h2 class="chapter-heading">收单网关：Stripe vs MoR模式</h2>
+      <div class="grid-asymmetric">
+        <div class="main-content">
+          <div class="list-item">
+            <div class="list-num">Stripe</div>
+            <div>
+              <div class="list-title">需要美国主体</div>
+              <div class="list-desc">通过Stripe Atlas注册美国LLC（~500美元）后可用。手续费2.9%+$0.3，支持信用卡/Apple Pay/Google Pay。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">Paddle / Lemon Squeezy</div>
+            <div>
+              <div class="list-title">MoR记录商模式（推荐）</div>
+              <div class="list-desc">平台作为法律销售方，自动处理全球VAT/GST代扣代缴。你无需注册海外公司，零门槛启动。手续费约5%。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">Gumroad / Patreon</div>
+            <div>
+              <div class="list-title">嵌入式金融</div>
+              <div class="list-desc">平台内置支付分发，创作者收入分账与报税一体化。适合数字产品、内容订阅、周边销售。</div>
+            </div>
+          </div>
+        </div>
+        <div class="side-content">
+          <div class="obj-block error">
+            <div class="obj-label">✕ 错误示范</div>
+            <div class="obj-content">直接用Stripe Atlas注册美国公司，但未计算年度维护费（~300-600美元）和复杂报税——对小微OPC可能不划算。</div>
+          </div>
+          <div class="obj-block success" style="margin-top: var(--space-lg);">
+            <div class="obj-label">✓ 推荐路径</div>
+            <div class="obj-content">数字产品/SaaS → Paddle/MoR模式（零门槛，平台代处理税务）。年流水<5万美元 → Wise/Airwallex + Stripe直连。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- D4: 结汇回国 -->
+    <section class="content-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-id">D4</span>
+        <span class="dim-tag">避坑</span>
+      </div>
+      <h2 class="chapter-heading">资金回国三条路</h2>
+      <div class="grid-asymmetric">
+        <div class="main-content">
+          <p class="body-text"><strong>通道一：第三方支付平台直提</strong>（主流，链路最短）</p>
+          <p class="body-text">万里汇/Airwallex/Payoneer提现至境内银行卡，1个工作日到账。单笔不超5万美元等值，需提供贸易背景材料（Invoice/服务协议）。</p>
+
+          <div class="quote-block">
+            <p class="quote-text"><strong>通道二：香港账户中转</strong>（适合年流水>20万美元）</p>
+          </div>
+          <p class="body-text">汇丰Business Direct/ZA Bank全程线上开户，SWIFT直入。换汇差价0.2-0.5%，但需同名汇款，且有维护费（月均余额低于5万港币约200港币）。</p>
+
+          <p class="body-text"><strong>通道三：数字货币合规通道</strong>（慎用，仅Web3特定场景）</p>
+          <p class="body-text">香港持牌交易所可提供结汇服务，需逐笔申报资金来源。2026年仍处"可用但受限"状态。</p>
+        </div>
+        <div class="side-content">
+          <div class="data-card">
+            <div class="data-card-row">
+              <span class="data-label">年流水&lt;20万美元</span>
+              <span class="data-value">通道一优先</span>
+            </div>
+            <div class="data-card-row">
+              <span class="data-label">年流水&gt;20万美元</span>
+              <span class="data-value">通道一+二并行</span>
+            </div>
+            <div class="data-card-row">
+              <span class="data-label">外汇管制额度</span>
+              <span class="data-value">不占用个人5万</span>
+            </div>
+          </div>
+          <div class="obj-block error" style="margin-top: var(--space-lg);">
+            <div class="obj-label">✕ 致命操作</div>
+            <div class="obj-content">单笔提现超过5万美元 + 无法提供贸易背景材料 = 冻结或退回。养成小额多次的习惯，单笔控制在3万美元以内。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- D5: 合规要点 -->
+    <section class="content-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-id">D5</span>
+        <span class="dim-tag">培育</span>
+      </div>
+      <h2 class="chapter-heading">2026年合规三条线</h2>
+      <div class="grid-asymmetric">
+        <div class="main-content">
+          <div class="list-item">
+            <div class="list-num">1</div>
+            <div>
+              <div class="list-title">主体隔离</div>
+              <div class="list-desc">个人资产与业务资产必须分离。国内个体工商户或美国LLC作为签约主体，避免个人账户收经营款项。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">2</div>
+            <div>
+              <div class="list-title">欧盟DAC7合规</div>
+              <div class="list-desc">平台必须向税务机关上报卖家信息。通过Paddle等MoR平台可自动转移申报义务；用Stripe则需自行处理VAT。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">3</div>
+            <div>
+              <div class="list-title">留存凭证</div>
+              <div class="list-desc">每笔收款对应的Invoice、服务协议、交付凭证必须完整保存。年度汇总发给会计师复核，成本不过几百元。</div>
+            </div>
+          </div>
+        </div>
+        <div class="side-content">
+          <div class="obj-block data">
+            <div class="obj-label">◑ 数据洞察</div>
+            <div class="obj-content">2026年是跨境支付阳光化元年。欧盟DAC7全面落地 + 全球信息上报机制强化——游离于监管之外的小额收入已被系统化记录。</div>
+          </div>
+          <div class="core-insight" style="margin-top: var(--space-lg);">
+            <p class="core-insight-text"><strong>实操建议</strong>：每月导出平台账单，保存好Invoice与服务协议，养成"合规即竞争力"的习惯。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- D6: 决策框架 -->
+    <section class="content-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-id">D6</span>
+        <span class="dim-tag">决策</span>
+      </div>
+      <h2 class="chapter-heading">做 / 不做</h2>
+      <div class="balance-intro">
+        海外支付的核心是<strong>主体隔离 + 工具匹配 + 合规留存</strong>。<strong>做</strong>则全球收款如发邮件，<strong>不做</strong>则汇率损失和合规风险吃掉利润。
+      </div>
+      <div class="balance-grid">
+        <div class="balance-card">
+          <div class="balance-card-label positive">✓ 做</div>
+          <div class="balance-item">用公司/个体工商户主体收海外款</div>
+          <div class="balance-item">数字产品选MoR模式(Paddle/Lemon)</div>
+          <div class="balance-item">单笔提现控制在3万美元以内</div>
+          <div class="balance-item">留存完整Invoice和服务协议</div>
+          <div class="balance-item">通过持牌支付机构结汇</div>
+          <div class="balance-item">配置备用通道(双账户)</div>
+          <div class="balance-item">年度汇总发给会计师复核</div>
+        </div>
+        <div class="balance-card">
+          <div class="balance-card-label negative">✕ 不做</div>
+          <div class="balance-item">个人账户收海外经营款</div>
+          <div class="balance-item">大额单笔结汇(>5万美元)</div>
+          <div class="balance-item">不保留Invoice和服务协议</div>
+          <div class="balance-item">只用PayPal(高费率)</div>
+          <div class="balance-item">忽视欧盟VAT代缴义务</div>
+          <div class="balance-item">资金全部留在平台不转出</div>
+          <div class="balance-item">忽视账户冻结风险(无备用)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FIN -->
+    <section class="content-section fade-section">
+      <div class="section-label">财务健康指标</div>
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="summary-num">0.5%</div>
+          <div class="summary-title">结汇成本</div>
+          <div class="summary-desc">Wise/Airwallex vs PayPal的3%+</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num">48小时</div>
+          <div class="summary-title">快速接入</div>
+          <div class="summary-desc">Paddle/MoR模式零门槛启动</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num">3万美元</div>
+          <div class="summary-title">单笔限额</div>
+          <div class="summary-desc">合规提现的安全阈值</div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer-nav">
+      <a href="/nodes/31-server-security/index.html" class="nav-link">
+        <span class="nav-arrow">←</span>
+        节点31：服务器安全防护
+      </a>
+      <a href="/nodes/33-energy-management/index.html" class="nav-link">
+        节点33：个人精力管理
+        <span class="nav-arrow">→</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
   </script>
 </body>
 </html>

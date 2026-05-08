@@ -7,101 +7,764 @@
   <meta name="theme-color" content="#111110">
   <title>服务器安全防护 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #111110;
-      --surface: #1A1A18;
-      --text-primary: #F0EDE6;
-      --text-secondary: #7A7670;
-      --accent: #C0392B;
-      --line: #2A2A28;
-    }
-    body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; }
-    .loading { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-    .loading-bar { width: 100%; height: 1px; background: var(--line); position: relative; overflow: hidden; max-width: 200px; }
-    .loading-bar::after { content: ''; position: absolute; left: -50%; top: 0; width: 50%; height: 100%; background: var(--accent); animation: loading-slide 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite; }
-    @keyframes loading-slide { from { left: -50%; } to { left: 100%; } }
-    .content h1 { font-size: 1.75rem; font-weight: 300; margin-bottom: 1rem; }
-    .content h2 { font-size: 1.25rem; font-weight: 400; margin: 1.5rem 0 0.75rem; color: var(--text-primary); }
-    .content h3 { font-size: 1rem; font-weight: 500; margin: 1.25rem 0 0.5rem; color: var(--text-primary); }
-    .content p { line-height: 1.9; margin-bottom: 1rem; color: var(--text-secondary); }
-    .content ul, .content ol { margin: 1rem 0; padding-left: 1.5rem; color: var(--text-secondary); }
-    .content li { line-height: 1.8; margin-bottom: 0.5rem; }
-    .content strong { color: var(--text-primary); font-weight: 500; }
-    .content code { background: var(--surface); padding: 0.125rem 0.375rem; border-radius: 0.25rem; font-size: 0.875rem; }
-    .content pre { background: var(--surface); padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin: 1rem 0; }
-    .content pre code { background: none; padding: 0; }
-    .content blockquote { border-left: 3px solid var(--accent); padding-left: 1rem; margin: 1rem 0; color: var(--text-secondary); font-style: italic; }
-    .content hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
-    .content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-    .content th, .content td { border: 1px solid var(--line); padding: 0.75rem; text-align: left; }
-    .content th { background: var(--surface); color: var(--text-primary); }
-    .content td { color: var(--text-secondary); }
-    .content a { color: var(--accent); text-decoration: underline; }
-    .content input[type="checkbox"] { margin-right: 0.5rem; }
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #B8B4AE;
+  --text-tertiary: #A8A49E;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 400;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+}
+.page {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 8vw, 120px);
+  min-height: 100vh;
+}
+.page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: clamp(24px, 8vw, 120px);
+  right: clamp(24px, 8vw, 120px);
+  height: 1px;
+  background: var(--line);
+}
+.section-number {
+  position: absolute;
+  top: var(--space-2xl);
+  right: clamp(24px, 8vw, 120px);
+  font-size: clamp(100px, 22vw, 280px);
+  font-weight: 100;
+  color: var(--text-primary);
+  opacity: 0.03;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-family: 'Noto Serif JP', serif;
+  pointer-events: none;
+  user-select: none;
+}
+.back-link {
+  position: fixed;
+  top: var(--space-xl);
+  left: clamp(24px, 8vw, 120px);
+  z-index: 100;
+}
+.back-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.back-link a:hover { color: var(--text-primary); }
+.hero {
+  padding: var(--space-4xl) 0 var(--space-3xl);
+  position: relative;
+}
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+}
+.hero-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+.hero-label::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--accent);
+}
+.hero-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  margin-bottom: var(--space-xl);
+}
+.hero-desc {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 44ch;
+}
+.content-section {
+  padding: var(--space-3xl) 0;
+  border-top: 1px solid var(--line);
+}
+.section-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+.section-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+}
+.grid-asymmetric {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-3xl);
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .grid-asymmetric {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+}
+.chapter-heading {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: var(--space-xl);
+  max-width: 16em;
+}
+.body-text {
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--text-secondary);
+  max-width: 44ch;
+  margin-bottom: var(--space-md);
+}
+.body-text strong { color: var(--text-primary); font-weight: 500; }
+.body-text .accent { color: var(--accent); font-weight: 500; }
+.quote-block {
+  padding-left: var(--space-md);
+  border-left: 1px solid var(--accent);
+  margin: var(--space-xl) 0;
+}
+.quote-text {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  max-width: 40ch;
+}
+.data-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.data-card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--line);
+}
+.data-card-row:last-child { border-bottom: none; }
+.data-label {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.data-value {
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+.data-value.accent { color: var(--accent); font-weight: 600; }
+.list-item {
+  padding: var(--space-lg) 0;
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: var(--space-lg);
+}
+.list-item:last-child { border-bottom: none; }
+.list-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--text-tertiary);
+  line-height: 1;
+}
+.list-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+.list-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 40ch;
+}
+.core-insight {
+  margin: var(--space-xl) 0;
+  padding-left: var(--space-md);
+  border-left: 1px solid var(--accent);
+}
+.core-insight-text {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 40ch;
+}
+.balance-section-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-xl);
+}
+.balance-intro {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 46ch;
+  margin-bottom: var(--space-2xl);
+}
+.balance-intro strong { color: var(--text-primary); font-weight: 500; }
+.balance-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: var(--space-2xl);
+}
+@media (max-width: 768px) {
+  .balance-grid { grid-template-columns: 1fr; gap: var(--space-xl); }
+}
+.balance-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+}
+.balance-card-label {
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+}
+.balance-card-label.positive { color: var(--accent); }
+.balance-card-label.negative { color: var(--text-tertiary); }
+.balance-item {
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--line-light);
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+.balance-item:last-child { border-bottom: none; }
+.balance-item.dim { color: var(--text-tertiary); }
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1.2fr 0.8fr;
+  gap: var(--space-xl);
+}
+@media (max-width: 900px) {
+  .summary-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
+}
+.summary-card {
+  padding: var(--space-lg) 0;
+  border-top: 1px solid var(--line);
+}
+.summary-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 36px;
+  font-weight: 300;
+  color: var(--accent);
+  margin-bottom: var(--space-sm);
+}
+.summary-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+.summary-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+.footer-nav {
+  padding: var(--space-2xl) 0;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.nav-link:hover { color: var(--text-primary); }
+.nav-arrow { font-size: 0.75rem; }
+.fade-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-section.visible { opacity: 1; transform: translateY(0); }
+* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+
+/* Dimension badge */
+.dim-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: var(--space-sm);
+}
+.dim-badge .dim-id {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--accent);
+}
+.dim-badge .dim-tag {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  border: 1px solid var(--line);
+  padding: 2px 8px;
+}
+.dim-badge .dim-tag.核心 { color: var(--accent); border-color: var(--accent); }
+
+/* Objection blocks */
+.obj-block {
+  padding: var(--space-lg);
+  margin: var(--space-md) 0;
+  border-left: 2px solid;
+}
+.obj-block.error {
+  background: rgba(192, 57, 43, 0.08);
+  border-color: var(--accent);
+}
+.obj-block.success {
+  background: rgba(39, 174, 96, 0.08);
+  border-color: var(--accent);
+}
+.obj-block.data {
+  background: rgba(255,255,255,0.03);
+  border-color: var(--text-tertiary);
+}
+.obj-label {
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.obj-block.error .obj-label { color: var(--accent); }
+.obj-block.success .obj-label { color: var(--accent); }
+.obj-block.data .obj-label { color: var(--text-tertiary); }
+.obj-content {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+.obj-content strong { color: var(--text-primary); }
   </style>
 </head>
 <body>
-  <div id="app" data-slug="server-security">
-    <div class="loading">
-      <div class="loading-bar"></div>
-    </div>
+  <div class="back-link">
+    <a href="/"><span>←</span> 返回首页</a>
   </div>
-  <script type="module">
-    const SLUG = "server-security";
+  <div class="section-number">31</div>
 
-    async function loadNode() {
-      try {
-        const res = await fetch("/api/nodes/" + SLUG);
-        if (!res.ok) throw new Error("Failed to load");
-        const data = await res.json();
-        renderNode(data);
-      } catch (e) {
-        document.getElementById("app").innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text-secondary)">加载失败</div>';
-      }
-    }
+  <div class="page">
+    <header class="hero">
+      <div class="hero-content">
+        <div class="hero-label">节点 31 · 1-10</div>
+        <h1 class="hero-title">服务器安全防护</h1>
+        <p class="hero-desc">防火墙配置、安全监控、漏洞修复，网站上线后就应该做</p>
+      </div>
+    </header>
 
-    function mdToHtml(md) {
-      if (!md) return '<p style="color:var(--text-secondary)">内容加载中...</p>';
-      let html = md
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/^### (.+)$/gm, "<h3>$1</h3>")
-        .replace(/^## (.+)$/gm, "<h2>$1</h2>")
-        .replace(/^# (.+)$/gm, "<h1>$1</h1>")
-        .replace(/**(.+?)**/g, "<strong>$1</strong>")
-        .replace(/^- (.+)$/gm, "<li>$1</li>")
-        .replace(/^\[ \] (.+)$/gm, "<div><input type="checkbox" disabled> $1</div>")
-        .replace(/^\[x\] (.+)$/gm, "<div><input type="checkbox" checked disabled> $1</div>")
-        .replace(/^\d+\. (.+)$/gm, "<li>$1</li>")
-        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
-        .replace(/^(?!<[a-z])(.+)$/gm, "<p>$1</p>")
-        .replace(/\n\n+/g, "\n");
-      html = html.replace(/(<li>.*<\/li>\n?)+/g, "<ul>$&</ul>");
-      return html;
-    }
-
-    function renderNode(node) {
-      const content = node.content || "";
-      const contentHtml = mdToHtml(content);
-      document.getElementById("app").innerHTML = `
-        <div style="max-width:800px;margin:0 auto;padding:2rem 1.25rem;">
-          <a href="/" style="color:var(--text-secondary);font-size:0.75rem;letter-spacing:0.1em;text-decoration:none;">← 返回首页</a>
-          <div style="margin-top:2rem;">
-            <div style="color:var(--accent);font-size:0.625rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;">${node.data?.category || ""} · ${node.data?.difficulty || ""}</div>
-            <h1 style="font-size:clamp(1.5rem,5vw,2.5rem);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;">${node.data?.title || ""}</h1>
-            <p style="color:var(--text-secondary);line-height:1.9;">${node.data?.summary || ""}</p>
+    <!-- D1: 认知跃迁 -->
+    <section class="content-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-id">D1</span>
+        <span class="dim-tag 核心">核心</span>
+        <span class="dim-tag">本质</span>
+      </div>
+      <h2 class="chapter-heading">OPC的安全现实</h2>
+      <div class="grid-asymmetric">
+        <div class="main-content">
+          <p class="body-text">一人公司 = 所有鸡蛋放一个篮子，且没有备份方案。<strong>攻击面极窄，但一次被破 = 业务终结。</strong></p>
+          <p class="body-text"><strong>AI驱动的自动化攻击</strong>：2025-2026年，生成式AI让扫描器可以7×24无差别遍历全网。弱口令、未打补丁的Redis/SSH，平均存活时间已降至数小时。</p>
+          <p class="body-text"><strong>合规义务下沉</strong>：《个人信息保护法》对处理个人信息的自然人同样适用。无论规模，只要收集手机号、邮箱或行为数据，就必须具备基本技术措施。</p>
+        </div>
+        <div class="side-content">
+          <div class="data-card">
+            <div class="data-card-row">
+              <span class="data-label">平均存活时间</span>
+              <span class="data-value accent">数小时</span>
+            </div>
+            <div class="data-card-row">
+              <span class="data-label">攻击来源</span>
+              <span class="data-value">自动化扫描</span>
+            </div>
+            <div class="data-card-row">
+              <span class="data-label">恢复目标</span>
+              <span class="data-value">≤30分钟</span>
+            </div>
           </div>
-          <div class="content" style="margin-top:2rem;padding-top:2rem;border-top:1px solid var(--line);">
-            ${contentHtml}
+          <div class="obj-block error" style="margin-top: var(--space-lg);">
+            <div class="obj-label">✕ 错误示范</div>
+            <div class="obj-content">"我只个小站，没人会攻击我"——攻击者用AI全天候扫描，不挑目标大小，只看有没有漏洞。</div>
           </div>
         </div>
-      `;
-    }
+      </div>
+    </section>
 
-    loadNode();
+    <!-- D2: 范式转变 -->
+    <section class="content-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-id">D2</span>
+        <span class="dim-tag">模型</span>
+      </div>
+      <h2 class="chapter-heading">范式一：无服务器全托管</h2>
+      <div class="grid-asymmetric">
+        <div class="main-content">
+          <p class="body-text">2026年，<strong>自己维护服务器 = 承担半全职安全运维工作量</strong>。更务实的做法是迁移到"无服务器"或"后端即服务"架构。</p>
+
+          <div class="list-item">
+            <div class="list-num">前端</div>
+            <div>
+              <div class="list-title">Vercel / Netlify / Cloudflare Pages</div>
+              <div class="list-desc">全球边缘分发、自动HTTPS、WAF一体化，无需关心Nginx配置</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">后端</div>
+            <div>
+              <div class="list-title">Cloudflare Workers / Vercel Edge Functions</div>
+              <div class="list-desc">函数层级写代码，运行环境由平台隔离加固，攻击面锁定在沙箱内</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">数据</div>
+            <div>
+              <div class="list-title">PlanetScale / Supabase / Neon</div>
+              <div class="list-desc">Serverless数据库，自带每日备份，连接管理、防火墙策略完全托管</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">存储</div>
+            <div>
+              <div class="list-title">对象存储 + CDN签名URL</div>
+              <div class="list-desc">不再自建FTP或文件服务器，用云存储代替</div>
+            </div>
+          </div>
+        </div>
+        <div class="side-content">
+          <div class="obj-block success">
+            <div class="obj-label">✓ 正确示范</div>
+            <div class="obj-content">使用全托管架构后，服务器级安全事件概率下降约78%，处理时间从4.2小时降至15分钟以下。</div>
+          </div>
+          <div class="data-card" style="margin-top: var(--space-lg);">
+            <div class="data-card-row">
+              <span class="data-label">安全责任转移</span>
+              <span class="data-value">平台承担OS层</span>
+            </div>
+            <div class="data-card-row">
+              <span class="data-label">你仍需保护</span>
+              <span class="data-value">平台账号本身</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- D3: 韧性思维 -->
+    <section class="content-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-id">D3</span>
+        <span class="dim-tag">培育</span>
+      </div>
+      <h2 class="chapter-heading">范式二：韧性取代绝对安全</h2>
+      <div class="grid-asymmetric">
+        <div class="main-content">
+          <p class="body-text">一人公司没有24小时值守安全团队。理性目标不是"不被攻破"，而是<strong>"被攻破后能多快恢复"</strong>。</p>
+
+          <div class="quote-block">
+            <p class="quote-text">可以没有专职安全人员，但不能没有安全基线；可以接受攻击尝试每天都在发生，但不能接受被攻破后毫无恢复能力。</p>
+          </div>
+
+          <p class="body-text"><strong>三大工程实践</strong>：</p>
+
+          <div class="list-item">
+            <div class="list-num">1</div>
+            <div>
+              <div class="list-title">基础设施即代码(IaC)</div>
+              <div class="list-desc">用Terraform/Pulumi声明环境，Git仓库管理。服务器被篡改后，10分钟内从零重建完全相同的环境。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">2</div>
+            <div>
+              <div class="list-title">不可变备份与恢复演练</div>
+              <div class="list-desc">Object Lock/WORM存储，7天内备份无法被删除或篡改。每月执行一次完整恢复演练，目标是低于30分钟。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">3</div>
+            <div>
+              <div class="list-title">无状态化设计</div>
+              <div class="list-desc">用户会话、缓存、上传文件全部外移到托管Redis/对象存储/数据库，服务实例可随时销毁替换而不丢失数据。</div>
+            </div>
+          </div>
+        </div>
+        <div class="side-content">
+          <div class="obj-block success">
+            <div class="obj-label">✓ 正确示范</div>
+            <div class="obj-content">你不再追逐零日漏洞防御，而是确保入侵发生后，服务能在<strong>30分钟内重生</strong>。这种能力远比WAF更能抵抗不确定性。</div>
+          </div>
+          <div class="obj-block data" style="margin-top: var(--space-lg);">
+            <div class="obj-label">◑ 核心转变</div>
+            <div class="obj-content">从"建高墙"到"做好回滚"。防御重心从"加固服务器"转移到"加固代码和身份边界"。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- D4: 快速加固 -->
+    <section class="content-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-id">D4</span>
+        <span class="dim-tag">避坑</span>
+      </div>
+      <h2 class="chapter-heading">10分钟安全加固</h2>
+      <div class="grid-asymmetric">
+        <div class="main-content">
+          <p class="body-text">不需要成为安全专家。<strong>用免费工具构建非对称防御</strong>，让自动化攻击绕道而行。</p>
+
+          <div class="list-item">
+            <div class="list-num">1</div>
+            <div>
+              <div class="list-title">接入Cloudflare（免费）</div>
+              <div class="list-desc">将域名DNS解析权交给Cloudflare，开启代理(橙色云朵)。自动隐藏源站IP，拦截SQL注入/XSS，DDoS无限量免费缓解。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">2</div>
+            <div>
+              <div class="list-title">关闭所有入站管理端口</div>
+              <div class="list-desc">SSH/RDP/数据库端口绝不暴露公网。使用Cloudflare Tunnel或云厂商堡垒机代替直接登录。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">3</div>
+            <div>
+              <div class="list-title">强制密钥登录，禁止密码</div>
+              <div class="list-desc">服务器SSH禁用密码，使用Ed25519密钥对。私钥存1Password，每90天轮换。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">4</div>
+            <div>
+              <div class="list-title">GitHub密钥扫描</div>
+              <div class="list-desc">开启GitHub Advanced Security的密钥检测，每次推送前自动扫描，发现泄漏立即阻断并告警。</div>
+            </div>
+          </div>
+        </div>
+        <div class="side-content">
+          <div class="obj-block error">
+            <div class="obj-label">✕ 致命操作</div>
+            <div class="obj-content">把SSH/RDP端口直接暴露公网 + 弱密码。这等于在暗网挂牌出售服务器权限。</div>
+          </div>
+          <div class="obj-block success" style="margin-top: var(--space-lg);">
+            <div class="obj-label">✓ 域名安全</div>
+            <div class="obj-content">开启注册商锁定(Registry Lock)和转移锁定(Transfer Lock)，防止域名被静默转走。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- D5: 工具栈 -->
+    <section class="content-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-id">D5</span>
+        <span class="dim-tag">培育</span>
+      </div>
+      <h2 class="chapter-heading">免费工具栈</h2>
+      <div class="grid-asymmetric">
+        <div class="main-content">
+          <div class="list-item">
+            <div class="list-num">代码</div>
+            <div>
+              <div class="list-title">GitHub Advanced Security / Snyk Free</div>
+              <div class="list-desc">代码扫描、密钥检测、依赖项审查。每周一凌晨自动审计，Critical/High漏洞未修复前禁止部署。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">容器</div>
+            <div>
+              <div class="list-title">Trivy (开源无限制)</div>
+              <div class="list-desc">CI中调用，CRITICAL/HIGH漏洞让流水线失败，阻止镜像推送到生产环境。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">端点</div>
+            <div>
+              <div class="list-title">微软Defender for Individuals / Sophos</div>
+              <div class="list-desc">实时保护、勒索软件文件夹限制、网络钓鱼检测。管理笔记本被入侵 = 所有防御归零。</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-num">邮件</div>
+            <div>
+              <div class="list-title">SPF + DKIM + DMARC</div>
+              <div class="list-desc">DNS中配置，DMARC设为 <code>p=reject</code> 拒绝所有未通过检验的邮件。</div>
+            </div>
+          </div>
+        </div>
+        <div class="side-content">
+          <div class="data-card">
+            <div class="data-card-row">
+              <span class="data-label">WAF</span>
+              <span class="data-value">Cloudflare免费</span>
+            </div>
+            <div class="data-card-row">
+              <span class="data-label">DDoS防护</span>
+              <span class="data-value">Cloudflare免费</span>
+            </div>
+            <div class="data-card-row">
+              <span class="data-label">代码扫描</span>
+              <span class="data-value">GitHub ADv.Security</span>
+            </div>
+          </div>
+          <div class="core-insight" style="margin-top: var(--space-lg);">
+            <p class="core-insight-text"><strong>关键红线</strong>：任何Critical或High漏洞未修复前，绝不推进部署。代码扫描必须嵌入PR流程。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- D6: 决策框架 -->
+    <section class="content-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-id">D6</span>
+        <span class="dim-tag">决策</span>
+      </div>
+      <h2 class="chapter-heading">做 / 不做</h2>
+      <div class="balance-intro">
+        服务器安全的核心是<strong>缩小暴露面 + 零信任接入 + 一键恢复</strong>。<strong>做</strong>则韧性十足，<strong>不做</strong>则一次攻击致命。
+      </div>
+      <div class="balance-grid">
+        <div class="balance-card">
+          <div class="balance-card-label positive">✓ 做</div>
+          <div class="balance-item">优先使用全托管Serverless架构</div>
+          <div class="balance-item">接入Cloudflare隐藏源站IP</div>
+          <div class="balance-item">关闭所有公网管理端口</div>
+          <div class="balance-item">强制SSH密钥登录，禁止密码</div>
+          <div class="balance-item">代码嵌入密钥扫描和CVE检测</div>
+          <div class="balance-item">每月执行恢复演练，目标≤30分钟</div>
+          <div class="balance-item">开启域名Registry Lock</div>
+        </div>
+        <div class="balance-card">
+          <div class="balance-card-label negative">✕ 不做</div>
+          <div class="balance-item">自管服务器 + 弱密码SSH</div>
+          <div class="balance-item">管理端口直接暴露公网</div>
+          <div class="balance-item">代码中硬编码密钥/密码</div>
+          <div class="balance-item">不开启GitHub密钥扫描</div>
+          <div class="balance-item">从不执行恢复演练</div>
+          <div class="balance-item">忽略域名锁定</div>
+          <div class="balance-item">管理笔记本不装终端防护</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FIN -->
+    <section class="content-section fade-section">
+      <div class="section-label">财务健康指标</div>
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="summary-num">$0</div>
+          <div class="summary-title">安全工具年费</div>
+          <div class="summary-desc">Cloudflare免费 + GitHub免费层</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num">10分钟</div>
+          <div class="summary-title">基础加固时间</div>
+          <div class="summary-desc">Cloudflare接入 + 端口收敛 + 密钥登录</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num">30分钟</div>
+          <div class="summary-title">恢复时间目标</div>
+          <div class="summary-desc">从零重建全部服务</div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer-nav">
+      <a href="/nodes/30-data-backup/index.html" class="nav-link">
+        <span class="nav-arrow">←</span>
+        节点30：数据备份与恢复
+      </a>
+      <a href="/nodes/32-global-payment/index.html" class="nav-link">
+        节点32：海外支付方案
+        <span class="nav-arrow">→</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
   </script>
 </body>
 </html>

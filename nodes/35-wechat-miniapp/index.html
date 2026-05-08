@@ -7,101 +7,793 @@
   <meta name="theme-color" content="#111110">
   <title>微信小程序部署 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #111110;
-      --surface: #1A1A18;
-      --text-primary: #F0EDE6;
-      --text-secondary: #7A7670;
-      --accent: #C0392B;
-      --line: #2A2A28;
-    }
-    body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; }
-    .loading { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-    .loading-bar { width: 100%; height: 1px; background: var(--line); position: relative; overflow: hidden; max-width: 200px; }
-    .loading-bar::after { content: ''; position: absolute; left: -50%; top: 0; width: 50%; height: 100%; background: var(--accent); animation: loading-slide 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite; }
-    @keyframes loading-slide { from { left: -50%; } to { left: 100%; } }
-    .content h1 { font-size: 1.75rem; font-weight: 300; margin-bottom: 1rem; }
-    .content h2 { font-size: 1.25rem; font-weight: 400; margin: 1.5rem 0 0.75rem; color: var(--text-primary); }
-    .content h3 { font-size: 1rem; font-weight: 500; margin: 1.25rem 0 0.5rem; color: var(--text-primary); }
-    .content p { line-height: 1.9; margin-bottom: 1rem; color: var(--text-secondary); }
-    .content ul, .content ol { margin: 1rem 0; padding-left: 1.5rem; color: var(--text-secondary); }
-    .content li { line-height: 1.8; margin-bottom: 0.5rem; }
-    .content strong { color: var(--text-primary); font-weight: 500; }
-    .content code { background: var(--surface); padding: 0.125rem 0.375rem; border-radius: 0.25rem; font-size: 0.875rem; }
-    .content pre { background: var(--surface); padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin: 1rem 0; }
-    .content pre code { background: none; padding: 0; }
-    .content blockquote { border-left: 3px solid var(--accent); padding-left: 1rem; margin: 1rem 0; color: var(--text-secondary); font-style: italic; }
-    .content hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
-    .content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-    .content th, .content td { border: 1px solid var(--line); padding: 0.75rem; text-align: left; }
-    .content th { background: var(--surface); color: var(--text-primary); }
-    .content td { color: var(--text-secondary); }
-    .content a { color: var(--accent); text-decoration: underline; }
-    .content input[type="checkbox"] { margin-right: 0.5rem; }
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #B8B4AE;
+  --text-tertiary: #A8A49E;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 400;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 8vw, 120px);
+  min-height: 100vh;
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: clamp(24px, 8vw, 120px);
+  right: clamp(24px, 8vw, 120px);
+  height: 1px;
+  background: var(--line);
+}
+
+.section-number {
+  position: absolute;
+  top: var(--space-2xl);
+  right: clamp(24px, 8vw, 120px);
+  font-size: clamp(100px, 22vw, 280px);
+  font-weight: 100;
+  color: var(--text-primary);
+  opacity: 0.03;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-family: 'Noto Serif JP', serif;
+  pointer-events: none;
+  user-select: none;
+}
+
+.back-link {
+  position: fixed;
+  top: var(--space-xl);
+  left: clamp(24px, 8vw, 120px);
+  z-index: 100;
+}
+
+.back-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.back-link a:hover { color: var(--text-primary); }
+
+.hero {
+  padding: var(--space-4xl) 0 var(--space-3xl);
+  position: relative;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+}
+
+.hero-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.hero-label::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.hero-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  margin-bottom: var(--space-xl);
+}
+
+.hero-desc {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 44ch;
+}
+
+.content-section {
+  padding: var(--space-3xl) 0;
+  border-top: 1px solid var(--line);
+}
+
+.section-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.section-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+}
+
+/* D1-D6 Dimension Badges */
+.dimensions-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--space-sm);
+  margin-bottom: var(--space-3xl);
+}
+
+@media (max-width: 1100px) {
+  .dimensions-grid { grid-template-columns: 1.5fr 1fr 1fr; }
+}
+
+@media (max-width: 600px) {
+  .dimensions-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.dim-badge {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: var(--space-md);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  position: relative;
+  overflow: hidden;
+}
+
+.dim-badge::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+}
+
+.dim-badge.d1::before { background: #C0392B; }
+.dim-badge.d2::before { background: #E05A47; }
+.dim-badge.d3::before { background: var(--accent); }
+.dim-badge.d4::before { background: var(--accent); }
+.dim-badge.d5::before { background: #3498DB; }
+.dim-badge.d6::before { background: #9B59B6; }
+
+.dim-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--text-tertiary);
+  line-height: 1;
+}
+
+.dim-tag {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.dim-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-top: 4px;
+}
+
+/* Asymmetric Grid */
+.grid-asymmetric {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-3xl);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .grid-asymmetric {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+}
+
+.chapter-heading {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: var(--space-xl);
+  max-width: 16em;
+}
+
+.body-text {
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--text-secondary);
+  max-width: 44ch;
+  margin-bottom: var(--space-md);
+}
+
+.body-text strong { color: var(--text-primary); font-weight: 500; }
+.body-text .accent { color: var(--accent); font-weight: 500; }
+
+/* Objection Blocks */
+.objection-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  margin-bottom: var(--space-lg);
+}
+
+.objection-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--line);
+}
+
+.objection-tag {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+}
+
+.objection-tag.error {
+  background: rgba(192, 57, 43, 0.15);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.objection-tag.success {
+  background: rgba(39, 174, 96, 0.15);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.objection-tag.data {
+  background: rgba(52, 152, 219, 0.15);
+  color: #3498DB;
+  border: 1px solid #3498DB;
+}
+
+.objection-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.objection-content {
+  padding: var(--space-lg);
+}
+
+.objection-item {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-sm);
+}
+
+.objection-item:last-child { margin-bottom: 0; }
+
+/* Core Insight */
+.core-insight {
+  margin: var(--space-xl) 0;
+  padding-left: var(--space-md);
+  border-left: 1px solid var(--accent);
+}
+
+.core-insight-text {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 40ch;
+}
+
+/* Balance Grid */
+.balance-section-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-xl);
+}
+
+.balance-intro {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 46ch;
+  margin-bottom: var(--space-2xl);
+}
+
+.balance-intro strong { color: var(--text-primary); font-weight: 500; }
+
+.balance-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: var(--space-2xl);
+}
+
+@media (max-width: 768px) {
+  .balance-grid { grid-template-columns: 1fr; gap: var(--space-xl); }
+}
+
+.balance-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+}
+
+.balance-card-label {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+}
+
+.balance-card-label.positive { color: var(--accent); }
+.balance-card-label.negative { color: var(--text-tertiary); }
+
+.balance-item {
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--line-light);
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.balance-item:last-child { border-bottom: none; }
+.balance-item.dim { color: var(--text-tertiary); }
+
+/* Summary Grid (FIN) */
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: var(--space-xl);
+}
+
+@media (max-width: 900px) {
+  .summary-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
+}
+
+.summary-card {
+  padding: var(--space-lg) 0;
+  border-top: 1px solid var(--line);
+}
+
+.summary-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 36px;
+  font-weight: 300;
+  color: var(--accent);
+  margin-bottom: var(--space-sm);
+}
+
+.summary-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.summary-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* Footer Nav */
+.footer-nav {
+  padding: var(--space-2xl) 0;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover { color: var(--text-primary); }
+.nav-arrow { font-size: 0.75rem; }
+
+/* Fade Animation */
+.fade-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-section.visible { opacity: 1; transform: translateY(0); }
+
+* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
   </style>
 </head>
 <body>
-  <div id="app" data-slug="wechat-miniapp">
-    <div class="loading">
-      <div class="loading-bar"></div>
-    </div>
+  <div class="back-link">
+    <a href="/"><span>←</span> 返回首页</a>
   </div>
-  <script type="module">
-    const SLUG = "wechat-miniapp";
+  <div class="section-number">35</div>
 
-    async function loadNode() {
-      try {
-        const res = await fetch("/api/nodes/" + SLUG);
-        if (!res.ok) throw new Error("Failed to load");
-        const data = await res.json();
-        renderNode(data);
-      } catch (e) {
-        document.getElementById("app").innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text-secondary)">加载失败</div>';
-      }
-    }
+  <div class="page">
+    <header class="hero">
+      <div class="hero-content">
+        <div class="hero-label">节点 35 · 1-10</div>
+        <h1 class="hero-title">微信小程序部署</h1>
+        <p class="hero-desc">小程序开发、审核、上线，网站流量稳定后需要更便捷用户体验时做</p>
+      </div>
+    </header>
 
-    function mdToHtml(md) {
-      if (!md) return '<p style="color:var(--text-secondary)">内容加载中...</p>';
-      let html = md
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/^### (.+)$/gm, "<h3>$1</h3>")
-        .replace(/^## (.+)$/gm, "<h2>$1</h2>")
-        .replace(/^# (.+)$/gm, "<h1>$1</h1>")
-        .replace(/**(.+?)**/g, "<strong>$1</strong>")
-        .replace(/^- (.+)$/gm, "<li>$1</li>")
-        .replace(/^\[ \] (.+)$/gm, "<div><input type="checkbox" disabled> $1</div>")
-        .replace(/^\[x\] (.+)$/gm, "<div><input type="checkbox" checked disabled> $1</div>")
-        .replace(/^\d+\. (.+)$/gm, "<li>$1</li>")
-        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
-        .replace(/^(?!<[a-z])(.+)$/gm, "<p>$1</p>")
-        .replace(/\n\n+/g, "\n");
-      html = html.replace(/(<li>.*<\/li>\n?)+/g, "<ul>$&</ul>");
-      return html;
-    }
+    <!-- D1-D6 Dimensions -->
+    <section class="content-section fade-section">
+      <div class="section-label">六维结构</div>
+      <div class="dimensions-grid">
+        <div class="dim-badge d1">
+          <span class="dim-num">D1</span>
+          <span class="dim-tag">核心</span>
+          <span class="dim-title">企业主体注册</span>
+        </div>
+        <div class="dim-badge d2">
+          <span class="dim-num">D2</span>
+          <span class="dim-tag">模型</span>
+          <span class="dim-title">云开发轻架构</span>
+        </div>
+        <div class="dim-badge d3">
+          <span class="dim-num">D3</span>
+          <span class="dim-tag">培育</span>
+          <span class="dim-title">GitHub+Webify</span>
+        </div>
+        <div class="dim-badge d4">
+          <span class="dim-num">D4</span>
+          <span class="dim-tag">避坑</span>
+          <span class="dim-title">小额打款与备案</span>
+        </div>
+        <div class="dim-badge d5">
+          <span class="dim-num">D5</span>
+          <span class="dim-tag">培育</span>
+          <span class="dim-title">隐私接口声明</span>
+        </div>
+        <div class="dim-badge d6">
+          <span class="dim-num">D6</span>
+          <span class="dim-tag">决策</span>
+          <span class="dim-title">灰度发布策略</span>
+        </div>
+      </div>
+    </section>
 
-    function renderNode(node) {
-      const content = node.content || "";
-      const contentHtml = mdToHtml(content);
-      document.getElementById("app").innerHTML = `
-        <div style="max-width:800px;margin:0 auto;padding:2rem 1.25rem;">
-          <a href="/" style="color:var(--text-secondary);font-size:0.75rem;letter-spacing:0.1em;text-decoration:none;">← 返回首页</a>
-          <div style="margin-top:2rem;">
-            <div style="color:var(--accent);font-size:0.625rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;">${node.data?.category || ""} · ${node.data?.difficulty || ""}</div>
-            <h1 style="font-size:clamp(1.5rem,5vw,2.5rem);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;">${node.data?.title || ""}</h1>
-            <p style="color:var(--text-secondary);line-height:1.9;">${node.data?.summary || ""}</p>
-          </div>
-          <div class="content" style="margin-top:2rem;padding-top:2rem;border-top:1px solid var(--line);">
-            ${contentHtml}
+    <!-- D1: 核心 -->
+    <section class="content-section fade-section">
+      <div class="grid-asymmetric">
+        <div class="main-content">
+          <h2 class="chapter-heading">为什么OPC必须选企业主体：商业化门槛不可绕过</h2>
+          <p class="body-text">一人公司（OPC）持有企业法人营业执照，在法律属性上属于企业，必须选择<strong>企业主体</strong>注册小程序。个人主体小程序无法开通微信支付、无法使用直播组件、无法启用云开发高级能力——实质上切断了所有商业化路径。</p>
+          <p class="body-text">2025-2026年关键变化：<strong>小额打款自动回填</strong>政策落地。注册资本≤10万元的一人公司，系统自动抓取银行电子回单完成核验，认证周期从5天缩短至1-2个工作日。</p>
+          <p class="body-text">2026年1月起新增《一人公司创业承诺函》：选择工具、商业服务类目时必须上传，声明项目由本人独立开发运营，无外包或团队参与。</p>
+          <div class="core-insight">
+            <p class="core-insight-text">注册前先确认营业执照上有"一人有限公司"或"自然人独资"字样，并开通传统银行I类对公结算账户——微众银行部分账户无法通过微信打款认证。</p>
           </div>
         </div>
-      `;
-    }
+        <div class="sub-content">
+          <div class="objection-block">
+            <div class="objection-header">
+              <span class="objection-tag error">错误</span>
+              <span class="objection-title">个人主体的功能阉割</span>
+            </div>
+            <div class="objection-content">
+              <p class="objection-item">❌ 无法申请微信支付（致命）</p>
+              <p class="objection-item">❌ 不支持直播组件</p>
+              <p class="objection-item">❌ 无法启用云开发高级能力</p>
+              <p class="objection-item">❌ 无法对接微信生态的支付、订阅等核心能力</p>
+              <p class="objection-item">❌ 主体一经选定不可更改，注销重注代价大</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    loadNode();
+    <!-- D2: 模型 -->
+    <section class="content-section fade-section">
+      <div class="grid-asymmetric">
+        <div class="main-content">
+          <h2 class="chapter-heading">云开发轻架构：让"部署"从待办清单消失</h2>
+          <p class="body-text">OPC技术选型的首要原则：让"部署"这个动作本身从待办清单中消失。微信云开发 + CloudBase Webify 一体化交付，实现环境申请、弹性伸缩、证书管理、CDN加速全部内置。</p>
+          <p class="body-text"><strong>技术栈选择</strong>：Taro 4.x（React/Vue3兼容）或uni-app 3.0，UI选WeUI 2.0（工具型）或TDesign（会员/商品型）。云开发环境包含云函数、云数据库、云存储，文档型NoSQL与JS/TS天然契合。</p>
+          <p class="body-text">首年基础资源包约99-199元，云函数调用次数、数据库读写次数、云存储容量足以支撑中小规模用户。超额部分按量计费，业务规模化前增长缓慢。</p>
+          <div class="core-insight">
+            <p class="core-insight-text">不需要买服务器、配HTTPS证书、搭建负载均衡或执行服务器巡检。单客年技术成本可控制在500元以内。</p>
+          </div>
+        </div>
+        <div class="sub-content">
+          <div class="objection-block">
+            <div class="objection-header">
+              <span class="objection-tag data">成本</span>
+              <span class="objection-title">2026年年度技术成本</span>
+            </div>
+            <div class="objection-content">
+              <p class="objection-item"><strong>云开发基础套餐</strong>：¥99-199/年</p>
+              <p class="objection-item"><strong>域名（.com/.cn）</strong>：¥60-80/年</p>
+              <p class="objection-item"><strong>微信支付费率</strong>：0.38%-0.6%（按交易抽成，非固定）</p>
+              <p class="objection-item"><strong>备案</strong>：免费</p>
+              <p class="objection-item" style="margin-top: 12px; color: var(--accent);">合计：¥159-279/年（不含交易手续费）</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- D3: 培育 - CI/CD -->
+    <section class="content-section fade-section">
+      <div class="grid-asymmetric">
+        <div class="main-content">
+          <h2 class="chapter-heading">GitHub+Webify：推送即发布的零运维交付</h2>
+          <p class="body-text"><strong>CloudBase Webify</strong>支持与GitHub/GitLab仓库直接关联。推送代码后自动触发构建，静态资源上传CDN，云函数同步部署。无需手动上传、无需切换环境变量。</p>
+          <p class="body-text">CI/CD搭建成本清零——没有Jenkins配置、没有Docker镜像、没有发布脚本维护。每次代码更新后等待构建完成，即可在开发者工具里拉取最新体验版。</p>
+          <p class="body-text"><strong>云函数热更新</strong>：业务逻辑调整、文案修改、临时活动规则变更，无需重新提审即可生效。审核通道之外保留一条快速响应业务的应急通道。</p>
+          <div class="objection-block">
+            <div class="objection-header">
+              <span class="objection-tag data">版本命名</span>
+              <span class="objection-title">一人公司版本管理规范</span>
+            </div>
+            <div class="objection-content">
+              <p class="objection-item">格式：<strong>v主.次.修订-环境标识</strong></p>
+              <p class="objection-item">示例：v1.0.1-opc-release</p>
+              <p class="objection-item">通过"一人公司诊断器"预检后再上传，拦截80%常见驳回原因</p>
+            </div>
+          </div>
+        </div>
+        <div class="sub-content">
+          <div class="objection-block">
+            <div class="objection-header">
+              <span class="objection-tag error">错误</span>
+              <span class="objection-title">自建服务器的隐性成本</span>
+            </div>
+            <div class="objection-content">
+              <p class="objection-item">❌ HTTPS证书管理、续期、配置错误</p>
+              <p class="objection-item">❌ 域名备案反复修改</p>
+              <p class="objection-item">❌ 服务器补丁、安全更新、故障恢复</p>
+              <p class="objection-item">❌ 负载均衡配置、数据库连接池</p>
+              <p class="objection-item">以上每项都是持续性人力成本</p>
+            </div>
+          </div>
+          <div class="objection-block">
+            <div class="objection-header">
+              <span class="objection-tag success">正确</span>
+              <span class="objection-title">云开发一体化</span>
+            </div>
+            <div class="objection-content">
+              <p class="objection-item">✓ 云函数=后端，无需部署服务器</p>
+              <p class="objection-item">✓ 数据库=存储，无需配置连接池</p>
+              <p class="objection-item">✓ CDN加速内置，无需手动配置</p>
+              <p class="objection-item">✓ 弹性伸缩，零运维负担</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- D4: 避坑 -->
+    <section class="content-section fade-section">
+      <div class="grid-asymmetric">
+        <div class="main-content">
+          <h2 class="chapter-heading">两大生死线：对公账户打款与备案主体一致性</h2>
+          <p class="body-text"><strong>坑一：微众银行对公账户认证失败</strong></p>
+          <p class="body-text">部分线上银行（如微众银行）对公账户因报文格式问题，无法通过微信开放平台的对公打款认证。解法：优先选择传统银行I类结算户；或申请微信支付特批通道（需3-5工作日）；或选"OPC友好开户包"城商行。</p>
+          <p class="body-text"><strong>坑二：备案主体与法人不一致</strong></p>
+          <p class="body-text">2025年新规要求备案主体必须是营业执照上的法定代表人。一人公司法人即负责人，必须亲自完成人脸识别，不能授权他人代办。</p>
+          <div class="objection-block">
+            <div class="objection-header">
+              <span class="objection-tag error">错误</span>
+              <span class="objection-title">资金违规操作</span>
+            </div>
+            <div class="objection-content">
+              <p class="objection-item">❌ 对公账户资金直接转入个人卡（反洗钱监测）</p>
+              <p class="objection-item">❌ 以"备用金""借款"名义长期占用公款</p>
+              <p class="objection-item">❌ 连续三个月无交易自动冻结商户号</p>
+            </div>
+          </div>
+        </div>
+        <div class="sub-content">
+          <div class="objection-block">
+            <div class="objection-header">
+              <span class="objection-tag success">正确</span>
+              <span class="objection-title">合规资金提取路径</span>
+            </div>
+            <div class="objection-content">
+              <p class="objection-item"><strong>工资发放</strong>：依法预扣个税，留存工资条</p>
+              <p class="objection-item"><strong>法人报销</strong>：凭真实发票，保留支出凭证</p>
+              <p class="objection-item"><strong>年终分红</strong>：书面决议，按20%缴个税</p>
+              <p class="objection-item"><strong>薪金理财产品</strong>：银行合规转账通道</p>
+              <p class="objection-item" style="margin-top: 12px; color: var(--accent);">⚠️ 公私混同是OPC最常见的合规性硬伤</p>
+            </div>
+          </div>
+          <div class="objection-block">
+            <div class="objection-header">
+              <span class="objection-tag data">认证</span>
+              <span class="objection-title">小额打款自动回填条件</span>
+            </div>
+            <div class="objection-content">
+              <p class="objection-item">✓ 注册资本≤10万元</p>
+              <p class="objection-item">✓ 支持电子回单实时查询</p>
+              <p class="objection-item">✓ 1-2个工作日完成认证</p>
+              <p class="objection-item">⚠️ 注册资本>10万需走标准认证通道</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- D5: 培育 - 隐私合规 -->
+    <section class="content-section fade-section">
+      <div class="grid-asymmetric">
+        <div class="main-content">
+          <h2 class="chapter-heading">隐私接口声明：2026年最易被拒的细节</h2>
+          <p class="body-text">2026年4月起，微信对涉及用户隐私接口的小程序实行最严格的<strong>"先配置后调用"</strong>原则。使用wx.getLocation、wx.chooseAddress、wx.getPhoneNumber等接口，必须在小程序后台配置《用户隐私保护指引》。</p>
+          <p class="body-text"><strong>常见驳回原因</strong>：用途描述过于笼统（如"用于改善服务"）被判定为"目的不明确"。必须具体到功能点，例如"获取位置用于匹配最近的自提点"。</p>
+          <p class="body-text">正确流程：后台"设置-用户隐私保护指引"逐项勾选实际调用的接口，填写每一项的具体用途说明，保存后系统自动生成隐私弹窗，用户首次打开时触发授权。</p>
+          <div class="core-insight">
+            <p class="core-insight-text">云开发环境中调用含敏感字段的数据库集合，必须在指引中单独声明。一人公司没有法务团队，直接套用微信官方隐私协议模板最稳妥。</p>
+          </div>
+        </div>
+        <div class="sub-content">
+          <div class="objection-block">
+            <div class="objection-header">
+              <span class="objection-tag error">错误</span>
+              <span class="objection-title">隐私声明高频错误</span>
+            </div>
+            <div class="objection-content">
+              <p class="objection-item">❌ "可能收集您的位置信息用于改善服务"（目的不明）</p>
+              <p class="objection-item">❌ 写了wx.getLocation却忘记在后台配置声明</p>
+              <p class="objection-item">❌ 隐私弹窗触发时机错误（调用前未弹窗）</p>
+              <p class="objection-item">❌ 代码中有残留的测试接口未删除</p>
+            </div>
+          </div>
+          <div class="objection-block">
+            <div class="objection-header">
+              <span class="objection-tag success">正确</span>
+              <span class="objection-title">隐私合规检查清单</span>
+            </div>
+            <div class="objection-content">
+              <p class="objection-item">✓ 登录后台逐项勾选实际调用的接口</p>
+              <p class="objection-item">✓ 每项用途具体到功能（如"匹配最近自提点"）</p>
+              <p class="objection-item">✓ 调用wx.requirePrivacyAuthorize触发弹窗</p>
+              <p class="objection-item">✓ 代码中移除任何指向外包公司的信息残留</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- D6: 决策 -->
+    <section class="content-section fade-section">
+      <div class="section-label">决策矩阵</div>
+      <h2 class="balance-section-title">做 / 不做</h2>
+      <p class="balance-intro">上线后一个人的监控能力有限。严禁一次性全量发布，<strong>灰度策略</strong>是OPC小程序的唯一安全发布方式。</p>
+      <div class="balance-grid">
+        <div class="balance-card">
+          <div class="balance-card-label positive">✓ 应该做</div>
+          <div class="balance-item">注册前确认营业执照有"一人有限公司"或"自然人独资"字样</div>
+          <div class="balance-item">开通传统银行I类对公结算账户（不支持微众等线上银行）</div>
+          <div class="balance-item">使用云开发+Webify一体化架构，零运维</div>
+          <div class="balance-item">GitHub关联Webify，推送即自动构建部署</div>
+          <div class="balance-item">灰度发布：先对5%用户，观察48小时再放量</div>
+          <div class="balance-item">配置云函数错误告警，绑定微信服务通知</div>
+          <div class="balance-item">通过云函数热更新修复Bug，避免重新提审</div>
+          <div class="balance-item">12月31日前清理"其他应收款-股东借款"挂账</div>
+        </div>
+        <div class="balance-card">
+          <div class="balance-card-label negative">✗ 不应该做</div>
+          <div class="balance-item dim">选个人主体小程序（功能阉割，无法商业化）</div>
+          <div class="balance-item dim">自建服务器（持续运维成本高）</div>
+          <div class="balance-item dim">一次性全量发布新版本（风险无法控制）</div>
+          <div class="balance-item dim">对公账户资金直接转入个人卡（反洗钱监测）</div>
+          <div class="balance-item dim">省略《一人公司创业承诺函》（审核直接驳回）</div>
+          <div class="balance-item dim">隐私接口声明填写模糊（审核秒拒）</div>
+          <div class="balance-item dim">代码中残留外包公司或三方团队信息</div>
+          <div class="balance-item dim">商户号三个月无交易（自动冻结）</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FIN Section -->
+    <section class="content-section fade-section">
+      <div class="section-label">FIN</div>
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="summary-num">¥99</div>
+          <div class="summary-title">首年技术成本</div>
+          <div class="summary-desc">云开发基础资源包，涵盖中小规模用户运转</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num">3天</div>
+          <div class="summary-title">从注册到上线</div>
+          <div class="summary-desc">日均投入3-4小时，纯工具类小程序最快2小时过审</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num">0</div>
+          <div class="summary-title">运维人员配置</div>
+          <div class="summary-desc">云开发一体化架构，零服务器、零运维、零证书管理</div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer-nav">
+      <a href="/nodes/34-tax-planning/index.html" class="nav-link">
+        <span class="nav-arrow">←</span>
+        节点34：年度税务筹划
+      </a>
+      <a href="/nodes/36-product-iteration/index.html" class="nav-link">
+        节点36：产品迭代与复盘
+        <span class="nav-arrow">→</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
   </script>
 </body>
 </html>

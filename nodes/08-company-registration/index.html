@@ -7,101 +7,357 @@
   <meta name="theme-color" content="#111110">
   <title>公司注册全流程 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #111110;
-      --surface: #1A1A18;
-      --text-primary: #F0EDE6;
-      --text-secondary: #7A7670;
-      --accent: #C0392B;
-      --line: #2A2A28;
-    }
-    body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; }
-    .loading { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-    .loading-bar { width: 100%; height: 1px; background: var(--line); position: relative; overflow: hidden; max-width: 200px; }
-    .loading-bar::after { content: ''; position: absolute; left: -50%; top: 0; width: 50%; height: 100%; background: var(--accent); animation: loading-slide 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite; }
-    @keyframes loading-slide { from { left: -50%; } to { left: 100%; } }
-    .content h1 { font-size: 1.75rem; font-weight: 300; margin-bottom: 1rem; }
-    .content h2 { font-size: 1.25rem; font-weight: 400; margin: 1.5rem 0 0.75rem; color: var(--text-primary); }
-    .content h3 { font-size: 1rem; font-weight: 500; margin: 1.25rem 0 0.5rem; color: var(--text-primary); }
-    .content p { line-height: 1.9; margin-bottom: 1rem; color: var(--text-secondary); }
-    .content ul, .content ol { margin: 1rem 0; padding-left: 1.5rem; color: var(--text-secondary); }
-    .content li { line-height: 1.8; margin-bottom: 0.5rem; }
-    .content strong { color: var(--text-primary); font-weight: 500; }
-    .content code { background: var(--surface); padding: 0.125rem 0.375rem; border-radius: 0.25rem; font-size: 0.875rem; }
-    .content pre { background: var(--surface); padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin: 1rem 0; }
-    .content pre code { background: none; padding: 0; }
-    .content blockquote { border-left: 3px solid var(--accent); padding-left: 1rem; margin: 1rem 0; color: var(--text-secondary); font-style: italic; }
-    .content hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
-    .content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-    .content th, .content td { border: 1px solid var(--line); padding: 0.75rem; text-align: left; }
-    .content th { background: var(--surface); color: var(--text-primary); }
-    .content td { color: var(--text-secondary); }
-    .content a { color: var(--accent); text-decoration: underline; }
-    .content input[type="checkbox"] { margin-right: 0.5rem; }
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #B8B4AE;
+  --text-tertiary: #A8A49E;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; font-weight: 400; line-height: 1.9; letter-spacing: 0.04em; -webkit-font-smoothing: antialiased; }
+
+.page { position: relative; max-width: 1200px; margin: 0 auto; padding: 0 clamp(24px, 8vw, 120px); min-height: 100vh; }
+.page::before { content: ''; position: absolute; top: 0; left: clamp(24px, 8vw, 120px); right: clamp(24px, 8vw, 120px); height: 1px; background: var(--line); }
+
+.section-number { position: absolute; top: var(--space-2xl); right: clamp(24px, 8vw, 120px); font-size: clamp(100px, 22vw, 280px); font-weight: 100; color: var(--text-primary); opacity: 0.03; line-height: 1; letter-spacing: -0.05em; font-family: 'Noto Serif JP', serif; pointer-events: none; user-select: none; }
+
+.back-link { position: fixed; top: var(--space-xl); left: clamp(24px, 8vw, 120px); z-index: 100; }
+.back-link a { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: color 0.3s ease; }
+.back-link a:hover { color: var(--text-primary); }
+
+.hero { padding: var(--space-4xl) 0 var(--space-3xl); position: relative; }
+.hero-content { position: relative; z-index: 1; max-width: 800px; }
+.hero-label { font-size: 13px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-md); }
+.hero-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+.hero-title { font-family: 'Noto Serif JP', serif; font-size: clamp(48px, 10vw, 96px); font-weight: 300; letter-spacing: -0.03em; line-height: 0.95; margin-bottom: var(--space-xl); }
+.hero-desc { font-size: 16px; color: var(--text-secondary); line-height: 1.8; max-width: 44ch; }
+
+.content-section { padding: var(--space-3xl) 0; border-top: 1px solid var(--line); }
+.section-label { font-size: 13px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-md); }
+.section-label::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+
+.timeline { position: relative; padding-left: var(--space-2xl); margin: var(--space-xl) 0; }
+.timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 1px; background: var(--line); }
+.timeline-item { position: relative; margin-bottom: var(--space-lg); }
+.timeline-item::before { content: ''; position: absolute; left: calc(-1 * var(--space-2xl) + 4px); top: 8px; width: 9px; height: 9px; background: var(--accent); }
+.timeline-item:last-child { margin-bottom: 0; }
+.timeline-label { font-size: 12px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: var(--space-xs); }
+.timeline-title { font-size: 15px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-xs); }
+.timeline-text { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+
+.step-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: var(--space-sm); margin: var(--space-xl) 0; }
+@media (max-width: 768px) { .step-grid { grid-template-columns: repeat(2, 1fr); } }
+.step-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-md); position: relative; }
+.step-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--accent); }
+.step-num { font-family: 'Noto Serif JP', serif; font-size: 24px; font-weight: 300; color: var(--accent); opacity: 0.5; margin-bottom: var(--space-xs); }
+.step-name { font-size: 13px; font-weight: 500; color: var(--text-primary); margin-bottom: 4px; }
+.step-time { font-size: 11px; color: var(--text-tertiary); }
+
+.three-col { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: var(--space-md); }
+@media (max-width: 900px) { .three-col { grid-template-columns: 1fr; } }
+
+.info-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-lg); position: relative; }
+.info-card.danger { border-color: var(--accent); }
+.info-card.danger::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--accent); }
+.info-card.success { border-color: var(--accent); opacity: 0.8; }
+.info-card.success::before { background: var(--accent); opacity: 0.6; }
+.info-label { font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-sm); }
+.info-card.danger .info-label { color: var(--accent); }
+.info-card.success .info-label { color: var(--accent); }
+.info-title { font-size: 15px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-xs); }
+.info-text { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+
+.data-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: var(--space-md) 0; }
+.data-table th { text-align: left; color: var(--accent); font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; padding: var(--space-sm); border-bottom: 1px solid var(--line); font-size: 12px; }
+.data-table td { padding: var(--space-sm); border-bottom: 1px solid var(--line-light); color: var(--text-secondary); }
+.data-table td:first-child { color: var(--text-primary); font-weight: 500; width: 30%; }
+
+.highlight-box { background: var(--surface); border: 1px solid var(--accent); padding: var(--space-lg); margin: var(--space-xl) 0; }
+.highlight-label { font-size: 12px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-sm); }
+.highlight-text { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+
+.quote-block { border-left: 2px solid var(--accent); padding-left: var(--space-md); margin: var(--space-xl) 0; }
+.quote-text { font-size: 15px; color: var(--text-secondary); font-style: italic; line-height: 1.7; }
+
+.footer-nav { padding: var(--space-2xl) 0; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
+.nav-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: color 0.3s ease; }
+.nav-link:hover { color: var(--text-primary); }
+.nav-arrow { font-size: 0.75rem; }
+
+.fade-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.fade-section.visible { opacity: 1; transform: translateY(0); }
+* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
   </style>
 </head>
 <body>
-  <div id="app" data-slug="company-registration">
-    <div class="loading">
-      <div class="loading-bar"></div>
-    </div>
+  <div class="back-link">
+    <a href="/"><span>←</span> 返回首页</a>
   </div>
-  <script type="module">
-    const SLUG = "company-registration";
+  <div class="section-number">08</div>
 
-    async function loadNode() {
-      try {
-        const res = await fetch("/api/nodes/" + SLUG);
-        if (!res.ok) throw new Error("Failed to load");
-        const data = await res.json();
-        renderNode(data);
-      } catch (e) {
-        document.getElementById("app").innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text-secondary)">加载失败</div>';
-      }
-    }
+  <div class="page">
+    <header class="hero fade-section">
+      <div class="hero-content">
+        <div class="hero-label">节点 08 · 0-1</div>
+        <h1 class="hero-title">公司注册<br>全流程</h1>
+        <p class="hero-desc">核名、经营范围、注册地址、刻章，全程线上办理1天搞定。新公司法5年实缴制下，如何高效拿到法人身份证？</p>
+      </div>
+    </header>
 
-    function mdToHtml(md) {
-      if (!md) return '<p style="color:var(--text-secondary)">内容加载中...</p>';
-      let html = md
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/^### (.+)$/gm, "<h3>$1</h3>")
-        .replace(/^## (.+)$/gm, "<h2>$1</h2>")
-        .replace(/^# (.+)$/gm, "<h1>$1</h1>")
-        .replace(/**(.+?)**/g, "<strong>$1</strong>")
-        .replace(/^- (.+)$/gm, "<li>$1</li>")
-        .replace(/^\[ \] (.+)$/gm, "<div><input type="checkbox" disabled> $1</div>")
-        .replace(/^\[x\] (.+)$/gm, "<div><input type="checkbox" checked disabled> $1</div>")
-        .replace(/^\d+\. (.+)$/gm, "<li>$1</li>")
-        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
-        .replace(/^(?!<[a-z])(.+)$/gm, "<p>$1</p>")
-        .replace(/\n\n+/g, "\n");
-      html = html.replace(/(<li>.*<\/li>\n?)+/g, "<ul>$&</ul>");
-      return html;
-    }
-
-    function renderNode(node) {
-      const content = node.content || "";
-      const contentHtml = mdToHtml(content);
-      document.getElementById("app").innerHTML = `
-        <div style="max-width:800px;margin:0 auto;padding:2rem 1.25rem;">
-          <a href="/" style="color:var(--text-secondary);font-size:0.75rem;letter-spacing:0.1em;text-decoration:none;">← 返回首页</a>
-          <div style="margin-top:2rem;">
-            <div style="color:var(--accent);font-size:0.625rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;">${node.data?.category || ""} · ${node.data?.difficulty || ""}</div>
-            <h1 style="font-size:clamp(1.5rem,5vw,2.5rem);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;">${node.data?.title || ""}</h1>
-            <p style="color:var(--text-secondary);line-height:1.9;">${node.data?.summary || ""}</p>
-          </div>
-          <div class="content" style="margin-top:2rem;padding-top:2rem;border-top:1px solid var(--line);">
-            ${contentHtml}
-          </div>
+    <section class="content-section fade-section">
+      <div class="section-label">七步注册流程</div>
+      <div class="step-grid">
+        <div class="step-card">
+          <div class="step-num">01</div>
+          <div class="step-name">核名申报</div>
+          <div class="step-time">1天</div>
         </div>
-      `;
-    }
+        <div class="step-card">
+          <div class="step-num">02</div>
+          <div class="step-name">确定要素</div>
+          <div class="step-time">半天</div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">03</div>
+          <div class="step-name">在线填报</div>
+          <div class="step-time">1天</div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">04-07</div>
+          <div class="step-name">签署→领照→刻章→开户</div>
+          <div class="step-time">1周</div>
+        </div>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-label">步骤 1</div>
+          <div class="timeline-title">核名自主申报</div>
+          <div class="timeline-text">登录"企业开办一网通办"平台。名称结构："行政区划+字号+行业+组织形式"。系统自动查重，秒级反馈。建议准备<strong>3-5个备选字号</strong>。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-label">步骤 2</div>
+          <div class="timeline-title">确定公司核心要素</div>
+          <div class="timeline-text">选择"一人有限责任公司"或"一人股份有限公司"。注册资本设定需匹配5年实缴能力，经营范围通过标准化条目库点选。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-label">步骤 3</div>
+          <div class="timeline-title">在线填报与实名认证</div>
+          <div class="timeline-text">上传身份证件，在《公司章程》模板中完善"股东职权行使"条款。股东、法定代表人、监事需通过手机APP完成<strong>人脸识别与电子签名</strong>。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-label">步骤 4-7</div>
+          <div class="timeline-title">签署→领照→刻章→开户</div>
+          <div class="timeline-text">电子签署并提交，审核通常0.5个工作日完成。领取电子执照+免费刻章（公章、财务章、法定代表人章）。同步完成税务登记与银行对公账户开户。</div>
+        </div>
+      </div>
+      <div class="highlight-box">
+        <div class="highlight-label">2025-2026政策</div>
+        <div class="highlight-text">全程网办、零见面、一日办结。材料齐备情况下，从提交申请到拿到执照通常不超过1个工作日。</div>
+      </div>
+    </section>
 
-    loadNode();
+    <section class="content-section fade-section">
+      <div class="section-label">公司类型与资本</div>
+      <div class="three-col">
+        <div class="info-card">
+          <div class="info-label">类型选择</div>
+          <div class="info-title">一人有限责任公司</div>
+          <div class="info-text">不设股东会，股东行使全部股东权利。日常合规负担更轻，适合绝大多数OPC创业者初期选择。</div>
+        </div>
+        <div class="info-card">
+          <div class="info-label">进阶选择</div>
+          <div class="info-title">一人股份有限公司</div>
+          <div class="info-text">新《公司法》首次开放。股份可自由转让、可分期发行，为未来融资、股权激励预留标准接口。</div>
+        </div>
+        <div class="info-card danger">
+          <div class="info-label">注册资本</div>
+          <div class="info-title">5年实缴制</div>
+          <div class="info-text">全体股东认缴出资额必须在公司成立之日起<strong>5年内缴足</strong>。禁止任意夸大设定。</div>
+        </div>
+      </div>
+      <div class="highlight-box" style="margin-top: var(--space-lg);">
+        <div class="highlight-label">务实选择</div>
+        <div class="highlight-text">初期10万元，盈利后增资。满足基本商业信誉需求，又不至于因5年实缴压力过大。年应纳税所得额≤300万元，实际税负可低至5%左右。</div>
+      </div>
+    </section>
+
+    <section class="content-section fade-section">
+      <div class="section-label">注册地址选择</div>
+      <div class="three-col">
+        <div class="info-card">
+          <div class="info-label">传统方案</div>
+          <div class="info-title">实体租赁</div>
+          <div class="info-text">租赁写字楼或商业办公地址。优点是银行开户、税务核查无障碍；缺点是初期成本高（尤其一线城市）。</div>
+        </div>
+        <div class="info-card success">
+          <div class="info-label">2026主流</div>
+          <div class="info-title">集群注册 / 托管地址</div>
+          <div class="info-text">由合规商务秘书公司或产业园区提供地址，年费通常<strong>1000-3000元</strong>。大幅降低创业初期租金压力。</div>
+        </div>
+        <div class="info-card">
+          <div class="info-label">政策放宽</div>
+          <div class="info-title">住宅地址</div>
+          <div class="info-text">多数城市推行"住所申报承诺制"，允许住宅注册（限不扰民行业）。但银行开户可能受阻。</div>
+        </div>
+      </div>
+      <div class="quote-block">
+        <p class="quote-text">使用托管地址前，务必向当地市监局确认其有效性，以及银行是否接受该地址用于开户。部分地区要求"一址一照"。</p>
+      </div>
+    </section>
+
+    <section class="content-section fade-section">
+      <div class="section-label">财产隔离铁律</div>
+      <div class="info-card danger" style="margin-bottom: var(--space-lg);">
+        <div class="info-label">核心原则</div>
+        <div class="info-title">公司账户与个人账户必须完全分离</div>
+        <div class="info-text">所有经营收入必须先进入公司对公账户，再通过正规渠道（工资、分红）提取至个人卡。哪怕是一笔几十元的小额收款。一旦被法院认定<strong>财产混同</strong>，将刺破公司面纱，股东承担无限连带责任。</div>
+      </div>
+      <div class="data-table">
+        <thead>
+          <tr>
+            <th>方式</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>发放工资</td>
+            <td>需签订劳动合同，依法代扣个税</td>
+          </tr>
+          <tr>
+            <td>税后利润分红</td>
+            <td>需有股东决定书</td>
+          </tr>
+          <tr>
+            <td>借款</td>
+            <td>需签订借款协议，约定还款期限和利率</td>
+          </tr>
+        </tbody>
+      </div>
+      <div class="highlight-box">
+        <div class="highlight-label">法律依据</div>
+        <div class="highlight-text">新《公司法》第23条：一人公司股东若不能证明公司财产独立于自己财产的，应当对公司债务承担连带责任。守不住这条底线，有限责任保护伞等于零。</div>
+      </div>
+    </section>
+
+    <section class="content-section fade-section">
+      <div class="section-label">书面决定记录</div>
+      <div class="info-card success" style="margin-bottom: var(--space-lg);">
+        <div class="info-label">法律依据</div>
+        <div class="info-title">新《公司法》第60条</div>
+        <div class="info-text">一人有限责任公司不设股东会。股东作出决定时，应当采用书面形式，由股东签名后置备于公司。</div>
+      </div>
+      <div class="data-table">
+        <thead>
+          <tr>
+            <th>必须记录的事项</th>
+            <th>日常场景</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>利润分配方案</td>
+            <td rowspan="5">日常经营决策若无重大影响，可不强制记录。但若涉及对外签署重要合同、进行大额采购等，建议留存书面决定。</td>
+          </tr>
+          <tr>
+            <td>增减注册资本</td>
+          </tr>
+          <tr>
+            <td>修改公司章程</td>
+          </tr>
+          <tr>
+            <td>对外投资或担保</td>
+          </tr>
+          <tr>
+            <td>变更经营范围或注册地址</td>
+          </tr>
+        </tbody>
+      </div>
+    </section>
+
+    <section class="content-section fade-section">
+      <div class="section-label">年度合规要点</div>
+      <div class="data-table">
+        <thead>
+          <tr>
+            <th>时间</th>
+            <th>事项</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1-5月</td>
+            <td>企业所得税汇算清缴</td>
+            <td>完成上一年度企业所得税汇算清缴，无论公司盈亏。逾期申报将产生滞纳金和罚款。</td>
+          </tr>
+          <tr>
+            <td>5月</td>
+            <td>个税综合所得汇算</td>
+            <td>完成个人综合所得年度汇算。</td>
+          </tr>
+          <tr>
+            <td>6月</td>
+            <td>工商年报</td>
+            <td>公示企业基本信息、股东出资情况、资产负债状况。逾期未报将被列入经营异常名录。</td>
+          </tr>
+          <tr>
+            <td>每两年</td>
+            <td>年度审计</td>
+            <td>主动审计是构建防火墙的常用策略。这笔费用是<strong>维护有限责任保护伞的保险费</strong>。</td>
+          </tr>
+          <tr>
+            <td>随时</td>
+            <td>创业补贴申请</td>
+            <td>注册后主动对接当地人社部门，申请<strong>一次性创业补贴</strong>（通常5000-20000元）。</td>
+          </tr>
+        </tbody>
+      </div>
+    </section>
+
+    <section class="content-section fade-section">
+      <div class="section-label">总纲</div>
+      <div class="quote-block" style="border-left-width: 3px;">
+        <p class="quote-text" style="font-size: 18px; color: var(--text-primary);">执照只是起点。<br><br>完成公司注册，你获得的不只是一张营业执照，更是一套OPC创业的合规生存框架。把公司视为独立的生命体，用规范的财产管理、书面决策和财税记录来喂养它，它就能用有限责任为你承担商海风浪。</p>
+      </div>
+    </section>
+
+    <footer class="footer-nav fade-section">
+      <a href="/nodes/07-tech-validation/index.html" class="nav-link">
+        <span class="nav-arrow">←</span>
+        节点07：核心功能技术验证
+      </a>
+      <a href="/nodes/09-bank-account/index.html" class="nav-link">
+        节点09：银行开户与商户号申请
+        <span class="nav-arrow">→</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
   </script>
 </body>
 </html>
