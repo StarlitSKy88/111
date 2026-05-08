@@ -15,9 +15,9 @@
   --bg: #111110;
   --surface: #1A1A18;
   --text-primary: #F0EDE6;
-  --text-secondary: #B8B4AE;
+  --text-secondary: #7A7670;
   --text-tertiary: #A8A49E;
-  --accent: #C0392B;
+  --accent: #E05A47;
   --line: #2A2A28;
   --line-light: rgba(255,255,255,0.06);
 
@@ -92,7 +92,7 @@ body {
   text-transform: uppercase;
   color: var(--text-tertiary);
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: color 0.4s ease;
 }
 
 .back-link a:hover { color: var(--text-primary); }
@@ -142,10 +142,31 @@ body {
   max-width: 44ch;
 }
 
-/* Dimension Sections */
-.dimension {
+.content-section {
   padding: var(--space-3xl) 0;
   border-top: 1px solid var(--line);
+}
+
+.section-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.section-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.dimension-section {
+  margin-bottom: var(--space-4xl);
 }
 
 .dimension-badge {
@@ -167,6 +188,7 @@ body {
   line-height: 1.2;
   margin-bottom: var(--space-xl);
   max-width: 16em;
+  color: var(--text-primary);
 }
 
 .dimension-layout {
@@ -188,29 +210,20 @@ body {
 }
 
 .answer-block {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  padding: var(--space-lg);
-  margin-bottom: var(--space-md);
-  position: relative;
+  padding: var(--space-lg) 0;
+  border-bottom: 1px solid var(--line);
 }
 
-.answer-block::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 2px;
-  height: 100%;
-  background: var(--accent);
+.answer-block:last-child {
+  border-bottom: none;
 }
 
 .answer-label {
   font-size: 12px;
-  color: var(--accent);
   letter-spacing: 0.15em;
   text-transform: uppercase;
   margin-bottom: var(--space-sm);
+  color: var(--text-tertiary);
 }
 
 .answer-title {
@@ -218,6 +231,7 @@ body {
   font-weight: 500;
   color: var(--text-primary);
   margin-bottom: var(--space-xs);
+  line-height: 1.4;
 }
 
 .answer-desc {
@@ -228,155 +242,124 @@ body {
 
 .chart-area {
   position: relative;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  padding: var(--space-xl);
-  min-height: 300px;
-}
-
-.chart-area::before {
-  content: '';
-  position: absolute;
-  top: var(--space-lg);
-  left: var(--space-lg);
-  right: var(--space-lg);
-  height: 1px;
-  background: var(--line);
 }
 
 .chart-title {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 18px;
-  font-weight: 300;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xl);
-  padding-top: var(--space-lg);
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
 }
 
 .objection-block {
-  padding: var(--space-md);
+  padding: var(--space-lg);
   margin-bottom: var(--space-md);
-  border-left: 2px solid;
+  border: 1px solid var(--line);
 }
 
+.objection-block:last-child { margin-bottom: 0; }
+
 .objection-block.red {
-  border-color: var(--accent);
-  background: rgba(192, 57, 43, 0.05);
+  border-left: 2px solid var(--accent);
+  background: rgba(224, 90, 71, 0.03);
 }
 
 .objection-block.green {
-  border-color: var(--accent);
-  background: rgba(39, 174, 96, 0.05);
+  border-left: 2px solid #4CAF50;
+  background: rgba(76, 175, 80, 0.03);
 }
 
 .objection-block.muted {
-  border-color: var(--text-tertiary);
-  background: rgba(168, 164, 158, 0.05);
+  border-left: 2px solid var(--text-tertiary);
+  background: rgba(168, 164, 158, 0.03);
 }
 
 .objection-label {
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  margin-bottom: var(--space-xs);
+  margin-bottom: var(--space-sm);
 }
 
 .objection-block.red .objection-label { color: var(--accent); }
-.objection-block.green .objection-label { color: var(--accent); }
+.objection-block.green .objection-label { color: #4CAF50; }
 .objection-block.muted .objection-label { color: var(--text-tertiary); }
 
 .objection-title {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
   color: var(--text-primary);
   margin-bottom: var(--space-xs);
 }
 
-.objection-desc {
+.objection-text {
   font-size: 13px;
   color: var(--text-secondary);
   line-height: 1.6;
 }
 
-.decision-table {
-  width: 100%;
-  border-collapse: collapse;
+.core-insight {
   margin-top: var(--space-xl);
+  padding-left: var(--space-md);
+  border-left: 1px solid var(--accent);
 }
 
-.decision-table th {
-  font-size: 11px;
-  color: var(--text-tertiary);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  text-align: left;
-  padding: var(--space-md);
-  border-bottom: 1px solid var(--line);
-  font-weight: 400;
-}
-
-.decision-table td {
-  font-size: 14px;
+.core-insight-text {
+  font-size: 15px;
   color: var(--text-secondary);
-  padding: var(--space-md);
-  border-bottom: 1px solid var(--line-light);
-  vertical-align: top;
-}
-
-.decision-table tr:last-child td { border-bottom: none; }
-
-.decision-table td:first-child {
-  color: var(--text-primary);
-  font-weight: 500;
-  width: 40%;
-}
-
-.decision-table td:last-child {
-  color: var(--accent);
-  font-weight: 500;
+  line-height: 1.7;
+  max-width: 40ch;
 }
 
 .fin-section {
   padding: var(--space-3xl) 0;
+  border-top: 1px solid var(--line);
   text-align: center;
   position: relative;
+  overflow: hidden;
 }
 
 .fin-number {
   font-family: 'Noto Serif JP', serif;
-  font-size: clamp(120px, 25vw, 300px);
+  font-size: clamp(120px, 30vw, 400px);
   font-weight: 100;
   color: var(--text-primary);
-  opacity: 0.05;
+  opacity: 0.04;
   line-height: 1;
+  letter-spacing: -0.05em;
   position: absolute;
   left: 50%;
-  transform: translateX(-50%);
   top: 50%;
   transform: translate(-50%, -50%);
   pointer-events: none;
   user-select: none;
 }
 
-.fin-label {
-  font-size: 11px;
-  color: var(--accent);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  margin-bottom: var(--space-sm);
+.fin-text {
   position: relative;
   z-index: 1;
 }
 
-.fin-text {
+.fin-label {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-md);
+}
+
+.fin-title {
   font-family: 'Noto Serif JP', serif;
   font-size: clamp(24px, 4vw, 36px);
   font-weight: 300;
+  letter-spacing: -0.02em;
   color: var(--text-primary);
-  max-width: 20ch;
+  max-width: 20em;
   margin: 0 auto;
-  position: relative;
-  z-index: 1;
+  line-height: 1.3;
 }
 
 .footer-nav {
@@ -396,7 +379,7 @@ body {
   text-transform: uppercase;
   color: var(--text-tertiary);
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: color 0.4s ease;
 }
 
 .nav-link:hover { color: var(--text-primary); }
@@ -410,489 +393,6 @@ body {
 
 .fade-section.visible { opacity: 1; transform: translateY(0); }
 
-/* ========== 节点18专用布局 - Ma风格极简主义 ========== */
-
-/* 维度一：个人IP - 左侧超大背景数字 */
-.dim1-trust-section {
-  position: relative;
-  margin-top: var(--space-xl);
-}
-
-.dim1-bg-num {
-  position: absolute;
-  top: -60px;
-  left: -20px;
-  font-family: 'Noto Serif JP', serif;
-  font-size: 280px;
-  font-weight: 100;
-  color: var(--text-primary);
-  opacity: 0.03;
-  line-height: 1;
-  pointer-events: none;
-  user-select: none;
-}
-
-.trust-model {
-  display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  gap: var(--space-3xl);
-  position: relative;
-  z-index: 1;
-}
-
-.trust-pillar {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-}
-
-.trust-pillar-item {
-  padding: var(--space-lg);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-left: 3px solid var(--accent);
-}
-
-.trust-pillar-label {
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: var(--space-sm);
-}
-
-.trust-pillar-title {
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xs);
-}
-
-.trust-pillar-desc {
-  font-size: 13px;
-  color: var(--text-secondary);
-  line-height: 1.6;
-}
-
-.trust-visual {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-lg);
-  padding-top: var(--space-xl);
-}
-
-/* 维度二：AI工具矩阵 - 不对称网格 */
-.dim2-matrix-section {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: var(--space-3xl);
-  margin-top: var(--space-xl);
-}
-
-.ai-matrix-label {
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  margin-bottom: var(--space-lg);
-}
-
-.ai-matrix-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-md);
-}
-
-.ai-matrix-cell {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  padding: var(--space-lg);
-  position: relative;
-}
-
-.ai-matrix-cell::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: var(--accent);
-  opacity: 0.4;
-}
-
-.ai-matrix-name {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xs);
-}
-
-.ai-matrix-desc {
-  font-size: 12px;
-  color: var(--text-secondary);
-  line-height: 1.5;
-}
-
-.ai-flywheel {
-  padding: var(--space-xl);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-top: 3px solid var(--accent);
-}
-
-.flywheel-title {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 18px;
-  font-weight: 300;
-  color: var(--text-primary);
-  margin-bottom: var(--space-lg);
-}
-
-.flywheel-steps {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-sm);
-}
-
-.flywheel-step {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-sm);
-  padding: var(--space-sm);
-  font-size: 12px;
-  color: var(--text-secondary);
-  background: var(--bg);
-  border: 1px solid var(--line-light);
-}
-
-.flywheel-num {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 14px;
-  color: var(--accent);
-  font-weight: 300;
-  flex-shrink: 0;
-}
-
-/* 维度三：获客四条路径 - 瀑布流变体 */
-.dim3-channels {
-  display: grid;
-  grid-template-columns: 1.4fr 1fr 0.8fr;
-  gap: var(--space-xl);
-  margin-top: var(--space-xl);
-}
-
-.channel-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  padding: var(--space-xl);
-  position: relative;
-}
-
-.channel-card:nth-child(1) {
-  grid-row: span 2;
-  border-top: 3px solid var(--accent);
-}
-
-.channel-card:nth-child(3) {
-  align-self: end;
-}
-
-.channel-num {
-  position: absolute;
-  top: var(--space-md);
-  right: var(--space-md);
-  font-family: 'Noto Serif JP', serif;
-  font-size: 48px;
-  font-weight: 100;
-  color: var(--text-primary);
-  opacity: 0.08;
-  line-height: 1;
-}
-
-.channel-label {
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: var(--space-sm);
-}
-
-.channel-title {
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--text-primary);
-  margin-bottom: var(--space-sm);
-}
-
-.channel-desc {
-  font-size: 13px;
-  color: var(--text-secondary);
-  line-height: 1.6;
-}
-
-/* 维度四：最小获客飞轮 - 环形流程 */
-.dim4-flywheel {
-  display: grid;
-  grid-template-columns: 140px 1fr;
-  gap: var(--space-2xl);
-  margin-top: var(--space-xl);
-  align-items: start;
-}
-
-.flywheel-ring {
-  position: relative;
-  width: 120px;
-  height: 120px;
-}
-
-.flywheel-ring svg {
-  transform: rotate(-90deg);
-}
-
-.flywheel-ring-bg {
-  fill: none;
-  stroke: var(--line);
-  stroke-width: 1;
-}
-
-.flywheel-ring-fill {
-  fill: none;
-  stroke: var(--accent);
-  stroke-width: 1;
-  stroke-linecap: round;
-  stroke-dasharray: 314;
-  stroke-dashoffset: 0;
-  transition: stroke-dashoffset 0.8s ease;
-}
-
-.flywheel-ring-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-}
-
-.flywheel-ring-pct {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 28px;
-  font-weight: 200;
-  color: var(--text-primary);
-  line-height: 1;
-}
-
-.flywheel-ring-label {
-  font-size: 9px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  margin-top: 4px;
-}
-
-.flywheel-nodes {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-md);
-}
-
-.flywheel-node {
-  padding: var(--space-lg);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-left: 2px solid var(--accent);
-}
-
-.flywheel-node-label {
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: var(--space-xs);
-}
-
-.flywheel-node-title {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xs);
-}
-
-.flywheel-node-desc {
-  font-size: 12px;
-  color: var(--text-secondary);
-  line-height: 1.5;
-}
-
-/* 维度五：转化漏斗 - 左重不对称 */
-.dim5-funnel {
-  display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  gap: var(--space-2xl);
-  margin-top: var(--space-xl);
-  align-items: start;
-}
-
-.funnel-steps {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-}
-
-.funnel-step {
-  display: grid;
-  grid-template-columns: 48px 1fr;
-  gap: var(--space-md);
-  padding: var(--space-md);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  position: relative;
-}
-
-.funnel-step::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: var(--accent);
-}
-
-.funnel-num {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 24px;
-  font-weight: 200;
-  color: var(--text-primary);
-  opacity: 0.15;
-  line-height: 1;
-  align-self: center;
-}
-
-.funnel-content { flex: 1; }
-
-.funnel-label {
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: var(--space-xs);
-}
-
-.funnel-title {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xs);
-}
-
-.funnel-desc {
-  font-size: 12px;
-  color: var(--text-secondary);
-  line-height: 1.5;
-}
-
-.funnel-visual {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-  padding-top: 0;
-}
-
-.funnel-metric {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  padding: var(--space-md);
-  text-align: center;
-}
-
-.funnel-metric-value {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 36px;
-  font-weight: 200;
-  color: var(--accent);
-  line-height: 1;
-  margin-bottom: 4px;
-}
-
-.funnel-metric-label {
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-}
-
-/* 维度六：渠道决策 - 极简表格 */
-.dim6-decision {
-  margin-top: var(--space-xl);
-}
-
-.decision-minimal {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.decision-minimal th {
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  font-weight: 400;
-  text-align: left;
-  padding: var(--space-md);
-  border-bottom: 1px solid var(--line);
-  background: var(--surface);
-}
-
-.decision-minimal td {
-  padding: var(--space-lg);
-  border-bottom: 1px solid var(--line-light);
-  font-size: 13px;
-  color: var(--text-secondary);
-  vertical-align: top;
-}
-
-.decision-minimal tr:last-child td { border-bottom: none; }
-
-.decision-minimal td:first-child {
-  font-weight: 500;
-  color: var(--text-primary);
-}
-
-.decision-minimal td:last-child {
-  color: var(--accent);
-  font-weight: 500;
-}
-
-.decision-status {
-  display: inline-block;
-  padding: 2px 8px;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.decision-status.danger { background: rgba(192, 57, 43, 0.15); color: var(--accent); }
-.decision-status.pass { background: rgba(39, 174, 96, 0.15); color: #4CAF50; }
-.decision-status.muted { background: rgba(168, 164, 158, 0.1); color: var(--text-tertiary); }
-
-/* 响应式 */
-@media (max-width: 900px) {
-  .trust-model,
-  .dim2-matrix-section,
-  .dim3-channels,
-  .dim4-flywheel,
-  .dim5-funnel {
-    grid-template-columns: 1fr;
-  }
-  .dim1-bg-num { display: none; }
-  .dim3-channels { grid-template-columns: 1fr 1fr; }
-  .channel-card:nth-child(1) { grid-row: auto; }
-  .dim4-flywheel { grid-template-columns: 1fr; }
-  .flywheel-ring { margin: 0 auto; }
-}
-
-
 * { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
   </style>
 </head>
@@ -903,7 +403,7 @@ body {
   <div class="section-number">18</div>
 
   <div class="page">
-    <header class="hero">
+    <header class="hero fade-section">
       <div class="hero-content">
         <div class="hero-label">节点 18 · 0-1</div>
         <h1 class="hero-title">冷启动获客</h1>
@@ -911,399 +411,308 @@ body {
       </div>
     </header>
 
-    <!-- Dimension 1: 信任前置与个人IP -->
-    <section class="dimension fade-section">
-      <span class="dimension-badge">维度一</span>
-      <h2 class="dimension-question">冷启动阶段，如何建立无法被复制的信任？</h2>
-      <div class="dimension-layout">
-        <div class="answer-section">
-          <div class="answer-block">
-            <div class="answer-label">策略</div>
-            <div class="answer-title">信任前置：你本人就是产品说明书</div>
-            <div class="answer-desc">在客户眼中，你就是公司的全部。你的专业知识、工作流、甚至你对行业的批判性思考，都必须作为公开内容被持续记录和分发。客户先信任你的判断力，随后才购买你的服务。</div>
-          </div>
-          <div class="answer-block">
-            <div class="answer-label">执行</div>
-            <div class="answer-title">将"你是谁"压缩成不可抗拒的第一印象</div>
-            <div class="answer-desc">身份定义 + 结果承诺 + 方法论命名，三要素集成在一屏之内。"专门帮出海SaaS独立开发者搞定美国LLC注册和税务申报的顾问"，远比"营销顾问"更锋利。</div>
-          </div>
-          <div class="answer-block">
-            <div class="answer-label">验证</div>
-            <div class="answer-title">用"过程透明度"替代"结果炫耀"</div>
-            <div class="answer-desc">潜在客户通过观察你如何思考、如何解决问题来预判你能否解决他们的问题。录屏展示工作流、公开失败复盘，让内容本身成为信任的载体。</div>
-          </div>
-        </div>
-        <div class="dim1-trust-section">
-          <div class="dim1-bg-num">01</div>
-          <div class="trust-model">
-            <div class="trust-pillar">
-              <div class="trust-pillar-item">
-                <div class="trust-pillar-label">策略</div>
-                <div class="trust-pillar-title">信任前置：你本人就是产品说明书</div>
-                <div class="trust-pillar-desc">在客户眼中，你就是公司的全部。你的专业知识、工作流、甚至你对行业的批判性思考，都必须作为公开内容被持续记录和分发。</div>
-              </div>
-              <div class="trust-pillar-item">
-                <div class="trust-pillar-label">执行</div>
-                <div class="trust-pillar-title">将"你是谁"压缩成不可抗拒的第一印象</div>
-                <div class="trust-pillar-desc">身份定义 + 结果承诺 + 方法论命名，三要素集成在一屏之内。</div>
-              </div>
-              <div class="trust-pillar-item">
-                <div class="trust-pillar-label">验证</div>
-                <div class="trust-pillar-title">用"过程透明度"替代"结果炫耀"</div>
-                <div class="trust-pillar-desc">录屏展示工作流、公开失败复盘，让内容本身成为信任的载体。</div>
-              </div>
-            </div>
-            <div class="trust-visual">
-              <div class="objection-block red">
-                <div class="objection-label">错误示范</div>
-                <div class="objection-title">先做流量，等人来了再考虑转化</div>
-                <div class="objection-desc">用户给你建立信任的时间窗口只有15秒到3分钟。</div>
-              </div>
-              <div class="objection-block green">
-                <div class="objection-label">正确回答</div>
-                <div class="objection-title">信任基础设施先行</div>
-                <div class="objection-desc">在所有触点预先铺设"你是谁"、"你能解决什么"。</div>
-              </div>
-              <div class="objection-block muted">
-                <div class="objection-label">数据模式</div>
-                <div class="objection-title">一对一单点触达回复率</div>
-                <div class="objection-desc">配合针对对方业务痛点的免费资源，回复率可达25%-40%。</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <section class="content-section fade-section">
+      <div class="section-label">节点内容</div>
 
-    <!-- Dimension 2: AI平权下的获客生产力 -->
-    <section class="dimension fade-section">
-      <span class="dimension-badge">维度二</span>
-      <h2 class="dimension-question">一个人如何运转完整获客系统？</h2>
-      <div class="dimension-layout">
-        <div class="answer-section">
-          <div class="answer-block">
-            <div class="answer-label">核心转变</div>
-            <div class="answer-title">从"没人帮我做图"到"教会AI理解业务逻辑"</div>
-            <div class="answer-desc">你不再需要操心"没人帮我做图怎么办"，核心任务是教会AI理解你的业务逻辑，并亲自设计那条转化链路。谁更善于定义问题、谁更有独特的审美和判断力，谁就能将AI真正转化为获客效率。</div>
-          </div>
-          <div class="answer-block">
-            <div class="answer-label">自动飞轮</div>
-            <div class="answer-title">从流量获取到客户跟进的全自动流水线</div>
-            <div class="answer-desc">当你睡觉时，AI助理可以在私信里自动识别用户询问的关键词，调取预先设置好的解决方案进行初步答疑，引导用户下载免费资料，并自动将其沉淀到私域邮箱列表。</div>
-          </div>
-          <div class="answer-block">
-            <div class="answer-label">配置</div>
-            <div class="answer-title">AI工具矩阵</div>
-            <div class="answer-desc">内容生成（Claude/ChatGPT）、视频自动化（Opus Clip/剪映）、无代码落地页（Carrd/Tally）、邮件自动化（ConvertKit/Resend）、AI客服（GPTs/Coze）。</div>
-          </div>
-        </div>
-        <div class="dim2-matrix-section">
-          <div>
-            <div class="ai-matrix-label">一人公司获客技术栈</div>
-            <div class="ai-matrix-grid">
-              <div class="ai-matrix-cell">
-                <div class="ai-matrix-name">Claude + ChatGPT</div>
-                <div class="ai-matrix-desc">专属内容编辑，深度文案与结构化写作</div>
-              </div>
-              <div class="ai-matrix-cell">
-                <div class="ai-matrix-name">Opus Clip</div>
-                <div class="ai-matrix-desc">30分钟视频切10条高光短视频</div>
-              </div>
-              <div class="ai-matrix-cell">
-                <div class="ai-matrix-name">Carrd / Tally</div>
-                <div class="ai-matrix-desc">无代码落地页搭建</div>
-              </div>
-              <div class="ai-matrix-cell">
-                <div class="ai-matrix-name">GPTs / Coze</div>
-                <div class="ai-matrix-desc">AI客服分身，7×24初步咨询</div>
-              </div>
+      <!-- 维度一：信任前置与个人IP -->
+      <div class="dimension-section">
+        <span class="dimension-badge">维度一</span>
+        <h2 class="dimension-question">冷启动阶段，如何建立无法被复制的信任？</h2>
+        <div class="dimension-layout">
+          <div class="answer-section">
+            <div class="answer-block">
+              <div class="answer-label">策略</div>
+              <div class="answer-title">信任前置：你本人就是产品说明书</div>
+              <div class="answer-desc">在客户眼中，你就是公司的全部。你的专业知识、工作流、甚至你对行业的批判性思考，都必须作为公开内容被持续记录和分发。客户先信任你的判断力，随后才购买你的服务。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">执行</div>
+              <div class="answer-title">将"你是谁"压缩成不可抗拒的第一印象</div>
+              <div class="answer-desc">身份定义 + 结果承诺 + 方法论命名，三要素集成在一屏之内。"专门帮出海SaaS独立开发者搞定美国LLC注册和税务申报的顾问"，远比"营销顾问"更锋利。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">验证</div>
+              <div class="answer-title">用"过程透明度"替代"结果炫耀"</div>
+              <div class="answer-desc">潜在客户通过观察你如何思考、如何解决问题来预判你能否解决他们的问题。录屏展示工作流、公开失败复盘，让内容本身成为信任的载体。</div>
             </div>
           </div>
-          <div class="ai-flywheel">
-            <div class="flywheel-title">获客自动飞轮</div>
-            <div class="flywheel-steps">
-              <div class="flywheel-step">
-                <span class="flywheel-num">01</span>
-                <span>私信自动识别关键词 → 调取预设方案初步答疑</span>
-              </div>
-              <div class="flywheel-step">
-                <span class="flywheel-num">02</span>
-                <span>引导用户下载免费资料</span>
-              </div>
-              <div class="flywheel-step">
-                <span class="flywheel-num">03</span>
-                <span>自动沉淀至私域邮箱列表</span>
-              </div>
-              <div class="flywheel-step">
-                <span class="flywheel-num">04</span>
-                <span>7天后自动推送付费产品</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Dimension 3: 精准获客矩阵 -->
-    <section class="dimension fade-section">
-      <span class="dimension-badge">维度三</span>
-      <h2 class="dimension-question">低预算高效获客，有哪四条路径？</h2>
-      <div class="dimension-layout">
-        <div class="answer-section">
-          <div class="answer-block">
-            <div class="answer-label">策略一</div>
-            <div class="answer-title">垂直内容"针尖式"穿透</div>
-            <div class="answer-desc">选取极度狭窄的长尾关键词（如"独立开发者出海税务架构指南"），利用AI生成100篇不同角度解答。结构清晰、直接解答具体问题的长尾内容将获得AI推荐算法的优先引用。</div>
-          </div>
-          <div class="answer-block">
-            <div class="answer-label">策略二</div>
-            <div class="answer-title">价值交换式冷触达</div>
-            <div class="answer-desc">精准甄选50位潜在客户，花一周研究其业务，识别你能解决的一个具体痛点。手工制作一份高价值免费资源。私信第一句直接点出对方业务细节，附上资源，不做推销，只求反馈。</div>
-          </div>
-          <div class="answer-block">
-            <div class="answer-label">策略三</div>
-            <div class="answer-title">微型产品冷启动</div>
-            <div class="answer-desc">将专业知识封装成解决微小痛点的免费工具（如"一人公司年收入税负预估计算器"）。工具界面底部植入增值服务入口，工具即信使，无声完成筛选与推荐。</div>
-          </div>
-          <div class="answer-block">
-            <div class="answer-label">策略四</div>
-            <div class="answer-title">高频直播与切片分发</div>
-            <div class="answer-desc">每天固定1小时直播"拆解一个商业问题"，如现场展示如何用AI工具在1小时内完成市场调研报告。直播后用AI自动剪辑为5-8条短视频分发。持续30天，算法将你作为专业节点反复推荐。</div>
-          </div>
-        </div>
-        <div class="dim3-channels">
-          <div class="channel-card">
-            <div class="channel-num">01</div>
-            <div class="channel-label">策略一</div>
-            <div class="channel-title">垂直内容"针尖式"穿透</div>
-            <div class="channel-desc">选取极度狭窄的长尾关键词，利用AI生成100篇不同角度解答。结构清晰、直接解答具体问题的长尾内容将获得AI推荐算法的优先引用。</div>
-          </div>
-          <div class="channel-card">
-            <div class="channel-num">02</div>
-            <div class="channel-label">策略二</div>
-            <div class="channel-title">价值交换式冷触达</div>
-            <div class="channel-desc">精准甄选50位潜在客户，花一周研究其业务，识别你能解决的一个具体痛点。手工制作一份高价值免费资源。</div>
-          </div>
-          <div class="channel-card">
-            <div class="channel-num">03</div>
-            <div class="channel-label">策略三</div>
-            <div class="channel-title">微型产品冷启动</div>
-            <div class="channel-desc">将专业知识封装成解决微小痛点的免费工具。</div>
-          </div>
-          <div class="channel-card">
-            <div class="channel-num">04</div>
-            <div class="channel-label">策略四</div>
-            <div class="channel-title">高频直播与切片分发</div>
-            <div class="channel-desc">每天固定1小时直播拆解商业问题。</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Dimension 4: 最小获客飞轮 -->
-    <section class="dimension fade-section">
-      <span class="dimension-badge">维度四</span>
-      <h2 class="dimension-question">如何让获客系统自动运转？</h2>
-      <div class="dimension-layout">
-        <div class="answer-section">
-          <div class="answer-block">
-            <div class="answer-label">轴心</div>
-            <div class="answer-title">定义"针尖承诺"</div>
-            <div class="answer-desc">将服务价值浓缩为清晰、可验证的承诺："我能帮助［特定人群］在［X周期内］实现［Y具体结果］，我的独特方法是［Z］。"放弃"全方位解决方案"幻想，只解决一个问题。</div>
-          </div>
-          <div class="answer-block">
-            <div class="answer-label">内容</div>
-            <div class="answer-title">搭建内容中央厨房</div>
-            <div class="answer-desc">每周固定3小时创作一个基石内容（如深度长文或40分钟教学视频），然后利用AI将其分解为5-10条短文、3个问答脚本、1个Notion模板。一次深度创作，N种形式分发。</div>
-          </div>
-          <div class="answer-block">
-            <div class="answer-label">自动化</div>
-            <div class="answer-title">部署诱饵交付系统</div>
-            <div class="answer-desc">用户扫码添加微信 → 自动通过并发送免费诱饵链接 → 系统根据关键词自动打标 → 7天后自动推送付费产品深度介绍。这套流程由工具完成，你无需亲手操作。</div>
-          </div>
-          <div class="answer-block">
-            <div class="answer-label">启动</div>
-            <div class="answer-title">建立共赢小组</div>
-            <div class="answer-desc">从早期关注者中筛选10位种子用户，提供免费且超预期的深度服务。换取：详细改进反馈、一个真实使用案例、对你的公开推荐。这10个人证是最锐利的冷启动素材。</div>
-          </div>
-        </div>
-        <div class="dim4-flywheel">
-          <div class="flywheel-ring">
-            <svg width="120" height="120" viewBox="0 0 120 120">
-              <circle class="flywheel-ring-bg" cx="60" cy="60" r="47"/>
-              <circle class="flywheel-ring-fill" cx="60" cy="60" r="47"/>
-            </svg>
-            <div class="flywheel-ring-text">
-              <div class="flywheel-ring-pct">4</div>
-              <div class="flywheel-ring-label">飞轮节点</div>
-            </div>
-          </div>
-          <div class="flywheel-nodes">
-            <div class="flywheel-node">
-              <div class="flywheel-node-label">轴心</div>
-              <div class="flywheel-node-content">
-                <div class="flywheel-node-title">定义"针尖承诺"</div>
-                <div class="flywheel-node-desc">"我能帮助［特定人群］在［X周期内］实现［Y具体结果］"</div>
-              </div>
-            </div>
-            <div class="flywheel-node">
-              <div class="flywheel-node-label">内容</div>
-              <div class="flywheel-node-content">
-                <div class="flywheel-node-title">搭建内容中央厨房</div>
-                <div class="flywheel-node-desc">每周3小时创作一个基石内容，分解为5-10条短文、3个问答脚本</div>
-              </div>
-            </div>
-            <div class="flywheel-node">
-              <div class="flywheel-node-label">自动化</div>
-              <div class="flywheel-node-content">
-                <div class="flywheel-node-title">部署诱饵交付系统</div>
-                <div class="flywheel-node-desc">用户扫码 → 自动发送免费诱饵 → 关键词自动打标 → 7天后自动推送</div>
-              </div>
-            </div>
-            <div class="flywheel-node">
-              <div class="flywheel-node-label">启动</div>
-              <div class="flywheel-node-content">
-                <div class="flywheel-node-title">建立共赢小组</div>
-                <div class="flywheel-node-desc">从早期关注者中筛选10位种子用户，提供超预期深度服务</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Dimension 5: 信任基础设施与转化闭环 -->
-    <section class="dimension fade-section">
-      <span class="dimension-badge">维度五</span>
-      <h2 class="dimension-question">如何将流量转化为付费用户？</h2>
-      <div class="dimension-layout">
-        <div class="answer-section">
-          <div class="answer-block">
-            <div class="answer-label">诱饵</div>
-            <div class="answer-title">开发最小可行知识产品</div>
-            <div class="answer-desc">如《一人公司出海合规避坑10条Checklist》、《我的AI自动获客工具栈完全配置指南》。这个产品必须解决客户在购买核心服务前必须先解决的认知问题。</div>
-          </div>
-          <div class="answer-block">
-            <div class="answer-label">培育</div>
-            <div class="answer-title">3-5天自动化内容推送序列</div>
-            <div class="answer-desc">逐步讲述更深度的方法论、拆解服务案例、展示客户口碑。在序列最后由"你本人"发出一份定向邀请，提供低价轻量级首次购买机会（如99元/小时一对一诊断）。</div>
-          </div>
-          <div class="answer-block">
-            <div class="answer-label">筛选</div>
-            <div class="answer-title">AI初步咨询官</div>
-            <div class="answer-desc">用GPTs训练你的AI客服分身，核心指令是：绝不直接回答所有问题，而是提出更深层的问题来澄清需求，并在对话结束时承诺24小时内亲自联系。</div>
-          </div>
-        </div>
-        <div class="dim5-funnel">
-          <div class="funnel-steps">
-            <div class="funnel-step">
-              <div class="funnel-num">01</div>
-              <div class="funnel-content">
-                <div class="funnel-label">诱饵</div>
-                <div class="funnel-title">开发最小可行知识产品</div>
-                <div class="funnel-desc">如《一人公司出海合规避坑10条Checklist》，解决客户购买前必须先解决的认知问题。</div>
-              </div>
-            </div>
-            <div class="funnel-step">
-              <div class="funnel-num">02</div>
-              <div class="funnel-content">
-                <div class="funnel-label">培育</div>
-                <div class="funnel-title">3-5天自动化内容推送序列</div>
-                <div class="funnel-desc">逐步讲述更深度的方法论、拆解服务案例、展示客户口碑。</div>
-              </div>
-            </div>
-            <div class="funnel-step">
-              <div class="funnel-num">03</div>
-              <div class="funnel-content">
-                <div class="funnel-label">筛选</div>
-                <div class="funnel-title">AI初步咨询官</div>
-                <div class="funnel-desc">用GPTs训练AI客服分身，提出更深层问题来澄清需求，对话结束时承诺24小时内亲自联系。</div>
-              </div>
-            </div>
-          </div>
-          <div class="funnel-visual">
-            <div class="funnel-metric">
-              <div class="funnel-metric-value">25-40%</div>
-              <div class="funnel-metric-label">一对一触达回复率</div>
-            </div>
+          <div class="chart-area">
+            <div class="chart-title">信任建设模型</div>
             <div class="objection-block red">
-              <div class="objection-label">流失点</div>
-              <div class="objection-title">内容结尾无引导</div>
-              <div class="objection-desc">所有内容结尾必须指向同一个私域入口</div>
+              <div class="objection-label">错误示范</div>
+              <div class="objection-title">先做流量，等人来了再考虑转化</div>
+              <div class="objection-text">用户给你建立信任的时间窗口只有15秒到3分钟。</div>
             </div>
             <div class="objection-block green">
-              <div class="objection-label">留存点</div>
-              <div class="objection-title">自动化信任交换</div>
-              <div class="objection-desc">AI客服自动识别关键词秒推下载链接</div>
+              <div class="objection-label">正确路径</div>
+              <div class="objection-title">信任基础设施先行</div>
+              <div class="objection-text">在所有触点预先铺设"你是谁"、"你能解决什么"。</div>
+            </div>
+            <div class="objection-block muted">
+              <div class="objection-label">数据参考</div>
+              <div class="objection-title">一对一单点触达回复率</div>
+              <div class="objection-text">配合针对对方业务痛点的免费资源，回复率可达25%-40%。</div>
             </div>
           </div>
         </div>
       </div>
-    </section>
 
-    <!-- Dimension 6: 渠道选择与决策 -->
-    <section class="dimension fade-section">
-      <span class="dimension-badge">维度六</span>
-      <h2 class="dimension-question">哪个渠道最值得投入？如何持续迭代？</h2>
-      <div class="dimension-layout">
-        <div class="answer-section">
-          <div class="answer-block">
-            <div class="answer-label">策略</div>
-            <div class="answer-title">一个主阵地 + 多平台分发</div>
-            <div class="answer-desc">选择一个渠道建立深度对话关系，其他渠道作为内容回收站。用户密度 + 表达适配决定主阵地选择：互联网从业者→即刻/Twitter，中小企业主→公众号/视频号，海外用户→LinkedIn/Newsletter。</div>
+      <!-- 维度二：AI平权下的获客生产力 -->
+      <div class="dimension-section">
+        <span class="dimension-badge">维度二</span>
+        <h2 class="dimension-question">一个人如何运转完整获客系统？</h2>
+        <div class="dimension-layout">
+          <div class="answer-section">
+            <div class="answer-block">
+              <div class="answer-label">核心转变</div>
+              <div class="answer-title">从"没人帮我做图"到"教会AI理解业务逻辑"</div>
+              <div class="answer-desc">你不再需要操心"没人帮我做图怎么办"，核心任务是教会AI理解你的业务逻辑，并亲自设计那条转化链路。谁更善于定义问题、谁更有独特的审美和判断力，谁就能将AI真正转化为获客效率。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">自动飞轮</div>
+              <div class="answer-title">从流量获取到客户跟进的全自动流水线</div>
+              <div class="answer-desc">当你睡觉时，AI助理可以在私信里自动识别用户询问的关键词，调取预先设置好的解决方案进行初步答疑，引导用户下载免费资料，并自动将其沉淀到私域邮箱列表。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">配置</div>
+              <div class="answer-title">AI工具矩阵</div>
+              <div class="answer-desc">内容生成（Claude/ChatGPT）、视频自动化（Opus Clip/剪映）、无代码落地页（Carrd/Tally）、邮件自动化（ConvertKit/Resend）、AI客服（GPTs/Coze）。</div>
+            </div>
           </div>
-          <div class="answer-block">
-            <div class="answer-label">复盘</div>
-            <div class="answer-title">"周迭代"增长复盘</div>
-            <div class="answer-desc">每周复盘一个关键指标：本周从哪个具体渠道获得了1位付费用户？一旦识别出最小可行的成功路径，下周就将全部精力加倍投入在这个渠道上。</div>
-          </div>
-          <div class="answer-block">
-            <div class="answer-label">决策</div>
-            <div class="answer-title">30天转化门槛</div>
-            <div class="answer-desc">判断渠道是否值得追加投入的依据不是阅读量或点赞数，而是"30天内是否从这个渠道获得了至少1个付费咨询或购买"。连续4周没有转化，就果断降级为纯分发渠道。</div>
-          </div>
-        </div>
-        <div class="dim6-decision">
-          <div class="decision-minimal">
-            <thead>
-              <tr>
-                <th>渠道类型</th>
-                <th>判断标准</th>
-                <th>决策</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>主阵地（深度）</td>
-                <td>目标用户密集 + 你能持续产出适配内容</td>
-                <td><span class="decision-status pass">每日/隔日更新</span></td>
-              </tr>
-              <tr>
-         <td>分发渠道（广度）</td>
-                <td>形态转换后发布，不额外投入精力维护</td>
-                <td><span class="decision-status muted">自动化分发</span></td>
-              </tr>
-              <tr>
-                <td>测试渠道（新）</td>
-                <td>4周内是否有付费咨询或购买</td>
-                <td><span class="decision-status pass">继续加倍 or 降级</span></td>
-              </tr>
-              <tr>
-                <td>放弃渠道</td>
-                <td>连续4周无任何转化</td>
-                <td><span class="decision-status danger">立即停止投入</span></td>
-              </tr>
-            </tbody>
+          <div class="chart-area">
+            <div class="chart-title">获客技术栈</div>
+            <div class="objection-block muted">
+              <div class="objection-label">内容</div>
+              <div class="objection-title">Claude + ChatGPT</div>
+              <div class="objection-text">专属内容编辑，深度文案与结构化写作</div>
+            </div>
+            <div class="objection-block muted">
+              <div class="objection-label">视频</div>
+              <div class="objection-title">Opus Clip</div>
+              <div class="objection-text">30分钟视频切10条高光短视频</div>
+            </div>
+            <div class="objection-block muted">
+              <div class="objection-label">落地页</div>
+              <div class="objection-title">Carrd / Tally</div>
+              <div class="objection-text">无代码落地页搭建</div>
+            </div>
+            <div class="objection-block muted">
+              <div class="objection-label">客服</div>
+              <div class="objection-title">GPTs / Coze</div>
+              <div class="objection-text">AI客服分身，7×24初步咨询</div>
+            </div>
           </div>
         </div>
       </div>
+
+      <!-- 维度三：精准获客矩阵 -->
+      <div class="dimension-section">
+        <span class="dimension-badge">维度三</span>
+        <h2 class="dimension-question">低预算高效获客，有哪四条路径？</h2>
+        <div class="dimension-layout">
+          <div class="answer-section">
+            <div class="answer-block">
+              <div class="answer-label">策略一</div>
+              <div class="answer-title">垂直内容"针尖式"穿透</div>
+              <div class="answer-desc">选取极度狭窄的长尾关键词（如"独立开发者出海税务架构指南"），利用AI生成100篇不同角度解答。结构清晰、直接解答具体问题的长尾内容将获得AI推荐算法的优先引用。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">策略二</div>
+              <div class="answer-title">价值交换式冷触达</div>
+              <div class="answer-desc">精准甄选50位潜在客户，花一周研究其业务，识别你能解决的一个具体痛点。手工制作一份高价值免费资源。私信第一句直接点出对方业务细节，附上资源，不做推销，只求反馈。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">策略三</div>
+              <div class="answer-title">微型产品冷启动</div>
+              <div class="answer-desc">将专业知识封装成解决微小痛点的免费工具（如"一人公司年收入税负预估计算器"）。工具界面底部植入增值服务入口，工具即信使，无声完成筛选与推荐。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">策略四</div>
+              <div class="answer-title">高频直播与切片分发</div>
+              <div class="answer-desc">每天固定1小时直播"拆解一个商业问题"，如现场展示如何用AI工具在1小时内完成市场调研报告。直播后用AI自动剪辑为5-8条短视频分发。持续30天，算法将你作为专业节点反复推荐。</div>
+            </div>
+          </div>
+          <div class="chart-area">
+            <div class="chart-title">四条路径概览</div>
+            <div class="objection-block red">
+              <div class="objection-label">策略一</div>
+              <div class="objection-title">垂直内容"针尖式"穿透</div>
+              <div class="objection-text">极度狭窄长尾关键词 + AI批量生成</div>
+            </div>
+            <div class="objection-block red">
+              <div class="objection-label">策略二</div>
+              <div class="objection-title">价值交换式冷触达</div>
+              <div class="objection-text">50位客户 × 一周研究 = 高价值免费资源</div>
+            </div>
+            <div class="objection-block muted">
+              <div class="objection-label">策略三</div>
+              <div class="objection-title">微型产品冷启动</div>
+              <div class="objection-text">工具即信使，无声完成筛选</div>
+            </div>
+            <div class="objection-block muted">
+              <div class="objection-label">策略四</div>
+              <div class="objection-title">高频直播与切片分发</div>
+              <div class="objection-text">30天持续输出，算法建立专业节点</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 维度四：最小获客飞轮 -->
+      <div class="dimension-section">
+        <span class="dimension-badge">维度四</span>
+        <h2 class="dimension-question">如何让获客系统自动运转？</h2>
+        <div class="dimension-layout">
+          <div class="answer-section">
+            <div class="answer-block">
+              <div class="answer-label">轴心</div>
+              <div class="answer-title">定义"针尖承诺"</div>
+              <div class="answer-desc">将服务价值浓缩为清晰、可验证的承诺："我能帮助［特定人群］在［X周期内］实现［Y具体结果］，我的独特方法是［Z］。"放弃"全方位解决方案"幻想，只解决一个问题。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">内容</div>
+              <div class="answer-title">搭建内容中央厨房</div>
+              <div class="answer-desc">每周固定3小时创作一个基石内容（如深度长文或40分钟教学视频），然后利用AI将其分解为5-10条短文、3个问答脚本、1个Notion模板。一次深度创作，N种形式分发。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">自动化</div>
+              <div class="answer-title">部署诱饵交付系统</div>
+              <div class="answer-desc">用户扫码添加微信 → 自动通过并发送免费诱饵链接 → 系统根据关键词自动打标 → 7天后自动推送付费产品深度介绍。这套流程由工具完成，你无需亲手操作。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">启动</div>
+              <div class="answer-title">建立共赢小组</div>
+              <div class="answer-desc">从早期关注者中筛选10位种子用户，提供免费且超预期的深度服务。换取：详细改进反馈、一个真实使用案例、对你的公开推荐。这10个人证是最锐利的冷启动素材。</div>
+            </div>
+          </div>
+          <div class="chart-area">
+            <div class="chart-title">飞轮运转节点</div>
+            <div class="objection-block green">
+              <div class="objection-label">01</div>
+              <div class="objection-title">定义针尖承诺</div>
+              <div class="objection-text">特定人群 + 明确周期 + 具体结果</div>
+            </div>
+            <div class="objection-block green">
+              <div class="objection-label">02</div>
+              <div class="objection-title">内容中央厨房</div>
+              <div class="objection-text">1个基石内容 → N种分发形式</div>
+            </div>
+            <div class="objection-block muted">
+              <div class="objection-label">03</div>
+              <div class="objection-title">诱饵交付系统</div>
+              <div class="objection-text">扫码 → 自动发送 → 关键词打标 → 7天后推送</div>
+            </div>
+            <div class="objection-block muted">
+              <div class="objection-label">04</div>
+              <div class="objection-title">共赢小组</div>
+              <div class="objection-text">10位种子用户 → 超预期服务 → 人证素材</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 维度五：信任基础设施与转化闭环 -->
+      <div class="dimension-section">
+        <span class="dimension-badge">维度五</span>
+        <h2 class="dimension-question">如何将流量转化为付费用户？</h2>
+        <div class="dimension-layout">
+          <div class="answer-section">
+            <div class="answer-block">
+              <div class="answer-label">诱饵</div>
+              <div class="answer-title">开发最小可行知识产品</div>
+              <div class="answer-desc">如《一人公司出海合规避坑10条Checklist》、《我的AI自动获客工具栈完全配置指南》。这个产品必须解决客户在购买核心服务前必须先解决的认知问题。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">培育</div>
+              <div class="answer-title">3-5天自动化内容推送序列</div>
+              <div class="answer-desc">逐步讲述更深度的方法论、拆解服务案例、展示客户口碑。在序列最后由"你本人"发出一份定向邀请，提供低价轻量级首次购买机会（如99元/小时一对一诊断）。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">筛选</div>
+              <div class="answer-title">AI初步咨询官</div>
+              <div class="answer-desc">用GPTs训练你的AI客服分身，核心指令是：绝不直接回答所有问题，而是提出更深层的问题来澄清需求，并在对话结束时承诺24小时内亲自联系。</div>
+            </div>
+          </div>
+          <div class="chart-area">
+            <div class="chart-title">转化漏斗</div>
+            <div class="objection-block green">
+              <div class="objection-label">T+0</div>
+              <div class="objection-title">诱饵下载</div>
+              <div class="objection-text">最小可行知识产品解决认知问题</div>
+            </div>
+            <div class="objection-block green">
+              <div class="objection-label">T+3-5天</div>
+              <div class="objection-title">自动化培育</div>
+              <div class="objection-text">深度方法论 + 服务案例 + 客户口碑</div>
+            </div>
+            <div class="objection-block muted">
+              <div class="objection-label">T+最后</div>
+              <div class="objection-title">AI咨询 + 人工跟进</div>
+              <div class="objection-text">澄清需求，承诺24小时内亲自联系</div>
+            </div>
+            <div class="core-insight">
+              <p class="core-insight-text">一对一触达回复率可达25%-40%，关键在于针对对方业务痛点的免费资源。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 维度六：渠道选择与决策 -->
+      <div class="dimension-section">
+        <span class="dimension-badge">维度六</span>
+        <h2 class="dimension-question">哪个渠道最值得投入？如何持续迭代？</h2>
+        <div class="dimension-layout">
+          <div class="answer-section">
+            <div class="answer-block">
+              <div class="answer-label">策略</div>
+              <div class="answer-title">一个主阵地 + 多平台分发</div>
+              <div class="answer-desc">选择一个渠道建立深度对话关系，其他渠道作为内容回收站。用户密度 + 表达适配决定主阵地选择：互联网从业者→即刻/Twitter，中小企业主→公众号/视频号，海外用户→LinkedIn/Newsletter。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">复盘</div>
+              <div class="answer-title">"周迭代"增长复盘</div>
+              <div class="answer-desc">每周复盘一个关键指标：本周从哪个具体渠道获得了1位付费用户？一旦识别出最小可行的成功路径，下周就将全部精力加倍投入在这个渠道上。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">决策</div>
+              <div class="answer-title">30天转化门槛</div>
+              <div class="answer-desc">判断渠道是否值得追加投入的依据不是阅读量或点赞数，而是"30天内是否从这个渠道获得了至少1个付费咨询或购买"。连续4周没有转化，就果断降级为纯分发渠道。</div>
+            </div>
+          </div>
+          <div class="chart-area">
+            <div class="chart-title">渠道决策矩阵</div>
+            <div class="objection-block green">
+              <div class="objection-label">主阵地</div>
+              <div class="objection-title">每日/隔日更新</div>
+              <div class="objection-text">目标用户密集 + 你能持续产出适配内容</div>
+            </div>
+            <div class="objection-block muted">
+              <div class="objection-label">分发渠道</div>
+              <div class="objection-title">自动化分发</div>
+              <div class="objection-text">形态转换后发布，不额外投入精力维护</div>
+            </div>
+            <div class="objection-block red">
+              <div class="objection-label">测试渠道</div>
+              <div class="objection-title">继续加倍 or 降级</div>
+              <div class="objection-text">4周内是否有付费咨询或购买</div>
+            </div>
+            <div class="objection-block red">
+              <div class="objection-label">放弃渠道</div>
+              <div class="objection-title">立即停止投入</div>
+              <div class="objection-text">连续4周无任何转化</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </section>
 
-    <!-- FIN -->
     <section class="fin-section fade-section">
       <div class="fin-number">FIN</div>
-      <div class="fin-label">核心结论</div>
-      <p class="fin-text">将你的专业见解转化为公开内容构筑信任，利用AI与自动化工具放大个人独特性，让获客成为一种深度连接与持续创造价值的生活方式</p>
+      <div class="fin-text">
+        <div class="fin-label">核心结论</div>
+        <h2 class="fin-title">将你的专业见解转化为公开内容构筑信任，利用AI与自动化工具放大个人独特性，让获客成为一种深度连接与持续创造价值的生活方式</h2>
+      </div>
     </section>
 
     <footer class="footer-nav">
