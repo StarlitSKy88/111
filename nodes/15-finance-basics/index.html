@@ -423,6 +423,661 @@ body {
 
 * { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
 
+/* ========== 三账户隔离法专用布局 ========== */
+.three-accounts-section {
+  padding: var(--space-3xl) 0;
+  border-top: 1px solid var(--line);
+}
+
+.three-accounts-section .dimension-badge {
+  display: inline-block;
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  border: 1px solid var(--accent);
+  padding: 4px 12px;
+}
+
+.three-accounts-section .dimension-question {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(24px, 4vw, 40px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  margin-bottom: var(--space-xl);
+  max-width: 18em;
+}
+
+.three-accounts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-xl);
+  margin-bottom: var(--space-2xl);
+}
+
+@media (max-width: 900px) {
+  .three-accounts-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+}
+
+.account-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+  position: relative;
+}
+
+.account-card::before {
+  content: '';
+  display: block;
+  height: 3px;
+  margin-bottom: var(--space-lg);
+  margin-left: calc(-1 * var(--space-lg));
+  margin-right: calc(-1 * var(--space-lg));
+}
+
+.account-card.operation::before { background: var(--text-primary); }
+.account-card.reserve::before { background: var(--accent); }
+.account-card.tax::before { background: var(--text-tertiary); }
+
+.account-card-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+}
+
+.account-card.operation .account-card-label { color: var(--text-primary); }
+.account-card.reserve .account-card-label { color: var(--accent); }
+.account-card.tax .account-card-label { color: var(--text-tertiary); }
+
+.account-card-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.account-card-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: var(--space-md);
+}
+
+.account-card-rule {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--line);
+}
+
+/* 分流比例条 */
+.allocation-bar {
+  margin-top: var(--space-2xl);
+  padding: var(--space-xl);
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.allocation-title {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-lg);
+}
+
+.allocation-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+/* ========== 维度一：收入确认 - 时间线布局 ========== */
+.dim1-timeline {
+  position: relative;
+  padding-left: var(--space-2xl);
+  border-left: 1px solid var(--line);
+  margin-left: var(--space-xl);
+}
+
+.dim1-timeline::before {
+  content: '12月';
+  position: absolute;
+  left: -32px;
+  top: 0;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+}
+
+.dim1-event {
+  position: relative;
+  margin-bottom: var(--space-2xl);
+  padding-left: var(--space-xl);
+}
+
+.dim1-event::before {
+  content: '';
+  position: absolute;
+  left: calc(-1 * var(--space-2xl) - 1px);
+  top: 8px;
+  width: 8px;
+  height: 1px;
+  background: var(--line);
+}
+
+.dim1-event.highlight {
+  margin-left: -32px;
+  padding-left: calc(var(--space-xl) + 32px);
+}
+
+.dim1-event.highlight::before {
+  width: 32px;
+  background: var(--accent);
+}
+
+.dim1-event.highlight::after {
+  content: '';
+  position: absolute;
+  left: calc(-1 * var(--space-2xl) - 1px);
+  top: 0;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--accent) 0%, transparent 100%);
+  opacity: 0.3;
+}
+
+.dim1-label {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+}
+
+.dim1-label.accent { color: var(--accent); }
+.dim1-label.muted { color: var(--text-tertiary); }
+
+.dim1-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.dim1-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 38ch;
+}
+
+/* ========== 维度二：支出三桶 - 不对称瀑布布局 ========== */
+.dim2-waterfall {
+  display: grid;
+  grid-template-columns: 1.8fr 1fr 0.7fr;
+  gap: var(--space-2xl);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .dim2-waterfall {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+}
+
+.dim2-category {
+  position: relative;
+}
+
+.dim2-category-label {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+}
+
+.dim2-category.rigid .dim2-category-label {
+  color: var(--text-primary);
+  border-color: var(--text-primary);
+}
+
+.dim2-category.elastic .dim2-category-label {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.dim2-category.hidden .dim2-category-label {
+  color: var(--text-tertiary);
+  border-color: var(--text-tertiary);
+}
+
+.dim2-item {
+  padding: var(--space-md) 0;
+  border-bottom: 1px solid var(--line-light);
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.dim2-item:last-child { border-bottom: none; }
+
+.dim2-item strong {
+  color: var(--text-primary);
+  font-weight: 500;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.dim2-total {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+.dim2-total strong {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* ========== 维度三：现金流真假对比 - 左右对峙布局 ========== */
+.dim3-confrontation {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: var(--space-3xl);
+}
+
+@media (max-width: 768px) {
+  .dim3-confrontation {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+}
+
+.dim3-false {
+  position: relative;
+  padding: var(--space-xl);
+  background: rgba(224, 90, 71, 0.05);
+  border-left: 3px solid var(--accent);
+}
+
+.dim3-false::before {
+  content: 'X';
+  position: absolute;
+  top: var(--space-lg);
+  right: var(--space-lg);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0.6;
+}
+
+.dim3-true {
+  position: relative;
+  padding: var(--space-xl);
+  background: rgba(76, 175, 80, 0.03);
+  border-left: 3px solid #4CAF50;
+}
+
+.dim3-true::before {
+  content: '✓';
+  position: absolute;
+  top: var(--space-lg);
+  right: var(--space-lg);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #4CAF50;
+  color: #4CAF50;
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0.6;
+}
+
+.dim3-label {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+}
+
+.dim3-false .dim3-label { color: var(--accent); }
+.dim3-true .dim3-label { color: #4CAF50; }
+
+.dim3-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-md);
+}
+
+.dim3-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: var(--space-lg);
+}
+
+.dim3-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+}
+
+.dim3-metric {
+  padding: var(--space-md);
+  background: var(--bg);
+  border: 1px solid var(--line);
+}
+
+.dim3-metric-label {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-xs);
+}
+
+.dim3-metric-value {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.dim3-metric-value.danger { color: var(--accent); }
+.dim3-metric-value.safe { color: #4CAF50; }
+
+/* ========== 维度四：税务主体 - 大型数字对比 ========== */
+.dim4-comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2xl);
+}
+
+@media (max-width: 768px) {
+  .dim4-comparison {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+}
+
+.dim4-entity {
+  padding: var(--space-xl);
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.dim4-entity-name {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-lg);
+}
+
+.dim4-tax-rate {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 8vw, 72px);
+  font-weight: 300;
+  color: var(--text-primary);
+  line-height: 1;
+  margin-bottom: var(--space-sm);
+}
+
+.dim4-tax-rate.accent { color: var(--accent); }
+
+.dim4-tax-breakdown {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-lg);
+  line-height: 1.6;
+}
+
+.dim4-total {
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--line);
+}
+
+.dim4-total-label {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-sm);
+}
+
+.dim4-total-value {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.dim4-total-value.highlight {
+  color: var(--accent);
+}
+
+.dim4-note {
+  margin-top: var(--space-lg);
+  padding: var(--space-md);
+  background: rgba(224, 90, 71, 0.05);
+  border-left: 2px solid var(--accent);
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ========== 维度六：60天预测 - 仪表盘布局 ========== */
+.dim6-dashboard {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: var(--space-3xl);
+}
+
+@media (max-width: 900px) {
+  .dim6-dashboard {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+}
+
+.dim6-gauge {
+  padding: var(--space-xl);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  text-align: center;
+}
+
+.dim6-gauge-label {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-lg);
+}
+
+.dim6-gauge-value {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(56px, 10vw, 80px);
+  font-weight: 300;
+  line-height: 1;
+  margin-bottom: var(--space-sm);
+}
+
+.dim6-gauge-value.danger { color: var(--accent); }
+.dim6-gauge-value.warning { color: #FFA726; }
+.dim6-gauge-value.safe { color: #4CAF50; }
+
+.dim6-gauge-unit {
+  font-size: 14px;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-lg);
+}
+
+.dim6-gauge-status {
+  font-size: 13px;
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid;
+  display: inline-block;
+}
+
+.dim6-gauge-status.danger {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(224, 90, 71, 0.05);
+}
+
+.dim6-gauge-status.warning {
+  color: #FFA726;
+  border-color: #FFA726;
+  background: rgba(255, 167, 38, 0.05);
+}
+
+.dim6-gauge-status.safe {
+  color: #4CAF50;
+  border-color: #4CAF50;
+  background: rgba(76, 175, 80, 0.05);
+}
+
+.dim6-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.dim6-check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.dim6-check-item.red {
+  border-left: 3px solid var(--accent);
+}
+
+.dim6-check-item.green {
+  border-left: 3px solid #4CAF50;
+}
+
+.dim6-check-icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 12px;
+}
+
+.dim6-check-item.red .dim6-check-icon { color: var(--accent); }
+.dim6-check-item.green .dim6-check-icon { color: #4CAF50; }
+
+.dim6-check-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.dim6-check-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.allocation-item:last-child { margin-bottom: 0; }
+
+.allocation-percent {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--text-primary);
+  min-width: 80px;
+}
+
+.allocation-percent.accent { color: var(--accent); }
+
+.allocation-label {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* 60天预测表 */
+.forecast-section {
+  margin-top: var(--space-3xl);
+  padding-top: var(--space-2xl);
+  border-top: 1px solid var(--line);
+}
+
+.forecast-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(20px, 3vw, 28px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-xl);
+}
+
+.forecast-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-lg);
+}
+
+@media (max-width: 768px) {
+  .forecast-grid { grid-template-columns: 1fr; }
+}
+
+.forecast-card {
+  padding: var(--space-lg);
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.forecast-card-label {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+}
+
+.forecast-card-label.danger { color: var(--accent); }
+.forecast-card-label.safe { color: #4CAF50; }
+
+.forecast-card-value {
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.forecast-card-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* ========== 原有维度布局 ========== */
 .dimension-section {
   padding: var(--space-3xl) 0;
   border-top: 1px solid var(--line);
@@ -733,356 +1388,394 @@ body {
       </div>
     </header>
 
-    <!-- 维度一：收入确认与权责发生制 -->
+    <!-- 维度一：收入确认与权责发生制 - 时间线布局 -->
     <section class="dimension-section fade-section">
       <div class="dimension-badge">维度一</div>
       <h2 class="dimension-question">预收款不是收入：权责发生制vs收付实现制</h2>
 
-      <div class="dimension-layout">
-        <div class="answer-section">
-          <div class="answer-block">
-            <div class="answer-label">核心概念</div>
-            <div class="answer-title">税法遵循"权责发生制"</div>
-            <div class="answer-desc">营业收入确认以"服务完成时点"为准，而非银行余额变动。2025年数字服务收入确认标准已明确：你2025年12月收到1200元年费，12月只能确认100元收入，其余1100元是负债。</div>
-          </div>
-
-          <div class="answer-block">
-            <div class="answer-label">致命陷阱</div>
-            <div class="answer-title">按全额预收款报税 = 为没赚到的利润交税</div>
-            <div class="answer-desc">如果按1200元全额报税，利润虚增，企业所得税无谓提前缴纳，白白占用现金流。年费、月度服务预付款都存在这个陷阱。</div>
-          </div>
-
-          <div class="answer-block">
-            <div class="answer-label">多币种</div>
-            <div class="answer-title">Stripe/PayPal/Payoneer汇算易断裂</div>
-            <div class="answer-desc">海外平台打款链路数据极易断裂，手动统计漏报几乎是必然。金税四期对非银行支付机构大额交易报送已成常态，漏报是定时炸弹。</div>
-          </div>
-
-          <div class="answer-block">
-            <div class="answer-label">工具</div>
-            <div class="answer-title">支持多币种自动抓取的记账系统</div>
-            <div class="answer-desc">微信/支付宝经营收款直接拉取流水生成凭证，电子发票直连。2025年起，经营性收入数据上报与税务端已初步打通。</div>
-          </div>
-
-          <div class="core-insight">
-            <div class="insight-tag">核心洞察</div>
-            <p class="core-insight-text">"钱到账就是赚了"是OPC最危险的幻觉。预收款是负债，服务分12个月交付，你分12个月确认收入。</p>
-          </div>
+      <div class="dim1-timeline">
+        <div class="dim1-event highlight">
+          <div class="dim1-label accent">12月1日 · 收到款项</div>
+          <div class="dim1-title">1200元年费到账</div>
+          <div class="dim1-desc">客户支付全年服务费，银行余额+1200元。但这1200元是"预收款"，不是你赚的钱。</div>
         </div>
 
-        <div class="chart-area">
-          <div class="objection-block red">
-            <div class="objection-label">危险操作</div>
-            <div class="objection-title">收到预收款就当"收入"花了</div>
-            <div class="objection-desc">1200元年费到账，立刻花了800元。实际上这800元是"借"的——你还欠着12个月的服务。服务交付时现金流已耗尽。</div>
-          </div>
+        <div class="dim1-event">
+          <div class="dim1-label muted">每月确认</div>
+          <div class="dim1-title">服务交付 → 收入确认 100元</div>
+          <div class="dim1-desc">每月1日，将100元从"预收账款"转入"已确认收入"。12个月后，1200元才全部转化为收入。</div>
+        </div>
 
-          <div class="objection-block green">
-            <div class="objection-label">正确做法</div>
-            <div class="answer-title">预收款进入"预收账款"账户</div>
-            <div class="objection-desc">每月服务交付后，从"预收账款"转为"已确认收入"。只有真正完成交付的部分才是你的利润。</div>
-          </div>
+        <div class="dim1-event">
+          <div class="dim1-label muted">季度申报</div>
+          <div class="dim1-title">按权责发生制申报增值税</div>
+          <div class="dim1-desc">只有已确认的100元计入季度收入申报基数，剩余1100元仍在"预收账款"负债科目。</div>
+        </div>
 
-          <div class="objection-block muted">
-            <div class="objection-label">记账工具</div>
-            <div class="objection-title">用账本/随手记自动分期确认</div>
-            <div class="objection-desc">主流SaaS记账工具已能自动拆分预收款，在收入实现时分期确认。妈妈再也不用担心我预缴税了。</div>
-          </div>
+        <div class="dim1-event">
+          <div class="dim1-label muted">年度汇算</div>
+          <div class="dim1-title">全年确认收入 1200元</div>
+          <div class="dim1-desc">到12月底，12个月的交付全部完成，1200元预收款才完全转化为你的营业收入。</div>
+        </div>
+
+        <div class="core-insight" style="margin-left: 0; margin-top: var(--space-2xl);">
+          <div class="insight-tag">核心洞察</div>
+          <p class="core-insight-text">"钱到账就是赚了"是OPC最危险的幻觉。预收款是负债，服务分12个月交付，你分12个月确认收入。</p>
+        </div>
+      </div>
+
+      <div style="margin-top: var(--space-2xl); padding: var(--space-xl); background: var(--surface); border: 1px solid var(--line);">
+        <div style="font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: var(--space-lg);">多币种风险</div>
+        <div style="font-size: 16px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-sm);">Stripe/PayPal/Payoneer汇算易断裂</div>
+        <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.7; max-width: 44ch;">
+          海外平台打款链路数据极易断裂，手动统计漏报几乎是必然。金税四期对非银行支付机构大额交易报送已成常态，漏报是定时炸弹。
+        </div>
+        <div style="margin-top: var(--space-lg); padding-top: var(--space-md); border-top: 1px solid var(--line);">
+          <div style="font-size: 12px; color: var(--text-tertiary);">推荐工具：支持多币种自动抓取的记账系统（微信/支付宝经营收款直连，电子发票直连）</div>
         </div>
       </div>
     </section>
 
-    <!-- 维度二：支出三桶模型 -->
+    <!-- 维度二：支出三桶模型 - 不对称瀑布布局 -->
     <section class="dimension-section fade-section">
       <div class="dimension-badge">维度二</div>
       <h2 class="dimension-question">刚性/弹性/隐性：拆开你的每一笔支出</h2>
 
-      <div class="dimension-layout">
-        <div class="answer-section">
-          <div class="answer-block">
-            <div class="answer-label">刚性支出</div>
-            <div class="answer-title">公司存在就必须支付的费用</div>
-            <div class="answer-desc">域名+云服务器年费(3000-15000元)、合规注册地址(3000-8000元)、代理记账(2400-4800元)、基础SaaS订阅(月均300-800元)。年付锁定折扣，固定可控。</div>
+      <div class="dim2-waterfall">
+        <div class="dim2-category rigid">
+          <div class="dim2-category-label">刚性支出</div>
+          <div class="dim2-item">
+            <strong>域名 + 云服务器</strong>
+            年费 3000-15000元
           </div>
-
-          <div class="answer-block">
-            <div class="answer-label">弹性支出</div>
-            <div class="answer-title">随项目波动的增长性投入</div>
-            <div class="answer-desc">广告投流、外包设计、AI出图按次付费。核心原则：每笔弹性支出必须关联明确项目，并设置上限。超支即停，ROI连续两个月低于1直接砍掉。</div>
+          <div class="dim2-item">
+            <strong>合规注册地址</strong>
+            年费 3000-8000元
           </div>
-
-          <div class="answer-block">
-            <div class="answer-label">隐性支出</div>
-            <div class="answer-title">最容易被忽略的三大杀手</div>
-            <div class="answer-desc">自雇社保(年18000-40000元)、个税预提、付费课程与设备折旧。这些钱花的时候不觉得多，汇总到一年就是一个月利润缺口。</div>
+          <div class="dim2-item">
+            <strong>代理记账</strong>
+            年费 2400-4800元
           </div>
-
-          <div class="answer-block">
-            <div class="answer-label">管控原则</div>
-            <div class="answer-title">弹性支出设"现金流红线"</div>
-            <div class="answer-desc">当账上现金低于3个月刚性支出总和时，除维生项目外所有弹性支出一律暂停。这条纪律在收入枯竭期为你强行续命。</div>
+          <div class="dim2-item">
+            <strong>基础SaaS订阅</strong>
+            月均 300-800元
           </div>
-
-          <div class="core-insight">
-            <div class="insight-tag">核心洞察</div>
-            <p class="core-insight-text">隐性支出是OPC年底资金断裂的元凶。预提制度是唯一解药：每月收入到账，立刻将20%-25%转入专门的"税款与储备账户"。</p>
+          <div class="dim2-total">
+            <strong>年均刚性支出：</strong>约 18000-60000元
           </div>
         </div>
 
-        <div class="chart-area">
-          <div class="objection-block red">
-            <div class="objection-label">典型陷阱</div>
-            <div class="objection-title">"反正不多，先订阅了"</div>
-            <div class="objection-desc">月均59美元的工具×12个月=708美元/年。15-20个SaaS中30%功能重叠或长期闲置，订阅膨胀在不经意间每月放血5%-8%。</div>
+        <div class="dim2-category elastic">
+          <div class="dim2-category-label">弹性支出</div>
+          <div class="dim2-item">
+            <strong>广告投流</strong>
+            按项目设置上限
           </div>
-
-          <div class="objection-block green">
-            <div class="objection-label">管控工具</div>
-            <div class="objection-title">TrackMySubs / 随手记</div>
-            <div class="objection-desc">统一管理所有订阅，设置到期提醒。每季度做一次"停用测试"——暂停两周看业务是否受影响，无感知则永久删除。</div>
+          <div class="dim2-item">
+            <strong>外包设计</strong>
+            按需付费
           </div>
+          <div class="dim2-item">
+            <strong>AI出图按次</strong>
+            实际使用付费
+          </div>
+          <div class="dim2-item">
+            <strong>SaaS订阅膨胀</strong>
+            月均59美元×12=5000元/年
+          </div>
+          <div class="dim2-total">
+            <strong>原则：</strong>关联项目 + 设置上限 + ROI连续2月<1即砍
+          </div>
+        </div>
 
-          <div class="objection-block muted">
-            <div class="objection-label">2026更新</div>
-            <div class="objection-title">AI订阅需要定期评估ROI</div>
-            <div class="objection-desc">AI工具迭代极快，上个月的必备工具可能本月已被更优替代。每季度评估AI订阅的产出比，保留真正提升效率的。</div>
+        <div class="dim2-category hidden">
+          <div class="dim2-category-label">隐性支出</div>
+          <div class="dim2-item">
+            <strong>自雇社保</strong>
+            年 18000-40000元
+          </div>
+          <div class="dim2-item">
+            <strong>个税预提</strong>
+            季度预估
+          </div>
+          <div class="dim2-item">
+            <strong>设备折旧</strong>
+            3年摊销
+          </div>
+          <div class="dim2-item">
+            <strong>付费课程</strong>
+            实际消耗
+          </div>
+          <div class="dim2-total">
+            <strong>年底资金断裂元凶</strong>汇总后=月利润缺口
           </div>
         </div>
       </div>
+
+      <div style="margin-top: var(--space-2xl); padding: var(--space-xl); border-top: 1px solid var(--line);">
+        <div style="font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: var(--space-md);">管控红线</div>
+        <div style="font-size: 16px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-sm);">现金流红线：当余额 < 3个月刚性支出</div>
+        <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.7; max-width: 44ch;">
+          当账上现金低于3个月刚性支出总和时，除维生项目外所有弹性支出一律暂停。这条纪律在收入枯竭期为你强行续命。
+        </div>
+      </div>
+
+      <div class="core-insight" style="margin-top: var(--space-2xl);">
+        <div class="insight-tag">核心洞察</div>
+        <p class="core-insight-text">隐性支出是OPC年底资金断裂的元凶。预提制度是唯一解药：每月收入到账，立刻将20%-25%转入专门的"税款与储备账户"。</p>
+      </div>
     </section>
 
-    <!-- 维度三：现金流的深入管控 -->
+    <!-- 维度三：现金流管控 - 左右对峙布局 -->
     <section class="dimension-section fade-section">
       <div class="dimension-badge">维度三</div>
       <h2 class="dimension-question">"账上赚钱"不等于"兜里有钱"：现金流管控</h2>
 
-      <div class="dimension-layout">
-        <div class="answer-section">
-          <div class="answer-block">
-            <div class="answer-label">陷阱一</div>
-            <div class="answer-title">虚假繁荣：收入确认≠现金到账</div>
-            <div class="answer-desc">合同签了，活儿干完了，会计算了5万收入。但客户账期90天，账面上赚钱，口袋里没钱付本月的服务器和社保。这就是权责发生制的幻觉。</div>
+      <div class="dim3-confrontation">
+        <div class="dim3-false">
+          <div class="dim3-label">虚假繁荣</div>
+          <div class="dim3-title">收入确认 ≠ 现金到账</div>
+          <div class="dim3-desc">合同签了，活儿干完了，会计算了5万收入。但客户账期90天，账面上赚钱，口袋里没钱付本月的服务器和社保。</div>
+
+          <div class="dim3-metrics">
+            <div class="dim3-metric">
+              <div class="dim3-metric-label">账面利润</div>
+              <div class="dim3-metric-value">50万</div>
+            </div>
+            <div class="dim3-metric">
+              <div class="dim3-metric-label">实际到账</div>
+              <div class="dim3-metric-value danger">20万</div>
+            </div>
           </div>
 
-          <div class="answer-block">
-            <div class="answer-label">陷阱二</div>
-            <div class="answer-title">预收款提前花光</div>
-            <div class="answer-desc">提前收到一年服务费，当"利润"花掉了。服务要分12个月交付，但钱已经在第一个月花完了。后续履约成本和退款风险集中爆发。</div>
-          </div>
-
-          <div class="answer-block">
-            <div class="answer-label">并行台账</div>
-            <div class="answer-title">时刻并行"收付实现制"台账</div>
-            <div class="answer-desc">只看银行卡余额和工作台待开发票毫无意义。你必须同时追踪"已确认收入"和"实际到账现金"两套数字。</div>
-          </div>
-
-          <div class="answer-block">
-            <div class="answer-label">弹性红线</div>
-            <div class="answer-title">现金流红线：当余额 < 3个月刚性支出</div>
-            <div class="answer-desc">好月份下意识增加投放，差月份舍不得砍弹性支出。正确做法：当账上现金低于3个月刚性支出总和，除维生项目外所有弹性支出暂停。</div>
-          </div>
-
-          <div class="core-insight">
-            <div class="insight-tag">核心洞察</div>
-            <p class="core-insight-text">对于OPC，利润是纸面的，现金流才是真实的。你必须并行两套账：权责发生制（税务合规）和收付实现制（生存真实）。</p>
+          <div style="margin-top: var(--space-lg); font-size: 13px; color: var(--text-tertiary);">
+            剩余30万在90天账期里 → 季末要交税才发现没钱
           </div>
         </div>
 
-        <div class="chart-area">
-          <div class="objection-block red">
-            <div class="objection-label">危险信号</div>
-            <div class="objection-title">账面利润可观，但连税费都交不起</div>
-            <div class="objection-desc">这是虚假繁荣的典型症状。账面上赚了50万，但实际到账只有20万，剩余30万还在90天账期里。季末要交税了，才发现没钱。</div>
+        <div class="dim3-true">
+          <div class="dim3-label">正确姿势</div>
+          <div class="dim3-title">并行两套账本</div>
+          <div class="dim3-desc">同时追踪"已确认收入"和"实际到账现金"两套数字。每周核查，任一指标触线立即行动。</div>
+
+          <div class="dim3-metrics">
+            <div class="dim3-metric">
+              <div class="dim3-metric-label">应收账款</div>
+              <div class="dim3-metric-value">30万</div>
+            </div>
+            <div class="dim3-metric">
+              <div class="dim3-metric-label">实际余额</div>
+              <div class="dim3-metric-value safe">8万</div>
+            </div>
           </div>
 
-          <div class="objection-block green">
-            <div class="objection-label">正确姿势</div>
-            <div class="objection-title">每周并行检查两套数字</div>
-            <div class="objection-desc">已确认未到账应收账款有多少？实际银行卡余额是多少？两套数字的差距就是你的"账期风险敞口"。</div>
+          <div style="margin-top: var(--space-lg); font-size: 13px; color: var(--text-tertiary);">
+            两套数字差距 = 账期风险敞口 → 必须预留税款
           </div>
+        </div>
+      </div>
 
-          <div class="objection-block muted">
-            <div class="objection-label">解法</div>
-            <div class="objection-title">50%预收款起步</div>
-            <div class="objection-desc">启动项目收取50%预付款，覆盖至少50%的预期成本。剩余50%按里程碑分期收取，降低"交付完但没收钱"的风险。</div>
-          </div>
+      <div class="core-insight" style="margin-top: var(--space-2xl);">
+        <div class="insight-tag">核心洞察</div>
+        <p class="core-insight-text">对于OPC，利润是纸面的，现金流才是真实的。你必须并行两套账：权责发生制（税务合规）和收付实现制（生存真实）。</p>
+      </div>
+
+      <div style="margin-top: var(--space-xl); padding: var(--space-lg); background: var(--surface); border: 1px solid var(--line);">
+        <div style="font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: var(--space-md);">解法：50%预收款起步</div>
+        <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.7;">
+          启动项目收取50%预付款，覆盖至少50%的预期成本。剩余50%按里程碑分期收取，降低"交付完但没收钱"的风险。
         </div>
       </div>
     </section>
 
-    <!-- 维度四：税务规划与主体选择 -->
+    <!-- 维度四：税务主体选择 - 大型数字对比 -->
     <section class="dimension-section fade-section">
       <div class="dimension-badge">维度四</div>
       <h2 class="dimension-question">一人有限公司vs个体户：税种联动与身份穿透</h2>
 
-      <div class="dimension-layout">
-        <div class="answer-section">
-          <div class="answer-block">
-            <div class="answer-label">案例对比</div>
-            <div class="answer-title">年利润100万：两种主体的税负</div>
-            <div class="answer-desc">一人有限：企业所得税5%(小微优惠)约5万 + 分红个税20%约19万 = 合计24万。个人独资：经营所得个税35%约28.45万（无企税）。看似差不多，但风险在公私混同。</div>
+      <div class="dim4-comparison">
+        <div class="dim4-entity">
+          <div class="dim4-entity-name">一人有限公司 · 年利润100万</div>
+          <div class="dim4-tax-rate">5%</div>
+          <div class="dim4-tax-breakdown">
+            企业所得税（小微优惠）约 5万<br>
+            + 分红个税 20% 约 19万<br>
+            = 合计 24万
           </div>
-
-          <div class="answer-block">
-            <div class="answer-label">公私混同</div>
-            <div class="answer-title">借款、报销长期占用公司资金是定时炸弹</div>
-            <div class="answer-desc">金税四期扫描公私大额频繁往来。认定为股东分红则追缴20%个税；穿透认定为实质个人劳务则剥夺税收优惠，面临补税风险。</div>
+          <div class="dim4-total">
+            <div class="dim4-total-label">综合税负</div>
+            <div class="dim4-total-value highlight">24%</div>
           </div>
-
-          <div class="answer-block">
-            <div class="answer-label">解法</div>
-            <div class="answer-title">给自己发符合市场水平的工资</div>
-            <div class="answer-desc">工资作为经营成本可税前扣除，降低公司利润。个人取得工资按综合所得3%-45%累进税率，可享受6万元基本费用扣除和专项附加扣除。</div>
-          </div>
-
-          <div class="answer-block">
-            <div class="answer-label">2026趋势</div>
-            <div class="answer-title">税务系统比对更紧密</div>
-            <div class="answer-desc">企业人工成本列支与个人申报比对更紧密。正确的工资列支不仅能节税，更是构建合规防火墙的核心砖石。</div>
-          </div>
-
-          <div class="core-insight">
-            <div class="insight-tag">核心洞察</div>
-            <p class="core-insight-text">税务上犯的错不是少缴了税，而是一开始就选错了主体身份，导致结构性的多缴税或被穿透追缴。主体选择在注册公司那一刻就已锁定。</p>
+          <div class="dim4-note">
+            风险点：公私混同被穿透认定后，追缴20%分红个税+滞纳金，优惠全部剥夺。
           </div>
         </div>
 
-        <div class="chart-area">
-          <div class="objection-block red">
-            <div class="objection-label">危险操作</div>
-            <div class="objection-title">以借款、报销名义长期占用公司资金</div>
-            <div class="objection-desc">金税四期自动扫描公私大额往来。一旦被认定分红，追缴20%个税+滞纳金。如果穿透认定为个人劳务，公司壳的税收优惠全部剥夺。</div>
+        <div class="dim4-entity">
+          <div class="dim4-entity-name">个人独资企业 · 年利润100万</div>
+          <div class="dim4-tax-rate">35%</div>
+          <div class="dim4-tax-breakdown">
+            经营所得个税（无企税）<br>
+            约 28.45万<br>
+            <br>
+            （500万以下可申请核定征收）
           </div>
+          <div class="dim4-total">
+            <div class="dim4-total-label">综合税负</div>
+            <div class="dim4-total-value">35%</div>
+          </div>
+          <div class="dim4-note" style="background: rgba(76, 175, 80, 0.05); border-color: #4CAF50;">
+            风险点：无企税但个税更高，且无限责任（债务风险个人承担）
+          </div>
+        </div>
+      </div>
 
-          <div class="objection-block green">
-            <div class="objection-label">正确姿势</div>
-            <div class="objection-title">工资+分红的合理比例</div>
-            <div class="objection-desc">给自己发合理工资（降低公司利润税基）+ 留存利润通过正规分红（享受小微优惠）。两道所得税横向平衡，综合税负最优。</div>
+      <div style="margin-top: var(--space-2xl); padding: var(--space-xl); background: var(--surface); border: 1px solid var(--line);">
+        <div style="font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: var(--space-lg);">分水岭</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl);">
+          <div>
+            <div style="font-size: 28px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-xs);">50万以下</div>
+            <div style="font-size: 14px; color: var(--text-secondary);">个体户/个人独资综合税负更低</div>
           </div>
+          <div>
+            <div style="font-size: 28px; font-weight: 500; color: var(--accent); margin-bottom: var(--space-xs);">50万以上</div>
+            <div style="font-size: 14px; color: var(--text-secondary);">一人有限小微优惠+分红个税20%可能更优</div>
+          </div>
+        </div>
+      </div>
 
-          <div class="objection-block muted">
-            <div class="objection-label">主体选择</div>
-            <div class="objection-title">年利润50万是个分水岭</div>
-            <div class="objection-desc">50万以下：个体户/个人独资综合税负更低。50万以上：一人有限小微优惠叠加，分红个税20%可能更优。具体计算需结合业务场景。</div>
-          </div>
+      <div class="core-insight" style="margin-top: var(--space-2xl);">
+        <div class="insight-tag">核心洞察</div>
+        <p class="core-insight-text">税务上犯的错不是少缴了税，而是一开始就选错了主体身份，导致结构性的多缴税或被穿透追缴。主体选择在注册公司那一刻就已锁定。</p>
+      </div>
+
+      <div style="margin-top: var(--space-xl); padding: var(--space-lg); border-top: 1px solid var(--line);">
+        <div style="font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: var(--space-md);">正确姿势：工资+分红的合理比例</div>
+        <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.7;">
+          给自己发合理工资（降低公司利润税基）+ 留存利润通过正规分红（享受小微优惠）。工资税前扣除降利润，综合所得税负更优。公私分离是合规防火墙。
         </div>
       </div>
     </section>
 
     <!-- 维度五：三账户隔离法 -->
-    <section class="dimension-section fade-section">
+    <section class="three-accounts-section fade-section">
       <div class="dimension-badge">维度五</div>
       <h2 class="dimension-question">运营/储备/税务：物理隔离是财务纪律的基石</h2>
 
-      <div class="dimension-layout">
-        <div class="answer-section">
-          <div class="answer-block">
-            <div class="answer-label">运营账户</div>
-            <div class="answer-title">日常收入和经营支出</div>
-            <div class="answer-desc">客户付款进入此账户，服务器续费、工具订阅从此扣款。每周核查，确保余额始终覆盖未来30天预计支出。超出安全线的金额按55/35/10分流。</div>
-          </div>
-
-          <div class="answer-block">
-            <div class="answer-label">储备账户</div>
-            <div class="answer-title">8个月刚性支出安全垫</div>
-            <div class="answer-desc">目标金额为8个月刚性支出(含社保+最低生活费)。达到目标前每月强制划转30%-40%；达到后仅在重大消耗时才补充。设"只进不出"锁定期，用摩擦对抗挪用冲动。</div>
-          </div>
-
-          <div class="answer-block">
-            <div class="answer-label">税务账户</div>
-            <div class="answer-title">每月预提15%-25%，绝不挪用</div>
-            <div class="answer-desc">无论发生什么情况，税务账户资金绝不挪用。金税四期银行流水与申报数据自动交叉比对，拖欠税款产生滞纳金+拉低企业信用评分。</div>
-          </div>
-
-          <div class="answer-block">
-            <div class="answer-label">分流比例</div>
-            <div class="answer-title">55/35/10：超出安全线资金的分配</div>
-            <div class="answer-desc">55%进储备账户（积累8个月安全垫）；35%用于投资性支出（测试新渠道、购买效率工具）；10%作为个人生活提取。激励与约束并存。</div>
-          </div>
-
-          <div class="core-insight">
-            <div class="insight-tag">核心洞察</div>
-            <p class="core-insight-text">大脑在单一账户余额面前容易产生"资源充裕"的幻觉。三账户分割后，每个账户清晰传递"可动用资金还剩多少"的信号。</p>
-          </div>
+      <div class="three-accounts-grid">
+        <div class="account-card operation">
+          <div class="account-card-label">运营账户</div>
+          <div class="account-card-title">日常收入和经营支出</div>
+          <div class="account-card-desc">客户付款进入此账户，服务器续费、工具订阅从此扣款。每周核查，确保余额始终覆盖未来30天预计支出。</div>
+          <div class="account-card-rule">每周核查 · 30天预计支出</div>
         </div>
 
-        <div class="chart-area">
-          <div class="objection-block green">
-            <div class="objection-label">工具支持</div>
-            <div class="objection-title">数字银行子账户</div>
-            <div class="objection-desc">2026年多数数字银行支持在线秒开子账户。运营/储备/税务三账户物理隔离，挪用时增加摩擦成本，比意志力可靠得多。</div>
-          </div>
+        <div class="account-card reserve">
+          <div class="account-card-label">储备账户</div>
+          <div class="account-card-title">8个月刚性支出安全垫</div>
+          <div class="account-card-desc">目标金额为8个月刚性支出(含社保+最低生活费)。达到目标前每月强制划转30%-40%；达到后仅在重大消耗时才补充。</div>
+          <div class="account-card-rule">只进不出 · 8个月安全跑道</div>
+        </div>
 
-          <div class="objection-block red">
-            <div class="objection-label">危险心理</div>
-            <div class="objection-title">"都是我的钱，只是放在不同账户"</div>
-            <div class="objection-desc">单一账户余额高时，大脑产生"资源充裕"幻觉，容易冲动消费或过度投资。分割后的账户数字更真实反映"可动用资金"。</div>
-          </div>
+        <div class="account-card tax">
+          <div class="account-card-label">税务账户</div>
+          <div class="account-card-title">每月预提15%-25%</div>
+          <div class="account-card-desc">无论发生什么情况，税务账户资金绝不挪用。金税四期银行流水与申报数据自动交叉比对，拖欠税款产生滞纳金。</div>
+          <div class="account-card-rule">绝不挪用 · 季末缴税专用</div>
+        </div>
+      </div>
 
-          <div class="objection-block muted">
-            <div class="objection-label">储备目标</div>
-            <div class="objection-title">8个月刚性支出 = 安全跑道</div>
-            <div class="objection-desc">OPC最脆弱的是现金流断裂。8个月储备意味着：即使完全零收入，也能撑8个月。这是你独立决策权的物理保证。</div>
-          </div>
+      <div class="allocation-bar">
+        <div class="allocation-title">超额分流比例</div>
+        <div class="allocation-item">
+          <span class="allocation-percent">55%</span>
+          <span class="allocation-label">进储备账户 · 积累8个月安全垫</span>
+        </div>
+        <div class="allocation-item">
+          <span class="allocation-percent accent">35%</span>
+          <span class="allocation-label">用于投资性支出 · 测试新渠道、购买效率工具</span>
+        </div>
+        <div class="allocation-item">
+          <span class="allocation-percent">10%</span>
+          <span class="allocation-label">个人生活提取 · 激励与约束并存</span>
         </div>
       </div>
     </section>
 
-    <!-- 维度六：未来60天滚动预测 -->
+    <!-- 维度六：60天预测 - 仪表盘布局 -->
     <section class="dimension-section fade-section">
       <div class="dimension-badge">维度六</div>
       <h2 class="dimension-question">每周60天滚动预测：你的现金流仪表盘</h2>
 
-      <div class="dimension-layout">
-        <div class="answer-section">
-          <div class="answer-block">
-            <div class="answer-label">预测表</div>
-            <div class="answer-title">Excel或Notion数据库搭建</div>
-            <div class="answer-desc">核心字段：周次、预计收款(已签约)、预计收款(洽谈中×概率)、刚性支出、弹性支出、期末余额。每周维护一次，贴在显示器边缘。</div>
-          </div>
+      <div class="dim6-dashboard">
+        <div class="dim6-gauge">
+          <div class="dim6-gauge-label">未来60天 · 预估最低余额</div>
+          <div class="dim6-gauge-value danger">2.1</div>
+          <div class="dim6-gauge-unit">个月刚性支出</div>
+          <div class="dim6-gauge-status danger">⚠ 红线区间</div>
 
-          <div class="answer-block">
-            <div class="answer-label">关键数字</div>
-            <div class="answer-title">两个数字必须每周更新</div>
-            <div class="answer-desc">未来60天每日预估最低余额 + 当前最大单一客户回款占比。前者看生存空间，后者看单点依赖风险。</div>
-          </div>
-
-          <div class="answer-block">
-            <div class="answer-label">红线触发</div>
-            <div class="answer-title">当任一指标突破预设红线</div>
-            <div class="answer-desc">最低余额 < 2个月支出，或单一客户占比 > 50%。触发动作：暂停非必要支出、立刻催收、启动副流、与客户协商缩短账期。</div>
-          </div>
-
-          <div class="answer-block">
-            <div class="answer-label">季度动作</div>
-            <div class="answer-title">每季"压力测试"</div>
-            <div class="answer-desc">假设最大客户本月流失，现金跑道还剩多少？假设账期全部延长30天，现金流能否支撑？如果测试结果触发红线，防御动作立即启动。</div>
-          </div>
-
-          <div class="core-insight">
-            <div class="insight-tag">核心洞察</div>
-            <p class="core-insight-text">现金流管理不是月底回顾，而是嵌入日常的前哨系统。每周60天滚动预测，让你在问题发生前两周就有行动窗口。</p>
+          <div style="margin-top: var(--space-xl); padding-top: var(--space-lg); border-top: 1px solid var(--line); text-align: left;">
+            <div style="font-size: 13px; color: var(--text-tertiary); margin-bottom: var(--space-sm);">触发动作</div>
+            <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.6;">
+              暂停非必要支出 · 立刻催收 · 启动副流 · 协商缩短账期
+            </div>
           </div>
         </div>
 
-        <div class="chart-area">
-          <div class="objection-block red">
-            <div class="objection-label">红线</div>
-            <div class="objection-title">最低余额 < 1个月支出</div>
-            <div class="objection-desc">这是紧急状态。立刻暂停所有非必要支出、催收在途款项、启动副流。任何拖延都可能导致无法挽回的现金流断裂。</div>
+        <div class="dim6-checklist">
+          <div class="dim6-check-item red">
+            <div class="dim6-check-icon">!</div>
+            <div>
+              <div class="dim6-check-title">红线：< 1个月支出</div>
+              <div class="dim6-check-desc">紧急状态，立刻暂停所有非必要支出</div>
+            </div>
           </div>
 
-          <div class="objection-block green">
-            <div class="objection-label">健康</div>
-            <div class="objection-title">最低余额 > 3个月 + 客户分散</div>
-            <div class="objection-desc">这是OPC的安全区间。可以适度扩张，不用过度保守。有足够缓冲应对波动，有分散的收入来源降低单点风险。</div>
+          <div class="dim6-check-item red">
+            <div class="dim6-check-icon">!</div>
+            <div>
+              <div class="dim6-check-title">红线：单客户 > 50%</div>
+              <div class="dim6-check-desc">单点依赖风险，集中催收分散风险</div>
+            </div>
           </div>
 
-          <div class="objection-block muted">
-            <div class="objection-label">预测原则</div>
-            <div class="objection-title">洽谈中项目按概率打折</div>
-            <div class="objection-desc">新客户按30%-50%概率计算，老客户按70%-80%计算。不要高估自己的赢单率。悲观预测是稳健现金流管理的基础。</div>
+          <div class="dim6-check-item green">
+            <div class="dim6-check-icon">✓</div>
+            <div>
+              <div class="dim6-check-title">健康：> 3个月 + 客户分散</div>
+              <div class="dim6-check-desc">可适度扩张，无需过度保守</div>
+            </div>
           </div>
+        </div>
+      </div>
+
+      <div style="margin-top: var(--space-2xl); padding: var(--space-xl); background: var(--surface); border: 1px solid var(--line);">
+        <div style="font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: var(--space-lg);">预测表核心字段</div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg);">
+          <div>
+            <div style="font-size: 14px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-xs);">周次</div>
+            <div style="font-size: 13px; color: var(--text-secondary);">Week 1-8 滚动</div>
+          </div>
+          <div>
+            <div style="font-size: 14px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-xs);">预计收款</div>
+            <div style="font-size: 13px; color: var(--text-secondary);">已签约 + 洽谈中×概率</div>
+          </div>
+          <div>
+            <div style="font-size: 14px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-xs);">刚性+弹性支出</div>
+            <div style="font-size: 13px; color: var(--text-secondary);">每周末更新期末余额</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="core-insight" style="margin-top: var(--space-2xl);">
+        <div class="insight-tag">核心洞察</div>
+        <p class="core-insight-text">现金流管理不是月底回顾，而是嵌入日常的前哨系统。每周60天滚动预测，让你在问题发生前两周就有行动窗口。</p>
+      </div>
+
+      <div style="margin-top: var(--space-xl); padding: var(--space-lg); border-top: 1px solid var(--line);">
+        <div style="font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: var(--space-md);">季度压力测试</div>
+        <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.7;">
+          假设①最大客户本月流失，现金跑道剩多少？假设②账期全部延长30天，现金流能否支撑？测试结果触发红线 → 防御动作立即启动。
         </div>
       </div>
     </section>
