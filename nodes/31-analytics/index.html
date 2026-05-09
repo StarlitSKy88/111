@@ -1,44 +1,808 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <script src="/auth-guard.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="数据监控 - OPC节点百科">
   <meta name="theme-color" content="#111110">
   <title>数据监控 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-:root { --bg:#111110;--surface:#1A1A18;--text-primary:#F0EDE6;--text-secondary:#7A7670;--text-tertiary:#A8A49E;--accent:#C0392B;--line:#2A2A28; }
-* { margin:0;padding:0;box-sizing:border-box; }
-body { background:var(--bg);color:var(--text-primary);font-family:'Noto Sans SC',sans-serif;font-weight:300;line-height:2;letter-spacing:0.04em;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem; }
-.top-nav { position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem clamp(24px,8vw,120px);border-bottom:1px solid var(--line);background:var(--bg); }
-.back-link { font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-tertiary);text-decoration:none; }
-.back-link:hover { color:var(--text-primary); }
-.node-id { font-family:'Noto Serif JP',serif;font-size:0.75rem;color:var(--text-tertiary);letter-spacing:0.1em; }
-h1 { font-family:'Noto Serif JP',serif;font-size:clamp(28px,6vw,56px);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;text-align:center; }
-.phase { font-size:12px;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;text-align:center; }
-.num { font-size:11px;color:var(--text-tertiary);letter-spacing:0.1em;margin-top:0.5rem;text-align:center; }
-.note { font-size:13px;color:var(--text-secondary);text-align:center;max-width:480px;margin-top:1.5rem;line-height:1.9; }
-.footer-nav { display:flex;justify-content:space-between;position:fixed;bottom:0;left:0;right:0;padding:1.5rem clamp(24px,8vw,120px);border-top:1px solid var(--line);background:var(--bg); }
-.nav-link { font-size:0.7rem;color:var(--text-tertiary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;gap:0.5rem; }
-.nav-link:hover { color:var(--text-primary); }
-.nav-arrow { font-size:0.6rem; }
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #7A7670;
+  --text-tertiary: #4A4744;
+  --accent: #C0392B;
+  --line: #2A2A28;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
+  line-height: 2;
+  letter-spacing: 0.03em;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Layout with Sidebar */
+.layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3rem);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
+}
+
+/* Sidebar TOC */
+.sidebar-toc {
+  position: sticky;
+  top: 5rem;
+  height: fit-content;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  padding-top: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.sidebar-toc::-webkit-scrollbar { width: 4px; }
+.sidebar-toc::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+.toc-title {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.toc-list { list-style: none; }
+
+.toc-item { margin-bottom: 0.75rem; }
+
+.toc-link {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: block;
+  padding: 0.375rem 0;
+  padding-left: 1rem;
+  border-left: 1px solid var(--line);
+  transition: all 0.3s;
+  line-height: 1.4;
+}
+
+.toc-link:hover { color: var(--text-primary); border-left-color: var(--accent); }
+.toc-link.active { color: var(--accent); border-left-color: var(--accent); font-weight: 400; }
+
+/* Fixed Top Nav */
+.fixed-top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+.back-link {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
+}
+
+.back-link:hover { color: var(--text-primary); }
+.back-link svg { width: 1rem; height: 1rem; }
+
+.node-id {
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  color: var(--text-tertiary);
+}
+
+/* Main Content */
+.content {
+  min-width: 0;
+}
+
+.content h1 {
+  font-family: 'Noto Serif JP', 'Noto Sans SC', sans-serif;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 300;
+  line-height: 1.3;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
+}
+
+.content .lead {
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.content h2 {
+  font-family: 'Noto Serif JP', 'Noto Sans SC', sans-serif;
+  font-size: clamp(1.125rem, 2.5vw, 1.375rem);
+  font-weight: 300;
+  color: var(--text-primary);
+  margin-top: 3rem;
+  margin-bottom: 1.25rem;
+  letter-spacing: 0.01em;
+  scroll-margin-top: 5rem;
+}
+
+.content h3 {
+  font-size: 0.9375rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-top: 2rem;
+  margin-bottom: 0.875rem;
+  scroll-margin-top: 5rem;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  font-size: 0.8125rem;
+}
+
+th, td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+
+th {
+  color: var(--text-tertiary);
+  font-weight: 400;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+}
+
+td { color: var(--text-secondary); }
+td:first-child { color: var(--text-primary); font-weight: 400; }
+
+/* Dashboard Box */
+.dashboard-box {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  font-family: 'Noto Serif JP', serif;
+}
+
+.dashboard-box pre {
+  font-family: inherit;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  white-space: pre;
+}
+
+/* Highlight box */
+.highlight-box {
+  background: var(--surface);
+  border-left: 2px solid var(--accent);
+  padding: 1rem 1.25rem;
+  margin: 1.25rem 0;
+}
+
+.highlight-box p {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+/* Warning box */
+.warning-box {
+  background: rgba(192, 57, 43, 0.08);
+  border: 1px solid rgba(192, 57, 43, 0.3);
+  border-radius: 2px;
+  padding: 1rem 1.25rem;
+  margin: 1.25rem 0;
+}
+
+.warning-box .warning-title {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.warning-box p {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+/* Quote/引语 */
+blockquote {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin: 1.5rem 0;
+  padding-left: 1.25rem;
+  border-left: 2px solid var(--accent);
+  line-height: 1.8;
+}
+
+/* Links */
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+a:hover { opacity: 0.75; }
+
+/* Code block */
+.code-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+
+.code-block code {
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  white-space: pre;
+}
+
+/* Step block */
+.step-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 2px;
+}
+
+.step-block h4 {
+  font-size: 0.9375rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.step-block p,
+.step-block li {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+/* Fixed Bottom Nav */
+.fixed-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
+}
+
+.nav-btn {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
+}
+
+.nav-btn:hover { color: var(--text-primary); }
+.nav-btn.disabled { opacity: 0.3; pointer-events: none; }
+
+.nav-btn svg { width: 1rem; height: 1rem; }
+
+.nav-indicator {
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+}
+
+/* Divider */
+hr {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 2.5rem 0;
+}
+
+/* Last revised note */
+.last-revised {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .layout {
+    grid-template-columns: 1fr;
+    padding-top: 4.5rem;
+  }
+
+  .sidebar-toc {
+    display: none;
+  }
+
+  .fixed-bottom-nav {
+    padding: 0.75rem 1rem;
+  }
+}
   </style>
 </head>
 <body>
-  <nav class="top-nav">
-    <a href="/index.html" class="back-link">← 返回首页</a>
-    <span class="node-id">节点 31 / 57</span>
-  </nav>
-  <div class="phase">上线后迭代与运营</div>
-  <h1>数据监控</h1>
-  <div class="num">节点 31</div>
-  <p class="note">🚧 内容正在建设中<br>这将是一个面向OPC（一人公司/独立开发者）的实操指南</p>
-  <footer class="footer-nav">
-    <a href="/nodes/30-official-launch/index.html" class="nav-link"><span class="nav-arrow">←</span>节点30：正式发布</a>
-    <a href="/nodes/32-cold-start/index.html" class="nav-link">节点32：冷启动获客<span class="nav-arrow">→</span></a>
-  </footer>
+
+<!-- Fixed Top Navigation -->
+<nav class="fixed-top-nav">
+  <a href="/" class="back-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+    返回首页
+  </a>
+  <span class="node-id">31 / 数据监控</span>
+</nav>
+
+<div class="layout">
+  <!-- Sidebar TOC -->
+  <aside class="sidebar-toc">
+    <div class="toc-title">目录</div>
+    <ul class="toc-list">
+      <li class="toc-item"><a class="toc-link" href="#section-philosophy">OPC数据哲学</a></li>
+      <li class="toc-item"><a class="toc-link" href="#section-ga4">GA4接入教程</a></li>
+      <li class="toc-item"><a class="toc-link" href="#section-baidu">百度统计接入</a></li>
+      <li class="toc-item"><a class="toc-link" href="#section-miniprogram">小程序数据分析</a></li>
+      <li class="toc-item"><a class="toc-link" href="#section-ignore">不要看的数据</a></li>
+      <li class="toc-item"><a class="toc-link" href="#section-diagnosis">异常诊断流程</a></li>
+      <li class="toc-item"><a class="toc-link" href="#section-summary">总纲</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="content">
+    <h1>数据监控</h1>
+    <p class="lead">你的产品上线了，现在每天都有数据进来。但一个人盯不过来——本章只用看3个数字，配一个5分钟就能搭好的监控系统。不需要数据分析师，不需要SQL。</p>
+
+    <section id="section-philosophy">
+      <h2>一、OPC数据哲学：只盯三件事</h2>
+
+      <h3>你不需要看的东西（先列出来，省得你焦虑）</h3>
+      <table>
+        <thead>
+          <tr><th>你常见的焦虑</th><th>为什么不需要看</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>"昨天地域分布里新疆突然多了3个用户，我要不要研究？"</td><td>一人产品的小样本波动没有任何决策意义</td></tr>
+          <tr><td>"平均停留时长从上月2分18秒降到2分07秒了"</td><td>11秒的差异不是趋势，是噪声</td></tr>
+          <tr><td>"跳出率从62%变成65%了"</td><td>3%在小样本下不构成任何信号</td></tr>
+          <tr><td>"用户画像里25-30岁占比下降了2%"</td><td>你只服务几百个人时，画像没有统计意义</td></tr>
+          <tr><td>"需要建一个数据大屏实时监控"</td><td>你一个人盯不了大屏，关键是关键时刻能发现问题</td></tr>
+        </tbody>
+      </table>
+
+      <h3>OPC唯一需要盯的三个数</h3>
+      <div class="dashboard-box">
+<pre>┌──────────────────────────────────────────────────────┐
+│                    OPC数据仪表盘                       │
+│                                                      │
+│  ① 日活用户（DAU）  ← 你的产品今天有没有人用          │
+│     今天：___  昨天：___  上周同期：___                │
+│                                                      │
+│  ② 核心功能使用率  ← 用户有没有用到产品的灵魂功能      │
+│     完成率：___%  目标：>60%                          │
+│                                                      │
+│  ③ 留存率  ← 用户用完会不会回来                       │
+│     次日留存：___%  (目标>30%)                        │
+│     7日留存：___%   (目标>15%)                        │
+│     30日留存：___%  (目标>10%)                        │
+│                                                      │
+└──────────────────────────────────────────────────────┘</pre>
+      </div>
+
+      <h3>为什么这三个就够了</h3>
+      <table>
+        <thead>
+          <tr><th>指标</th><th>它告诉你</th><th>异常时意味着</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>DAU</strong></td><td>产品还活着吗</td><td>连续3天腰斩 → 服务器挂了/支付崩了/被微信封了</td></tr>
+          <tr><td><strong>核心功能使用率</strong></td><td>用户用对了吗</td><td>注册100人但核心功能只有3人用过 → 引导太差或功能不对</td></tr>
+          <tr><td><strong>留存率</strong></td><td>产品有价值吗</td><td>次日留存<20% → 用户第一分钟就决定"这东西没用"</td></tr>
+        </tbody>
+      </table>
+
+      <h3>不需要拆维度、不需要建漏斗、不需要A/B测试</h3>
+      <p>你不是字节跳动。你有300个用户，拆10个维度后每个格子只有3个人。3个人的数据变化没有任何统计学意义。</p>
+
+      <div class="highlight-box">
+        <p>OPC数据分析的原则是：盯住命门，忽略其他。</p>
+      </div>
+    </section>
+
+    <hr>
+
+    <section id="section-ga4">
+      <h2>二、GA4 接入5分钟教程（2026年5月界面）</h2>
+
+      <h3>什么是GA4</h3>
+      <p>Google Analytics 4，谷歌的免费网站分析工具。<strong>2026年最实用的免费分析方案。</strong></p>
+
+      <h3>注册和接入</h3>
+
+      <div class="step-block">
+        <h4>第1步：注册GA4账号（1分钟）</h4>
+        <ol style="margin: 0.75rem 0; padding-left: 1.5rem; color: var(--text-secondary); font-size: 0.875rem;">
+          <li style="margin-bottom: 0.5rem;">打开 <a href="https://analytics.google.com" target="_blank" rel="noopener">analytics.google.com</a></li>
+          <li style="margin-bottom: 0.5rem;">用Google账号登录（没有的话注册一个，免费）</li>
+          <li style="margin-bottom: 0.5rem;">点击"创建账号" → 输入账号名称（比如你的产品名）</li>
+          <li style="margin-bottom: 0.5rem;">点击"创建媒体资源" → 输入产品名 + 时区选"中国标准时间"</li>
+          <li style="margin-bottom: 0.5rem;">点击"创建" → 选择"网站"平台</li>
+          <li>输入你的网站URL → 点击"创建数据流"</li>
+        </ol>
+      </div>
+
+      <div class="step-block">
+        <h4>第2步：获取测量ID（30秒）</h4>
+        <p>数据流创建后，你会看到一个"测量ID"，格式为 <code>G-XXXXXXXXXX</code>。复制它。</p>
+      </div>
+
+      <div class="step-block">
+        <h4>第3步：粘贴代码（2分钟）</h4>
+        <p>在网站每个页面的 <code>&lt;head&gt;</code> 标签内，粘贴以下代码：</p>
+        <div class="code-block">
+          <code>&lt;!-- Google tag (gtag.js) --&gt;
+&lt;script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"&gt;&lt;/script&gt;
+&lt;script&gt;
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+&lt;/script&gt;</code>
+        </div>
+        <p>替换 <code>G-XXXXXXXXXX</code> 为你的测量ID。</p>
+      </div>
+
+      <div class="step-block">
+        <h4>第4步：验证（1分钟）</h4>
+        <p>部署后，打开GA4 → 报告 → 实时。用手机打开你的网站，30秒内应该能在实时报告中看到"1个活跃用户"。</p>
+      </div>
+
+      <div class="warning-box">
+        <div class="warning-title">国内注意事项</div>
+        <p>GA4依赖Google服务器，<strong>国内用户直接访问可能不稳定</strong>。如果你是用Trae做开发、主要面向国内用户，建议GA4 + 百度统计双接入（见下一章）。</p>
+        <p style="margin-top: 0.5rem;"><strong>补救方案</strong>：Vercel部署的网站可以开一个中间代理，把GA4请求转发到自己的域名上。如果不会配，直接用百度统计替代。</p>
+      </div>
+    </section>
+
+    <hr>
+
+    <section id="section-baidu">
+      <h2>三、百度统计接入：国内用户必备</h2>
+
+      <h3>为什么需要百度统计</h3>
+      <ul style="margin: 0.75rem 0; padding-left: 1.5rem; color: var(--text-secondary); font-size: 0.875rem;">
+        <li style="margin-bottom: 0.5rem;">服务器在国内，加载速度快（一秒之内）</li>
+        <li style="margin-bottom: 0.5rem;">中文后台，无学习曲线</li>
+        <li style="margin-bottom: 0.5rem;">自动生成热力图（看到用户点了哪里）——这是免费功能</li>
+        <li>微信小程序也可接入</li>
+      </ul>
+
+      <h3>接入步骤（3分钟）</h3>
+
+      <div class="step-block">
+        <h4>第1步</h4>
+        <p>打开 <a href="https://tongji.baidu.com" target="_blank" rel="noopener">tongji.baidu.com</a></p>
+      </div>
+
+      <div class="step-block">
+        <h4>第2步</h4>
+        <p>用百度账号登录 → 点击"添加站点"</p>
+      </div>
+
+      <div class="step-block">
+        <h4>第3步</h4>
+        <p>填入你的网站域名 → 获取JS代码</p>
+      </div>
+
+      <div class="step-block">
+        <h4>第4步</h4>
+        <p>将代码粘贴到所有页面的 <code>&lt;/head&gt;</code> 之前：</p>
+        <div class="code-block">
+          <code>&lt;script&gt;
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?你的统计ID";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+&lt;/script&gt;</code>
+        </div>
+      </div>
+
+      <div class="step-block">
+        <h4>第5步</h4>
+        <p>等5分钟，打开百度统计后台 → "实时访客"，用手机访问你的网站验证。</p>
+      </div>
+
+      <h3>百度统计 vs GA4</h3>
+      <table>
+        <thead>
+          <tr><th>维度</th><th>GA4</th><th>百度统计</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>服务器位置</td><td>海外（国内可能慢）</td><td>国内（秒开）</td></tr>
+          <tr><td>免费</td><td>✅</td><td>✅</td></tr>
+          <tr><td>热力图</td><td>需付费/第三方</td><td>✅ 内置免费</td></tr>
+          <tr><td>事件追踪</td><td>灵活但学习成本高</td><td>简单但不够灵活</td></tr>
+          <tr><td>中文支持</td><td>有中文界面</td><td>✅ 原生中文</td></tr>
+          <tr><td>小程序</td><td>❌</td><td>✅ 可接入</td></tr>
+          <tr><td>数据导出</td><td>✅</td><td>有限制</td></tr>
+        </tbody>
+      </table>
+
+      <div class="highlight-box">
+        <p><strong>OPC推荐</strong>：两者都接入。GA4做主分析（数据更灵活），百度统计做热力图和国内用户确认。</p>
+      </div>
+    </section>
+
+    <hr>
+
+    <section id="section-miniprogram">
+      <h2>四、微信小程序数据分析接入</h2>
+
+      <h3>小程序天生就有数据</h3>
+      <p>微信小程序不需要额外接入统计——微信后台自带数据分析：</p>
+
+      <p><strong>入口</strong>：登录 <a href="https://mp.weixin.qq.com" target="_blank" rel="noopener">mp.weixin.qq.com</a> → 左侧菜单 → "统计"</p>
+
+      <h3>小程序自带的关键指标</h3>
+      <table>
+        <thead>
+          <tr><th>菜单</th><th>核心数据</th><th>OPC需要看吗</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>用户分析</strong></td><td>日活、新增、留存</td><td>✅ 必看</td></tr>
+          <tr><td><strong>访问分析</strong></td><td>访问深度、停留时长</td><td>⚠️ 偶尔看</td></tr>
+          <tr><td><strong>页面分析</strong></td><td>各页面访问量、退出率</td><td>✅ 核心功能页面必看</td></tr>
+          <tr><td><strong>来源分析</strong></td><td>用户从聊天/朋友圈/搜索进入</td><td>⚠️ 偶尔看</td></tr>
+          <tr><td><strong>实时统计</strong></td><td>当前在线、今日累计</td><td>✅ 上线第一周每天看</td></tr>
+        </tbody>
+      </table>
+
+      <h3>小程序 + 百度统计</h3>
+      <p>微信自带统计有一个盲区：<strong>看不到热力图</strong>（用户具体在页面上点了哪里）。</p>
+
+      <p>补救方案：小程序可以使用百度统计的<a href="https://mtj.baidu.com" target="_blank" rel="noopener">小程序SDK</a>（在百度统计后台 → 小程序应用 → 添加应用获取AppKey）。</p>
+
+      <h3>小程序 + GA4</h3>
+      <p>微信小程序<strong>不能直接</strong>接入GA4。但可以通过自定义上报实现：</p>
+      <ol style="margin: 0.75rem 0; padding-left: 1.5rem; color: var(--text-secondary); font-size: 0.875rem;">
+        <li style="margin-bottom: 0.5rem;">在小程序后台 → 开发 → 开发设置 → 服务器域名 → 添加 <code>https://www.google-analytics.com</code></li>
+        <li style="margin-bottom: 0.5rem;">在自己的服务器上搭一个数据转发接口（GA4的measurement protocol）</li>
+      </ol>
+
+      <div class="highlight-box">
+        <p><strong>建议</strong>：如果只是为了看三个数，小程序自带统计 + 百度统计足够。不需要折腾。</p>
+      </div>
+    </section>
+
+    <hr>
+
+    <section id="section-ignore">
+      <h2>五、不要看的数据库清单（避免分析瘫痪）</h2>
+
+      <h3>这些数据看多了只会让你焦虑，不会让你变聪明</h3>
+      <table>
+        <thead>
+          <tr><th>数据</th><th>为什么不要盯</th><th>什么时候才需要看</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>PV/UV每小时波动</strong></td><td>小产品的小时数据是纯噪声</td><td>日均UV > 1000时</td></tr>
+          <tr><td><strong>设备型号分布</strong></td><td>除非你的产品有兼容性问题，否则没用</td><td>大量用户反馈某机型闪退</td></tr>
+          <tr><td><strong>浏览器分布</strong></td><td>一二线城市Chrome 80%+，不需要操心</td><td>收到IE/旧版浏览器bug反馈</td></tr>
+          <tr><td><strong>地域分布</strong></td><td>你一个人的产品不需要按城市做市场策略</td><td>考虑投本地广告时</td></tr>
+          <tr><td><strong>用户年龄/性别</strong></td><td>微信和GA4的画像精准度远不如你以为的</td><td>准备融资展示时做PPT用</td></tr>
+          <tr><td><strong>新老用户比</strong></td><td>在500 DAU以下没有统计意义</td><td>DAU > 1000</td></tr>
+          <tr><td><strong>会话时长</strong></td><td>好的产品用户用30秒就走了（工具属性），差的产品用户研究半天（看不懂）</td><td>结合核心功能使用率一起看</td></tr>
+          <tr><td><strong>跳出率</strong></td><td>单页应用、工具型产品的跳出率天然高</td><td>配合转化漏斗看</td></tr>
+        </tbody>
+      </table>
+
+      <h3>OPC正确做法</h3>
+      <ol style="margin: 1rem 0; padding-left: 1.5rem; color: var(--text-secondary); font-size: 0.875rem;">
+        <li style="margin-bottom: 0.75rem;"><strong>每周一看</strong>：DAU、核心功能使用率、留存率。三个数，看一眼，30秒完毕。</li>
+        <li style="margin-bottom: 0.75rem;"><strong>每月一总结</strong>：把四周的数据放进Excel，画出折线图。如果连续四周持平或上涨 → 不看细节。如果连续四周下跌 → 回到"数据异常诊断流程"（见下章）。</li>
+        <li><strong>其余时间</strong>：不要打开GA4。去做推广、做产品、聊用户。</li>
+      </ol>
+    </section>
+
+    <hr>
+
+    <section id="section-diagnosis">
+      <h2>六、数据异常诊断流程</h2>
+
+      <h3>当DAU突然腰斩（连续3天）</h3>
+      <div class="dashboard-box">
+<pre>① 检查服务器
+   → Vercel dashboard 看部署状态
+   → Supabase dashboard 看API是否正常
+   → 用手机亲自访问一次
+
+② 检查支付
+   → 支付是否还能正常拉起？
+   → 有无支付回调失败通知？
+
+③ 检查封禁
+   → 微信有没有提示"已停止访问该网页"？
+   → 域名有没有被墙？
+   → 小程序有没有被下架/限流通知？
+
+④ 检查流量来源
+   → 百度统计→来源分析→看看哪个渠道掉量了
+   → 如果你靠SEO，检查搜索排名有没有掉
+   → 如果你靠社群，检查群里有没有人说了负面
+
+⑤ 找3个活跃用户直接微信问
+   → "这两天用我们的产品有什么不对劲吗？"</pre>
+      </div>
+
+      <h3>当核心功能使用率持续偏低（<30%）</h3>
+      <div class="dashboard-box">
+<pre>① 检查引导
+   → 新用户进来第一屏能直接看到核心功能入口吗？
+   → 还是藏在菜单深处？
+   → 用一个非技术朋友测试：打开产品，问他能在10秒内找到核心功能吗
+
+② 检查功能名
+   → 功能按钮上写的文案，用户能看懂吗？
+   → A/B测试两个按钮名（比如"立即分析"vs"上传文件"）
+
+③ 检查是否有竞品
+   → 用户有没有直接告诉你"我觉得XX更好用"？
+   → 去知乎/小红书搜你的品类名，看最新评论</pre>
+      </div>
+
+      <h3>当留存率持续低迷（次日<20%）</h3>
+      <div class="dashboard-box">
+<pre>留存率是你的产品价值的唯一客观评分。
+
+如果不是技术bug导致的，那就是一件事：
+  → 你的产品没有解决用户真正的问题。
+
+验证方法：
+  → 给上个月注册的10个用户发红包，做5分钟微信语音
+  → 问："为什么后来不用了？"
+  → 听他们的原话，不要听"挺好用的就是没时间"
+
+真实的答案通常是：
+  "好用，但没觉得不用会怎样"
+  "和朋友推荐XX了，他说YY更好用"
+  "注册完不知道下一步该干嘛"</pre>
+      </div>
+    </section>
+
+    <hr>
+
+    <section id="section-summary">
+      <h2>总纲</h2>
+
+      <p>Google Analytics、百度统计、微信后台——三套数据系统，对OPC来说<strong>只有三个数字需要每周看一眼</strong>：</p>
+
+      <table>
+        <thead>
+          <tr><th>数字</th><th>含义</th><th>红线</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>日活</strong></td><td>产品还活着吗</td><td>连续3天掉50% → 立刻排查</td></tr>
+          <tr><td><strong>核心功能使用率</strong></td><td>用户用对了吗</td><td><30% → 改引导</td></tr>
+          <tr><td><strong>次日留存</strong></td><td>产品有用吗</td><td><20% → 回去做用户访谈</td></tr>
+        </tbody>
+      </table>
+
+      <blockquote>你不是字节跳动的数据分析师。你有300个用户时做30个维度的交叉分析，每个格子只有3个样本——那不是分析，是自我欺骗。</blockquote>
+    </section>
+
+    <p class="last-revised">最后修订：2026年5月9日</p>
+  </main>
+</div>
+
+<!-- Fixed Bottom Navigation -->
+<nav class="fixed-bottom-nav">
+  <a href="/nodes/30-official-launch/" class="nav-btn" id="prev-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+    <span class="nav-label">正式发布</span>
+  </a>
+  <span class="nav-indicator">31 / 57</span>
+  <a href="/nodes/32-cold-start/" class="nav-btn" id="next-btn">
+    <span class="nav-label">冷启动获客</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M5 12h14M12 5l7 7-7 7"/>
+    </svg>
+  </a>
+</nav>
+
+<script>
+// Scroll spy and smooth scroll
+document.addEventListener('DOMContentLoaded', function() {
+  const tocLinks = document.querySelectorAll('.toc-link');
+  const sections = document.querySelectorAll('section[id]');
+
+  // Smooth scroll on TOC click
+  tocLinks.forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').substring(1);
+      const target = document.getElementById(targetId);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // Scroll spy
+  function updateActiveLink() {
+    const scrollPos = window.scrollY + window.innerHeight / 3;
+
+    let currentSection = null;
+    sections.forEach(function(section) {
+      if (section.offsetTop <= scrollPos) {
+        currentSection = section.id;
+      }
+    });
+
+    tocLinks.forEach(function(link) {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === '#' + currentSection) {
+        link.classList.add('active');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveLink);
+  updateActiveLink();
+});
+</script>
+
 </body>
 </html>
