@@ -1,44 +1,1311 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <script src="/auth-guard.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="技术选型（零基础专属） - OPC节点百科">
+  <meta name="description" content="技术选型（零基础专属）- 2026年AI编码工具选型指南，面向OPC一人公司创业者">
   <meta name="theme-color" content="#111110">
   <title>技术选型（零基础专属） - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-:root { --bg:#111110;--surface:#1A1A18;--text-primary:#F0EDE6;--text-secondary:#7A7670;--text-tertiary:#A8A49E;--accent:#C0392B;--line:#2A2A28; }
-* { margin:0;padding:0;box-sizing:border-box; }
-body { background:var(--bg);color:var(--text-primary);font-family:'Noto Sans SC',sans-serif;font-weight:300;line-height:2;letter-spacing:0.04em;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem; }
-.top-nav { position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem clamp(24px,8vw,120px);border-bottom:1px solid var(--line);background:var(--bg); }
-.back-link { font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-tertiary);text-decoration:none; }
-.back-link:hover { color:var(--text-primary); }
-.node-id { font-family:'Noto Serif JP',serif;font-size:0.75rem;color:var(--text-tertiary);letter-spacing:0.1em; }
-h1 { font-family:'Noto Serif JP',serif;font-size:clamp(28px,6vw,56px);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;text-align:center; }
-.phase { font-size:12px;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;text-align:center; }
-.num { font-size:11px;color:var(--text-tertiary);letter-spacing:0.1em;margin-top:0.5rem;text-align:center; }
-.note { font-size:13px;color:var(--text-secondary);text-align:center;max-width:480px;margin-top:1.5rem;line-height:1.9; }
-.footer-nav { display:flex;justify-content:space-between;position:fixed;bottom:0;left:0;right:0;padding:1.5rem clamp(24px,8vw,120px);border-top:1px solid var(--line);background:var(--bg); }
-.nav-link { font-size:0.7rem;color:var(--text-tertiary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;gap:0.5rem; }
-.nav-link:hover { color:var(--text-primary); }
-.nav-arrow { font-size:0.6rem; }
-  </style>
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #7A7670;
+  --text-tertiary: #4A4744;
+  --accent: #C0392B;
+  --line: #2A2A28;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
+  line-height: 2;
+  letter-spacing: 0.03em;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Layout with Sidebar */
+.layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3rem);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
+}
+
+/* Sidebar TOC */
+.sidebar-toc {
+  position: sticky;
+  top: 5rem;
+  height: fit-content;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  padding-top: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.sidebar-toc::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar-toc::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 2px;
+}
+
+.toc-title {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.toc-list {
+  list-style: none;
+}
+
+.toc-item {
+  margin-bottom: 0.75rem;
+}
+
+.toc-link {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: block;
+  padding: 0.375rem 0;
+  padding-left: 1rem;
+  border-left: 1px solid var(--line);
+  transition: all 0.3s;
+  line-height: 1.4;
+}
+
+.toc-link:hover {
+  color: var(--text-primary);
+  border-left-color: var(--accent);
+}
+
+.toc-link.active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  font-weight: 400;
+}
+
+.toc-link.sub {
+  padding-left: 1.75rem;
+  font-size: 0.75rem;
+}
+
+/* Fixed Top Nav */
+.fixed-top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+.back-link {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
+}
+
+.back-link:hover {
+  color: var(--text-primary);
+}
+
+.node-id {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar-toc {
+    display: none;
+  }
+
+  .fixed-top-nav {
+    padding: 0.75rem clamp(1rem, 4vw, 1.5rem);
+  }
+}
+
+/* Header */
+header {
+  padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(2rem, 5vh, 3rem);
+}
+
+/* Main content */
+main {
+  padding-bottom: 5rem;
+}
+
+/* Section anchors offset for sticky header */
+section {
+  scroll-margin-top: 2rem;
+}
+
+section h2 {
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+}
+
+section p, section li {
+  font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
+  line-height: 1.9;
+}
+
+/* Table improvements */
+.table-wrapper {
+  margin: 1.5rem 0;
+  border: 1px solid var(--line);
+}
+
+table {
+  font-size: 0.875rem;
+}
+
+td, th {
+  padding: 0.875rem 1rem;
+}
+
+/* Tool Cards */
+.tool-grid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* Path blocks */
+.path-block {
+  padding: 1.5rem;
+}
+
+.workflow {
+  padding: 1rem 1.25rem;
+  font-size: 0.8125rem;
+}
+
+/* Validation cards */
+.validation-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.validation-card {
+  padding: 1.25rem;
+}
+
+/* Level items */
+.level-grid {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+/* Decision box */
+.decision-box {
+  padding: 1.25rem 1.5rem;
+}
+
+/* Main content */
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+h1 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(2rem, 7vw, 3.5rem);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+.subtitle {
+  font-size: clamp(0.9375rem, 2.5vw, 1.0625rem);
+  color: var(--text-secondary);
+  max-width: 52ch;
+  line-height: 1.8;
+}
+
+.node-meta {
+  margin-top: 2rem;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+}
+
+/* Sections */
+section {
+  padding-bottom: clamp(3rem, 10vh, 5rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(3rem, 10vh, 5rem);
+}
+
+section:last-of-type {
+  border-bottom: none;
+}
+
+.section-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.375rem, 4vw, 1.875rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+h3 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.125rem, 3vw, 1.375rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+p {
+  color: var(--text-secondary);
+  line-height: 2;
+  margin-bottom: 1.25rem;
+}
+
+.decision-box {
+  background: var(--surface);
+  border-left: 2px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.decision-box p {
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  margin: 0;
+}
+
+.decision-box .icon {
+  color: var(--accent);
+  font-size: 0.75rem;
+  margin-right: 0.5rem;
+}
+
+/* Tables */
+.table-wrapper {
+  overflow-x: auto;
+  margin: 2rem 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+th {
+  text-align: left;
+  font-weight: 400;
+  font-size: 0.6875rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--text-secondary);
+  vertical-align: top;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+td:first-child {
+  color: var(--text-primary);
+  font-weight: 400;
+}
+
+.star {
+  color: var(--accent);
+}
+
+/* Tool Cards */
+.tool-grid {
+  display: grid;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.tool-card {
+  background: var(--surface);
+  padding: 1.75rem;
+  border: 1px solid var(--line);
+}
+
+.tool-card h4 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.tool-card .tagline {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.tool-card p {
+  font-size: 0.875rem;
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.tool-card .pros {
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+}
+
+.tool-card .price {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.25rem 0.75rem;
+  margin-top: 1rem;
+}
+
+/* Path Section */
+.path-block {
+  background: var(--surface);
+  padding: 2rem;
+  margin: 2rem 0;
+  border: 1px solid var(--line);
+}
+
+.path-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.path-number {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+.path-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.path-tools {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.path-block p {
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+}
+
+.workflow {
+  background: var(--bg);
+  padding: 1.25rem 1.5rem;
+  margin-top: 1.25rem;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.9;
+}
+
+/* Validation Box */
+.validation-grid {
+  display: grid;
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
+
+.validation-card {
+  background: var(--surface);
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+}
+
+.validation-card h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.validation-card p {
+  font-size: 0.8125rem;
+  margin: 0;
+}
+
+.level-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.level-item {
+  background: var(--surface);
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+}
+
+.level-item .num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.5rem;
+  color: var(--accent);
+  opacity: 0.6;
+  margin-bottom: 0.5rem;
+}
+
+.level-item h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.level-item p {
+  font-size: 0.75rem;
+  margin: 0;
+}
+
+/* Cost Control */
+.cost-table {
+  margin: 2rem 0;
+}
+
+/* Quote */
+.quote-block {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+}
+
+.quote-block p {
+  font-size: 1rem;
+  color: var(--text-primary);
+  line-height: 1.8;
+}
+
+/* Network Section */
+.network-alert {
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.network-alert h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.network-alert p {
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Summary Box */
+.summary-box {
+  background: var(--surface);
+  padding: 2rem;
+  margin-top: 3rem;
+  border: 1px solid var(--line);
+}
+
+.summary-box h3 {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+}
+
+.step-list {
+  list-style: none;
+  counter-reset: steps;
+}
+
+.step-list li {
+  counter-increment: steps;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.step-list li::before {
+  content: counter(steps);
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--accent);
+  flex-shrink: 0;
+  width: 1.5rem;
+  padding-top: 0.25rem;
+}
+
+/* Footer Nav - Fixed Bottom */
+.footer-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.9);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
+}
+
+.nav-link {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
+}
+
+.nav-link:hover {
+  color: var(--text-primary);
+}
+
+.nav-link.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+header, section {
+  animation: fadeIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+section:nth-child(2) { animation-delay: 0.1s; }
+section:nth-child(3) { animation-delay: 0.15s; }
+section:nth-child(4) { animation-delay: 0.2s; }
+section:nth-child(5) { animation-delay: 0.25s; }
+section:nth-child(6) { animation-delay: 0.3s; }
+section:nth-child(7) { animation-delay: 0.35s; }
+</style>
 </head>
 <body>
-  <nav class="top-nav">
+  <!-- Fixed Top Navigation -->
+  <nav class="fixed-top-nav">
     <a href="/index.html" class="back-link">← 返回首页</a>
     <span class="node-id">节点 06 / 57</span>
   </nav>
-  <div class="phase">产品验证与准备</div>
-  <h1>技术选型（零基础专属）</h1>
-  <div class="num">节点 06</div>
-  <p class="note">🚧 内容正在建设中<br>这将是一个面向OPC（一人公司/独立开发者）的实操指南</p>
-  <footer class="footer-nav">
-    <a href="/nodes/05-mvp-scope/index.html" class="nav-link"><span class="nav-arrow">←</span>节点05：MVP功能清单</a>
-    <a href="/nodes/07-dev-environment/index.html" class="nav-link">节点07：开发环境安装<span class="nav-arrow">→</span></a>
-  </footer>
+
+  <div class="layout">
+    <aside class="sidebar-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#s1" class="toc-link">一、先定方向</a></li>
+        <li class="toc-item"><a href="#s2" class="toc-link">二、后端正解</a></li>
+        <li class="toc-item"><a href="#s3" class="toc-link">三、AI编码工具矩阵</a></li>
+        <li class="toc-item"><a href="#s4" class="toc-link">四、三条实战路径</a></li>
+        <li class="toc-item"><a href="#s5" class="toc-link">五、技术可行性验证</a></li>
+        <li class="toc-item"><a href="#s6" class="toc-link">六、成本控制</a></li>
+        <li class="toc-item"><a href="#s7" class="toc-link">七、工具绑定风险</a></li>
+        <li class="toc-item"><a href="#s8" class="toc-link">八、国内网络现实</a></li>
+      </ul>
+    </aside>
+
+    <main class="container">
+      <header>
+      <div class="phase-label">产品验证与准备</div>
+      <h1>技术选型<br>（零基础专属）</h1>
+      <p class="subtitle">2026年AI编码工具选型完全指南。面向OPC一人公司，想用AI工具一个人完成从验证到上线的全流程。本文不要求任何编程基础。</p>
+      <div class="node-meta">节点 06 / 57 · 最后修订：2026年5月9日</div>
+    </header>
+
+    <!-- Section 1: Platform Decision -->
+    <section id="s1">
+      <div class="section-label">一、先定方向</div>
+      <h2>Web vs 小程序 vs App</h2>
+      <p>技术选型的第一步不是选工具，而是选平台。方向错了，后面全是沉没成本。</p>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>维度</th>
+              <th>Web应用</th>
+              <th>微信小程序</th>
+              <th>移动App</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>学习曲线</td>
+              <td><span class="star">⭐</span> 最低</td>
+              <td><span class="star">⭐⭐</span> 中等</td>
+              <td><span class="star">⭐⭐⭐</span> 最高</td>
+            </tr>
+            <tr>
+              <td>开发到上线</td>
+              <td>1-2周（Vercel部署）</td>
+              <td>2-4周（含审核）</td>
+              <td>4-8周（含商店审核）</td>
+            </tr>
+            <tr>
+              <td>用户获取</td>
+              <td>SEO/社交分享/直接链接</td>
+              <td>微信生态自带流量</td>
+              <td>应用商店搜索+付费投放</td>
+            </tr>
+            <tr>
+              <td>支付集成</td>
+              <td>Stripe（海外）/ 支付宝网页支付</td>
+              <td>微信支付（JSAPI）</td>
+              <td>IAP（苹果）/ 各安卓市场</td>
+            </tr>
+            <tr>
+              <td>更新迭代</td>
+              <td>秒级部署，即时生效</td>
+              <td>审核1-7天</td>
+              <td>审核1-3天</td>
+            </tr>
+            <tr>
+              <td>月成本</td>
+              <td>$0-20</td>
+              <td>¥300认证费/年 + 服务器</td>
+              <td>$99 Apple年费 + 服务器</td>
+            </tr>
+            <tr>
+              <td>适合场景</td>
+              <td>SaaS工具、内容站、AI应用</td>
+              <td>微信生态内工具、电商、服务预约</td>
+              <td>高频使用、推送通知、拍照/定位等硬件能力</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="decision-box">
+        <p><span class="icon">▶</span><strong>决策口诀：你的用户在哪里，平台就在哪里。</strong></p>
+      </div>
+
+      <p>• 用户通过搜索引擎/社交媒体找到你 → <strong>Web</strong><br>
+         • 用户就在微信里，你希望"扫一扫"就能用 → <strong>小程序</strong><br>
+         • 用户需要频繁打开、接收推送、调用摄像头等 → <strong>App</strong></p>
+
+      <p><strong style="color: var(--accent);">OPC铁律：</strong>除非你有明确的理由选择小程序或App，否则一律从Web开始。Web的开发速度最快、迭代成本最低、部署最简单。</p>
+    </section>
+
+    <!-- Section 2: Backend -->
+    <section id="s2">
+      <div class="section-label">二、后端正解</div>
+      <h2>为什么OPC只需要Supabase</h2>
+
+      <h3>"后端"不是服务器</h3>
+      <p>传统认知里，做产品需要：买服务器 → 装Linux → 配Nginx → 装数据库 → 写API。这条路OPC一个人走，至少浪费30天。</p>
+
+      <p><strong>Supabase是什么：</strong>开源的Firebase替代品。一句话——它给了你一个现成的PostgreSQL数据库 + 自动生成的REST API + 用户认证系统 + 文件存储。</p>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>传统自建</th>
+              <th>Supabase</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>自己搭PostgreSQL（至少半天）</td><td>创建项目，30秒可用</td></tr>
+            <tr><td>手写CRUD API（每个表至少2小时）</td><td>建表后API自动生成</td></tr>
+            <tr><td>自己实现JWT鉴权（至少一天）</td><td>内置Auth，支持邮箱/手机/OAuth</td></tr>
+            <tr><td>自己配置SSL/域名（半天）</td><td>自带HTTPS</td></tr>
+            <tr><td>数据库备份靠自己写脚本</td><td>自动每日备份</td></tr>
+            <tr><td>扩展靠手动升级服务器</td><td>按用量自动伸缩</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>2026年5月免费额度（足够用到第一个付费用户）</h3>
+      <div class="level-grid">
+        <div class="level-item">
+          <div class="num">500MB</div>
+          <h4>数据库</h4>
+          <p>约10万行普通数据</p>
+        </div>
+        <div class="level-item">
+          <div class="num">200万</div>
+          <h4>API请求/月</h4>
+          <p>月请求次数上限</p>
+        </div>
+        <div class="level-item">
+          <div class="num">5万</div>
+          <h4>认证用户/月</h4>
+          <p>活跃用户数</p>
+        </div>
+        <div class="level-item">
+          <div class="num">1GB</div>
+          <h4>文件存储</h4>
+          <p>文件存储空间</p>
+        </div>
+      </div>
+
+      <div class="quote-block">
+        <p>突破免费额度之前，你大概率已经有收入了。</p>
+      </div>
+
+      <h3>Supabase的局限（诚实交代）</h3>
+      <p>• 不支持存储过程（用Edge Functions替代）<br>
+         • 免费项目7天不活跃会休眠（有请求自动唤醒）<br>
+         • 数据库在云端，无法做本地离线<br>
+         • 复杂查询性能不如自建专用服务器</p>
+
+      <p><strong style="color: var(--accent);">但这些局限对OPC的第一个产品来说，全部不是瓶颈。</strong> 当这些成为瓶颈的那天，你已经成功了。</p>
+    </section>
+
+    <!-- Section 3: AI Tools -->
+    <section id="s3">
+      <div class="section-label">三、AI编码工具矩阵</div>
+      <h2>2026年5月工具全景</h2>
+      <p>选好方向和基础设施后，进入核心问题：用哪个AI工具写代码？</p>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>工具</th>
+              <th>定位</th>
+              <th>最适合</th>
+              <th>月费用</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Trae</strong></td>
+              <td>字节跳动出品，中文原生支持</td>
+              <td>国内开发者，小程序场景</td>
+              <td>免费/¥199 Pro</td>
+            </tr>
+            <tr>
+              <td><strong>Cursor</strong></td>
+              <td>AI-first IDE，项目级上下文理解</td>
+              <td>深度理解代码库的日常开发</td>
+              <td>$20 Pro / $40 Business</td>
+            </tr>
+            <tr>
+              <td><strong>GitHub Copilot</strong></td>
+              <td>IDE自动补全鼻祖，生态最成熟</td>
+              <td>已有GitHub工作流</td>
+              <td>$10 Individual</td>
+            </tr>
+            <tr>
+              <td><strong>Claude Code</strong></td>
+              <td>终端CLI代理，自主执行能力最强</td>
+              <td>自动化脚本、测试生成、复杂重构</td>
+              <td>按token用量</td>
+            </tr>
+            <tr>
+              <td><strong>Codex</strong></td>
+              <td>OpenAI终端编码代理，开源</td>
+              <td>长任务自主执行、研究型编码</td>
+              <td>按token用量</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Tool Cards -->
+      <div class="tool-grid">
+        <div class="tool-card">
+          <h4>1. Trae — 国内OPC的首选IDE</h4>
+          <div class="tagline">字节跳动2025年推出，中文原生支持碾压所有竞品</div>
+          <p><strong>核心竞争力：</strong>对中文技术文档、微信小程序开发、国内云服务（阿里云/腾讯云）的生态集成远超海外工具。</p>
+          <p><strong>典型场景：</strong>用中文描述"做一个微信小程序登录页"，Trae能直接生成符合微信规范的完整代码。</p>
+          <p><strong>弱点：</strong>海外服务（Vercel/Stripe/Supabase）的集成经验不如Cursor和GitHub Copilot丰富。</p>
+          <span class="price">基础版免费 · Pro ¥199/月</span>
+        </div>
+
+        <div class="tool-card">
+          <h4>2. Cursor — 技术型OPC的日常主力</h4>
+          <div class="tagline">AI IDE品类综合体验最好，"AI搭档"而非补全工具</div>
+          <p><strong>核心竞争力：</strong>Tab补全快如闪电（100ms级）+ Composer多文件编辑 + 项目级上下文（自动索引整个项目结构）。</p>
+          <p><strong>代理模式：</strong>Cursor Agent可以接收自然语言指令，自主完成"找文件→理解逻辑→多文件修改→运行测试→修复错误"的完整链路。</p>
+          <p><strong>最大特色：</strong><code>.cursorrules</code> 文件让你定义项目级AI行为准则，相当于给你的AI搭档写了一本"员工手册"。</p>
+          <span class="price">Pro $20/月 · Business $40/月</span>
+        </div>
+
+        <div class="tool-card">
+          <h4>3. GitHub Copilot — 最安全的选择</h4>
+          <div class="tagline">Microsoft出品，嵌入VS Code生态，"绝对不会错"</div>
+          <p><strong>核心竞争力：</strong>代码补全准确率行业最高（尤其TypeScript/JavaScript/Python），企业级代码安全扫描内置。</p>
+          <p><strong>Copilot Chat：</strong>在IDE内直接对话，可以选中代码问"这段为什么慢"。</p>
+          <p><strong>弱点：</strong>代理能力弱于Cursor和Claude Code，只能做单文件级别的修改，做不到跨文件的自主重构。</p>
+          <span class="price">Individual $10/月</span>
+        </div>
+
+        <div class="tool-card">
+          <h4>4. Claude Code — 最聪明的"外包工程师"</h4>
+          <div class="tagline">Anthropic出品终端CLI工具，"雇的一个全天候远程工程师"</div>
+          <p><strong>核心竞争力：</strong>超长上下文（200K token），能一次性理解整个中型项目的代码结构、数据库Schema、API路由之间的全部关系。</p>
+          <p><strong>自主执行：</strong>可以接收"把这个项目的支付模块从Stripe迁移到微信支付"这种级别的指令，自己规划步骤、执行、测试、修复，整个过程可能持续30分钟以上。</p>
+          <span class="price">按token用量计费 · Max $200/月</span>
+        </div>
+
+        <div class="tool-card">
+          <h4>5. Codex — 开源生态的终端代理</h4>
+          <div class="tagline">OpenAI维护开源项目，非商业用途完全免费</div>
+          <p><strong>核心竞争力：</strong>开源（代码完全可见，可以自己部署到私有环境），非商业用途完全免费，通过API调用各种模型（不绑单一模型供应商）。</p>
+          <p><strong>典型场景：</strong>"帮我在Supabase上建一个用户表，包含邮箱、密码哈希、创建时间三个字段，然后生成React前端登录组件"——Codex能自主执行完整链路。</p>
+          <span class="price">免费开源 · 只需支付模型API费用</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Three Paths -->
+    <section id="s4">
+      <div class="section-label">四、三条实战路径</div>
+      <h2>按技术水平选择</h2>
+
+      <div class="path-block">
+        <div class="path-header">
+          <span class="path-number">路径一</span>
+          <span class="path-title">零基础 / 只懂产品</span>
+        </div>
+        <div class="path-tools">核心工具：Trae + Supabase</div>
+        <p><strong>为什么：</strong>Trae对中文理解最好，可以用大白话描述需求；Supabase让你完全不用碰服务器。学习曲线：从注册Trae到看到第一个页面，约30分钟。</p>
+        <div class="workflow">
+          <strong>OPC实战工作流：</strong><br><br>
+          <strong>周一上午：</strong>在Trae中新建项目，用300字中文描述你的产品（它叫什么、核心功能是什么、用户从哪里来）<br><br>
+          <strong>周一下午：</strong>Trae生成第一个页面。用自然语言调整："这个按钮不够大，改成首页居中，颜色换成#C0392B"<br><br>
+          <strong>周二：</strong>在Supabase建一个表（完全图形化操作，不需要写SQL），告诉Trae"帮我连接这个数据库，做一个可以读取数据并展示的页面"<br><br>
+          <strong>周三：</strong>部署到线上。把代码推到GitHub，连上Vercel，自动上线
+        </div>
+      </div>
+
+      <div class="path-block">
+        <div class="path-header">
+          <span class="path-number">路径二</span>
+          <span class="path-title">会一点基础 / 理解变量和函数</span>
+        </div>
+        <div class="path-tools">核心工具：Cursor + GitHub Copilot</div>
+        <p><strong>为什么：</strong>Cursor的项目理解能力能帮你维护2-3个页面的完整应用；GitHub Copilot的自动补全让你写代码像在填表。两者的价格加起来$30/月，这是你唯一的"人力成本"。</p>
+        <div class="workflow">
+          <strong>关键习惯：</strong><br><br>
+          1. <strong>建一个 <code>architecture.md</code></strong>，放入项目根目录。用中文写清楚：这个项目有几个页面、数据库有哪些表、核心逻辑是什么。让Cursor每次都读这个文件作为上下文。<br><br>
+          2. <strong>每次改完代码让AI写commit message：</strong>"帮我总结这次的改动，写一条git commit message"<br><br>
+          3. <strong>遇到bug先截图，</strong>把截图+报错信息一起扔给Cursor："这个页面点击按钮后报了这个错，帮我修"
+        </div>
+      </div>
+
+      <div class="path-block">
+        <div class="path-header">
+          <span class="path-number">路径三</span>
+          <span class="path-title">有经验的开发者</span>
+        </div>
+        <div class="path-tools">核心工具：Cursor + Claude Code + Codex</div>
+        <p><strong>为什么三件套：</strong>Cursor做日常开发（写功能、改UI、调接口）；Claude Code做重型任务（数据库迁移、批量重构、生成测试）；Codex做补充和探索（新想法快速验证、开源工具链集成）。</p>
+        <div class="workflow">
+          <strong>周工作流示例：</strong><br><br>
+          <strong>周一：</strong>Cursor里用中文写本周的spec文档，让Cursor扫描全项目，给出一份"本周可执行任务清单"<br><br>
+          <strong>周二上午：</strong>Cursor执行3-4个小任务（用户反馈的bug、UI微调）<br><br>
+          <strong>周二下午：</strong>Claude Code执行数据库迁移任务（"把用户表的phone字段拆成country_code和phone_number两个字段，同步更新所有相关API和前端组件"）<br><br>
+          <strong>周三：</strong>Codex探索一个新想法（"帮我在新分支上创建一个WebSocket实时通知的原型"），验证可行后合并<br><br>
+          <strong>周五：</strong>Cursor扫描本周所有commit，自动生成周报
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: Feasibility Validation -->
+    <section id="s5">
+      <div class="section-label">五、技术可行性验证</div>
+      <h2>只验证"唯一的那个东西"</h2>
+      <p>工具选得再好，也得先验证——你的核心功能在技术上能不能实现。</p>
+
+      <p>OPC在验证阶段最容易犯的错：先做登录系统、用户权限、后台管理、设置页面……然后累死在半路上。</p>
+
+      <p><strong>验证阶段只需要验证一件事：</strong>你的产品核心算法/逻辑，能不能把输入变成输出。</p>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>该做的</th>
+              <th>不该做的</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>一个上传按钮 + 分析函数 + 结果展示</td><td>完整的用户登录系统</td></tr>
+            <tr><td>一段能把中文问题翻译成SQL的提示词</td><td>用户角色权限管理</td></tr>
+            <tr><td>30行Python验证推荐算法准确率</td><td>后台CMS管理系统</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>"人造现实"验证法：用造假装一个真的</h3>
+      <p>不需要先构建完整后端。用这三个递进层次：</p>
+
+      <div class="validation-grid">
+        <div class="validation-card">
+          <h4>L1：录屏原型（半天）</h4>
+          <p>用任何录屏工具录一段操作演示。发给目标用户问："如果你有这个，你会用吗？"——零代码验证需求。</p>
+        </div>
+        <div class="validation-card">
+          <h4>L2：硬编码响应（一天）</h4>
+          <p>前端做完整，但后端所有返回值都是写死的。用户点击"分析"，永远返回同一份模拟结果。验证的是交互流程。</p>
+        </div>
+        <div class="validation-card">
+          <h4>L3：绿野仙踪模式（两天）</h4>
+          <p>前端完整 + 用户提交后你手动用AI处理 + 粘贴结果回去。在用户看来系统是"自动"的，实际你是幕后的法师。</p>
+        </div>
+      </div>
+
+      <h3>72小时微型实验</h3>
+      <p>• <strong>招募：</strong>5-10个正在经历你解决的问题的人（不是"对品类感兴趣的"，是"现在就在痛"的）<br>
+         • <strong>观察：</strong>不要问"你觉得怎么样"，而是看——他能不能不问你就理解第一步操作？有没有出现超过10秒的停滞？<br>
+         • <strong>边界：</strong>72小时，5-15人，一个核心行为完成率。这是OPC最残酷也最诚实的验证边界。</p>
+
+      <h3>硬核停止指标</h3>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>指标</th>
+              <th>红线</th>
+              <th>达标行动</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>无干预完成率</td>
+              <td>≥80%（5人至少4人独立完成核心动作）</td>
+              <td>不达标 → 重新设计交互</td>
+            </tr>
+            <tr>
+              <td>单位毛利</td>
+              <td>API调用成本 < 目标售价的30%</td>
+              <td>不达标 → 技术路线失败，换方案</td>
+            </tr>
+            <tr>
+              <td>响应延迟</td>
+              <td>核心功能返回 < 3秒（非实时场景）</td>
+              <td>超时 → 优化或换技术方案</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="decision-box">
+        <p><span class="icon">▶</span><strong>如果三条标准全部通过</strong> → 验证通过，可以进入MVP开发<br>
+           <strong>有任何一条不过</strong> → 果断终止。沉没成本不是继续的理由。</p>
+      </div>
+    </section>
+
+    <!-- Section 6: Cost Control -->
+    <section id="s6">
+      <div class="section-label">六、工具订阅成本控制</div>
+      <h2>用"将军思维"管理工具成本</h2>
+      <p>2026年AI工具订阅很容易月支出超过$200。OPC需要用"将军思维"管理工具成本。</p>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>工具层级</th>
+              <th>策略</th>
+              <th>示例</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>核心常驻</td>
+              <td>始终订阅，每月固定</td>
+              <td>Cursor Pro $20/月</td>
+            </tr>
+            <tr>
+              <td>按需开启</td>
+              <td>只在特定阶段订阅一个月</td>
+              <td>需要快速原型时开一个月GitHub Copilot</td>
+            </tr>
+            <tr>
+              <td>按量付费</td>
+              <td>用多少付多少</td>
+              <td>Claude Code按token、Supabase超出免费额度部分</td>
+            </tr>
+            <tr>
+              <td>免费替代</td>
+              <td>能用免费版绝不付费</td>
+              <td>Trae基础版、Codex开源版</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+   <div class="decision-box">
+        <p><span class="icon">▶</span><strong>成本红线：</strong>OPC的前六个月，总工具成本控制在 <strong>¥300/月</strong> 以内。超过这个数，说明你可能在为"感觉很厉害"的工具付费，而不是为"真正创造收入"的工具付费。</p>
+      </div>
+
+      <h3>每季度审查</h3>
+      <p>每三个月问自己：<br>
+         • 这个工具我上月打开了几次？<br>
+         • 如果停用它，有什么是其他工具做不到的？<br>
+         • 它的免费版/替代品现在能做到什么程度？</p>
+    </section>
+
+    <!-- Section 7: Lock-in Prevention -->
+    <section id="s7">
+      <div class="section-label">七、工具绑定风险与迁移预案</div>
+      <h2>最大的风险：你根本不知道你的应用怎么跑起来的</h2>
+      <p>2026年有大量"描述即生成"的工具。危险在于——它们在让你30分钟做出一个产品的同时，也让你对产品的技术细节完全失明。</p>
+
+      <p><strong>真实案例：</strong>2025年底，某OPC用AI工具生成了一整套SaaS后端。半年后想迁移到自建服务器，发现数据库结构全嵌在平台私有方案里，迁移成本几乎等于重写。</p>
+
+      <h3>防锁死三原则</h3>
+
+      <div class="path-block">
+        <div class="path-header">
+          <span class="path-number">原则一</span>
+          <span class="path-title">第一天就下指令</span>
+        </div>
+        <p>在任何AI工具中，第一次让它生成代码时就加上这段话：</p>
+        <div class="workflow">
+          "请用标准、通用的方案实现。数据库请用PostgreSQL标准SQL语法，鉴权请用JWT标准方案，避免任何平台专属函数或私有API。"
+        </div>
+      </div>
+
+      <div class="path-block">
+        <div class="path-header">
+          <span class="path-number">原则二</span>
+          <span class="path-title">理解核心流程</span>
+        </div>
+        <p>不用会写，但要会读。每周挑一段AI生成的业务逻辑代码，用Cursor的"解释这段代码"功能理解它。你不需要成为程序员，但需要能在出问题时，用一句话准确描述问题给AI。</p>
+      </div>
+
+      <div class="path-block">
+        <div class="path-header">
+          <span class="path-number">原则三</span>
+          <span class="path-title">保持数据主权</span>
+        </div>
+        <p>• 数据库用Supabase（开源，随时可以导出标准SQL）<br>
+           • 代码托管在GitHub（你拥有完整的git历史）<br>
+           • 域名在你自己的注册商手里（不要用平台送的临时域名）<br>
+           • 不要在任何单一平台上同时绑定代码、数据库和域名</p>
+      </div>
+    </section>
+
+    <!-- Section 8: Network Reality -->
+    <section id="s8">
+      <div class="section-label">八、国内OPC网络现实</div>
+      <h2>海外服务连接方案</h2>
+
+      <div class="network-alert">
+        <h4>第一道门槛不是代码，是网络</h4>
+        <p>以下基于2026年5月中国大陆实际网络环境。</p>
+      </div>
+
+      <h3>基础设施可达性</h3>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>服务</th>
+              <th>直连可用？</th>
+              <th>说明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Supabase Cloud</td><td>❌ 不稳定</td><td>托管于AWS海外节点，国内访问延迟高、不稳定</td></tr>
+            <tr><td>Vercel</td><td>⚠️ 偶尔可用</td><td>海外CDN，国内部分地区可访问</td></tr>
+            <tr><td>GitHub</td><td>⚠️ 间歇性波动</td><td>代码托管服务存在访问波动，推送/拉取可能中断</td></tr>
+            <tr><td>npm / pip</td><td>⚠️ 速度偏慢</td><td>建议配置国内镜像源</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>AI编码工具网络实测</h3>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>工具</th>
+              <th>海外服务依赖</th>
+              <th>直连体验</th>
+              <th>建议</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Trae</td><td>❌ 不依赖</td><td>✅ 流畅</td><td>国内服务器，无需额外配置，国内OPC首选</td></tr>
+            <tr><td>GitHub Copilot</td><td>⚠️ 需要访问海外服务</td><td>⚠️ 不稳定</td><td>认证和API依赖海外节点</td></tr>
+            <tr><td>Cursor</td><td>⚠️ 模型API在海外</td><td>⚠️ 延迟高</td><td>补全请求走海外线路，建议搭配网络优化</td></tr>
+            <tr><td>Claude Code</td><td>⚠️ Anthropic API在海外</td><td>❌ 不可用</td><td>需要配合海外服务访问</td></tr>
+            <tr><td>Codex</td><td>⚠️ OpenAI API在海外</td><td>❌ 不可用</td><td>需要配合海外服务访问</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>OPC实战建议</h3>
+
+      <div class="path-block">
+        <div class="path-header">
+          <span class="path-number">方案A</span>
+          <span class="path-title">国内OPC首选</span>
+        </div>
+        <p>日常开发用 <strong>Trae</strong>（免费+流畅），搭配 <strong>Gitee</strong>（代码托管）+ <strong>阿里云/腾讯云部署</strong> + <strong>自建Supabase</strong>，完全走国内生态完成从开发到上线的全流程。</p>
+      </div>
+
+      <div class="path-block">
+        <div class="path-header">
+          <span class="path-number">方案B</span>
+          <span class="path-title">有能力优化海外网络</span>
+        </div>
+        <p><strong>Cursor + Claude Code + Supabase Cloud + GitHub + Vercel</strong> 是能力最强的技术栈组合，但前提是你能为开发环境提供稳定的海外网络连接。这类方案的技术细节不在本文讨论范围，建议自行了解。</p>
+      </div>
+
+      <div class="path-block">
+        <div class="path-header">
+          <span class="path-number">折中方案</span>
+          <span class="path-title">推荐</span>
+        </div>
+        <p>日常开发用 <strong>Trae</strong>（免费+流畅），遇到跨文件重构、测试生成等复杂任务时切换到 <strong>Claude Code</strong> 按量使用（用完即关），代码同时推送到 <strong>GitHub</strong> 和 <strong>Gitee</strong> 形成双备份。这种组合兼顾了日常效率和关键时刻的能力上限。</p>
+      </div>
+
+      <div class="decision-box">
+        <p><span class="icon">▶</span><strong>预算提醒：</strong>如果你选择了依赖海外服务的工具链，请把<strong>网络优化成本</strong>纳入月度预算（市场行情约 ¥30–100/月）。这属于开发环境的基础设施支出，和订阅工具的费用一样是合理的经营成本。</p>
+      </div>
+    </section>
+
+    <!-- Summary -->
+    <div class="summary-box">
+      <h3>选型四步法</h3>
+      <ol class="step-list">
+        <li>先定平台（Web优先）</li>
+        <li>再定后端（Supabase）</li>
+        <li>匹配工具（按技术水平选路径）</li>
+        <li>验证可行性（72小时，5个人）</li>
+      </ol>
+      <div class="quote-block" style="margin-top: 2rem;">
+        <p><strong>工具不再是辅助。工具就是你的团队。你唯一的任务是：发出正确的指令。</strong></p>
+      </div>
+    </main>
+    </div><!-- end .layout -->
+
+    <!-- Fixed Footer Navigation -->
+    <nav class="footer-nav">
+      <a href="/nodes/05-mvp-scope/index.html" class="nav-link">
+        <span>←</span> 节点05：MVP功能清单
+      </a>
+      <a href="/nodes/07-dev-environment/index.html" class="nav-link">
+        节点07：开发环境安装 <span>→</span>
+      </a>
+    </nav>
+
+<script>
+// Smooth scroll for TOC links
+document.querySelectorAll('.toc-link').forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    const targetId = this.getAttribute('href').slice(1);
+    const target = document.getElementById(targetId);
+    if (target) {
+      const offsetTop = target.offsetTop - 80;
+      window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth'
+      });
+    }
+  });
+});
+
+// Scroll spy for TOC
+const sections = document.querySelectorAll('section[id]');
+const tocLinks = document.querySelectorAll('.toc-link');
+
+function updateActiveLink() {
+  const scrollPos = window.scrollY + 120;
+
+  sections.forEach(section => {
+    const top = section.offsetTop;
+    const height = section.offsetHeight;
+    const id = section.getAttribute('id');
+
+    if (scrollPos >= top && scrollPos < top + height) {
+      tocLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${id}`) {
+          link.classList.add('active');
+        }
+      });
+    }
+  });
+}
+
+window.addEventListener('scroll', updateActiveLink, { passive: true });
+updateActiveLink();
+</script>
 </body>
 </html>
