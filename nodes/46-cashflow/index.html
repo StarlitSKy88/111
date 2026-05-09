@@ -552,21 +552,9 @@ hr {
       </div>
 
       <h3>四级预警</h3>
-      <div class="warning-level safe">
+      <div id="runway-warning" class="warning-level safe">
         <div class="dot"></div>
-        <span class="text"><strong>> 12个月</strong> — 正常运营，持续验证商业模式</span>
-      </div>
-      <div class="warning-level caution">
-        <div class="dot"></div>
-        <span class="text"><strong>6-12个月</strong> — 每月复盘：跑道是拉长了还是缩短了</span>
-      </div>
-      <div class="warning-level alert">
-        <div class="dot"></div>
-        <span class="text"><strong>3-6个月</strong> — 立刻暂停所有弹性支出，全力推动回款</span>
-      </div>
-      <div class="warning-level danger">
-        <div class="dot"></div>
-        <span class="text"><strong>< 3个月</strong> — 生存模式：只保留能直接产生收入的支出，其余全砍</span>
+        <span class="text">根据您的计算结果动态显示预警信息</span>
       </div>
 
       <h3>跑道被低估的五大元凶</h3>
@@ -943,17 +931,39 @@ function calculateRunway() {
   gapEl.textContent = (gap >= 0 ? '+' : '') + '¥' + gap.toLocaleString('zh-CN', { maximumFractionDigits: 0 });
   gapEl.style.color = gap >= 0 ? '#22c55e' : '#ef4444';
 
-  // 预警显示
+  // 预警显示 - 计算器内
   const warningDisplay = document.getElementById('warning-display');
+  let calcWarningClass = '';
+  let calcWarningText = '';
   if (runway > 12) {
-    warningDisplay.innerHTML = '<div class="warning-level safe"><div class="dot"></div><span class="text">🟢 安全 — 有充足时间试错，可以适度投资增长</span></div>';
+    calcWarningClass = 'safe';
+    calcWarningText = '🟢 安全 — 有充足时间试错，可以适度投资增长';
   } else if (runway >= 6) {
-    warningDisplay.innerHTML = '<div class="warning-level caution"><div class="dot"></div><span class="text">🟡 注意 — 加速验证商业模式，控制非必要支出</span></div>';
+    calcWarningClass = 'caution';
+    calcWarningText = '🟡 注意 — 加速验证商业模式，控制非必要支出';
   } else if (runway >= 3) {
-    warningDisplay.innerHTML = '<div class="warning-level alert"><div class="dot"></div><span class="text">🟠 警戒 — 全力推动收入增长，暂停所有弹性支出</span></div>';
+    calcWarningClass = 'alert';
+    calcWarningText = '🟠 警戒 — 全力推动收入增长，暂停所有弹性支出';
   } else {
-    warningDisplay.innerHTML = '<div class="warning-level danger"><div class="dot"></div><span class="text">🔴 危险 — 立即启动增收/砍支，考虑兼职维持生计</span></div>';
+    calcWarningClass = 'danger';
+    calcWarningText = '🔴 危险 — 立即启动增收/砍支，考虑兼职维持生计';
   }
+  warningDisplay.innerHTML = '<div class="warning-level ' + calcWarningClass + '"><div class="dot"></div><span class="text">' + calcWarningText + '</span></div>';
+
+  // 预警显示 - 四级预警区域
+  const runwayWarning = document.getElementById('runway-warning');
+  runwayWarning.className = 'warning-level ' + calcWarningClass;
+  let runwayText = '';
+  if (runway > 12) {
+    runwayText = '<strong>> 12个月</strong> — 正常运营，持续验证商业模式。<span style="color: #22c55e;">您的跑道为 <strong>' + runway.toFixed(1) + ' 个月</strong>，状态安全。</span>';
+  } else if (runway >= 6) {
+    runwayText = '<strong>6-12个月</strong> — 每月复盘：跑道是拉长了还是缩短了。<span style="color: #eab308;">您的跑道为 <strong>' + runway.toFixed(1) + ' 个月</strong>，需要密切关注。</span>';
+  } else if (runway >= 3) {
+    runwayText = '<strong>3-6个月</strong> — 立刻暂停所有弹性支出，全力推动回款。<span style="color: #f97316;">您的跑道为 <strong>' + runway.toFixed(1) + ' 个月</strong>，处于警戒状态！</span>';
+  } else {
+    runwayText = '<strong>< 3个月</strong> — 生存模式：只保留能直接产生收入的支出，其余全砍。<span style="color: #ef4444;">您的跑道为 <strong>' + runway.toFixed(1) + ' 个月</strong>，危险！立即行动！</span>';
+  }
+  runwayWarning.innerHTML = '<div class="dot"></div><span class="text">' + runwayText + '</span>';
 }
 
 // 输入监听
