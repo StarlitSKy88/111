@@ -1,44 +1,890 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <script src="/auth-guard.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="问题定义与用户调研 - OPC节点百科">
   <meta name="theme-color" content="#111110">
   <title>问题定义与用户调研 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-:root { --bg:#111110;--surface:#1A1A18;--text-primary:#F0EDE6;--text-secondary:#7A7670;--text-tertiary:#A8A49E;--accent:#C0392B;--line:#2A2A28; }
-* { margin:0;padding:0;box-sizing:border-box; }
-body { background:var(--bg);color:var(--text-primary);font-family:'Noto Sans SC',sans-serif;font-weight:300;line-height:2;letter-spacing:0.04em;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem; }
-.top-nav { position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem clamp(24px,8vw,120px);border-bottom:1px solid var(--line);background:var(--bg); }
-.back-link { font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-tertiary);text-decoration:none; }
-.back-link:hover { color:var(--text-primary); }
-.node-id { font-family:'Noto Serif JP',serif;font-size:0.75rem;color:var(--text-tertiary);letter-spacing:0.1em; }
-h1 { font-family:'Noto Serif JP',serif;font-size:clamp(28px,6vw,56px);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;text-align:center; }
-.phase { font-size:12px;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;text-align:center; }
-.num { font-size:11px;color:var(--text-tertiary);letter-spacing:0.1em;margin-top:0.5rem;text-align:center; }
-.note { font-size:13px;color:var(--text-secondary);text-align:center;max-width:480px;margin-top:1.5rem;line-height:1.9; }
-.footer-nav { display:flex;justify-content:space-between;position:fixed;bottom:0;left:0;right:0;padding:1.5rem clamp(24px,8vw,120px);border-top:1px solid var(--line);background:var(--bg); }
-.nav-link { font-size:0.7rem;color:var(--text-tertiary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;gap:0.5rem; }
-.nav-link:hover { color:var(--text-primary); }
-.nav-arrow { font-size:0.6rem; }
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #7A7670;
+  --text-tertiary: #4A4744;
+  --accent: #C0392B;
+  --line: #2A2A28;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
+  line-height: 2;
+  letter-spacing: 0.03em;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Layout with Sidebar */
+.layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3rem);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
+}
+
+/* Sidebar TOC */
+.sidebar-toc {
+  position: sticky;
+  top: 5rem;
+  height: fit-content;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  padding-top: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.sidebar-toc::-webkit-scrollbar { width: 4px; }
+.sidebar-toc::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+.toc-title {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.toc-list { list-style: none; }
+
+.toc-item { margin-bottom: 0.75rem; }
+
+.toc-link {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: block;
+  padding: 0.375rem 0;
+  padding-left: 1rem;
+  border-left: 1px solid var(--line);
+  transition: all 0.3s;
+  line-height: 1.4;
+}
+
+.toc-link:hover { color: var(--text-primary); border-left-color: var(--accent); }
+.toc-link.active { color: var(--accent); border-left-color: var(--accent); font-weight: 400; }
+
+/* Fixed Top Nav */
+.fixed-top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+.back-link {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
+}
+
+.back-link:hover { color: var(--text-primary); }
+.back-link svg { width: 1rem; height: 1rem; }
+
+.node-id {
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  color: var(--text-tertiary);
+}
+
+/* Main Content */
+.content {
+  min-width: 0;
+}
+
+.content h1 {
+  font-family: 'Noto Serif JP', 'Noto Sans SC', sans-serif;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 300;
+  line-height: 1.3;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
+}
+
+.content .lead {
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.content h2 {
+  font-family: 'Noto Serif JP', 'Noto Sans SC', sans-serif;
+  font-size: clamp(1.125rem, 2.5vw, 1.375rem);
+  font-weight: 300;
+  color: var(--text-primary);
+  margin-top: 3rem;
+  margin-bottom: 1.25rem;
+  letter-spacing: 0.01em;
+  scroll-margin-top: 5rem;
+}
+
+.content h3 {
+  font-size: 0.9375rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-top: 2rem;
+  margin-bottom: 0.875rem;
+  scroll-margin-top: 5rem;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  font-size: 0.8125rem;
+}
+
+th, td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+
+th {
+  color: var(--text-tertiary);
+  font-weight: 400;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+}
+
+td { color: var(--text-secondary); }
+td:first-child { color: var(--text-primary); font-weight: 400; }
+
+/* Highlight box */
+.highlight-box {
+  background: var(--surface);
+  border-left: 2px solid var(--accent);
+  padding: 1rem 1.25rem;
+  margin: 1.25rem 0;
+}
+
+.highlight-box p {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+/* Warning box */
+.warning-box {
+  background: rgba(192, 57, 43, 0.08);
+  border: 1px solid rgba(192, 57, 43, 0.3);
+  border-radius: 2px;
+  padding: 1rem 1.25rem;
+  margin: 1.25rem 0;
+}
+
+.warning-box .warning-title {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.warning-box p {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+/* Quote/引语 */
+blockquote {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin: 1.5rem 0;
+  padding-left: 1.25rem;
+  border-left: 2px solid var(--accent);
+  line-height: 1.8;
+}
+
+/* Links */
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+a:hover { opacity: 0.75; }
+
+/* Step block */
+.step-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 2px;
+}
+
+.step-block h4 {
+  font-size: 0.9375rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.step-block p,
+.step-block li {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+/* Interview Template Box */
+.template-box {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 2px;
+  font-family: 'Noto Serif JP', serif;
+}
+
+.template-box pre {
+  font-family: inherit;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  white-space: pre-wrap;
+  line-height: 1.8;
+}
+
+/* Fixed Bottom Nav */
+.fixed-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
+}
+
+.nav-btn {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
+}
+
+.nav-btn:hover { color: var(--text-primary); }
+.nav-btn.disabled { opacity: 0.3; pointer-events: none; }
+
+.nav-btn svg { width: 1rem; height: 1rem; }
+
+.nav-indicator {
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+}
+
+/* Divider */
+hr {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 2.5rem 0;
+}
+
+/* Last revised note */
+.last-revised {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .layout {
+    grid-template-columns: 1fr;
+    padding-top: 4.5rem;
+  }
+
+  .sidebar-toc {
+    display: none;
+  }
+
+  .fixed-bottom-nav {
+    padding: 0.75rem 1rem;
+  }
+}
   </style>
 </head>
 <body>
-  <nav class="top-nav">
-    <a href="/index.html" class="back-link">← 返回首页</a>
-    <span class="node-id">节点 03 / 57</span>
-  </nav>
-  <div class="phase">产品验证与准备</div>
-  <h1>问题定义与用户调研</h1>
-  <div class="num">节点 03</div>
-  <p class="note">🚧 内容正在建设中<br>这将是一个面向OPC（一人公司/独立开发者）的实操指南</p>
-  <footer class="footer-nav">
-    <a href="/nodes/02-personal-resources/index.html" class="nav-link"><span class="nav-arrow">←</span>节点02：个人能力与资源盘点</a>
-    <a href="/nodes/04-prototype/index.html" class="nav-link">节点04：产品原型设计<span class="nav-arrow">→</span></a>
-  </footer>
+
+<!-- Fixed Top Navigation -->
+<nav class="fixed-top-nav">
+  <a href="/" class="back-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+    返回首页
+  </a>
+  <span class="node-id">03 / 问题定义</span>
+</nav>
+
+<div class="layout">
+  <!-- Sidebar TOC -->
+  <aside class="sidebar-toc">
+    <div class="toc-title">目录</div>
+    <ul class="toc-list">
+      <li class="toc-item"><a class="toc-link" href="#section-interview">用户访谈生死线</a></li>
+      <li class="toc-item"><a class="toc-link" href="#section-10people">10人访谈法</a></li>
+      <li class="toc-item"><a class="toc-link" href="#section-template">访谈提问模板</a></li>
+      <li class="toc-item"><a class="toc-link" href="#section-extract">需求提取方法</a></li>
+      <li class="toc-item"><a class="toc-link" href="#section-record">访谈记录模板</a></li>
+      <li class="toc-item"><a class="toc-link" href="#section-payment">付费意愿验证</a></li>
+      <li class="toc-item"><a class="toc-link" href="#section-filter">三把刀筛选</a></li>
+      <li class="toc-item"><a class="toc-link" href="#section-stop">停止信号</a></li>
+      <li class="toc-item"><a class="toc-link" href="#section-summary">总纲</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="content">
+    <h1>问题定义与用户调研</h1>
+    <p class="lead">62%的一人公司在18个月内注销——大多数不是败于市场，而是败于从未验证过"我解决的是不是真问题"。本章不教问卷调查、不教SPSS分析——只教一套一个人72小时内就能完成的验证方法。</p>
+
+    <section id="section-interview">
+      <h2>一、为什么用户访谈是OPC的生死线</h2>
+
+      <h3>国内OPC最常见的死法</h3>
+      <table>
+        <thead>
+          <tr><th>死法</th><th>占比估计</th><th>根本原因</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>做了没人用的产品</td><td>~40%</td><td>凭"我感觉"做功能，没问过用户</td></tr>
+          <tr><td>方向对但解法错</td><td>~30%</td><td>问了用户，但问法有诱导性</td></tr>
+          <tr><td>有用户但价格错</td><td>~20%</td><td>没验证用户"真掏钱"的意愿</td></tr>
+          <tr><td>其他</td><td>~10%</td><td>法律、资金、技术等</td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>核心问题不是"会不会做"，而是"有没有搞清楚到底该做什么"。</strong></p>
+
+      <h3>一个真实国内案例：微信红包</h3>
+      <p>2014年春节，微信红包团队做了一件事——他们没去设计"觉得用户会喜欢"的功能，而是在广东地区观察春节期间人们真实的红包行为：</p>
+
+      <blockquote>
+        ① 广东人过年发红包有"利是"传统（小额、高频）<br>
+        ② 人们在微信群里的自然行为已经是"抢红包"（拼手气群接龙）<br>
+        ③ 问题不是"怎么发红包"，而是"线下的红包怎么搬到线上还能保持那个感觉"
+      </blockquote>
+
+      <p>他们把观察到的问题定义为："让用户在微信群里体验到和线下收红包一样的快乐"。然后才做了拼手气红包——不是先想功能再找用户，而是先看懂用户再想功能。</p>
+
+      <div class="warning-box">
+        <div class="warning-title">OPC的铁律</div>
+        <p>你的第一个版本，不应该超过5个人反复跟你聊过之后你才确定的。</p>
+      </div>
+    </section>
+
+    <hr>
+
+    <section id="section-10people">
+      <h2>二、10人1对1访谈法：OPC专属执行版</h2>
+
+      <h3>为什么是10人不是100人</h3>
+      <blockquote>Jakob Nielsen（尼尔森诺曼集团创始人）的研究表明：<strong>5个用户就能发现85%的可用性问题。</strong> 10个人足以覆盖你目标用户的绝大多数行为模式。</blockquote>
+
+      <p>对OPC来说，10人访谈 = 你可以在一周内完成的验证规模。不需要问卷星、不需要广撒网——你一个人打电话、面谈、微信语音，全搞定。</p>
+
+      <h3>执行六步</h3>
+
+      <div class="step-block">
+        <h4>第1步：定义你的"问题假设"（30分钟）</h4>
+        <p>在找人之前，先用一句话写下你的假设：</p>
+        <blockquote>"我观察到[某类人]在[某个场景下]做[某件事]的时候，最困扰的是[某个问题]。"</blockquote>
+        <p><strong>真实示例（国内OPC场景）</strong>：</p>
+        <table>
+          <thead>
+            <tr><th>不好的假设</th><th>好的假设</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>"小企业需要CRM"</td><td>"我观察到三线城市的建材批发店主，每天用微信手动回复几十个客户的询价，经常漏单、记错价格"</td></tr>
+            <tr><td>"年轻人需要理财"</td><td>"我观察到25-30岁的一线城市打工人，每月工资到账后不知道该怎么分配，余额宝利率越来越低但不敢碰基金"</td></tr>
+            <tr><td>"餐饮店需要小程序"</td><td>"我观察到二线城市社区周边的独立咖啡馆，美团抽成22%后几乎没利润，想建自己的渠道但不会做"</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="step-block">
+        <h4>第2步：找到对的人（2小时）</h4>
+        <p><strong>你需要的不是"对品类感兴趣的"，而是"正在经历这个问题的"。</strong></p>
+        <table>
+          <thead>
+            <tr><th>找人的渠道</th><th>适合场景</th><th>实操方法</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>微信朋友圈/群聊</td><td>B2C、知识付费</td><td>发一条动态："想聊一下[某话题]，请喝咖啡（¥30红包），限10人"</td></tr>
+            <tr><td>即刻/小红书私信</td><td>年轻用户、兴趣社区</td><td>搜索相关话题，找最近1周内发过相关内容的人私信</td></tr>
+            <tr><td>线下实地找人</td><td>本地服务、实体店</td><td>直接走进店里，点杯咖啡，跟老板聊10分钟</td></tr>
+            <tr><td>行业微信群</td><td>B2B、垂直行业</td><td>在群里发一个具体问题求助，私聊愿意回答的人</td></tr>
+            <tr><td>朋友的朋友</td><td>所有场景</td><td>让朋友介绍，比直接找陌生人转化率高3倍</td></tr>
+          </tbody>
+        </table>
+        <div class="warning-box">
+          <p><strong>关键原则</strong>：不要找你的朋友。朋友会出于礼貌说"挺好的"——这种反馈比没反馈更危险。</p>
+        </div>
+      </div>
+
+      <div class="step-block">
+        <h4>第3步：做访谈（每人30分钟）</h4>
+        <p><strong>铁律</strong>：</p>
+        <ul style="margin: 0.75rem 0; padding-left: 1.5rem; color: var(--text-secondary); font-size: 0.875rem;">
+          <li>不要解释你的产品</li>
+          <li>不要问"如果有一个工具可以……"</li>
+          <li>只问他们现在的行为、现在的痛点、现在的解决方案</li>
+        </ul>
+      </div>
+
+      <div class="step-block">
+        <h4>第4步：记录（当场）</h4>
+        <p>用手机录音（征得同意），但更重要的是<strong>当场记笔记</strong>——你会在当场捕捉到录音里听不出来的东西：对方说某句话时皱了一下眉头、停顿了3秒、突然提高了音量。</p>
+      </div>
+
+      <div class="step-block">
+        <h4>第5步：找出模式（访谈结束后2小时）</h4>
+        <p>把10个人的访谈记录摊开，用荧光笔标注反复出现的词。<strong>如果10个人里有7个人不约而同地用了同一个词来形容他们的痛点——这就是你的产品应该解决的那个问题。</strong></p>
+      </div>
+
+      <div class="step-block">
+        <h4>第6步：回到假设，修正或推翻（30分钟）</h4>
+        <p>把你的原始假设和访谈结果对比。修正你的假设，或者——如果发现假设根本不对——果断放弃。这比做了半年产品才发现没人需要便宜得多。</p>
+      </div>
+    </section>
+
+    <hr>
+
+    <section id="section-template">
+      <h2>三、访谈提问模板（直接复制使用）</h2>
+
+      <h3>模板A：面对面/微信语音访谈（30分钟版）</h3>
+      <div class="template-box">
+<pre>═══════════════════════════════════════
+        用户访谈提纲 · OPC版
+═══════════════════════════════════════
+
+受访人：__________  日期：__________
+行业/身份：__________  访谈方式：__________
+
+━━━ 第一部分：热身（5分钟）━━━
+
+1. 先简单介绍一下你自己吧，平时主要做什么？
+
+━━━ 第二部分：理解现状（15分钟）━━━
+
+2. 你上次遇到[某问题]是在什么时候？能具体跟我讲讲当时的情况吗？
+   （追问：当时你是怎么解决的？花了多长时间？）
+
+3. 这个问题多久出现一次？是一周几次、一个月一次、还是偶尔？
+
+4. 你目前用什么办法处理这个问题？
+   （追问：这个办法有什么不满意的地方吗？）
+
+5. 你有没有尝试过其他的解决办法？为什么没用下去？
+
+6. 这个问题如果不解决，对你来说最大的代价是什么？
+   （追问：比如会损失钱、时间、机会？）
+
+━━━ 第三部分：验证意愿（10分钟）━━━
+
+7. 如果有一个方案能帮你[解决核心问题]，你愿意为它付费吗？
+   （如果愿意）你觉得多少钱比较合理？
+   （如果不愿意）为什么？
+
+8. 你身边还有哪些人和你遇到了同样的问题？
+   （追问：方便介绍我聊聊吗？）
+
+━━━ 第四部分：收尾 ━━━
+
+9. 还有什么我没问到、但你觉得我应该知道的吗？
+
+10. 如果后续有新的想法，我可以再找你聊几分钟吗？
+
+═══════════════════════════════════════</pre>
+      </div>
+
+      <h3>模板B：微信文字访谈（轻量版）</h3>
+      <div class="template-box">
+<pre>Hi [名字]，想请教你一个小问题~
+
+你平时[做某件事]的时候，有没有觉得特别麻烦的地方？
+
+→ 等对方回答后追问：
+   "那你现在怎么处理这个麻烦？"
+   "这个麻烦大概多久出现一次？"
+   "如果花钱能解决，你觉得多少可以接受？"
+
+感谢！送你一杯咖啡 [发30元红包]</pre>
+      </div>
+    </section>
+
+    <hr>
+
+    <section id="section-extract">
+      <h2>四、从"我好烦XX"到真实需求的提取方法</h2>
+
+      <h3>用户说的 ≠ 用户需要的</h3>
+
+      <p><strong>经典案例：滴滴早期</strong></p>
+      <p>2012年，程颐（滴滴创始人）自己在北京街头做了大量司机访谈。司机们说："最大的问题是找不到乘客。"但如果程颐直接做一个"帮司机找乘客"的工具，滴滴不会是今天的样子。</p>
+
+      <p>他多问了一层："<strong>除了找不到乘客之外，还有什么让你烦？</strong>"</p>
+
+      <p>司机说："最烦的是空车跑——不知道乘客在哪，跑过去发现人已经走了。"</p>
+
+      <div class="highlight-box">
+        <p>核心需求不是"匹配司机和乘客"，而是"减少空驶率"。</p>
+      </div>
+
+      <h3>提取公式</h3>
+      <blockquote>用户描述的表面行为 → 追问"为什么烦" → 找出真正的卡点</blockquote>
+
+      <table>
+        <thead>
+          <tr><th>用户说</th><th>不要理解为</th><th>追问后会发现</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>"我每天要花2小时回微信群消息"</td><td>"他需要一个群管理工具"</td><td>他的卡点是"怕漏掉付费客户的咨询，但又不想被闲聊打扰"</td></tr>
+          <tr><td>"记账好麻烦"</td><td>"他需要一个记账App"</td><td>他的卡点是"年底报税时代账公司问我要数据，我根本找不到"</td></tr>
+          <tr><td>"小红书发笔记太花时间"</td><td>"他需要一个自动排版工具"</td><td>他的卡点是"不知道怎么写标题才有流量，写了10篇只有2篇有人看"</td></tr>
+          <tr><td>"招聘太难了"</td><td>"他需要一个招聘平台"</td><td>他的卡点是"收到200份简历但没有一份能用，筛选太浪费时间"</td></tr>
+        </tbody>
+      </table>
+
+      <h3>五个追问魔法词</h3>
+      <p>当用户说"XX好麻烦/好烦/好难"时，用这五个词追问：</p>
+      <ol style="margin: 1rem 0; padding-left: 1.5rem; color: var(--text-secondary); font-size: 0.875rem;">
+        <li style="margin-bottom: 0.5rem;"><strong>"上次是？"</strong> → 把模糊抱怨变成具体场景</li>
+        <li style="margin-bottom: 0.5rem;"><strong>"怎么解决的？"</strong> → 了解现有方案的缺陷</li>
+        <li style="margin-bottom: 0.5rem;"><strong>"多久一次？"</strong> → 判断是高频痛点还是偶尔困扰</li>
+        <li style="margin-bottom: 0.5rem;"><strong>"最坏会怎样？"</strong> → 衡量痛点的真实代价</li>
+        <li><strong>"试过别的吗？"</strong> → 了解竞品和替代方案</li>
+      </ol>
+    </section>
+
+    <hr>
+
+    <section id="section-record">
+      <h2>五、访谈记录模板</h2>
+
+      <h3>单人访谈记录卡</h3>
+      <div class="template-box">
+<pre>┌─────────────────────────────────────────────┐
+│              访谈记录卡 #___                   │
+├─────────────────────────────────────────────┤
+│ 受访人：__________  日期：__________          │
+│ 身份/行业：__________  年龄：__________       │
+│ 访谈方式：□面谈 □微信语音 □电话 □文字        │
+├─────────────────────────────────────────────┤
+│                                               │
+│ 【核心痛点】一句话总结                         │
+│                                               │
+│ __________________________________________    │
+│                                               │
+│ 【现有解决方案】                               │
+│                                               │
+│ __________________________________________    │
+│                                               │
+│ 【对现有方案的不满】                           │
+│                                               │
+│ __________________________________________    │
+│                                               │
+│ 【痛点频率】                                   │
+│                                               │
+│ □每天 □每周 □每月 □偶尔                        │
+│                                               │
+│ 【付费意愿】                                   │
+│                                               │
+│ □愿意付费 心理价位：¥__________               │
+│ □不愿付费 原因：__________                    │
+│                                               │
+│ 【原话摘录】最触动你的3句话                     │
+│                                               │
+│ 1. ______________________________________     │
+│ 2. ______________________________________     │
+│ 3. ______________________________________     │
+│                                               │
+│ 【我的判断】□强烈信号 □中等信号 □弱信号       │
+│                                               │
+└─────────────────────────────────────────────┘</pre>
+      </div>
+
+      <h3>10人访谈汇总表</h3>
+      <table>
+        <thead>
+          <tr><th>编号</th><th>身份</th><th>核心痛点关键词</th><th>现有方案</th><th>付费意愿</th><th>信号强度</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>01</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>02</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>…</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>10</td><td></td><td></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+
+      <h3>判断标准</h3>
+      <table>
+        <thead>
+          <tr><th>信号</th><th>表现</th><th>决策</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>强烈信号</strong></td><td>7/10人用同一个词描述痛点 + 付费意愿明确</td><td>进入MVP验证</td></tr>
+          <tr><td><strong>中等信号</strong></td><td>4-6/10人有共同痛点，但付费意愿模糊</td><td>再找5个人确认</td></tr>
+          <tr><td><strong>弱信号</strong></td><td>痛点分散，没有共同模式</td><td>放弃此方向</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <hr>
+
+    <section id="section-payment">
+      <h2>六、付费意愿验证：真金白银比承诺更诚实</h2>
+
+      <h3>为什么"我愿意付费"不可信</h3>
+      <p>国内用户出于礼貌习惯性说"挺好的""应该会用"。这是OPC验证阶段的第一杀手。</p>
+
+      <div class="warning-box">
+        <div class="warning-title">数据</div>
+        <p>哈佛商学院研究——调查中表示"愿意购买"的用户，实际购买转化率仅为<strong>10%-20%</strong>。</p>
+      </div>
+
+      <h3>三种真实验证方法</h3>
+
+      <div class="step-block">
+        <h4>方法一：48小时预售页测试</h4>
+        <p>做一个极简单页（用Trae或Canva），放上产品介绍 + 一个"预购"按钮。按钮链接到一个真实的收款页面（微信赞赏码/支付宝收款码）。</p>
+        <ul style="margin: 0.75rem 0; padding-left: 1.5rem; color: var(--text-secondary); font-size: 0.875rem;">
+          <li>发给你访谈过的10个人 + 朋友圈/社群</li>
+          <li>48小时后看有多少人点了付款</li>
+          <li><strong>超过0人付款 = 信号成立</strong>（哪怕只有¥9.9）</li>
+        </ul>
+        <p><strong>国内真实案例</strong>：2023年，一位独立开发者做了一个"小红书文案AI辅助工具"。在写任何代码之前，他在即刻上发了一条动态：</p>
+        <blockquote>"做了一个小红书爆款标题生成器，输入你的主题，帮你生成10个标题。预售¥9.9，限前50人，加我微信付款。"</blockquote>
+        <p>48小时内37人付款。他花了3天写了第一版。如果没人付钱——他连3天都不会浪费。</p>
+      </div>
+
+      <div class="step-block">
+        <h4>方法二：虚假门测试</h4>
+        <p>在目标用户聚集的地方发布一个"内测招募"，设置一个门槛：</p>
+        <blockquote>"我们正在做一个[产品简述]，首期开放20个内测名额，需要填写申请表并支付¥1锁定名额（正式上线后抵扣¥20）。"</blockquote>
+        <p>关键指标：<strong>登记率</strong>。如果看到信息的人里有超过20%填写了申请表——这比你问100个人"你会用吗"都更有说服力。</p>
+      </div>
+
+      <div class="step-block">
+        <h4>方法三：礼宾式交付</h4>
+        <p><strong>不做产品，先做服务。你本人充当产品的"AI引擎"，手动为前3个用户提供结果。</strong></p>
+        <p><strong>典型操作</strong>：</p>
+        <ol style="margin: 0.75rem 0; padding-left: 1.5rem; color: var(--text-secondary); font-size: 0.875rem;">
+          <li>用户发来需求 → 你手动用ChatGPT处理 → 把结果发给用户</li>
+          <li>用户不知道背后是人工</li>
+          <li>观察：用户愿意为这个结果付费吗？用户会回来吗？</li>
+        </ol>
+        <p><strong>国内案例</strong>：某知识付费创作者想做一个"帮你写周报"的AI工具。他没有先开发——他在微信上对10个朋友说："每周五把你这周的工作要点发我，我帮你写周报，¥19.9/次。"做了4周，发现复购率为零——不是需求不对，是写周报这事一个月都不一定需要一次。他调整方向做了"帮你写晋升答辩PPT"——客单价¥299，复购（跳槽/年度述职）稳定。</p>
+      </div>
+    </section>
+
+    <hr>
+
+    <section id="section-filter">
+      <h2>七、创业想法筛选：三把刀</h2>
+
+      <p>在10人访谈之外，用这三把刀筛一遍你的创业想法：</p>
+
+      <div class="step-block">
+        <h4>第一刀：认知套利能力</h4>
+        <blockquote>你的想法是否利用了你独有的认知积累——不是公开信息汇总，而是只有你（或极少数人）才有的洞察？</blockquote>
+        <table>
+          <thead>
+            <tr><th>有认知套利</th><th>无认知套利</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>你在某行业干了5年，知道客户最烦的3件事</td><td>你看了几篇知乎就觉得自己懂了</td></tr>
+            <tr><td>你有一套独特的方法论（别人学不会或很难学）</td><td>你的解决方案任何人花3天都能复制</td></tr>
+            <tr><td>你的经验/审美/判断力是核心壁垒</td><td>你的核心价值是汇总公开资料</td></tr>
+          </tbody>
+        </table>
+        <p><strong>2026年已验证方向</strong>：实操材料包+加密教程——需要特定渠道才能获取的特殊材料 + 只能通过特定链接观看的详细视频教程。这种模式天然具备认知套利属性。</p>
+      </div>
+
+      <div class="step-block">
+        <h4>第二刀：抗AI替代性</h4>
+        <blockquote>你的核心价值是否容易被AI完全覆盖？</blockquote>
+        <table>
+          <thead>
+            <tr><th>抗AI</th><th>易被替代</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>深度情绪共鸣（心理咨询、占星、情感辅导）</td><td>纯知识交付（问答、翻译、总结）</td></tr>
+            <tr><td>高度定制化策略（企业咨询、财税筹划）</td><td>标准化内容生成</td></tr>
+            <tr><td>涉及物理世界（实物手作、线下体验）</td><td>纯线上信息处理</td></tr>
+            <tr><td>需要真人信任背书（私域带货、保险）</td><td>工具型SaaS（除非有独特数据壁垒）</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="step-block">
+        <h4>第三刀：单人交付时间模型</h4>
+        <blockquote>这个生意的天花板是否在一个人可承受的范围内？</blockquote>
+        <p><strong>公式</strong>：</p>
+        <div class="highlight-box">
+          <p>月收入上限 = 客单价 × (200小时 ÷ 单次服务耗时)</p>
+        </div>
+        <table>
+          <thead>
+            <tr><th>案例</th><th>客单价</th><th>获客+交付+售后</th><th>月收入上限</th><th>判断</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>工商注册代办</td><td>¥2,000</td><td>8h</td><td>¥50,000</td><td>可行</td></tr>
+            <tr><td>Web全栈开发</td><td>¥30,000</td><td>80h</td><td>¥75,000</td><td>单价高</td></tr>
+            <tr><td>个人简历修改</td><td>¥200</td><td>3h</td><td>¥13,333</td><td>天花板低</td></tr>
+            <tr><td>一对一英语口语</td><td>¥100</td><td>1.5h</td><td>¥13,333</td><td>手停口停</td></tr>
+          </tbody>
+        </table>
+        <p><strong>如果月收入上限低于你的生活成本 → 不可行。</strong> 要么提价、要么标准化、要么换方向。</p>
+      </div>
+    </section>
+
+    <hr>
+
+    <section id="section-stop">
+      <h2>八、三个必须停止的信号</h2>
+
+      <p>当以下任一信号出现，果断终止，不浪费更多时间：</p>
+      <table>
+        <thead>
+          <tr><th>信号</th><th>判断标准</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>获客成本 > 首单毛利</strong></td><td>你花在获客上的时间折算成工资，已经高于用户带来的利润</td></tr>
+          <tr><td><strong>复购率趋近于零</strong></td><td>一人公司没有地推团队，老用户不回来意味着增长引擎一直熄火</td></tr>
+          <tr><td><strong>需跨法律门槛</strong></td><td>需专职人员/前置行政许可证/大量固定资产 → 不符合OPC，及时转向</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <hr>
+
+    <section id="section-summary">
+      <h2>总纲</h2>
+
+      <blockquote>OPC失败的第一原因不是技术不行，不是运气不好，是花了一年做了一个没人需要的东西。</blockquote>
+
+      <p><strong>验证三步法</strong>：</p>
+      <ol style="margin: 1rem 0; padding-left: 1.5rem; color: var(--text-secondary); font-size: 0.875rem;">
+        <li style="margin-bottom: 0.75rem;"><strong>10人访谈</strong>（一周内）—— 找出共同的痛点模式</li>
+        <li style="margin-bottom: 0.75rem;"><strong>48小时付费测试</strong>（两天内）—— 验证是否有人真掏钱</li>
+        <li><strong>三刀筛选</strong>（一天内）—— 认知套利 × 抗AI替代 × 单人可交付</li>
+      </ol>
+
+      <p>三关全过 → 进入MVP开发。任何一关不过 → 回到第一步，修正假设。</p>
+    </section>
+
+    <p class="last-revised">最后修订：2026年5月9日</p>
+  </main>
+</div>
+
+<!-- Fixed Bottom Navigation -->
+<nav class="fixed-bottom-nav">
+  <a href="/nodes/02-identity-confirmation/" class="nav-btn" id="prev-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+    <span class="nav-label">身份确认与初心</span>
+  </a>
+  <span class="nav-indicator">03 / 57</span>
+  <a href="/nodes/04-idea-screening/" class="nav-btn" id="next-btn">
+    <span class="nav-label">创意筛选与MVP定义</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M5 12h14M12 5l7 7-7 7"/>
+    </svg>
+  </a>
+</nav>
+
+<script>
+// Scroll spy and smooth scroll
+document.addEventListener('DOMContentLoaded', function() {
+  const tocLinks = document.querySelectorAll('.toc-link');
+  const sections = document.querySelectorAll('section[id]');
+
+  // Smooth scroll on TOC click
+  tocLinks.forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').substring(1);
+      const target = document.getElementById(targetId);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // Scroll spy
+  function updateActiveLink() {
+    const scrollPos = window.scrollY + window.innerHeight / 3;
+
+    let currentSection = null;
+    sections.forEach(function(section) {
+      if (section.offsetTop <= scrollPos) {
+        currentSection = section.id;
+      }
+    });
+
+    tocLinks.forEach(function(link) {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === '#' + currentSection) {
+        link.classList.add('active');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveLink);
+  updateActiveLink();
+});
+</script>
+
 </body>
 </html>
