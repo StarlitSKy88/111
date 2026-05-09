@@ -1,12 +1,11 @@
 {
   "id": 56,
-  "slug": "energy-management",
   "title": "精力与能量管理",
-  "phase": "并行支撑层",
+  "slug": "energy-management",
+  "summary": "时间块、番茄工作法、精力分配，OPC最宝贵资源，很多人3个月就burnout",
   "difficulty": "入门",
-  "category": "扩展可选",
-  "summary": "OPC最大的倒闭风险不是市场，是你自己的精力崩溃",
-  "content": "",
-  "created_at": "2026-05-09T00:00:00Z",
-  "updated_at": "2026-05-09T00:00:00Z"
+  "category": "1-10",
+  "price_standard": null,
+  "price_consult": 299,
+  "ai_summary": null
 }

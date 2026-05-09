@@ -1,44 +1,1325 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <script src="/auth-guard.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="广告合规 - OPC节点百科">
+  <meta name="description" content="广告合规 - OPC节点百科28 - 2026年最新监管政策与避坑指南">
   <meta name="theme-color" content="#111110">
   <title>广告合规 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-:root { --bg:#111110;--surface:#1A1A18;--text-primary:#F0EDE6;--text-secondary:#7A7670;--text-tertiary:#A8A49E;--accent:#C0392B;--line:#2A2A28; }
-* { margin:0;padding:0;box-sizing:border-box; }
-body { background:var(--bg);color:var(--text-primary);font-family:'Noto Sans SC',sans-serif;font-weight:300;line-height:2;letter-spacing:0.04em;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem; }
-.top-nav { position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem clamp(24px,8vw,120px);border-bottom:1px solid var(--line);background:var(--bg); }
-.back-link { font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-tertiary);text-decoration:none; }
-.back-link:hover { color:var(--text-primary); }
-.node-id { font-family:'Noto Serif JP',serif;font-size:0.75rem;color:var(--text-tertiary);letter-spacing:0.1em; }
-h1 { font-family:'Noto Serif JP',serif;font-size:clamp(28px,6vw,56px);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;text-align:center; }
-.phase { font-size:12px;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;text-align:center; }
-.num { font-size:11px;color:var(--text-tertiary);letter-spacing:0.1em;margin-top:0.5rem;text-align:center; }
-.note { font-size:13px;color:var(--text-secondary);text-align:center;max-width:480px;margin-top:1.5rem;line-height:1.9; }
-.footer-nav { display:flex;justify-content:space-between;position:fixed;bottom:0;left:0;right:0;padding:1.5rem clamp(24px,8vw,120px);border-top:1px solid var(--line);background:var(--bg); }
-.nav-link { font-size:0.7rem;color:var(--text-tertiary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;gap:0.5rem; }
-.nav-link:hover { color:var(--text-primary); }
-.nav-arrow { font-size:0.6rem; }
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #B8B4AE;
+  --text-tertiary: #A8A49E;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 400;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* Layout */
+.page {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 8vw, 120px);
+  min-height: 100vh;
+}
+
+.page::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: clamp(24px, 8vw, 120px);
+  right: clamp(24px, 8vw, 120px);
+  height: 1px;
+  background: var(--line);
+  z-index: 1;
+}
+
+.section-number {
+  position: fixed;
+  top: var(--space-2xl);
+  right: clamp(24px, 8vw, 120px);
+  font-size: clamp(120px, 25vw, 320px);
+  font-weight: 100;
+  color: var(--text-primary);
+  opacity: 0.03;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-family: 'Noto Serif JP', serif;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
+/* Back Link */
+.back-link {
+  position: fixed;
+  top: var(--space-xl);
+  left: clamp(24px, 8vw, 120px);
+  z-index: 100;
+}
+
+.back-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: opacity 0.4s ease;
+}
+
+.back-link a:hover { opacity: 0.6; }
+
+/* Hero */
+.hero {
+  padding: var(--space-4xl) 0 var(--space-3xl);
+  position: relative;
+  z-index: 1;
+}
+
+.hero-content {
+  max-width: 800px;
+}
+
+.hero-label {
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.hero-label::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.hero-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 11vw, 112px);
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  margin-bottom: var(--space-xl);
+}
+
+.hero-desc {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 46ch;
+}
+
+/* Dimension Badge */
+.dim-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+
+.dim-number {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+}
+
+.dim-tag {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+}
+
+/* Question */
+.dim-question {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(22px, 4vw, 38px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  margin-bottom: var(--space-2xl);
+  max-width: 20em;
+  color: var(--text-primary);
+}
+
+/* Asymmetric Grid */
+.grid-asymmetric {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: var(--space-3xl);
+  align-items: start;
+  margin-bottom: var(--space-3xl);
+}
+
+@media (max-width: 900px) {
+  .grid-asymmetric {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+}
+
+/* Answer Blocks */
+.answer-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-md);
+}
+
+.answer-label {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-sm);
+}
+
+.answer-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+  line-height: 1.4;
+}
+
+.answer-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+.answer-desc strong { color: var(--text-primary); font-weight: 500; }
+
+/* Objection Blocks */
+.objection-block {
+  padding: var(--space-md);
+  margin-bottom: var(--space-sm);
+  border-left: 2px solid;
+}
+
+.objection-block.error {
+  background: rgba(192, 57, 43, 0.06);
+  border-color: var(--text-tertiary);
+}
+
+.objection-block.success {
+  background: rgba(39, 174, 96, 0.06);
+  border-color: var(--accent);
+}
+
+.objection-block.data {
+  background: rgba(168, 164, 158, 0.04);
+  border-color: var(--text-tertiary);
+}
+
+.objection-block.warning {
+  background: rgba(192, 57, 43, 0.04);
+  border-color: var(--accent);
+}
+
+.objection-tag {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-xs);
+}
+
+.objection-block.error .objection-tag { color: var(--text-tertiary); }
+.objection-block.success .objection-tag { color: var(--accent); }
+.objection-block.data .objection-tag { color: var(--text-tertiary); }
+.objection-block.warning .objection-tag { color: var(--accent); }
+
+.objection-text {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+}
+
+.objection-text strong { color: var(--text-primary); font-weight: 500; }
+
+/* Chart Block */
+.chart-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-md);
+}
+
+.chart-title {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+}
+
+.chart-item {
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--line-light);
+}
+
+.chart-item:last-child { border-bottom: none; }
+
+.chart-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.chart-value {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 26px;
+  font-weight: 300;
+  color: var(--text-primary);
+}
+
+.chart-value .accent { color: var(--accent); }
+.chart-value .small { font-size: 14px; }
+
+/* Core Insight */
+.core-insight {
+  margin: var(--space-2xl) 0;
+  padding-left: var(--space-md);
+  border-left: 1px solid var(--accent);
+}
+
+.core-insight-text {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  max-width: 44ch;
+}
+
+.core-insight-text strong { color: var(--text-primary); font-weight: 500; }
+
+/* Balance Grid */
+.balance-intro {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 48ch;
+  margin-bottom: var(--space-2xl);
+}
+
+.balance-intro strong { color: var(--text-primary); font-weight: 500; }
+
+.balance-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: var(--space-2xl);
+  margin-bottom: var(--space-3xl);
+}
+
+@media (max-width: 768px) {
+  .balance-grid { grid-template-columns: 1fr; gap: var(--space-xl); }
+}
+
+.balance-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+}
+
+.balance-card-label {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+}
+
+.balance-card-label.positive { color: var(--accent); }
+.balance-card-label.negative { color: var(--text-tertiary); }
+
+.balance-item {
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--line-light);
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.balance-item:last-child { border-bottom: none; }
+.balance-item.dim { color: var(--text-tertiary); font-size: 13px; }
+
+/* Summary Grid */
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1.1fr 0.9fr;
+  gap: var(--space-xl);
+  margin-bottom: var(--space-3xl);
+}
+
+@media (max-width: 900px) {
+  .summary-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
+}
+
+.summary-card {
+  padding: var(--space-lg) 0;
+  border-top: 1px solid var(--line);
+}
+
+.summary-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 34px;
+  font-weight: 300;
+  color: var(--accent);
+  margin-bottom: var(--space-sm);
+}
+
+.summary-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.summary-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* Checklist */
+.checklist {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-md);
+}
+
+.checklist-title {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+}
+
+.checklist-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--line-light);
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.checklist-item:last-child { border-bottom: none; }
+
+.checklist-icon {
+  color: var(--accent);
+  font-weight: bold;
+  font-size: 12px;
+  min-width: 20px;
+}
+
+/* Section Divider */
+.section-divider {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: var(--space-3xl) 0;
+}
+
+/* Footer Nav */
+.footer-nav {
+  padding: var(--space-2xl) 0;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-2xl);
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: opacity 0.4s ease;
+}
+
+.nav-link:hover { opacity: 0.6; }
+.nav-arrow { font-size: 0.75rem; }
+
+/* Fade Animation */
+.fade-section {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.fade-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Dim Section */
+.dim-section {
+  padding: var(--space-3xl) 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* Highlight Text */
+.highlight {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* Timeline */
+.timeline-item {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.timeline-marker {
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  margin-top: 8px;
+  flex-shrink: 0;
+}
+
+.timeline-content {
+  flex: 1;
+}
+
+.timeline-date {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+
+.timeline-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Quote Block */
+.quote-block {
+  border-left: 2px solid var(--accent);
+  padding-left: var(--space-md);
+  margin: var(--space-xl) 0;
+}
+
+.quote-text {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(18px, 3vw, 26px);
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.quote-source {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  margin-top: var(--space-sm);
+}
+
+/* Law Block */
+.law-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+  margin: var(--space-xl) 0;
+}
+
+.law-title {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+}
+
+.law-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+/* Process Steps */
+.process-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-lg);
+  margin: var(--space-xl) 0;
+}
+
+@media (max-width: 768px) {
+  .process-steps { grid-template-columns: 1fr 1fr; }
+}
+
+.process-step {
+  text-align: center;
+  padding: var(--space-md);
+}
+
+.step-number {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--accent);
+  margin-bottom: var(--space-sm);
+}
+
+.step-title {
+  font-size: 13px;
+  color: var(--text-primary);
+  font-weight: 500;
+  margin-bottom: var(--space-xs);
+}
+
+.step-desc {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  line-height: 1.5;
+}
   </style>
 </head>
 <body>
-  <nav class="top-nav">
-    <a href="/index.html" class="back-link">← 返回首页</a>
-    <span class="node-id">节点 50 / 57</span>
-  </nav>
-  <div class="phase">并行支撑层</div>
-  <h1>广告合规</h1>
-  <div class="num">节点 50</div>
-  <p class="note">🚧 内容正在建设中<br>这将是一个面向OPC（一人公司/独立开发者）的实操指南</p>
-  <footer class="footer-nav">
-    <a href="/nodes/49-copyright/index.html" class="nav-link"><span class="nav-arrow">←</span>节点49：软件著作权登记</a>
-    <a href="/nodes/51-data-backup/index.html" class="nav-link">节点51：数据备份与恢复<span class="nav-arrow">→</span></a>
-  </footer>
+  <div class="back-link">
+    <a href="/"><span>←</span> 返回首页</a>
+  </div>
+  <div class="section-number">28</div>
+
+  <div class="page">
+    <header class="hero fade-section">
+      <div class="hero-content">
+        <div class="hero-label">节点 50 · 1-10阶段</div>
+        <h1 class="hero-title">广告合规</h1>
+        <p class="hero-desc">2026年监管新规之下的生存法则。AI生成内容标识、直播带货新规、私域营销管制——旧地图已经找不到新大陆。</p>
+      </div>
+    </header>
+
+    <!-- 开篇警句 -->
+    <section class="fade-section" style="margin-bottom: var(--space-3xl);">
+      <div class="quote-block">
+        <p class="quote-text">「你以为AI输出的是大模型给出的客观结果，实际上可能是从互联网上抓下来的一条广告——还没有"广告"标签。」</p>
+        <p class="quote-source">—— 新华社，2026年2月</p>
+      </div>
+    </section>
+
+    <!-- 壹 · 2026监管新格局 -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-number">壹</span>
+        <span class="dim-tag">本质</span>
+      </div>
+      <h2 class="dim-question">2026年监管新格局：三个文件同时生效</h2>
+
+      <div class="grid-asymmetric">
+        <div class="answer-col">
+          <div class="answer-block">
+            <div class="answer-label">核心文件一</div>
+            <h3 class="answer-title">《互联网广告管理办法》（2023年5月1日施行，持续强化）</h3>
+            <p class="answer-desc">明确规定互联网广告应当具有可识别性，显著标明"广告"。付费搜索广告与自然搜索结果须明显区分。特殊商品（医疗、药品、保健食品等）广告须经审查方可发布。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">核心文件二</div>
+            <h3 class="answer-title">《人工智能生成合成内容标识办法》（2025年9月1日起已施行）</h3>
+            <p class="answer-desc">建立"显式标识+隐式标识"双重体系。显式标识需在生成内容中添加可明显感知的标识；隐式标识需嵌入文件元数据。服务提供者、传播平台、用户三方责任全覆盖。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">核心文件三</div>
+            <h3 class="answer-title">《直播电商监督管理办法》（2026年2月1日施行）</h3>
+            <p class="answer-desc">平台成为第一责任人，须核验主播资质、监测直播内容、保存交易记录不少于三年。主播按信用评价分级管理，重点直播间专人巡查。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">监管重点</div>
+            <h3 class="answer-title">国家市场监管总局：AI生成广告是重点难点问题</h3>
+            <p class="answer-desc">《2026年全国广告监管工作要点》明确指出：AI生成广告是监管重点难点，将开展集中整治。新华社报道直指GEO（生成式引擎优化）——你以为的客观搜索结果，可能是一条未标识的广告。</p>
+          </div>
+        </div>
+
+        <div class="chart-col">
+          <div class="chart-block">
+            <div class="chart-title">2026广告合规三大风险领域</div>
+            <div class="chart-item">
+              <div class="chart-label">AI生成内容未标识</div>
+              <div class="chart-value"><span class="accent">高危</span></div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">直播虚假宣传</div>
+              <div class="chart-value"><span class="accent">高危</span></div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">私域营销违规</div>
+              <div class="chart-value"><span class="accent">高危</span></div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">绝对化用语</div>
+              <div class="chart-value"><span class="accent">高频</span></div>
+            </div>
+          </div>
+
+          <div class="objection-block data" style="margin-top: var(--space-md);">
+            <div class="objection-tag">数据洞察</div>
+            <p class="objection-text"><strong>2026年第一季度</strong>，全国消协系统收到消费投诉12.6万件，同比上涨35%。直播电商虚假宣传成"重灾区中的重灾区"，监管力度持续加码。</p>
+          </div>
+
+          <div class="objection-block warning" style="margin-top: var(--space-sm);">
+            <div class="objection-tag">OPC警钟</div>
+            <p class="objection-text"><strong>一人公司没有"不懂"和"忘了"的避风港。</strong>近年来监管查处OPC案件持续增长，两年内三次违法将直接吊销营业执照。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 贰 · 广告标识：强制义务不是可选项 -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-number">贰</span>
+        <span class="dim-tag">本质</span>
+      </div>
+      <h2 class="dim-question">广告标识：强制义务，不是可选项</h2>
+
+      <div class="grid-asymmetric">
+        <div class="answer-col">
+          <div class="answer-block">
+            <div class="answer-label">法律依据</div>
+            <h3 class="answer-title">《互联网广告管理办法》第七条</h3>
+            <p class="answer-desc">互联网广告应当具有可识别性，显著标明"广告"，使消费者能够辨明其为广告。付费搜索广告应当与自然搜索结果明显区分。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">2026新动态</div>
+            <h3 class="answer-title">知识介绍、体验分享、消费测评也需标注</h3>
+            <p class="answer-desc">通过知识介绍、体验分享、消费测评等形式推销商品或服务，并附加购物链接等购买方式的，广告发布者应当显著标明"广告"。网红推荐、直播切片二次传播均被纳入商业广告认定范畴。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">标识位置</div>
+            <h3 class="answer-title">必须在显著位置，字体大小与内容同等醒目</h3>
+            <p class="answer-desc">直播带货须全程展示"广告"标识，不能仅在开头闪现。种草笔记须在内容前三分之一位置标注。不能被特效、动画遮挡，不能用模糊字样替代。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">违规代价</div>
+            <h3 class="answer-title">20万元起步，上不封顶</h3>
+            <p class="answer-desc">腾讯因发布虚假广告及使用绝对化用语被罚20万元。杭州某炒货店因"杭州最优秀的炒货店"被罚10万元。"不知道需要标注"不再作为抗辩理由。</p>
+          </div>
+        </div>
+
+        <div class="chart-col">
+          <div class="chart-block">
+            <div class="chart-title">必须标注"广告"的场景（2026版）</div>
+            <div class="chart-item">
+              <div class="chart-label">小红书种草笔记（附购买链接）</div>
+              <div class="chart-value small">必须标注</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">抖音/快手短视频（商业推广）</div>
+              <div class="chart-value small">必须标注</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">微信朋友圈（商业合作）</div>
+              <div class="chart-value small">必须标注</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">私域社群（产品推广）</div>
+              <div class="chart-value small">必须标注</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">直播间带货（全程）</div>
+              <div class="chart-value small">必须标注</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">B站/视频号（恰饭内容）</div>
+              <div class="chart-value small">必须标注</div>
+            </div>
+          </div>
+
+          <div class="objection-block error" style="margin-top: var(--space-md);">
+            <div class="objection-tag">错误示范</div>
+            <p class="objection-text"><strong>"合作推广""体验分享""好物推荐""粉丝专属福利"</strong><br>使用模糊词汇替代"广告"标识，不能免除违规责任，已有多人被罚。</p>
+          </div>
+
+          <div class="objection-block success" style="margin-top: var(--space-sm);">
+            <div class="objection-tag">正确示范</div>
+            <p class="objection-text"><strong>【广告】开头显著位置标注</strong><br>字体颜色、大小与其他内容同等醒目，不能被特效遮挡。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 叁 · 绝对化用语：极易触发且代价极高 -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-number">叁</span>
+        <span class="dim-tag">避坑</span>
+      </div>
+      <h2 class="dim-question">绝对化用语：监管打击的重中之重</h2>
+
+      <div class="grid-asymmetric">
+        <div class="answer-col">
+          <div class="answer-block">
+            <div class="answer-label">禁用范围</div>
+            <h3 class="answer-title">语义绝对、无法客观验证的词汇</h3>
+            <p class="answer-desc">"最好""第一""全网最低""顶级""唯一""100%有效""绝对安全""国家级""最高级"等。《广告法》第九条第三项明确禁止，执法无需证明表述是否属实——只要说了就是违法。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">变体词库</div>
+            <h3 class="answer-title">警惕隐性绝对化表达</h3>
+            <p class="answer-desc">"全网性价比天花板""行业公认效果最强""唯一有效方案""秒杀一切""史无前例""治愈率最高"等隐含排他性表述同样危险。只要无法提供权威证明，即构成违法。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">免责抗辩失败</div>
+            <h3 class="answer-title">加"个人看法"不能免责</h3>
+            <p class="answer-desc">深圳某一人咨询公司网站使用"全国第一"，主张"仅为个人看法"，被罚20万元，申辩未获采纳。绝对化用语传递的是客观声称，"个人看法"不能消解其误导性。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">酒类直播新规</div>
+            <h3 class="answer-title">"亲测好喝""家族推荐"也需合规</h3>
+            <p class="answer-desc">2026年新规将网红推荐、直播切片二次传播纳入商业广告认定，对酒类常用"亲测好喝""家族推荐"等营销话术提出明确合规要求。不能以"真实体验"为由发布绝对化表述。</p>
+          </div>
+        </div>
+
+        <div class="chart-col">
+          <div class="chart-block">
+            <div class="chart-title">安全替换策略（可用表述）</div>
+            <div class="chart-item">
+              <div class="chart-label">"效果最好" →</div>
+              <div class="chart-value small">用户反馈中90%表示改善</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">"销量第一" →</div>
+              <div class="chart-value small">累计服务3000+客户</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">"全网最低" →</div>
+              <div class="chart-value small">同品类中价格较低</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">"最好效果" →</div>
+              <div class="chart-value small">综合评价4.9/5.0</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">"绝对安全" →</div>
+              <div class="chart-value small">通过国家标准检测</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">"国家级" →</div>
+              <div class="chart-value small">符合行业标准要求</div>
+            </div>
+          </div>
+
+          <div class="objection-block error" style="margin-top: var(--space-md);">
+            <div class="objection-tag">典型案例</div>
+            <p class="objection-text"><strong>化妆品"世界上唯一"</strong><br>青海春天子公司因业务员进行引人误解的商业宣传，被罚款80万元。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 肆 · 效果承诺：知识付费领域的集中风险 -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-number">肆</span>
+        <span class="dim-tag">本质</span>
+      </div>
+      <h2 class="dim-question">效果承诺：OPC创业最常见的违规陷阱</h2>
+
+      <div class="grid-asymmetric">
+        <div class="answer-col">
+          <div class="answer-block">
+            <div class="answer-label">高危领域</div>
+            <h3 class="answer-title">知识付费、个人服务、软件产品</h3>
+            <p class="answer-desc">"7天学会""月入10万""零基础保过""无风险稳定收益""学完推荐就业""保证回本"等向消费者传递确定性承诺，无法兑现即构成虚假宣传。OPC的知识付费课程尤须警惕。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">个人背书</div>
+            <h3 class="answer-title">创业者故事不能作为效果保证</h3>
+            <p class="answer-desc">"靠这个项目买了别墅""从负债到年入百万"等个人经历，若与所推广项目无直接因果联系，被定性为虚假广告，罚款30万元。展示收益案例必须附条件性表述。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">教育培训机构</div>
+            <h3 class="answer-title">"保过""包就业"是红线</h3>
+            <p class="answer-desc">教育培训广告禁止承诺"保过""包就业"等效果。多地市场监管部门将教育培训类广告作为监测重点，"最优秀的考研辅导学校""国家级英语培训班"等绝对化用语均已受处罚。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">安全表述</div>
+            <h3 class="answer-title">只描述服务内容，不承诺用户成果</h3>
+            <p class="answer-desc">使用"因人而异""取决于个人投入程度""效果因人而异"等免责辅助。更关键的是：绝不能将"可能实现的个案"包装为"普遍必然的结果"。</p>
+          </div>
+        </div>
+
+        <div class="chart-col">
+          <div class="chart-block">
+            <div class="chart-title">近年典型处罚案例</div>
+            <div class="chart-item">
+              <div class="chart-label">知识付费虚假承诺</div>
+              <div class="chart-value">50<span class="accent">万元</span></div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">直播虚假背书</div>
+              <div class="chart-value">30<span class="accent">万元</span></div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">"保证上稿"集体投诉</div>
+              <div class="chart-value">每人<span class="accent">3倍</span>赔偿</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">个体户抖音虚假宣传</div>
+              <div class="chart-value">从<apan class="accent">轻处罚</span></div>
+            </div>
+          </div>
+
+          <div class="objection-block data" style="margin-top: var(--space-md);">
+            <div class="objection-tag">数据洞察</div>
+            <p class="objection-text"><strong>收入展示必须标注：</strong>时间周期、统计口径、覆盖人群比例，并保留可核验的原始数据。单独展示极端收益案例构成误导性广告。</p>
+          </div>
+
+          <div class="objection-block warning" style="margin-top: var(--space-sm);">
+            <div class="objection-tag">OPC警戒</div>
+            <p class="objection-text"><strong>你的创业故事可能是违规素材。</strong>展示"从0到100万"时，必须同时说明：这是个案，且需要说明时间周期、具体操作路径、适用范围。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 伍 · AI生成内容：你仍是唯一责任人 -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-number">伍</span>
+        <span class="dim-tag">避坑</span>
+      </div>
+      <h2 class="dim-question">AI生成内容：2026年监管最严领域</h2>
+
+      <div class="grid-asymmetric">
+        <div class="answer-col">
+          <div class="answer-block">
+            <div class="answer-label">新规明确</div>
+            <h3 class="answer-title">《人工智能生成合成内容标识办法》（2025年9月1日起已施行）</h3>
+            <p class="answer-desc">使用AIGC工具生成的广告文案、图像、视频，你作为广告主仍承担全部法律责任。不可主张"内容由AI生成故无责任"。2026年监管重点整治GEO——你以为的客观搜索结果，可能是一条未标识的AI广告。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">标识要求</div>
+            <h3 class="answer-title">显式标识+隐式标识双重体系</h3>
+            <p class="answer-desc"><strong>显式标识：</strong>视频标识持续时间≥2秒，文字高度需满足可识别标准；<strong>隐式标识：</strong>嵌入文件元数据，包含服务提供者编码、内容属性等信息，防止被篡改。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">平台责任</div>
+            <h3 class="answer-title">抖音已全面强制执行AIGC标识</h3>
+            <p class="answer-desc">抖音自2025年9月1日起全面执行国家《人工智能生成合成内容标识办法》，强制要求所有AI生成内容必须显式标注"AI生成"并同步写入隐式元数据标识。未标识内容将被限流、下架或追加平台标识。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">审查逻辑</div>
+            <h3 class="answer-title">将AI输出视为未经审核的初稿</h3>
+            <p class="answer-desc">AI常因语料问题生成包含绝对化用语、无来源数据、虚构案例的内容。你的人工终审是防止问题内容流向市场的唯一关卡。AI只是生产工具，决策权在你，发布内容责任在你。</p>
+          </div>
+        </div>
+
+        <div class="chart-col">
+          <div class="chart-block">
+            <div class="chart-title">AI内容必检三项（发布前逐条确认）</div>
+            <div class="chart-item">
+              <div class="chart-label">绝对化用语排查</div>
+              <div class="chart-value" style="font-size: 16px; color: var(--accent);">必须清除</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">功效承诺溯源</div>
+              <div class="chart-value" style="font-size: 16px; color: var(--accent);">必须核实</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">数据引用查原始</div>
+              <div class="chart-value" style="font-size: 16px; color: var(--accent);">必须验证</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">AI标识合规</div>
+              <div class="chart-value" style="font-size: 16px; color: var(--accent);">必须添加</div>
+            </div>
+          </div>
+
+          <div class="objection-block error" style="margin-top: var(--space-md);">
+            <div class="objection-tag">典型案例</div>
+            <p class="objection-text"><strong>浙江某OPC用AI生成"100%见效"被罚18万</strong><br>2025年浙江某OPC用AI生成护肤品广告文案，被罚后辩称"AI自动写的"，执法机关直接驳回。</p>
+          </div>
+
+          <div class="objection-block success" style="margin-top: var(--space-sm);">
+            <div class="objection-tag">合规做法</div>
+            <p class="objection-text"><strong>添加"AI辅助生成"标识</strong><br>在内容起始位置添加显式标识，说明内容由AI辅助生成，并进行人工审核。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 陆 · 直播带货新规：平台第一责任人 -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-number">陆</span>
+        <span class="dim-tag">培育</span>
+      </div>
+      <h2 class="dim-question">直播带货：2026年新规的核心冲击</h2>
+
+      <div class="grid-asymmetric">
+        <div class="answer-col">
+          <div class="answer-block">
+            <div class="answer-label">平台责任</div>
+            <h3 class="answer-title">平台成为第一责任人</h3>
+            <p class="answer-desc">《直播电商监督管理办法》要求平台核验主播商家资质，对夸大宣传、虚构销量、AI造假信息立即处置。建立消费争议解决机制，保存交易记录不少于三年。平台未履行责任最高可罚10万元。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">私域直播</div>
+            <h3 class="answer-title">私域直播纳入监管范围</h3>
+            <p class="answer-desc">2026年新规将私域直播纳入监管，要求平台保存直播回放、直播互动信息、订单详情、交易记录等，保存时间自交易完成之日起不少于三年。不得以"私域"为由规避监管。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">主播管理</div>
+            <h3 class="answer-title">分级分类管理，重点直播间专人巡查</h3>
+            <p class="answer-desc">根据直播间运营者账号信用评价、关注和点击数量、营销金额等指标建立分级管理制度。对重点直播间运营者采取安排专人实时巡查、延长直播内容保存时间等措施。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">禁止行为</div>
+            <h3 class="answer-title">不得扮演"假专家"、虚构人设</h3>
+            <p class="answer-desc">不得通过扮演医疗、教育、金融等领域"假专家"以及虚构专业、履历、阅历、人物关系、情感人设等"假人设"，或者通过杜撰帮扶社会弱势群体、制造虚假舆论热点等方式骗取受众信任。</p>
+          </div>
+        </div>
+
+        <div class="chart-col">
+          <div class="chart-block">
+            <div class="chart-title">直播电商合规要点（2026版）</div>
+            <div class="chart-item">
+              <div class="chart-label">广告标识</div>
+              <div class="chart-value small">全程展示"广告"</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">商品资质</div>
+              <div class="chart-value small">核验营业执照、许可证</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">真实宣传</div>
+              <div class="chart-value small">不得虚构销量、夸大功效</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">AI内容</div>
+              <div class="chart-value small">须标注"AI生成"</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">记录保存</div>
+              <div class="chart-value small">直播回放保存≥3年</div>
+            </div>
+          </div>
+
+          <div class="objection-block data" style="margin-top: var(--space-md);">
+            <div class="objection-tag">浙江规定</div>
+            <p class="objection-text"><strong>酒类直播营销话术红线：</strong>"亲测好喝""家族推荐""口感一流"等表述需附条件说明，不得使用绝对化用语。"特供""专供"传播错误价值导向被明确禁止。</p>
+          </div>
+
+          <div class="objection-block warning" style="margin-top: var(--space-sm);">
+            <div class="objection-tag">OPC提醒</div>
+            <p class="objection-text"><strong>如果你做直播带货：</strong>选品时认真核对商家及商品资质，涉及商标、专利、认证需查验相关证明和授权材料。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 柒 · 30秒自检流程 -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-number">柒</span>
+        <span class="dim-tag">培育</span>
+      </div>
+      <h2 class="dim-question">30秒自检流程：把合规焊进工作流</h2>
+
+      <div class="process-steps">
+        <div class="process-step">
+          <div class="step-number">1</div>
+          <div class="step-title">身份识别</div>
+          <div class="step-desc">广告标识是否在显著位置？</div>
+        </div>
+        <div class="process-step">
+          <div class="step-number">2</div>
+          <div class="step-title">用语检查</div>
+          <div class="step-desc">有无"最""第一""百分百""保证"？</div>
+        </div>
+        <div class="process-step">
+          <div class="step-number">3</div>
+          <div class="step-title">证据链</div>
+          <div class="step-desc">数据案例能否拿出原始材料？</div>
+        </div>
+        <div class="process-step">
+          <div class="step-number">4</div>
+          <div class="step-title">AI合规</div>
+          <div class="step-desc">AI内容是否添加显式标识？</div>
+        </div>
+      </div>
+
+      <div class="checklist">
+        <div class="checklist-title">发布前五问清单</div>
+        <div class="checklist-item">
+          <span class="checklist-icon">1</span>
+          <span>广告标识是否在显著位置清晰可见？（不是模糊的"合作推广"）</span>
+        </div>
+        <div class="checklist-item">
+          <span class="checklist-icon">2</span>
+          <span>文案中有无"最""第一""唯一""百分百""保证"及其变体？（逐条排查）</span>
+        </div>
+        <div class="checklist-item">
+          <span class="checklist-icon">3</span>
+          <span>所有数据、案例、效果展示是否有原始材料支撑？能否48小时内提供？</span>
+        </div>
+        <div class="checklist-item">
+          <span class="checklist-icon">4</span>
+          <span>AI生成内容是否已添加"AI生成"显式标识？隐式标识是否嵌入文件？</span>
+        </div>
+        <div class="checklist-item">
+          <span class="checklist-icon">5</span>
+          <span>如果被投诉，我能48小时内拿出什么证据？证据链是否完整？</span>
+        </div>
+      </div>
+
+      <div class="objection-block data" style="margin-top: var(--space-xl);">
+        <div class="objection-tag">数据洞察</div>
+        <p class="objection-text"><strong>48小时证据窗口：</strong>执法部门受理投诉后通常给广告主48小时提交证据材料。无法提供有效证明，违法行为将被直接认定。档案保存期限：3年。</p>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 捌 · 决策框架 -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-number">捌</span>
+        <span class="dim-tag">决策</span>
+      </div>
+      <h2 class="dim-question">广告合规决策框架：做与不做</h2>
+
+      <div class="balance-intro">
+        <strong>核心判断标准：</strong>每一次按下发布键前问自己三个问题——这条内容会被当作广告标识了吗？所有表述我能拿出证明吗？如果消费者因为这条内容付款，我最大可能损失什么？
+      </div>
+
+      <div class="balance-grid">
+        <div class="balance-card">
+          <div class="balance-card-label positive">应该做</div>
+          <div class="balance-item">商业推广内容显著位置标注"广告"（不能用"合作""种草"替代）</div>
+          <div class="balance-item">使用可验证的比较替代绝对化描述</div>
+          <div class="balance-item">所有数据标注统计时间、口径、出处</div>
+          <div class="balance-item">收入展示附条件性表述（因人而异，非保证）</div>
+          <div class="balance-item">AI生成内容进行人工二道审+添加标识</div>
+          <div class="balance-item">建立广告档案（保留3年）</div>
+          <div class="balance-item">收款引导至公司对公账户</div>
+          <div class="balance-item">直播内容全程可回放追溯</div>
+        </div>
+
+        <div class="balance-card">
+          <div class="balance-card-label negative">不要做</div>
+          <div class="balance-item">用"合作""种草""体验分享"替代"广告"标识</div>
+          <div class="balance-item">使用"最好""第一""唯一""100%""绝对"等绝对化用语</div>
+          <div class="balance-item">"月入10万""保证回本""无风险"等效果承诺</div>
+          <div class="balance-item">个人经历作为效果背书（无因果证明）</div>
+          <div class="balance-item">以"这是AI写的"为由免责</div>
+          <div class="balance-item">展示个人收款码</div>
+          <div class="balance-item">私域推广不标注"广告"</div>
+          <div class="balance-item">未经审查发布医疗、药品、金融类广告</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 核心洞察 -->
+    <section class="fade-section" style="padding: var(--space-3xl) 0; border-top: 1px solid var(--line);">
+      <div class="core-insight">
+        <p class="core-insight-text"><strong>一人公司没有"不懂"和"忘了"的避风港。</strong>2026年监管环境：AI生成内容是重点整治对象，直播带货新规全面落地，私域营销纳入监管。核心原则只有一条——每一个字发出去之前，先想"我能拿出什么证据"。</p>
+      </div>
+    </section>
+
+    <!-- 玖 · 违规成本一览 -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-number">玖</span>
+        <span class="dim-tag">警示</span>
+      </div>
+      <h2 class="dim-question">2026年违规成本一览</h2>
+
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="summary-num">20万+</div>
+          <div class="summary-title">绝对化用语最低罚款</div>
+          <div class="summary-desc">措辞不当的种草笔记或未经证实的销量承诺，可能触发最低20万元罚款。广告费用无法计算或明显偏低的，直接处20万元以上100万元以下罚款。</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num">3年</div>
+          <div class="summary-title">档案保存期限</div>
+          <div class="summary-desc">广告档案法定保存年限，直播回放、交易记录保存3年。发布一条存一条，执法检查时能全身而退。</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num">3次</div>
+          <div class="summary-title">吊销执照红线</div>
+          <div class="summary-desc">两年内三次以上违法行为或者有其他严重情节的，处广告费用5倍以上10倍以下罚款；可以吊销营业执照。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 拾 · OPC专属合规路径 -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-number">拾</span>
+        <span class="dim-tag">行动</span>
+      </div>
+      <h2 class="dim-question">OPC专属广告合规行动清单</h2>
+
+      <div class="grid-asymmetric">
+        <div class="answer-col">
+          <div class="answer-block">
+            <div class="answer-label">第一步</div>
+            <h3 class="answer-title">建立内容发布检查清单</h3>
+            <p class="answer-desc">在发布任何商业内容前，对照五问清单逐项检查。重点关注：广告标识、绝对化用语、效果承诺、AI内容标识、数据来源证明。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">第二步</div>
+            <h3 class="answer-title">建立广告档案管理系统</h3>
+            <p class="answer-desc">所有发布的广告内容（图文、视频、直播）保留原始文件和时间戳。保存与客户的沟通记录、效果数据原始材料。档案保存≥3年。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">第三步</div>
+            <h3 class="answer-title">AI工具使用规范</h3>
+            <p class="answer-desc">使用AI生成内容时，将AI输出视为"初稿"而非"终稿"。发布前必须：①检查绝对化用语②核实数据来源③添加"AI辅助生成"显式标识。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">第四步</div>
+            <h3 class="answer-title">特殊行业先审批再发布</h3>
+            <p class="answer-desc">涉及医疗、药品、保健食品、金融、教育培训等需前置审批的类别，先取得审查批准文件再发布广告。不得剪辑、拼接、修改已审查内容。</p>
+          </div>
+        </div>
+
+        <div class="chart-col">
+          <div class="law-block">
+            <div class="law-title">法规速查</div>
+            <div class="law-text">
+              <p style="margin-bottom: var(--space-sm);"><strong>《广告法》第九条第三项：</strong>禁止使用"国家级""最高级""最佳"等用语。</p>
+              <p style="margin-bottom: var(--space-sm);"><strong>《广告法》第五十五条：</strong>虚假广告处广告费用3-5倍罚款；无法计算的处20万-100万罚款。</p>
+              <p style="margin-bottom: var(--space-sm);"><strong>《互联网广告管理办法》第七条：</strong>互联网广告应当显著标明"广告"。</p>
+              <p><strong>《人工智能生成合成内容标识办法》（2025年9月1日起已施行）：</strong>AI生成内容须添加显式和隐式标识。</p>
+            </div>
+          </div>
+
+          <div class="objection-block success" style="margin-top: var(--space-md);">
+            <div class="objection-tag">最终原则</div>
+            <p class="objection-text"><strong>宁可保守，不要冒险。</strong>当你犹豫要不要加"广告"标识时——加。当你犹豫要不要说"效果最好"时——换。当你犹豫这条内容会不会有问题时——先存证，后发布。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer-nav">
+      <a href="/nodes/49-copyright/index.html" class="nav-link">
+        <span class="nav-arrow">←</span>
+        节点27：软件著作权登记
+      </a>
+      <a href="/nodes/47-business-email/index.html" class="nav-link">
+        节点29：企业邮箱搭建
+        <span class="nav-arrow">→</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
+  </script>
 </body>
 </html>

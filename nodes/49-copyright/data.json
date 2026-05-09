@@ -1,12 +1,11 @@
 {
   "id": 49,
-  "slug": "copyright",
   "title": "软件著作权登记",
-  "phase": "并行支撑层",
+  "slug": "copyright",
+  "summary": "申请流程、材料准备、加急办理，需要上架应用商店或申请补贴时办理",
   "difficulty": "进阶",
-  "category": "核心必做",
-  "summary": "软著登记是上架应用市场的通行证，提前3个月申请",
-  "content": "",
-  "created_at": "2026-05-09T00:00:00Z",
-  "updated_at": "2026-05-09T00:00:00Z"
+  "category": "1-10",
+  "price_standard": null,
+  "price_consult": 299,
+  "ai_summary": null
 }

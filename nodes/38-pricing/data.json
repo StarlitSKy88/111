@@ -1,12 +1,11 @@
 {
   "id": 38,
-  "slug": "pricing",
   "title": "定价策略",
-  "phase": "上线后迭代与运营",
-  "difficulty": "基础",
-  "category": "核心必做",
-  "summary": "三层价格体系+先卖再建+价格透明化+OPC专属定价模型",
-  "content": "",
-  "created_at": "2026-05-09T00:00:00Z",
-  "updated_at": "2026-05-09T00:00:00Z"
+  "slug": "pricing",
+  "summary": "成本定价、价值定价、价格测试，定价比产品功能更重要",
+  "difficulty": "进阶",
+  "category": "1-10",
+  "price_standard": null,
+  "price_consult": 399,
+  "ai_summary": null
 }

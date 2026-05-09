@@ -1,44 +1,1229 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <script src="/auth-guard.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="内容营销与SEO/ASO - OPC节点百科">
+  <meta name="description" content="内容营销与SEO - OPC节点百科">
   <meta name="theme-color" content="#111110">
   <title>内容营销与SEO/ASO - OPC节点百科</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23E05A47' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23E05A47'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-:root { --bg:#111110;--surface:#1A1A18;--text-primary:#F0EDE6;--text-secondary:#7A7670;--text-tertiary:#A8A49E;--accent:#C0392B;--line:#2A2A28; }
-* { margin:0;padding:0;box-sizing:border-box; }
-body { background:var(--bg);color:var(--text-primary);font-family:'Noto Sans SC',sans-serif;font-weight:300;line-height:2;letter-spacing:0.04em;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem; }
-.top-nav { position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem clamp(24px,8vw,120px);border-bottom:1px solid var(--line);background:var(--bg); }
-.back-link { font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-tertiary);text-decoration:none; }
-.back-link:hover { color:var(--text-primary); }
-.node-id { font-family:'Noto Serif JP',serif;font-size:0.75rem;color:var(--text-tertiary);letter-spacing:0.1em; }
-h1 { font-family:'Noto Serif JP',serif;font-size:clamp(28px,6vw,56px);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;text-align:center; }
-.phase { font-size:12px;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;text-align:center; }
-.num { font-size:11px;color:var(--text-tertiary);letter-spacing:0.1em;margin-top:0.5rem;text-align:center; }
-.note { font-size:13px;color:var(--text-secondary);text-align:center;max-width:480px;margin-top:1.5rem;line-height:1.9; }
-.footer-nav { display:flex;justify-content:space-between;position:fixed;bottom:0;left:0;right:0;padding:1.5rem clamp(24px,8vw,120px);border-top:1px solid var(--line);background:var(--bg); }
-.nav-link { font-size:0.7rem;color:var(--text-tertiary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;gap:0.5rem; }
-.nav-link:hover { color:var(--text-primary); }
-.nav-arrow { font-size:0.6rem; }
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #7A7670;
+  --text-tertiary: #A8A49E;
+  --accent: #E05A47;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 400;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 8vw, 120px);
+  min-height: 100vh;
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: clamp(24px, 8vw, 120px);
+  right: clamp(24px, 8vw, 120px);
+  height: 1px;
+  background: var(--line);
+}
+
+.section-number {
+  position: absolute;
+  top: var(--space-2xl);
+  right: clamp(24px, 8vw, 120px);
+  font-size: clamp(100px, 22vw, 280px);
+  font-weight: 100;
+  color: var(--text-primary);
+  opacity: 0.03;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-family: 'Noto Serif JP', serif;
+  pointer-events: none;
+  user-select: none;
+}
+
+.back-link {
+  position: fixed;
+  top: var(--space-xl);
+  left: clamp(24px, 8vw, 120px);
+  z-index: 100;
+}
+
+.back-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.4s ease;
+}
+
+.back-link a:hover { color: var(--text-primary); }
+
+.hero {
+  padding: var(--space-4xl) 0 var(--space-3xl);
+}
+
+.hero-content {
+  max-width: 800px;
+}
+
+.hero-label {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-lg);
+}
+
+.hero-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin-bottom: var(--space-xl);
+}
+
+.hero-desc {
+  font-size: 18px;
+  color: var(--text-secondary);
+  max-width: 580px;
+  margin-bottom: var(--space-2xl);
+  line-height: 1.8;
+}
+
+.hero-metrics {
+  display: flex;
+  gap: var(--space-2xl);
+  padding-top: var(--space-xl);
+  border-top: 1px solid var(--line);
+}
+
+.metric-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.metric-value {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 36px;
+  font-weight: 300;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.metric-label {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.dim-section {
+  padding: var(--space-3xl) 0;
+  border-top: 1px solid var(--line);
+  position: relative;
+}
+
+.dim-badge {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-lg);
+}
+
+.dim-question {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-2xl);
+  max-width: 700px;
+}
+
+/* Layout */
+.dim1-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3xl);
+}
+
+@media (max-width: 768px) {
+  .dim1-layout { grid-template-columns: 1fr; }
+}
+
+.dim1-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.text-block {
+  padding-left: var(--space-lg);
+  border-left: 1px solid var(--line);
+}
+
+.text-label {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-sm);
+}
+
+.text-title {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: var(--space-sm);
+}
+
+.text-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.metrics-table {
+  width: 100%;
+  border: 1px solid var(--line);
+}
+
+.metrics-table th,
+.metrics-table td {
+  padding: var(--space-md) var(--space-lg);
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+
+.metrics-table th {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  font-weight: 400;
+}
+
+.metrics-table tr:last-child td { border-bottom: none; }
+.metrics-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+
+.metrics-name {
+  font-weight: 500;
+}
+
+.metrics-value {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--accent);
+}
+
+.metrics-bench {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+/* Dimension 2: GEO */
+.dim2-layout {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: var(--space-3xl);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .dim2-layout { grid-template-columns: 1fr; }
+}
+
+.geo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.geo-item {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: var(--space-lg);
+  padding: var(--space-lg) 0;
+  border-bottom: 1px solid var(--line);
+  align-items: start;
+}
+
+.geo-item:first-child { padding-top: 0; }
+.geo-item:last-child { border-bottom: none; }
+
+.geo-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--accent);
+  line-height: 1.2;
+}
+
+.geo-content {}
+
+.geo-title {
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: var(--space-xs);
+}
+
+.geo-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.quote-block {
+  background: var(--surface);
+  padding: var(--space-xl);
+  border-left: 2px solid var(--accent);
+}
+
+.quote-text {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+/* Dimension 3: Topic Clusters */
+.dim3-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: var(--space-3xl);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .dim3-layout { grid-template-columns: 1fr; }
+}
+
+.cluster-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.cluster-center {
+  background: var(--accent);
+  color: var(--bg);
+  padding: var(--space-md) var(--space-lg);
+  text-align: center;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.cluster-spokes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-sm);
+}
+
+.cluster-spoke {
+  background: var(--surface);
+  padding: var(--space-md);
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-secondary);
+  border: 1px solid var(--line);
+}
+
+.pillar-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.pillar-item {
+  display: flex;
+  gap: var(--space-md);
+  align-items: flex-start;
+}
+
+.pillar-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 24px;
+  font-weight: 300;
+  color: var(--accent);
+  width: 32px;
+  flex-shrink: 0;
+}
+
+.pillar-content {}
+
+.pillar-name {
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: var(--space-xs);
+}
+
+.pillar-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* Dimension 4: ROI */
+.dim4-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3xl);
+}
+
+@media (max-width: 768px) {
+  .dim4-layout { grid-template-columns: 1fr; }
+}
+
+.big-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(64px, 12vw, 120px);
+  font-weight: 300;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: var(--space-md);
+}
+
+.big-num-label {
+  font-size: 14px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.05em;
+}
+
+.roi-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.roi-phase {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: var(--space-lg);
+  padding-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--line);
+}
+
+.roi-phase:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.roi-time {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 14px;
+  color: var(--text-tertiary);
+}
+
+.roi-title {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: var(--space-xs);
+  color: var(--text-primary);
+}
+
+.roi-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* Dimension 5: FAQ Schema */
+.dim5-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3xl);
+}
+
+@media (max-width: 768px) {
+  .dim5-layout { grid-template-columns: 1fr; }
+}
+
+.faq-example {
+  background: var(--surface);
+  padding: var(--space-lg);
+  border: 1px solid var(--line);
+}
+
+.faq-q {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.faq-q::before {
+  content: 'Q';
+  color: var(--accent);
+  font-family: 'Noto Serif JP', serif;
+}
+
+.faq-a {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  padding-left: calc(var(--space-sm) + 20px);
+}
+
+.schema-code {
+  background: var(--surface);
+  padding: var(--space-lg);
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  color: var(--text-secondary);
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  line-height: 1.6;
+}
+
+.schema-code .key { color: var(--accent); }
+.schema-code .str { color: #98C379; }
+.schema-code .num { color: #E5C07B; }
+
+/* Dimension 6: Distribution */
+.dim6-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: var(--space-3xl);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .dim6-layout { grid-template-columns: 1fr; }
+}
+
+.channel-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.channel-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.channel-pct {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--accent);
+  width: 60px;
+}
+
+.channel-name {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.dist-flow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.flow-step {
+  display: flex;
+  gap: var(--space-md);
+  align-items: center;
+}
+
+.flow-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.flow-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.flow-arrow {
+  color: var(--accent);
+  font-size: 12px;
+}
+
+/* Dimension 7: Video */
+.dim7-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-3xl);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .dim7-layout { grid-template-columns: 1fr; }
+}
+
+.video-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+.video-stat {
+  background: var(--surface);
+  padding: var(--space-lg);
+  border: 1px solid var(--line);
+}
+
+.video-stat-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 36px;
+  font-weight: 300;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: var(--space-xs);
+}
+
+.video-stat-label {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.repurpose-flow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.repurpose-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.repurpose-icon {
+  width: 20px;
+  height: 20px;
+  background: var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: var(--accent);
+}
+
+/* Do / Don't */
+.do-dont-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+}
+
+@media (max-width: 600px) {
+  .do-dont-grid { grid-template-columns: 1fr; }
+}
+
+.do-dont-col {}
+
+.do-dont-label {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+}
+
+.do-dont-label.do { color: var(--accent); }
+.do-dont-label.dont { color: var(--text-tertiary); }
+
+.do-dont-item {
+  font-size: 13px;
+  color: var(--text-secondary);
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--line-light);
+}
+
+.do-dont-item:last-child { border-bottom: none; }
+
+/* Timeline */
+.timeline-section {
+  padding: var(--space-3xl) 0;
+  border-top: 1px solid var(--line);
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  margin-top: var(--space-xl);
+}
+
+.timeline-item {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: var(--space-xl);
+}
+
+@media (max-width: 600px) {
+  .timeline-item { grid-template-columns: 1fr; gap: var(--space-sm); }
+}
+
+.timeline-date {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 13px;
+  color: var(--text-tertiary);
+  padding-top: 2px;
+}
+
+.timeline-content { flex: 1; }
+
+.timeline-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.timeline-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* Footer */
+.footer-nav {
+  padding: var(--space-2xl) 0;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.4s ease;
+}
+
+.nav-link:hover { color: var(--text-primary); }
+.nav-arrow { font-size: 0.75rem; }
+
+/* Fade animation */
+.fade-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
   </style>
 </head>
 <body>
-  <nav class="top-nav">
-    <a href="/index.html" class="back-link">← 返回首页</a>
-    <span class="node-id">节点 33 / 57</span>
-  </nav>
-  <div class="phase">上线后迭代与运营</div>
-  <h1>内容营销与SEO/ASO</h1>
-  <div class="num">节点 33</div>
-  <p class="note">🚧 内容正在建设中<br>这将是一个面向OPC（一人公司/独立开发者）的实操指南</p>
-  <footer class="footer-nav">
-    <a href="/nodes/32-cold-start/index.html" class="nav-link"><span class="nav-arrow">←</span>节点32：冷启动获客</a>
-    <a href="/nodes/34-feedback/index.html" class="nav-link">节点34：用户反馈收集<span class="nav-arrow">→</span></a>
-  </footer>
+  <div class="back-link">
+    <a href="/"><span>←</span> 返回首页</a>
+  </div>
+  <div class="section-number">21</div>
+
+  <div class="page">
+    <!-- Hero -->
+    <header class="hero">
+      <div class="hero-content">
+        <div class="hero-label">节点 33 · 增长运营</div>
+        <h1 class="hero-title">内容营销<br>与SEO</h1>
+        <p class="hero-desc">在2026年，AI搜索正在重塑内容发现的方式。92%的营销者已在使用LLM优化，但大多数人的策略仍停留在「发文章等排名」的旧时代。GEO（生成引擎优化）才是新战场。</p>
+        <div class="hero-metrics">
+          <div class="metric-item">
+            <div class="metric-value">$7.65</div>
+            <div class="metric-label">内容营销ROI</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-value">3x</div>
+            <div class="metric-label">vs 付费广告</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-value">92%</div>
+            <div class="metric-label">LLM优化采用</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Dimension 1: 2026内容营销基准 -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">01 · 测量体系</div>
+      <h2 class="dim-question">2026年的内容营销，已经不是「发文章等排名」那么简单</h2>
+
+      <div class="dim1-layout">
+        <div class="dim1-text">
+          <div class="text-block">
+            <div class="text-label">市场现状</div>
+            <div class="text-title">内容营销市场规模已达$5247亿</div>
+            <div class="text-desc">内容营销市场估值$5247亿，并以13.53%的CAGR增长，预计2030年将突破$9898亿。全球内容营销收入单独将在2026年达到$1075亿。</div>
+          </div>
+          <div class="text-block">
+            <div class="text-label">流量变化</div>
+            <div class="text-title">AI Overviews导致CTR下降61%</div>
+            <div class="text-desc">Google的AI Overviews每月覆盖超过15亿用户，覆盖200+国家。当AI摘要出现在搜索结果中时，点击率下降高达61%，高达60%的搜索最终无点击。</div>
+          </div>
+          <div class="text-block">
+            <div class="text-label">战略转变</div>
+            <div class="text-title">从SEO排名到GEO引用</div>
+            <div class="text-desc">传统SEO优化点击，GEO（生成引擎优化）优化被AI系统引用。内容不再只是「排在第几位」，而是「被多少AI系统引用为来源」。</div>
+          </div>
+        </div>
+
+        <div>
+          <table class="metrics-table">
+            <thead>
+              <tr>
+                <th>指标</th>
+                <th>数值</th>
+                <th>说明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="metrics-name">内容营销ROI</span></td>
+                <td><span class="metrics-value">$7.65/1</span></td>
+                <td><span class="metrics-bench">每$1投入回报</span></td>
+              </tr>
+              <tr>
+                <td><span class="metrics-name">B2B平均ROI</span></td>
+                <td><span class="metrics-value">647%</span></td>
+                <td><span class="metrics-bench">3年平均</span></td>
+              </tr>
+              <tr>
+                <td><span class="metrics-name">获客成本差</span></td>
+                <td><span class="metrics-value">$205 vs $341</span></td>
+                <td><span class="metrics-bench">有机vs付费</span></td>
+              </tr>
+              <tr>
+                <td><span class="metrics-name">博客转化率</span></td>
+                <td><span class="metrics-value">2.9%</span></td>
+                <td><span class="metrics-bench">B2B平均</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dimension 2: GEO策略 -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">02 · GEO优化</div>
+      <h2 class="dim-question">生成引擎优化：2026年最重要的新SEO discipline</h2>
+
+      <div class="dim2-layout">
+        <div class="geo-list">
+          <div class="geo-item">
+            <div class="geo-num">01</div>
+            <div class="geo-content">
+              <div class="geo-title">引用价值 > 点击价值</div>
+              <div class="geo-desc">传统SEO优化点击率。GEO优化被AI系统引用为来源。这意味着提供确定的、可引用的答案，包含具体数据。</div>
+            </div>
+          </div>
+          <div class="geo-item">
+            <div class="geo-num">02</div>
+            <div class="geo-content">
+              <div class="geo-title">声明+证据结构</div>
+              <div class="geo-desc">AI系统优先选择结构为「清晰声明+具体证据支持」的内容。「2025年我们分析了340个项目，平均成本$4,200」比「成本取决于很多因素」更能被引用。</div>
+            </div>
+          </div>
+          <div class="geo-item">
+            <div class="geo-num">03</div>
+            <div class="geo-content">
+              <div class="geo-title">多源验证</div>
+              <div class="geo-desc">AI系统跨多个来源交叉验证声明。与既定共识一致同时添加原始数据的内容，比毫无证据地与一切矛盾的来源更容易被引用。</div>
+            </div>
+          </div>
+          <div class="geo-item">
+            <div class="geo-num">04</div>
+            <div class="geo-content">
+              <div class="geo-title">实体优化</div>
+              <div class="geo-desc">在Google知识图谱中为你的品牌、作者和核心主题建立清晰、可验证的身份。这是2026年最高ROI的SEO投资。</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="quote-block">
+          <p class="quote-text">「结合传统SEO优势与AI时代优化的网站，表现超过单独使用任一方法的网站2-3倍。」</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dimension 3: Topic Cluster -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">03 · 主题集群</div>
+      <h2 class="dim-question">主题集群是建立主题权威的最佳架构</h2>
+
+      <div class="dim3-layout">
+        <div>
+          <div class="cluster-diagram">
+            <div class="cluster-center">OPC创业<br>完整指南</div>
+            <div class="cluster-spokes">
+              <div class="cluster-spoke">公司注册</div>
+              <div class="cluster-spoke">银行开户</div>
+              <div class="cluster-spoke">税务处理</div>
+              <div class="cluster-spoke">域名备案</div>
+              <div class="cluster-spoke">支付接入</div>
+              <div class="cluster-spoke">冷启动获客</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pillar-list">
+          <div class="pillar-item">
+            <div class="pillar-num">1</div>
+            <div class="pillar-content">
+              <div class="pillar-name">支柱内容</div>
+              <div class="pillar-desc">全面的权威指南，涵盖一个广泛主题的各个方面。这是你的「目的地页面」，旨在捕获所有相关搜索意图。</div>
+            </div>
+          </div>
+          <div class="pillar-item">
+            <div class="pillar-num">2</div>
+            <div class="pillar-content">
+              <div class="pillar-name">集群内容</div>
+              <div class="pillar-desc">针对特定长尾关键词的深入文章，链接回支柱内容。每篇都应该能独立回答一个问题，同时链接到相关集群。</div>
+            </div>
+          </div>
+          <div class="pillar-item">
+            <div class="pillar-num">3</div>
+            <div class="pillar-content">
+              <div class="pillar-name">内部链接</div>
+              <div class="pillar-desc">集群中的所有文章相互链接，并链接回支柱内容。这在主题中建立密集的语义网络，向搜索引擎发送强大的权威信号。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dimension 4: ROI Timeline -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">04 · 回报周期</div>
+      <h2 class="dim-question">内容营销需要6-18个月才能产生显著回报</h2>
+
+      <div class="dim4-layout">
+        <div>
+          <div class="big-num">3-5x</div>
+          <div class="big-num-label">12个月ROI · 中小企业</div>
+        </div>
+
+        <div class="roi-timeline">
+          <div class="roi-phase">
+            <span class="roi-time">月1-3</span>
+            <div>
+              <div class="roi-title">负ROI阶段</div>
+              <div class="roi-desc">你在生产上花钱，几乎没有回报。大多数企业在这里放弃——这是最大的错误。</div>
+            </div>
+          </div>
+          <div class="roi-phase">
+            <span class="roi-time">月4-6</span>
+            <div>
+              <div class="roi-title">接近盈亏平衡</div>
+              <div class="roi-desc">首次SEO流量开始到达，首次入站线索开始滴流。仍然主要是支出>收入。</div>
+            </div>
+          </div>
+          <div class="roi-phase">
+            <span class="roi-time">月6-12</span>
+            <div>
+              <div class="roi-title">跨越盈亏平衡</div>
+              <div class="roi-desc">复合效应开始。每月ROI变为正值。SEO飞轮开始转动。</div>
+            </div>
+          </div>
+          <div class="roi-phase">
+            <span class="roi-time">月12-18</span>
+            <div>
+              <div class="roi-title">完全复合</div>
+              <div class="roi-desc">SEO飞轮全速旋转，受众自我推荐，内容库无需新投入即可产生流量。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dimension 5: FAQ Schema -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">05 · 结构化数据</div>
+      <h2 class="dim-question">FAQ Schema是AI搜索的入场券</h2>
+
+      <div class="dim5-layout">
+        <div class="faq-example">
+          <div class="faq-q">个体户创业第一步是什么？</div>
+          <div class="faq-a">完成OPC适配测试，确认自己适合创业模式。然后进行个人能力与资源盘点，明确你的技能树和可调用资源。这是整个创业旅程的基础。</div>
+        </div>
+
+        <div>
+          <div class="schema-code">
+<span class="key">{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+    "@type": "Question",
+    "name": "个体户创业第一步是什么？",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "完成OPC适配测试，确认自己适合创业模式..."
+    }
+  }]
+}</span>
+          </div>
+          <p style="font-size: 12px; color: var(--text-tertiary); margin-top: var(--space-md);">
+            FAQ Schema使AI系统能够轻松提取和使用你的内容，这是AI Overviews的主要来源格式。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dimension 6: Distribution -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">06 · 分发渠道</div>
+      <h2 class="dim-question">内容生产后，70%的工作在分发</h2>
+
+      <div class="dim6-layout">
+        <div class="channel-list">
+          <div class="channel-item">
+            <div class="channel-pct">53%</div>
+            <div class="channel-name">有机搜索</div>
+          </div>
+          <div class="channel-item">
+            <div class="channel-pct">40%</div>
+            <div class="channel-name">有机社交</div>
+          </div>
+          <div class="channel-item">
+            <div class="channel-pct">39%</div>
+            <div class="channel-name">付费社交</div>
+          </div>
+          <div class="channel-item">
+            <div class="channel-pct">32%</div>
+            <div class="channel-name">邮件营销</div>
+          </div>
+        </div>
+
+        <div class="dist-flow">
+          <div class="flow-step">
+            <span class="flow-num">1</span>
+            <span class="flow-text">一篇深度博客文章（2000+字）</span>
+          </div>
+          <div class="flow-step">
+            <span class="flow-num">2</span>
+            <span class="flow-text">拆分为5-8条社交帖子</span>
+          </div>
+          <div class="flow-step">
+            <span class="flow-num">3</span>
+            <span class="flow-text">提取核心观点作为邮件Newsletter</span>
+          </div>
+          <div class="flow-step">
+            <span class="flow-num">4</span>
+            <span class="flow-text">录制视频/播客解读</span>
+          </div>
+          <div class="flow-step">
+            <span class="flow-num">5</span>
+            <span class="flow-text">提交到相关社区和论坛</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dimension 7: Video -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">07 · 视频内容</div>
+      <h2 class="dim-question">2026年最有效的内容格式：视频</h2>
+
+      <div class="dim7-layout">
+        <div class="video-stats">
+          <div class="video-stat">
+            <div class="video-stat-num">91%</div>
+            <div class="video-stat-label">企业使用视频</div>
+          </div>
+          <div class="video-stat">
+            <div class="video-stat-num">87%</div>
+            <div class="video-stat-label">视频ROI正向</div>
+          </div>
+          <div class="video-stat">
+            <div class="video-stat-num">61%</div>
+            <div class="video-stat-label">B2B增加视频投入</div>
+          </div>
+          <div class="video-stat">
+            <div class="video-stat-num">52%</div>
+            <div class="video-stat-label">转向视频/多媒体</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="repurpose-flow">
+            <div style="font-size: 13px; color: var(--text-tertiary); margin-bottom: var(--space-sm);">一鱼多吃的最佳实践：</div>
+            <div class="repurpose-item">
+              <span class="repurpose-icon">◎</span>
+              博客文章 → 油管视频脚本
+            </div>
+            <div class="repurpose-item">
+              <span class="repurpose-icon">◎</span>
+              视频 → 播客音频
+            </div>
+            <div class="repurpose-item">
+              <span class="repurpose-icon">◎</span>
+              长视频 → TikTok/短视频剪辑
+            </div>
+            <div class="repurpose-item">
+              <span class="repurpose-icon">◎</span>
+              关键洞察 → 社交媒体图文
+            </div>
+            <div class="repurpose-item">
+              <span class="repurpose-icon">◎</span>
+              Q&A → FAQ页面内容
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dimension 8: Do/Don't -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">08 · 行动清单</div>
+      <h2 class="dim-question">2026年内容营销的Do's and Don'ts</h2>
+
+      <div class="do-dont-grid" style="margin-top: var(--space-xl);">
+        <div class="do-dont-col">
+          <div class="do-dont-label do">做</div>
+          <div class="do-dont-item">每篇内容回答一个具体问题</div>
+          <div class="do-dont-item">使用声明+证据结构</div>
+          <div class="do-dont-item">添加FAQ和HowTo Schema</div>
+          <div class="do-dont-item">建立主题集群</div>
+          <div class="do-dont-item">复用内容到多渠道</div>
+          <div class="do-dont-item">追踪线索和收入而非只看流量</div>
+          <div class="do-dont-item">给AI一个「引用你」的理由</div>
+        </div>
+        <div class="do-dont-col">
+          <div class="do-dont-label dont">不做</div>
+          <div class="do-dont-item">用AI完全替代人工编辑</div>
+          <div class="do-dont-item">追求数量忽略质量</div>
+          <div class="do-dont-item">发布后不进行分发</div>
+          <div class="do-dont-item">只看SEO排名不看转化</div>
+          <div class="do-dont-item">几个月没效果就放弃</div>
+          <div class="do-dont-item">内容没有明确的行动引导</div>
+          <div class="do-dont-item">孤立发布而不建立内部链接</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Timeline -->
+    <section class="timeline-section fade-section">
+      <div class="dim-badge">路线图</div>
+      <h2 class="dim-question">90天内容启动计划</h2>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <span class="timeline-date">Week 1-2</span>
+          <div class="timeline-content">
+            <div class="timeline-title">定义内容支柱</div>
+            <div class="timeline-desc">选择3个内容支柱：你的核心专业领域、受众搜索的相邻问题、证明内容（数据、案例、幕后）。创建单页策略。</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-date">Week 3-4</span>
+          <div class="timeline-content">
+            <div class="timeline-title">建立Topic Cluster</div>
+            <div class="timeline-desc">选择一个核心主题创建支柱页面，围绕它规划5-8篇集群内容。使用关键词工具研究长尾关键词。</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-date">Month 2</span>
+          <div class="timeline-content">
+            <div class="timeline-title">生产+分发</div>
+            <div class="timeline-desc">每月发布2-4篇深度文章，每篇配套社交帖子、邮件摘要、视频解读。建立内容生产流水线。</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-date">Month 3</span>
+          <div class="timeline-content">
+            <div class="timeline-title">测量+优化</div>
+            <div class="timeline-desc">分析哪些内容带来线索和收入。追踪SEO排名变化、AI引用情况、转化路径。建立你的内容ROI仪表板。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer-nav">
+      <a href="/nodes/20-customer-experience/index.html" class="nav-link">
+        <span class="nav-arrow">←</span>
+        节点20：客户体验与口碑管理
+      </a>
+      <a href="/nodes/39-advertising/index.html" class="nav-link">
+        节点22：广告投放入门
+        <span class="nav-arrow">→</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
+  </script>
 </body>
 </html>

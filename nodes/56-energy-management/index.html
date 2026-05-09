@@ -1,44 +1,787 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <script src="/auth-guard.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="精力与能量管理 - OPC节点百科">
+  <meta name="description" content="时间块、番茄工作法、精力分配，OPC最宝贵资源，很多人3个月就burnout">
   <meta name="theme-color" content="#111110">
   <title>精力与能量管理 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-:root { --bg:#111110;--surface:#1A1A18;--text-primary:#F0EDE6;--text-secondary:#7A7670;--text-tertiary:#A8A49E;--accent:#C0392B;--line:#2A2A28; }
-* { margin:0;padding:0;box-sizing:border-box; }
-body { background:var(--bg);color:var(--text-primary);font-family:'Noto Sans SC',sans-serif;font-weight:300;line-height:2;letter-spacing:0.04em;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem; }
-.top-nav { position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem clamp(24px,8vw,120px);border-bottom:1px solid var(--line);background:var(--bg); }
-.back-link { font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-tertiary);text-decoration:none; }
-.back-link:hover { color:var(--text-primary); }
-.node-id { font-family:'Noto Serif JP',serif;font-size:0.75rem;color:var(--text-tertiary);letter-spacing:0.1em; }
-h1 { font-family:'Noto Serif JP',serif;font-size:clamp(28px,6vw,56px);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;text-align:center; }
-.phase { font-size:12px;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;text-align:center; }
-.num { font-size:11px;color:var(--text-tertiary);letter-spacing:0.1em;margin-top:0.5rem;text-align:center; }
-.note { font-size:13px;color:var(--text-secondary);text-align:center;max-width:480px;margin-top:1.5rem;line-height:1.9; }
-.footer-nav { display:flex;justify-content:space-between;position:fixed;bottom:0;left:0;right:0;padding:1.5rem clamp(24px,8vw,120px);border-top:1px solid var(--line);background:var(--bg); }
-.nav-link { font-size:0.7rem;color:var(--text-tertiary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;gap:0.5rem; }
-.nav-link:hover { color:var(--text-primary); }
-.nav-arrow { font-size:0.6rem; }
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #B8B4AE;
+  --text-tertiary: #A8A49E;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 400;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 8vw, 120px);
+  min-height: 100vh;
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: clamp(24px, 8vw, 120px);
+  right: clamp(24px, 8vw, 120px);
+  height: 1px;
+  background: var(--line);
+}
+
+.section-number {
+  position: absolute;
+  top: var(--space-2xl);
+  right: clamp(24px, 8vw, 120px);
+  font-size: clamp(100px, 22vw, 280px);
+  font-weight: 100;
+  color: var(--text-primary);
+  opacity: 0.03;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-family: 'Noto Serif JP', serif;
+  pointer-events: none;
+  user-select: none;
+}
+
+.back-link {
+  position: fixed;
+  top: var(--space-xl);
+  left: clamp(24px, 8vw, 120px);
+  z-index: 100;
+}
+
+.back-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.back-link a:hover { color: var(--text-primary); }
+
+.hero {
+  padding: var(--space-4xl) 0 var(--space-3xl);
+  position: relative;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+}
+
+.hero-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.hero-label::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.hero-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  margin-bottom: var(--space-xl);
+}
+
+.hero-desc {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 44ch;
+}
+
+.content-section {
+  padding: var(--space-3xl) 0;
+  border-top: 1px solid var(--line);
+}
+
+.section-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.section-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+}
+
+/* D1-D6 Dimension Badges */
+.dimensions-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--space-sm);
+  margin-bottom: var(--space-3xl);
+}
+
+@media (max-width: 1100px) {
+  .dimensions-grid { grid-template-columns: 1.5fr 1fr 1fr; }
+}
+
+@media (max-width: 600px) {
+  .dimensions-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.dim-badge {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: var(--space-md);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  position: relative;
+  overflow: hidden;
+}
+
+.dim-badge::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+}
+
+.dim-badge.d1::before { background: #C0392B; }
+.dim-badge.d2::before { background: #E05A47; }
+.dim-badge.d3::before { background: var(--accent); }
+.dim-badge.d4::before { background: var(--accent); }
+.dim-badge.d5::before { background: #3498DB; }
+.dim-badge.d6::before { background: #9B59B6; }
+
+.dim-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--text-tertiary);
+  line-height: 1;
+}
+
+.dim-tag {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.dim-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-top: 4px;
+}
+
+/* Asymmetric Grid */
+.grid-asymmetric {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-3xl);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .grid-asymmetric {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+}
+
+.chapter-heading {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: var(--space-xl);
+  max-width: 16em;
+}
+
+.body-text {
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--text-secondary);
+  max-width: 44ch;
+  margin-bottom: var(--space-md);
+}
+
+.body-text strong { color: var(--text-primary); font-weight: 500; }
+.body-text .accent { color: var(--accent); font-weight: 500; }
+
+/* Objection Blocks */
+.objection-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  margin-bottom: var(--space-lg);
+}
+
+.objection-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--line);
+}
+
+.objection-tag {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+}
+
+.objection-tag.error {
+  background: rgba(192, 57, 43, 0.15);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.objection-tag.success {
+  background: rgba(39, 174, 96, 0.15);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.objection-tag.data {
+  background: rgba(52, 152, 219, 0.15);
+  color: #3498DB;
+  border: 1px solid #3498DB;
+}
+
+.objection-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.objection-content {
+  padding: var(--space-lg);
+}
+
+.objection-item {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-sm);
+}
+
+.objection-item:last-child { margin-bottom: 0; }
+
+/* Core Insight */
+.core-insight {
+  margin: var(--space-xl) 0;
+  padding-left: var(--space-md);
+  border-left: 1px solid var(--accent);
+}
+
+.core-insight-text {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 40ch;
+}
+
+/* Balance Grid */
+.balance-section-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-xl);
+}
+
+.balance-intro {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 46ch;
+  margin-bottom: var(--space-2xl);
+}
+
+.balance-intro strong { color: var(--text-primary); font-weight: 500; }
+
+.balance-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: var(--space-2xl);
+}
+
+@media (max-width: 768px) {
+  .balance-grid { grid-template-columns: 1fr; gap: var(--space-xl); }
+}
+
+.balance-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+}
+
+.balance-card-label {
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+}
+
+.balance-card-label.positive { color: var(--accent); }
+.balance-card-label.negative { color: var(--text-tertiary); }
+
+.balance-item {
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--line-light);
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.balance-item:last-child { border-bottom: none; }
+.balance-item.dim { color: var(--text-tertiary); }
+
+/* Summary Grid (FIN) */
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1.2fr 0.8fr;
+  gap: var(--space-xl);
+}
+
+@media (max-width: 900px) {
+  .summary-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
+}
+
+.summary-card {
+  padding: var(--space-lg) 0;
+  border-top: 1px solid var(--line);
+}
+
+.summary-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 36px;
+  font-weight: 300;
+  color: var(--accent);
+  margin-bottom: var(--space-sm);
+}
+
+.summary-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.summary-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* Footer Nav */
+.footer-nav {
+  padding: var(--space-2xl) 0;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover { color: var(--text-primary); }
+.nav-arrow { font-size: 0.75rem; }
+
+/* Fade Animation */
+.fade-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-section.visible { opacity: 1; transform: translateY(0); }
+
+* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
   </style>
 </head>
 <body>
-  <nav class="top-nav">
-    <a href="/index.html" class="back-link">← 返回首页</a>
-    <span class="node-id">节点 56 / 57</span>
-  </nav>
-  <div class="phase">并行支撑层</div>
-  <h1>精力与能量管理</h1>
-  <div class="num">节点 56</div>
-  <p class="note">🚧 内容正在建设中<br>这将是一个面向OPC（一人公司/独立开发者）的实操指南</p>
-  <footer class="footer-nav">
-    <a href="/nodes/55-outsourcing/index.html" class="nav-link"><span class="nav-arrow">←</span>节点55：外包策略与执行</a>
-    <a href="/nodes/57-government-policy/index.html" class="nav-link">节点57：政府政策与创业补贴<span class="nav-arrow">→</span></a>
-  </footer>
+  <div class="back-link">
+    <a href="/"><span>←</span> 返回首页</a>
+  </div>
+  <div class="section-number">33</div>
+
+  <div class="page">
+    <header class="hero">
+      <div class="hero-content">
+        <div class="hero-label">节点 56 · 1-10</div>
+        <h1 class="hero-title">个人精力管理</h1>
+        <p class="hero-desc">时间块、番茄工作法、精力分配，OPC最宝贵资源，很多人3个月就burnout</p>
+      </div>
+    </header>
+
+    <!-- D1-D6 Dimensions -->
+    <section class="content-section fade-section">
+      <div class="section-label">六维结构</div>
+      <div class="dimensions-grid">
+        <div class="dim-badge d1">
+          <span class="dim-num">D1</span>
+          <span class="dim-tag">核心</span>
+          <span class="dim-title">认知能量资产化</span>
+        </div>
+        <div class="dim-badge d2">
+          <span class="dim-num">D2</span>
+          <span class="dim-tag">模型</span>
+          <span class="dim-title">高认知窗口锁定</span>
+        </div>
+        <div class="dim-badge d3">
+          <span class="dim-num">D3</span>
+          <span class="dim-tag">培育</span>
+          <span class="dim-title">AI精力沙盒</span>
+        </div>
+        <div class="dim-badge d4">
+          <span class="dim-num">D4</span>
+          <span class="dim-tag">避坑</span>
+          <span class="dim-title">五大崩溃信号</span>
+        </div>
+        <div class="dim-badge d5">
+          <span class="dim-num">D5</span>
+          <span class="dim-tag">培育</span>
+          <span class="dim-title">工具栈与恢复SOP</span>
+        </div>
+        <div class="dim-badge d6">
+          <span class="dim-num">D6</span>
+          <span class="dim-tag">决策</span>
+          <span class="dim-title">精力分配矩阵</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- D1: 核心 -->
+    <section class="content-section fade-section">
+      <div class="grid-asymmetric">
+        <div class="main-content">
+          <h2 class="chapter-heading">为什么2026年精力管理是OPC的生死线</h2>
+          <p class="body-text">在OPC语境下，<strong>个人精力管理已被重新定义为"单人组织的核心生产资料维护"</strong>。这不再是养生话题，而是直接关乎公司月度损益表的核心财务决策。</p>
+          <p class="body-text">你同时是首席执行官、营销总监、产品经理和唯一执行者。没有团队缓冲，没有部门协作，没有他人分摊压力。你的个人状态，就是公司运转的唯一引擎。</p>
+          <p class="body-text">传统时间管理方法论正在OPC领域全面失效。AI可以处理客服应答、数据整理等执行层工作，却无法替你承担战略决策和创造性构思。你的精力被重新定义为一套珍贵的<strong>"认知能量资产"</strong>。</p>
+          <div class="core-insight">
+            <p class="core-insight-text">一人公司的第一资产不是商业模式，是你本人的神经状态。精力管理到2026年，最高级的形态不是"多高效地运转"，而是"多早地觉察危险并停下来"。</p>
+          </div>
+        </div>
+        <div class="sub-content">
+          <div class="objection-block">
+            <div class="objection-header">
+              <span class="objection-tag data">数据</span>
+              <span class="objection-title">2026 OPC崩溃统计数据</span>
+            </div>
+            <div class="objection-content">
+              <p class="objection-item">• 3000名独立创业者追踪：平均每天解锁手机147次</p>
+              <p class="objection-item">• 仅4%的即时消息与当天核心收入直接相关</p>
+              <p class="objection-item">• 每次被动切换后，大脑需要15-23分钟才能恢复深度工作状态</p>
+              <p class="objection-item">• 正常人类每日决策疲劳阈值：150-200次</p>
+              <p class="objection-item">• OPC创业者实际日均决策量常超过500次</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- D2: 模型 -->
+    <section class="content-section fade-section">
+      <div class="grid-asymmetric">
+        <div class="main-content">
+          <h2 class="chapter-heading">高认知窗口锁定：像管理现金流一样管理精力</h2>
+          <p class="body-text">放弃标准模板。通过为期两周的记录，精确锁定专属于你的<strong>"高认知窗口"</strong>。这类窗口通常在一天中出现两次，每次持续90至120分钟。</p>
+          <p class="body-text">判断标准极其简单：这段时间内，你能否无需任何外部刺激物，就自动进入逻辑清晰、思维活跃的状态。</p>
+          <p class="body-text">一旦确认，进入单向保护模式：将直接产生收入或构建核心资产的任务，<strong>不可被任何事务侵占</strong>。窗口外时段则进行能量降级处理。</p>
+          <div class="core-insight">
+            <p class="core-insight-text">任务价值 = (带来的收入或长期资产) ÷ (消耗的认知能量 + 情绪能量)。高能量回报任务必须亲自做到极致；AI可代理任务只做质检；能量吸血鬼任务直接砍掉或自动化。</p>
+          </div>
+        </div>
+        <div class="sub-content">
+          <div class="objection-block">
+            <div class="objection-header">
+              <span class="objection-tag error">错误</span>
+              <span class="objection-title">伪自律陷阱</span>
+            </div>
+            <div class="objection-content">
+              <p class="objection-item">❌ 强制早起但上午昏沉，强行工作3小时产出接近零</p>
+              <p class="objection-item">❌ 每天列10+待办事项，全部完成就等于"高效"？</p>
+              <p class="objection-item">❌ 用咖啡因强行延长注意力，透支肾上腺储备</p>
+              <p class="objection-item">❌ "等做完这个再休息"——结果等来精力系统性崩溃</p>
+            </div>
+          </div>
+          <div class="objection-block">
+            <div class="objection-header">
+              <span class="objection-tag success">正确</span>
+              <span class="objection-title">能量感知型工作</span>
+            </div>
+            <div class="objection-content">
+              <p class="objection-item">✓ 顺应昼夜节律，而非强行扭曲它</p>
+              <p class="objection-item">✓ 每天只做3件能量回报最高的事，其余全部放开</p>
+              <p class="objection-item">✓ 高认知窗口内只做战略决策和核心创作</p>
+              <p class="objection-item">✓ 借助Oura Ring等设备量化身体状态</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- D3: 培育 - AI沙盒 -->
+    <section class="content-section fade-section">
+      <div class="grid-asymmetric">
+        <div class="main-content">
+          <h2 class="chapter-heading">AI精力沙盒：一人公司的注意力防护墙</h2>
+          <p class="body-text">每次被动切换都会留下一段<strong>"注意力残留"</strong>——你以为只看了30秒消息，实际上大脑需要额外15分钟才能重新凝聚到深度任务的思考密度上。</p>
+          <p class="body-text">解决方案是引入强制性的沙盒机制。当预设的高认知窗口开始时，启动由AI驱动的虚拟沙盒环境：所有外部消息、邮件、订阅通知全部由AI分身接管。</p>
+          <p class="body-text">它不会简单地静音，而是依据预设的紧急程度，<strong>仅将真正需要中止工作的极端例外事项</strong>，以最简摘要形式推送到沙盒边缘。</p>
+          <div class="core-insight">
+            <p class="core-insight-text">"不看不等于不处理，而是由AI判断何时需要你看"。沙盒模式结束时，AI生成一份《离线期间事务简报》，你用一次性的小批量处理清空所有积压。</p>
+          </div>
+        </div>
+        <div class="sub-content">
+          <div class="objection-block">
+            <div class="objection-header">
+              <span class="objection-tag error">错误</span>
+              <span class="objection-title">伪自动化陷阱</span>
+            </div>
+            <div class="objection-content">
+              <p class="objection-item">❌ 花了3小时调试AI自动化流程，但这个流程每月只节省2小时</p>
+              <p class="objection-item">❌ 为了使用某个AI工具花费大量时间调整格式、导入导出数据</p>
+              <p class="objection-item">❌ 同时和ChatGPT、Claude、Midjourney对话，大脑在多语境间反复跳转</p>
+              <p class="objection-item">❌ 用AI做决策却花了双倍时间反复修改prompt</p>
+            </div>
+          </div>
+          <div class="objection-block">
+            <div class="objection-header">
+              <span class="objection-tag success">正确</span>
+              <span class="objection-title">硬件级隔离</span>
+            </div>
+            <div class="objection-content">
+              <p class="objection-item">✓ Opal 2.0物理屏蔽器——物理开关切断路由器与社交媒体连接</p>
+              <p class="objection-item">✓ 静默时段开始前执行固定仪式：降噪耳塞→手机锁进定时盒→喝一口水</p>
+              <p class="objection-item">✓ AI分身用预设话术回应所有外联："当前正专注交付，将在[时间]集中回复"</p>
+              <p class="objection-item">✓ 门上挂"创作中，请勿敲门"标识</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- D4: 避坑 - 五大崩溃信号 -->
+    <section class="content-section fade-section">
+      <div class="grid-asymmetric">
+        <div class="main-content">
+          <h2 class="chapter-heading">五大精力崩溃信号：你的自我预警系统</h2>
+          <p class="body-text">精力红线的本质是自我预警系统——不是在倒下那一刻才响，而是在你还能自救的时候发出信号。等你反应过来，已经搁浅在沙滩上。</p>
+          <p class="body-text">五个信号不是独立存在的，它们常常结伴出现。整个过程可能只有<strong>10天</strong>。一人公司的残酷之处在于：你没有合伙人能接过方向盘，你倒下的那一刻，公司就停了。</p>
+          <div class="objection-block">
+            <div class="objection-header">
+              <span class="objection-tag error">危险</span>
+              <span class="objection-title">五大崩溃信号清单</span>
+            </div>
+            <div class="objection-content">
+              <p class="objection-item">① <strong>对所有工作消息产生生理性反感</strong>——胃部收紧、呼吸变浅，这是神经系统已将"工作"标记为威胁</p>
+              <p class="objection-item">② <strong>一天内多次忘记核心任务是什么</strong>——工作记忆容量耗尽，海马体和前额叶同时过载</p>
+              <p class="objection-item">③ <strong>连续3天无法进入任何一次深度工作</strong>——"注意力肌肉"已经过度训练并拉伤</p>
+              <p class="objection-item">④ <strong>用咖啡强行维持产出，但质量持续下降</strong>——透支肾上腺储备，掩盖判断力衰退</p>
+              <p class="objection-item">⑤ <strong>对曾经热爱的事业产生"无所谓"的麻木感</strong>——精神能量耗尽，意义感烧完</p>
+            </div>
+          </div>
+        </div>
+        <div class="sub-content">
+          <div class="objection-block">
+            <div class="objection-header">
+              <span class="objection-tag data">数据</span>
+              <span class="objection-title">崩溃进程时间线</span>
+            </div>
+            <div class="objection-content">
+              <p class="objection-item">Day 1-2：轻微反感出现</p>
+              <p class="objection-item">Day 3-4：记忆开始出问题</p>
+              <p class="objection-item">Day 5-6：深度工作变得不可能</p>
+              <p class="objection-item">Day 7-8：用咖啡/刺激物填补</p>
+              <p class="objection-item">Day 9-10：在某个安静下午意识到什么都不在乎了</p>
+              <p class="objection-item" style="margin-top: 16px; color: var(--accent);">⚠️ 整个崩溃过程可能只有10天</p>
+            </div>
+          </div>
+          <div class="objection-block">
+            <div class="objection-header">
+              <span class="objection-tag success">复元</span>
+              <span class="objection-title">停业调整SOP</span>
+            </div>
+            <div class="objection-content">
+              <p class="objection-item"><strong>Day 1：</strong>切断所有非紧急通信，睡觉、慢走、吃简单食物</p>
+              <p class="objection-item"><strong>Day 2：</strong>无目的输出，纸上随便写画，让大脑找回自发性思考</p>
+              <p class="objection-item"><strong>Day 3：</strong>评估哪条业务线、哪个客户或哪个AI工作流在持续吞噬能量，下决心砍掉</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- D5: 培育 - 工具栈 -->
+    <section class="content-section fade-section">
+      <div class="grid-asymmetric">
+        <div class="main-content">
+          <h2 class="chapter-heading">2026年专属工具栈：四位一体的精力保护生态系统</h2>
+          <p class="body-text">每个工具都必须直接削减某一类精力消耗，或主动构建保护屏障。遵循这个刚性原则：凡是不直接服务精力的工具，都是认知负担。</p>
+          <p class="body-text"><strong>身体能量层：</strong>从被动恢复转向主动预测。Eight Sleep Pod 4这类智能床垫，根据深睡周期实时调节温度。晨间光照模拟眼镜在预定起床时间前30分钟逐步增强冷白光，强行校准昼夜节律。</p>
+          <p class="body-text"><strong>认知调度层：</strong>Motion + Make + 自定义GPT代理。AI代理进行第一轮筛选，将能量吸血鬼任务标记为只做最终质检的类别。Motion根据已验证的高认知窗口，强制锁定2个90分钟的深度工作块。</p>
+          <p class="body-text"><strong>情绪能量层：</strong>Sibyl AI持续监测声纹、键盘节奏、心率变异性。当负面情绪分值连续两天超标，AI助理自动执行熔断：冻结所有非紧急对外沟通，社交媒体由AI代管并发布"维护公告"。</p>
+          <p class="body-text"><strong>精神能量层：</strong>AI使命朗读与高光回溯。每天早晨AI助理朗读公司使命文档，将琐碎工作重新链接到长远个人意义。每周末生成"精力资产周报"审视能量消耗与长期价值的重叠度。</p>
+        </div>
+        <div class="sub-content">
+          <div class="objection-block">
+            <div class="objection-header">
+              <span class="objection-tag data">恢复协议</span>
+              <span class="objection-title">三位一体恢复SOP</span>
+            </div>
+            <div class="objection-content">
+              <p class="objection-item"><strong>微恢复（每天）：</strong>每完成一个深度工作块，强制离开屏幕10-15分钟。不刷信息，只看窗外、做拉伸——神经系统的一次重启</p>
+              <p class="objection-item"><strong>中恢复（每周）：</strong>每周安排一个完整半天，去与工作完全无关的环境，做重复性体力活动，让大脑进入默认模式网络</p>
+              <p class="objection-item"><strong>深恢复（每季度）：</strong>安排3-5天离线，关闭所有AI工作代理通知，验证系统是否可以在你完全不参与时依然运作</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- D6: 决策 -->
+    <section class="content-section fade-section">
+      <div class="section-label">决策矩阵</div>
+      <h2 class="balance-section-title">做 / 不做</h2>
+      <p class="balance-intro">精力是OPC最不可替代的生产资料。每项任务都要问：这件事与我的高价值任务有没有交叉点？如果没有，<strong>立即拒绝</strong>。</p>
+      <div class="balance-grid">
+        <div class="balance-card">
+          <div class="balance-card-label positive">✓ 应该做</div>
+          <div class="balance-item">锁定高认知窗口，只做战略决策和核心创作</div>
+          <div class="balance-item">建立硬件级注意力防火墙（物理隔离）</div>
+          <div class="balance-item">每季度进行"精力审计"，猎杀能量吸血鬼</div>
+          <div class="balance-item">每天安排完全不产出的"存钱罐"时间</div>
+          <div class="balance-item">维护3-5位同为OPC的"能量朋友"</div>
+          <div class="balance-item">为AI设定清晰的"决策边界"</div>
+          <div class="balance-item">出现信号立即停业调整，不拖延</div>
+          <div class="balance-item">每周日晚用10分钟做情绪能量审计</div>
+        </div>
+        <div class="balance-card">
+          <div class="balance-card-label negative">✗ 不应该做</div>
+          <div class="balance-item dim">强行扭曲昼夜节律以适应"标准作息"</div>
+          <div class="balance-item dim">每天处理10+件事，每件60分而非3件95分</div>
+          <div class="balance-item dim">用咖啡因强行延长注意力透支肾上腺</div>
+          <div class="balance-item dim">同时运营多个AI对话窗口，反复切换语境</div>
+          <div class="balance-item dim">承接消耗大量情绪能量却贡献极低利润的客户</div>
+          <div class="balance-item dim">花3小时调试每月只节省2小时的"伪自动化"</div>
+          <div class="balance-item dim">连续高强度工作3周以上不安排恢复周期</div>
+          <div class="balance-item dim">在低电量状态下做重大业务决策</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FIN Section -->
+    <section class="content-section fade-section">
+      <div class="section-label">FIN</div>
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="summary-num">¥0</div>
+          <div class="summary-title">工具年费</div>
+          <div class="summary-desc"> Motion + Make免费版即可启动，硬件隔离选Opal则+$299</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num">14天</div>
+          <div class="summary-title">建立高认知窗口</div>
+          <div class="summary-desc">通过两周记录精确定位个人专属窗口，之后永久保护</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num">30%</div>
+          <div class="summary-title">注意力碎片减少</div>
+          <div class="summary-desc">AI沙盒+硬件隔离组合拳将无效切换降低30%以上</div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer-nav">
+      <a href="/nodes/53-global-payment/index.html" class="nav-link">
+        <span class="nav-arrow">←</span>
+        节点32：海外支付方案
+      </a>
+      <a href="/nodes/34-tax-planning/index.html" class="nav-link">
+        节点34：年度税务筹划
+        <span class="nav-arrow">→</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
+  </script>
 </body>
 </html>

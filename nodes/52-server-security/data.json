@@ -1,12 +1,11 @@
 {
   "id": 52,
-  "slug": "server-security",
   "title": "服务器安全防护",
-  "phase": "并行支撑层",
-  "difficulty": "进阶",
-  "category": "核心必做",
-  "summary": "SQL注入/弱口令/勒索防护——一人公司的安全底线",
-  "content": "",
-  "created_at": "2026-05-09T00:00:00Z",
-  "updated_at": "2026-05-09T00:00:00Z"
+  "slug": "server-security",
+  "summary": "防火墙配置、安全监控、漏洞修复，网站上线后就应该做",
+  "difficulty": "高级",
+  "category": "1-10",
+  "price_standard": null,
+  "price_consult": 399,
+  "ai_summary": null
 }

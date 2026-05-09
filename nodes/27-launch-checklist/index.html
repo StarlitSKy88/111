@@ -1,44 +1,1444 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <script src="/auth-guard.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="上线前检查清单 - OPC节点百科">
+  <meta name="description" content="一人公司上线前检查清单：法律合规、产品测试、AI特检、备份恢复、客户支持、营销准备，2026年OPC上线安全网">
   <meta name="theme-color" content="#111110">
   <title>上线前检查清单 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-:root { --bg:#111110;--surface:#1A1A18;--text-primary:#F0EDE6;--text-secondary:#7A7670;--text-tertiary:#A8A49E;--accent:#C0392B;--line:#2A2A28; }
-* { margin:0;padding:0;box-sizing:border-box; }
-body { background:var(--bg);color:var(--text-primary);font-family:'Noto Sans SC',sans-serif;font-weight:300;line-height:2;letter-spacing:0.04em;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem; }
-.top-nav { position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem clamp(24px,8vw,120px);border-bottom:1px solid var(--line);background:var(--bg); }
-.back-link { font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-tertiary);text-decoration:none; }
-.back-link:hover { color:var(--text-primary); }
-.node-id { font-family:'Noto Serif JP',serif;font-size:0.75rem;color:var(--text-tertiary);letter-spacing:0.1em; }
-h1 { font-family:'Noto Serif JP',serif;font-size:clamp(28px,6vw,56px);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;text-align:center; }
-.phase { font-size:12px;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;text-align:center; }
-.num { font-size:11px;color:var(--text-tertiary);letter-spacing:0.1em;margin-top:0.5rem;text-align:center; }
-.note { font-size:13px;color:var(--text-secondary);text-align:center;max-width:480px;margin-top:1.5rem;line-height:1.9; }
-.footer-nav { display:flex;justify-content:space-between;position:fixed;bottom:0;left:0;right:0;padding:1.5rem clamp(24px,8vw,120px);border-top:1px solid var(--line);background:var(--bg); }
-.nav-link { font-size:0.7rem;color:var(--text-tertiary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;gap:0.5rem; }
-.nav-link:hover { color:var(--text-primary); }
-.nav-arrow { font-size:0.6rem; }
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #7A7670;
+  --text-tertiary: #A8A49E;
+  --accent: #E05A47;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 400;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 8vw, 120px);
+  min-height: 100vh;
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: clamp(24px, 8vw, 120px);
+  right: clamp(24px, 8vw, 120px);
+  height: 1px;
+  background: var(--line);
+}
+
+.section-number {
+  position: absolute;
+  top: var(--space-2xl);
+  right: clamp(24px, 8vw, 120px);
+  font-size: clamp(100px, 22vw, 280px);
+  font-weight: 100;
+  color: var(--text-primary);
+  opacity: 0.03;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-family: 'Noto Serif JP', serif;
+  pointer-events: none;
+  user-select: none;
+}
+
+.back-link {
+  position: fixed;
+  top: var(--space-xl);
+  left: clamp(24px, 8vw, 120px);
+  z-index: 100;
+}
+
+.back-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.back-link a:hover { color: var(--text-primary); }
+
+.hero {
+  padding: var(--space-4xl) 0 var(--space-3xl);
+  position: relative;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+}
+
+.hero-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.hero-label::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.hero-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  margin-bottom: var(--space-xl);
+}
+
+.hero-desc {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 44ch;
+}
+
+.content-section {
+  padding: var(--space-3xl) 0;
+  border-top: 1px solid var(--line);
+}
+
+.section-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.section-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.dimension-section {
+  margin-bottom: var(--space-4xl);
+}
+
+.dimension-badge {
+  display: inline-block;
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  border: 1px solid var(--accent);
+  padding: 4px 12px;
+}
+
+.dimension-question {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: var(--space-xl);
+  max-width: 16em;
+  color: var(--text-primary);
+}
+
+.dimension-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-3xl);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .dimension-layout {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+}
+
+.answer-section {
+  position: relative;
+}
+
+.answer-block {
+  padding: var(--space-lg) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.answer-block:last-child {
+  border-bottom: none;
+}
+
+.answer-label {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+  color: var(--text-tertiary);
+}
+
+.answer-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+  line-height: 1.4;
+}
+
+.answer-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.chart-area {
+  position: relative;
+}
+
+.chart-title {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+}
+
+.objection-block {
+  padding: var(--space-lg);
+  margin-bottom: var(--space-md);
+  border: 1px solid var(--line);
+}
+
+.objection-block.red {
+  border-left: 2px solid var(--accent);
+  background: rgba(224, 90, 71, 0.03);
+}
+
+.objection-block.green {
+  border-left: 2px solid #4CAF50;
+  background: rgba(76, 175, 80, 0.03);
+}
+
+.objection-block.muted {
+  border-left: 2px solid var(--text-tertiary);
+  background: rgba(168, 164, 158, 0.03);
+}
+
+.objection-label {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+}
+
+.objection-block.red .objection-label { color: var(--accent); }
+.objection-block.green .objection-label { color: #4CAF50; }
+.objection-block.muted .objection-label { color: var(--text-tertiary); }
+
+.objection-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.objection-text {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.core-insight {
+  margin-top: var(--space-xl);
+  padding-left: var(--space-md);
+  border-left: 1px solid var(--accent);
+}
+
+.core-insight-text {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 40ch;
+}
+
+.decision-table {
+  margin-top: var(--space-xl);
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.decision-row {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 1px;
+  background: var(--line);
+}
+
+.decision-cell {
+  padding: var(--space-md) var(--space-lg);
+  background: var(--surface);
+}
+
+.decision-cell.header {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  border-bottom: 1px solid var(--line);
+}
+
+.decision-cell.content {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.decision-cell.highlight {
+  background: rgba(224, 90, 71, 0.05);
+  color: var(--accent);
+}
+
+.checklist-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: var(--space-md) 0;
+  border-bottom: 1px solid var(--line-light);
+}
+
+.checklist-item:last-child { border-bottom: none; }
+
+.checklist-marker {
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--text-tertiary);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.checklist-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.fin-section {
+  padding: var(--space-3xl) 0;
+  border-top: 1px solid var(--line);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.fin-number {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(120px, 30vw, 400px);
+  font-weight: 100;
+  color: var(--text-primary);
+  opacity: 0.04;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  user-select: none;
+}
+
+.fin-text {
+  position: relative;
+  z-index: 1;
+}
+
+.fin-label {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-md);
+}
+
+.fin-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  max-width: 20em;
+  margin: 0 auto;
+  line-height: 1.3;
+}
+
+.footer-nav {
+  padding: var(--space-2xl) 0;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover { color: var(--text-primary); }
+.nav-arrow { font-size: 0.75rem; }
+
+.fade-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+
+
+/* ========== 节点17专用布局 ========== */
+
+/* 维度三：危险标记卡片 */
+.danger-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-md);
+}
+
+.danger-card:last-child { margin-bottom: 0; }
+
+.danger-card-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--accent);
+  margin-bottom: var(--space-sm);
+}
+
+.danger-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* 维度四：进度条+清单 */
+.backup-progress {
+  margin-bottom: var(--space-2xl);
+}
+
+.progress-bar-container {
+  height: 3px;
+  background: var(--line);
+  margin-bottom: var(--space-md);
+  position: relative;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.6s ease;
+}
+
+.progress-label-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-xl);
+}
+
+.backup-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.backup-check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: var(--space-sm) 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.check-icon {
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--text-tertiary);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* 维度五：支持通道时间线 */
+.support-section {
+  position: relative;
+  padding-left: var(--space-xl);
+}
+
+.support-section::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--line);
+}
+
+.support-item {
+  position: relative;
+  padding-bottom: var(--space-lg);
+}
+
+.support-item:last-child { padding-bottom: 0; }
+
+.support-item::before {
+  content: '';
+  position: absolute;
+  left: calc(-1 * var(--space-xl) - 4px);
+  top: 6px;
+  width: 9px;
+  height: 9px;
+  background: var(--text-tertiary);
+}
+
+.support-item.active::before {
+  background: var(--accent);
+}
+
+.support-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.support-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* 维度六：底线检查表格 */
+.bottomline-table {
+  margin-top: var(--space-xl);
+  border: 1px solid var(--line);
+}
+
+.bottomline-row {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr;
+  gap: 1px;
+  background: var(--line);
+}
+
+.bottomline-row.header {
+  background: var(--surface);
+}
+
+.bottomline-cell {
+  padding: var(--space-md) var(--space-lg);
+  background: var(--surface);
+  font-size: 13px;
+}
+
+.bottomline-cell.header {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  border-bottom: 1px solid var(--line);
+}
+
+.bottomline-cell.danger {
+  background: rgba(224, 90, 71, 0.06);
+  color: var(--accent);
+}
+
+/* 维度一：法律合规摘要卡 */
+.compliance-summary {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
+}
+
+.compliance-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-md);
+}
+
+.compliance-card.danger {
+  border-left: 3px solid var(--accent);
+}
+
+.compliance-card.pass {
+  border-left: 3px solid #4CAF50;
+}
+
+.compliance-label {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-xs);
+}
+
+.compliance-card.danger .compliance-label { color: var(--accent); }
+.compliance-card.pass .compliance-label { color: #4CAF50; }
+
+.compliance-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.compliance-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .bottomline-row {
+    grid-template-columns: 1fr;
+  }
+  .compliance-summary {
+    grid-template-columns: 1fr;
+  }
+}
+.fade-section.visible { opacity: 1; transform: translateY(0); }
+
+/* 风险列表 */
+.risk-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.risk-item {
+  display: flex;
+  gap: var(--space-lg);
+  padding: var(--space-lg);
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.risk-item--critical {
+  border-left: 3px solid var(--accent);
+  background: rgba(224, 90, 71, 0.03);
+}
+
+.risk-item--safe {
+  border-left: 3px solid #4CAF50;
+  background: rgba(76, 175, 80, 0.03);
+}
+
+.risk-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+
+.risk-item--critical .risk-indicator { background: var(--accent); }
+.risk-item--safe .risk-indicator { background: #4CAF50; }
+
+.risk-content { flex: 1; }
+
+.risk-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-xs);
+}
+
+.risk-item--critical .risk-label { color: var(--accent); }
+.risk-item--safe .risk-label { color: #4CAF50; }
+
+.risk-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.risk-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* 维度一：法律合规流程 - 非对称左重布局 */
+.compliance-flow {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: var(--space-xl);
+  margin-top: var(--space-xl);
+}
+
+.compliance-item {
+  display: flex;
+  gap: var(--space-lg);
+  padding: var(--space-lg) 0;
+  border-bottom: 1px solid var(--line-light);
+}
+
+.compliance-item:last-child { border-bottom: none; }
+
+.compliance-item--primary {
+  grid-column: 1 / -1;
+  padding: var(--space-xl);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+}
+
+.compliance-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 32px;
+  font-weight: 200;
+  color: var(--text-primary);
+  opacity: 0.15;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.compliance-item--primary .compliance-num {
+  font-size: 64px;
+  opacity: 0.08;
+}
+
+.compliance-content {
+  flex: 1;
+}
+
+.compliance-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.compliance-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* 维度二：产品检验瀑布流 */
+.product-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-2xl);
+  margin-top: var(--space-xl);
+}
+
+.product-test-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-md);
+  position: relative;
+}
+
+.product-test-card:last-child { margin-bottom: 0; }
+
+.product-test-card.tall {
+  grid-row: span 2;
+}
+
+.product-test-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-sm);
+}
+
+.product-test-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.product-test-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* 维度三：AI风险 - 大号背景数字 */
+.ai-risk-section {
+  position: relative;
+  margin-top: var(--space-xl);
+}
+
+.ai-risk-bg-num {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 180px;
+  font-weight: 100;
+  color: var(--text-primary);
+  opacity: 0.03;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.danger-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+}
+
+.danger-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--accent);
+  padding: var(--space-lg);
+  position: relative;
+}
+
+.danger-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.3;
+}
+
+/* 维度四：备份进度 - 环形进度 */
+.backup-ring-section {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: var(--space-3xl);
+  align-items: center;
+  margin-top: var(--space-xl);
+}
+
+.backup-ring {
+  position: relative;
+  width: 180px;
+  height: 180px;
+}
+
+.backup-ring svg {
+  transform: rotate(-90deg);
+}
+
+.backup-ring-bg {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 2;
+}
+
+.backup-ring-fill {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 440;
+  stroke-dashoffset: 176;
+  transition: stroke-dashoffset 0.6s ease;
+}
+
+.backup-ring-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.backup-ring-pct {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 42px;
+  font-weight: 200;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.backup-ring-label {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-top: var(--space-xs);
+}
+
+/* 维度五：支持通道 - 左侧大字时间线 */
+.support-vertical {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: var(--space-3xl);
+  margin-top: var(--space-xl);
+  position: relative;
+}
+
+.support-time-axis {
+  position: relative;
+  padding-top: var(--space-lg);
+}
+
+.support-time-axis::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 20px;
+  width: 1px;
+  background: var(--line);
+}
+
+.support-time-marker {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-2xl);
+  position: relative;
+}
+
+.support-time-marker::before {
+  content: '';
+  position: absolute;
+  right: -28px;
+  top: 4px;
+  width: 8px;
+  height: 8px;
+  background: var(--text-tertiary);
+}
+
+.support-time-marker.active {
+  color: var(--accent);
+}
+
+.support-time-marker.active::before {
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+.support-content-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.support-content-item {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+  border-left: 3px solid var(--line);
+}
+
+.support-content-item.highlight {
+  border-left-color: var(--accent);
+}
+
+.support-content-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.support-content-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* 维度六：营销法律 - 仪表盘风格 */
+.marketing-dashboard {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: var(--space-2xl);
+  margin-top: var(--space-xl);
+}
+
+.dashboard-panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-xl);
+}
+
+.dashboard-panel-title {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+}
+
+.dashboard-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.dashboard-metric {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--line-light);
+}
+
+.dashboard-metric:last-child { border-bottom: none; }
+
+.metric-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.metric-status {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+}
+
+.metric-status.danger { color: var(--accent); }
+.metric-status.pass { color: #4CAF50; }
+
+.dashboard-alert {
+  background: rgba(224, 90, 71, 0.05);
+  border: 1px solid var(--accent);
+  border-left: 3px solid var(--accent);
+  padding: var(--space-lg);
+}
+
+.alert-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--accent);
+  margin-bottom: var(--space-sm);
+}
+
+.alert-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .compliance-flow,
+  .product-grid,
+  .backup-ring-section,
+  .marketing-dashboard {
+    grid-template-columns: 1fr;
+  }
+  .backup-ring { margin: 0 auto; }
+  .danger-cards { grid-template-columns: 1fr; }
+  .support-vertical { grid-template-columns: 80px 1fr; }
+  .compliance-item--primary { grid-column: 1; }
+}
+
+
+
+* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
   </style>
 </head>
 <body>
-  <nav class="top-nav">
-    <a href="/index.html" class="back-link">← 返回首页</a>
-    <span class="node-id">节点 27 / 57</span>
-  </nav>
-  <div class="phase">上线准备</div>
-  <h1>上线前检查清单</h1>
-  <div class="num">节点 27</div>
-  <p class="note">🚧 内容正在建设中<br>这将是一个面向OPC（一人公司/独立开发者）的实操指南</p>
-  <footer class="footer-nav">
-    <a href="/nodes/26-audit-material/index.html" class="nav-link"><span class="nav-arrow">←</span>节点26：审核材料准备</a>
-    <a href="/nodes/28-audit-submit/index.html" class="nav-link">节点28：提交审核与等待<span class="nav-arrow">→</span></a>
-  </footer>
+  <div class="back-link">
+    <a href="/"><span>←</span> 返回首页</a>
+  </div>
+  <div class="section-number">17</div>
+
+  <div class="page">
+    <header class="hero fade-section">
+      <div class="hero-content">
+        <div class="hero-label">节点 27 · 1-10</div>
+        <h1 class="hero-title">上线前检查清单</h1>
+        <p class="hero-desc">你作为一人公司创始人的上线安全网与长期续航的保险单。系统性地清点每一个关键模块，防止你成为最薄弱的单点故障源。</p>
+      </div>
+    </header>
+
+    <section class="content-section fade-section">
+      <div class="section-label">节点内容</div>
+
+      <!-- 维度一：法律实体与合规基础 -->
+      <div class="dimension-section">
+        <span class="dimension-badge">维度一</span>
+        <h2 class="dimension-question">一人公司的法律根基，哪些有一票否决效力？</h2>
+        <div class="dimension-layout">
+          <div class="answer-section">
+            <div class="answer-block">
+              <div class="answer-label">A</div>
+              <div class="answer-title">确认法律实体有效性</div>
+              <div class="answer-desc">确保公司注册手续完成并持有有效营业执照。检查：营业执照名称与对外品牌名是否一致、公司状态在工商系统显示"存续"无经营异常。这是将个人无限责任限制在公司资产范围内的核心屏障。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">B</div>
+              <div class="answer-title">经营范围匹配度复核</div>
+              <div class="answer-desc">拿着营业执照正本逐字对照经营范围与产品服务。在线工具订阅需含"互联网信息服务"或"软件销售"；付费咨询或课程需含"教育咨询服务"或"信息技术咨询"。2025-2026年监管已用AI自动比对，发现超范围经营可能触发异常名录标记。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">C</div>
+              <div class="answer-title">数字服务法规适配（面向欧盟）</div>
+              <div class="answer-desc">设立"欧盟单一联络点"页面接收合规通知；建立透明度报告模板；关注PSD3对强客户认证(SCA)的要求。若使用Stripe或Paddle作为MoR，通常会替你承担这部分合规。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">D</div>
+              <div class="answer-title">隐私政策与Cookie同意更新</div>
+              <div class="answer-desc">隐私政策必须包含AI功能数据处理逻辑的独立条款：AI是否使用用户输入训练、生成内容是否缓存、用户如何请求删除AI交互记录。Cookie弹窗必须让用户能以同等步骤点击"拒绝全部"，可用Google Consent Mode v2或Osano部署。</div>
+            </div>
+          </div>
+          <div class="chart-area">
+            <div class="chart-title">风险矩阵</div>
+            <div class="objection-block red">
+              <div class="objection-label">致命风险</div>
+              <div class="objection-title">营业执照无效或异常</div>
+              <div class="objection-desc">支付账户无法开通，商户账号风控审核失败，业务直接停摆</div>
+            </div>
+            <div class="objection-block red">
+              <div class="objection-label">致命风险</div>
+              <div class="objection-title">超范围经营被标记</div>
+              <div class="objection-desc">AI自动比对系统触发异常经营名录，影响支付通道正常结算</div>
+            </div>
+            <div class="objection-block green">
+              <div class="objection-label">通过标准</div>
+              <div class="objection-title">MoR模式税务合规</div>
+              <div class="objection-desc">使用Paddle/Lemon Squeezy等MoR服务，手续费换税务合规完全外包</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 维度二：产品核心功能完整性 -->
+      <div class="dimension-section">
+        <span class="dimension-badge">维度二</span>
+        <h2 class="dimension-question">MVP是否真的"可行"？从注册到付费的无阻塞验证</h2>
+        <div class="dimension-layout">
+          <div class="answer-section">
+            <div class="answer-block">
+              <div class="answer-label">A</div>
+              <div class="answer-title">核心回路走通测试</div>
+              <div class="answer-desc">将自己置于完全陌生的用户视角：注册与激活（验证邮件10秒内送达且不在垃圾箱）、关键功能使用（从登录到体验核心价值的路径是否极短）、价值兑现与付费引导（免费额度耗尽提示是否清晰、付费入口是否顺畅）。30分钟内心流不间断完成，记录每一个犹豫或困惑的瞬间。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">B</div>
+              <div class="answer-title">空状态与边界错误处理</div>
+              <div class="answer-desc">空状态设计：每一个列表页在初始无数据时必须有明确占位图示、引导性文案和突出行动按钮。错误反馈：关键操作失败时用通俗语句解释原因并提供恢复路径，穷举所有可能失败点并设计"致歉方案"。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">C</div>
+              <div class="answer-title">移动端基础可用性</div>
+              <div class="answer-desc">2025年移动端流量占比普遍超过60%。触控友好（按钮点击区域符合拇指热区）、布局适配（文字不溢出、排版不错乱）、关键路径可用（注册、付费、查看核心结果在移动端能完整走通）。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">D</div>
+              <div class="answer-title">加载速度生死线：2.5秒内</div>
+              <div class="answer-desc">资源减负（图片压缩+懒加载）、代码精简（移除非必要第三方脚本）、缓存策略（静态资源设置合理浏览器缓存）。Core Web Vitals标准：首屏主要内容(LCP)加载时间需在2.5秒以内。</div>
+            </div>
+          </div>
+          <div class="chart-area">
+            <div class="chart-title">产品检验清单</div>
+            <div class="objection-block red">
+              <div class="objection-label">危险信号</div>
+              <div class="objection-title">注册流程断点</div>
+              <div class="objection-desc">验证邮件未送达、激活链接失效、社交账号授权失败——流量在第一步就开始流失</div>
+            </div>
+            <div class="objection-block red">
+              <div class="objection-label">危险信号</div>
+              <div class="objection-title">白屏无引导</div>
+              <div class="objection-desc">空状态是刺眼的白屏，没有任何文案和行动按钮——用户不知道下一步该做什么</div>
+            </div>
+            <div class="objection-block green">
+              <div class="objection-label">达标标准</div>
+              <div class="objection-title">2.5秒内LCP</div>
+              <div class="objection-desc">首屏加载在2.5秒内完成，图片压缩、代码精简、缓存配置到位</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 维度三：AI功能特检 -->
+      <div class="dimension-section">
+        <span class="dimension-badge">维度三</span>
+        <h2 class="dimension-question">AI功能上线前，最容易忽略的三个风险是什么？</h2>
+        
+        <div class="danger-card">
+          <div class="danger-card-title">
+            <svg class="danger-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 1L15 14H1L8 1Z" stroke="currentColor" stroke-width="1" fill="none"/>
+              <line x1="8" y1="6" x2="8" y2="10" stroke="currentColor" stroke-width="1"/>
+              <circle cx="8" cy="12" r="0.5" fill="currentColor"/>
+            </svg>
+            风险一：成本失控
+          </div>
+          <p style="font-size:14px;color:var(--text-secondary);line-height:1.7;">你无法预见用户会以什么方式调用AI接口，单个重度用户可能在一小时内消耗掉整月利润。必须在后端设置硬性用量上限和缓存策略，对重复请求直接返回缓存结果。</p>
+        </div>
+
+        <div class="danger-card">
+          <div class="danger-card-title">
+            <svg class="danger-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 1L15 14H1L8 1Z" stroke="currentColor" stroke-width="1" fill="none"/>
+              <line x1="8" y1="6" x2="8" y2="10" stroke="currentColor" stroke-width="1"/>
+              <circle cx="8" cy="12" r="0.5" fill="currentColor"/>
+            </svg>
+            风险二：内容合规标识义务
+          </div>
+          <p style="font-size:14px;color:var(--text-secondary);line-height:1.7;">中国《生成式人工智能服务管理暂行办法》要求对AI生成内容显著标识；欧盟《AI法案》要求告知用户正在与AI交互。追求"拟人化体验"而刻意隐藏AI身份可能构成违规。</p>
+        </div>
+
+        <div class="danger-card">
+          <div class="danger-card-title">
+            <svg class="danger-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 1L15 14H1L8 1Z" stroke="currentColor" stroke-width="1" fill="none"/>
+              <line x1="8" y1="6" x2="8" y2="10" stroke="currentColor" stroke-width="1"/>
+              <circle cx="8" cy="12" r="0.5" fill="currentColor"/>
+            </svg>
+            风险三：安全过滤缺失
+          </div>
+          <p style="font-size:14px;color:var(--text-secondary);line-height:1.7;">即使没有团队做深度内容审核，也必须接入基础的敏感词或NSFW过滤接口，自动拦截明显违规的输出，标注可疑内容等待抽检。这是防止你承担法律责任的关键护栏。</p>
+        </div>
+
+        <div class="core-insight">
+          <p class="core-insight-text">AI功能上线不是终点，而是需要预设护栏的起点。若未设置API调用上限和缓存机制，可能遭遇恶意刷量导致API账单远超利润。</p>
+        </div>
+      </div>
+
+      <!-- 维度四：自动备份与灾难恢复 -->
+      <div class="dimension-section">
+        <span class="dimension-badge">维度四</span>
+        <h2 class="dimension-question">数据丢失即业务终结——如何设计单人可执行的恢复体系？</h2>
+        
+        <div class="dimension-layout">
+          <div class="answer-section">
+            <div class="answer-block">
+              <div class="answer-label">备份策略</div>
+              <div class="answer-title">每日全量备份，保留7天历史版本</div>
+              <div class="answer-desc">备份文件异地存储（云存储跨区域复制），上线前完成隔离环境恢复演练。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">部署安全</div>
+              <div class="answer-title">代码部署配置Git管理</div>
+              <div class="answer-desc">环境变量加密存储，外部监控探活，异常5分钟内Telegram告警。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">恢复目标</div>
+              <div class="answer-title">4小时内可恢复</div>
+              <div class="answer-desc">若超过4小时则说明自动化程度不足，需要强化。</div>
+            </div>
+          </div>
+          <div class="chart-area">
+            <div class="chart-title">备份就绪度</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md);margin-bottom:var(--space-lg);">
+              <div style="background:var(--bg);padding:var(--space-lg);text-align:center;border:1px solid var(--line);">
+                <div style="font-family:'Noto Serif JP',serif;font-size:36px;font-weight:200;color:var(--accent);">60%</div>
+                <div style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-tertiary);margin-top:4px;">当前进度</div>
+              </div>
+              <div style="background:var(--bg);padding:var(--space-lg);text-align:center;border:1px solid var(--line);">
+                <div style="font-family:'Noto Serif JP',serif;font-size:36px;font-weight:200;color:var(--text-primary);">4h</div>
+                <div style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-tertiary);margin-top:4px;">恢复目标</div>
+              </div>
+            </div>
+            <div class="objection-block muted">
+              <div class="objection-label">恢复时间目标</div>
+              <div class="objection-title">4小时内可恢复</div>
+              <div class="objection-desc">若超过4小时则说明自动化程度不足，需要强化</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 维度五：客户沟通与支持通道 -->
+      <div class="dimension-section">
+        <span class="dimension-badge">维度五</span>
+        <h2 class="dimension-question">一人公司无法提供7x24小时客服，如何管理用户预期？</h2>
+        
+        <div class="dimension-layout">
+          <div class="answer-section">
+            <div class="answer-block">
+              <div class="answer-label">基础配置</div>
+              <div class="answer-title">支持邮箱 + 帮助中心</div>
+              <div class="answer-desc">一个公开的专用支持邮箱（support@你的域名.com）和结构清晰的FAQ页面是不可妥协的底线。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">自动回复</div>
+              <div class="answer-title">1分钟内自动回复</div>
+              <div class="answer-desc">用户发出支持邮件后，必须在1分钟内收到自动回执，明确告知回复时间承诺。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">持续优化</div>
+              <div class="answer-title">公开反馈入口</div>
+              <div class="answer-desc">在应用内固定位置设置反馈按钮，链接到公开产品路线图页面。</div>
+            </div>
+          </div>
+          <div class="chart-area">
+            <div class="chart-title">预期管理时间线</div>
+            <div style="display:flex;flex-direction:column;gap:var(--space-md);">
+              <div style="display:grid;grid-template-columns:56px 1fr;gap:var(--space-md);padding:var(--space-md) 0;border-bottom:1px solid var(--line-light);">
+                <div style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:#4CAF50;font-weight:500;">T+0</div>
+                <div>
+                  <div style="font-size:14px;font-weight:500;color:var(--text-primary);margin-bottom:2px;">支持邮箱 + 帮助中心</div>
+                  <div style="font-size:13px;color:var(--text-secondary);line-height:1.5;">专用支持邮箱和FAQ页面是底限</div>
+                </div>
+              </div>
+              <div style="display:grid;grid-template-columns:56px 1fr;gap:var(--space-md);padding:var(--space-md) 0;border-bottom:1px solid var(--line-light);">
+                <div style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:#4CAF50;font-weight:500;">T+1min</div>
+                <div>
+                  <div style="font-size:14px;font-weight:500;color:var(--text-primary);margin-bottom:2px;">1分钟内自动回复</div>
+                  <div style="font-size:13px;color:var(--text-secondary);line-height:1.5;">明确告知回复时间承诺，消除用户焦虑</div>
+                </div>
+              </div>
+              <div style="display:grid;grid-template-columns:56px 1fr;gap:var(--space-md);padding:var(--space-md) 0;">
+                <div style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-tertiary);font-weight:500;">T+24h</div>
+                <div>
+                  <div style="font-size:14px;font-weight:500;color:var(--text-primary);margin-bottom:2px;">人工跟进</div>
+                  <div style="font-size:13px;color:var(--text-secondary);line-height:1.5;">复杂问题由你亲自跟进</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 维度六：营销获客与法律保护 -->
+      <div class="dimension-section">
+        <span class="dimension-badge">维度六</span>
+        <h2 class="dimension-question">上线不是终点——冷启动获客与法律风险如何同步准备？</h2>
+
+        <div class="dimension-layout">
+          <div class="answer-section">
+            <div class="answer-block">
+              <div class="answer-label">法律</div>
+              <div class="answer-title">法律实体与支付合规</div>
+              <div class="answer-desc">MoR模式（如Paddle/Lemon Squeezy）税务合规完全外包，手续费换安心。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">基础设施</div>
+              <div class="answer-title">域名所有权与HTTPS</div>
+              <div class="answer-desc">域名自动续费，HTTPS全程加密，用户信任的基础保障。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">产品</div>
+              <div class="answer-title">核心回路完整可走通</div>
+              <div class="answer-desc">从注册到付费的路径无断点，30分钟内完成验证。</div>
+            </div>
+            <div class="answer-block">
+              <div class="answer-label">安全</div>
+              <div class="answer-title">关键流程单人可恢复</div>
+              <div class="answer-desc">备份就绪，4小时内恢复，监控告警配置完毕。</div>
+            </div>
+          </div>
+          <div class="chart-area">
+            <div class="chart-title">上线前检查清单</div>
+            <div class="objection-block red">
+              <div class="objection-label">致命风险</div>
+              <div class="objection-title">法律实体残缺</div>
+              <div class="objection-desc">导致无限连带责任</div>
+            </div>
+            <div class="objection-block red">
+              <div class="objection-label">致命风险</div>
+              <div class="objection-title">域名+HTTPS未完成</div>
+              <div class="objection-desc">用户信任归零</div>
+            </div>
+            <div class="objection-block green">
+              <div class="objection-label">通过标准</div>
+              <div class="objection-title">核心回路 + 备份恢复</div>
+              <div class="objection-desc">完成这两项可大幅降低上线风险</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <section class="fin-section fade-section">
+      <div class="fin-number">FIN</div>
+      <div class="fin-text">
+        <div class="fin-label">核心掌握</div>
+        <h2 class="fin-title">你只需要守住四条底线：法律实体与支付合规、域名所有权与HTTPS、核心回路完整可走通、关键流程单人可恢复。其余模块按业务优先级分批迭代。</h2>
+      </div>
+    </section>
+
+    <footer class="footer-nav">
+      <a href="/nodes/38-pricing/index.html" class="nav-link">
+        <span class="nav-arrow">←</span>
+        节点16：定价策略
+      </a>
+      <a href="/nodes/32-cold-start/index.html" class="nav-link">
+        节点18：冷启动获客
+        <span class="nav-arrow">→</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
+  </script>
 </body>
 </html>

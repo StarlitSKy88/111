@@ -1,44 +1,1039 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <script src="/auth-guard.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="商标申请 - OPC节点百科">
+  <meta name="description" content="商标分类、申请流程、异议处理，月收入稳定1万+后开始品牌保护">
   <meta name="theme-color" content="#111110">
   <title>商标申请 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-:root { --bg:#111110;--surface:#1A1A18;--text-primary:#F0EDE6;--text-secondary:#7A7670;--text-tertiary:#A8A49E;--accent:#C0392B;--line:#2A2A28; }
-* { margin:0;padding:0;box-sizing:border-box; }
-body { background:var(--bg);color:var(--text-primary);font-family:'Noto Sans SC',sans-serif;font-weight:300;line-height:2;letter-spacing:0.04em;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem; }
-.top-nav { position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem clamp(24px,8vw,120px);border-bottom:1px solid var(--line);background:var(--bg); }
-.back-link { font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-tertiary);text-decoration:none; }
-.back-link:hover { color:var(--text-primary); }
-.node-id { font-family:'Noto Serif JP',serif;font-size:0.75rem;color:var(--text-tertiary);letter-spacing:0.1em; }
-h1 { font-family:'Noto Serif JP',serif;font-size:clamp(28px,6vw,56px);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;text-align:center; }
-.phase { font-size:12px;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;text-align:center; }
-.num { font-size:11px;color:var(--text-tertiary);letter-spacing:0.1em;margin-top:0.5rem;text-align:center; }
-.note { font-size:13px;color:var(--text-secondary);text-align:center;max-width:480px;margin-top:1.5rem;line-height:1.9; }
-.footer-nav { display:flex;justify-content:space-between;position:fixed;bottom:0;left:0;right:0;padding:1.5rem clamp(24px,8vw,120px);border-top:1px solid var(--line);background:var(--bg); }
-.nav-link { font-size:0.7rem;color:var(--text-tertiary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;gap:0.5rem; }
-.nav-link:hover { color:var(--text-primary); }
-.nav-arrow { font-size:0.6rem; }
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #B8B4AE;
+  --text-tertiary: #A8A49E;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 400;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 8vw, 120px);
+  min-height: 100vh;
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: clamp(24px, 8vw, 120px);
+  right: clamp(24px, 8vw, 120px);
+  height: 1px;
+  background: var(--line);
+}
+
+.section-number {
+  position: absolute;
+  top: var(--space-2xl);
+  right: clamp(24px, 8vw, 120px);
+  font-size: clamp(100px, 22vw, 280px);
+  font-weight: 100;
+  color: var(--text-primary);
+  opacity: 0.03;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-family: 'Noto Serif JP', serif;
+  pointer-events: none;
+  user-select: none;
+}
+
+.back-link {
+  position: fixed;
+  top: var(--space-xl);
+  left: clamp(24px, 8vw, 120px);
+  z-index: 100;
+}
+
+.back-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.back-link a:hover { color: var(--text-primary); }
+
+.hero {
+  padding: var(--space-4xl) 0 var(--space-3xl);
+  position: relative;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+}
+
+.hero-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.hero-label::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.hero-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  margin-bottom: var(--space-xl);
+}
+
+.hero-desc {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 44ch;
+}
+
+.section-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.section-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.dim-section {
+  padding: var(--space-3xl) 0;
+  border-top: 1px solid var(--line);
+}
+
+.dim-question {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  margin-bottom: var(--space-xl);
+  max-width: 18em;
+}
+
+.grid-asymmetric {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-3xl);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .grid-asymmetric {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+}
+
+.answer-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-md);
+}
+
+.answer-label {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-sm);
+}
+
+.answer-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.answer-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.answer-desc strong { color: var(--text-primary); }
+
+.objection-block {
+  padding: var(--space-md);
+  margin-bottom: var(--space-sm);
+  border-left: 2px solid;
+}
+
+.objection-block.error {
+  background: rgba(168, 164, 158, 0.05);
+  border-color: var(--text-tertiary);
+}
+
+.objection-block.success {
+  background: rgba(39, 174, 96, 0.08);
+  border-color: var(--accent);
+}
+
+.objection-block.data {
+  background: rgba(168, 164, 158, 0.05);
+  border-color: var(--text-tertiary);
+}
+
+.objection-tag {
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-xs);
+}
+
+.objection-block.error .objection-tag { color: var(--text-tertiary); }
+.objection-block.success .objection-tag { color: var(--accent); }
+.objection-block.data .objection-tag { color: var(--text-tertiary); }
+
+.objection-text {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.objection-text strong { color: var(--text-primary); }
+
+.chart-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+}
+
+.chart-title {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-md);
+}
+
+.chart-item {
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--line-light);
+}
+
+.chart-item:last-child { border-bottom: none; }
+
+.chart-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.chart-value {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--text-primary);
+}
+
+.chart-value .accent { color: var(--accent); }
+
+.core-insight {
+  margin: var(--space-xl) 0;
+  padding-left: var(--space-md);
+  border-left: 1px solid var(--accent);
+}
+
+.core-insight-text {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 40ch;
+}
+
+.core-insight-text strong { color: var(--text-primary); font-weight: 500; }
+
+.balance-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: var(--space-2xl);
+}
+
+@media (max-width: 768px) {
+  .balance-grid { grid-template-columns: 1fr; gap: var(--space-xl); }
+}
+
+.balance-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+}
+
+.balance-card-label {
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+}
+
+.balance-card-label.positive { color: var(--accent); }
+.balance-card-label.negative { color: var(--text-tertiary); }
+
+.balance-item {
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--line-light);
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.balance-item:last-child { border-bottom: none; }
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1.2fr 0.8fr;
+  gap: var(--space-xl);
+}
+
+@media (max-width: 900px) {
+  .summary-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
+}
+
+.summary-card {
+  padding: var(--space-lg) 0;
+  border-top: 1px solid var(--line);
+}
+
+.summary-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 36px;
+  font-weight: 300;
+  color: var(--accent);
+  margin-bottom: var(--space-sm);
+}
+
+.summary-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.summary-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.footer-nav {
+  padding: var(--space-2xl) 0;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover { color: var(--text-primary); }
+.nav-arrow { font-size: 0.75rem; }
+
+.fade-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-section.visible { opacity: 1; transform: translateY(0); }
+
+* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-xl);
+  margin: var(--space-xl) 0;
+}
+
+@media (max-width: 768px) {
+  .stat-row { grid-template-columns: 1fr; gap: var(--space-lg); }
+}
+
+.stat-item {
+  text-align: center;
+  padding: var(--space-lg);
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.stat-value {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 300;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: var(--space-sm);
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  letter-spacing: 0.05em;
+}
+
+.flow-section {
+  margin: var(--space-xl) 0;
+}
+
+.flow-item {
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-md) 0;
+  border-bottom: 1px solid var(--line-light);
+}
+
+.flow-item:last-child { border-bottom: none; }
+
+.flow-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 14px;
+  color: var(--accent);
+  width: 32px;
+  flex-shrink: 0;
+}
+
+.flow-content { flex: 1; }
+
+.flow-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.flow-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.class-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+  margin: var(--space-lg) 0;
+}
+
+@media (max-width: 768px) {
+  .class-grid { grid-template-columns: 1fr; }
+}
+
+.class-item {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-md);
+}
+
+.class-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+
+.class-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.class-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
   </style>
 </head>
 <body>
-  <nav class="top-nav">
-    <a href="/index.html" class="back-link">← 返回首页</a>
-    <span class="node-id">节点 48 / 57</span>
-  </nav>
-  <div class="phase">并行支撑层</div>
-  <h1>商标申请</h1>
-  <div class="num">节点 48</div>
-  <p class="note">🚧 内容正在建设中<br>这将是一个面向OPC（一人公司/独立开发者）的实操指南</p>
-  <footer class="footer-nav">
-    <a href="/nodes/47-business-email/index.html" class="nav-link"><span class="nav-arrow">←</span>节点47：企业邮箱搭建</a>
-    <a href="/nodes/49-copyright/index.html" class="nav-link">节点49：软件著作权登记<span class="nav-arrow">→</span></a>
-  </footer>
+  <div class="back-link">
+    <a href="/"><span>←</span> 返回首页</a>
+  </div>
+  <div class="section-number">26</div>
+
+  <div class="page">
+    <header class="hero">
+      <div class="hero-content">
+        <div class="hero-label">节点 48 · 1-10</div>
+        <h1 class="hero-title">商标申请</h1>
+        <p class="hero-desc">用可控成本锁定核心类别，为你的OPC品牌建立第一道法律屏障</p>
+      </div>
+    </header>
+
+    <!-- 一、2026年商标申请新现实 -->
+    <section class="dim-section fade-section">
+      <div class="section-label">壹 · 2026年商标申请新现实</div>
+
+      <div class="dim-question">从碎片化认知到系统化布局</div>
+
+      <div class="grid-asymmetric">
+        <div>
+          <p style="font-size: 15px; color: var(--text-secondary); line-height: 1.9; margin-bottom: var(--space-xl); max-width: 52ch;">
+            2026年，商标注册已进入<strong style="color: var(--text-primary);">全面电子化时代</strong>。从提交到核准全程约7-9个月，审查效率较三年前提升40%。全国商标注册申请量突破800万件，平均每个工作日处理超3万件。但与此同时，驳回率维持在30%-40%高位——主要败在"近似商标"和"缺乏显著性"两个坑上。
+          </p>
+
+          <div class="answer-block">
+            <div class="answer-label">时与势</div>
+            <h3 class="answer-title">从"等产品上线再申请"到"品牌名确定即申请"</h3>
+            <p class="answer-desc">商标注册遵循"申请在先"原则，而非"使用在先"。2026年审查标准进一步细化：单纯描述性词汇（如"便宜好鞋"）、仅为商品通用名称的词汇（如"电脑"）、缺乏显著性的图形，一律驳回。品牌名越早确定，越早锁定排他权。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">危与机</div>
+            <h3 class="answer-title">撤三风险上升，空置商标成靶子</h3>
+            <p class="answer-desc">当前商标法修订方向是强化使用义务。注册后"囤而不用"的商标被撤销可能性增大。这意味着：注册商标必须真实使用，且需留存完整的使用证据链。单纯防御性注册而缺乏实际使用计划的，风险正在累积。</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="chart-block">
+            <div class="chart-title">2026年商标注册数据</div>
+            <div class="chart-item">
+              <div class="chart-label">全国年申请量</div>
+              <div class="chart-value">800<span class="accent">万+件</span></div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">平均工作日处理量</div>
+              <div class="chart-value">3<span class="accent">万+件</span></div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">驳回率</div>
+              <div class="chart-value">30-40<span class="accent">%</span></div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">审查周期</div>
+              <div class="chart-value">7-9<span class="accent">月</span></div>
+            </div>
+          </div>
+
+          <div class="objection-block data" style="margin-top: var(--space-md);">
+            <div class="objection-tag">政策红利</div>
+            <p class="objection-text"><strong>小微企业首件商标官费全免：</strong>2026年多地推出补贴政策，个体工商户首次注册商标可享全额报销。建议在申请前查询当地市场监管局的具体政策。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 二、申请主体的选择 -->
+    <section class="dim-section fade-section">
+      <div class="section-label">贰 · 申请主体：个人 vs 公司</div>
+
+      <div class="dim-question">以什么名义申请，权利归属截然不同</div>
+
+      <div class="grid-asymmetric">
+        <div>
+          <div class="answer-block">
+            <div class="answer-label">自然人</div>
+            <h3 class="answer-title">必须具备经营资质</h3>
+            <p class="answer-desc">自2007年起，纯自然人仅凭身份证无法注册商标。必须提供<strong style="color: var(--text-primary);">个体工商户营业执照</strong>或农村承包经营合同，且经营范围须与申请类别基本对应。没有经营实体的自由职业者，需先注册个体工商户。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">一人公司</div>
+            <h3 class="answer-title">新公司法红利，取消数量限制</h3>
+            <p class="answer-desc">现行《公司法》已取消"一个自然人只能设立一个一人有限责任公司"的限制。同一人可设立多家OPC，分别持有不同品牌商标，实现<strong style="color: var(--text-primary);">一项目一公司一商标</strong>的风险隔离。以公司名义申请的商标，是公司的独立法人财产，可量化、可流转、可抵押。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">混合策略</div>
+            <h3 class="answer-title">商号与商标一致原则</h3>
+            <p class="answer-desc">核准公司名称前，务必先在国家知识产权局官网查询商标。避免公司成立后才发现商标被抢注，导致公司名与品牌名永久割裂。最佳实践：先查商标，再定公司名，最后注册公司。</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="chart-block">
+            <div class="chart-title">个人 vs 公司持有对比</div>
+            <div class="chart-item">
+              <div class="chart-label">产权归属</div>
+              <div class="chart-value" style="font-size: 16px;">个人/公司</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">风险隔离</div>
+              <div class="chart-value" style="font-size: 16px;">无/有</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">电商平台接纳度</div>
+              <div class="chart-value" style="font-size: 16px;">低/高</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">可转让性</div>
+              <div class="chart-value" style="font-size: 16px;">复杂/清晰</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">跨境布局</div>
+              <div class="chart-value" style="font-size: 16px;">受限/便利</div>
+            </div>
+          </div>
+
+          <div class="objection-block success" style="margin-top: var(--space-md);">
+            <div class="objection-tag">OPC推荐</div>
+            <p class="objection-text">以一人公司名义申请商标，是OPC实现<strong>品牌资产与个人责任隔离</strong>的最优路径。公司注销前务必先办理商标转让，否则权利直接消失。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 三、费用结构 -->
+    <section class="dim-section fade-section">
+      <div class="section-label">叁 · 费用结构：2026最新官方标准</div>
+
+      <div class="stat-row">
+        <div class="stat-item">
+          <div class="stat-value">¥270</div>
+          <div class="stat-label">电子申请/类（限10项）</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">¥300</div>
+          <div class="stat-label">纸质申请/类（限10项）</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">¥27</div>
+          <div class="stat-label">超项加收/项（电子）</div>
+        </div>
+      </div>
+
+      <div class="grid-asymmetric">
+        <div>
+          <div class="answer-block">
+            <div class="answer-label">官费构成</div>
+            <h3 class="answer-title">按类别收费，限定10个商品</h3>
+            <p class="answer-desc"><strong style="color: var(--text-primary);">电子申请：</strong>270元/类（限定10个商品/服务项），超出部分每项加收27元。<br><br><strong style="color: var(--text-primary);">纸质申请：</strong>300元/类（限定10个商品/服务项），超出部分每项加收30元。<br><br>电子申请比纸质申请优惠10%，且审查周期快1-2个月，2026年已成为主流申请方式。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">附加费用</div>
+            <h3 class="answer-title">这些情况需要额外预算</h3>
+            <p class="answer-desc"><strong style="color: var(--text-primary);">驳回复审：</strong>750元/类，被驳回后15日内提交<br><strong style="color: var(--text-primary);">异议答辩：</strong>官费无，代理费约1000-3000元<br><strong style="color: var(--text-primary);">续展（10年到期）：</strong>500元/类（电子），宽展期加250元<br><strong style="color: var(--text-primary);">变更/转让：</strong>150-500元/类</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="answer-block">
+            <div class="answer-label">地方补贴</div>
+            <h3 class="answer-title">2026年各地补贴政策一览</h3>
+            <p class="answer-desc"><strong style="color: var(--text-primary);">上海：</strong>小微企业首件商标全额补贴<br><strong style="color: var(--text-primary);">北京：</strong>专精特新企业最高500元/件补贴<br><strong style="color: var(--text-primary);">杭州：</strong>电商直播主体前3件官费全额报销<br><strong style="color: var(--text-primary);">深圳：</strong>科技/文化类博主补贴2000元/件<br><strong style="color: var(--text-primary);">成都：</strong>个人首次注册200元/件补贴</p>
+          </div>
+
+          <div class="objection-block data" style="margin-top: var(--space-md);">
+            <div class="objection-tag">查询入口</div>
+            <p class="objection-text">各地补贴政策可通过<strong>当地市场监管局官网</strong>或<strong>政务服务平台</strong>查询。需在收到《受理通知书》后6个月内提交补贴申请，逾期视为放弃。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 四、核心类别攻略 -->
+    <section class="dim-section fade-section">
+      <div class="section-label">肆 · 核心类别：OPC必须锁定的战场</div>
+
+      <div class="dim-question">第35类：线上生意的通行证</div>
+
+      <div class="class-grid">
+        <div class="class-item">
+          <div class="class-num">第35类</div>
+          <div class="class-name">广告销售 · 替他人推销</div>
+          <div class="class-desc">在抖音、淘宝开设店铺展示商品时，平台判定你正在进行"推销服务"行为。没有第35类，入驻、上架、投诉侵权都可能遇阻。</div>
+        </div>
+        <div class="class-item">
+          <div class="class-num">第41类</div>
+          <div class="class-name">教育娱乐 · 在线服务</div>
+          <div class="class-desc">知识付费、在线课程、自媒体内容、教育娱乐服务。自媒体创作者、知识博主的核心类别。</div>
+        </div>
+        <div class="class-item">
+          <div class="class-num">第9类</div>
+          <div class="class-name">科学仪器 · 软件APP</div>
+          <div class="class-desc">可下载的手机应用、 计算机软件、电子设备。SaaS工具、APP、小程序开发者的必备类别。</div>
+        </div>
+        <div class="class-item">
+          <div class="class-num">第42类</div>
+          <div class="class-name">科技服务 · 软件开发</div>
+          <div class="class-desc">计算机编程、软件开发、技术研究。软件外包、技术服务的核心保护类别。</div>
+        </div>
+      </div>
+
+      <div class="grid-asymmetric" style="margin-top: var(--space-2xl);">
+        <div>
+          <div class="answer-block">
+            <div class="answer-label">一主一防原则</div>
+            <h3 class="answer-title">核心类别 + 第35类黄金组合</h3>
+            <p class="answer-desc">以最低成本覆盖最广泛保护范围：<br><br><strong style="color: var(--text-primary);">知识付费OPC：</strong>第41类（在线教育）+ 第35类（替他人推销）+ 第9类（软件）<br><br><strong style="color: var(--text-primary);">电商带货OPC：</strong>第35类（替他人推销）+ 第25类（服装）/ 第30类（食品）<br><br><strong style="color: var(--text-primary);">SaaS工具OPC：</strong>第42类（软件开发）+ 第35类（广告宣传）+ 第9类（APP）</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="chart-block">
+            <div class="chart-title">第35类三大必选项目</div>
+            <div class="chart-item">
+              <div class="chart-label">替他人推销 350071</div>
+              <div class="chart-value" style="font-size: 14px; color: var(--accent);">核心</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">为零售目的在通信媒体上展示商品 350092</div>
+              <div class="chart-value" style="font-size: 14px; color: var(--accent);">核心</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">广告宣传 350039</div>
+              <div class="chart-value" style="font-size: 14px;">必备</div>
+            </div>
+          </div>
+
+          <div class="objection-block error" style="margin-top: var(--space-md);">
+            <div class="objection-tag">致命错误</div>
+            <p class="objection-text"><strong>做线上业务但不注册第35类</strong><br>相当于为他人做嫁衣，极易被抢注后遭投诉商品下架。连投诉他人冒用的资格都没有。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 五、申请流程 -->
+    <section class="dim-section fade-section">
+      <div class="section-label">伍 · 操作流程：从检索到拿证</div>
+
+      <div class="flow-section">
+        <div class="flow-item">
+          <div class="flow-num">壹</div>
+          <div class="flow-content">
+            <div class="flow-title">商标近似检索</div>
+            <div class="flow-desc">在国家知识产权局商标局官网（sbj.cnipa.gov.cn）进行检索。同时查文字、拼音、英文及图形要素。存在完全相同或高度近似商标且商品重叠的，申请被驳回概率极高。这一步是生死关头，90%的被驳回都源于检索不充分。</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num">贰</div>
+          <div class="flow-content">
+            <div class="flow-title">准备申请材料</div>
+            <div class="flow-desc">一人公司营业执照副本复印件加盖公章、商标图样JPG格式（建议300dpi以上）。同时准备黑白稿和彩色稿——黑白稿注册后可改变颜色使用，彩色稿在维权时辨识度更高。</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num">叁</div>
+          <div class="flow-content">
+            <div class="flow-title">提交申请</div>
+            <div class="flow-desc">登录中国商标网（sbj.cnipa.gov.cn）电子申请系统，以公司名义注册用户、绑定统一社会信用代码。填写申请书，上传材料，缴纳官费（电子申请约270元/类）。提交后1-5个工作日下发申请号。</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num">肆</div>
+          <div class="flow-content">
+            <div class="flow-title">形式审查（约1个月）</div>
+            <div class="flow-desc">官方检查申请文件格式、公章、主体资格是否符合要求。材料不全将触发补正通知，需在15日内补正，否则视为放弃申请。通过后下发《商标注册申请受理通知书》。</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num">伍</div>
+          <div class="flow-content">
+            <div class="flow-title">实质审查（约4-5个月）</div>
+            <div class="flow-desc">这是最核心的环节。审查员从合法性、显著性、与在先商标是否冲突三方面评估。2026年审查效率提升，平均4-5个月出结果。通过则进入公告期；若被驳回，15日内可申请复审（750元/类）。</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num">陆</div>
+          <div class="flow-content">
+            <div class="flow-title">初审公告（3个月）</div>
+            <div class="flow-desc">通过实审后，商标进入为期三个月的公告期。任何人都可以在这3个月内提出异议。常见的异议理由包括：在先权利人认为侵犯其商标权、认为该商标缺乏显著性等。</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num">柒</div>
+          <div class="flow-content">
+            <div class="flow-title">核准注册</div>
+            <div class="flow-desc">公告期满无异议，商标即告成功。电子版注册证第一时间推送至申请人账户。从提交到拿证，全程约7-9个月，若遇驳回、异议，时间可能延长至2-3年。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 六、常见失误 -->
+    <section class="dim-section fade-section">
+      <div class="section-label">陆 · 避坑指南：十大致命失误</div>
+
+      <div class="grid-asymmetric">
+        <div>
+          <div class="objection-block error">
+            <div class="objection-tag">失误① · 申请主体不一致</div>
+            <p class="objection-text">营业执照与申请书上的申请人名称必须完全一致。"XX科技有限公司"与"XX科技公司"会被视为不同主体，导致申请被退回。</p>
+          </div>
+
+          <div class="objection-block error" style="margin-top: var(--space-sm);">
+            <div class="objection-tag">失误② · 图样与使用不一致</div>
+            <p class="objection-text">注册时提交的图样颜色、字体必须与实际使用一致。随意更改注册图样的颜色或字体，属于不规范使用，可能在维权时败诉。</p>
+          </div>
+
+          <div class="objection-block error" style="margin-top: var(--space-sm);">
+            <div class="objection-tag">失误③ · 类别选择失误</div>
+            <p class="objection-text">只看大类不选具体群组。选错群组导致保护范围过窄或与实际业务不符。建议对照《类似商品和服务区分表》逐项确认。</p>
+          </div>
+
+          <div class="objection-block error" style="margin-top: var(--space-sm);">
+            <div class="objection-tag">失误④ · 忽视第35类</div>
+            <p class="objection-text">做线上业务但不注册第35类，是最常见的致命失误。相当于放弃了对核心商业场景的法律保护。</p>
+          </div>
+
+          <div class="objection-block error" style="margin-top: var(--space-sm);">
+            <div class="objection-tag">失误⑤ · 未留存使用证据</div>
+            <p class="objection-text">注册后务必真实使用并留存证据：合同、发票、广告截图、包装照片、电商平台链接。撤三风险正在上升，空置商标是活靶子。</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="objection-block error">
+            <div class="objection-tag">失误⑥ · 产品上线前不申请</div>
+            <p class="objection-text">"等产品上线再申请"是典型的本末倒置。审核存在不确定性，若被驳回、复审，窗口期已过。品牌将处于无保护裸奔状态。</p>
+          </div>
+
+          <div class="objection-block error" style="margin-top: var(--space-sm);">
+            <div class="objection-tag">失误⑦ · 攀附知名品牌</div>
+            <p class="objection-text">故意模仿知名品牌Logo或名称，以为主观上"不是故意的"就能过关。实际上，审查员有专业数据库，一眼就能识别近似。</p>
+          </div>
+
+          <div class="objection-block error" style="margin-top: var(--space-sm);">
+            <div class="objection-tag">失误⑧ · 全类保护执念</div>
+            <p class="objection-text">OPC资源有限，全类注册（45类全覆盖）成本高达数万元。除非是真正的多行业集团，否则只需聚焦核心2-3个类别。</p>
+          </div>
+
+          <div class="objection-block error" style="margin-top: var(--space-sm);">
+            <div class="objection-tag">失误⑨ · 公司注销时忽略商标</div>
+            <p class="objection-text">商标属于公司法人财产，注销后权利直接消失，无法自动归个人所有。必须在注销前办理转让手续。</p>
+          </div>
+
+          <div class="objection-block error" style="margin-top: var(--space-sm);">
+            <div class="objection-tag">失误⑩ · 轻信"包过"承诺</div>
+            <p class="objection-text">商标审查结果由审查员独立判断，代理机构无法"保证通过"。声称包过的机构，往往在合同里埋了退款的坑。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 七、OPC时机判断 -->
+    <section class="dim-section fade-section">
+      <div class="section-label">柒 · OPC时机判断：什么时候该申请</div>
+
+      <div class="grid-asymmetric">
+        <div>
+          <div class="answer-block">
+            <div class="answer-label">品牌确立期</div>
+            <h3 class="answer-title">品牌名确定后立即申请</h3>
+            <p class="answer-desc">商标申请日决定"在先权利"。早一天申请，早一天锁定排他性。不要等产品上线、不要等收入稳定、不要等"想清楚再说"——想清楚的那天就是申请的那天。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">月入门槛</div>
+            <h3 class="answer-title">月收入稳定1万+后开始品牌保护</h3>
+            <p class="answer-desc">这是OPC的合理时机。此时业务模型已验证，品牌价值开始积累，商标保护投入回报率开始显现。早于这个阶段，商标更多是心理安慰而非实际资产。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">动态调整</div>
+            <h3 class="answer-title">业务扩张时同步扩展保护范围</h3>
+            <p class="answer-desc">进入新品类、开发新服务时，同步申请对应类别商标。不要等到被抢注后才后悔。</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="chart-block">
+            <div class="chart-title">商标申请决策时间轴</div>
+            <div class="chart-item">
+              <div class="chart-label">品牌名确定</div>
+              <div class="chart-value" style="font-size: 16px; color: var(--accent);">立即申请</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">月收入1万+</div>
+              <div class="chart-value" style="font-size: 16px;">强化保护</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">业务扩张</div>
+              <div class="chart-value" style="font-size: 16px;">扩展类别</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">公司注销前</div>
+              <div class="chart-value" style="font-size: 16px; color: var(--accent);">先转商标</div>
+            </div>
+          </div>
+
+          <div class="objection-block success" style="margin-top: var(--space-md);">
+            <div class="objection-tag">核心原则</div>
+            <p class="objection-text"><strong>不以使用为目的的恶意商标注册申请，将被驳回。</strong>2026年审查标准进一步细化，非正常申请将进入黑名单。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 八、马德里国际商标 -->
+    <section class="dim-section fade-section">
+      <div class="section-label">捌 · 跨境布局：马德里国际商标</div>
+
+      <div class="grid-asymmetric">
+        <div>
+          <p style="font-size: 15px; color: var(--text-secondary); line-height: 1.9; margin-bottom: var(--space-xl);">
+            如果你的OPC业务涉及<strong style="color: var(--text-primary);">跨境电商</strong>或<strong style="color: var(--text-primary);">海外市场拓展</strong>，单一的中国商标保护就不够了。马德里体系（Madrid System）允许你通过一次申请，在多个国家获得商标保护。
+          </p>
+
+          <div class="answer-block">
+            <div class="answer-label">马德里体系优势</div>
+            <h3 class="answer-title">一次申请，多国生效</h3>
+            <p class="answer-desc">通过中国国家知识产权局提交马德里商标国际注册申请，可指定70多个马德里联盟成员国。一份申请、多国生效，比逐一国家申请节省60%以上成本。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">费用构成</div>
+            <h3 class="answer-title">基础费 + 各国指定费</h3>
+            <p class="answer-desc"><strong style="color: var(--text-primary);">基础费：</strong>653瑞士法郎（单独规费）<br><strong style="color: var(--text-primary);">指定费：</strong>因国家而异，大多数100-300瑞士法郎<br><strong style="color: var(--text-primary);">代理费：</strong>国际申请需通过代理机构办理<br><br>注意：马德里注册基于国内申请，需先有中国商标基础。</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="chart-block">
+            <div class="chart-title">马德里体系 vs 单一国家注册</div>
+            <div class="chart-item">
+              <div class="chart-label">申请方式</div>
+              <div class="chart-value" style="font-size: 16px;">一次申请/多次申请</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">成本</div>
+              <div class="chart-value" style="font-size: 16px;">低60%+/因国而异</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">覆盖国家</div>
+              <div class="chart-value" style="font-size: 16px;">70+成员过</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">前提条件</div>
+              <div class="chart-value" style="font-size: 16px;">需先有国内申请</div>
+            </div>
+          </div>
+
+          <div class="objection-block data" style="margin-top: var(--space-md);">
+            <div class="objection-tag">OPC建议</div>
+            <p class="objection-text">跨境布局是<strong>收入稳定10万+后</strong>才需要考虑的事。初创OPC应集中资源先把国内核心市场做好，再考虑海外扩张。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 核心洞察 -->
+    <section class="fade-section" style="padding: var(--space-3xl) 0; border-top: 1px solid var(--line);">
+      <div class="core-insight">
+        <p class="core-insight-text"><strong>商标是OPC最重要的无形资产护城河。</strong>在新公司法取消数量限制后，同一创业者可通过不同OPC分别持有不同品牌商标，实现风险隔离。核心策略是"精准防御"——聚焦核心2-3个类别，以最低成本覆盖最关键的线上商业场景。品牌名确定的那一刻，就是申请商标的最佳时机。</p>
+      </div>
+    </section>
+
+    <!-- 财务健康指标 -->
+    <section class="fade-section" style="padding: var(--space-3xl) 0; border-top: 1px solid var(--line);">
+      <div class="section-label" style="margin-bottom: var(--space-xl);">财务健康指标</div>
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="summary-num">≤1000</div>
+          <div class="summary-title">首期商标成本</div>
+          <div class="summary-desc">单个OPC商标首期成本控制在千元以内（核心类别+35类），符合OPC轻资产原则</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num">≤270</div>
+          <div class="summary-title">单类别官费</div>
+          <div class="summary-desc">电子申请约270元/类（含10个商品），高性价比的无形资产投资</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num">7-9月</div>
+          <div class="summary-title">审查周期</div>
+          <div class="summary-desc">从申请到拿到电子注册证约7-9个月，建议品牌名确定即申请</div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer-nav">
+      <a href="/nodes/55-outsourcing/index.html" class="nav-link">
+        <span class="nav-arrow">←</span>
+        节点25：外包策略与执行
+      </a>
+      <a href="/nodes/49-copyright/index.html" class="nav-link">
+        节点27：软件著作权登记
+        <span class="nav-arrow">→</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
+  </script>
 </body>
 </html>

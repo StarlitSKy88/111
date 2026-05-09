@@ -1,12 +1,11 @@
 {
   "id": 27,
-  "slug": "launch-checklist",
   "title": "上线前检查清单",
-  "phase": "上线准备",
-  "difficulty": "基础",
-  "category": "核心必做",
-  "summary": "上线前最后检查：20项逐一打勾，确认无误再提交",
-  "content": "",
-  "created_at": "2026-05-09T00:00:00Z",
-  "updated_at": "2026-05-09T00:00:00Z"
+  "slug": "launch-checklist",
+  "summary": "功能测试、支付测试、合规检查，不要带bug或合规风险上线",
+  "difficulty": "入门",
+  "category": "0-1",
+  "price_standard": null,
+  "price_consult": 199,
+  "ai_summary": null
 }

@@ -1,12 +1,11 @@
 {
   "id": 55,
-  "slug": "outsourcing",
   "title": "外包策略与执行",
-  "phase": "并行支撑层",
+  "slug": "outsourcing",
+  "summary": "外包时机、平台选择、避坑指南，把不擅长不想做的事情外包出去",
   "difficulty": "进阶",
-  "category": "扩展可选",
-  "summary": "什么时候该外包、怎么找靠谱的人、怎么管理远程协作",
-  "content": "",
-  "created_at": "2026-05-09T00:00:00Z",
-  "updated_at": "2026-05-09T00:00:00Z"
+  "category": "1-10",
+  "price_standard": null,
+  "price_consult": 299,
+  "ai_summary": null
 }

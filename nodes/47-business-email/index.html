@@ -1,44 +1,1337 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <script src="/auth-guard.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="企业邮箱搭建 - OPC节点百科">
+  <meta name="description" content="企业邮箱搭建 - OPC节点百科29 - 2026年最新品牌邮箱方案">
   <meta name="theme-color" content="#111110">
   <title>企业邮箱搭建 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-:root { --bg:#111110;--surface:#1A1A18;--text-primary:#F0EDE6;--text-secondary:#7A7670;--text-tertiary:#A8A49E;--accent:#C0392B;--line:#2A2A28; }
-* { margin:0;padding:0;box-sizing:border-box; }
-body { background:var(--bg);color:var(--text-primary);font-family:'Noto Sans SC',sans-serif;font-weight:300;line-height:2;letter-spacing:0.04em;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem; }
-.top-nav { position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem clamp(24px,8vw,120px);border-bottom:1px solid var(--line);background:var(--bg); }
-.back-link { font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-tertiary);text-decoration:none; }
-.back-link:hover { color:var(--text-primary); }
-.node-id { font-family:'Noto Serif JP',serif;font-size:0.75rem;color:var(--text-tertiary);letter-spacing:0.1em; }
-h1 { font-family:'Noto Serif JP',serif;font-size:clamp(28px,6vw,56px);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;text-align:center; }
-.phase { font-size:12px;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;text-align:center; }
-.num { font-size:11px;color:var(--text-tertiary);letter-spacing:0.1em;margin-top:0.5rem;text-align:center; }
-.note { font-size:13px;color:var(--text-secondary);text-align:center;max-width:480px;margin-top:1.5rem;line-height:1.9; }
-.footer-nav { display:flex;justify-content:space-between;position:fixed;bottom:0;left:0;right:0;padding:1.5rem clamp(24px,8vw,120px);border-top:1px solid var(--line);background:var(--bg); }
-.nav-link { font-size:0.7rem;color:var(--text-tertiary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;gap:0.5rem; }
-.nav-link:hover { color:var(--text-primary); }
-.nav-arrow { font-size:0.6rem; }
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #B8B4AE;
+  --text-tertiary: #A8A49E;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 400;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--accent); color: var(--bg); }
+
+/* Layout */
+.page {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 8vw, 120px);
+  min-height: 100vh;
+}
+
+.page::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: clamp(24px, 8vw, 120px);
+  right: clamp(24px, 8vw, 120px);
+  height: 1px;
+  background: var(--line);
+  z-index: 1;
+}
+
+.section-number {
+  position: fixed;
+  top: var(--space-2xl);
+  right: clamp(24px, 8vw, 120px);
+  font-size: clamp(120px, 25vw, 320px);
+  font-weight: 100;
+  color: var(--text-primary);
+  opacity: 0.03;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-family: 'Noto Serif JP', serif;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
+/* Back Link */
+.back-link {
+  position: fixed;
+  top: var(--space-xl);
+  left: clamp(24px, 8vw, 120px);
+  z-index: 100;
+}
+
+.back-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: opacity 0.4s ease;
+}
+
+.back-link a:hover { opacity: 0.6; }
+
+/* Hero */
+.hero {
+  padding: var(--space-4xl) 0 var(--space-3xl);
+  position: relative;
+  z-index: 1;
+}
+
+.hero-content { max-width: 800px; }
+
+.hero-label {
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.hero-label::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.hero-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 11vw, 112px);
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  margin-bottom: var(--space-xl);
+}
+
+.hero-desc {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 46ch;
+}
+
+/* Dimension Badge */
+.dim-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+
+.dim-number {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+}
+
+.dim-tag {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+}
+
+/* Question */
+.dim-question {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(22px, 4vw, 38px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  margin-bottom: var(--space-2xl);
+  max-width: 20em;
+  color: var(--text-primary);
+}
+
+/* Asymmetric Grid */
+.grid-asymmetric {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: var(--space-3xl);
+  align-items: start;
+  margin-bottom: var(--space-3xl);
+}
+
+@media (max-width: 900px) {
+  .grid-asymmetric { grid-template-columns: 1fr; gap: var(--space-2xl); }
+}
+
+/* Answer Blocks */
+.answer-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-md);
+}
+
+.answer-label {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-sm);
+}
+
+.answer-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+  line-height: 1.4;
+}
+
+.answer-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+.answer-desc strong { color: var(--text-primary); font-weight: 500; }
+.answer-desc code {
+  background: var(--surface);
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-family: 'Geist Mono', 'SF Mono', monospace;
+  font-size: 13px;
+}
+
+/* Objection Blocks */
+.objection-block {
+  padding: var(--space-md);
+  margin-bottom: var(--space-sm);
+  border-left: 2px solid;
+}
+
+.objection-block.error {
+  background: rgba(192, 57, 43, 0.06);
+  border-color: var(--text-tertiary);
+}
+
+.objection-block.success {
+  background: rgba(39, 174, 96, 0.06);
+  border-color: var(--accent);
+}
+
+.objection-block.data {
+  background: rgba(168, 164, 158, 0.04);
+  border-color: var(--text-tertiary);
+}
+
+.objection-block.warning {
+  background: rgba(192, 57, 43, 0.04);
+  border-color: var(--accent);
+}
+
+.objection-tag {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-xs);
+}
+
+.objection-block.error .objection-tag { color: var(--text-tertiary); }
+.objection-block.success .objection-tag { color: var(--accent); }
+.objection-block.data .objection-tag { color: var(--text-tertiary); }
+.objection-block.warning .objection-tag { color: var(--accent); }
+
+.objection-text {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+}
+
+.objection-text strong { color: var(--text-primary); font-weight: 500; }
+
+/* Chart Block */
+.chart-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-md);
+}
+
+.chart-title {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+}
+
+.chart-item {
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--line-light);
+}
+
+.chart-item:last-child { border-bottom: none; }
+
+.chart-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.chart-value {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 26px;
+  font-weight: 300;
+  color: var(--text-primary);
+}
+
+.chart-value .accent { color: var(--accent); }
+.chart-value .small { font-size: 14px; }
+.chart-value .muted { color: var(--text-tertiary); }
+
+/* Data Card */
+.data-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  margin-bottom: var(--space-md);
+}
+
+.data-card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--line);
+}
+
+.data-card-row:last-child { border-bottom: none; }
+
+.data-label {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.data-value {
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.data-value.accent { color: var(--accent); font-weight: 600; }
+
+/* Core Insight */
+.core-insight {
+  margin: var(--space-2xl) 0;
+  padding-left: var(--space-md);
+  border-left: 1px solid var(--accent);
+}
+
+.core-insight-text {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  max-width: 44ch;
+}
+
+.core-insight-text strong { color: var(--text-primary); font-weight: 500; }
+
+/* Balance Grid */
+.balance-intro {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 48ch;
+  margin-bottom: var(--space-2xl);
+}
+
+.balance-intro strong { color: var(--text-primary); font-weight: 500; }
+
+.balance-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: var(--space-2xl);
+  margin-bottom: var(--space-3xl);
+}
+
+@media (max-width: 768px) {
+  .balance-grid { grid-template-columns: 1fr; gap: var(--space-xl); }
+}
+
+.balance-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+}
+
+.balance-card-label {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+}
+
+.balance-card-label.positive { color: var(--accent); }
+.balance-card-label.negative { color: var(--text-tertiary); }
+
+.balance-item {
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--line-light);
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.balance-item:last-child { border-bottom: none; }
+.balance-item.dim { color: var(--text-tertiary); font-size: 13px; }
+
+/* Summary Grid */
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1.1fr 0.9fr;
+  gap: var(--space-xl);
+  margin-bottom: var(--space-3xl);
+}
+
+@media (max-width: 900px) {
+  .summary-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
+}
+
+.summary-card {
+  padding: var(--space-lg) 0;
+  border-top: 1px solid var(--line);
+}
+
+.summary-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 34px;
+  font-weight: 300;
+  color: var(--accent);
+  margin-bottom: var(--space-sm);
+}
+
+.summary-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.summary-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* Checklist */
+.checklist {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-md);
+}
+
+.checklist-title {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+}
+
+.checklist-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--line-light);
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.checklist-item:last-child { border-bottom: none; }
+
+.checklist-icon {
+  color: var(--accent);
+  font-weight: bold;
+  font-size: 12px;
+  min-width: 20px;
+}
+
+/* Section Divider */
+.section-divider {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: var(--space-3xl) 0;
+}
+
+/* Footer Nav */
+.footer-nav {
+  padding: var(--space-2xl) 0;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-2xl);
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: opacity 0.4s ease;
+}
+
+.nav-link:hover { opacity: 0.6; }
+.nav-arrow { font-size: 0.75rem; }
+
+/* Fade Animation */
+.fade-section {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.fade-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Dim Section */
+.dim-section {
+  padding: var(--space-3xl) 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* Code Block */
+.code-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-md);
+  margin: var(--space-md) 0;
+  overflow-x: auto;
+}
+
+.code-block code {
+  font-family: 'Geist Mono', 'SF Mono', 'Fira Code', monospace;
+  font-size: 13px;
+  color: var(--text-primary);
+  white-space: pre;
+}
+
+/* Quote Block */
+.quote-block {
+  border-left: 2px solid var(--accent);
+  padding-left: var(--space-md);
+  margin: var(--space-xl) 0;
+}
+
+.quote-text {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(18px, 3vw, 26px);
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+/* Process Steps */
+.process-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-lg);
+  margin: var(--space-xl) 0;
+}
+
+@media (max-width: 768px) {
+  .process-steps { grid-template-columns: 1fr 1fr; }
+}
+
+.process-step {
+  text-align: center;
+  padding: var(--space-md);
+}
+
+.step-number {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--accent);
+  margin-bottom: var(--space-sm);
+}
+
+.step-title {
+  font-size: 13px;
+  color: var(--text-primary);
+  font-weight: 500;
+  margin-bottom: var(--space-xs);
+}
+
+.step-desc {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  line-height: 1.5;
+}
+
+/* List Item */
+.list-item {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.list-marker {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--accent);
+  min-width: 32px;
+  line-height: 1.4;
+}
+
+.list-content { flex: 1; }
+
+.list-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.list-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
   </style>
 </head>
 <body>
-  <nav class="top-nav">
-    <a href="/index.html" class="back-link">← 返回首页</a>
-    <span class="node-id">节点 47 / 57</span>
-  </nav>
-  <div class="phase">并行支撑层</div>
-  <h1>企业邮箱搭建</h1>
-  <div class="num">节点 47</div>
-  <p class="note">🚧 内容正在建设中<br>这将是一个面向OPC（一人公司/独立开发者）的实操指南</p>
-  <footer class="footer-nav">
-    <a href="/nodes/46-cashflow/index.html" class="nav-link"><span class="nav-arrow">←</span>节点46：现金流与财务基础</a>
-    <a href="/nodes/48-trademark/index.html" class="nav-link">节点48：商标申请<span class="nav-arrow">→</span></a>
-  </footer>
+  <div class="back-link">
+    <a href="/"><span>←</span> 返回首页</a>
+  </div>
+  <div class="section-number">29</div>
+
+  <div class="page">
+    <header class="hero fade-section">
+      <div class="hero-content">
+        <div class="hero-label">节点 47 · 1-10阶段</div>
+        <h1 class="hero-title">企业邮箱搭建</h1>
+        <p class="hero-desc">公司数字身份的第一步。2026年的企业邮箱不仅是收发工具，更是AI协同办公的入口。</p>
+      </div>
+    </header>
+
+    <!-- 开篇洞察 -->
+    <section class="fade-section" style="margin-bottom: var(--space-3xl);">
+      <div class="quote-block">
+        <p class="quote-text">「邮件系统正从传统的信息传递工具，演变为连接业务系统与数据流转的重要基础设施。」</p>
+      </div>
+    </section>
+
+    <!-- 壹 · 为什么OPC需要企业邮箱 -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-number">壹</span>
+        <span class="dim-tag">本质</span>
+      </div>
+      <h2 class="dim-question">企业邮箱：公司法人的数字身份证</h2>
+
+      <div class="grid-asymmetric">
+        <div class="answer-col">
+          <div class="answer-block">
+            <div class="answer-label">法律合规</div>
+            <h3 class="answer-title">银行开户、税务申报、电子合同签署的必要条件</h3>
+            <p class="answer-desc">完成工商注册后，银行开户、税务报到、电子合同平台注册、入驻天猫/亚马逊企业购等场景，都要求提供<strong>企业域名邮箱</strong>。个人邮箱会被系统直接判定为"非企业实体申请"并驳回。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">品牌信任</div>
+            <h3 class="answer-title"><code>hi@你的公司.com</code> 传递的信号</h3>
+            <p class="answer-desc">"我不是随时消失的散兵游勇，而是一家受法律约束、立志长久经营的公司。" 客户收到一封来自<code>@自有域名.com</code>的邮件，信任度远超<code>@qq.com</code>的个人邮箱。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">数据主权</div>
+            <h3 class="answer-title">"公司文件柜"而非"个人抽屉"</h3>
+            <p class="answer-desc">将公司邮件与个人邮件物理隔离，意味着历史邮件、客户沟通、订单确认全部沉淀在"公司"而非"个人"账户下。引入合伙人时只需移交管理员权限，邮件无缝继承。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">2026新趋势</div>
+            <h3 class="answer-title">AI协同办公的第一入口</h3>
+            <p class="answer-desc">阿里企业邮箱已集成AI写邮件、AI回复、AI多语种翻译功能。腾讯企业邮箱与企业微信深度整合。邮箱不再孤立，是整个办公生态的入口。</p>
+          </div>
+        </div>
+
+        <div class="chart-col">
+          <div class="chart-block">
+            <div class="chart-title">2026企业邮箱核心需求变迁</div>
+            <div class="chart-item">
+              <div class="chart-label">2023年：基础收发+品牌形象</div>
+              <div class="chart-value">60<span class="muted">%</span></div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">2025年：安全管控+协同效率</div>
+              <div class="chart-value accent">82<span class="muted">%</span></div>
+            </div>
+          </div>
+
+          <div class="data-card">
+            <div class="data-card-row">
+              <span class="data-label">免费方案</span>
+              <span class="data-value">腾讯/阿里企业邮免费版</span>
+            </div>
+            <div class="data-card-row">
+              <span class="data-label">年费成本（起步）</span>
+              <span class="data-value accent">¥0</span>
+            </div>
+            <div class="data-card-row">
+              <span class="data-label">配置耗时</span>
+              <span class="data-value">20分钟</span>
+            </div>
+            <div class="data-card-row">
+              <span class="data-label">最低付费用户数</span>
+              <span class="data-value">5用户起</span>
+            </div>
+          </div>
+
+          <div class="objection-block warning" style="margin-top: var(--space-md);">
+            <div class="objection-tag">风险提示</div>
+            <p class="objection-text"><strong>因邮箱安全漏洞导致的企业平均损失达128万元。</strong>选择邮箱方案时，安全性是2026年首要考量指标。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 贰 · 2026年三条主要路径 -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-number">贰</span>
+        <span class="dim-tag">决策</span>
+      </div>
+      <h2 class="dim-question">2026年企业邮箱三条路径的选择</h2>
+
+      <div class="grid-asymmetric">
+        <div class="answer-col">
+          <div class="list-item">
+            <div class="list-marker">01</div>
+            <div class="list-content">
+              <div class="list-title">国内托管型（免费/低成本）</div>
+              <div class="list-desc">腾讯企业邮/阿里企业邮免费版。绑定自有域名、无限容量（付费版）、微信扫码登录。<strong>国内客户为主的首选，零成本起步。</strong></div>
+            </div>
+          </div>
+
+          <div class="list-item">
+            <div class="list-marker">02</div>
+            <div class="list-content">
+              <div class="list-title">国际SaaS型（付费）</div>
+              <div class="list-desc">Google Workspace / Microsoft 365。全球送达率最高，附带云端协作工具。适合跨境电商、软件出海，年费约¥400-600/用户。</div>
+            </div>
+          </div>
+
+          <div class="list-item">
+            <div class="list-marker">03</div>
+            <div class="list-content">
+              <div class="list-title">轻量转发型（免费）</div>
+              <div class="list-desc">Cloudflare Email Routing。所有发往<code>@你的域名.com</code>的邮件自动转发至私人Gmail，用Gmail别名发件。适合内测期或咨询顾问，极致轻量。</div>
+            </div>
+          </div>
+
+          <div class="list-item">
+            <div class="list-marker">04</div>
+            <div class="list-content">
+              <div class="list-title">外贸专型（付费）</div>
+              <div class="list-desc">凯方全球邮等全球51个高信誉转发节点，支持外发邮件追踪统计（阅读次数/时间/地点）。适合需要大量发送开发信的外贸企业。</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-col">
+          <div class="chart-block">
+            <div class="chart-title">2026年主流方案价格对比</div>
+            <div class="chart-item">
+              <div class="chart-label">腾讯企业邮箱（5用户/年）</div>
+              <div class="chart-value small">¥950</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">阿里企业邮箱标准版（5用户/年）</div>
+              <div class="chart-value small">¥600<span class="muted">（买1年送1年）</span></div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">阿里AI尊享版（5用户/年）</div>
+              <div class="chart-value small">¥900</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">Google Workspace（per user/月）</div>
+              <div class="chart-value small">¥70+</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">凯方全球邮（5用户/3年）</div>
+              <div class="chart-value small">¥895</div>
+            </div>
+          </div>
+
+          <div class="objection-block success" style="margin-top: var(--space-md);">
+            <div class="objection-tag">OPC推荐</div>
+            <p class="objection-text"><strong>国内业务为主</strong> → 腾讯企业邮免费版 + 企业微信生态<br><strong>跨境业务为主</strong> → Google Workspace<br><strong>极致轻量</strong> → Cloudflare转发 + Gmail别名<br><strong>外贸开发信</strong> → 凯方全球邮</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 叁 · 腾讯企业邮箱详解 -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-number">叁</span>
+        <span class="dim-tag">培育</span>
+      </div>
+      <h2 class="dim-question">腾讯企业邮箱：企业微信生态首选</h2>
+
+      <div class="grid-asymmetric">
+        <div class="answer-col">
+          <div class="answer-block">
+            <div class="answer-label">核心优势</div>
+            <h3 class="answer-title">与企业微信深度整合</h3>
+            <p class="answer-desc">在企业微信内可直接收发邮件并转工作群讨论，实现"邮件-即时通讯"无缝切换。管理员在企业微信后台统一管理，邮件直接推送至员工微信。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">免费版限制</div>
+            <h3 class="answer-title">每用户空间只有1G，超大附件仅2G</h3>
+            <p class="answer-desc">免费版功能限制较大，付费版（950元/5用户/年）各方面功能有所提升。离职员工邮箱不能继承——没有微信扫码谁也进不去，这是一个需要注意的痛点。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">安全功能</div>
+            <h3 class="answer-title">IP登录限制 + 邮件备份归档 + 微信动态密码</h3>
+            <p class="answer-desc">智能反垃圾邮件拦截率高达99.97%，支持邮件撤回、分级权限管理、邮件审计追溯。IP登录限制可设置账号访问权限，防止非法登录。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">配置要点</div>
+            <h3 class="answer-title">SPF/DKIM/DMARC三项必须全部配置</h3>
+            <p class="answer-desc">2025年后Google与Microsoft同时收紧了邮件接收策略。未设置三种认证的邮件几乎会被直接归入垃圾箱或遭到硬拒绝。只配置SPF不够——三项全部到位才算合规。</p>
+          </div>
+        </div>
+
+        <div class="chart-col">
+          <div class="code-block">
+            <code>// SPF记录（DNS添加TXT记录）
+v=spf1 include:spf.mail.qq.com ~all
+
+// DMARC记录（建议从宽松策略开始）
+v=DMARC1; p=none; rua=mailto:admin@你的域名.com
+
+// 运行1-2周无异常后，改为
+v=DMARC1; p=quarantine; rua=mailto:admin@你的域名.com</code>
+          </div>
+
+          <div class="data-card">
+            <div class="data-card-row">
+              <span class="data-label">免费版每用户空间</span>
+              <span class="data-value">1GB</span>
+            </div>
+            <div class="data-card-row">
+              <span class="data-label">付费版（5用户/年）</span>
+              <span class="data-value accent">¥950</span>
+            </div>
+            <div class="data-card-row">
+              <span class="data-label">超大附件限制</span>
+              <span class="data-value">2GB（免费）/ 20GB（付费）</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 肆 · 阿里企业邮箱详解 -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-number">肆</span>
+        <span class="dim-tag">培育</span>
+      </div>
+      <h2 class="dim-question">阿里企业邮箱：AI赋能 + 钉钉协同</h2>
+
+      <div class="grid-asymmetric">
+        <div class="answer-col">
+          <div class="answer-block">
+            <div class="answer-label">2026年新动态</div>
+            <h3 class="answer-title">AI尊享版：AI写邮件、AI回信、AI翻译</h3>
+            <p class="answer-desc">阿里企业邮箱推出AI尊享版（900元/5用户/年），集成基于阿里自有AI能力的智能功能：AI写信智能润色、AI多语种翻译、邮件网关智能识别。钉钉深度融合，实现企业内外沟通全面提效。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">版本选择</div>
+            <h3 class="answer-title">标准版 / 集团版 / AI尊享版 / 信创版</h3>
+            <p class="answer-desc"><strong>标准版</strong>（600元/5用户/年）：适合初创型及中小型企业。<br><strong>AI尊享版</strong>（900元/5用户/年）：AI写信+审批+差旅，200G企业网盘。<br><strong>集团版</strong>（9500元/100用户/年）：多层级架构管理，适合集团型公司。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">容量对比</div>
+            <h3 class="answer-title">与腾讯相比：邮箱容量偏低</h3>
+            <p class="answer-desc">AI尊享版个人邮箱容量32G/用户，云附件32G。标准版个人网盘仅5G/用户，远低于腾讯的无限容量和20G超大附件配置。这是阿里企业邮箱的明显短板。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">全球畅邮</div>
+            <h3 class="answer-title">依托阿里云全球化数据中心</h3>
+            <p class="answer-desc">在欧洲、亚洲、北美多地部署本地物理服务器，支持全球分布式部署。境外邮件送达率有保障。</p>
+          </div>
+        </div>
+
+        <div class="chart-col">
+          <div class="chart-block">
+            <div class="chart-title">阿里企业邮箱版本对比（2026年）</div>
+            <div class="chart-item">
+              <div class="chart-label">标准版（5用户/年）</div>
+              <div class="chart-value small">¥600</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">AI尊享版（5用户/年）</div>
+              <div class="chart-value small">¥900</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">信创版（5用户/年）</div>
+              <div class="chart-value small">¥900</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">集团版（100用户/年）</div>
+              <div class="chart-value small">¥9500</div>
+            </div>
+          </div>
+
+          <div class="objection-block warning" style="margin-top: var(--space-md);">
+            <div class="objection-tag">注意</div>
+            <p class="objection-text"><strong>阿里邮箱和钉钉邮箱实际是同一个产品，但有两个价格。</strong>钉钉内购买5用户600元，官网购买5用户600元（但功能略有差异）。购买前确认所需功能。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 伍 · 三项认证：SPF/DKIM/DMARC -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-number">伍</span>
+        <span class="dim-tag">避坑</span>
+      </div>
+      <h2 class="dim-question">SPF / DKIM / DMARC：邮件送达率的生死线</h2>
+
+      <div class="process-steps">
+        <div class="process-step">
+          <div class="step-number">SPF</div>
+          <div class="step-title">发件授权</div>
+          <div class="step-desc">声明哪些服务器有权代表你的域名发送邮件</div>
+        </div>
+        <div class="process-step">
+          <div class="step-number">DKIM</div>
+          <div class="step-title">数字签名</div>
+          <div class="step-desc">给每封邮件加盖签名，防止内容被篡改</div>
+        </div>
+        <div class="process-step">
+          <div class="step-number">DMARC</div>
+          <div class="step-title">策略报告</div>
+          <div class="step-desc">接收方反馈报告，持续优化送达策略</div>
+        </div>
+        <div class="process-step">
+          <div class="step-number">验证</div>
+          <div class="step-title">MXToolbox</div>
+          <div class="step-desc">配置完成后在线验证解析是否生效</div>
+        </div>
+      </div>
+
+      <div class="grid-asymmetric">
+        <div class="answer-col">
+          <div class="answer-block">
+            <div class="answer-label">配置位置</div>
+            <h3 class="answer-title">在域名DNS解析中添加TXT记录</h3>
+            <p class="answer-desc">登录域名服务商（阿里云/腾讯云/Cloudflare），找到DNS解析设置，添加TXT记录。生效时间5-30分钟。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">腾讯企业邮SPF</div>
+            <h3 class="answer-title">include:spf.mail.qq.com</h3>
+            <p class="answer-desc">主机记录通常留空或填@，值填写<code>v=spf1 include:spf.mail.qq.com ~all</code>。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">阿里企业邮SPF</div>
+            <h3 class="answer-title">mx1._domainkey.alimail.com</h3>
+            <p class="answer-desc">阿里邮箱的DKIM签名密钥托管在阿里云，DKIM记录主机为<code>mx1._domainkey</code>，在阿里邮箱管理后台获取完整记录值。</p>
+          </div>
+        </div>
+
+        <div class="chart-col">
+          <div class="code-block">
+            <code>// 腾讯企业邮箱SPF记录（TXT）
+名称：@ 或空
+类型：TXT
+值：v=spf1 include:spf.mail.qq.com ~all
+
+// DMARC记录（TXT）
+名称：_dmarc
+类型：TXT
+值：v=DMARC1; p=none;
+    rua=mailto:admin@你的域名.com
+
+// 宽松策略运行1-2周后改为
+v=DMARC1; p=quarantine;
+    rua=mailto:admin@你的域名.com</code>
+          </div>
+
+          <div class="objection-block error" style="margin-top: var(--space-md);">
+            <div class="objection-tag">错误做法</div>
+            <p class="objection-text"><strong>只配置SPF，不配置DKIM和DMARC。</strong>2026年Google和Microsoft已将三项全部列为硬性指标，仅SPF不足以保证送达率。</p>
+          </div>
+
+          <div class="objection-block success" style="margin-top: var(--space-sm);">
+            <div class="objection-tag">验证工具</div>
+            <p class="objection-text">使用 MXToolbox (mxtoolbox.com) 的免费工具，输入域名即可检查SPF/DKIM/DMARC配置是否正确。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 陆 · 账户架构设计 -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-number">陆</span>
+        <span class="dim-tag">培育</span>
+      </div>
+      <h2 class="dim-question">OPC账户架构：职能邮箱 + 个人工作邮箱</h2>
+
+      <div class="grid-asymmetric">
+        <div class="answer-col">
+          <div class="answer-block">
+            <div class="answer-label">超级管理员</div>
+            <h3 class="answer-title"><code>admin@你的域名.com</code></h3>
+            <p class="answer-desc">仅登录管理后台，密码与个人邮箱完全不同。日常不收发邮件，只做权限管理。这是最容易被忽略但最关键的安全设计。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">对外沟通主邮箱</div>
+            <h3 class="answer-title"><code>你的名字@你的域名.com</code></h3>
+            <p class="answer-desc">日常业务往来主邮箱。建议使用2FA（手机验证码或验证器App）保护。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">职能邮箱</div>
+            <h3 class="answer-title"><code>hello@ / contact@ / support@</code></h3>
+            <p class="answer-desc">统一转发至主邮箱。客户联系入口、品牌展示、客服支持——多个入口收归一个出口，方便管理。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">客户端专用密码</div>
+            <h3 class="answer-title">每个设备生成独立密码</h3>
+            <p class="answer-desc">设备丢失时单独吊销该设备密码，不影响其他设备。腾讯/阿里企业邮箱后台均支持此功能。</p>
+          </div>
+        </div>
+
+        <div class="chart-col">
+          <div class="chart-block">
+            <div class="chart-title">OPC企业邮箱架构图</div>
+            <div class="chart-item">
+              <div class="chart-label">admin@ 超级管理员</div>
+              <div class="chart-value small muted">仅管理后台登录</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">myname@ 对外主邮箱</div>
+              <div class="chart-value small muted">日常业务往来</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">hello/contact/support@</div>
+              <div class="chart-value small muted">统一转发至主邮箱</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">finance@ 财务专用</div>
+              <div class="chart-value small muted">账单/发票专用通道</div>
+            </div>
+          </div>
+
+          <div class="checklist">
+            <div class="checklist-title">安全配置清单</div>
+            <div class="checklist-item">
+              <span class="checklist-icon">1</span>
+              <span>强制开启两步验证（2FA）</span>
+            </div>
+            <div class="checklist-item">
+              <span class="checklist-icon">2</span>
+              <span>每个设备生成独立客户端专用密码</span>
+            </div>
+            <div class="checklist-item">
+              <span class="checklist-icon">3</span>
+              <span>管理员密码与个人密码完全不同</span>
+            </div>
+            <div class="checklist-item">
+              <span class="checklist-icon">4</span>
+              <span>定期审查登录日志</span>
+            </div>
+          </div>
+
+          <div class="objection-block data" style="margin-top: var(--space-md);">
+            <div class="objection-tag">数据洞察</div>
+            <p class="objection-text"><strong>S/MIME证书</strong>（可选，年费¥100-200）：向海外金融/法律客户提供邮件数字签名证明，适合需要跨境高信任度沟通的OPC。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 柒 · 协议选择：IMAP vs POP3 -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-number">柒</span>
+        <span class="dim-tag">避坑</span>
+      </div>
+      <h2 class="dim-question">IMAP vs POP3：选错毁数据</h2>
+
+      <div class="grid-asymmetric">
+        <div class="answer-col">
+          <div class="answer-block">
+            <div class="answer-label">POP3 — 禁用</div>
+            <h3 class="answer-title">下载后从服务器删除，邮件只存本地</h3>
+            <p class="answer-desc">硬盘损坏或电脑丢失 = 公司全部历史邮件归零。<strong>一人公司绝对禁止使用POP3协议。</strong></p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">IMAP — 首选</div>
+            <h3 class="answer-title">邮件始终保存在云端服务器</h3>
+            <p class="answer-desc">手机、平板、电脑实时同步。数据天然备份在服务商专业服务器上，随时随地无缝切换设备处理工作。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">Exchange ActiveSync</div>
+            <h3 class="answer-title">微软专有同步协议</h3>
+            <p class="answer-desc">同步邮件+日历+联系人，移动端推送速度和稳定性更优。使用Microsoft 365时优先选用。</p>
+          </div>
+        </div>
+
+        <div class="chart-col">
+          <div class="core-insight">
+            <p class="core-insight-text"><strong>最小可行方案：</strong>IMAP协议 + 至少两个客户端（手机原生邮件App + 电脑Thunderbird）。这是最低成本的实时同步与数据冗余方案。</p>
+          </div>
+
+          <div class="objection-block success" style="margin-top: var(--space-xl);">
+            <div class="objection-tag">备份策略</div>
+            <p class="objection-text"><strong>每月使用Thunderbird通过IMAP完整下载邮件至本地电脑，并同步备份至加密外部硬盘。</strong>这是公司数据主权的最后防线——云端服务商也会故障，本地备份是终极保障。</p>
+          </div>
+
+          <div class="objection-block error" style="margin-top: var(--space-md);">
+            <div class="objection-tag">错误示范</div>
+            <p class="objection-text"><strong>只用POP3，只存本地。</strong>一旦电脑损坏，所有公司历史邮件无法恢复。正确的做法是IMAP实时同步+每月本地备份。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 捌 · 决策框架 -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-number">捌</span>
+        <span class="dim-tag">决策</span>
+      </div>
+      <h2 class="dim-question">企业邮箱决策框架：做与不做</h2>
+
+      <div class="balance-intro">
+        <strong>核心判断标准：</strong>你的邮箱是否是公司域名结尾？你的邮件数据是否同时存在于云端和本地？你的登录是否启用了两步验证？三个问题都答"是"，你的企业邮箱才算合规。
+      </div>
+
+      <div class="balance-grid">
+        <div class="balance-card">
+          <div class="balance-card-label positive">应该做</div>
+          <div class="balance-item">使用自有域名的企业邮箱（不是@qq.com/@163.com）</div>
+          <div class="balance-item">部署SPF + DKIM + DMARC三项认证</div>
+          <div class="balance-item">使用IMAP协议实时同步</div>
+          <div class="balance-item">开启两步验证（2FA）</div>
+          <div class="balance-item">每个设备配置独立客户端密码</div>
+          <div class="balance-item">使用专业HTML邮件签名（含公司名、职位、联系方式）</div>
+          <div class="balance-item">每月本地备份邮件（Thunderbird + 加密硬盘）</div>
+          <div class="balance-item">管理员后台定期审查登录日志</div>
+        </div>
+
+        <div class="balance-card">
+          <div class="balance-card-label negative">不要做</div>
+          <div class="balance-item">使用个人免费邮箱（@qq.com/@163.com/@gmail.com）处理业务</div>
+          <div class="balance-item">使用POP3协议</div>
+          <div class="balance-item">所有设备使用同一密码</div>
+          <div class="balance-item">忽略SPF/DKIM/DMARC配置</div>
+          <div class="balance-item">只依赖云端，不做本地备份</div>
+          <div class="balance-item">邮件中暴露个人社交账号（微信/个人手机号）</div>
+          <div class="balance-item">离职员工邮箱不处理（及时注销或继承）</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 核心洞察 -->
+    <section class="fade-section" style="padding: var(--space-3xl) 0; border-top: 1px solid var(--line);">
+      <div class="core-insight">
+        <p class="core-insight-text"><strong>企业邮箱是OPC数字身份的基础构建。</strong>2026年选择免费方案完全可以满足初期需求——腾讯企业邮免费版、阿里企业邮免费版都是正规军。关键不是花多少钱，而是<strong>一定要用自有域名、一定要配置三项认证、一定要IMAP同步</strong>。做到了这三点，你的公司邮箱已经比90%的初创企业都规范。</p>
+      </div>
+    </section>
+
+    <!-- 玖 · 财务健康指标 -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-number">玖</span>
+        <span class="dim-tag">决策</span>
+      </div>
+      <h2 class="dim-question">财务健康指标</h2>
+
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="summary-num">¥0</div>
+          <div class="summary-title">最低年费成本</div>
+          <div class="summary-desc">腾讯/阿里企业邮免费版，零成本建立专业形象。付费版（5用户）最低600元/年。</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num">20分钟</div>
+          <div class="summary-title">完成配置时间</div>
+          <div class="summary-desc">DNS解析 + 邮箱绑定 + 三项认证记录 = 20分钟上手。</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num">3层</div>
+          <div class="summary-title">安全防护</div>
+          <div class="summary-desc">2FA + 客户端专用密码 + 本地备份。128万元/次的平均损失风险，必须防范。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 拾 · 操作清单 -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-number">拾</span>
+        <span class="dim-tag">行动</span>
+      </div>
+      <h2 class="dim-question">从零开始：20分钟搭建企业邮箱</h2>
+
+      <div class="process-steps">
+        <div class="process-step">
+          <div class="step-number">1</div>
+          <div class="step-title">注册域名</div>
+          <div class="step-desc">阿里云/腾讯云购买域名（.com约¥60/年）</div>
+        </div>
+        <div class="process-step">
+          <div class="step-number">2</div>
+          <div class="step-title">开通企业邮</div>
+          <div class="step-desc">腾讯企业邮/阿里企业邮免费版，绑定域名</div>
+        </div>
+        <div class="process-step">
+          <div class="step-number">3</div>
+          <div class="step-title">配置认证</div>
+          <div class="step-desc">DNS添加SPF、DKIM、DMARC记录</div>
+        </div>
+        <div class="process-step">
+          <div class="step-number">4</div>
+          <div class="step-title">开启2FA</div>
+          <div class="step-desc">管理员后台启用两步验证</div>
+        </div>
+      </div>
+
+      <div class="checklist">
+        <div class="checklist-title">完成后检查清单</div>
+        <div class="checklist-item">
+          <span class="checklist-icon">□</span>
+          <span>访问 MXToolbox 验证三项认证配置正确</span>
+        </div>
+        <div class="checklist-item">
+          <span class="checklist-icon">□</span>
+          <span>在手机和电脑分别配置IMAP，测试收发信</span>
+        </div>
+        <div class="checklist-item">
+          <span class="checklist-icon">□</span>
+          <span>设置管理员2FA + 客户端专用密码</span>
+        </div>
+        <div class="checklist-item">
+          <span class="checklist-icon">□</span>
+          <span>配置邮件签名（姓名、职位、公司、手机[可选]、网站）</span>
+        </div>
+        <div class="checklist-item">
+          <span class="checklist-icon">□</span>
+          <span>安装Thunderbird并配置本地备份（每月执行）</span>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer-nav">
+      <a href="/nodes/50-ad-compliance/index.html" class="nav-link">
+        <span class="nav-arrow">←</span>
+        节点28：广告合规
+      </a>
+      <a href="/nodes/51-data-backup/index.html" class="nav-link">
+        节点30：数据备份与恢复
+        <span class="nav-arrow">→</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
+  </script>
 </body>
 </html>

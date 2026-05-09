@@ -1,12 +1,11 @@
 {
   "id": 44,
-  "slug": "bank-account",
   "title": "银行开户与商户号",
-  "phase": "并行支撑层",
-  "difficulty": "进阶",
-  "category": "核心必做",
-  "summary": "对公账户+微信支付宝商户号申请全流程",
-  "content": "",
-  "created_at": "2026-05-09T00:00:00Z",
-  "updated_at": "2026-05-09T00:00:00Z"
+  "slug": "bank-account",
+  "summary": "对公账户、微信支付、支付宝，能收钱才是真正的生意",
+  "difficulty": "入门",
+  "category": "0-1",
+  "price_standard": null,
+  "price_consult": 299,
+  "ai_summary": null
 }

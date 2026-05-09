@@ -1,12 +1,11 @@
 {
   "id": 5,
-  "slug": "mvp-scope",
   "title": "MVP功能清单",
-  "phase": "产品验证与准备",
+  "slug": "mvp-scope",
+  "summary": "砍到只剩一个核心功能，先上线再迭代，OPC的核心优势是快",
   "difficulty": "入门",
-  "category": "核心必做",
-  "summary": "只保留3个核心功能，砍掉一切'以后再加'的想法",
-  "content": "",
-  "created_at": "2026-05-09T00:00:00Z",
-  "updated_at": "2026-05-09T00:00:00Z"
+  "category": "0-1",
+  "price_standard": null,
+  "price_consult": 299,
+  "ai_summary": null
 }

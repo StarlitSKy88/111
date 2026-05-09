@@ -1,44 +1,856 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <script src="/auth-guard.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="软件著作权登记 - OPC节点百科">
+  <meta name="description" content="申请流程、材料准备、加急办理，需要上架应用商店或申请补贴时办理">
   <meta name="theme-color" content="#111110">
   <title>软件著作权登记 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-:root { --bg:#111110;--surface:#1A1A18;--text-primary:#F0EDE6;--text-secondary:#7A7670;--text-tertiary:#A8A49E;--accent:#C0392B;--line:#2A2A28; }
-* { margin:0;padding:0;box-sizing:border-box; }
-body { background:var(--bg);color:var(--text-primary);font-family:'Noto Sans SC',sans-serif;font-weight:300;line-height:2;letter-spacing:0.04em;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem; }
-.top-nav { position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem clamp(24px,8vw,120px);border-bottom:1px solid var(--line);background:var(--bg); }
-.back-link { font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-tertiary);text-decoration:none; }
-.back-link:hover { color:var(--text-primary); }
-.node-id { font-family:'Noto Serif JP',serif;font-size:0.75rem;color:var(--text-tertiary);letter-spacing:0.1em; }
-h1 { font-family:'Noto Serif JP',serif;font-size:clamp(28px,6vw,56px);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;text-align:center; }
-.phase { font-size:12px;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;text-align:center; }
-.num { font-size:11px;color:var(--text-tertiary);letter-spacing:0.1em;margin-top:0.5rem;text-align:center; }
-.note { font-size:13px;color:var(--text-secondary);text-align:center;max-width:480px;margin-top:1.5rem;line-height:1.9; }
-.footer-nav { display:flex;justify-content:space-between;position:fixed;bottom:0;left:0;right:0;padding:1.5rem clamp(24px,8vw,120px);border-top:1px solid var(--line);background:var(--bg); }
-.nav-link { font-size:0.7rem;color:var(--text-tertiary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;gap:0.5rem; }
-.nav-link:hover { color:var(--text-primary); }
-.nav-arrow { font-size:0.6rem; }
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #B8B4AE;
+  --text-tertiary: #A8A49E;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 400;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 8vw, 120px);
+  min-height: 100vh;
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: clamp(24px, 8vw, 120px);
+  right: clamp(24px, 8vw, 120px);
+  height: 1px;
+  background: var(--line);
+}
+
+.section-number {
+  position: absolute;
+  top: var(--space-2xl);
+  right: clamp(24px, 8vw, 120px);
+  font-size: clamp(100px, 22vw, 280px);
+  font-weight: 100;
+  color: var(--text-primary);
+  opacity: 0.03;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-family: 'Noto Serif JP', serif;
+  pointer-events: none;
+  user-select: none;
+}
+
+.back-link {
+  position: fixed;
+  top: var(--space-xl);
+  left: clamp(24px, 8vw, 120px);
+  z-index: 100;
+}
+
+.back-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.back-link a:hover { color: var(--text-primary); }
+
+.hero {
+  padding: var(--space-4xl) 0 var(--space-3xl);
+  position: relative;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+}
+
+.hero-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.hero-label::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.hero-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  margin-bottom: var(--space-xl);
+}
+
+.hero-desc {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 44ch;
+}
+
+/* Dimension Badge */
+.dim-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+
+.dim-number {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+}
+
+.dim-tag {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+}
+
+.dim-question {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  margin-bottom: var(--space-xl);
+  max-width: 18em;
+}
+
+/* Asymmetric Grid */
+.grid-asymmetric {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-3xl);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .grid-asymmetric {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+}
+
+/* Answer Blocks */
+.answer-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-md);
+}
+
+.answer-label {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-sm);
+}
+
+.answer-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.answer-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.answer-desc strong { color: var(--text-primary); }
+
+/* Objection Blocks */
+.objection-block {
+  padding: var(--space-md);
+  margin-bottom: var(--space-sm);
+  border-left: 2px solid;
+}
+
+.objection-block.error {
+  background: rgba(192, 57, 43, 0.08);
+  border-color: var(--accent);
+}
+
+.objection-block.success {
+  background: rgba(39, 174, 96, 0.08);
+  border-color: var(--accent);
+}
+
+.objection-block.data {
+  background: rgba(168, 164, 158, 0.05);
+  border-color: var(--text-tertiary);
+}
+
+.objection-tag {
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-xs);
+}
+
+.objection-block.error .objection-tag { color: var(--accent); }
+.objection-block.success .objection-tag { color: var(--accent); }
+.objection-block.data .objection-tag { color: var(--text-tertiary); }
+
+.objection-text {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.objection-text strong { color: var(--text-primary); }
+
+/* Chart/Insight Block */
+.chart-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+}
+
+.chart-title {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-md);
+}
+
+.chart-item {
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--line-light);
+}
+
+.chart-item:last-child { border-bottom: none; }
+
+.chart-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.chart-value {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--text-primary);
+}
+
+.chart-value .accent { color: var(--accent); }
+
+/* Core Insight */
+.core-insight {
+  margin: var(--space-xl) 0;
+  padding-left: var(--space-md);
+  border-left: 1px solid var(--accent);
+}
+
+.core-insight-text {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 40ch;
+}
+
+.core-insight-text strong { color: var(--text-primary); font-weight: 500; }
+
+/* Balance Grid */
+.balance-section-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-xl);
+}
+
+.balance-intro {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 46ch;
+  margin-bottom: var(--space-2xl);
+}
+
+.balance-intro strong { color: var(--text-primary); font-weight: 500; }
+
+.balance-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: var(--space-2xl);
+}
+
+@media (max-width: 768px) {
+  .balance-grid { grid-template-columns: 1fr; gap: var(--space-xl); }
+}
+
+.balance-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+}
+
+.balance-card-label {
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+}
+
+.balance-card-label.positive { color: var(--accent); }
+.balance-card-label.negative { color: var(--text-tertiary); }
+
+.balance-item {
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--line-light);
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.balance-item:last-child { border-bottom: none; }
+.balance-item.dim { color: var(--text-tertiary); }
+
+/* Summary Grid */
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1.2fr 0.8fr;
+  gap: var(--space-xl);
+}
+
+@media (max-width: 900px) {
+  .summary-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
+}
+
+.summary-card {
+  padding: var(--space-lg) 0;
+  border-top: 1px solid var(--line);
+}
+
+.summary-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 36px;
+  font-weight: 300;
+  color: var(--accent);
+  margin-bottom: var(--space-sm);
+}
+
+.summary-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.summary-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* Footer Nav */
+.footer-nav {
+  padding: var(--space-2xl) 0;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover { color: var(--text-primary); }
+.nav-arrow { font-size: 0.75rem; }
+
+/* Fade Animation */
+.fade-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-section.visible { opacity: 1; transform: translateY(0); }
+
+* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+
+/* Dimension Section */
+.dim-section {
+  padding: var(--space-3xl) 0;
+  border-top: 1px solid var(--line);
+}
   </style>
 </head>
 <body>
-  <nav class="top-nav">
-    <a href="/index.html" class="back-link">← 返回首页</a>
-    <span class="node-id">节点 49 / 57</span>
-  </nav>
-  <div class="phase">并行支撑层</div>
-  <h1>软件著作权登记</h1>
-  <div class="num">节点 49</div>
-  <p class="note">🚧 内容正在建设中<br>这将是一个面向OPC（一人公司/独立开发者）的实操指南</p>
-  <footer class="footer-nav">
-    <a href="/nodes/48-trademark/index.html" class="nav-link"><span class="nav-arrow">←</span>节点48：商标申请</a>
-    <a href="/nodes/50-ad-compliance/index.html" class="nav-link">节点50：广告合规<span class="nav-arrow">→</span></a>
-  </footer>
+  <div class="back-link">
+    <a href="/"><span>←</span> 返回首页</a>
+  </div>
+  <div class="section-number">27</div>
+
+  <div class="page">
+    <header class="hero">
+      <div class="hero-content">
+        <div class="hero-label">节点 49 · 1-10</div>
+        <h1 class="hero-title">软件著作权登记</h1>
+        <p class="hero-desc">将无形的代码转化为受法律保护的核心资产，完成公司资本实缴的市场准入</p>
+      </div>
+    </header>
+
+    <!-- D1: 核心价值 -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-number">D1</span>
+        <span class="dim-tag">本质</span>
+      </div>
+      <h2 class="dim-question">为什么OPC必须第一时间登记软著</h2>
+
+      <div class="grid-asymmetric">
+        <div class="answer-col">
+          <div class="answer-block">
+            <div class="answer-label">政策红利</div>
+            <h3 class="answer-title">科创企业与税收优惠的硬通货</h3>
+            <p class="answer-desc">申报科技型中小企业或高新技术企业时，软著是绕不开的必备知识产权。通过认定后可享受研发费用加计扣除、所得税减免及地方政府奖补，直接改善现金流。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">资本实缴</div>
+            <h3 class="answer-title">解决注册资本认缴压力</h3>
+            <p class="answer-desc">新《公司法》要求5年内完成实缴。对于纯智力投入的开发者，可将软著进行无形资产评估，作为非货币财产作价出资完成实缴义务，盘活"沉睡"的代码资产。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">市场准入</div>
+            <h3 class="answer-title">应用商店与招标的门槛</h3>
+            <p class="answer-desc">苹果、安卓应用商店上架、政企采购招标，软著证书是证明权属清晰、避免第三方侵权纠纷的必备文件。没有它，产品无法合规上市。</p>
+          </div>
+        </div>
+
+        <div class="chart-col">
+          <div class="chart-block">
+            <div class="chart-title">软著四大核心价值</div>
+            <div class="chart-item">
+              <div class="chart-label">政策申报</div>
+              <div class="chart-value" style="font-size: 16px;">科小/高企认定</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">资本实缴</div>
+              <div class="chart-value" style="font-size: 16px;">无形资产评估</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">市场准入</div>
+              <div class="chart-value" style="font-size: 16px;">App Store/投标</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">权利保护</div>
+              <div class="chart-value" style="font-size: 16px;">维权/转让/入股</div>
+            </div>
+          </div>
+
+          <div class="objection-block success" style="margin-top: var(--space-md);">
+            <div class="objection-tag">正确示范</div>
+            <p class="objection-text"><strong>软件完成V1.0立即登记</strong><br>早登记意味着尽早固化资产、获得市场准入门票，是低成本构筑竞争壁垒的关键一步。</p>
+          </div>
+
+          <div class="objection-block error" style="margin-top: var(--space-sm);">
+            <div class="objection-tag">错误示范</div>
+            <p class="objection-text"><strong>等产品市场火爆再登记</strong><br>登记需要时间，商业机会和政策窗口不等人。且代码早已公开，可能已被抢登。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- D2: 材料准备 -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-number">D2</span>
+        <span class="dim-tag">模型</span>
+      </div>
+      <h2 class="dim-question">材料准备的精细度决定通过率</h2>
+
+      <div class="grid-asymmetric">
+        <div class="answer-col">
+          <div class="answer-block">
+            <div class="answer-label">源代码文档</div>
+            <h3 class="answer-title">前30页+后30页，每页50行</h3>
+            <p class="answer-desc">必须提交前30页和后30页的源代码，若总页数不足60页则提交全部。每页严格保持50行格式，用文本编辑器彻底格式化，确保页码清晰、代码行数准确无误。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">操作说明书</div>
+            <h3 class="answer-title">用户视角的完整操作路径</h3>
+            <p class="answer-desc">每页须包含软件全称及版本号。截图要展示从操作到获得结果的完整过程，配以简洁连续的文字说明。名称必须与营业执照法人实体完全一致。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">AI审查机制</div>
+            <h3 class="answer-title">格式不规范直接触发补正</h3>
+            <p class="answer-desc">2026年已引入AI辅助审查，代码中存在不规范的空行、未清理的注释代码块或格式错乱，可能被判定为"代码不连续"或"格式异常"。提交前逐项核查。</p>
+          </div>
+        </div>
+
+        <div class="chart-col">
+          <div class="chart-block">
+            <div class="chart-title">源代码格式要求</div>
+            <div class="chart-item">
+              <div class="chart-label">总行数限制</div>
+              <div class="chart-value">3000<span class="accent">行</span></div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">每页行数</div>
+              <div class="chart-value">50<span class="accent">行</span></div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">提交方式</div>
+              <div class="chart-value">前30+后30页</div>
+            </div>
+          </div>
+
+          <div class="objection-block data" style="margin-top: var(--space-md);">
+            <div class="objection-tag">数据洞察</div>
+            <p class="objection-text"><strong>补正时限只有30天：</strong><br>收到补正通知后，你需要在30日内一次性修正所有问题。超时将被视为撤回申请，前期努力白费。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- D3: 登记时机与版本规划 -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-number">D3</span>
+        <span class="dim-tag">培育</span>
+      </div>
+      <h2 class="dim-question">登记时机与版本号的长期规划</h2>
+
+      <div class="grid-asymmetric">
+        <div class="answer-col">
+          <div class="answer-block">
+            <div class="answer-label">最佳时机</div>
+            <h3 class="answer-title">核心功能完成+操作手册初稿</h3>
+            <p class="answer-desc">软件已完成一个具备核心功能的、可独立交付的版本，且已撰写完整的操作手册初稿。此时立即登记，即可获得V1.0版本证书，这是进行APP上架、参加双软评估的敲门砖。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">版本号原则</div>
+            <h3 class="answer-title">从V1.0起步，重大升级再登记</h3>
+            <p class="answer-desc">首次登记务必使用V1.0。当软件在功能模块或代码量上有实质性重大升级（代码变动超过30%或增加核心功能模块），再申请登记V2.0。微小补丁更新无需重复登记。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">身份一致性</div>
+            <h3 class="answer-title">著作权人名称必须与营业执照一致</h3>
+            <p class="answer-desc">著作权人名称必须与营业执照上的每一个字、每一个标点符号完全一致，不能使用简称或个人姓名。这直接关系到无形资产验资的可行性。</p>
+          </div>
+        </div>
+
+        <div class="chart-col">
+          <div class="chart-block">
+            <div class="chart-title">版本规划策略</div>
+            <div class="chart-item">
+              <div class="chart-label">V1.0</div>
+              <div class="chart-value" style="font-size: 16px; color: var(--accent);">首次登记</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">V2.0+</div>
+              <div class="chart-value" style="font-size: 16px;">代码变动>30%时</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">补丁更新</div>
+              <div class="chart-value" style="font-size: 16px; color: var(--text-tertiary);">无需登记</div>
+            </div>
+          </div>
+
+          <div class="objection-block error" style="margin-top: var(--space-md);">
+            <div class="objection-tag">错误示范</div>
+            <p class="objection-text"><strong>未完成开发就登记V2.0</strong><br>商业版本与证书不符，可能影响融资尽调。版本号应真实反映产品成熟度。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- D4: 操作流程 -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-number">D4</span>
+        <span class="dim-tag">避坑</span>
+      </div>
+      <h2 class="dim-question">五步完成软著登记</h2>
+
+      <div class="grid-asymmetric">
+        <div class="answer-col">
+          <div class="answer-block">
+            <div class="answer-label">第一步</div>
+            <h3 class="answer-title">机构账号注册与实名认证</h3>
+            <p class="answer-desc">以"著作权人"身份注册为"机构用户"，上传营业执照彩色扫描件，绑定统一社会信用代码。完成法人人脸核验后方可操作。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">第二步</div>
+            <h3 class="answer-title">准备三类核心文件</h3>
+            <p class="answer-desc">操作说明书（图文结合，标注版本号）、源代码文档（3000行以内，50行/页）、身份与权属证明。若完全独立开发，无需合作协议。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">第三步</div>
+            <h3 class="answer-title">在线填报及智能校验</h3>
+            <p class="answer-desc">软件全称采用"品牌名+功能描述+软件"结构，版本号V1.0，分类号按功能关键词搜索。著作权人名称与营业执照一字不差。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">第四步</div>
+            <h3 class="answer-title">补正处理与审查</h3>
+            <p class="answer-desc">收到补正通知30日内一次性修正所有问题。常见补正：截图模糊、源代码混入无关注释、名称含禁用字。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">第五步</div>
+            <h3 class="answer-title">获得电子证书及归档</h3>
+            <p class="answer-desc">审查通过后电子证书推送至账户。与受理通知书、源代码和说明书底稿一并存档。按需申请纸质证书邮寄。</p>
+          </div>
+        </div>
+
+        <div class="chart-col">
+          <div class="chart-block">
+            <div class="chart-title">2026年实际周期</div>
+            <div class="chart-item">
+              <div class="chart-label">普通通道</div>
+              <div class="chart-value">20-25<span class="accent">工作日</span></div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">加急通道</div>
+              <div class="chart-value">5-15<span class="accent">工作日</span></div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">官方费用</div>
+              <div class="chart-value" style="font-size: 16px;">免费</div>
+            </div>
+          </div>
+
+          <div class="objection-block data" style="margin-top: var(--space-md);">
+            <div class="objection-tag">数据洞察</div>
+            <p class="objection-text"><strong>发表状态必须如实填报：</strong><br>如果软件已上架App Store或在任何公开平台提供下载，视为"已发表"。2026年大数据背景下的抽查可能发现虚假登记。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- D5: 维护与风险防控 -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-number">D5</span>
+        <span class="dim-tag">模型</span>
+      </div>
+      <h2 class="dim-question">登记后的维护与风险防控</h2>
+
+      <div class="grid-asymmetric">
+        <div class="answer-col">
+          <div class="answer-block">
+            <div class="answer-label">证书核验</div>
+            <h3 class="answer-title">拿到证书第一时间逐字核对</h3>
+            <p class="answer-desc">核对著作权人名称、软件全称、版本号、开发完成日期与首次发表日期是否符合实际。发现错误在窗口期内申请更正。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">资本实缴</div>
+            <h3 class="answer-title">必须经第三方评估机构定价</h3>
+            <p class="answer-desc">将软著转化为注册资本，必须由具备无形资产评估资质的第三方机构出具评估报告。绝不能自己拍脑袋定价，否则构成虚假出资。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">开源代码</div>
+            <h3 class="answer-title">建立代码成分台账</h3>
+            <p class="answer-desc">维护开源组件清单，列明许可证类型（GPL、MIT、Apache等）、使用方式。确保强传染性许可证代码在技术实现上完全隔离，避免被迫开源整个项目。</p>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">迭代策略</div>
+            <h3 class="answer-title">核心架构改变应新软件登记</h3>
+            <p class="answer-desc">颠覆性改变应作为新软件办理首次登记。增量功能可采取"原版登记+新增模块独立登记"组合策略，实现精准维权。</p>
+          </div>
+        </div>
+
+        <div class="chart-col">
+          <div class="chart-block">
+            <div class="chart-title">实缴操作规范</div>
+            <div class="chart-item">
+              <div class="chart-label">评估机构</div>
+              <div class="chart-value" style="font-size: 16px;">必须具备资质</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">操作步骤</div>
+              <div class="chart-value" style="font-size: 16px;">评估→确认→转移</div>
+            </div>
+            <div class="chart-item">
+              <div class="chart-label">风险红线</div>
+              <div class="chart-value" style="font-size: 16px; color: var(--accent);">禁止自定价</div>
+            </div>
+          </div>
+
+          <div class="objection-block error" style="margin-top: var(--space-md);">
+            <div class="objection-tag">错误示范</div>
+            <p class="objection-text"><strong>自己评估定价然后实缴</strong><br>构成虚假出资，一人公司股东需承担无限连带责任。公司财产必须与个人财产严格分离。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- D6: 决策框架 -->
+    <section class="dim-section fade-section">
+      <div class="dim-badge">
+        <span class="dim-number">D6</span>
+        <span class="dim-tag">决策</span>
+      </div>
+      <h2 class="dim-question">软著决策框架：做与不做</h2>
+
+      <div class="balance-intro">
+        <strong>核心判断标准：</strong>软件是OPC最核心的资产。软著不仅是作品保护凭证，更是资本实缴、政策申报、市场准入的法定工具。完成V1.0后立即登记，不必等市场验证。
+      </div>
+
+      <div class="balance-grid">
+        <div class="balance-card">
+          <div class="balance-card-label positive">应该做</div>
+          <div class="balance-item">V1.0完成立即登记</div>
+          <div class="balance-item">以公司名义申请（与营业执照一致）</div>
+          <div class="balance-item">源代码格式严格按50行/页</div>
+          <div class="balance-item">说明书包含完整操作路径</div>
+          <div class="balance-item">如实填写发表状态</div>
+          <div class="balance-item">建立开源代码成分台账</div>
+          <div class="balance-item">重大版本迭代重新登记</div>
+          <div class="balance-item">实缴须经第三方评估</div>
+        </div>
+
+        <div class="balance-card">
+          <div class="balance-card-label negative">不要做</div>
+          <div class="balance-item">等产品市场火爆再登记</div>
+          <div class="balance-item">超前登记V2.0（版本号错位）</div>
+          <div class="balance-item">自己评估定价进行实缴</div>
+          <div class="balance-item">忽视开源代码合规性</div>
+          <div class="balance-item">发表状态虚假填报</div>
+          <div class="balance-item">混用强传染性开源代码</div>
+          <div class="balance-item">忽略证书核对直接使用</div>
+          <div class="balance-item">公司注销时不处理商标</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Core Insight -->
+    <section class="fade-section" style="padding: var(--space-3xl) 0; border-top: 1px solid var(--line);">
+      <div class="core-insight">
+        <p class="core-insight-text"><strong>软著是OPC的核心无形资产护城河。</strong>2026年全面无纸化+AI审查时代，登记成本近乎为零，但资产价值和法律保护效力却巨大。"自助登记+区块链存证"双层架构，是资源有限的OPC最高效的知识产权固化路径。</p>
+      </div>
+    </section>
+
+    <!-- FIN Section -->
+    <section class="fade-section" style="padding: var(--space-3xl) 0; border-top: 1px solid var(--line);">
+      <div class="section-label" style="margin-bottom: var(--space-xl);">财务健康指标</div>
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="summary-num">0元</div>
+          <div class="summary-title">官方登记费用</div>
+          <div class="summary-desc">中国版权保护中心软著登记免费，仅证书邮寄等杂项费用，几近于零成本确权</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num">20-25天</div>
+          <div class="summary-title">普通通道周期</div>
+          <div class="summary-desc">从受理到取得电子证书约20-25个工作日，加急通道可缩短至5-15个工作日</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num">3000行</div>
+          <div class="summary-title">源代码限制</div>
+          <div class="summary-desc">每份申请最多提交60页源代码（前30+后30），每页不少于50行，超出无需提交</div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer-nav">
+      <a href="/nodes/48-trademark/index.html" class="nav-link">
+        <span class="nav-arrow">←</span>
+        节点26：商标申请
+      </a>
+      <a href="/nodes/50-ad-compliance/index.html" class="nav-link">
+        节点28：广告合规
+        <span class="nav-arrow">→</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
+  </script>
 </body>
 </html>

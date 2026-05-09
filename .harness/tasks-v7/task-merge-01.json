@@ -12,7 +12,7 @@
   "outline": [
     "一、三平台方向决策：Web vs 小程序 vs App 对比表",
     "二、后端正解 Supabase：为什么OPC不需要自己搭服务器",
-    "三、AI编码工具矩阵（2026年5月）：Cursor / GitHub Copilot / Claude Code / Lovable / Windsurf 对比",
+    "三、AI编码工具矩阵（2026年5月）：Trae / Claude Code / Codex / Cursor / GitHub Copilot 对比",
     "四、不同技术背景的三条工具路径（零基础 / 会一点 / 经验者）",
     "五、技术可行性验证（原07核心内容保留）",
     "六、工具订阅成本控制策略",
@@ -23,7 +23,7 @@
     "原07核心内容完整保留（技术栈验证清单）",
     "三平台对比表有具体学习曲线/成本/时间估算",
     "Supabase推荐理由有免费额度/功能/限制具体数据",
-    "AI工具对比更新至2026年5月（价格/功能/方案名称）",
+    "AI工具对比更新至2026年5月（Trae/Claude Code/Codex/Cursor/GitHub Copilot，价格/功能/方案名称）",
     "无2024/2025年份残留（除历史引用注明外）"
   ],
   "dependencies": []

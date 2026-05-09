@@ -1,12 +1,11 @@
 {
   "id": 41,
-  "slug": "product-iteration",
   "title": "每周迭代与复盘",
-  "phase": "上线后迭代与运营",
-  "difficulty": "基础",
-  "category": "扩展可选",
-  "summary": "周一修bug/周三看数据/周五发更新，OPC的周迭代节奏",
-  "content": "",
-  "created_at": "2026-05-09T00:00:00Z",
-  "updated_at": "2026-05-09T00:00:00Z"
+  "slug": "product-iteration",
+  "summary": "用户反馈收集、每周复盘、功能迭代，每周花2小时持续优化",
+  "difficulty": "入门",
+  "category": "1-10",
+  "price_standard": null,
+  "price_consult": 199,
+  "ai_summary": null
 }

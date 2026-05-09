@@ -1,44 +1,313 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <script src="/auth-guard.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="产品规模化决策 - OPC节点百科">
+  <meta name="description" content="公司注销、数据处理、用户通知，项目结束时体面地离开">
   <meta name="theme-color" content="#111110">
   <title>产品规模化决策 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-:root { --bg:#111110;--surface:#1A1A18;--text-primary:#F0EDE6;--text-secondary:#7A7670;--text-tertiary:#A8A49E;--accent:#C0392B;--line:#2A2A28; }
-* { margin:0;padding:0;box-sizing:border-box; }
-body { background:var(--bg);color:var(--text-primary);font-family:'Noto Sans SC',sans-serif;font-weight:300;line-height:2;letter-spacing:0.04em;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem; }
-.top-nav { position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem clamp(24px,8vw,120px);border-bottom:1px solid var(--line);background:var(--bg); }
-.back-link { font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-tertiary);text-decoration:none; }
-.back-link:hover { color:var(--text-primary); }
-.node-id { font-family:'Noto Serif JP',serif;font-size:0.75rem;color:var(--text-tertiary);letter-spacing:0.1em; }
-h1 { font-family:'Noto Serif JP',serif;font-size:clamp(28px,6vw,56px);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;text-align:center; }
-.phase { font-size:12px;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;text-align:center; }
-.num { font-size:11px;color:var(--text-tertiary);letter-spacing:0.1em;margin-top:0.5rem;text-align:center; }
-.note { font-size:13px;color:var(--text-secondary);text-align:center;max-width:480px;margin-top:1.5rem;line-height:1.9; }
-.footer-nav { display:flex;justify-content:space-between;position:fixed;bottom:0;left:0;right:0;padding:1.5rem clamp(24px,8vw,120px);border-top:1px solid var(--line);background:var(--bg); }
-.nav-link { font-size:0.7rem;color:var(--text-tertiary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;gap:0.5rem; }
-.nav-link:hover { color:var(--text-primary); }
-.nav-arrow { font-size:0.6rem; }
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #B8B4AE;
+  --text-tertiary: #A8A49E;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; font-weight: 400; line-height: 1.9; letter-spacing: 0.04em; -webkit-font-smoothing: antialiased; }
+
+.page { position: relative; max-width: 1200px; margin: 0 auto; padding: 0 clamp(24px, 8vw, 120px); min-height: 100vh; }
+.page::before { content: ''; position: absolute; top: 0; left: clamp(24px, 8vw, 120px); right: clamp(24px, 8vw, 120px); height: 1px; background: var(--line); }
+
+.section-number { position: absolute; top: var(--space-2xl); right: clamp(24px, 8vw, 120px); font-size: clamp(100px, 22vw, 280px); font-weight: 100; color: var(--text-primary); opacity: 0.03; line-height: 1; letter-spacing: -0.05em; font-family: 'Noto Serif JP', serif; pointer-events: none; user-select: none; }
+
+.back-link { position: fixed; top: var(--space-xl); left: clamp(24px, 8vw, 120px); z-index: 100; }
+.back-link a { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: color 0.3s ease; }
+.back-link a:hover { color: var(--text-primary); }
+
+.hero { padding: var(--space-4xl) 0 var(--space-3xl); position: relative; }
+.hero-content { position: relative; z-index: 1; max-width: 800px; }
+.hero-label { font-size: 13px; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-md); }
+.hero-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+.hero-title { font-family: 'Noto Serif JP', serif; font-size: clamp(48px, 10vw, 96px); font-weight: 300; letter-spacing: -0.03em; line-height: 0.95; margin-bottom: var(--space-xl); }
+.hero-desc { font-size: 16px; color: var(--text-secondary); line-height: 1.8; max-width: 44ch; }
+
+.dimensions-section { padding: var(--space-2xl) 0; border-top: 1px solid var(--line); }
+.section-label { font-size: 13px; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-md); }
+.section-label::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+
+.dimensions-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: var(--space-md); margin-bottom: var(--space-2xl); }
+@media (max-width: 900px) { .dimensions-grid { grid-template-columns: 1fr; } }
+
+.dim-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-md); position: relative; overflow: hidden; }
+.dim-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--accent); }
+.dim-badge { display: inline-block; font-size: 9px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-sm); border: 1px solid var(--accent); padding: 2px 8px; }
+.dim-title { font-family: 'Noto Serif JP', serif; font-size: 18px; font-weight: 400; color: var(--text-primary); margin-bottom: var(--space-xs); line-height: 1.3; }
+.dim-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+.content-section { padding: var(--space-3xl) 0; border-top: 1px solid var(--line); }
+.grid-asymmetric { display: grid; grid-template-columns: 1.2fr 1fr; gap: var(--space-3xl); align-items: start; }
+@media (max-width: 900px) { .grid-asymmetric { grid-template-columns: 1fr; gap: var(--space-2xl); } }
+
+.chapter-heading { font-family: 'Noto Serif JP', serif; font-size: clamp(28px, 5vw, 48px); font-weight: 300; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: var(--space-xl); max-width: 16em; }
+.body-text { font-size: 15px; line-height: 1.9; color: var(--text-secondary); max-width: 44ch; margin-bottom: var(--space-md); }
+.body-text strong { color: var(--text-primary); font-weight: 500; }
+.body-text .accent { color: var(--accent); font-weight: 500; }
+
+.answer-block { margin-bottom: var(--space-xl); }
+.answer-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: var(--space-sm); padding-bottom: var(--space-xs); border-bottom: 1px solid var(--line); }
+.answer-label.red { color: #E74C3C; border-color: rgba(231,76,60,0.3); }
+.answer-label.green { color: var(--accent); border-color: rgba(39,174,96,0.3); }
+.answer-label.blue { color: #3498DB; border-color: rgba(52,152,219,0.3); }
+
+.answer-content { padding-left: var(--space-md); border-left: 1px solid var(--line); }
+.answer-title { font-size: 15px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-xs); }
+.answer-text { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+
+.core-insight { margin: var(--space-xl) 0; padding-left: var(--space-md); border-left: 1px solid var(--accent); }
+.core-insight-text { font-size: 15px; color: var(--text-secondary); line-height: 1.7; max-width: 40ch; }
+
+.balance-section-title { font-family: 'Noto Serif JP', serif; font-size: clamp(28px, 5vw, 48px); font-weight: 300; letter-spacing: -0.02em; margin-bottom: var(--space-xl); }
+.balance-intro { font-size: 15px; color: var(--text-secondary); line-height: 1.8; max-width: 46ch; margin-bottom: var(--space-2xl); }
+.balance-intro strong { color: var(--text-primary); font-weight: 500; }
+
+.balance-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: var(--space-2xl); }
+@media (max-width: 768px) { .balance-grid { grid-template-columns: 1fr; gap: var(--space-xl); } }
+
+.balance-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-lg); }
+.balance-card-label { font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-md); padding-bottom: var(--space-sm); border-bottom: 1px solid var(--line); }
+.balance-card-label.positive { color: var(--accent); }
+.balance-card-label.negative { color: var(--text-tertiary); }
+
+.balance-item { padding: var(--space-sm) 0; border-bottom: 1px solid var(--line-light); font-size: 14px; color: var(--text-secondary); }
+.balance-item:last-child { border-bottom: none; }
+.balance-item.dim { color: var(--text-tertiary); }
+
+.summary-grid { display: grid; grid-template-columns: 1.5fr 1.2fr 0.8fr; gap: var(--space-xl); }
+@media (max-width: 900px) { .summary-grid { grid-template-columns: 1fr; gap: var(--space-lg); } }
+
+.summary-card { padding: var(--space-lg) 0; border-top: 1px solid var(--line); }
+.summary-num { font-family: 'Noto Serif JP', serif; font-size: 36px; font-weight: 300; color: var(--accent); margin-bottom: var(--space-sm); }
+.summary-title { font-size: 15px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-xs); }
+.summary-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+
+.footer-nav { padding: var(--space-2xl) 0; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
+.nav-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: color 0.3s ease; }
+.nav-link:hover { color: var(--text-primary); }
+.nav-arrow { font-size: 0.75rem; }
+
+.fade-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.fade-section.visible { opacity: 1; transform: translateY(0); }
+* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
   </style>
 </head>
 <body>
-  <nav class="top-nav">
-    <a href="/index.html" class="back-link">← 返回首页</a>
-    <span class="node-id">节点 43 / 57</span>
-  </nav>
-  <div class="phase">上线后迭代与运营</div>
-  <h1>产品规模化决策</h1>
-  <div class="num">节点 43</div>
-  <p class="note">🚧 内容正在建设中<br>这将是一个面向OPC（一人公司/独立开发者）的实操指南</p>
-  <footer class="footer-nav">
-    <a href="/nodes/42-income-diversification/index.html" class="nav-link"><span class="nav-arrow">←</span>节点42：收入多元化</a>
-    <a href="/nodes/44-bank-account/index.html" class="nav-link">节点44：银行开户与商户号<span class="nav-arrow">→</span></a>
-  </footer>
+  <div class="back-link">
+    <a href="/"><span>←</span> 返回首页</a>
+  </div>
+  <div class="section-number">38</div>
+
+  <div class="page">
+    <header class="hero">
+      <div class="hero-content">
+        <div class="hero-label">节点 43 · 10+</div>
+        <h1 class="hero-title">项目退出机制</h1>
+        <p class="hero-desc">公司注销、数据处理、用户通知，项目结束时体面地离开</p>
+      </div>
+    </header>
+
+    <section class="dimensions-section fade-section">
+      <div class="section-label">核心维度</div>
+      <div class="dimensions-grid">
+        <div class="dim-card">
+          <span class="dim-badge">D1 核心</span>
+          <h3 class="dim-title">退出底层逻辑</h3>
+          <p class="dim-desc">不是关门歇业，而是资产剥离与价值兑现的系统化安排</p>
+        </div>
+        <div class="dim-card">
+          <span class="dim-badge">D2 本质</span>
+          <h3 class="dim-title">去个人化剥离</h3>
+          <p class="dim-desc">财务切断、权限集中、AI文档化封装，让项目脱离创始人运转</p>
+        </div>
+        <div class="dim-card">
+          <span class="dim-badge">D3 模型</span>
+          <h3 class="dim-title">估值与定价博弈</h3>
+          <p class="dim-desc">AI接管能力是2026年估值核心，自动化程度决定溢价倍数</p>
+        </div>
+        <div class="dim-card">
+          <span class="dim-badge">D4 培育</span>
+          <h3 class="dim-title">交割安全落地</h3>
+          <p class="dim-desc">原子化交付、账号变更尾款触发、历史债务熔断机制</p>
+        </div>
+        <div class="dim-card">
+          <span class="dim-badge">D5 避坑</span>
+          <h3 class="dim-title">竞业禁止与声誉</h3>
+          <p class="dim-desc">精准锁定竞争边界，社交禁言备忘，洁净室开发日志</p>
+        </div>
+        <div class="dim-card">
+          <span class="dim-badge">D6 决策</span>
+          <h3 class="dim-title">风险隔离策略</h3>
+          <p class="dim-desc">三重断链：债权人公告、买方豁免函、个人担保解除</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section fade-section">
+      <div class="section-label">节点内容</div>
+      <div class="grid-asymmetric">
+        <div>
+          <h2 class="chapter-heading">退出准备：资产的"去个人化"剥离</h2>
+          <p class="body-text">退出交易的本质，是在出售一个脱离了你依然能运转的系统。超过半数的OPC退出失败案例，并非价格谈不拢，而是买方尽调后发现资产与创始人个人账户过度捆绑。</p>
+
+          <div class="answer-block">
+            <div class="answer-label">第一阶段：财务与账户的物理切断</div>
+            <div class="answer-content">
+              <p class="answer-title">公私混同是最致命的合规红线</p>
+              <p class="answer-text">新《公司法》强化了对"实质一人公司"的穿透审查。必须将项目所有收入切换至独立对公账户，过往个人微信、支付宝收款历史必须导出完整流水并补开合规发票。服务器、API调用费、域名续费等运营成本必须从项目独立账户支出，严禁混合支付。</p>
+            </div>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">第二阶段：数字资产的清点与权限集中</div>
+            <div class="answer-content">
+              <p class="answer-title">无形资产三件套</p>
+              <p class="answer-text">代码与数据权属：私有数据集和大模型微调权重已成为核心议价点。<br>社媒与分发渠道：订阅号、App Store开发者账号的所有权，若无法变更估值折价30%。<br>合约权利转让：含有"主体变更即违约"条款的合同，必须先行取得客户书面谅解。</p>
+            </div>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label">第三阶段：核心能力的AI文档化封装</div>
+            <div class="answer-content">
+              <p class="answer-title">制作"AI可读操作包"</p>
+              <p class="answer-text">录制决策逻辑：把每日判断"何时投流、何时关停、如何回复复杂客诉"的思维过程转化为结构化决策树。<br>沉淀运营提示库：整理处理业务的全部Prompt指令。一份高质量AI指令集可直接带来10%-15%的溢价。</p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="answer-block">
+            <div class="answer-label red">错误示范</div>
+            <div class="answer-content">
+              <p class="answer-title">未完成财务切断就接触买家</p>
+              <p class="answer-text">认为"找到买家再清理账目也不迟"。新买方律师会重点核查公私混同，若无法做出清晰切割，交易对手不仅会压价，更可能设置24-36个月的历史债务追索条款。</p>
+            </div>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label red">错误示范</div>
+            <div class="answer-content">
+              <p class="answer-title">把"买代码"当成退出唯一形式</p>
+              <p class="answer-text">忽视"隐性知识"的价值交付。买家真正收购的是一个可立即投入运营的"微型盈利系统"：客户列表、自动化SOP、专属数据集。只交付代码但不交付运营逻辑，估值至少打5折。</p>
+            </div>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label green">正确示范</div>
+            <div class="answer-content">
+              <p class="answer-title">原子化资产交付</p>
+              <p class="answer-text">使用具备存证功能的智能合约进行权限交接，留有不可篡改的时间戳。Loom视频库或AI可解析SOP文档作为尾款释放条件，在尾款确认到账瞬间移交。</p>
+            </div>
+          </div>
+
+          <div class="answer-block">
+            <div class="answer-label blue">数据洞察</div>
+            <div class="answer-content">
+              <p class="answer-title">2026年微型项目估值参考</p>
+              <p class="answer-text">AI接管型微型SaaS：MRR的2.5-3.5倍<br>高度绑定创始人个人的社群：年利润0.5-1.0倍<br>AI工作流自动化模板：月收入的8-15倍（估值黑马）</p>
+            </div>
+          </div>
+
+          <div class="core-insight">
+            <p class="core-insight-text"><strong>核心洞察：</strong>OPC退出的核心悖论是——如何在创始人物理抽身的前提下，证明项目的商业价值可以无损延续。答案不是"找到愿意接手的人"，而是"提前把项目变成不需要你的人"。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section fade-section">
+      <div class="section-label">决策矩阵</div>
+      <h2 class="balance-section-title">做与不做的balance grid</h2>
+      <p class="balance-intro">退出机制的核心不在于"卖不卖"，而在于<strong>什么时候卖、怎么卖、如何保护自己</strong>。</p>
+
+      <div class="balance-grid">
+        <div class="balance-card">
+          <div class="balance-card-label positive">做</div>
+          <div class="balance-item">退出前6个月启动有意识的财务物理隔离</div>
+          <div class="balance-item">完成"法律体检"：清理个人关联担保、调取企业征信报告</div>
+          <div class="balance-item">在协议中设置"历史债务隔离条款"和"买方豁免函"</div>
+          <div class="balance-item">将交易款分项定价：资产转让款90%+过渡咨询费10%</div>
+          <div class="balance-item">使用Escrow智能合约自动划拨尾款</div>
+          <div class="balance-item">竞业禁止精准锁定"特定细分赛道的直接竞争"</div>
+        </div>
+        <div class="balance-card">
+          <div class="balance-card-label negative">不做</div>
+          <div class="balance-item dim">未剥离个人担保就签署交割协议</div>
+          <div class="balance-item dim">接受"全款一次性支付"而無任何对赌机制</div>
+          <div class="balance-item dim">竞业范围模糊表述为"互联网行业"</div>
+          <div class="balance-item dim">以"未来可能上市"的股权抵扣全部咨询费</div>
+          <div class="balance-item dim">交割后立刻在公开渠道对原项目进行评价或引流</div>
+          <div class="balance-item dim">不建立"洁净室开发日志"就立即启动新项目</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section fade-section">
+      <div class="section-label">FIN 健康指标</div>
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="summary-num">2.5-3.5×</div>
+          <h3 class="summary-title">AI接管型SaaS估值倍数</h3>
+          <p class="summary-desc">自动化客服覆盖90%以上、API调用逻辑完整的项目，估值维持在年化经常性收入的2.5-3.5倍</p>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num">3个月</div>
+          <h3 class="summary-title">过渡期对赌观察期</h3>
+          <p class="summary-desc">将20%尾款与"AI工作流自动完成率≥85%"或"核心客户续费率下跌≤15%"挂钩</p>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num">30%+50%</div>
+          <h3 class="summary-title">首付+尾款结构</h3>
+          <p class="summary-desc">首付30%锁定交易+20%域名代码库交割+50%账号转移成功后尾款，确保资产安全落地</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer-nav">
+      <a href="/nodes/42-income-diversification/index.html" class="nav-link">
+        <span class="nav-arrow">←</span>
+        节点37：收入多元化
+      </a>
+      <a href="/nodes/57-government-policy/index.html" class="nav-link">
+        节点39：政府政策与创业补贴
+        <span class="nav-arrow">→</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
+  </script>
 </body>
 </html>
