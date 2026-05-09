@@ -1,12 +1,11 @@
 {
   "id": 2,
-  "slug": "personal-resources",
   "title": "个人能力与资源盘点",
-  "phase": "产品验证与准备",
+  "slug": "personal-resources",
+  "summary": "技能清单、时间投入、资源盘点，OPC成功90%取决于你自己",
   "difficulty": "入门",
-  "category": "核心必做",
-  "summary": "诚实地评估技能/资金/时间/人脉四维度，阻止不自量力的创业方向",
-  "content": "",
-  "created_at": "2026-05-09T00:00:00Z",
-  "updated_at": "2026-05-09T00:00:00Z"
+  "category": "0-1",
+  "price_standard": null,
+  "price_consult": 299,
+  "ai_summary": null
 }

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <script src="/auth-guard.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="个人能力与资源盘点 - OPC节点百科">
@@ -10,25 +9,25 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@300;400;500&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
 :root {
   --bg: #111110;
   --surface: #1A1A18;
   --text-primary: #F0EDE6;
-  --text-secondary: #A09A94;
-  --text-tertiary: #6A6560;
+  --text-secondary: #7A7670;
+  --text-tertiary: #A8A49E;
   --accent: #C0392B;
   --line: #2A2A28;
   --line-light: rgba(255,255,255,0.04);
   --space-xs: 8px;
-  --space-sm: 12px;
-  --space-md: 16px;
-  --space-lg: 24px;
-  --space-xl: 32px;
-  --space-2xl: 48px;
-  --space-3xl: 64px;
-  --space-4xl: 96px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -36,30 +35,32 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--text-primary);
-  font-family: 'Noto Sans JP', sans-serif;
-  font-weight: 300;
-  line-height: 1.9;
-  letter-spacing: 0.04em;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 400;
+  line-height: 2;
+  letter-spacing: 0.05em;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
+/* 页面基础 */
 .page {
   position: relative;
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 clamp(24px, 8vw, 120px);
 }
 
+/* 大号背景印章 */
 .section-seal {
   position: absolute;
-  top: 120px;
+  top: var(--space-3xl);
   right: clamp(24px, 8vw, 120px);
-  font-family: 'Shippori Mincho', serif;
+  font-family: 'Noto Serif JP', serif;
   font-size: clamp(180px, 35vw, 400px);
   font-weight: 100;
   color: var(--text-primary);
-  opacity: 0.03;
+  opacity: 0.025;
   line-height: 1;
   letter-spacing: -0.05em;
   pointer-events: none;
@@ -67,6 +68,7 @@ body {
   writing-mode: vertical-rl;
 }
 
+/* 顶部导航 */
 .top-nav {
   position: fixed;
   top: 0;
@@ -76,28 +78,28 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px clamp(24px, 8vw, 120px);
+  padding: var(--space-lg) clamp(24px, 8vw, 120px);
   border-bottom: 1px solid var(--line);
   background: var(--bg);
 }
-.back-link { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: opacity 0.4s ease; }
-.back-link:hover { opacity: 0.6; }
-.node-id { font-family: 'Shippori Mincho', serif; font-size: 11px; color: var(--text-tertiary); letter-spacing: 0.08em; }
+.back-link { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: color 0.4s ease; }
+.back-link:hover { color: var(--text-primary); }
+.node-id { font-family: 'Noto Serif JP', serif; font-size: 0.75rem; color: var(--text-tertiary); letter-spacing: 0.1em; }
 
-/* Hero */
+/* Hero - 非对称大留白 */
 .hero {
-  padding: clamp(100px, 18vw, 180px) 0 var(--space-3xl);
+  padding: var(--space-4xl) 0 var(--space-3xl);
   position: relative;
-  min-height: 60vh;
+  min-height: 70vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
 .hero-label {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--accent);
-  letter-spacing: 0.3em;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
   margin-bottom: var(--space-xl);
   display: flex;
@@ -106,19 +108,19 @@ body {
 }
 .hero-label::before {
   content: '';
-  width: 32px;
+  width: 40px;
   height: 1px;
   background: var(--accent);
 }
 
 .hero-title {
-  font-family: 'Shippori Mincho', serif;
-  font-size: clamp(48px, 10vw, 88px);
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(56px, 12vw, 120px);
   font-weight: 300;
-  letter-spacing: -0.03em;
-  line-height: 1;
-  margin-bottom: var(--space-2xl);
-  max-width: 12ch;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  margin-bottom: var(--space-3xl);
+  max-width: 8ch;
 }
 
 .hero-aside {
@@ -126,149 +128,36 @@ body {
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  width: 32%;
+  width: 35%;
   padding-left: var(--space-2xl);
   border-left: 1px solid var(--line);
 }
 @media (max-width: 900px) {
-  .hero-aside { position: relative; transform: none; width: 100%; margin-top: var(--space-2xl); border-left: none; padding-left: 0; }
+  .hero-aside { position: relative; transform: none; width: 100%; margin-top: var(--space-2xl); }
 }
 
 .hero-statement {
-  font-family: 'Shippori Mincho', serif;
-  font-size: clamp(16px, 2vw, 22px);
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(20px, 2.5vw, 28px);
   font-weight: 300;
-  line-height: 1.7;
+  line-height: 1.6;
   color: var(--text-secondary);
 }
 .hero-statement em {
   color: var(--text-primary);
   font-style: normal;
+  font-weight: 400;
 }
 
-/* 节点01测评结果卡片 */
-.node01-result {
-  padding: var(--space-2xl) 0;
-  border-top: 1px solid var(--line);
+/* 分隔线 */
+.divider {
+  width: 48px;
+  height: 1px;
+  background: var(--line);
+  margin: var(--space-3xl) 0;
 }
 
-.result-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  padding: var(--space-xl);
-  position: relative;
-}
-
-.result-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: var(--space-lg);
-}
-
-.result-title {
-  font-size: 11px;
-  color: var(--text-tertiary);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-}
-
-.result-badge {
-  font-family: 'Shippori Mincho', serif;
-  font-size: 11px;
-  color: var(--accent);
-  padding: 4px 10px;
-  border: 1px solid var(--accent);
-  letter-spacing: 0.08em;
-}
-
-.result-score {
-  font-family: 'Shippori Mincho', serif;
-  font-size: clamp(48px, 12vw, 96px);
-  font-weight: 300;
-  color: var(--text-primary);
-  line-height: 1;
-  margin-bottom: var(--space-md);
-}
-.result-score span {
-  font-size: 0.4em;
-  color: var(--text-tertiary);
-  margin-left: var(--space-sm);
-}
-
-.result-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-sm);
-  margin-top: var(--space-lg);
-}
-
-.result-tag {
-  font-size: 12px;
-  color: var(--text-secondary);
-  padding: 6px 12px;
-  border: 1px solid var(--line);
-  letter-spacing: 0.05em;
-}
-
-.result-insight {
-  margin-top: var(--space-xl);
-  padding-top: var(--space-lg);
-  border-top: 1px solid var(--line);
-}
-
-.result-insight-text {
-  font-family: 'Shippori Mincho', serif;
-  font-size: 15px;
-  color: var(--text-secondary);
-  line-height: 1.7;
-}
-
-.result-reminder {
-  margin-top: var(--space-lg);
-  font-size: 12px;
-  color: var(--text-tertiary);
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-sm);
-}
-
-.result-reminder::before {
-  content: '→';
-  color: var(--accent);
-}
-
-/* 核心观点 */
-.keystone {
-  padding: var(--space-3xl) 0;
-  position: relative;
-}
-.keystone-text {
-  font-family: 'Shippori Mincho', serif;
-  font-size: clamp(20px, 3.5vw, 32px);
-  font-weight: 300;
-  line-height: 1.5;
-  color: var(--text-primary);
-  max-width: 24ch;
-}
-.keystone-text::first-letter {
-  font-size: 2.5em;
-  float: left;
-  line-height: 0.8;
-  margin-right: 0.08em;
-  margin-top: 0.05em;
-  color: var(--accent);
-}
-.keystone-source {
-  margin-top: var(--space-lg);
-  font-size: 11px;
-  color: var(--text-tertiary);
-  letter-spacing: 0.1em;
-}
-
+/* 章节通用 */
 .section {
   padding: var(--space-3xl) 0;
   border-top: 1px solid var(--line);
@@ -276,88 +165,328 @@ body {
 
 .section-header {
   display: grid;
-  grid-template-columns: 64px 1fr;
-  gap: var(--space-lg);
-  margin-bottom: var(--space-xl);
+  grid-template-columns: 80px 1fr;
+  gap: var(--space-xl);
+  margin-bottom: var(--space-2xl);
   align-items: baseline;
 }
 @media (max-width: 600px) {
-  .section-header { grid-template-columns: 1fr; gap: var(--space-sm); }
+  .section-header { grid-template-columns: 1fr; gap: var(--space-md); }
 }
 
 .section-num {
-  font-family: 'Shippori Mincho', serif;
-  font-size: 40px;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 48px;
   font-weight: 300;
   color: var(--text-tertiary);
-  opacity: 0.35;
+  opacity: 0.4;
   line-height: 1;
 }
 
 .section-title {
-  font-family: 'Shippori Mincho', serif;
-  font-size: clamp(18px, 3vw, 24px);
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 300;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+/* 核心观点 - 大字引用 */
+.keystone {
+  padding: var(--space-3xl) 0;
+  position: relative;
+}
+.keystone-text {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 300;
+  line-height: 1.4;
+  color: var(--text-primary);
+  max-width: 18ch;
+  letter-spacing: -0.01em;
+}
+.keystone-text::first-letter {
+  font-size: 3em;
+  float: left;
+  line-height: 0.8;
+  margin-right: 0.1em;
+  color: var(--accent);
+}
+.keystone-source {
+  margin-top: var(--space-xl);
+  font-size: 12px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+}
+
+/* 能力矩阵 - 非对称3列 */
+.capability-matrix {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: var(--space-md);
+}
+@media (max-width: 900px) {
+  .capability-matrix { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .capability-matrix { grid-template-columns: 1fr; }
+}
+
+.cap-item {
+  padding: var(--space-xl) var(--space-lg);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  position: relative;
+}
+.cap-item::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 0;
+  background: var(--accent);
+  transition: height 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.cap-item:hover::after { height: 100%; }
+
+.cap-label {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-md);
+}
+
+.cap-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 20px;
   font-weight: 400;
   color: var(--text-primary);
+  margin-bottom: var(--space-sm);
   line-height: 1.3;
 }
 
-/* 流程步骤 */
+.cap-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* 能力自检分数 - 动态显示 */
+.cap-score {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-top: var(--space-md);
+}
+.cap-percent {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--accent);
+  line-height: 1;
+}
+.cap-percent-label {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+}
+
+/* 进度条 */
+.cap-bar {
+  height: 2px;
+  background: var(--line);
+  margin-top: var(--space-sm);
+  position: relative;
+  overflow: hidden;
+}
+.cap-bar::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: var(--progress, 0%);
+  background: var(--accent);
+  transition: width 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.cap-bar-fill {
+  height: 100%;
+  width: var(--progress, 0%);
+  background: var(--accent);
+  transition: width 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* 节点01结果卡片 */
+.node01-card {
+  animation: fadeInUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 未做测试时的默认样式 */
+.cap-item:not([data-score]) .cap-score { display: none; }
+.cap-item[data-score] .cap-default { display: none; }
+
+.cap-item[data-score] .cap-bar { display: block; }
+
+/* 流程图 - 左重不对称 */
 .process-asymmetric {
   display: grid;
-  grid-template-columns: 3fr 2fr;
+  grid-template-columns: 1.5fr 1fr;
   gap: var(--space-3xl);
   align-items: start;
-  margin-top: var(--space-xl);
 }
-@media (max-width: 900px) {
+@media (max-width: 768px) {
   .process-asymmetric { grid-template-columns: 1fr; gap: var(--space-2xl); }
+}
+
+.process-main { border-right: 1px solid var(--line); padding-right: var(--space-3xl); }
+@media (max-width: 768px) {
+  .process-main { border-right: none; padding-right: 0; border-bottom: 1px solid var(--line); padding-bottom: var(--space-2xl); }
 }
 
 .process-step {
   display: grid;
-  grid-template-columns: 56px 1fr;
-  gap: var(--space-xl);
-  padding: var(--space-2xl) 0;
-  border-bottom: 1px solid var(--line);
+  grid-template-columns: 48px 1fr;
+  gap: var(--space-lg);
+  padding: var(--space-lg) 0;
+  border-bottom: 1px solid var(--line-light);
 }
 .process-step:last-child { border-bottom: none; }
 
 .step-num {
-  font-family: 'Shippori Mincho', serif;
-  font-size: 40px;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 32px;
   font-weight: 300;
   color: var(--text-tertiary);
-  opacity: 0.35;
-  line-height: 1;
-  padding-top: 4px;
+  opacity: 0.5;
 }
 
 .step-title {
-  font-size: 16px;
-  font-weight: 400;
+  font-size: 15px;
+  font-weight: 500;
   color: var(--text-primary);
-  margin-bottom: var(--space-md);
-  letter-spacing: 0.02em;
+  margin-bottom: var(--space-xs);
 }
 
 .step-desc {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-secondary);
-  line-height: 1.85;
+  line-height: 1.7;
 }
 
+/* 侧边注释 */
 .process-sidebar {
-  padding-top: var(--space-lg);
+  padding-top: var(--space-md);
 }
+
 .sidebar-note {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-tertiary);
-  line-height: 1.85;
-  padding-left: var(--space-xl);
+  line-height: 1.8;
+  padding-left: var(--space-md);
   border-left: 1px solid var(--line);
 }
 
+/* 对比布局 - 左右不等 */
+.compare-asymmetric {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: var(--space-2xl);
+}
+@media (max-width: 768px) {
+  .compare-asymmetric { grid-template-columns: 1fr; }
+}
+
+.compare-col { }
+.compare-header {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding-bottom: var(--space-md);
+  margin-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--line);
+}
+.compare-header.accent { color: var(--accent); border-color: var(--accent); }
+.compare-header.muted { color: var(--text-tertiary); }
+
+.compare-item {
+  padding: var(--space-sm) 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--line-light);
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+}
+.compare-item::before { content: '—'; color: var(--text-tertiary); font-size: 12px; }
+.compare-item.dim { color: var(--text-tertiary); }
+
+/* 三栏指标 */
+.metrics-tri {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+}
+@media (max-width: 768px) {
+  .metrics-tri { grid-template-columns: 1fr; }
+}
+
+.metric-item {
+  text-align: center;
+  padding: var(--space-2xl) var(--space-lg);
+  border: 1px solid var(--line);
+}
+
+.metric-value {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 8vw, 72px);
+  font-weight: 300;
+  color: var(--text-primary);
+  line-height: 1;
+  margin-bottom: var(--space-md);
+}
+
+.metric-label {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+/* 决策路径 - 横向流程 */
+.decision-path {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  padding: var(--space-xl) 0;
+}
+
+.path-node {
+  padding: var(--space-md) var(--space-lg);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  font-size: 13px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.path-node.highlight {
+  border-color: var(--accent);
+  color: var(--text-primary);
+}
+.path-arrow {
+  color: var(--text-tertiary);
+  font-size: 14px;
+}
+
+/* 底部导航 */
 .footer-nav {
   padding: var(--space-2xl) 0;
   border-top: 1px solid var(--line);
@@ -369,188 +498,20 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 11px;
-  letter-spacing: 0.12em;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--text-tertiary);
   text-decoration: none;
-  transition: opacity 0.4s ease;
+  transition: color 0.4s ease;
 }
-.nav-link:hover { opacity: 0.5; }
-.nav-arrow { font-size: 10px; }
+.nav-link:hover { color: var(--text-primary); }
+.nav-arrow { font-size: 0.7rem; }
 
-/* 表单 */
-.form-section {
-  margin-top: var(--space-xl);
-}
-
-.form-group {
-  margin-bottom: var(--space-2xl);
-}
-
-.form-label {
-  font-size: 12px;
-  color: var(--text-secondary);
-  letter-spacing: 0.12em;
-  margin-bottom: var(--space-sm);
-  display: block;
-  font-weight: 400;
-}
-
-.form-hint {
-  font-size: 11px;
-  color: var(--text-tertiary);
-  margin-bottom: var(--space-md);
-  line-height: 1.6;
-}
-
-.form-input {
-  width: 100%;
-  padding: 16px 0;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid var(--line);
-  color: var(--text-primary);
-  font-family: 'Noto Sans JP', sans-serif;
-  font-size: 15px;
-  letter-spacing: 0.02em;
-  transition: border-color 0.4s ease;
-  border-radius: 0;
-}
-.form-input:focus {
-  outline: none;
-  border-color: var(--accent);
-}
-.form-input::placeholder {
-  color: var(--text-tertiary);
-}
-.form-input option {
-  background: var(--surface);
-}
-
-textarea.form-input {
-  resize: vertical;
-  min-height: 80px;
-  line-height: 1.7;
-}
-
-select.form-input {
-  cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236A6560' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0 center;
-}
-
-.score-options {
-  display: flex;
-  gap: var(--space-sm);
-  margin-top: var(--space-sm);
-}
-.score-btn {
-  flex: 1;
-  padding: 18px 12px;
-  border: 1px solid var(--line);
-  background: var(--surface);
-  color: var(--text-tertiary);
-  font-family: 'Noto Sans JP', sans-serif;
-  font-size: 15px;
-  cursor: pointer;
-  transition: all 0.4s ease;
-  text-align: center;
-}
-.score-btn:hover {
-  border-color: var(--accent);
-  color: var(--text-primary);
-}
-.score-btn.selected {
-  border-color: var(--accent);
-  color: var(--text-primary);
-  background: rgba(192, 57, 43, 0.08);
-}
-
-.divider {
-  width: 48px;
-  height: 1px;
-  background: var(--line);
-  margin: var(--space-2xl) 0;
-}
-
-/* CTA 按钮 */
-.cta-section {
-  padding: var(--space-2xl) 0;
-  margin-top: var(--space-xl);
-}
-
-.cta-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-md);
-  width: 100%;
-  max-width: 400px;
-  padding: 20px 32px;
-  background: var(--accent);
-  color: var(--text-primary);
-  font-family: 'Noto Sans JP', sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  border: none;
-  cursor: pointer;
-  transition: all 0.4s ease;
-  position: relative;
-  overflow: hidden;
-}
-.cta-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-  transition: left 0.6s ease;
-}
-.cta-btn:hover::before {
-  left: 100%;
-}
-.cta-btn:hover {
-  background: #a93226;
-  transform: translateY(-2px);
-}
-.cta-btn:disabled {
-  background: var(--line);
-  color: var(--text-tertiary);
-  cursor: not-allowed;
-  transform: none;
-}
-.cta-btn:disabled::before {
-  display: none;
-}
-
-.cta-subtext {
-  font-size: 11px;
-  color: var(--text-tertiary);
-  margin-top: var(--space-lg);
-  text-align: center;
-}
-
-.privacy-note {
-  font-size: 11px;
-  color: var(--text-tertiary);
-  margin-top: var(--space-lg);
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-xs);
-}
-
+/* 动画 */
 .fade-in {
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(24px);
   transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
               transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
@@ -558,13 +519,18 @@ select.form-input {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* 响应式 */
+@media (max-width: 600px) {
+  .section-seal { display: none; }
+  .hero { min-height: auto; padding: var(--space-3xl) 0 var(--space-2xl); }
+}
   </style>
 </head>
 <body>
-
   <nav class="top-nav">
-    <a href="/index.html" class="back-link">← 返回首页</a>
-    <span class="node-id">节点 02 / 57</span>
+    <a href="/" class="back-link">← 返回首页</a>
+    <span class="node-id">02</span>
   </nav>
 
   <div class="section-seal">02</div>
@@ -576,344 +542,363 @@ select.form-input {
       <h1 class="hero-title">个人能力<br>与资源<br>盘点</h1>
       <aside class="hero-aside">
         <p class="hero-statement">
-          基于节点01的测试结果，诚实地评估你<em>现在能做什么、缺什么</em>。
+          OPC的生死线，不在于市场，而在于<em>你是否具备独立完成价值闭环的能力</em>。
         </p>
       </aside>
     </header>
 
-    <!-- 节点01测评结果 -->
-    <section class="node01-result fade-in" id="node01-result">
-      <div class="result-card">
-        <div class="result-header">
-          <span class="result-title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
-            </svg>
-            节点01测评结果
-          </span>
-          <span class="result-badge">FIT TEST</span>
-        </div>
-        <div class="result-score" id="result-score">72<span>分</span></div>
-        <div class="result-tags" id="result-tags">
-          <span class="result-tag">执行力强</span>
-          <span class="result-tag">创意能力中</span>
-          <span class="result-tag">抗压能力高</span>
-        </div>
-        <div class="result-insight">
-          <p class="result-insight-text" id="result-insight">
-            你的执行力和抗压能力是你的优势，但在创意发散方面还有提升空间。建议在节点03的问题定义中，充分发挥执行力的优势。
-          </p>
-        </div>
-        <div class="result-reminder" id="result-reminder">
-          此结果将作为你填写节点02的重要参考维度
-        </div>
-      </div>
-    </section>
-
     <!-- 核心观点 -->
     <section class="keystone fade-in">
       <p class="keystone-text">
-        83%的一人公司失败，源于创始人<em>未经验证就上场</em>。盘点不是罗列名单——是阻止不自量力的创业方向。
+        盘点不是罗列名单，而是评估你被别人需要的程度。83%的一人公司失败，源于创始人未经验证就上场。
       </p>
-      <p class="keystone-source">— OPC节点百科 · 节点02 · 2026年5月</p>
+      <p class="keystone-source">— OPC节点百科 · 节点02</p>
     </section>
 
-    <!-- 01 评估说明 -->
+    <!-- 01 能力自检矩阵 -->
     <section class="section fade-in">
       <div class="section-header">
         <span class="section-num">01</span>
-        <h2 class="section-title">如何完成这个盘点</h2>
+        <h2 class="section-title">能力自检矩阵</h2>
+      </div>
+
+      <!-- 节点01结果卡片 -->
+      <div id="node01-result-card" class="node01-card" style="display: none; background: var(--surface); border: 1px solid var(--line); padding: var(--space-lg); margin-bottom: var(--space-xl);">
+        <div class="text-label" style="margin-bottom: var(--space-sm);">节点01 · OPC适配测试</div>
+        <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: var(--space-xs);">
+          <span id="node01-score" style="font-family: 'Noto Serif JP', serif; font-size: 48px; font-weight: 300; color: var(--accent);">0</span>
+          <span style="font-size: 12px; color: var(--text-tertiary);">分</span>
+        </div>
+        <p id="node01-verdict" style="font-size: 14px; color: var(--text-secondary);"></p>
+        <a href="/nodes/01-opc-fit-test/index.html" class="back-link" style="display: inline-block; margin-top: var(--space-sm); font-size: 11px;">← 重新测试</a>
+      </div>
+
+      <div class="capability-matrix">
+        <div class="cap-item" data-dimension="D1">
+          <div class="cap-label">D1 · 核心</div>
+          <h3 class="cap-title">最小商业闭环</h3>
+          <p class="cap-desc">从引流到售后的全链路能力——你能否独立完成一个完整商业交付？这是OPC的生死线。</p>
+          <div class="cap-score">
+            <span class="cap-percent">0</span>
+            <span class="cap-percent-label">%</span>
+          </div>
+          <div class="cap-bar"><div class="cap-bar-fill"></div></div>
+          <p class="cap-default" style="font-size: 12px; color: var(--text-tertiary); margin-top: var(--space-sm);">完成节点01测试后显示</p>
+        </div>
+        <div class="cap-item" data-dimension="D2">
+          <div class="cap-label">D2 · 结构</div>
+          <h3 class="cap-title">T型/π型能力</h3>
+          <p class="cap-desc">一项精深技能 + 周边知识广度 + AI协同能力</p>
+          <div class="cap-score">
+            <span class="cap-percent">0</span>
+            <span class="cap-percent-label">%</span>
+          </div>
+          <div class="cap-bar"><div class="cap-bar-fill"></div></div>
+          <p class="cap-default" style="font-size: 12px; color: var(--text-tertiary); margin-top: var(--space-sm);">完成节点01测试后显示</p>
+        </div>
+        <div class="cap-item" data-dimension="D3">
+          <div class="cap-label">D3 · 连接</div>
+          <h3 class="cap-title">资源网络</h3>
+          <p class="cap-desc">从"占有"转向"可连接"——弱关系网络与非对称资源</p>
+          <div class="cap-score">
+            <span class="cap-percent">0</span>
+            <span class="cap-percent-label">%</span>
+          </div>
+          <div class="cap-bar"><div class="cap-bar-fill"></div></div>
+          <p class="cap-default" style="font-size: 12px; color: var(--text-tertiary); margin-top: var(--space-sm);">完成节点01测试后显示</p>
+        </div>
+        <div class="cap-item" data-dimension="D4">
+          <div class="cap-label">D4 · 领导</div>
+          <h3 class="cap-title">AI领导力</h3>
+          <p class="cap-desc">定义问题、拆解任务、指挥多个AI智能体协同</p>
+          <div class="cap-score">
+            <span class="cap-percent">0</span>
+            <span class="cap-percent-label">%</span>
+          </div>
+          <div class="cap-bar"><div class="cap-bar-fill"></div></div>
+          <p class="cap-default" style="font-size: 12px; color: var(--text-tertiary); margin-top: var(--space-sm);">完成节点01测试后显示</p>
+        </div>
+        <div class="cap-item" data-dimension="D5">
+          <div class="cap-label">D5 · 财务</div>
+          <h3 class="cap-title">公私隔离</h3>
+          <p class="cap-desc">公私账户混同的无限连带责任陷阱</p>
+          <div class="cap-score">
+            <span class="cap-percent">0</span>
+            <span class="cap-percent-label">%</span>
+          </div>
+          <div class="cap-bar"><div class="cap-bar-fill"></div></div>
+          <p class="cap-default" style="font-size: 12px; color: var(--text-tertiary); margin-top: var(--space-sm);">完成节点01测试后显示</p>
+        </div>
+        <div class="cap-item" data-dimension="D6">
+          <div class="cap-label">D6 · 决策</div>
+          <h3 class="cap-title">法律形式</h3>
+          <p class="cap-desc">个体工商户与一人有限公司的决策框架</p>
+          <div class="cap-score">
+            <span class="cap-percent">0</span>
+            <span class="cap-percent-label">%</span>
+          </div>
+          <div class="cap-bar"><div class="cap-bar-fill"></div></div>
+          <p class="cap-default" style="font-size: 12px; color: var(--text-tertiary); margin-top: var(--space-sm);">完成节点01测试后显示</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 最小闭环验证 -->
+    <section class="section fade-in">
+      <div class="section-header">
+        <span class="section-num">02</span>
+        <h2 class="section-title">最小闭环验证流程</h2>
       </div>
       <div class="process-asymmetric">
-        <div class="process-steps">
+        <div class="process-main">
           <div class="process-step">
             <span class="step-num">一</span>
             <div>
-              <div class="step-title">诚实打分</div>
-              <p class="step-desc">每个维度 1-5 分。1 = 这个维度会直接导致我失败，5 = 这个维度是我的护城河。不要骗自己——如果你说不出和上一档的区别，就选低的那档。</p>
+              <div class="step-title">获取第一批付费用户</div>
+              <p class="step-desc">在任何平台，通过内容或服务，证明有人愿意为你付费。这是商业验证的起点，而非"有个好想法"。</p>
             </div>
           </div>
           <div class="process-step">
             <span class="step-num">二</span>
             <div>
-              <div class="step-title">填写具体数据</div>
-              <p class="step-desc">不要写"还可以""差不多"。写具体数字：存款多少万、每周几小时、认识几个能说真话的人。模糊的输入只能得到模糊的建议。</p>
+              <div class="step-title">核心交付能力</div>
+              <p class="step-desc">你能独立完成对用户的价值承诺，不依赖外部团队、外包或合伙人。这是OPC的本质要求。</p>
             </div>
           </div>
           <div class="process-step">
             <span class="step-num">三</span>
             <div>
-              <div class="step-title">生成报告</div>
-              <p class="step-desc">点击"生成个性化评估报告"，AI会根据你的测试分数和四维度数据，给出一份定制化的创业能力分析。</p>
-            </div>
-          </div>
-          <div class="process-step">
-            <span class="step-num">四</span>
-            <div>
-              <div class="step-title">带着报告去节点03</div>
-              <p class="step-desc">验证你的创业方向是否真的被需要。盘点结果决定了你适合走哪条路。</p>
+              <div class="step-title">收款与持续服务</div>
+              <p class="step-desc">建立稳定的收款通道和维护体系，确保现金流的健康循环，而非一锤子买卖。</p>
             </div>
           </div>
         </div>
         <aside class="process-sidebar">
           <p class="sidebar-note">
-            完成一份诚实的盘点大约需要 5-8 分钟。如果你发现自己在某个问题上犹豫超过 30 秒——那就是你还没想清楚的地方。
+            据抖音电商近期数据，采用"内容MVP"验证模式的一人公司，首年存活率较未验证者提升约40%。
           </p>
         </aside>
       </div>
     </section>
 
-    <!-- 02 四维度表单 -->
+    <!-- 03 付费验证路径 -->
     <section class="section fade-in">
       <div class="section-header">
-        <span class="section-num">02</span>
-        <h2 class="section-title">四维度个人盘点</h2>
+        <span class="section-num">03</span>
+        <h2 class="section-title">付费验证：数字摆摊法则</h2>
       </div>
+      <div class="decision-path">
+        <span class="path-node">100条内容</span>
+        <span class="path-arrow">→</span>
+        <span class="path-node">10个咨询</span>
+        <span class="path-arrow">→</span>
+        <span class="path-node">3个付费</span>
+        <span class="path-arrow">→</span>
+        <span class="path-node highlight">验证成功</span>
+        <span class="path-arrow">→</span>
+        <span class="path-node">正式注册</span>
+      </div>
+      <p style="margin-top: var(--space-lg); font-size: 13px; color: var(--text-tertiary);">
+        没有经过付费验证的想法，仅是待测试的假设。先跑通最小闭环，再考虑公司化。
+      </p>
+    </section>
 
-      <form class="form-section" id="assessment-form">
-        <!-- 技能维度 -->
-        <div class="form-group">
-          <label class="form-label">技能维度</label>
-          <p class="form-hint">评估你在创业过程中需要的关键技能，从左到右代表从"致命弱点"到"核心护城河"</p>
-          <div class="score-options" data-score="skills">
-            <button type="button" class="score-btn" data-value="1">1分<br><small>致命弱点</small></button>
-            <button type="button" class="score-btn" data-value="2">2分<br><small>明显短板</small></button>
-            <button type="button" class="score-btn" data-value="3">3分<br><small>基本合格</small></button>
-            <button type="button" class="score-btn" data-value="4">4分<br><small>明显优势</small></button>
-            <button type="button" class="score-btn" data-value="5">5分<br><small>核心护城河</small></button>
+    <!-- 04 法律形式对比 -->
+    <section class="section fade-in">
+      <div class="section-header">
+        <span class="section-num">04</span>
+        <h2 class="section-title">法律形式：个体户 vs 一人有限公司</h2>
+      </div>
+      <div class="compare-asymmetric">
+        <div class="compare-col">
+          <div class="compare-header accent">个体工商户</div>
+          <div class="compare-item">无限责任（但经营风险可控）</div>
+          <div class="compare-item">税负低，政策减半征收至2027年</div>
+          <div class="compare-item">财务合规要求相对宽松</div>
+          <div class="compare-item">无需实缴注册资本</div>
+          <div class="compare-item">适合初创验证阶段</div>
+        </div>
+        <div class="compare-col">
+          <div class="compare-header muted">一人有限公司</div>
+          <div class="compare-item dim">有条件的有限责任（需财产隔离）</div>
+          <div class="compare-item dim">需严格财务合规</div>
+          <div class="compare-item dim">5年内需实缴注册资本</div>
+          <div class="compare-item dim">存在"揭开面纱"风险</div>
+          <div class="compare-item dim">适合收入稳定后升级</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 能量管理 -->
+    <section class="section fade-in">
+      <div class="section-header">
+        <span class="section-num">05</span>
+        <h2 class="section-title">能量管理：一人公司最大的倒闭风险</h2>
+      </div>
+      <div class="metrics-tri">
+        <div class="metric-item">
+          <div class="metric-value">心</div>
+          <div class="metric-label">心力 · 情绪韧性</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-value">体</div>
+          <div class="metric-label">体力 · 深度专注</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-value">知</div>
+          <div class="metric-label">知力 · 数字戒断</div>
+        </div>
+      </div>
+      <p style="margin-top: var(--space-xl); font-size: 13px; color: var(--text-tertiary); text-align: center;">
+        三者构成OPC的能量三角。任一缺失，商业闭环即会崩溃。
+      </p>
+    </section>
+
+    <!-- 06 能力资产化 -->
+    <section class="section fade-in">
+      <div class="section-header">
+        <span class="section-num">06</span>
+        <h2 class="section-title">能力资产化路径</h2>
+      </div>
+      <div class="process-asymmetric">
+        <div class="process-main">
+          <div class="process-step">
+            <span class="step-num">A</span>
+            <div>
+              <div class="step-title">方法论 → 标准化服务</div>
+              <p class="step-desc">将经验固化为可复用的服务流程，如"企业谈判顾问服务包"、"独立开发者法律风险检查清单"</p>
+            </div>
           </div>
-          <input type="hidden" name="score_skills" value="">
-          <div style="margin-top: var(--space-xl);">
-            <input type="text" class="form-input" name="skills_strengths" placeholder="你擅长的技能（写作/销售/设计/编程等），越具体越好">
+          <div class="process-step">
+            <span class="step-num">B</span>
+            <div>
+              <div class="step-title">知识体系 → 数字产品</div>
+              <p class="step-desc">封装为录播课程或训练营，实现一次生产、多次销售的被动收入结构</p>
+            </div>
           </div>
-          <div style="margin-top: var(--space-lg);">
-            <input type="text" class="form-input" name="skills_weaknesses" placeholder="你需要提升或补齐的技能">
+          <div class="process-step">
+            <span class="step-num">C</span>
+            <div>
+              <div class="step-title">综合能力 → 个人品牌</div>
+              <p class="step-desc">持续输出行业洞见，建立专业认知壁垒，形成定价权与获客溢价</p>
+            </div>
           </div>
         </div>
-
-        <div class="divider"></div>
-
-        <!-- 资金维度 -->
-        <div class="form-group">
-          <label class="form-label">资金维度</label>
-          <p class="form-hint">金钱是创业的血脉。数字越具体，报告越精准</p>
-          <div class="score-options" data-score="finance">
-            <button type="button" class="score-btn" data-value="1">1分<br><small>资金断裂</small></button>
-            <button type="button" class="score-btn" data-value="2">2分<br><small>严重不足</small></button>
-            <button type="button" class="score-btn" data-value="3">3分<br><small>基本安全</small></button>
-            <button type="button" class="score-btn" data-value="4">4分<br><small>比较充裕</small></button>
-            <button type="button" class="score-btn" data-value="5">5分<br><small>资金充沛</small></button>
-          </div>
-          <input type="hidden" name="score_finance" value="">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-lg);margin-top:var(--space-xl);">
-            <input type="text" class="form-input" name="finance_savings" placeholder="当前存款（万元）">
-            <input type="text" class="form-input" name="finance_cost" placeholder="月生活成本（元）">
-            <input type="text" class="form-input" name="finance_runway" placeholder="能坚持不盈利（月）">
-            <input type="text" class="form-input" name="finance_income" placeholder="其他被动收入">
-          </div>
-        </div>
-
-        <div class="divider"></div>
-
-        <!-- 时间维度 -->
-        <div class="form-group">
-          <label class="form-label">时间维度</label>
-          <p class="form-hint">时间是最公平的资源，也是最稀缺的。你的时间决定了你的边界</p>
-          <div class="score-options" data-score="time">
-            <button type="button" class="score-btn" data-value="1">1分<br><small>时间匮乏</small></button>
-            <button type="button" class="score-btn" data-value="2">2分<br><small>严重不足</small></button>
-            <button type="button" class="score-btn" data-value="3">3分<br><small>基本够用</small></button>
-            <button type="button" class="score-btn" data-value="4">4分<br><small>比较充裕</small></button>
-            <button type="button" class="score-btn" data-value="5">5分<br><small>时间自由</small></button>
-          </div>
-          <input type="hidden" name="score_time" value="">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-lg);margin-top:var(--space-xl);">
-            <select class="form-input" name="time_status">
-              <option value="">当前状态</option>
-              <option>全职创业</option>
-              <option>主业+业余</option>
-              <option>学生/自由职业</option>
-            </select>
-            <input type="text" class="form-input" name="time_hours" placeholder="每周可投入（小时）">
-            <select class="form-input" name="time_duration">
-              <option value="">能坚持的时长</option>
-              <option>3个月</option>
-              <option>6个月</option>
-              <option>1年</option>
-              <option>1年以上</option>
-            </select>
-            <select class="form-input" name="time_peak">
-              <option value="">精力峰值时段</option>
-              <option>早晨（6-10点）</option>
-              <option>上午（10-12点）</option>
-              <option>下午（2-5点）</option>
-              <option>深夜（8-12点）</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="divider"></div>
-
-        <!-- 人脉维度 -->
-        <div class="form-group">
-          <label class="form-label">人脉维度</label>
-          <p class="form-hint">人脉的质量比数量更重要。能说真话的人，才是真正的人脉</p>
-          <div class="score-options" data-score="network">
-            <button type="button" class="score-btn" data-value="1">1分<br><small>孤立无援</small></button>
-            <button type="button" class="score-btn" data-value="2">2分<br><small>人脉匮乏</small></button>
-            <button type="button" class="score-btn" data-value="3">3分<br><small>基本够用</small></button>
-            <button type="button" class="score-btn" data-value="4">4分<br><small>人脉丰富</small></button>
-            <button type="button" class="score-btn" data-value="5">5分<br><small>强大网络</small></button>
-          </div>
-          <input type="hidden" name="score_network" value="">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-lg);margin-top:var(--space-xl);">
-            <input type="text" class="form-input" name="network_brainstorm" placeholder="能聊想法的人数">
-            <input type="text" class="form-input" name="network_seed" placeholder="潜在种子用户数">
-            <input type="text" class="form-input" name="network_communities" placeholder="所在社群/圈子">
-            <input type="text" class="form-input" name="network_key" placeholder="最关键的人脉（姓名/角色）">
-          </div>
-        </div>
-
-        <!-- CTA -->
-        <div class="cta-section">
-          <button type="submit" class="cta-btn" id="submit-btn">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M9 17H7A5 5 0 017 7h2M15 7h2a5 5 0 010 10h-2M8 12h8"/>
-            </svg>
-            生成个性化评估报告
-          </button>
-          <p class="cta-subtext">报告将结合节点01的测评结果，提供定制化分析</p>
-          <p class="privacy-note">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-              <path d="M7 11V7a5 5 0 0110 0v4"/>
-            </svg>
-            数据仅用于本次报告生成，不会上传或存储
+        <aside class="process-sidebar">
+          <p class="sidebar-note">
+            资产化的本质：从出卖时间，转向出卖可复制的价值。从服务者，进化为产品者。
           </p>
-        </div>
-      </form>
+        </aside>
+      </div>
     </section>
 
     <footer class="footer-nav fade-in">
       <a href="/nodes/01-opc-fit-test/index.html" class="nav-link">
-        <span class="nav-arrow">←</span> 节点01
+        <span class="nav-arrow">←</span>
+        节点01：OPC适配测试
       </a>
-      <a href="/nodes/03-problem-definition/index.html" class="nav-link">
-        节点03 <span class="nav-arrow">→</span>
+      <a href="/nodes/03-idea-validation/index.html" class="nav-link">
+        节点03：创业想法筛选与验证
+        <span class="nav-arrow">→</span>
       </a>
     </footer>
   </div>
 
-<script>
-(function() {
-  // 从localStorage获取节点01结果
-  function loadNode01Result() {
-    const saved = localStorage.getItem('opc_node01_result');
-    if (saved) {
-      try {
-        const result = JSON.parse(saved);
-        document.getElementById('result-score').innerHTML = result.score + '<span>分</span>';
+  <script>
+    // 初始化：从localStorage读取节点01测试结果
+    (function initNode01Link() {
+      const dimensions = localStorage.getItem('opc_dimensions');
+      const fitScore = localStorage.getItem('opc_fit_score');
 
-        if (result.tags && result.tags.length > 0) {
-          const tagsEl = document.getElementById('result-tags');
-          tagsEl.innerHTML = result.tags.map(tag =>
-            '<span class="result-tag">' + tag + '</span>'
-          ).join('');
-        }
+      if (dimensions && fitScore) {
+        try {
+          const dims = JSON.parse(dimensions);
 
-        if (result.insight) {
-          document.getElementById('result-insight').textContent = result.insight;
-        }
+          // 显示节点01结果卡片
+          const card = document.getElementById('node01-result-card');
+          const scoreEl = document.getElementById('node01-score');
+          const verdictEl = document.getElementById('node01-verdict');
 
-        // 显示提醒
-        document.getElementById('result-reminder').textContent =
-          '基于节点01的「' + (result.category || '综合评估') + '」结果，此盘点将为你提供定制化建议';
-      } catch (e) {
-        console.log('节点01结果解析失败');
-      }
-    }
-  }
+          if (card && scoreEl && verdictEl) {
+            scoreEl.textContent = fitScore;
 
-  // 评分按钮交互
-  document.querySelectorAll('.score-options').forEach(container => {
-    container.querySelectorAll('.score-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        container.querySelectorAll('.score-btn').forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-        const hiddenInput = container.parentElement.querySelector('input[type="hidden"]');
-        if (hiddenInput) hiddenInput.value = btn.dataset.value;
-      });
-    });
-  });
+            if (fitScore >= 80) verdict = '非常适合';
+            else if (fitScore >= 60) verdict = '适合';
+            else if (fitScore >= 40) verdict = '待提升';
+            else verdict = '暂不适合';
 
-  // 表单提交
-  document.getElementById('assessment-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const data = {
-      score_skills: formData.get('score_skills'),
-      score_finance: formData.get('score_finance'),
-      score_time: formData.get('score_time'),
-      score_network: formData.get('score_network'),
-      skills_strengths: formData.get('skills_strengths'),
-      skills_weaknesses: formData.get('skills_weaknesses'),
-      finance_savings: formData.get('finance_savings'),
-      finance_cost: formData.get('finance_cost'),
-      finance_runway: formData.get('finance_runway'),
-      finance_income: formData.get('finance_income'),
-      time_status: formData.get('time_status'),
-      time_hours: formData.get('time_hours'),
-      time_duration: formData.get('time_duration'),
-      time_peak: formData.get('time_peak'),
-      network_brainstorm: formData.get('network_brainstorm'),
-      network_seed: formData.get('network_seed'),
-      network_communities: formData.get('network_communities'),
-      network_key: formData.get('network_key')
-    };
-
-    if (!data.score_skills || !data.score_finance || !data.score_time || !data.score_network) {
-      // 高亮未评分的维度
-      const维度 = ['skills', 'finance', 'time', 'network'];
-      const维度.forEach(dim => {
-        if (!data['score_' + dim]) {
-          const container = document.querySelector('[data-score="' + dim + '"]');
-          if (container) {
-            container.style.border = '1px solid var(--accent)';
-            setTimeout(() => {
-              container.style.border = 'none';
-            }, 2000);
+            verdictEl.textContent = verdict;
+            card.style.display = 'block';
           }
+
+          // 更新D1-D6维度分数
+          const dimensionMap = {
+            'D1': 'D1',
+            'D2': 'D2',
+            'D3': 'D3',
+            'D4': 'D4',
+            'D5': 'D5',
+            'D6': 'D6'
+          };
+
+          Object.keys(dimensionMap).forEach(dim => {
+            const capItem = document.querySelector(`[data-dimension="${dim}"]`);
+            if (capItem && dims[dim] !== undefined) {
+              capItem.setAttribute('data-score', dims[dim]);
+
+              const percentEl = capItem.querySelector('.cap-percent');
+              const barEl = capItem.querySelector('.cap-bar');
+
+              if (percentEl) {
+                // 带动画的数字显示
+                animateNumber(percentEl, 0, dims[dim], 1000);
+              }
+              if (barEl) {
+                barEl.style.setProperty('--progress', dims[dim] + '%');
+              }
+
+              // 隐藏默认提示
+              const defaultEl = capItem.querySelector('.cap-default');
+              if (defaultEl) defaultEl.style.display = 'none';
+            }
+          });
+
+        } catch (e) {
+          console.error('Failed to parse node01 results:', e);
         }
-      });
-      alert('请为四个维度分别评分后再提交');
-      return;
+      }
+    })();
+
+    // 数字动画函数
+    function animateNumber(el, from, to, duration) {
+      const startTime = performance.now();
+      const diff = to - from;
+
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        // easeOutQuart缓动
+        const eased = 1 - Math.pow(1 - progress, 4);
+        el.textContent = Math.round(from + diff * eased);
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        }
+      }
+
+      requestAnimationFrame(update);
     }
 
-    // 保存节点02结果
-    const node02Result = {
-      ...data,
-      timestamp: new Date().toISOString()
-    };
-    localStorage.setItem('opc_node02_result', JSON.stringify(node02Result));
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -80px 0px' });
 
-    alert('报告生成功能正在开发中，敬请期待！');
-  });
-
-  // Intersection Observer 动画
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) entry.target.classList.add('visible');
+    document.querySelectorAll('.fade-in').forEach((el, i) => {
+      el.style.transitionDelay = `${i * 0.05}s`;
+      observer.observe(el);
     });
-  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-
-  document.querySelectorAll('.fade-in').forEach((el, i) => {
-    el.style.transitionDelay = (i * 0.08) + 's';
-    observer.observe(el);
-  });
-
-  // 初始化加载节点01结果
-  loadNode01Result();
-})();
-</script>
+  </script>
 </body>
 </html>

@@ -1,0 +1,115 @@
+{
+  "version": "1.0",
+  "questions": [
+    {
+      "id": 1,
+      "text": "你现在最想解决的问题是什么？",
+      "type": "single_choice",
+      "options": [
+        { "key": "A", "text": "收入太低，想找个副业", "scores": { "opc_fit": 3, "urgency": 5 } },
+        { "key": "B", "text": "被裁员/担心被裁员，想找后路", "scores": { "opc_fit": 4, "urgency": 5 } },
+        { "key": "C", "text": "想做副业但不知道做什么", "scores": { "opc_fit": 5, "urgency": 4 } },
+        { "key": "D", "text": "已经有想法，想找人指导落地", "scores": { "opc_fit": 2, "urgency": 3 } }
+      ]
+    },
+    {
+      "id": 2,
+      "text": "你每周能投入多少时间在副业上？",
+      "type": "single_choice",
+      "options": [
+        { "key": "A", "text": "几乎没时间，忙于主业", "scores": { "opc_fit": 1, "time": 1 } },
+        { "key": "B", "text": "每天1-2小时", "scores": { "opc_fit": 3, "time": 3 } },
+        { "key": "C", "text": "每天2-4小时", "scores": { "opc_fit": 4, "time": 4 } },
+        { "key": "D", "text": "超过4小时，全职在做", "scores": { "opc_fit": 5, "time": 5 } }
+      ]
+    },
+    {
+      "id": 3,
+      "text": "你有多少存款可以用于创业？（不吃老本）",
+      "type": "single_choice",
+      "options": [
+        { "key": "A", "text": "几乎没有存款", "scores": { "opc_fit": 5, "capital": 1 } },
+        { "key": "B", "text": "1-3个月生活费", "scores": { "opc_fit": 4, "capital": 2 } },
+        { "key": "C", "text": "3-6个月生活费", "scores": { "opc_fit": 3, "capital": 3 } },
+        { "key": "D", "text": "6个月以上", "scores": { "opc_fit": 2, "capital": 4 } }
+      ]
+    },
+    {
+      "id": 4,
+      "text": "你最擅长什么？",
+      "type": "single_choice",
+      "options": [
+        { "key": "A", "text": "写作/文案/内容创作", "scores": { "opc_fit": 4, "skill": "content" } },
+        { "key": "B", "text": "销售/商务/对接资源", "scores": { "opc_fit": 5, "skill": "sales" } },
+        { "key": "C", "text": "技术/编程/产品设计", "scores": { "opc_fit": 3, "skill": "tech" } },
+        { "key": "D", "text": "什么都没有，还在学习", "scores": { "opc_fit": 2, "skill": "none" } }
+      ]
+    },
+    {
+      "id": 5,
+      "text": "你能接受多长时间不赚钱？",
+      "type": "single_choice",
+      "options": [
+        { "key": "A", "text": "1个月以内", "scores": { "opc_fit": 2, "patience": 1 } },
+        { "key": "B", "text": "1-3个月", "scores": { "opc_fit": 3, "patience": 2 } },
+        { "key": "C", "text": "3-6个月", "scores": { "opc_fit": 4, "patience": 3 } },
+        { "key": "D", "text": "半年以上也行", "scores": { "opc_fit": 5, "patience": 4 } }
+      ]
+    },
+    {
+      "id": 6,
+      "text": "你身边有多少人可以帮你？",
+      "type": "single_choice",
+      "options": [
+        { "key": "A", "text": "没人帮我，只能靠自己", "scores": { "opc_fit": 4, "network": 1 } },
+        { "key": "B", "text": "有1-3个人可以商量", "scores": { "opc_fit": 3, "network": 2 } },
+        { "key": "C", "text": "有一些资源和人脉", "scores": { "opc_fit": 2, "network": 3 } },
+        { "key": "D", "text": "资源丰富，很多人脉", "scores": { "opc_fit": 1, "network": 4 } }
+      ]
+    },
+    {
+      "id": 7,
+      "text": "你踩过多少副业/创业的坑？",
+      "type": "single_choice",
+      "options": [
+        { "key": "A", "text": "还没开始过，这是第一次", "scores": { "opc_fit": 3, "experience": 0 } },
+        { "key": "B", "text": "尝试过1-2次，都失败了", "scores": { "opc_fit": 4, "experience": 1 } },
+        { "key": "C", "text": "成功过1次或以上", "scores": { "opc_fit": 2, "experience": 2 } },
+        { "key": "D", "text": "一直成功，从没失败过", "scores": { "opc_fit": 1, "experience": 3 } }
+      ]
+    },
+    {
+      "id": 8,
+      "text": "你的性格更接近哪个？",
+      "type": "single_choice",
+      "options": [
+        { "key": "A", "text": "内向型，喜欢独自工作", "scores": { "opc_fit": 4, "personality": "introvert" } },
+        { "key": "B", "text": "外向型，喜欢社交和人脉", "scores": { "opc_fit": 3, "personality": "extrovert" } },
+        { "key": "C", "text": "混合型，看情况", "scores": { "opc_fit": 5, "personality": "hybrid" } }
+      ]
+    },
+    {
+      "id": 9,
+      "text": "你为什么想做OPC（一人公司）？",
+      "type": "single_choice",
+      "options": [
+        { "key": "A", "text": "听说很赚钱，想试试", "scores": { "opc_fit": 2, "motivation": 1 } },
+        { "key": "B", "text": "不想上班，想自由职业", "scores": { "opc_fit": 4, "motivation": 3 } },
+        { "key": "C", "text": "不想被AI淘汰，想掌握主动权", "scores": { "opc_fit": 5, "motivation": 4 } },
+        { "key": "D", "text": "已经有客户/订单，只差执行", "scores": { "opc_fit": 5, "motivation": 5 } }
+      ]
+    },
+    {
+      "id": 10,
+      "text": "如果明天AI可以替代你现在的工作，你会？",
+      "type": "single_choice",
+      "options": [
+        { "key": "A", "text": "panic，开始疯狂投简历", "scores": { "opc_fit": 3, "urgency": 5 } },
+        { "key": "B", "text": "焦虑但不知道怎么办", "scores": { "opc_fit": 4, "urgency": 4 } },
+        { "key": "C", "text": "已经有计划，正在准备", "scores": { "opc_fit": 2, "urgency": 2 } },
+        { "key": "D", "text": "无所谓，这正好是我想要的", "scores": { "opc_fit": 5, "urgency": 1 } }
+      ]
+    }
+  ],
+  "scoring_dimensions": ["opc_fit", "urgency", "time", "capital", "skill", "patience", "network", "experience", "personality", "motivation"]
+}
