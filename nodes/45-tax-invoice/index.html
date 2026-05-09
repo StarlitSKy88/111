@@ -1,44 +1,1157 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <script src="/auth-guard.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="税务报到与筹划 - OPC节点百科">
   <meta name="theme-color" content="#111110">
   <title>税务报到与筹划 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-:root { --bg:#111110;--surface:#1A1A18;--text-primary:#F0EDE6;--text-secondary:#7A7670;--text-tertiary:#A8A49E;--accent:#C0392B;--line:#2A2A28; }
-* { margin:0;padding:0;box-sizing:border-box; }
-body { background:var(--bg);color:var(--text-primary);font-family:'Noto Sans SC',sans-serif;font-weight:300;line-height:2;letter-spacing:0.04em;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem; }
-.top-nav { position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem clamp(24px,8vw,120px);border-bottom:1px solid var(--line);background:var(--bg); }
-.back-link { font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-tertiary);text-decoration:none; }
-.back-link:hover { color:var(--text-primary); }
-.node-id { font-family:'Noto Serif JP',serif;font-size:0.75rem;color:var(--text-tertiary);letter-spacing:0.1em; }
-h1 { font-family:'Noto Serif JP',serif;font-size:clamp(28px,6vw,56px);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;text-align:center; }
-.phase { font-size:12px;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;text-align:center; }
-.num { font-size:11px;color:var(--text-tertiary);letter-spacing:0.1em;margin-top:0.5rem;text-align:center; }
-.note { font-size:13px;color:var(--text-secondary);text-align:center;max-width:480px;margin-top:1.5rem;line-height:1.9; }
-.footer-nav { display:flex;justify-content:space-between;position:fixed;bottom:0;left:0;right:0;padding:1.5rem clamp(24px,8vw,120px);border-top:1px solid var(--line);background:var(--bg); }
-.nav-link { font-size:0.7rem;color:var(--text-tertiary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;gap:0.5rem; }
-.nav-link:hover { color:var(--text-primary); }
-.nav-arrow { font-size:0.6rem; }
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #7A7670;
+  --text-tertiary: #4A4744;
+  --accent: #C0392B;
+  --line: #2A2A28;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
+  line-height: 2;
+  letter-spacing: 0.03em;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Layout with Sidebar */
+.layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3rem);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
+}
+
+/* Sidebar TOC */
+.sidebar-toc {
+  position: sticky;
+  top: 5rem;
+  height: fit-content;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  padding-top: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.sidebar-toc::-webkit-scrollbar { width: 4px; }
+.sidebar-toc::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+.toc-title {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.toc-list { list-style: none; }
+
+.toc-item { margin-bottom: 0.75rem; }
+
+.toc-link {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: block;
+  padding: 0.375rem 0;
+  padding-left: 1rem;
+  border-left: 1px solid var(--line);
+  transition: all 0.3s;
+  line-height: 1.4;
+}
+
+.toc-link:hover { color: var(--text-primary); border-left-color: var(--accent); }
+.toc-link.active { color: var(--accent); border-left-color: var(--accent); font-weight: 400; }
+
+/* Fixed Top Nav */
+.fixed-top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+.back-link {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
+}
+
+.back-link:hover { color: var(--text-primary); }
+
+.back-link svg { width: 1rem; height: 1rem; }
+
+.node-id {
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  color: var(--text-tertiary);
+}
+
+/* Main Content */
+.content {
+  min-width: 0;
+}
+
+.content h1 {
+  font-family: 'Noto Serif JP', 'Noto Sans SC', sans-serif;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 300;
+  line-height: 1.3;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
+}
+
+.content .lead {
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.content h2 {
+  font-family: 'Noto Serif JP', 'Noto Sans SC', sans-serif;
+  font-size: clamp(1.125rem, 2.5vw, 1.375rem);
+  font-weight: 300;
+  color: var(--text-primary);
+  margin-top: 3rem;
+  margin-bottom: 1.25rem;
+  letter-spacing: 0.01em;
+  scroll-margin-top: 5rem;
+}
+
+.content h3 {
+  font-size: 0.9375rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-top: 2rem;
+  margin-bottom: 0.875rem;
+  scroll-margin-top: 5rem;
+}
+
+.step-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 2px;
+}
+
+.step-block h4 {
+  font-size: 0.9375rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.step-block p,
+.step-block li {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.step-block ul {
+  list-style: none;
+  margin: 0.75rem 0;
+}
+
+.step-block li {
+  padding-left: 1rem;
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+
+.step-block li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.65em;
+  width: 3px;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  font-size: 0.8125rem;
+}
+
+th, td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+
+th {
+  color: var(--text-tertiary);
+  font-weight: 400;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+}
+
+td { color: var(--text-secondary); }
+td:first-child { color: var(--text-primary); font-weight: 400; }
+
+/* Highlight box */
+.highlight-box {
+  background: var(--surface);
+  border-left: 2px solid var(--accent);
+  padding: 1rem 1.25rem;
+  margin: 1.25rem 0;
+}
+
+.highlight-box p {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+/* Warning box */
+.warning-box {
+  background: rgba(192, 57, 43, 0.08);
+  border: 1px solid rgba(192, 57, 43, 0.3);
+  border-radius: 2px;
+  padding: 1rem 1.25rem;
+  margin: 1.25rem 0;
+}
+
+.warning-box .warning-title {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.warning-box p {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+/* Quote/引语 */
+blockquote {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin: 1.5rem 0;
+  padding-left: 1.25rem;
+  border-left: 2px solid var(--accent);
+  line-height: 1.8;
+}
+
+/* Links */
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+a:hover { opacity: 0.75; }
+
+/* Summary Table */
+.summary-table {
+  margin-top: 2rem;
+}
+
+.summary-table table {
+  margin-top: 0;
+}
+
+/* Fixed Bottom Nav */
+.fixed-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
+}
+
+.nav-btn {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
+}
+
+.nav-btn:hover { color: var(--text-primary); }
+.nav-btn.disabled { opacity: 0.3; pointer-events: none; }
+
+.nav-btn svg { width: 1rem; height: 1rem; }
+
+.nav-indicator {
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+}
+
+/* Divider */
+hr {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 2.5rem 0;
+}
+
+/* Last revised note */
+.last-revised {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .layout {
+    grid-template-columns: 1fr;
+    padding-top: 4.5rem;
+  }
+
+  .sidebar-toc {
+    display: none;
+  }
+
+  .fixed-bottom-nav {
+    padding: 0.75rem 1rem;
+  }
+}
   </style>
 </head>
 <body>
-  <nav class="top-nav">
-    <a href="/index.html" class="back-link">← 返回首页</a>
-    <span class="node-id">节点 45 / 57</span>
-  </nav>
-  <div class="phase">并行支撑层</div>
-  <h1>税务报到与筹划</h1>
-  <div class="num">节点 45</div>
-  <p class="note">🚧 内容正在建设中<br>这将是一个面向OPC（一人公司/独立开发者）的实操指南</p>
-  <footer class="footer-nav">
-    <a href="/nodes/44-bank-account/index.html" class="nav-link"><span class="nav-arrow">←</span>节点44：银行开户与商户号</a>
-    <a href="/nodes/46-cashflow/index.html" class="nav-link">节点46：现金流与财务基础<span class="nav-arrow">→</span></a>
-  </footer>
+
+<!-- Fixed Top Navigation -->
+<nav class="fixed-top-nav">
+  <a href="/" class="back-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+    返回首页
+  </a>
+  <span class="node-id">45 / 税务全周期</span>
+</nav>
+
+<div class="layout">
+  <!-- Sidebar TOC -->
+  <aside class="sidebar-toc">
+    <div class="toc-title">目录</div>
+    <ul class="toc-list">
+      <li class="toc-item"><a class="toc-link" href="#section-1">注册后税务报到</a></li>
+      <li class="toc-item"><a class="toc-link" href="#section-2">数电票时代</a></li>
+      <li class="toc-item"><a class="toc-link" href="#section-3">日常申报</a></li>
+      <li class="toc-item"><a class="toc-link" href="#section-4">核心税收优惠</a></li>
+      <li class="toc-item"><a class="toc-link" href="#section-5">年度税务筹划</a></li>
+      <li class="toc-item"><a class="toc-link" href="#section-6">代理记账</a></li>
+      <li class="toc-item"><a class="toc-link" href="#section-7">成本票合规获取</a></li>
+      <li class="toc-item"><a class="toc-link" href="#section-summary">总纲</a></li>
+      <li class="toc-item"><a class="toc-link" href="#section-appendix">附录</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="content">
+    <h1>税务报到与筹划</h1>
+    <p class="lead">执照到手不是终点——30天内必须报到、数电票时代发票怎么开、每季度申报怎么做、年底如何合法省税。本文覆盖OPC从注册到年度筹划的完整税务周期。</p>
+
+    <section id="section-1">
+      <h2>一、注册后税务报到：30天倒计时</h2>
+
+      <h3>法律时限</h3>
+      <p>根据《税收征收管理法》，领取营业执照后<strong>30日内</strong>必须完成税务报到。实务中，执照下发后电子税务局会自动生成"新办企业待办"任务，要求<strong>15日内</strong>登录确认。</p>
+
+      <h3>报到操作（5分钟完成）</h3>
+      <p>2026年"新办智能开业"功能已全国铺开：</p>
+      <ol style="margin: 1rem 0; padding-left: 1.5rem; color: var(--text-secondary); font-size: 0.875rem;">
+        <li>登录各省电子税务局（详见本章附录链接汇总）</li>
+        <li>系统根据工商登记的经营范围<strong>自动预判税种</strong></li>
+        <li>法定代表人<strong>人脸识别确认</strong></li>
+        <li>一键完成税务登记信息补录</li>
+      </ol>
+
+      <h3>报到时必须确认的四项</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>事项</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>法人/财务负责人/办税员实名认证</td>
+            <td>通过手机APP做人脸识别</td>
+          </tr>
+          <tr>
+            <td>存款账户账号报告</td>
+            <td>绑定公司对公账户（用于退税/扣税）</td>
+          </tr>
+          <tr>
+            <td>税（费）种认定</td>
+            <td>系统自动认定增值税、企业所得税等</td>
+          </tr>
+          <tr>
+            <td>发票票种核定</td>
+            <td>申请数电票授信额度</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>逾期后果</h3>
+      <ul style="list-style: none; margin: 1rem 0; padding: 0;">
+        <li style="padding-left: 1rem; position: relative; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">
+          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; display: inline-block;"></span>
+          罚款：2000元以下
+        </li>
+        <li style="padding-left: 1rem; position: relative; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">
+          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; display: inline-block;"></span>
+          纳税信用等级降级
+        </li>
+        <li style="padding-left: 1rem; position: relative; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">
+          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; display: inline-block;"></span>
+          发票申领受限
+        </li>
+        <li style="padding-left: 1rem; position: relative; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">
+          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; display: inline-block;"></span>
+          列入经营异常名录
+        </li>
+      </ul>
+
+      <h3>纳税人类型选择</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>类型</th>
+            <th>默认</th>
+            <th>条件</th>
+            <th>税率</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>小规模纳税人</td>
+            <td>✅ 新办默认</td>
+            <td>—</td>
+            <td>月销售≤10万免增值税，超过按<strong>1%</strong>征收</td>
+          </tr>
+          <tr>
+            <td>一般纳税人</td>
+            <td>手动申请</td>
+            <td>年销售额>500万强制认定</td>
+            <td>6%/9%/13%，可抵扣进项</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="highlight-box">
+        <p><strong>OPC建议：</strong>保持小规模纳税人，除非客户明确要求13%增值税专用发票。小规模免税额度对绝大多数OPC创业者已经够用。</p>
+      </div>
+    </section>
+
+    <hr>
+
+    <section id="section-2">
+      <h2>二、数电票时代：发票怎么开</h2>
+
+      <h3>什么是数电票</h3>
+      <p><strong>全面数字化的电子发票</strong>。2026年已全覆盖全国新设企业。不再需要税控盘、不再每月清卡——直接在电子税务局开具，全票种电子化。</p>
+
+      <h3>与旧版发票的区别</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>旧版</th>
+            <th>数电票（2026）</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>需购买税控盘（¥200-400）</td>
+            <td>无需任何硬件</td>
+          </tr>
+          <tr>
+            <td>每月需清卡</td>
+            <td>自动同步</td>
+          </tr>
+          <tr>
+            <td>纸质发票，快递给客户</td>
+            <td>PDF/XML发送，秒到</td>
+          </tr>
+          <tr>
+            <td>额度固定，申请提额流程复杂</td>
+            <td>系统根据经营数据动态调整额度</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>额度管理</h3>
+      <p>系统根据经营数据动态调整授信额度：</p>
+      <ul style="list-style: none; margin: 1rem 0; padding: 0;">
+        <li style="padding-left: 1rem; position: relative; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">
+          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; display: inline-block;"></span>
+          <strong>连续6个月稳定开票缴税</strong> → 自动提额
+        </li>
+        <li style="padding-left: 1rem; position: relative; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">
+          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; display: inline-block;"></span>
+          <strong>零申报、社保为零但有大额开票</strong> → 降额或锁票
+        </li>
+        <li style="padding-left: 1rem; position: relative; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">
+          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; display: inline-block;"></span>
+          <strong>每月开票金额稳定</strong> → 额度保持
+        </li>
+      </ul>
+
+      <h3>开票红线（绝对不能碰）</h3>
+      <p>数电票开具后<strong>实时同步至税务数字账户</strong>，申报时自动预填开票金额。开票当月必须如实申报，不能递延确认收入。</p>
+
+      <div class="warning-box">
+        <div class="warning-title">⚠️ 过票、环开、买票冲成本 = 虚开增值税专用发票罪</div>
+        <p>《刑法》第205条。一人公司法定代表人是直接责任人。</p>
+      </div>
+    </section>
+
+    <hr>
+
+    <section id="section-3">
+      <h2>三、日常申报：月/季/年做什么</h2>
+
+      <h3>OPC税务日历</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>周期</th>
+            <th>事项</th>
+            <th>时间</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>每月</td>
+            <td>个人所得税</td>
+            <td>次月15日前</td>
+            <td>法人工资申报，零收入也做零申报</td>
+          </tr>
+          <tr>
+            <td>每季</td>
+            <td>增值税 + 企业所得税预缴</td>
+            <td>1/4/7/10月的15日前</td>
+            <td>小规模按季度申报增值税</td>
+          </tr>
+          <tr>
+            <td>每年1-5月</td>
+            <td>企业所得税汇算清缴</td>
+            <td>5月31日前</td>
+            <td>多退少补，无论盈亏都要申报</td>
+          </tr>
+          <tr>
+            <td>每年3-6月</td>
+            <td>工商年报</td>
+            <td>6月30日前</td>
+            <td>公示出资、资产负债等（不属于税务但同期必做）</td>
+          </tr>
+          <tr>
+            <td>每年5月</td>
+            <td>个税综合所得汇算</td>
+            <td>6月30日前</td>
+            <td>个人年度汇算（法人作为个人）</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>零申报注意事项</h3>
+      <p>没有收入也要做零申报。连续6个月零申报会触发系统预警，可能被认定为"非正常户"——建议即使没有业务，每季度至少有一次小额开票记录。</p>
+
+      <h3>在线申报入口</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>地区</th>
+            <th>地址</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>全国统一</td>
+            <td><a href="https://12366.chinatax.gov.cn" target="_blank" rel="noopener">国家税务总局12366纳税服务平台</a></td>
+          </tr>
+          <tr>
+            <td>各省电子税务局</td>
+            <td>搜索"XX省电子税务局"（各省域名不同）</td>
+          </tr>
+          <tr>
+            <td>自然人电子税务局</td>
+            <td><a href="https://etax.chinatax.gov.cn" target="_blank" rel="noopener">etax.chinatax.gov.cn</a>（个税申报）</td>
+          </tr>
+          <tr>
+            <td>个人所得税APP</td>
+            <td>各应用商店搜索"个人所得税"</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <hr>
+
+    <section id="section-4">
+      <h2>四、核心税收优惠：OPC能省多少税</h2>
+
+      <h3>小微企业所得税优惠（执行至2027年12月31日）</h3>
+      <blockquote>年应纳税所得额 ≤ 300万元部分，减按25%计入应纳税所得额，按20%税率缴纳。</blockquote>
+      <p style="color: var(--text-primary); margin-bottom: 1rem;">翻译：<strong>实际税负仅5%。</strong></p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>年利润</th>
+            <th>企业所得税</th>
+            <th>税后利润</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>10万</td>
+            <td>¥5,000</td>
+            <td>¥95,000</td>
+          </tr>
+          <tr>
+            <td>50万</td>
+            <td>¥25,000</td>
+            <td>¥475,000</td>
+          </tr>
+          <tr>
+            <td>100万</td>
+            <td>¥50,000</td>
+            <td>¥950,000</td>
+          </tr>
+          <tr>
+            <td>200万</td>
+            <td>¥100,000</td>
+            <td>¥1,900,000</td>
+          </tr>
+          <tr>
+            <td>300万</td>
+            <td>¥150,000</td>
+            <td>¥2,850,000</td>
+          </tr>
+          <tr>
+            <td><strong>301万</strong></td>
+            <td><strong>¥752,500</strong></td>
+            <td><strong>¥2,257,500</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="warning-box">
+        <div class="warning-title">⚠️ 300万断崖式跳涨</div>
+        <p>注意最后一行：300万以下5%，超过300万<strong>全额按25%</strong>。299.9万 → 300.1万，税负从15万跳到75万。这是OPC年底最重要的筹划节点。</p>
+      </div>
+
+      <h3>个体工商户减半征收（执行至2027年12月31日）</h3>
+      <blockquote>年应纳税所得额 ≤ 200万元的部分，减半征收个人所得税。</blockquote>
+
+      <table>
+        <thead>
+          <tr>
+            <th>年利润</th>
+            <th>实际税率</th>
+            <th>税额</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>10万</td>
+            <td>~5%</td>
+            <td>~¥5,000</td>
+          </tr>
+          <tr>
+            <td>50万</td>
+            <td>~12%</td>
+            <td>~¥60,000</td>
+          </tr>
+          <tr>
+            <td>100万</td>
+            <td>~14.2%</td>
+            <td>~¥142,000</td>
+          </tr>
+          <tr>
+            <td>200万</td>
+            <td>~15.86%</td>
+            <td>~¥317,000</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>增值税小规模纳税人优惠</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>条件</th>
+            <th>优惠</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>月销售额 ≤ 10万（季 ≤ 30万）</td>
+            <td><strong>免征增值税</strong></td>
+          </tr>
+          <tr>
+            <td>月销售额 > 10万</td>
+            <td>减按<strong>1%</strong>征收率</td>
+          </tr>
+          <tr>
+            <td>适用期间</td>
+            <td>长期有效（政策持续延续）</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>六税两费减半</h3>
+      <p>资源税、城市维护建设税、房产税、城镇土地使用税、印花税、耕地占用税及教育费附加、地方教育附加——<strong>全部减半征收</strong>。执行至2027年12月31日。</p>
+    </section>
+
+    <hr>
+
+    <section id="section-5">
+      <h2>五、年度税务筹划：合法省税实操</h2>
+
+      <h3>筹划起点：主体形式对了吗？</h3>
+      <p>在考虑具体操作之前，先确认一件事：你当前的主体形式（个体户/有限公司）在未来12-18个月是否依然最优。</p>
+
+      <p><strong>决策口诀：</strong></p>
+      <table>
+        <thead>
+          <tr>
+            <th>年净利润</th>
+            <th>最优主体</th>
+            <th>理由</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>≤ 30万</td>
+            <td>个体户</td>
+            <td>实际税率1%-3%，无需强制社保</td>
+          </tr>
+          <tr>
+            <td>50-300万（不分红）</td>
+            <td>有限公司</td>
+            <td>仅5%企业所得税，分红税可递延</td>
+          </tr>
+          <tr>
+            <td>50-300万（全分红）</td>
+            <td>个体户</td>
+            <td>综合税负更低</td>
+          </tr>
+          <tr>
+            <td>> 300万</td>
+            <td>业务分拆或转个体户</td>
+            <td>避开有限公司25%全额税率</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>核心策略一：工资+分红的最优配比</h3>
+      <p>你从公司拿钱只有两条合规路径：工资，或者分红。</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>路径</th>
+            <th>税负</th>
+            <th>优势</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>工资</strong></td>
+            <td>个税3%-45%累进</td>
+            <td>可抵扣企业所得税，构建社保权益</td>
+          </tr>
+          <tr>
+            <td><strong>分红</strong></td>
+            <td>5%企税 + 20%个税 = 综合24%</td>
+            <td>利润可留存公司滚动发展</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>2026年推荐方案：</strong>月工资设<strong>¥12,000</strong>作为锚点（年14.4万），覆盖基本扣除和社保。年底根据实际利润开"一人股东会"，形成书面分红决议后再提取。</p>
+
+      <h3>核心策略二：个人资源合规转化为企业成本</h3>
+      <p>这是OPC的独特优势——你既是老板又是员工，个人资产与公司天然高度关联。</p>
+
+      <div class="step-block">
+        <h4>① 私车公用</h4>
+        <p>签订《私车公用租赁协议》，约定租金（¥500-2000/月区间较合理）。公司支付租金后，油费、过路费、停车费可合规入账。月租金≤10万免增值税。</p>
+      </div>
+
+      <div class="step-block">
+        <h4>② 个人房产办公</h4>
+        <p>签订房屋租赁协议，按实际办公面积比例列支。假设月租金¥5000，30%用于办公——公司月付¥1500，年入账成本¥18000。住房出租按10%税率计税，远低于20%分红税率。</p>
+      </div>
+
+      <div class="step-block">
+        <h4>③ 无形资产授权</h4>
+        <p>如果你有软件著作权、商标、专利——授权给公司使用，收取使用费。公司支付使用费→减少应税所得→减少企业所得税。个人收到的使用费按特许权使用费计税（3%-8%），远低于20%分红税率。</p>
+      </div>
+
+      <h3>核心策略三：年底利润压线方案</h3>
+      <p>12月前预估全年利润。如果接近300万阈值：</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>方法</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>加速折旧</strong></td>
+            <td>12月31日前采购设备（≤500万），一次性税前扣除</td>
+          </tr>
+          <tr>
+            <td><strong>公益捐赠</strong></td>
+            <td>利润总额12%以内可税前扣除</td>
+          </tr>
+          <tr>
+            <td><strong>预付费用</strong></td>
+            <td>预付下年房租、物业费、软件年费</td>
+          </tr>
+          <tr>
+            <td><strong>工资奖金</strong></td>
+            <td>12月给自己发年终奖（在次年汇算前发放即算当年成本）</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>两大致命陷阱</h3>
+
+      <div class="warning-box">
+        <div class="warning-title">陷阱①</div>
+        <p>12月31日"其他应收款-股东借款"科目如有余额 → 视同分红，补缴20%个税。每年12月31日前必须彻底清理。</p>
+      </div>
+
+      <div class="warning-box">
+        <div class="warning-title">陷阱②</div>
+        <p>公私账户混同。个人微信/支付宝长期收取公司款项 → 金税四期直接触发预警。</p>
+      </div>
+    </section>
+
+    <hr>
+
+    <section id="section-6">
+      <h2>六、代理记账：自己报还是找人报</h2>
+
+      <h3>三种方案对比</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>方案</th>
+            <th>月成本</th>
+            <th>适合</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>自己报</strong></td>
+            <td>¥0 + 大量时间</td>
+            <td>有时间、有兴趣、业务极简</td>
+          </tr>
+          <tr>
+            <td><strong>代理记账公司</strong></td>
+            <td>¥200-400/月</td>
+            <td>绝大多数OPC的推荐方案</td>
+          </tr>
+          <tr>
+            <td><strong>兼职会计</strong></td>
+            <td>¥500-1000/月</td>
+            <td>业务较复杂，需要面对面沟通</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>OPC推荐：代理记账</h3>
+      <p>理由：</p>
+      <ul style="list-style: none; margin: 1rem 0; padding: 0;">
+        <li style="padding-left: 1rem; position: relative; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">
+          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; display: inline-block;"></span>
+          ¥200-400/月 = 每年¥2400-4800，是最低成本的合规保险
+        </li>
+        <li style="padding-left: 1rem; position: relative; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">
+          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; display: inline-block;"></span>
+          申报错误的责任由代账公司承担（签合同约定）
+        </li>
+        <li style="padding-left: 1rem; position: relative; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">
+          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; display: inline-block;"></span>
+          代账公司熟悉最新政策变化，不需要你自己追
+        </li>
+      </ul>
+
+      <h3>选择代账公司的要点</h3>
+      <ol style="margin: 1rem 0; padding-left: 1.5rem; color: var(--text-secondary); font-size: 0.875rem;">
+        <li>有《代理记账许可证》</li>
+        <li>合同明确"因代账公司原因导致的税务罚款由其承担"</li>
+        <li>每月主动汇报申报结果（不要那种只收钱不沟通的）</li>
+        <li>年底能做一次税务健康检查</li>
+      </ol>
+    </section>
+
+    <hr>
+
+    <section id="section-7">
+      <h2>七、成本票合规获取</h2>
+
+      <h3>常见成本票类型</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>支出</th>
+            <th>如何获取合规凭证</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>房租</strong></td>
+            <td>房东去税务局代开租金发票（月租金≤10万免增值税）</td>
+          </tr>
+          <tr>
+            <td><strong>外包/自由职业者</strong></td>
+            <td>对方去税务局代开劳务发票</td>
+          </tr>
+          <tr>
+            <td><strong>小额采购</strong></td>
+            <td>≤¥500/次可用收据（载明姓名、身份证号、项目、金额）</td>
+          </tr>
+          <tr>
+            <td><strong>差旅</strong></td>
+            <td>火车票/机票+住宿发票（2026年数电票自动归集）</td>
+          </tr>
+          <tr>
+            <td><strong>软件/服务器</strong></td>
+            <td>电子发票，自动同步至税务数字账户</td>
+          </tr>
+          <tr>
+            <td><strong>办公用品/设备</strong></td>
+            <td>京东/淘宝企业购，发票自动同步</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>红线</h3>
+      <ul style="list-style: none; margin: 1rem 0; padding: 0;">
+        <li style="padding-left: 1rem; position: relative; margin-bottom: 0.5rem; color: var(--accent); font-size: 0.875rem;">
+          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; display: inline-block;"></span>
+          买票冲成本 → 虚开增值税发票罪
+        </li>
+        <li style="padding-left: 1rem; position: relative; margin-bottom: 0.5rem; color: var(--accent); font-size: 0.875rem;">
+          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; display: inline-block;"></span>
+          虚构员工工资 → 个税和企业所得税双重追缴
+        </li>
+        <li style="padding-left: 1rem; position: relative; margin-bottom: 0.5rem; color: var(--accent); font-size: 0.875rem;">
+          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; display: inline-block;"></span>
+          个人消费开公司发票 → 金税四期自动比对
+        </li>
+      </ul>
+    </section>
+
+    <hr>
+
+    <section id="section-summary">
+      <h2>总纲</h2>
+      <p><strong>OPC税务四层结构：</strong></p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>层级</th>
+            <th>频率</th>
+            <th>核心</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>报到</strong></td>
+            <td>一次（注册30天内）</td>
+            <td>税种认定、数电票开通</td>
+          </tr>
+          <tr>
+            <td><strong>申报</strong></td>
+            <td>月/季</td>
+            <td>增值税、个税、企税预缴，零收入也做零申报</td>
+          </tr>
+          <tr>
+            <td><strong>汇算</strong></td>
+            <td>年</td>
+            <td>企业所得税年度汇算、个税综合所得汇算</td>
+          </tr>
+          <tr>
+            <td><strong>筹划</strong></td>
+            <td>年（12月前）</td>
+            <td>利润压线、工资分红配比、成本票查漏补缺</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <blockquote>税务合规是OPC最低成本的风险管理。金税四期下的原则很简单：<strong>每一笔进出对公账户的钱，都有对应的合同、发票或银行回单。</strong> 做不到这一条，有限责任保护伞等于没有。</blockquote>
+    </section>
+
+    <hr>
+
+    <section id="section-appendix">
+      <h2>附录：税务线上办理链接汇总</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>事项</th>
+            <th>官方地址</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>国家税务总局12366平台</td>
+            <td><a href="https://12366.chinatax.gov.cn" target="_blank" rel="noopener">https://12366.chinatax.gov.cn</a></td>
+          </tr>
+          <tr>
+            <td>自然人电子税务局（个税）</td>
+            <td><a href="https://etax.chinatax.gov.cn" target="_blank" rel="noopener">https://etax.chinatax.gov.cn</a></td>
+          </tr>
+          <tr>
+            <td>个人所得税APP</td>
+            <td>各应用商店搜索"个人所得税"</td>
+          </tr>
+          <tr>
+            <td>全国增值税发票查验平台</td>
+            <td><a href="https://inv-veri.chinatax.gov.cn" target="_blank" rel="noopener">https://inv-veri.chinatax.gov.cn</a></td>
+          </tr>
+          <tr>
+            <td>电子营业执照小程序</td>
+            <td>微信/支付宝搜索"电子营业执照"</td>
+          </tr>
+          <tr>
+            <td>各省电子税务局</td>
+            <td>搜索"XX省/市 电子税务局"</td>
+          </tr>
+          <tr>
+            <td>小微企业优惠查询</td>
+            <td><a href="https://www.chinatax.gov.cn/chinatax/n810341/n810755/index.html" target="_blank" rel="noopener">国家税务总局·政策法规库</a></td>
+          </tr>
+          <tr>
+            <td>纳税信用等级查询</td>
+            <td>各省电子税务局 → 纳税信用</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <p class="last-revised">最后修订：2026年5月9日</p>
+  </main>
+</div>
+
+<!-- Fixed Bottom Navigation -->
+<nav class="fixed-bottom-nav">
+  <a href="/nodes/44-social-security/" class="nav-btn" id="prev-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+    <span class="nav-label">社保·公积金</span>
+  </a>
+  <span class="nav-indicator">45 / 50</span>
+  <a href="/nodes/46-annual-review/" class="nav-btn" id="next-btn">
+    <span class="nav-label">工商年报</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M5 12h14M12 5l7 7-7 7"/>
+    </svg>
+  </a>
+</nav>
+
+<script>
+// Scroll spy and smooth scroll
+document.addEventListener('DOMContentLoaded', function() {
+  const tocLinks = document.querySelectorAll('.toc-link');
+  const sections = document.querySelectorAll('section[id]');
+
+  // Smooth scroll on TOC click
+  tocLinks.forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').substring(1);
+      const target = document.getElementById(targetId);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // Scroll spy
+  function updateActiveLink() {
+    const scrollPos = window.scrollY + window.innerHeight / 3;
+
+    let currentSection = null;
+    sections.forEach(function(section) {
+      if (section.offsetTop <= scrollPos) {
+        currentSection = section.id;
+      }
+    });
+
+    tocLinks.forEach(function(link) {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === '#' + currentSection) {
+        link.classList.add('active');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveLink);
+  updateActiveLink();
+});
+</script>
+
 </body>
 </html>
