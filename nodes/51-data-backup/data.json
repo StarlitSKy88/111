@@ -1,0 +1,12 @@
+{
+  "id": 51,
+  "slug": "data-backup",
+  "title": "数据备份与恢复",
+  "phase": "并行支撑层",
+  "difficulty": "进阶",
+  "category": "核心必做",
+  "summary": "OPC的数据命脉——自动备份+异地备份+恢复演练",
+  "content": "",
+  "created_at": "2026-05-09T00:00:00Z",
+  "updated_at": "2026-05-09T00:00:00Z"
+}

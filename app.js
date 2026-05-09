@@ -193,6 +193,7 @@ async function submitForAnalysis() {
     }
 
     state.results = await response.json();
+    localStorage.setItem("opc_result_id", state.results.id);
   } catch (error) {
     if (error.name === 'AbortError') {
       state.error = '请求超时，请稍后再试';
@@ -202,6 +203,7 @@ async function submitForAnalysis() {
       state.error = error.message || '分析失败';
     }
     state.results = generateMockResults();
+    localStorage.setItem("opc_result_id", state.results.id);
   }
 
   state.loading = false;
@@ -1058,54 +1060,55 @@ async function loadNodes() {
 }
 
 // OPC 阶段分组 - Ma 设计：单色系 + 描述文字
+// 57节点七阶段 + 并行支撑体系
 const PHASES = [
   {
-    percent: '10%',
-    title: '创业准备',
-    description: '评估自我，认识创业的本质',
-    nodes: [1, 2, 3]
+    percent: '18%',
+    title: '产品验证与准备',
+    description: '想法筛选，原型设计，MVP定义',
+    nodes: [1, 2, 3, 4, 5, 6]
   },
   {
-    percent: '25%',
-    title: '基石搭建',
-    description: '选定方向，完成基础设施',
-    nodes: [4, 5, 6, 7, 8]
+    percent: '28%',
+    title: '环境搭建与Hello World',
+    description: '开发环境，Git版本控制，后端连接',
+    nodes: [7, 8, 9, 10]
   },
   {
-    percent: '40%',
-    title: '合规与支付',
-    description: '合法合规经营，收钱是根本',
-    nodes: [9, 10, 11, 12, 13]
+    percent: '42%',
+    title: '核心功能开发',
+    description: '认证系统，三大核心功能，支付集成',
+    nodes: [11, 12, 13, 14, 15, 16, 17]
   },
   {
-    percent: '55%',
-    title: '运营基础',
-    description: '财务与定价，生存的保障',
-    nodes: [14, 15, 16, 17]
-  },
-  {
-    percent: '70%',
-    title: '获客增长',
-    description: '从0到1，获取第一批客户',
+    percent: '50%',
+    title: '测试与修复',
+    description: '自测流程，灰度测试，Bug修复，性能优化',
     nodes: [18, 19, 20, 21]
   },
   {
-    percent: '85%',
-    title: '规模化',
-    description: '扩大规模，建立壁垒',
+    percent: '64%',
+    title: '上线准备',
+    description: '内容填充，公司注册，域名ICP，网站部署',
     nodes: [22, 23, 24, 25, 26, 27]
   },
   {
-    percent: '95%',
-    title: '保障体系',
-    description: '安全与保障，长期发展',
-    nodes: [28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38]
+    percent: '74%',
+    title: '正式上线',
+    description: '提交审核，审核问题处理，正式发布',
+    nodes: [28, 29, 30]
   },
   {
-    percent: '99%',
-    title: '最终阶段',
-    description: '政府补贴与客户关系，登顶之路',
-    nodes: [39, 40]
+    percent: '100%',
+    title: '上线后迭代与运营',
+    description: '数据分析，冷启动，内容营销，定价策略',
+    nodes: [31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43]
+  },
+  {
+    percent: '⚓',
+    title: '并行支撑层',
+    description: '银行税务，企业邮箱，商标版权，安全合规',
+    nodes: [44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57]
   },
 ];
 
@@ -1360,10 +1363,23 @@ function openAuthModal(mode) {
 }
 
 function closeAuthModal() {
-  const modal = document.getElementById('auth-modal');
-  modal.classList.add('hidden');
+  const authModal = document.getElementById('auth-modal');
+  if (authModal) authModal.classList.add('hidden');
+  const subModal = document.getElementById('subscription-modal');
+  if (subModal) subModal.classList.add('hidden');
+  const nodeModal = document.getElementById('node-modal');
+  if (nodeModal) nodeModal.classList.add('hidden');
   document.body.style.overflow = '';
   state.authMode = 'login';
+}
+
+// 关闭所有模态框
+function closeAllModals() {
+  ['auth-modal','subscription-modal','node-modal'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.add('hidden');
+  });
+  document.body.style.overflow = '';
 }
 
 function renderAuthForm() {
@@ -1493,8 +1509,15 @@ async function handleAuthSubmit(event) {
     localStorage.setItem('opc_username', username);
     localStorage.setItem('opc_role', role);
 
-    closeAuthModal();
+    closeAllModals();
     renderAuthSection();
+
+    // 恢复登录前的节点访问意图
+    const pendingNodeId = state._pendingNodeId;
+    if (pendingNodeId) {
+      state._pendingNodeId = null;
+      setTimeout(() => openNodeModalWithAccess(pendingNodeId), 200);
+    }
 
   } catch (error) {
     errorEl.textContent = error.message;
@@ -1532,9 +1555,7 @@ function openSubscriptionModal() {
 }
 
 function closeSubscriptionModal() {
-  const modal = document.getElementById('subscription-modal');
-  modal.classList.add('hidden');
-  document.body.style.overflow = '';
+  closeAllModals();
   state.selectedPlan = null;
 }
 
@@ -1574,11 +1595,21 @@ async function confirmSubscription() {
     startDate: new Date().toISOString()
   };
   localStorage.setItem('opc_subscription', JSON.stringify(state.subscription));
+  state.user.role = 'paid';
+  localStorage.setItem('opc_role', 'paid');
 
   closeSubscriptionModal();
+  renderAuthSection();
 
-  // 提示成功并刷新节点
+  // 提示成功
   showToast('订阅成功！开始探索全部节点');
+
+  // 订阅后恢复节点意图
+  const pendingNodeId = state._pendingNodeId;
+  if (pendingNodeId) {
+    state._pendingNodeId = null;
+    setTimeout(() => openNodeModalWithAccess(pendingNodeId), 200);
+  }
 }
 
 function showToast(message) {
@@ -1640,7 +1671,9 @@ function openNodeModalWithAccess(nodeId) {
     return true;
   }
 
-  // 根据原因引导用户
+  // 保存意图，登录/订阅后恢复
+  state._pendingNodeId = nodeId;
+
   if (access.reason === 'login_required') {
     openAuthModal('login');
   } else if (access.reason === 'subscription_required') {
@@ -1657,6 +1690,9 @@ function openNodeModal(nodeId) {
     doOpenNodeModal(nodeId);
     return;
   }
+
+  // 保存意图
+  state._pendingNodeId = nodeId;
 
   if (access.reason === 'login_required') {
     openAuthModal('login');

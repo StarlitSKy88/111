@@ -1,0 +1,12 @@
+{
+  "id": 16,
+  "slug": "payment-code",
+  "title": "支付代码集成",
+  "phase": "核心功能开发",
+  "difficulty": "进阶",
+  "category": "核心必做",
+  "summary": "Stripe/微信支付/支付宝——测试环境先跑通一分钱",
+  "content": "",
+  "created_at": "2026-05-09T00:00:00Z",
+  "updated_at": "2026-05-09T00:00:00Z"
+}

@@ -1,0 +1,30 @@
+{
+  "task_id": "task-merge-01",
+  "category": "merge",
+  "status": "pending",
+  "description": "合并原05(AI编码工具选型) + 原07(核心技术验证) → 新06(技术选型·零基础专属)",
+  "source_nodes": [
+    "原05-ai-tools",
+    "原07-tech-validation"
+  ],
+  "target_node": "新06",
+  "merged_definition": "OPC零基础技术选型决策指南：上半部分讲三平台(Web/小程序/App)方向怎么选+Supabase为什么是后端正解，下半部分讲选好方向后用什么AI工具配合。",
+  "outline": [
+    "一、三平台方向决策：Web vs 小程序 vs App 对比表",
+    "二、后端正解 Supabase：为什么OPC不需要自己搭服务器",
+    "三、AI编码工具矩阵（2026年5月）：Cursor / GitHub Copilot / Claude Code / Lovable / Windsurf 对比",
+    "四、不同技术背景的三条工具路径（零基础 / 会一点 / 经验者）",
+    "五、技术可行性验证（原07核心内容保留）",
+    "六、工具订阅成本控制策略",
+    "七、工具绑定风险与迁移预案"
+  ],
+  "verification": [
+    "原05核心内容完整迁移（AI工具对比表 + 三条路径）",
+    "原07核心内容完整保留（技术栈验证清单）",
+    "三平台对比表有具体学习曲线/成本/时间估算",
+    "Supabase推荐理由有免费额度/功能/限制具体数据",
+    "AI工具对比更新至2026年5月（价格/功能/方案名称）",
+    "无2024/2025年份残留（除历史引用注明外）"
+  ],
+  "dependencies": []
+}

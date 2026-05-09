@@ -1,0 +1,24 @@
+{
+  "task_id": "task-new-04",
+  "category": "new",
+  "status": "completed",
+  "node_number": "09",
+  "node_name": "Git版本控制初始化",
+  "stage": "第二阶段",
+  "definition": "OPC用最简方式管理代码版本：只学main分支+feature分支，推荐GitHub Desktop可视化方案。",
+  "outline": [
+    "一、Git是什么（用一句话讲清，不超过30字）",
+    "二、GitHub注册→创建仓库→安装Git→配置用户名/邮箱（4步）",
+    "三、首次提交三步：git init → git add . → git commit -m 'Hello World'",
+    "四、分支策略（OPC只需要知道两个：main永远可运行 / feature开发新功能）",
+    "五、GitHub Desktop替代命令行方案（适合完全不想碰终端的OPC）",
+    "六、提交节奏：每完成一个功能就提交一次·commit message规范"
+  ],
+  "verification": [
+    "命令可复制执行",
+    "分支策略足够简单（不是企业级Git Flow）",
+    "GitHub Desktop操作步骤可复现",
+    "commit message规范给模板而非理论",
+    "全程无Git内部原理讲解"
+  ]
+}

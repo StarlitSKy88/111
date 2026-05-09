@@ -1,0 +1,12 @@
+{
+  "id": 11,
+  "slug": "auth-system",
+  "title": "用户认证系统",
+  "phase": "核心功能开发",
+  "difficulty": "入门",
+  "category": "核心必做",
+  "summary": "实现用户名+密码注册登录，Supabase一键搞定认证",
+  "content": "",
+  "created_at": "2026-05-09T00:00:00Z",
+  "updated_at": "2026-05-09T00:00:00Z"
+}

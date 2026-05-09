@@ -1,0 +1,12 @@
+{
+  "id": 7,
+  "slug": "dev-environment",
+  "title": "开发环境安装",
+  "phase": "环境搭建与Hello World",
+  "difficulty": "入门",
+  "category": "核心必做",
+  "summary": "零基础安装VS Code、Node.js、Git，全部让AI生成命令",
+  "content": "",
+  "created_at": "2026-05-09T00:00:00Z",
+  "updated_at": "2026-05-09T00:00:00Z"
+}

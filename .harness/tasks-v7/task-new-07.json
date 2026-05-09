@@ -1,0 +1,23 @@
+{
+  "task_id": "task-new-07",
+  "category": "new",
+  "status": "pending",
+  "node_number": "13",
+  "node_name": "核心功能2开发",
+  "stage": "第三阶段",
+  "definition": "实现第二个核心功能，核心难点是和数据/页面和功能1联动。",
+  "outline": [
+    "一、跨功能联动的关键问题：数据共享 + 页面跳转 + 状态保持",
+    "二、从功能1页面跳到功能2页面的代码模板（AI prompt）",
+    "三、数据在功能间共享的Supabase方案",
+    "四、功能2完成标志与验证方法",
+    "五、功能1+功能2联合测试",
+    "六、git commit"
+  ],
+  "verification": [
+    "跨页面跳转方案可直接使用",
+    "数据共享方案正确（Supabase session/url参数）",
+    "联合测试有具体步骤",
+    "全篇强调'联动'这个新增难点"
+  ]
+}

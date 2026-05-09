@@ -1,0 +1,12 @@
+{
+  "id": 10,
+  "slug": "backend-connect",
+  "title": "后端CRUD连接测试",
+  "phase": "环境搭建与Hello World",
+  "difficulty": "入门",
+  "category": "核心必做",
+  "summary": "注册Supabase，完成增删改查四步测试，确认前后端通了",
+  "content": "",
+  "created_at": "2026-05-09T00:00:00Z",
+  "updated_at": "2026-05-09T00:00:00Z"
+}

@@ -341,6 +341,189 @@ function generateMockResults() {
   };
 }
 
+
+
+// ========== 节点02辅助函数 ==========
+
+const ASSESSMENT_SYSTEM_PROMPT = `你是一个面向OPC（一人公司/独立开发者）的创业教练。你的任务是根据用户的OPC适配测试结果和四维度个人盘点数据，生成一份个性化评估报告。
+
+报告格式（严格按此结构返回）：
+
+## 总体评估
+[50字以内，结合测试分数和四维度数据给出总体判断]
+
+## 优势维度
+[列出得分最高的1-2个维度，说明为什么这些是你的核心竞争力]
+
+## 风险维度
+[列出得分最低的1-2个维度，说明如果不解决会导致什么问题]
+
+## 推荐方向
+[基于你的测评画像，推荐3个适合的OPC创业方向，每个方向一句话说清核心逻辑]
+
+## 第一步行动
+[本周就应该做的1件具体的事]
+
+## 需要警惕的陷阱
+[你这个画像最容易犯的1个错误]`;
+
+function buildPrompt(testResult, profile) {
+  const skills = profile.skills || {};
+  const finance = profile.finance || {};
+  const time = profile.time || {};
+  const network = profile.network || {};
+
+  return `用户OPC适配测试结果：
+- 得分：${testResult.fit_score}/100
+- 等级：${testResult.fit_level}
+
+用户四维度盘点数据：
+【技能维度】
+- 自评得分：${skills.score || '未填写'}/5
+- 擅长领域：${skills.strengths || '未填写'}
+- 待提升领域：${skills.weaknesses || '未填写'}
+
+【资金维度】
+- 自评得分：${finance.score || '未填写'}/5
+- 当前存款：${finance.savings || '未填写'}
+- 月生活成本：${finance.monthlyCost || '未填写'}
+- 能坚持不盈利：${finance.runway || '未填写'}个月
+- 其他收入来源：${finance.otherIncome || '无'}
+
+【时间维度】
+- 自评得分：${time.score || '未填写'}/5
+- 当前状态：${time.status || '未填写'}
+- 每周可投入：${time.weeklyHours || '未填写'}小时
+- 能坚持的时长：${time.duration || '未填写'}
+
+【人脉维度】
+- 自评得分：${network.score || '未填写'}/5
+- 可聊想法的人数：${network.brainstormCount || '未填写'}
+- 潜在种子用户数：${network.seedUsers || '未填写'}
+- 所在社群：${network.communities || '无'}
+
+请根据以上数据生成个性化评估报告。注意：如果某项数据是"未填写"，不要评论该维度。`;
+}
+
+function templateReport(testResult, profile) {
+  const skills = profile.skills || {};
+  const finance = profile.finance || {};
+  const time = profile.time || {};
+  const network = profile.network || {};
+
+  const totalScore = parseInt(skills.score || 3) + parseInt(finance.score || 3) + parseInt(time.score || 3) + parseInt(network.score || 3);
+  const level = totalScore >= 16 ? '可以起步了' : totalScore >= 11 ? '可以起步但要控制风险' : totalScore >= 6 ? '先补齐短板再启动' : '先积累再想创业';
+
+  return {
+    overall: `OPC适配测试 ${testResult.fit_score} 分（${testResult.fit_level}），四维度综合评估：${level}。`,
+    strengths: [skills.score >= 4 ? `技能维度得分 ${skills.score}/5，是你的核心竞争力` : `技能维度还有提升空间（${skills.score}/5）`].filter(Boolean),
+    risks: [
+      parseInt(finance.score) <= 3 ? `资金维度仅 ${finance.score}/5，存款${finance.savings || '未知'}，单月成本${finance.monthlyCost || '未知'}，建议保持主业直到资金缓冲≥9个月` : null,
+      parseInt(network.score) <= 3 ? `人脉维度仅 ${network.score}/5，种子用户${network.seedUsers || '未知'}，建议先加入OPC创业者社群积累初始关系` : null,
+    ].filter(Boolean),
+    directions: [
+      parseInt(skills.score) >= 4 ? '技术型产品（工具/SaaS/模板）：你的技能优势可以快速做出MVP' : '内容型产品（课程/咨询/社区）：轻资产、低技术门槛、快速验证',
+      parseInt(finance.score) >= 4 ? '服务型产品（咨询/代运营/设计）：高客单价、现金回流快' : '轻资产项目（自媒体/affiliate/模板销售）：零启动成本',
+      'AI增强型产品：利用AI工具补充你的技能短板，一人能力边界大幅拓展',
+    ],
+    firstStep: parseInt(skills.score) <= 3 ? '花2周时间学会用AI生成一个可运行的网页' : '用节点03的用户调研方法找到10个目标用户做访谈',
+    trap: parseInt(finance.score) <= 2 ? '资金链断裂是你最大的风险，切忌辞职创业' : '完美主义是你最大的敌人，先上线一个不完美的版本',
+  };
+}
+
+function parseReport(analysis, testResult, profile) {
+  // 从AI返回中提取结构化数据（改用简单split避免跨行正则问题）
+  const lines = analysis.split('\n').filter(l => l.trim());
+  let section = 'overall';
+  const sections = { overall: [], strengths: [], risks: [], directions: [], firstStep: [], trap: [] };
+
+  for (const line of lines) {
+    const l = line.trim();
+    if (l.includes('总体评估')) { section = 'overall'; continue; }
+    if (l.includes('优势维度')) { section = 'strengths'; continue; }
+    if (l.includes('风险维度')) { section = 'risks'; continue; }
+    if (l.includes('推荐方向')) { section = 'directions'; continue; }
+    if (l.includes('第一步行动') || l.includes('第一步')) { section = 'firstStep'; continue; }
+    if (l.includes('需要警惕') || l.includes('陷阱')) { section = 'trap'; continue; }
+    if (l.startsWith('##') || l.startsWith('- ')) {
+      sections[section].push(l.replace(/^[-#* ]+/, '').trim());
+    } else if (l) {
+      sections[section].push(l);
+    }
+  }
+
+  const overall = sections.overall[0] || '';
+  const firstStep = sections.firstStep[0] || '';
+  const trap = sections.trap[0] || '';
+
+  return {
+    overall: overall || '根据你的测试结果和四维度数据，你适合从轻资产、高客单价的服务型OPC开始。',
+    strengths: strengths.length > 0 ? strengths : ['你对OPC有明确的动机和认知'],
+    risks: risks.length > 0 ? risks : ['资金缓冲不足是你的首要风险'],
+    directions: directions.length > 0 ? directions : ['内容型产品', '服务型产品', 'AI增强型产品'],
+    firstStep: firstStep || '花一周时间完成节点03的用户调研',
+    trap: trap || '不要追求完美——先上线一个最小版本',
+    raw: analysis
+  };
+}
+
+// 暴露 dataStore 的 readResults 和 getResultById 给路由使用
+// readResults reference removed (using getAllResults)
+const getResultById = dataStore.getResultById;
+
+
+// ========== 节点02：个人能力与资源盘点 ==========
+
+// 获取最新的测试结果
+app.get("/api/assessment/latest-result", (req, res) => {
+  const results = dataStore.getAllResults();
+  if (!results || results.length === 0) {
+    return res.status(404).json({ success: false, error: "暂无测试结果，请先完成节点01 OPC适配测试" });
+  }
+  const latest = results[0];
+  res.json({ success: true, data: latest });
+});
+
+// 根据ID获取指定测试结果
+app.get("/api/assessment/result/:id", (req, res) => {
+  const record = dataStore.getResultById(req.params.id);
+  if (!record) {
+    return res.status(404).json({ success: false, error: "未找到该测试结果" });
+  }
+  res.json({ success: true, data: record });
+});
+
+// 生成个性化评估报告（01测试数据 + 02四维度自评）
+app.post("/api/assessment/generate", async (req, res) => {
+  const { resultId, profile } = req.body;
+
+  if (!profile) {
+    return res.status(400).json({ success: false, error: "请完成四维度盘点" });
+  }
+
+  let testResult = null;
+  if (resultId) testResult = dataStore.getResultById(resultId);
+  if (!testResult) testResult = { fit_score: 60, fit_level: "适合", summary: "" };
+
+  if (!process.env.API_KEY) {
+    return res.json({ success: true, source: "template", data: templateReport(testResult, profile) });
+  }
+
+  try {
+    const prompt = buildPrompt(testResult, profile);
+    const analysis = await callAI([
+      { role: "system", content: ASSESSMENT_SYSTEM_PROMPT },
+      { role: "user", content: prompt }
+    ], 2000);
+
+    const report = parseReport(analysis, testResult, profile);
+    res.json({ success: true, source: "ai", data: report });
+  } catch (err) {
+    console.error("评估生成失败:", err.message);
+    res.json({ success: true, source: "template", data: templateReport(testResult, profile) });
+  }
+});
+
 // 健康检查
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });

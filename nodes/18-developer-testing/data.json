@@ -1,0 +1,12 @@
+{
+  "id": 18,
+  "slug": "developer-testing",
+  "title": "开发者自测流程",
+  "phase": "测试与修复",
+  "difficulty": "基础",
+  "category": "核心必做",
+  "summary": "假装自己是不懂的新用户，从头走一遍全部流程并记录所有bug",
+  "content": "",
+  "created_at": "2026-05-09T00:00:00Z",
+  "updated_at": "2026-05-09T00:00:00Z"
+}

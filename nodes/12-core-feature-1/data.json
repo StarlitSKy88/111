@@ -1,0 +1,12 @@
+{
+  "id": 12,
+  "slug": "core-feature-1",
+  "title": "核心功能1开发",
+  "phase": "核心功能开发",
+  "difficulty": "基础",
+  "category": "核心必做",
+  "summary": "Vibecoding主战场——让AI逐页生成代码，实现第一个核心功能",
+  "content": "",
+  "created_at": "2026-05-09T00:00:00Z",
+  "updated_at": "2026-05-09T00:00:00Z"
+}

@@ -1,0 +1,25 @@
+{
+  "task_id": "task-new-02",
+  "category": "new",
+  "status": "completed",
+  "node_number": "07",
+  "node_name": "开发环境安装",
+  "stage": "第二阶段",
+  "definition": "零基础OPC安装开发工具的复制粘贴终极指南——全部让AI生成命令，不要自己去官网找下载链接。",
+  "outline": [
+    "一、安装前确认：操作系统检查（Mac/Windows/Linux）",
+    "二、Web开发三件套：VS Code + Chrome + Node.js（安装+验证命令）",
+    "三、小程序开发：微信开发者工具安装",
+    "四、App开发(可选)：Flutter SDK + Android Studio + Xcode(Mac专属)",
+    "五、三件验证命令（确认所有工具安装成功）",
+    "六、让AI帮你生成安装命令的标准prompt",
+    "七、常见安装踩坑与解决"
+  ],
+  "verification": [
+    "所有命令可复制粘贴直接执行",
+    "版本号标注2026-05（非过时版本号）",
+    "三平台分区清晰不混淆",
+    "踩坑解决基于2026年真实场景",
+    "不要求用户有任何编程基础"
+  ]
+}

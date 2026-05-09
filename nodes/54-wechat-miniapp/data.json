@@ -1,0 +1,12 @@
+{
+  "id": 54,
+  "slug": "wechat-miniapp",
+  "title": "微信小程序部署",
+  "phase": "并行支撑层",
+  "difficulty": "进阶",
+  "category": "扩展可选",
+  "summary": "注册→开发→审核→上架，微信小程序从0到1",
+  "content": "",
+  "created_at": "2026-05-09T00:00:00Z",
+  "updated_at": "2026-05-09T00:00:00Z"
+}

@@ -1,0 +1,12 @@
+{
+  "id": 21,
+  "slug": "performance",
+  "title": "性能基础优化",
+  "phase": "测试与修复",
+  "difficulty": "基础",
+  "category": "核心必做",
+  "summary": "压缩图片、删无用代码、Lighthouse评分>80——不卡就行",
+  "content": "",
+  "created_at": "2026-05-09T00:00:00Z",
+  "updated_at": "2026-05-09T00:00:00Z"
+}

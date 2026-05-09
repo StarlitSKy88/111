@@ -1,0 +1,24 @@
+{
+  "task_id": "task-new-05",
+  "category": "new",
+  "status": "pending",
+  "node_number": "10",
+  "node_name": "后端CRUD连接测试",
+  "stage": "第二阶段",
+  "definition": "OPC连接Supabase完成增删改查四步验证——确保前后端数据链路通了。",
+  "outline": [
+    "一、Supabase是什么（一句话：不需要写后端代码的数据库）",
+    "二、注册→创建项目→获取API Key→创建测试表（users: id/name/created_at）",
+    "三、四步测试（每一步给AI prompt模板）",
+    "四、验证成功标志（Console没有红色 + 数据库里多了数据）",
+    "五、如果连不上：排查清单（API Key → 项目状态 → 网络 → 控制台报错）",
+    "六、成功后的心理锚点：'前后端通了，最难的部分已经过了'"
+  ],
+  "verification": [
+    "Supabase注册步骤与2026年5月界面一致",
+    "API Key获取路径准确",
+    "四个prompt模板可分别复制使用",
+    "排查清单覆盖≥5种常见失败场景",
+    "无数据库理论知识（不讲范式/索引/SQL原理）"
+  ]
+}

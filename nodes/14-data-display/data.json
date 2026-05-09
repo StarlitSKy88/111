@@ -1,0 +1,12 @@
+{
+  "id": 14,
+  "slug": "data-display",
+  "title": "数据展示与交互",
+  "phase": "核心功能开发",
+  "difficulty": "基础",
+  "category": "核心必做",
+  "summary": "列表/详情/表单——三个标准CRUD页面的完整AI prompt模板",
+  "content": "",
+  "created_at": "2026-05-09T00:00:00Z",
+  "updated_at": "2026-05-09T00:00:00Z"
+}
