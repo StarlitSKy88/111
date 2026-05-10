@@ -351,6 +351,68 @@ hr {
   margin-bottom: 1rem;
 }
 
+/* Metrics Dashboard */
+.metrics-dashboard {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.metric-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  transition: border-color 0.3s;
+}
+
+.metric-card:hover {
+  border-color: var(--accent);
+}
+
+.metric-icon {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.5rem;
+  color: var(--accent);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.metric-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.metric-title {
+  font-size: 0.9375rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.metric-desc {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+}
+
+.metric-placeholder {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.875rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.05em;
+}
+
+.metric-target {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.02em;
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .layout {
@@ -360,6 +422,10 @@ hr {
 
   .sidebar-toc {
     display: none;
+  }
+
+  .metrics-dashboard {
+    grid-template-columns: 1fr;
   }
 
   .fixed-bottom-nav {
@@ -419,22 +485,31 @@ hr {
       </table>
 
       <h3>OPC唯一需要盯的三个数</h3>
-      <div class="dashboard-box">
-<pre>┌──────────────────────────────────────────────────────┐
-│                    OPC数据仪表盘                       │
-│                                                      │
-│  ① 日活用户（DAU）  ← 你的产品今天有没有人用          │
-│     今天：___  昨天：___  上周同期：___                │
-│                                                      │
-│  ② 核心功能使用率  ← 用户有没有用到产品的灵魂功能      │
-│     完成率：___%  目标：>60%                          │
-│                                                      │
-│  ③ 留存率  ← 用户用完会不会回来                       │
-│     次日留存：___%  (目标>30%)                        │
-│     7日留存：___%   (目标>15%)                        │
-│     30日留存：___%  (目标>10%)                        │
-│                                                      │
-└──────────────────────────────────────────────────────┘</pre>
+      <div class="metrics-dashboard">
+        <div class="metric-card">
+          <div class="metric-icon">①</div>
+          <div class="metric-content">
+            <div class="metric-title">日活用户（DAU）</div>
+            <div class="metric-desc">你的产品今天有没有人用</div>
+            <div class="metric-placeholder">___ / ___ / ___</div>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon">②</div>
+          <div class="metric-content">
+            <div class="metric-title">核心功能使用率</div>
+            <div class="metric-desc">用户有没有用到产品的灵魂功能</div>
+            <div class="metric-target">目标 &gt;60%</div>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon">③</div>
+          <div class="metric-content">
+            <div class="metric-title">留存率</div>
+            <div class="metric-desc">用户用完会不会回来</div>
+            <div class="metric-target">次日 &gt;30% | 7日 &gt;15% | 30日 &gt;10%</div>
+          </div>
+        </div>
       </div>
 
       <h3>为什么这三个就够了</h3>
