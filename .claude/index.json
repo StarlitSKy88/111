@@ -1,0 +1,101 @@
+{
+  "scan_timestamp": "2026-05-10T12:28:43+08:00",
+  "scan_phase": "B",
+  "project": "OPC节点百科3.0",
+  "description": "OPC（一人公司）创业从0到1的完整节点导航系统",
+  "modules": [
+    {
+      "id": "frontend",
+      "name": "前端展示层",
+      "path": "/",
+      "type": "frontend",
+      "entries": ["index.html", "admin.html", "app.js"],
+      "interfaces": ["Tailwind CDN", "Express static"],
+      "tests": null,
+      "status": "stable"
+    },
+    {
+      "id": "api",
+      "name": "API服务",
+      "path": "/api",
+      "type": "backend",
+      "entries": ["analyze.js"],
+      "interfaces": ["/api/analyze", "/api/admin/results", "/api/stats"],
+      "tests": null,
+      "status": "stable",
+      "dependencies": ["express", "dotenv", "jsonwebtoken", "marked"]
+    },
+    {
+      "id": "data-store",
+      "name": "数据存储层",
+      "path": "/api",
+      "type": "data",
+      "entries": ["data-store.js"],
+      "interfaces": ["readResults", "writeResults", "saveResult", "savePayment"],
+      "tests": null,
+      "status": "stable"
+    },
+    {
+      "id": "nodes-data",
+      "name": "节点数据",
+      "path": "/data",
+      "type": "data",
+      "entries": ["nodes.json", "results.json", "payments.json", "questions.json"],
+      "interfaces": null,
+      "tests": null,
+      "status": "stable"
+    },
+    {
+      "id": "nodes-content",
+      "name": "节点内容页",
+      "path": "/nodes",
+      "type": "content",
+      "entries": ["{id}-{slug}/index.html"],
+      "interfaces": null,
+      "tests": null,
+      "status": "deployed",
+      "note": "57个节点内容页已部署"
+    }
+  ],
+  "coverage": {
+    "estimated_total_files": 100,
+    "scanned_files": 20,
+    "coverage_percentage": 20,
+    "covered_modules": ["frontend", "api", "data-store", "nodes-data"],
+    "partially_covered": ["nodes-content"],
+    "not_covered": []
+  },
+  "gaps": [
+    {
+      "module": "nodes-content",
+      "gap": "仅扫描了01-opc-fit-test节点",
+      "recommendation": "批量扫描剩余56个节点内容页"
+    },
+    {
+      "module": "tests",
+      "gap": "无自动化测试",
+      "recommendation": "添加node tests/app.test.js和api.test.js"
+    }
+  ],
+  "ignored_patterns": [
+    "node_modules/**",
+    ".git/**",
+    "dist/**",
+    "build/**",
+    "*.lock",
+    "*.log",
+    "*.bin",
+    "*.png",
+    "*.jpg",
+    "*.gif",
+    "*.mp4",
+    "*.zip"
+  ],
+  "truncated": true,
+  "truncated_reason": "节点内容页数量众多(57个)，工具调用受限",
+  "next_recommendations": [
+    "扫描剩余56个节点内容页：nodes/02-personal-resources/ 到 nodes/57-*",
+    "查看content-drafts/目录下的草稿内容",
+    "添加自动化测试"
+  ]
+}

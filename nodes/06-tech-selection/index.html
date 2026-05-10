@@ -19,6 +19,15 @@
   --text-tertiary: #4A4744;
   --accent: #C0392B;
   --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -28,8 +37,8 @@ body {
   color: var(--text-primary);
   font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 300;
-  line-height: 2;
-  letter-spacing: 0.03em;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -245,18 +254,30 @@ td, th {
 
 h1 {
   font-family: 'Noto Serif JP', serif;
-  font-size: clamp(2rem, 7vw, 3.5rem);
+  font-size: clamp(48px, 10vw, 96px);
   font-weight: 300;
   letter-spacing: -0.03em;
-  line-height: 1.15;
+  line-height: 0.95;
   color: var(--text-primary);
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--space-xl);
 }
 
+.phase-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+.phase-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+
 .subtitle {
-  font-size: clamp(0.9375rem, 2.5vw, 1.0625rem);
+  font-size: 16px;
   color: var(--text-secondary);
-  max-width: 52ch;
+  max-width: 44ch;
   line-height: 1.8;
 }
 
@@ -308,7 +329,7 @@ h3 {
 
 p {
   color: var(--text-secondary);
-  line-height: 2;
+  line-height: 1.9;
   margin-bottom: 1.25rem;
 }
 
@@ -323,12 +344,6 @@ p {
   color: var(--text-primary);
   font-size: 0.9375rem;
   margin: 0;
-}
-
-.decision-box .icon {
-  color: var(--accent);
-  font-size: 0.75rem;
-  margin-right: 0.5rem;
 }
 
 /* Tables */
@@ -370,10 +385,6 @@ tr:last-child td {
 td:first-child {
   color: var(--text-primary);
   font-weight: 400;
-}
-
-.star {
-  color: var(--accent);
 }
 
 /* Tool Cards */
@@ -640,23 +651,6 @@ td:first-child {
   opacity: 0.3;
   pointer-events: none;
 }
-
-/* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-header, section {
-  animation: fadeIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-}
-
-section:nth-child(2) { animation-delay: 0.1s; }
-section:nth-child(3) { animation-delay: 0.15s; }
-section:nth-child(4) { animation-delay: 0.2s; }
-section:nth-child(5) { animation-delay: 0.25s; }
-section:nth-child(6) { animation-delay: 0.3s; }
-section:nth-child(7) { animation-delay: 0.35s; }
 </style>
 </head>
 <body>
@@ -708,9 +702,9 @@ section:nth-child(7) { animation-delay: 0.35s; }
           <tbody>
             <tr>
               <td>学习曲线</td>
-              <td><span class="star">⭐</span> 最低</td>
-              <td><span class="star">⭐⭐</span> 中等</td>
-              <td><span class="star">⭐⭐⭐</span> 最高</td>
+              <td><strong>最低</strong></td>
+              <td><strong>中等</strong></td>
+              <td><strong>最高</strong></td>
             </tr>
             <tr>
               <td>开发到上线</td>
@@ -753,7 +747,7 @@ section:nth-child(7) { animation-delay: 0.35s; }
       </div>
 
       <div class="decision-box">
-        <p><span class="icon">▶</span><strong>决策口诀：你的用户在哪里，平台就在哪里。</strong></p>
+        <p><strong>决策口诀：你的用户在哪里，平台就在哪里。</strong></p>
       </div>
 
       <p>• 用户通过搜索引擎/社交媒体找到你 → <strong>Web</strong><br>
@@ -1061,7 +1055,7 @@ section:nth-child(7) { animation-delay: 0.35s; }
       </div>
 
       <div class="decision-box">
-        <p><span class="icon">▶</span><strong>如果三条标准全部通过</strong> → 验证通过，可以进入MVP开发<br>
+        <p><strong>如果三条标准全部通过</strong> → 验证通过，可以进入MVP开发<br>
            <strong>有任何一条不过</strong> → 果断终止。沉没成本不是继续的理由。</p>
       </div>
     </section>
@@ -1107,7 +1101,7 @@ section:nth-child(7) { animation-delay: 0.35s; }
       </div>
 
    <div class="decision-box">
-        <p><span class="icon">▶</span><strong>成本红线：</strong>OPC的前六个月，总工具成本控制在 <strong>¥300/月</strong> 以内。超过这个数，说明你可能在为"感觉很厉害"的工具付费，而不是为"真正创造收入"的工具付费。</p>
+        <p><strong>成本红线：</strong>OPC的前六个月，总工具成本控制在 <strong>¥300/月</strong> 以内。超过这个数，说明你可能在为"感觉很厉害"的工具付费，而不是为"真正创造收入"的工具付费。</p>
       </div>
 
       <h3>每季度审查</h3>
@@ -1179,10 +1173,10 @@ section:nth-child(7) { animation-delay: 0.35s; }
             </tr>
           </thead>
           <tbody>
-            <tr><td>Supabase Cloud</td><td>❌ 不稳定</td><td>托管于AWS海外节点，国内访问延迟高、不稳定</td></tr>
-            <tr><td>Vercel</td><td>⚠️ 偶尔可用</td><td>海外CDN，国内部分地区可访问</td></tr>
-            <tr><td>GitHub</td><td>⚠️ 间歇性波动</td><td>代码托管服务存在访问波动，推送/拉取可能中断</td></tr>
-            <tr><td>npm / pip</td><td>⚠️ 速度偏慢</td><td>建议配置国内镜像源</td></tr>
+            <tr><td>Supabase Cloud</td><td>× 不稳定</td><td>托管于AWS海外节点，国内访问延迟高、不稳定</td></tr>
+            <tr><td>Vercel</td><td>⚠ 偶尔可用</td><td>海外CDN，国内部分地区可访问</td></tr>
+            <tr><td>GitHub</td><td>⚠ 间歇性波动</td><td>代码托管服务存在访问波动，推送/拉取可能中断</td></tr>
+            <tr><td>npm / pip</td><td>⚠ 速度偏慢</td><td>建议配置国内镜像源</td></tr>
           </tbody>
         </table>
       </div>
@@ -1199,11 +1193,11 @@ section:nth-child(7) { animation-delay: 0.35s; }
             </tr>
           </thead>
           <tbody>
-            <tr><td>Trae</td><td>❌ 不依赖</td><td>✅ 流畅</td><td>国内服务器，无需额外配置，国内OPC首选</td></tr>
-            <tr><td>GitHub Copilot</td><td>⚠️ 需要访问海外服务</td><td>⚠️ 不稳定</td><td>认证和API依赖海外节点</td></tr>
-            <tr><td>Cursor</td><td>⚠️ 模型API在海外</td><td>⚠️ 延迟高</td><td>补全请求走海外线路，建议搭配网络优化</td></tr>
-            <tr><td>Claude Code</td><td>⚠️ Anthropic API在海外</td><td>❌ 不可用</td><td>需要配合海外服务访问</td></tr>
-            <tr><td>Codex</td><td>⚠️ OpenAI API在海外</td><td>❌ 不可用</td><td>需要配合海外服务访问</td></tr>
+            <tr><td>Trae</td><td>× 不依赖</td><td>✓ 流畅</td><td>国内服务器，无需额外配置，国内OPC首选</td></tr>
+            <tr><td>GitHub Copilot</td><td>⚠ 需要访问海外服务</td><td>⚠ 不稳定</td><td>认证和API依赖海外节点</td></tr>
+            <tr><td>Cursor</td><td>⚠ 模型API在海外</td><td>⚠ 延迟高</td><td>补全请求走海外线路，建议搭配网络优化</td></tr>
+            <tr><td>Claude Code</td><td>⚠ Anthropic API在海外</td><td>× 不可用</td><td>需要配合海外服务访问</td></tr>
+            <tr><td>Codex</td><td>⚠ OpenAI API在海外</td><td>× 不可用</td><td>需要配合海外服务访问</td></tr>
           </tbody>
         </table>
       </div>
@@ -1235,7 +1229,7 @@ section:nth-child(7) { animation-delay: 0.35s; }
       </div>
 
       <div class="decision-box">
-        <p><span class="icon">▶</span><strong>预算提醒：</strong>如果你选择了依赖海外服务的工具链，请把<strong>网络优化成本</strong>纳入月度预算（市场行情约 ¥30–100/月）。这属于开发环境的基础设施支出，和订阅工具的费用一样是合理的经营成本。</p>
+        <p><strong>预算提醒：</strong>如果你选择了依赖海外服务的工具链，请把<strong>网络优化成本</strong>纳入月度预算（市场行情约 ¥30–100/月）。这属于开发环境的基础设施支出，和订阅工具的费用一样是合理的经营成本。</p>
       </div>
     </section>
 

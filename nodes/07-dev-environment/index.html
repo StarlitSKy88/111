@@ -1,44 +1,625 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <script src="/auth-guard.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="开发环境安装 - OPC节点百科">
+  <meta name="description" content="你不需要装Docker、不需要配Kubernetes、不需要学Linux命令行。本章只装3个东西，30分钟内你的电脑就能开始写代码。Mac和Windows都有，全程截屏级步骤。">
   <meta name="theme-color" content="#111110">
   <title>开发环境安装 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-:root { --bg:#111110;--surface:#1A1A18;--text-primary:#F0EDE6;--text-secondary:#7A7670;--text-tertiary:#A8A49E;--accent:#C0392B;--line:#2A2A28; }
-* { margin:0;padding:0;box-sizing:border-box; }
-body { background:var(--bg);color:var(--text-primary);font-family:'Noto Sans SC',sans-serif;font-weight:300;line-height:2;letter-spacing:0.04em;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem; }
-.top-nav { position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem clamp(24px,8vw,120px);border-bottom:1px solid var(--line);background:var(--bg); }
-.back-link { font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-tertiary);text-decoration:none; }
-.back-link:hover { color:var(--text-primary); }
-.node-id { font-family:'Noto Serif JP',serif;font-size:0.75rem;color:var(--text-tertiary);letter-spacing:0.1em; }
-h1 { font-family:'Noto Serif JP',serif;font-size:clamp(28px,6vw,56px);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;text-align:center; }
-.phase { font-size:12px;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;text-align:center; }
-.num { font-size:11px;color:var(--text-tertiary);letter-spacing:0.1em;margin-top:0.5rem;text-align:center; }
-.note { font-size:13px;color:var(--text-secondary);text-align:center;max-width:480px;margin-top:1.5rem;line-height:1.9; }
-.footer-nav { display:flex;justify-content:space-between;position:fixed;bottom:0;left:0;right:0;padding:1.5rem clamp(24px,8vw,120px);border-top:1px solid var(--line);background:var(--bg); }
-.nav-link { font-size:0.7rem;color:var(--text-tertiary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;gap:0.5rem; }
-.nav-link:hover { color:var(--text-primary); }
-.nav-arrow { font-size:0.6rem; }
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #B8B4AE;
+  --text-tertiary: #A8A49E;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; font-weight: 400; line-height: 1.9; letter-spacing: 0.04em; -webkit-font-smoothing: antialiased; }
+
+.page { position: relative; max-width: 1200px; margin: 0 auto; padding: 0 clamp(24px, 8vw, 120px); min-height: 100vh; }
+.page::before { content: ''; position: absolute; top: 0; left: clamp(24px, 8vw, 120px); right: clamp(24px, 8vw, 120px); height: 1px; background: var(--line); }
+
+.section-number { position: absolute; top: var(--space-2xl); right: clamp(24px, 8vw, 120px); font-size: clamp(100px, 22vw, 280px); font-weight: 100; color: var(--text-primary); opacity: 0.03; line-height: 1; letter-spacing: -0.05em; font-family: 'Noto Serif JP', serif; pointer-events: none; user-select: none; }
+
+.back-link { position: fixed; top: var(--space-xl); left: clamp(24px, 8vw, 120px); z-index: 100; }
+.back-link a { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: opacity 0.3s ease; }
+.back-link a:hover { opacity: 0.6; }
+
+.hero { padding: var(--space-4xl) 0 var(--space-3xl); position: relative; }
+.hero-content { position: relative; z-index: 1; max-width: 800px; }
+.hero-label { font-size: 13px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-md); }
+.hero-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+.hero-title { font-family: 'Noto Serif JP', serif; font-size: clamp(48px, 10vw, 96px); font-weight: 300; letter-spacing: -0.03em; line-height: 0.95; margin-bottom: var(--space-xl); }
+.hero-desc { font-size: 16px; color: var(--text-secondary); line-height: 1.8; max-width: 44ch; }
+
+.content-section { padding: var(--space-3xl) 0; border-top: 1px solid var(--line); }
+.section-label { font-size: 13px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-md); }
+.section-label::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+
+.highlight-box { background: var(--surface); border: 1px solid var(--accent); padding: var(--space-lg); margin: var(--space-xl) 0; }
+.highlight-label { font-size: 12px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-sm); }
+.highlight-text { font-size: 15px; color: var(--text-primary); line-height: 1.7; }
+
+.quote-block { border-left: 2px solid var(--accent); padding-left: var(--space-md); margin: var(--space-lg) 0; }
+.quote-text { font-size: 15px; color: var(--text-secondary); font-style: italic; }
+
+.tool-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: var(--space-md) 0; }
+.tool-table th { text-align: left; color: var(--accent); font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; padding: var(--space-sm); border-bottom: 1px solid var(--line); font-size: 12px; }
+.tool-table td { padding: var(--space-sm); border-bottom: 1px solid var(--line-light); color: var(--text-secondary); vertical-align: top; }
+.tool-table td:first-child { color: var(--text-primary); font-weight: 500; width: 25%; }
+
+.avoid-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: var(--space-md) 0; }
+.avoid-table th { text-align: left; color: var(--accent); font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; padding: var(--space-sm); border-bottom: 1px solid var(--line); font-size: 12px; }
+.avoid-table td { padding: var(--space-sm); border-bottom: 1px solid var(--line-light); color: var(--text-secondary); vertical-align: top; }
+.avoid-table td:first-child { color: var(--accent); font-weight: 500; width: 20%; }
+
+.step-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-lg); margin-bottom: var(--space-md); position: relative; }
+.step-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--accent); }
+.step-header { display: flex; align-items: baseline; gap: var(--space-md); margin-bottom: var(--space-md); }
+.step-num { font-family: 'Noto Serif JP', serif; font-size: 48px; font-weight: 300; color: var(--accent); opacity: 0.5; line-height: 1; }
+.step-title { font-family: 'Noto Serif JP', serif; font-size: 22px; font-weight: 400; }
+.step-content { font-size: 14px; color: var(--text-secondary); line-height: 1.8; padding-left: 64px; }
+@media (max-width: 768px) { .step-content { padding-left: 0; } }
+.step-content p { margin-bottom: var(--space-sm); }
+.step-content strong { color: var(--text-primary); }
+
+.step-list { margin-top: var(--space-xl); }
+.step-item { padding: var(--space-lg) 0; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 48px 1fr; gap: var(--space-lg); }
+.step-item:last-child { border-bottom: none; }
+.step-item-num { font-family: 'Noto Serif JP', serif; font-size: 32px; font-weight: 300; color: var(--accent); opacity: 0.5; }
+.step-item-title { font-size: 15px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-xs); }
+.step-item-desc { font-size: 13px; color: var(--text-tertiary); line-height: 1.7; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg); }
+@media (max-width: 768px) { .two-col { grid-template-columns: 1fr; } }
+.col-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-lg); }
+.col-label { font-size: 12px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-sm); }
+.col-title { font-size: 16px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-sm); }
+.col-text { font-size: 13px; color: var(--text-tertiary); line-height: 1.7; }
+
+.check-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: var(--space-md) 0; }
+.check-table th { text-align: left; color: var(--accent); font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; padding: var(--space-sm); border-bottom: 1px solid var(--line); font-size: 12px; width: 80px; }
+.check-table td { padding: var(--space-sm); border-bottom: 1px solid var(--line-light); color: var(--text-secondary); }
+.check-table td:first-child { color: var(--text-primary); font-weight: 500; }
+.check-table td:last-child { color: var(--text-tertiary); font-family: monospace; font-size: 12px; }
+
+.plugin-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: var(--space-md) 0; }
+.plugin-table th { text-align: left; color: var(--accent); font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; padding: var(--space-sm); border-bottom: 1px solid var(--line); font-size: 12px; }
+.plugin-table td { padding: var(--space-sm); border-bottom: 1px solid var(--line-light); color: var(--text-secondary); vertical-align: top; }
+.plugin-table td:first-child { color: var(--text-primary); font-weight: 500; width: 25%; }
+
+.code-block { background: var(--surface); border: 1px solid var(--line); padding: var(--space-lg); margin: var(--space-md) 0; font-family: 'Geist Mono', 'SF Mono', monospace; }
+.code-label { font-size: 12px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-sm); }
+.code-content { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+
+.directory-tree { background: var(--surface); border: 1px solid var(--line); padding: var(--space-lg); margin: var(--space-md) 0; font-family: 'Geist Mono', 'SF Mono', monospace; font-size: 13px; color: var(--text-tertiary); line-height: 1.9; }
+
+.footer-nav { padding: var(--space-2xl) 0; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
+.nav-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: opacity 0.3s ease; }
+.nav-link:hover { opacity: 0.6; }
+.nav-arrow { font-size: 0.75rem; }
+
+.fade-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.fade-section.visible { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body>
-  <nav class="top-nav">
-    <a href="/index.html" class="back-link">← 返回首页</a>
-    <span class="node-id">节点 07 / 57</span>
-  </nav>
-  <div class="phase">环境搭建与Hello World</div>
-  <h1>开发环境安装</h1>
-  <div class="num">节点 07</div>
-  <p class="note">🚧 内容正在建设中<br>这将是一个面向OPC（一人公司/独立开发者）的实操指南</p>
-  <footer class="footer-nav">
-    <a href="/nodes/06-tech-selection/index.html" class="nav-link"><span class="nav-arrow">←</span>节点06：技术选型（零基础专属）</a>
-    <a href="/nodes/08-hello-world/index.html" class="nav-link">节点08：Hello World 启动<span class="nav-arrow">→</span></a>
-  </footer>
+  <div class="back-link">
+    <a href="/"><span>←</span> 返回首页</a>
+  </div>
+  <div class="section-number">07</div>
+
+  <div class="page">
+    <header class="hero fade-section">
+      <div class="hero-content">
+        <div class="hero-label">节点 07 · 环境搭建</div>
+        <h1 class="hero-title">开发环境安装</h1>
+        <p class="hero-desc">你不需要装Docker、不需要配Kubernetes、不需要学Linux命令行。本章只装3个东西，30分钟内你的电脑就能开始写代码。Mac和Windows都有，全程截屏级步骤。</p>
+      </div>
+    </header>
+
+    <section class="content-section fade-section">
+      <div class="section-label">OPC最低环境：只需要3个核心工具</div>
+
+      <div class="highlight-box">
+        <div class="highlight-label">2026年实战有效认知</div>
+        <div class="highlight-text">2026年做Web开发的工具链已经极度简化。过去需要配Java环境、配数据库、配Tomcat、配Maven——现在你只需要一个JavaScript运行时、一个编辑器、一个版本管理工具。</div>
+      </div>
+
+      <table class="tool-table">
+        <thead>
+          <tr>
+            <th>工具</th>
+            <th>干什么</th>
+            <th>替代了过去哪些东西</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Node.js</td>
+            <td>运行JavaScript代码、安装依赖包</td>
+            <td>Java JDK + Tomcat + npm</td>
+          </tr>
+          <tr>
+            <td>VS Code</td>
+            <td>写代码、装AI插件</td>
+            <td>Eclipse + Sublime + 各种IDE</td>
+          </tr>
+          <tr>
+            <td>Git</td>
+            <td>版本管理、推送到GitHub/Gitee</td>
+            <td>SVN、手动备份</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="font-size: 14px; color: var(--text-secondary); margin-top: var(--space-lg);">就这三个。别的都是有了需要再装。</p>
+    </section>
+
+    <section class="content-section fade-section">
+      <div class="section-label">不需要装的东西（别浪费时间）</div>
+
+      <table class="avoid-table">
+        <thead>
+          <tr>
+            <th>不装</th>
+            <th>原因</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Docker</td>
+            <td>你不是运维。Supabase代替了本地数据库</td>
+          </tr>
+          <tr>
+            <td>MySQL/PostgreSQL本地</td>
+            <td>Supabase在云端，不需要本地装</td>
+          </tr>
+          <tr>
+            <td>Nginx/Apache</td>
+            <td>Vercel帮你部署，不需要配服务器</td>
+          </tr>
+          <tr>
+            <td>Python（除非你项目用）</td>
+            <td>Node.js生态足够Web开发</td>
+          </tr>
+          <tr>
+            <td>Webpack/Vite手动配</td>
+            <td>AI工具直接帮你配好</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section fade-section">
+      <div class="section-label">Node.js 安装（10分钟）</div>
+
+      <div class="two-col" style="margin-bottom: var(--space-lg);">
+        <div class="col-card">
+          <div class="col-label">Mac 安装</div>
+          <div class="col-title">方法一：官网安装包（推荐零基础）</div>
+          <div class="col-text">
+            1. 打开 nodejs.org<br>
+            2. 点击左侧 LTS 版本（2026年5月为 v22.x）<br>
+            3. 下载 .pkg 安装包<br>
+            4. 双击安装，一路点"继续"，不需要改任何设置<br>
+            5. 安装完成
+          </div>
+        </div>
+        <div class="col-card">
+          <div class="col-label">Windows 安装</div>
+          <div class="col-title">下载安装包</div>
+          <div class="col-text">
+            1. 打开 nodejs.org<br>
+            2. 下载 Windows Installer (.msi) 64-bit<br>
+            3. 双击运行，勾选"Automatically install the necessary tools"<br>
+            4. 一路点 Next，安装完成
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header">
+          <span class="step-num">验证</span>
+          <h3 class="step-title">安装完成后验证</h3>
+        </div>
+        <div class="step-content">
+          <p><strong>Mac</strong>：打开"终端"（在启动台搜索 Terminal），输入：</p>
+          <div class="code-block">
+            <div class="code-label">终端命令</div>
+            <div class="code-content">node -v
+# 应显示 v22.x.x
+
+npm -v
+# 应显示 10.x.x</div>
+          </div>
+          <p style="margin-top: var(--space-md);"><strong>Windows</strong>：按 Win + R，输入 cmd，回车。在命令行中输入：</p>
+          <div class="code-block">
+            <div class="code-label">命令提示符</div>
+            <div class="code-content">node -v
+npm -v
+# 两个命令都应该显示版本号</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card" style="border-color: var(--accent);">
+        <div class="step-header">
+          <span class="step-num">必须</span>
+          <h3 class="step-title">设置国内镜像源</h3>
+        </div>
+        <div class="step-content">
+          <p>npm默认从海外服务器下载依赖包，国内速度极慢。安装完Node.js后立刻执行：</p>
+          <div class="code-block">
+            <div class="code-label">设置淘宝镜像</div>
+            <div class="code-content">npm config set registry https://registry.npmmirror.com</div>
+          </div>
+          <p style="margin-top: var(--space-md);">验证是否设置成功：</p>
+          <div class="code-block">
+            <div class="code-label">验证镜像</div>
+            <div class="code-content">npm config get registry
+# 应显示 https://registry.npmmirror.com</div>
+          </div>
+          <p style="margin-top: var(--space-md); color: var(--text-tertiary);">如果以后想恢复默认源：<code style="font-family:monospace;">npm config set registry https://registry.npmjs.org</code></p>
+        </div>
+      </div>
+
+      <div class="quote-block">
+        <p class="quote-text">什么是npm？npm = Node Package Manager。它是"代码的App Store"——别人写好的功能模块打包好放在上面，你执行 <code style="font-family:monospace;">npm install 包名</code> 就能下载到你的项目里直接用。</p>
+      </div>
+    </section>
+
+    <section class="content-section fade-section">
+      <div class="section-label">VS Code 安装与配置（10分钟）</div>
+
+      <div class="highlight-box">
+        <div class="highlight-label">为什么是VS Code</div>
+        <div class="highlight-text">
+          免费 + 中文界面 · 微软维护，更新稳定 · AI插件生态最丰富（GitHub Copilot、Trae插件都直接支持） · 轻量——打开只需2秒
+        </div>
+      </div>
+
+      <div class="step-list">
+        <div class="step-item">
+          <span class="step-item-num">1</span>
+          <div>
+            <div class="step-item-title">安装</div>
+            <div class="step-item-desc">
+              1. 打开 code.visualstudio.com<br>
+              2. 下载对应系统版本（Mac / Windows）<br>
+              3. Mac：解压后拖到"应用程序"文件夹<br>
+              4. Windows：双击安装，勾选"添加到PATH"
+            </div>
+          </div>
+        </div>
+        <div class="step-item">
+          <span class="step-item-num">2</span>
+          <div>
+            <div class="step-item-title">必装插件（3个）</div>
+            <div class="step-item-desc">打开VS Code → 左侧栏点击"扩展"图标（或按 Ctrl/⌘ + Shift + X） → 搜索以下插件逐个安装：</div>
+          </div>
+        </div>
+      </div>
+
+      <table class="plugin-table" style="margin-top: var(--space-md);">
+        <thead>
+          <tr>
+            <th>插件</th>
+            <th>干什么</th>
+            <th>必装吗</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Chinese (Simplified)</td>
+            <td>VS Code界面汉化</td>
+            <td>英文不好就装</td>
+          </tr>
+          <tr>
+            <td>Prettier</td>
+            <td>代码自动格式化（保存时自动整理代码）</td>
+            <td>必装</td>
+          </tr>
+          <tr>
+            <td>GitHub Copilot</td>
+            <td>AI代码补全</td>
+            <td>看你的工具选型（见节点06）</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="step-card" style="margin-top: var(--space-lg);">
+        <div class="step-header">
+          <span class="step-num">3</span>
+          <h3 class="step-title">初始化设置（3项）</h3>
+        </div>
+        <div class="step-content">
+          <p>打开VS Code → 按 Ctrl/⌘ + , → 搜索以下设置：</p>
+          <table class="plugin-table">
+            <thead>
+              <tr>
+                <th>设置项</th>
+                <th>改为</th>
+                <th>原因</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Format On Save</td>
+                <td>勾选</td>
+                <td>每次保存代码自动格式化</td>
+              </tr>
+              <tr>
+                <td>Auto Save</td>
+                <td>afterDelay</td>
+                <td>自动保存，避免忘记保存就关了</td>
+              </tr>
+              <tr>
+                <td>Tab Size</td>
+                <td>2</td>
+                <td>Web开发标准缩进</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header">
+          <span class="step-num">4</span>
+          <h3 class="step-title">首次打开项目</h3>
+        </div>
+        <div class="step-content">
+          <p>1. VS Code菜单栏 → "文件" → "打开文件夹"<br>
+          2. 选择一个空文件夹作为你的第一个项目<br>
+          3. 按 Ctrl/⌘ + ~ 打开内置终端<br>
+          4. 以后所有命令行操作都可以在VS Code自带的终端里做，不需要切窗口</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section fade-section">
+      <div class="section-label">Git 安装与首次配置（5分钟）</div>
+
+      <div class="two-col">
+        <div class="col-card">
+          <div class="col-label">Mac 安装</div>
+          <div class="col-title">通常自带Git</div>
+          <div class="col-text">
+            打开终端输入：<br>
+            <code style="font-family:monospace;font-size:12px;">git --version</code><br><br>
+            如果没装，系统会提示安装 Xcode Command Line Tools，点"安装"即可。
+          </div>
+        </div>
+        <div class="col-card">
+          <div class="col-label">Windows 安装</div>
+          <div class="col-title">下载安装</div>
+          <div class="col-text">
+            1. 打开 git-scm.com<br>
+            2. 下载 Windows 版本<br>
+            3. 安装过程中，除了以下两项，其余全部默认：<br>
+            - "Default editor" → 选 "Use Visual Studio Code as Git's default editor"<br>
+            - "Adjusting the name of the initial branch" → 选 "Override" → 填 main
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card" style="margin-top: var(--space-lg); border-color: var(--accent);">
+        <div class="step-header">
+          <span class="step-num">必须</span>
+          <h3 class="step-title">首次配置</h3>
+        </div>
+        <div class="step-content">
+          <p>在终端中执行（把名字和邮箱换成你自己的）：</p>
+          <div class="code-block">
+            <div class="code-label">Git 配置</div>
+            <div class="code-content">git config --global user.name "你的名字"
+git config --global user.email "你的邮箱@example.com"</div>
+          </div>
+          <p style="margin-top: var(--space-md);">验证：</p>
+          <div class="code-block">
+            <div class="code-label">验证配置</div>
+            <div class="code-content">git config --global user.name
+git config --global user.email
+# 这两个信息会出现在你每一次代码提交记录上</div>
+          </div>
+          <p style="margin-top: var(--space-md); color: var(--text-tertiary);">使用真实姓名和邮箱——如果你以后接外包、做开源项目，这是你的"署名"。</p>
+        </div>
+      </div>
+
+      <div class="highlight-box" style="margin-top: var(--space-lg);">
+        <div class="highlight-label">OPC的Git就够了</div>
+        <div class="highlight-text">
+          你只需要会3个Git操作（后面节点09会详细讲）：<br><br>
+          <code style="font-family:monospace;">git add .</code> — 保存所有改动<br>
+          <code style="font-family:monospace;">git commit -m "说明"</code> — 创建一条修改记录<br>
+          <code style="font-family:monospace;">git push</code> — 上传到GitHub/Gitee
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section fade-section">
+      <div class="section-label">环境可用性检验（2分钟）</div>
+      <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: var(--space-lg); line-height: 1.8;">装完3个工具后，跑一遍这个检验清单。6项全部通过，环境就绪，可以开始写代码了。</p>
+
+      <table class="check-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>检验项</th>
+            <th>验证命令</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Node.js 装好了吗？</td>
+            <td>node -v（应显示版本号，如 v22.x.x）</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>npm 装好了吗？</td>
+            <td>npm -v（应显示版本号）</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>npm镜像源改了吗？</td>
+            <td>npm config get registry（应显示 npmmirror.com）</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Git 装好了吗？</td>
+            <td>git --version（应显示版本号）</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Git配置了吗？</td>
+            <td>git config --global user.name（应显示你的名字）</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>VS Code 能打开吗？</td>
+            <td>code --version</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="highlight-box" style="margin-top: var(--space-lg);">
+        <div class="highlight-label">常见问题排查</div>
+        <table class="check-table">
+          <thead>
+            <tr>
+              <th>问题</th>
+              <th>解决</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>node 命令不存在</td>
+              <td>重启终端/CMD，或重新安装Node.js（安装时勾选"Add to PATH"）</td>
+            </tr>
+            <tr>
+              <td>npm安装包时报错 ETIMEDOUT</td>
+              <td>镜像源没改，执行 npm config set registry https://registry.npmmirror.com</td>
+            </tr>
+            <tr>
+              <td>Git显示乱码</td>
+              <td>Windows：git config --global core.quotepath false</td>
+            </tr>
+            <tr>
+              <td>VS Code打开后是英文</td>
+              <td>装了Chinese插件后，按 Ctrl/⌘ + Shift + P → 输入 "display language" → 选中文 → 重启</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-section fade-section">
+      <div class="section-label">开发目录结构建议</div>
+
+      <div class="directory-tree">
+        <div>~/projects/              ← 所有项目放这里</div>
+        <div style="padding-left: 2rem;">├── my-first-app/      ← 第一个产品</div>
+        <div style="padding-left: 2rem;">├── landing-page/      ← 落地页</div>
+        <div style="padding-left: 2rem;">└── side-project/      ← 试验项目</div>
+      </div>
+
+      <div class="step-card" style="margin-top: var(--space-lg);">
+        <div class="step-header">
+          <span class="step-num">每个</span>
+          <h3 class="step-title">项目的标准结构</h3>
+        </div>
+        <div class="step-content">
+          <p>当AI帮你生成项目时，推荐使用这个目录结构（让AI初始化）：</p>
+          <div class="directory-tree">
+            <div>my-product/</div>
+            <div style="padding-left: 2rem;">├── index.html           ← 主页面</div>
+            <div style="padding-left: 2rem;">├── style.css            ← 样式</div>
+            <div style="padding-left: 2rem;">├── script.js            ← 逻辑</div>
+            <div style="padding-left: 2rem;">├── assets/              ← 图片/图标</div>
+            <div style="padding-left: 2rem;">├── .gitignore           ← 告诉Git忽略哪些文件</div>
+            <div style="padding-left: 2rem;">└── README.md            ← 项目说明</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header">
+          <span class="step-num">.gitignore 模板</span>
+          <h3 class="step-title">告诉Git不要上传这些文件</h3>
+        </div>
+        <div class="step-content">
+          <div class="code-block">
+            <div class="code-content">node_modules/
+.env
+.DS_Store
+dist/
+.vscode/</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section fade-section">
+      <div class="section-label">总纲</div>
+      <div class="quote-block" style="border-left-width: 3px;">
+        <p class="quote-text" style="font-size: 18px; color: var(--text-primary);">开发环境不是越全越好，是越少越好。少到你只需要30分钟就能在任何一台新电脑上重建整个环境。</p>
+      </div>
+
+      <div class="highlight-box" style="margin-top: var(--space-xl);">
+        <div class="highlight-label">30分钟清单</div>
+        <div class="highlight-text">
+          1. 装 Node.js → 改 npm 淘宝镜像（10分钟）<br>
+          2. 装 VS Code → 装3个插件 → 设置自动保存（10分钟）<br>
+          3. 装 Git → 配名字邮箱（5分钟）<br>
+          4. 跑环境检验 → 6项全过（2分钟）<br>
+          5. 建好项目目录结构（3分钟）
+        </div>
+      </div>
+
+      <p style="font-size: 13px; color: var(--text-tertiary); margin-top: var(--space-lg); letter-spacing: 0.05em;">
+        环境就绪。下一步：用3条命令创建你的第一个Hello World项目（见节点08）。<br>
+        （本文写于2026年5月。）
+      </p>
+    </section>
+
+    <footer class="footer-nav fade-section">
+      <a href="/nodes/06-tech-selection/index.html" class="nav-link">
+        <span class="nav-arrow">←</span>
+        节点06：技术选型（零基础专属）
+      </a>
+      <a href="/nodes/08-hello-world/index.html" class="nav-link">
+        节点08：Hello World 启动
+        <span class="nav-arrow">→</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
+  </script>
 </body>
 </html>

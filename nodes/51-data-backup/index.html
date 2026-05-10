@@ -568,7 +568,7 @@ body {
             </div>
           </div>
           <div class="obj-block error" style="margin-top: var(--space-lg);">
-            <div class="obj-label">✕ 致命误解</div>
+            <div class="obj-label">× 致命误解</div>
             <div class="obj-content">"我的文件都在云端，很安全"——云同步（OneDrive/iCloud/Google Drive）是双向镜像。你删他也删，你被勒索他也同步加密。账号被盗等于备份入口沦陷。</div>
           </div>
         </div>
@@ -701,22 +701,22 @@ body {
       <div class="grid-asymmetric">
         <div class="main-content">
           <div class="obj-block error">
-            <div class="obj-label">✕ 误区一：云端=安全</div>
+            <div class="obj-label">× 误区一：云端=安全</div>
             <div class="obj-content">云同步是双向实时镜像。云端的数据与你本地数据完全同步——你删他也删，你被勒索加密他也同步加密。更危险的是：一旦账号被攻击者接管，他们可以立即删除你的备份副本，等于丧失了恢复的唯一途径。必须建立独立的备份层，与同步盘完全解耦。</div>
           </div>
 
           <div class="obj-block error">
-            <div class="obj-label">✕ 误区二：备份=完成</div>
+            <div class="obj-label">× 误区二：备份=完成</div>
             <div class="obj-content">"备份完成"和"能成功恢复"之间存在巨大鸿沟。现实中的 Silent Data Corruption（静默数据损坏）每TB存储介质每年约有0.03%的概率发生。备份文件可能看似完整，但部分数据已悄然损坏。一份从未被验证可恢复的备份，是占用空间的未知风险。每月必须执行一次抽检恢复。</div>
           </div>
 
           <div class="obj-block error">
-            <div class="obj-label">✕ 误区三：备份盘始终连接系统</div>
+            <div class="obj-label">× 误区三：备份盘始终连接系统</div>
             <div class="obj-content">如果备份盘始终挂载为Z盘或D盘，勒索软件在加密本地文件时会循路径感染备份盘。2024年的勒索软件已能扫描并加密所有可见存储设备，包括映射的网络驱动器和USB外置硬盘。隔离备份必须是物理断开（拔线）或不可变存储（Object Lock）。</div>
           </div>
 
           <div class="obj-block error">
-            <div class="obj-label">✕ 误区四：只依赖手机验证码</div>
+            <div class="obj-label">× 误区四：只依赖手机验证码</div>
             <div class="obj-content">SIM交换攻击（SIM Swap）已成熟化。攻击者致电运营商声称手机丢失，将号码转移至新SIM卡，随即接收你的短信验证码。2025年针对加密货币和金融账户的SIM交换攻击增长了约220%。备份账号必须使用硬件安全密钥（YubiKey）或通行密钥（Passkey），不接受短信验证码。</div>
           </div>
         </div>
@@ -909,7 +909,7 @@ body {
           <div class="balance-item">归档核心AI提示词和自定义配置</div>
         </div>
         <div class="balance-card">
-          <div class="balance-card-label negative">✕ 不做</div>
+          <div class="balance-card-label negative">× 不做</div>
           <div class="balance-item">仅依赖云同步（OneDrive/iCloud）</div>
           <div class="balance-item">备份盘始终挂载系统不断开</div>
           <div class="balance-item">只备份，从不验证</div>

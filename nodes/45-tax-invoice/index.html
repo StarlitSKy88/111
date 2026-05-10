@@ -28,8 +28,8 @@ body {
   color: var(--text-primary);
   font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 300;
-  line-height: 2;
-  letter-spacing: 0.03em;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -129,7 +129,7 @@ body {
 
 .content h1 {
   font-family: 'Noto Serif JP', 'Noto Sans SC', sans-serif;
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-size: clamp(48px, 10vw, 96px);
   font-weight: 300;
   line-height: 1.3;
   margin-bottom: 0.5rem;
@@ -204,7 +204,7 @@ body {
   width: 3px;
   height: 3px;
   background: var(--accent);
-  border-radius: 50%;
+  border-radius: 2%;
 }
 
 /* Tables */
@@ -445,19 +445,19 @@ hr {
       <h3>逾期后果</h3>
       <ul style="list-style: none; margin: 1rem 0; padding: 0;">
         <li style="padding-left: 1rem; position: relative; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">
-          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; display: inline-block;"></span>
+          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 2%; display: inline-block;"></span>
           罚款：2000元以下
         </li>
         <li style="padding-left: 1rem; position: relative; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">
-          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; display: inline-block;"></span>
+          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 2%; display: inline-block;"></span>
           纳税信用等级降级
         </li>
         <li style="padding-left: 1rem; position: relative; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">
-          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; display: inline-block;"></span>
+          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 2%; display: inline-block;"></span>
           发票申领受限
         </li>
         <li style="padding-left: 1rem; position: relative; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">
-          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; display: inline-block;"></span>
+          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 2%; display: inline-block;"></span>
           列入经营异常名录
         </li>
       </ul>
@@ -475,7 +475,7 @@ hr {
         <tbody>
           <tr>
             <td>小规模纳税人</td>
-            <td>✅ 新办默认</td>
+            <td>✓ 新办默认</td>
             <td>—</td>
             <td>月销售≤10万免增值税，超过按<strong>1%</strong>征收</td>
           </tr>
@@ -533,15 +533,15 @@ hr {
       <p>系统根据经营数据动态调整授信额度：</p>
       <ul style="list-style: none; margin: 1rem 0; padding: 0;">
         <li style="padding-left: 1rem; position: relative; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">
-          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; display: inline-block;"></span>
+          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 2%; display: inline-block;"></span>
           <strong>连续6个月稳定开票缴税</strong> → 自动提额
         </li>
         <li style="padding-left: 1rem; position: relative; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">
-          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; display: inline-block;"></span>
+          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 2%; display: inline-block;"></span>
           <strong>零申报、社保为零但有大额开票</strong> → 降额或锁票
         </li>
         <li style="padding-left: 1rem; position: relative; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">
-          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; display: inline-block;"></span>
+          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 2%; display: inline-block;"></span>
           <strong>每月开票金额稳定</strong> → 额度保持
         </li>
       </ul>
@@ -550,7 +550,7 @@ hr {
       <p>数电票开具后<strong>实时同步至税务数字账户</strong>，申报时自动预填开票金额。开票当月必须如实申报，不能递延确认收入。</p>
 
       <div class="warning-box">
-        <div class="warning-title">⚠️ 过票、环开、买票冲成本 = 虚开增值税专用发票罪</div>
+        <div class="warning-title">⚠ 过票、环开、买票冲成本 = 虚开增值税专用发票罪</div>
         <p>《刑法》第205条。一人公司法定代表人是直接责任人。</p>
       </div>
     </section>
@@ -688,7 +688,7 @@ hr {
       </table>
 
       <div class="warning-box">
-        <div class="warning-title">⚠️ 300万断崖式跳涨</div>
+        <div class="warning-title">⚠ 300万断崖式跳涨</div>
         <p>注意最后一行：300万以下5%，超过300万<strong>全额按25%</strong>。299.9万 → 300.1万，税负从15万跳到75万。这是OPC年底最重要的筹划节点。</p>
       </div>
 
@@ -921,15 +921,15 @@ hr {
       <p>理由：</p>
       <ul style="list-style: none; margin: 1rem 0; padding: 0;">
         <li style="padding-left: 1rem; position: relative; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">
-          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; display: inline-block;"></span>
+          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 2%; display: inline-block;"></span>
           ¥200-400/月 = 每年¥2400-4800，是最低成本的合规保险
         </li>
         <li style="padding-left: 1rem; position: relative; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">
-          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; display: inline-block;"></span>
+          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 2%; display: inline-block;"></span>
           申报错误的责任由代账公司承担（签合同约定）
         </li>
         <li style="padding-left: 1rem; position: relative; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">
-          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; display: inline-block;"></span>
+          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 2%; display: inline-block;"></span>
           代账公司熟悉最新政策变化，不需要你自己追
         </li>
       </ul>
@@ -987,15 +987,15 @@ hr {
       <h3>红线</h3>
       <ul style="list-style: none; margin: 1rem 0; padding: 0;">
         <li style="padding-left: 1rem; position: relative; margin-bottom: 0.5rem; color: var(--accent); font-size: 0.875rem;">
-          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; display: inline-block;"></span>
+          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 2%; display: inline-block;"></span>
           买票冲成本 → 虚开增值税发票罪
         </li>
         <li style="padding-left: 1rem; position: relative; margin-bottom: 0.5rem; color: var(--accent); font-size: 0.875rem;">
-          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; display: inline-block;"></span>
+          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 2%; display: inline-block;"></span>
           虚构员工工资 → 个税和企业所得税双重追缴
         </li>
         <li style="padding-left: 1rem; position: relative; margin-bottom: 0.5rem; color: var(--accent); font-size: 0.875rem;">
-          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; display: inline-block;"></span>
+          <span style="position: absolute; left: 0; top: 0.65em; width: 3px; height: 3px; background: var(--accent); border-radius: 2%; display: inline-block;"></span>
           个人消费开公司发票 → 金税四期自动比对
         </li>
       </ul>

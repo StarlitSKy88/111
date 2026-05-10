@@ -1,0 +1,386 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "返回首页" [ref=e3] [cursor=pointer]:
+      - /url: /
+      - img [ref=e4]
+      - text: 返回首页
+    - generic [ref=e6]: 31 / 数据监控
+  - generic [ref=e7]:
+    - complementary [ref=e8]:
+      - generic [ref=e9]: 目录
+      - list [ref=e10]:
+        - listitem [ref=e11]:
+          - link "OPC数据哲学" [ref=e12] [cursor=pointer]:
+            - /url: "#section-philosophy"
+        - listitem [ref=e13]:
+          - link "GA4接入教程" [ref=e14] [cursor=pointer]:
+            - /url: "#section-ga4"
+        - listitem [ref=e15]:
+          - link "百度统计接入" [ref=e16] [cursor=pointer]:
+            - /url: "#section-baidu"
+        - listitem [ref=e17]:
+          - link "小程序数据分析" [ref=e18] [cursor=pointer]:
+            - /url: "#section-miniprogram"
+        - listitem [ref=e19]:
+          - link "不要看的数据" [ref=e20] [cursor=pointer]:
+            - /url: "#section-ignore"
+        - listitem [ref=e21]:
+          - link "异常诊断流程" [ref=e22] [cursor=pointer]:
+            - /url: "#section-diagnosis"
+        - listitem [ref=e23]:
+          - link "总纲" [ref=e24] [cursor=pointer]:
+            - /url: "#section-summary"
+    - main [ref=e25]:
+      - heading "数据监控" [level=1] [ref=e26]
+      - paragraph [ref=e27]: 你的产品上线了，现在每天都有数据进来。但一个人盯不过来——本章只用看3个数字，配一个5分钟就能搭好的监控系统。不需要数据分析师，不需要SQL。
+      - generic [ref=e28]:
+        - heading "一、OPC数据哲学：只盯三件事" [level=2] [ref=e29]
+        - heading "你不需要看的东西（先列出来，省得你焦虑）" [level=3] [ref=e30]
+        - table [ref=e31]:
+          - rowgroup [ref=e32]:
+            - row "你常见的焦虑 为什么不需要看" [ref=e33]:
+              - columnheader "你常见的焦虑" [ref=e34]
+              - columnheader "为什么不需要看" [ref=e35]
+          - rowgroup [ref=e36]:
+            - row "\"昨天地域分布里新疆突然多了3个用户，我要不要研究？\" 一人产品的小样本波动没有任何决策意义" [ref=e37]:
+              - cell "\"昨天地域分布里新疆突然多了3个用户，我要不要研究？\"" [ref=e38]
+              - cell "一人产品的小样本波动没有任何决策意义" [ref=e39]
+            - row "\"平均停留时长从上月2分18秒降到2分07秒了\" 11秒的差异不是趋势，是噪声" [ref=e40]:
+              - cell "\"平均停留时长从上月2分18秒降到2分07秒了\"" [ref=e41]
+              - cell "11秒的差异不是趋势，是噪声" [ref=e42]
+            - row "\"跳出率从62%变成65%了\" 3%在小样本下不构成任何信号" [ref=e43]:
+              - cell "\"跳出率从62%变成65%了\"" [ref=e44]
+              - cell "3%在小样本下不构成任何信号" [ref=e45]
+            - row "\"用户画像里25-30岁占比下降了2%\" 你只服务几百个人时，画像没有统计意义" [ref=e46]:
+              - cell "\"用户画像里25-30岁占比下降了2%\"" [ref=e47]
+              - cell "你只服务几百个人时，画像没有统计意义" [ref=e48]
+            - row "\"需要建一个数据大屏实时监控\" 你一个人盯不了大屏，关键是关键时刻能发现问题" [ref=e49]:
+              - cell "\"需要建一个数据大屏实时监控\"" [ref=e50]
+              - cell "你一个人盯不了大屏，关键是关键时刻能发现问题" [ref=e51]
+        - heading "OPC唯一需要盯的三个数" [level=3] [ref=e52]
+        - generic [ref=e54]: ┌──────────────────────────────────────────────────────┐ │ OPC数据仪表盘 │ │ │ │ ① 日活用户（DAU） ← 你的产品今天有没有人用 │ │ 今天：___ 昨天：___ 上周同期：___ │ │ │ │ ② 核心功能使用率 ← 用户有没有用到产品的灵魂功能 │ │ 完成率：___% 目标：>60% │ │ │ │ ③ 留存率 ← 用户用完会不会回来 │ │ 次日留存：___% (目标>30%) │ │ 7日留存：___% (目标>15%) │ │ 30日留存：___% (目标>10%) │ │ │ └──────────────────────────────────────────────────────┘
+        - heading "为什么这三个就够了" [level=3] [ref=e55]
+        - table [ref=e56]:
+          - rowgroup [ref=e57]:
+            - row "指标 它告诉你 异常时意味着" [ref=e58]:
+              - columnheader "指标" [ref=e59]
+              - columnheader "它告诉你" [ref=e60]
+              - columnheader "异常时意味着" [ref=e61]
+          - rowgroup [ref=e62]:
+            - row "DAU 产品还活着吗 连续3天腰斩 → 服务器挂了/支付崩了/被微信封了" [ref=e63]:
+              - cell "DAU" [ref=e64]:
+                - strong [ref=e65]: DAU
+              - cell "产品还活着吗" [ref=e66]
+              - cell "连续3天腰斩 → 服务器挂了/支付崩了/被微信封了" [ref=e67]
+            - row "核心功能使用率 用户用对了吗 注册100人但核心功能只有3人用过 → 引导太差或功能不对" [ref=e68]:
+              - cell "核心功能使用率" [ref=e69]:
+                - strong [ref=e70]: 核心功能使用率
+              - cell "用户用对了吗" [ref=e71]
+              - cell "注册100人但核心功能只有3人用过 → 引导太差或功能不对" [ref=e72]
+            - row "留存率 产品有价值吗 次日留存<20% → 用户第一分钟就决定\"这东西没用\"" [ref=e73]:
+              - cell "留存率" [ref=e74]:
+                - strong [ref=e75]: 留存率
+              - cell "产品有价值吗" [ref=e76]
+              - cell "次日留存<20% → 用户第一分钟就决定\"这东西没用\"" [ref=e77]
+        - heading "不需要拆维度、不需要建漏斗、不需要A/B测试" [level=3] [ref=e78]
+        - paragraph [ref=e79]: 你不是字节跳动。你有300个用户，拆10个维度后每个格子只有3个人。3个人的数据变化没有任何统计学意义。
+        - paragraph [ref=e81]: OPC数据分析的原则是：盯住命门，忽略其他。
+      - separator [ref=e82]
+      - generic [ref=e83]:
+        - heading "二、GA4 接入5分钟教程（2026年5月界面）" [level=2] [ref=e84]
+        - heading "什么是GA4" [level=3] [ref=e85]
+        - paragraph [ref=e86]:
+          - text: Google Analytics 4，谷歌的免费网站分析工具。
+          - strong [ref=e87]: 2026年最实用的免费分析方案。
+        - heading "注册和接入" [level=3] [ref=e88]
+        - generic [ref=e89]:
+          - heading "第1步：注册GA4账号（1分钟）" [level=4] [ref=e90]
+          - list [ref=e91]:
+            - listitem [ref=e92]:
+              - text: 打开
+              - link "analytics.google.com" [ref=e93] [cursor=pointer]:
+                - /url: https://analytics.google.com
+            - listitem [ref=e94]: 用Google账号登录（没有的话注册一个，免费）
+            - listitem [ref=e95]: 点击"创建账号" → 输入账号名称（比如你的产品名）
+            - listitem [ref=e96]: 点击"创建媒体资源" → 输入产品名 + 时区选"中国标准时间"
+            - listitem [ref=e97]: 点击"创建" → 选择"网站"平台
+            - listitem [ref=e98]: 输入你的网站URL → 点击"创建数据流"
+        - generic [ref=e99]:
+          - heading "第2步：获取测量ID（30秒）" [level=4] [ref=e100]
+          - paragraph [ref=e101]:
+            - text: 数据流创建后，你会看到一个"测量ID"，格式为
+            - code [ref=e102]: G-XXXXXXXXXX
+            - text: 。复制它。
+        - generic [ref=e103]:
+          - heading "第3步：粘贴代码（2分钟）" [level=4] [ref=e104]
+          - paragraph [ref=e105]:
+            - text: 在网站每个页面的
+            - code [ref=e106]: <head>
+            - text: 标签内，粘贴以下代码：
+          - code [ref=e108]: "<!-- Google tag (gtag.js) --> <script async src=\"https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX\"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-XXXXXXXXXX'); </script>"
+          - paragraph [ref=e109]:
+            - text: 替换
+            - code [ref=e110]: G-XXXXXXXXXX
+            - text: 为你的测量ID。
+        - generic [ref=e111]:
+          - heading "第4步：验证（1分钟）" [level=4] [ref=e112]
+          - paragraph [ref=e113]: 部署后，打开GA4 → 报告 → 实时。用手机打开你的网站，30秒内应该能在实时报告中看到"1个活跃用户"。
+        - generic [ref=e114]:
+          - generic [ref=e115]: 国内注意事项
+          - paragraph [ref=e116]:
+            - text: GA4依赖Google服务器，
+            - strong [ref=e117]: 国内用户直接访问可能不稳定
+            - text: 。如果你是用Trae做开发、主要面向国内用户，建议GA4 + 百度统计双接入（见下一章）。
+          - paragraph [ref=e118]:
+            - strong [ref=e119]: 补救方案
+            - text: ：Vercel部署的网站可以开一个中间代理，把GA4请求转发到自己的域名上。如果不会配，直接用百度统计替代。
+      - separator [ref=e120]
+      - generic [ref=e121]:
+        - heading "三、百度统计接入：国内用户必备" [level=2] [ref=e122]
+        - heading "为什么需要百度统计" [level=3] [ref=e123]
+        - list [ref=e124]:
+          - listitem [ref=e125]: 服务器在国内，加载速度快（一秒之内）
+          - listitem [ref=e126]: 中文后台，无学习曲线
+          - listitem [ref=e127]: 自动生成热力图（看到用户点了哪里）——这是免费功能
+          - listitem [ref=e128]: 微信小程序也可接入
+        - heading "接入步骤（3分钟）" [level=3] [ref=e129]
+        - generic [ref=e130]:
+          - heading "第1步" [level=4] [ref=e131]
+          - paragraph [ref=e132]:
+            - text: 打开
+            - link "tongji.baidu.com" [ref=e133] [cursor=pointer]:
+              - /url: https://tongji.baidu.com
+        - generic [ref=e134]:
+          - heading "第2步" [level=4] [ref=e135]
+          - paragraph [ref=e136]: 用百度账号登录 → 点击"添加站点"
+        - generic [ref=e137]:
+          - heading "第3步" [level=4] [ref=e138]
+          - paragraph [ref=e139]: 填入你的网站域名 → 获取JS代码
+        - generic [ref=e140]:
+          - heading "第4步" [level=4] [ref=e141]
+          - paragraph [ref=e142]:
+            - text: 将代码粘贴到所有页面的
+            - code [ref=e143]: </head>
+            - text: 之前：
+          - code [ref=e145]: "<script> var _hmt = _hmt || []; (function() { var hm = document.createElement(\"script\"); hm.src = \"https://hm.baidu.com/hm.js?你的统计ID\"; var s = document.getElementsByTagName(\"script\")[0]; s.parentNode.insertBefore(hm, s); })(); </script>"
+        - generic [ref=e146]:
+          - heading "第5步" [level=4] [ref=e147]
+          - paragraph [ref=e148]: 等5分钟，打开百度统计后台 → "实时访客"，用手机访问你的网站验证。
+        - heading "百度统计 vs GA4" [level=3] [ref=e149]
+        - table [ref=e150]:
+          - rowgroup [ref=e151]:
+            - row "维度 GA4 百度统计" [ref=e152]:
+              - columnheader "维度" [ref=e153]
+              - columnheader "GA4" [ref=e154]
+              - columnheader "百度统计" [ref=e155]
+          - rowgroup [ref=e156]:
+            - row "服务器位置 海外（国内可能慢） 国内（秒开）" [ref=e157]:
+              - cell "服务器位置" [ref=e158]
+              - cell "海外（国内可能慢）" [ref=e159]
+              - cell "国内（秒开）" [ref=e160]
+            - row "免费 ✅ ✅" [ref=e161]:
+              - cell "免费" [ref=e162]
+              - cell "✅" [ref=e163]
+              - cell "✅" [ref=e164]
+            - row "热力图 需付费/第三方 ✅ 内置免费" [ref=e165]:
+              - cell "热力图" [ref=e166]
+              - cell "需付费/第三方" [ref=e167]
+              - cell "✅ 内置免费" [ref=e168]
+            - row "事件追踪 灵活但学习成本高 简单但不够灵活" [ref=e169]:
+              - cell "事件追踪" [ref=e170]
+              - cell "灵活但学习成本高" [ref=e171]
+              - cell "简单但不够灵活" [ref=e172]
+            - row "中文支持 有中文界面 ✅ 原生中文" [ref=e173]:
+              - cell "中文支持" [ref=e174]
+              - cell "有中文界面" [ref=e175]
+              - cell "✅ 原生中文" [ref=e176]
+            - row "小程序 ❌ ✅ 可接入" [ref=e177]:
+              - cell "小程序" [ref=e178]
+              - cell "❌" [ref=e179]
+              - cell "✅ 可接入" [ref=e180]
+            - row "数据导出 ✅ 有限制" [ref=e181]:
+              - cell "数据导出" [ref=e182]
+              - cell "✅" [ref=e183]
+              - cell "有限制" [ref=e184]
+        - paragraph [ref=e186]:
+          - strong [ref=e187]: OPC推荐
+          - text: ：两者都接入。GA4做主分析（数据更灵活），百度统计做热力图和国内用户确认。
+      - separator [ref=e188]
+      - generic [ref=e189]:
+        - heading "四、微信小程序数据分析接入" [level=2] [ref=e190]
+        - heading "小程序天生就有数据" [level=3] [ref=e191]
+        - paragraph [ref=e192]: 微信小程序不需要额外接入统计——微信后台自带数据分析：
+        - paragraph [ref=e193]:
+          - strong [ref=e194]: 入口
+          - text: ：登录
+          - link "mp.weixin.qq.com" [ref=e195] [cursor=pointer]:
+            - /url: https://mp.weixin.qq.com
+          - text: → 左侧菜单 → "统计"
+        - heading "小程序自带的关键指标" [level=3] [ref=e196]
+        - table [ref=e197]:
+          - rowgroup [ref=e198]:
+            - row "菜单 核心数据 OPC需要看吗" [ref=e199]:
+              - columnheader "菜单" [ref=e200]
+              - columnheader "核心数据" [ref=e201]
+              - columnheader "OPC需要看吗" [ref=e202]
+          - rowgroup [ref=e203]:
+            - row "用户分析 日活、新增、留存 ✅ 必看" [ref=e204]:
+              - cell "用户分析" [ref=e205]:
+                - strong [ref=e206]: 用户分析
+              - cell "日活、新增、留存" [ref=e207]
+              - cell "✅ 必看" [ref=e208]
+            - row "访问分析 访问深度、停留时长 ⚠️ 偶尔看" [ref=e209]:
+              - cell "访问分析" [ref=e210]:
+                - strong [ref=e211]: 访问分析
+              - cell "访问深度、停留时长" [ref=e212]
+              - cell "⚠️ 偶尔看" [ref=e213]
+            - row "页面分析 各页面访问量、退出率 ✅ 核心功能页面必看" [ref=e214]:
+              - cell "页面分析" [ref=e215]:
+                - strong [ref=e216]: 页面分析
+              - cell "各页面访问量、退出率" [ref=e217]
+              - cell "✅ 核心功能页面必看" [ref=e218]
+            - row "来源分析 用户从聊天/朋友圈/搜索进入 ⚠️ 偶尔看" [ref=e219]:
+              - cell "来源分析" [ref=e220]:
+                - strong [ref=e221]: 来源分析
+              - cell "用户从聊天/朋友圈/搜索进入" [ref=e222]
+              - cell "⚠️ 偶尔看" [ref=e223]
+            - row "实时统计 当前在线、今日累计 ✅ 上线第一周每天看" [ref=e224]:
+              - cell "实时统计" [ref=e225]:
+                - strong [ref=e226]: 实时统计
+              - cell "当前在线、今日累计" [ref=e227]
+              - cell "✅ 上线第一周每天看" [ref=e228]
+        - heading "小程序 + 百度统计" [level=3] [ref=e229]
+        - paragraph [ref=e230]:
+          - text: 微信自带统计有一个盲区：
+          - strong [ref=e231]: 看不到热力图
+          - text: （用户具体在页面上点了哪里）。
+        - paragraph [ref=e232]:
+          - text: 补救方案：小程序可以使用百度统计的
+          - link "小程序SDK" [ref=e233] [cursor=pointer]:
+            - /url: https://mtj.baidu.com
+          - text: （在百度统计后台 → 小程序应用 → 添加应用获取AppKey）。
+        - heading "小程序 + GA4" [level=3] [ref=e234]
+        - paragraph [ref=e235]:
+          - text: 微信小程序
+          - strong [ref=e236]: 不能直接
+          - text: 接入GA4。但可以通过自定义上报实现：
+        - list [ref=e237]:
+          - listitem [ref=e238]:
+            - text: 在小程序后台 → 开发 → 开发设置 → 服务器域名 → 添加
+            - code [ref=e239]: https://www.google-analytics.com
+          - listitem [ref=e240]: 在自己的服务器上搭一个数据转发接口（GA4的measurement protocol）
+        - paragraph [ref=e242]:
+          - strong [ref=e243]: 建议
+          - text: ：如果只是为了看三个数，小程序自带统计 + 百度统计足够。不需要折腾。
+      - separator [ref=e244]
+      - generic [ref=e245]:
+        - heading "五、不要看的数据库清单（避免分析瘫痪）" [level=2] [ref=e246]
+        - heading "这些数据看多了只会让你焦虑，不会让你变聪明" [level=3] [ref=e247]
+        - table [ref=e248]:
+          - rowgroup [ref=e249]:
+            - row "数据 为什么不要盯 什么时候才需要看" [ref=e250]:
+              - columnheader "数据" [ref=e251]
+              - columnheader "为什么不要盯" [ref=e252]
+              - columnheader "什么时候才需要看" [ref=e253]
+          - rowgroup [ref=e254]:
+            - row "PV/UV每小时波动 小产品的小时数据是纯噪声 日均UV > 1000时" [ref=e255]:
+              - cell "PV/UV每小时波动" [ref=e256]:
+                - strong [ref=e257]: PV/UV每小时波动
+              - cell "小产品的小时数据是纯噪声" [ref=e258]
+              - cell "日均UV > 1000时" [ref=e259]
+            - row "设备型号分布 除非你的产品有兼容性问题，否则没用 大量用户反馈某机型闪退" [ref=e260]:
+              - cell "设备型号分布" [ref=e261]:
+                - strong [ref=e262]: 设备型号分布
+              - cell "除非你的产品有兼容性问题，否则没用" [ref=e263]
+              - cell "大量用户反馈某机型闪退" [ref=e264]
+            - row "浏览器分布 一二线城市Chrome 80%+，不需要操心 收到IE/旧版浏览器bug反馈" [ref=e265]:
+              - cell "浏览器分布" [ref=e266]:
+                - strong [ref=e267]: 浏览器分布
+              - cell "一二线城市Chrome 80%+，不需要操心" [ref=e268]
+              - cell "收到IE/旧版浏览器bug反馈" [ref=e269]
+            - row "地域分布 你一个人的产品不需要按城市做市场策略 考虑投本地广告时" [ref=e270]:
+              - cell "地域分布" [ref=e271]:
+                - strong [ref=e272]: 地域分布
+              - cell "你一个人的产品不需要按城市做市场策略" [ref=e273]
+              - cell "考虑投本地广告时" [ref=e274]
+            - row "用户年龄/性别 微信和GA4的画像精准度远不如你以为的 准备融资展示时做PPT用" [ref=e275]:
+              - cell "用户年龄/性别" [ref=e276]:
+                - strong [ref=e277]: 用户年龄/性别
+              - cell "微信和GA4的画像精准度远不如你以为的" [ref=e278]
+              - cell "准备融资展示时做PPT用" [ref=e279]
+            - row "新老用户比 在500 DAU以下没有统计意义 DAU > 1000" [ref=e280]:
+              - cell "新老用户比" [ref=e281]:
+                - strong [ref=e282]: 新老用户比
+              - cell "在500 DAU以下没有统计意义" [ref=e283]
+              - cell "DAU > 1000" [ref=e284]
+            - row "会话时长 好的产品用户用30秒就走了（工具属性），差的产品用户研究半天（看不懂） 结合核心功能使用率一起看" [ref=e285]:
+              - cell "会话时长" [ref=e286]:
+                - strong [ref=e287]: 会话时长
+              - cell "好的产品用户用30秒就走了（工具属性），差的产品用户研究半天（看不懂）" [ref=e288]
+              - cell "结合核心功能使用率一起看" [ref=e289]
+            - row "跳出率 单页应用、工具型产品的跳出率天然高 配合转化漏斗看" [ref=e290]:
+              - cell "跳出率" [ref=e291]:
+                - strong [ref=e292]: 跳出率
+              - cell "单页应用、工具型产品的跳出率天然高" [ref=e293]
+              - cell "配合转化漏斗看" [ref=e294]
+        - heading "OPC正确做法" [level=3] [ref=e295]
+        - list [ref=e296]:
+          - listitem [ref=e297]:
+            - strong [ref=e298]: 每周一看
+            - text: ：DAU、核心功能使用率、留存率。三个数，看一眼，30秒完毕。
+          - listitem [ref=e299]:
+            - strong [ref=e300]: 每月一总结
+            - text: ：把四周的数据放进Excel，画出折线图。如果连续四周持平或上涨 → 不看细节。如果连续四周下跌 → 回到"数据异常诊断流程"（见下章）。
+          - listitem [ref=e301]:
+            - strong [ref=e302]: 其余时间
+            - text: ：不要打开GA4。去做推广、做产品、聊用户。
+      - separator [ref=e303]
+      - generic [ref=e304]:
+        - heading "六、数据异常诊断流程" [level=2] [ref=e305]
+        - heading "当DAU突然腰斩（连续3天）" [level=3] [ref=e306]
+        - generic [ref=e308]: ① 检查服务器 → Vercel dashboard 看部署状态 → Supabase dashboard 看API是否正常 → 用手机亲自访问一次 ② 检查支付 → 支付是否还能正常拉起？ → 有无支付回调失败通知？ ③ 检查封禁 → 微信有没有提示"已停止访问该网页"？ → 域名有没有被墙？ → 小程序有没有被下架/限流通知？ ④ 检查流量来源 → 百度统计→来源分析→看看哪个渠道掉量了 → 如果你靠SEO，检查搜索排名有没有掉 → 如果你靠社群，检查群里有没有人说了负面 ⑤ 找3个活跃用户直接微信问 → "这两天用我们的产品有什么不对劲吗？"
+        - heading "当核心功能使用率持续偏低（<30%）" [level=3] [ref=e309]
+        - generic [ref=e311]: ① 检查引导 → 新用户进来第一屏能直接看到核心功能入口吗？ → 还是藏在菜单深处？ → 用一个非技术朋友测试：打开产品，问他能在10秒内找到核心功能吗 ② 检查功能名 → 功能按钮上写的文案，用户能看懂吗？ → A/B测试两个按钮名（比如"立即分析"vs"上传文件"） ③ 检查是否有竞品 → 用户有没有直接告诉你"我觉得XX更好用"？ → 去知乎/小红书搜你的品类名，看最新评论
+        - heading "当留存率持续低迷（次日<20%）" [level=3] [ref=e312]
+        - generic [ref=e314]: 留存率是你的产品价值的唯一客观评分。 如果不是技术bug导致的，那就是一件事： → 你的产品没有解决用户真正的问题。 验证方法： → 给上个月注册的10个用户发红包，做5分钟微信语音 → 问："为什么后来不用了？" → 听他们的原话，不要听"挺好用的就是没时间" 真实的答案通常是： "好用，但没觉得不用会怎样" "和朋友推荐XX了，他说YY更好用" "注册完不知道下一步该干嘛"
+      - separator [ref=e315]
+      - generic [ref=e316]:
+        - heading "总纲" [level=2] [ref=e317]
+        - paragraph [ref=e318]:
+          - text: Google Analytics、百度统计、微信后台——三套数据系统，对OPC来说
+          - strong [ref=e319]: 只有三个数字需要每周看一眼
+          - text: ：
+        - table [ref=e320]:
+          - rowgroup [ref=e321]:
+            - row "数字 含义 红线" [ref=e322]:
+              - columnheader "数字" [ref=e323]
+              - columnheader "含义" [ref=e324]
+              - columnheader "红线" [ref=e325]
+          - rowgroup [ref=e326]:
+            - row "日活 产品还活着吗 连续3天掉50% → 立刻排查" [ref=e327]:
+              - cell "日活" [ref=e328]:
+                - strong [ref=e329]: 日活
+              - cell "产品还活着吗" [ref=e330]
+              - cell "连续3天掉50% → 立刻排查" [ref=e331]
+            - row "核心功能使用率 用户用对了吗 <30% → 改引导" [ref=e332]:
+              - cell "核心功能使用率" [ref=e333]:
+                - strong [ref=e334]: 核心功能使用率
+              - cell "用户用对了吗" [ref=e335]
+              - cell "<30% → 改引导" [ref=e336]
+            - row "次日留存 产品有用吗 <20% → 回去做用户访谈" [ref=e337]:
+              - cell "次日留存" [ref=e338]:
+                - strong [ref=e339]: 次日留存
+              - cell "产品有用吗" [ref=e340]
+              - cell "<20% → 回去做用户访谈" [ref=e341]
+        - blockquote [ref=e342]: 你不是字节跳动的数据分析师。你有300个用户时做30个维度的交叉分析，每个格子只有3个样本——那不是分析，是自我欺骗。
+      - paragraph [ref=e343]: 最后修订：2026年5月9日
+  - navigation [ref=e344]:
+    - link "正式发布" [ref=e345] [cursor=pointer]:
+      - /url: /nodes/30-official-launch/
+      - img [ref=e346]
+      - generic [ref=e348]: 正式发布
+    - generic [ref=e349]: 31 / 57
+    - link "冷启动获客" [ref=e350] [cursor=pointer]:
+      - /url: /nodes/32-cold-start/
+      - generic [ref=e351]: 冷启动获客
+      - img [ref=e352]
