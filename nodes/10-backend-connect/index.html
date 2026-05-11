@@ -283,7 +283,7 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
       </ul>
     </aside>
 
-  <div class="page">
+    <main class="page">
     <header class="hero fade-section">
       <div class="hero-content">
         <div class="hero-label">节点 10 · 环境搭建</div>
@@ -721,7 +721,8 @@ Supabase信息：
         你不需要会SQL，不需要搭服务器，不需要配数据库。你只需要把建表操作在网页上点几下，然后把 "Supabase Project URL + anon key" 告诉AI——剩下的代码AI帮你写。<br>
         （本文写于2026年5月。）
       </p>
-    
+      </div>
+
     <!-- 🔵 2026年时效性内容更新 -->
     <section id="s2026" class="section fade-section">
       <div style="margin-bottom:var(--space-lg);">
@@ -892,8 +893,6 @@ await supabase.auth.signInWithOAuth({ provider: 'google' });
       </p>
     </section>
 
-</section>
-
     <nav class="footer-nav">
       <a href="/nodes/09-git-version/index.html" class="nav-link">
         <span class="nav-arrow">←</span>
@@ -904,7 +903,7 @@ await supabase.auth.signInWithOAuth({ provider: 'google' });
         <span class="nav-arrow">→</span>
       </a>
     </nav>
-  </div>
+  </main>
 
   <script>
     const observer = new IntersectionObserver((entries) => {
