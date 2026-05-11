@@ -43,7 +43,7 @@ body {
   position: relative;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 clamp(24px, 8vw, 120px);
+  padding: 0 clamp(24px, 8vw, 120px) 6rem;
   min-height: 100vh;
 }
 .page::before {
@@ -69,13 +69,21 @@ body {
   pointer-events: none;
   user-select: none;
 }
-.back-link {
+.fixed-top-nav {
   position: fixed;
-  top: var(--space-xl);
-  left: clamp(24px, 8vw, 120px);
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
 }
-.back-link a {
+.fixed-top-nav a {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -86,7 +94,12 @@ body {
   text-decoration: none;
   transition: color 0.3s ease;
 }
-.back-link a:hover { color: var(--text-primary); }
+.fixed-top-nav a:hover { color: var(--text-primary); }
+.fixed-top-nav .nav-center {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--text-tertiary);
+}
 .hero {
   padding: var(--space-4xl) 0 var(--space-3xl);
   position: relative;
@@ -326,11 +339,18 @@ body {
   line-height: 1.7;
 }
 .footer-nav {
-  padding: var(--space-2xl) 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: var(--space-2xl) clamp(1.25rem, 4vw, 2.5rem);
   border-top: 1px solid var(--line);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: rgba(17, 17, 16, 0.85);
+  backdrop-filter: blur(12px);
 }
 .nav-link {
   display: inline-flex;
@@ -415,9 +435,10 @@ body {
   </style>
 </head>
 <body>
-  <div class="back-link">
+  <nav class="fixed-top-nav">
     <a href="/"><span>←</span> 返回首页</a>
-  </div>
+    <span class="nav-center">节点 54 / 57</span>
+  </nav>
   <div class="section-number">54</div>
 
   <div class="page">
@@ -723,7 +744,7 @@ body {
       </div>
     </section>
 
-    <footer class="footer-nav">
+    <nav class="footer-nav">
       <a href="/nodes/53-global-payment/index.html" class="nav-link">
         <span class="nav-arrow">←</span>
         节点53：海外支付方案

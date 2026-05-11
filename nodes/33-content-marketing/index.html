@@ -79,17 +79,23 @@ body {
   user-select: none;
 }
 
-.back-link {
+.fixed-top-nav {
   position: fixed;
-  top: var(--space-xl);
-  left: clamp(24px, 8vw, 120px);
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
 }
 
-.back-link a {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
+.fixed-top-nav .back-link {
+  position: static;
   font-size: 0.75rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -98,10 +104,18 @@ body {
   transition: color 0.4s ease;
 }
 
-.back-link a:hover { color: var(--text-primary); }
+.fixed-top-nav .back-link:hover { color: var(--text-primary); }
+
+.fixed-top-nav .node-id {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
 
 .hero {
   padding: var(--space-4xl) 0 var(--space-3xl);
+  position: relative;
 }
 
 .hero-content {
@@ -746,7 +760,14 @@ body {
 
 /* Footer */
 .footer-nav {
-  padding: var(--space-2xl) 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.85);
+  backdrop-filter: blur(12px);
   border-top: 1px solid var(--line);
   display: flex;
   justify-content: space-between;
@@ -784,9 +805,10 @@ body {
   </style>
 </head>
 <body>
-  <div class="back-link">
-    <a href="/"><span>←</span> 返回首页</a>
-  </div>
+  <nav class="fixed-top-nav">
+    <a href="/" class="back-link">← 返回首页</a>
+    <span class="node-id">节点 33 / 57</span>
+  </nav>
   <div class="section-number">21</div>
 
   <div class="page">
@@ -1222,7 +1244,7 @@ body {
       </div>
     </section>
 
-    <footer class="footer-nav">
+    <nav class="footer-nav">
       <a href="/nodes/32-cold-start/index.html" class="nav-link">
         <span class="nav-arrow">←</span>
         节点32：冷启动获客
@@ -1231,7 +1253,7 @@ body {
         节点34：用户反馈收集
         <span class="nav-arrow">→</span>
       </a>
-    </footer>
+    </nav>
     </div>
   </div>
 

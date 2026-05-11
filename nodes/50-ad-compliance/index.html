@@ -56,7 +56,7 @@ body {
   position: relative;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
+  padding: 5rem clamp(1.25rem, 5vw, 3rem) 6rem;
   display: grid;
   grid-template-columns: 220px minmax(0, 1fr);
   gap: clamp(2rem, 4vw, 3rem);
@@ -89,15 +89,23 @@ body {
   z-index: 0;
 }
 
-/* Back Link */
-.back-link {
+/* Fixed Top Nav */
+.fixed-top-nav {
   position: fixed;
-  top: var(--space-xl);
-  left: clamp(24px, 8vw, 120px);
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
 }
 
-.back-link a {
+.fixed-top-nav a {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -109,7 +117,13 @@ body {
   transition: opacity 0.4s ease;
 }
 
-.back-link a:hover { opacity: 0.6; }
+.fixed-top-nav a:hover { opacity: 0.6; }
+
+.fixed-top-nav .nav-center {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--text-tertiary);
+}
 
 /* Hero */
 .hero {
@@ -479,12 +493,18 @@ body {
 
 /* Footer Nav */
 .footer-nav {
-  padding: var(--space-2xl) 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: var(--space-2xl) clamp(1.25rem, 4vw, 2.5rem);
   border-top: 1px solid var(--line);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: var(--space-2xl);
+  background: rgba(17, 17, 16, 0.85);
+  backdrop-filter: blur(12px);
 }
 
 .nav-link {
@@ -647,9 +667,10 @@ body {
   </style>
 </head>
 <body>
-  <div class="back-link">
+  <nav class="fixed-top-nav">
     <a href="/"><span>←</span> 返回首页</a>
-  </div>
+    <span class="nav-center">节点 50 / 57</span>
+  </nav>
   <div class="section-number">28</div>
 
   <div class="page">
@@ -1318,7 +1339,7 @@ body {
       </div>
     </section>
 
-    <footer class="footer-nav">
+    <nav class="footer-nav">
       <a href="/nodes/49-copyright/index.html" class="nav-link">
         <span class="nav-arrow">←</span>
         节点49：软件著作权登记
@@ -1327,7 +1348,7 @@ body {
         节点51：数据备份与恢复
         <span class="nav-arrow">→</span>
       </a>
-    </footer>
+    </nav>
     </div>
   </div>
 

@@ -46,7 +46,7 @@ body {
   position: relative;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
+  padding: 5rem clamp(1.25rem, 5vw, 3rem) 6rem;
   display: grid;
   grid-template-columns: 220px minmax(0, 1fr);
   gap: clamp(2rem, 4vw, 3rem);
@@ -78,14 +78,22 @@ body {
   user-select: none;
 }
 
-.back-link {
+.fixed-top-nav {
   position: fixed;
-  top: var(--space-xl);
-  left: clamp(24px, 8vw, 120px);
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
 }
 
-.back-link a {
+.fixed-top-nav a {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -97,7 +105,13 @@ body {
   transition: color 0.3s ease;
 }
 
-.back-link a:hover { color: var(--text-primary); }
+.fixed-top-nav a:hover { color: var(--text-primary); }
+
+.fixed-top-nav .nav-center {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--text-tertiary);
+}
 
 .hero {
   padding: var(--space-4xl) 0 var(--space-3xl);
@@ -415,11 +429,18 @@ body {
 
 /* Footer Nav */
 .footer-nav {
-  padding: var(--space-2xl) 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: var(--space-2xl) clamp(1.25rem, 4vw, 2.5rem);
   border-top: 1px solid var(--line);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: rgba(17, 17, 16, 0.85);
+  backdrop-filter: blur(12px);
 }
 
 .nav-link {
@@ -456,9 +477,10 @@ body {
   </style>
 </head>
 <body>
-  <div class="back-link">
+  <nav class="fixed-top-nav">
     <a href="/"><span>←</span> 返回首页</a>
-  </div>
+    <span class="nav-center">节点 49 / 57</span>
+  </nav>
   <div class="section-number">27</div>
 
   <div class="page">
@@ -848,16 +870,16 @@ body {
       </div>
     </section>
 
-    <footer class="footer-nav">
+    <nav class="footer-nav">
       <a href="/nodes/48-trademark/index.html" class="nav-link">
         <span class="nav-arrow">←</span>
-        节点26：商标申请
+        节点48：商标申请
       </a>
       <a href="/nodes/50-ad-compliance/index.html" class="nav-link">
-        节点28：广告合规
+        节点50：广告合规
         <span class="nav-arrow">→</span>
       </a>
-    </footer>
+    </nav>
     </div>
   </div>
 

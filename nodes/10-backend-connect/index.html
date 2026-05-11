@@ -33,14 +33,133 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; font-weight: 400; line-height: 1.9; letter-spacing: 0.04em; -webkit-font-smoothing: antialiased; }
 
-.page { position: relative; max-width: 1200px; margin: 0 auto; padding: 0 clamp(24px, 8vw, 120px); min-height: 100vh; }
+.page {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 8vw, 120px) 6rem;
+  min-height: 100vh;
+}
+
+/* Layout with Sidebar TOC */
+.layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3rem);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar-toc {
+    display: none;
+  }
+}
+
+/* Sidebar TOC */
+.sidebar-toc {
+  position: sticky;
+  top: 5rem;
+  height: fit-content;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  padding-top: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.sidebar-toc::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar-toc::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 2px;
+}
+
+.toc-title {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.toc-list {
+  list-style: none;
+}
+
+.toc-item {
+  margin-bottom: 0.75rem;
+}
+
+.toc-link {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: block;
+  padding: 0.375rem 0;
+  padding-left: 1rem;
+  border-left: 1px solid var(--line);
+  transition: all 0.3s;
+  line-height: 1.4;
+}
+
+.toc-link:hover {
+  color: var(--text-primary);
+  border-left-color: var(--accent);
+}
+
+.toc-link.active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  font-weight: 400;
+}
 .page::before { content: ''; position: absolute; top: 0; left: clamp(24px, 8vw, 120px); right: clamp(24px, 8vw, 120px); height: 1px; background: var(--line); }
 
 .section-number { position: absolute; top: var(--space-2xl); right: clamp(24px, 8vw, 120px); font-size: clamp(100px, 22vw, 280px); font-weight: 100; color: var(--text-primary); opacity: 0.03; line-height: 1; letter-spacing: -0.05em; font-family: 'Noto Serif JP', serif; pointer-events: none; user-select: none; }
 
-.back-link { position: fixed; top: var(--space-xl); left: clamp(24px, 8vw, 120px); z-index: 100; }
-.back-link a { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: opacity 0.3s ease; }
-.back-link a:hover { opacity: 0.6; }
+/* Fixed Top Nav */
+.fixed-top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+.back-link {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
+}
+
+.back-link:hover { color: var(--text-primary); }
+
+.node-id {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+}
 
 .hero { padding: var(--space-4xl) 0 var(--space-3xl); position: relative; }
 .hero-content { position: relative; z-index: 1; max-width: 800px; }
@@ -111,20 +230,58 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
 .err-table td { padding: var(--space-sm); border-bottom: 1px solid var(--line-light); color: var(--text-secondary); vertical-align: top; }
 .err-table td:first-child { color: var(--text-primary); font-weight: 500; }
 
-.footer-nav { padding: var(--space-2xl) 0; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
-.nav-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: opacity 0.3s ease; }
-.nav-link:hover { opacity: 0.6; }
-.nav-arrow { font-size: 0.75rem; }
+.footer-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.9);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
+}
+.nav-link {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
+}
+.nav-link:hover { color: var(--text-primary); }
+.nav-link.disabled { opacity: 0.3; pointer-events: none; }
 
 .fade-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
 .fade-section.visible { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body>
-  <div class="back-link">
-    <a href="/"><span>←</span> 返回首页</a>
-  </div>
+  <nav class="fixed-top-nav">
+    <a href="/index.html" class="back-link">← 返回首页</a>
+    <span class="node-id">节点 10 / 57</span>
+  </nav>
   <div class="section-number">10</div>
+
+  <div class="layout">
+    <aside class="sidebar-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#s1" class="toc-link">创建Supabase项目</a></li>
+        <li class="toc-item"><a href="#s2" class="toc-link">建第一张数据库表</a></li>
+        <li class="toc-item"><a href="#s3" class="toc-link">获取API密钥</a></li>
+        <li class="toc-item"><a href="#s4" class="toc-link">用AI写出第一个API调用</a></li>
+        <li class="toc-item"><a href="#s5" class="toc-link">数据库基础概念速成</a></li>
+        <li class="toc-item"><a href="#s6" class="toc-link">最简 supabase-js 代码示例</a></li>
+        <li class="toc-item"><a href="#s7" class="toc-link">调试：最常见的两个错误</a></li>
+        <li class="toc-item"><a href="#s2026" class="toc-link">2026年更新</a></li>
+      </ul>
+    </aside>
 
   <div class="page">
     <header class="hero fade-section">
@@ -135,7 +292,7 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
       </div>
     </header>
 
-    <section class="content-section fade-section">
+    <section id="s1" class="content-section fade-section">
       <div class="section-label">创建Supabase项目（3分钟）</div>
 
       <div class="highlight-box">
@@ -207,7 +364,7 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
       </table>
     </section>
 
-    <section class="content-section fade-section">
+    <section id="s2" class="content-section fade-section">
       <div class="section-label">建第一张数据库表（图形化操作）</div>
 
       <div class="highlight-box">
@@ -284,7 +441,7 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
       </div>
     </section>
 
-    <section class="content-section fade-section">
+    <section id="s3" class="content-section fade-section">
       <div class="section-label">获取API密钥</div>
 
       <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: var(--space-lg); line-height: 1.8;">Supabase控制台 → 左侧最下面 "Project Settings" → "API"：</p>
@@ -314,7 +471,7 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
       <p style="font-size: 14px; color: var(--accent); margin-top: var(--space-lg);">复制这两个值，存起来。后面每做一个新功能都要用到。</p>
     </section>
 
-    <section class="content-section fade-section">
+    <section id="s4" class="content-section fade-section">
       <div class="section-label">用AI写出第一个API调用</div>
 
       <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: var(--space-lg); line-height: 1.8;">目标：在 index.html 里加一个输入框 + 一个按钮。用户在输入框里打字 → 点按钮 → 数据存到Supabase → 页面下方显示刚才保存的所有消息。</p>
@@ -367,7 +524,7 @@ Supabase信息：
       </div>
     </section>
 
-    <section class="content-section fade-section">
+    <section id="s5" class="content-section fade-section">
       <div class="section-label">数据库基础概念速成（30秒版）</div>
 
       <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: var(--space-lg); line-height: 1.8;">四个操作合称 CRUD：</p>
@@ -421,7 +578,7 @@ Supabase信息：
       </div>
     </section>
 
-    <section class="content-section fade-section">
+    <section id="s6" class="content-section fade-section">
       <div class="section-label">最简 supabase-js 代码示例</div>
 
       <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: var(--space-lg); line-height: 1.8;">以下是一个完整的、可以直接跑的最简示例（AI给你的代码会比这个更完善，但这个版本让你理解核心逻辑）：</p>
@@ -518,7 +675,7 @@ Supabase信息：
       </table>
     </section>
 
-    <section class="content-section fade-section">
+    <section id="s7" class="content-section fade-section">
       <div class="section-label">调试：最常见的两个错误</div>
 
       <table class="err-table">
@@ -737,7 +894,7 @@ await supabase.auth.signInWithOAuth({ provider: 'google' });
 
 </section>
 
-    <footer class="footer-nav fade-section">
+    <nav class="footer-nav">
       <a href="/nodes/09-git-version/index.html" class="nav-link">
         <span class="nav-arrow">←</span>
         节点09：Git版本控制初始化
@@ -746,7 +903,7 @@ await supabase.auth.signInWithOAuth({ provider: 'google' });
         节点11：用户认证系统
         <span class="nav-arrow">→</span>
       </a>
-    </footer>
+    </nav>
   </div>
 
   <script>
@@ -756,6 +913,48 @@ await supabase.auth.signInWithOAuth({ provider: 'google' });
       });
     }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
     document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
+
+    // Smooth scroll for TOC links
+    document.querySelectorAll('.toc-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').slice(1);
+        const target = document.getElementById(targetId);
+        if (target) {
+          const offsetTop = target.offsetTop - 80;
+          window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // Scroll spy for TOC
+    const sections = document.querySelectorAll('section[id]');
+    const tocLinks = document.querySelectorAll('.toc-link');
+
+    function updateActiveLink() {
+      const scrollPos = window.scrollY + 120;
+
+      sections.forEach(section => {
+        const top = section.offsetTop;
+        const height = section.offsetHeight;
+        const id = section.getAttribute('id');
+
+        if (scrollPos >= top && scrollPos < top + height) {
+          tocLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${id}`) {
+              link.classList.add('active');
+            }
+          });
+        }
+      });
+    }
+
+    window.addEventListener('scroll', updateActiveLink, { passive: true });
+    updateActiveLink();
   </script>
 </body>
 </html>
