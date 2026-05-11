@@ -212,6 +212,8 @@ bash start.sh
 - ✅ 阅读段落 `max-width: 44ch`（约58字符）
 - ✅ 至少一个超大元素（`clamp(48px, 10vw, 96px)` 标题）
 - ✅ 排版作为主要视觉元素
+- ✅ **页面最大宽度 1200px**（所有节点页面统一）
+- ✅ **页面自适应**（响应式布局，使用 `clamp()` 函数）
 
 ### 色彩系统
 
@@ -338,7 +340,7 @@ Section标题: clamp(1.125rem, 2.5vw, 1.375rem)
   display: grid;
   grid-template-columns: 220px minmax(0, 1fr);
   gap: clamp(2rem, 4vw, 3rem);
-  max-width: 1200px;
+  max-width: 1200px;        /* 固定最大宽度 */
   margin: 0 auto;
   padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
 }
@@ -347,11 +349,16 @@ Section标题: clamp(1.125rem, 2.5vw, 1.375rem)
 **全宽Hero布局**（用于简单节点）：
 ```css
 .page {
-  max-width: 1200px;
+  max-width: 1200px;        /* 固定最大宽度 */
   margin: 0 auto;
-  padding: 0 clamp(24px, 8vw, 120px);
+  padding: 0 clamp(24px, 8vw, 120px);  /* 响应式自适应 */
 }
 ```
+
+**关键约束**：
+- 所有节点页面 `.page` 或 `.layout` 的 `max-width` 统一为 **1200px**
+- 内边距使用 `clamp()` 实现响应式自适应
+- 内容区段间距至少 96px（`--space-3xl`）
 
 ### 节点样式更新检查清单
 
@@ -364,6 +371,8 @@ Section标题: clamp(1.125rem, 2.5vw, 1.375rem)
 - [ ] 无圆角药丸按钮
 - [ ] 无弹簧动画
 - [ ] 朱红强调色每页最多1处
+- [ ] **页面最大宽度 1200px**
+- [ ] **响应式自适应（使用 clamp() 函数）**
 
 ### 标记符号系统
 

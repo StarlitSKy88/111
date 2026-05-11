@@ -1127,7 +1127,7 @@ function renderNodeCard(node) {
       height: 100%;
       transition: all 0.4s ease;
     "
-         onclick="${node.id === 1 ? 'startTest()' : 'openNodeModalWithAccess(' + node.id + ')'}"
+         onclick="${node.id === 1 ? 'window.location.href=&quot;/nodes/01-opc-fit-test/index.html&quot;' : 'openNodeModalWithAccess(' + node.id + ')'}"
          onmouseenter="this.style.borderColor='var(--accent)'; this.style.background='rgba(26, 26, 24, 0.9)';"
          onmouseleave="this.style.borderColor='rgba(42, 42, 40, 0.8)'; this.style.background='rgba(26, 26, 24, 0.7)';">
       <div style="display: flex; justify-content: space-between; align-items: center;">
