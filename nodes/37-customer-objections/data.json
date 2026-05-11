@@ -1,11 +1,13 @@
 {
   "id": 37,
-  "title": "客户异议应对",
   "slug": "customer-objections",
-  "summary": "客户常见异议的标准应答、投诉处理、危机公关",
+  "title": "客户异议应对",
+  "phase": "上线后迭代与运营",
   "difficulty": "进阶",
-  "category": "1-10",
-  "price_standard": null,
-  "price_consult": 299,
-  "ai_summary": null
+  "category": "post",
+  "summary": "当客户说\"太贵了\"、\"不需要\"、\"再考虑考虑\"，你怎么回应？",
+  "content": "",
+  "external_url": "https://opc.taomyst.top/",
+  "created_at": "2026-05-09T00:00:00Z",
+  "updated_at": "2026-05-10T00:00:00Z"
 }

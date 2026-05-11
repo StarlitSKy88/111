@@ -3,23 +3,158 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="OPC客户异议应对 - OPC节点百科">
+  <meta name="description" content="客户异议应对 - OPC节点百科">
   <meta name="theme-color" content="#111110">
   <title>客户异议应对 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <meta http-equiv="refresh" content="0;url=https://opc.taomyst.top/">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg: #111110;
+      --surface: #1A1A18;
+      --text-primary: #F0EDE6;
+      --text-secondary: #7A7670;
+      --text-tertiary: #A8A49E;
+      --accent: #C0392B;
+      --line: #2A2A28;
+      --space-xs: 8px;
+      --space-sm: 16px;
+      --space-md: 24px;
+      --space-lg: 32px;
+      --space-xl: 48px;
+      --space-2xl: 64px;
+      --space-3xl: 96px;
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #111110; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-    .redirect-msg { color: #A8A49E; font-family: 'Noto Sans SC', sans-serif; font-size: 14px; }
-    .redirect-msg a { color: #C0392B; text-decoration: none; }
-    .redirect-msg a:hover { text-decoration: underline; }
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: 'Noto Sans SC', sans-serif;
+      font-weight: 300;
+      line-height: 1.8;
+      letter-spacing: 0.04em;
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .top-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem clamp(24px, 8vw, 120px);
+      border-bottom: 1px solid var(--line);
+      background: var(--bg);
+    }
+    .back-link {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      text-decoration: none;
+    }
+    .back-link:hover { color: var(--text-primary); }
+    .node-id {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 0.75rem;
+      color: var(--text-tertiary);
+      letter-spacing: 0.1em;
+    }
+    .redirect-box {
+      max-width: 600px;
+      text-align: center;
+      padding: var(--space-2xl);
+    }
+    .redirect-box h1 {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(32px, 6vw, 56px);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: var(--space-lg);
+    }
+    .redirect-box p {
+      font-size: 16px;
+      color: var(--text-secondary);
+      margin-bottom: var(--space-xl);
+      line-height: 1.8;
+    }
+    .redirect-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 2rem;
+      background: var(--accent);
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 0.875rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: opacity 0.3s;
+    }
+    .redirect-btn:hover { opacity: 0.8; }
+    .note {
+      margin-top: var(--space-xl);
+      font-size: 13px;
+      color: var(--text-tertiary);
+    }
+    .footer-nav {
+      display: flex;
+      justify-content: space-between;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1.5rem clamp(24px, 8vw, 120px);
+      border-top: 1px solid var(--line);
+      background: var(--bg);
+    }
+    .nav-link {
+      font-size: 0.7rem;
+      color: var(--text-tertiary);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .nav-link:hover { color: var(--text-primary); }
+    .nav-arrow { font-size: 0.6rem; }
   </style>
 </head>
 <body>
-  <div class="redirect-msg">
-    正在跳转至 <a href="https://opc.taomyst.top/">opc.taomyst.top</a>...
-  </div>
-  <script>window.location.href = 'https://opc.taomyst.top/';</script>
+  <nav class="top-nav">
+    <a href="/" class="back-link">← 返回首页</a>
+    <span class="node-id">节点 37 / 57</span>
+  </nav>
+
+  <main class="redirect-box">
+    <p style="color: var(--accent); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1rem;">节点 37 · 上线后迭代与运营</p>
+    <h1>客户异议应对</h1>
+    <p>当客户说"太贵了"、"不需要"、"再考虑考虑"，<br>你怎么回应？</p>
+    <a href="https://opc.taomyst.top/" class="redirect-btn">
+      前往学习
+      <span class="nav-arrow">→</span>
+    </a>
+    <p class="note">内容已迁移至 OPC 学习平台</p>
+  </main>
+
+  <footer class="footer-nav">
+    <a href="/nodes/36-ai-customer-service/index.html" class="nav-link">
+      <span class="nav-arrow">←</span>节点36：AI客户服务
+    </a>
+    <a href="/nodes/38-pricing/index.html" class="nav-link">
+      节点38：定价策略 <span class="nav-arrow">→</span>
+    </a>
+  </footer>
 </body>
 </html>

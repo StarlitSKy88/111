@@ -2,11 +2,11 @@
   "id": 29,
   "slug": "audit-fix",
   "title": "审核问题处理",
-  "phase": "正式上线",
-  "difficulty": "进阶",
-  "category": "核心必做",
-  "summary": "审核被拒是常态，各平台常见拒绝原因和处理SOP",
+  "phase": "产品验证与准备",
+  "difficulty": "入门",
+  "category": "0-1",
+  "summary": "审核被拒原因分析、修改重提、申诉流程",
   "content": "",
   "created_at": "2026-05-09T00:00:00Z",
-  "updated_at": "2026-05-09T00:00:00Z"
+  "updated_at": "2026-05-10T00:00:00Z"
 }

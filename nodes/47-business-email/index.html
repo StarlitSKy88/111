@@ -51,20 +51,22 @@ body {
   position: relative;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 clamp(24px, 8vw, 120px);
-  min-height: 100vh;
+  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3rem);
 }
-
-.page::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: clamp(24px, 8vw, 120px);
-  right: clamp(24px, 8vw, 120px);
-  height: 1px;
-  background: var(--line);
-  z-index: 1;
-}
+.page::before { content: ''; position: fixed; top: 0; left: clamp(1.25rem, 5vw, 3rem); right: clamp(1.25rem, 5vw, 3rem); height: 1px; background: var(--line); z-index: 1; }
+.sidebar-toc { position: sticky; top: 5rem; height: fit-content; max-height: calc(100vh - 6rem); overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+.sidebar-toc::-webkit-scrollbar { width: 4px; }
+.sidebar-toc::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+.toc-title { font-size: 0.6875rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 1.25rem; }
+.toc-list { list-style: none; }
+.toc-item { margin-bottom: 0.75rem; }
+.toc-link { font-size: 0.8125rem; color: var(--text-secondary); text-decoration: none; display: block; padding: 0.375rem 0; padding-left: 1rem; border-left: 1px solid var(--line); transition: all 0.3s; line-height: 1.4; }
+.toc-link:hover { color: var(--text-primary); border-left-color: var(--accent); }
+.toc-link.active { color: var(--accent); border-left-color: var(--accent); font-weight: 400; }
+@media (max-width: 900px) { .page { grid-template-columns: 1fr; } .sidebar-toc { display: none; } }
 
 .section-number {
   position: fixed;
@@ -659,6 +661,22 @@ body {
   <div class="section-number">29</div>
 
   <div class="page">
+    <nav class="sidebar-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#s1" class="toc-link">企业邮箱本质</a></li>
+        <li class="toc-item"><a href="#s2" class="toc-link">三条主要路径</a></li>
+        <li class="toc-item"><a href="#s3" class="toc-link">腾讯企业邮箱</a></li>
+        <li class="toc-item"><a href="#s4" class="toc-link">阿里企业邮箱</a></li>
+        <li class="toc-item"><a href="#s5" class="toc-link">三项认证</a></li>
+        <li class="toc-item"><a href="#s5" class="toc-link">账户架构</a></li>
+        <li class="toc-item"><a href="#s6" class="toc-link">协议选择</a></li>
+        <li class="toc-item"><a href="#s7" class="toc-link">决策框架</a></li>
+        <li class="toc-item"><a href="#s8" class="toc-link">财务指标</a></li>
+        <li class="toc-item"><a href="#s9" class="toc-link">操作清单</a></li>
+      </ul>
+    </nav>
+    <div class="main-content">
     <header class="hero fade-section">
       <div class="hero-content">
         <div class="hero-label">节点 47 · 1-10阶段</div>
@@ -675,7 +693,7 @@ body {
     </section>
 
     <!-- 壹 · 为什么OPC需要企业邮箱 -->
-    <section class="dim-section fade-section">
+    <section id="s1" class="dim-section fade-section">
       <div class="dim-badge">
         <span class="dim-number">壹</span>
         <span class="dim-tag">本质</span>
@@ -752,7 +770,7 @@ body {
     <hr class="section-divider">
 
     <!-- 贰 · 2026年三条主要路径 -->
-    <section class="dim-section fade-section">
+    <section id="s2" class="dim-section fade-section">
       <div class="dim-badge">
         <span class="dim-number">贰</span>
         <span class="dim-tag">决策</span>
@@ -897,7 +915,7 @@ v=DMARC1; p=quarantine; rua=mailto:admin@你的域名.com</code>
     <hr class="section-divider">
 
     <!-- 肆 · 阿里企业邮箱详解 -->
-    <section class="dim-section fade-section">
+    <section id="s4" class="dim-section fade-section">
       <div class="dim-badge">
         <span class="dim-number">肆</span>
         <span class="dim-tag">培育</span>
@@ -963,7 +981,7 @@ v=DMARC1; p=quarantine; rua=mailto:admin@你的域名.com</code>
     <hr class="section-divider">
 
     <!-- 伍 · 三项认证：SPF/DKIM/DMARC -->
-    <section class="dim-section fade-section">
+    <section id="s5" class="dim-section fade-section">
       <div class="dim-badge">
         <span class="dim-number">伍</span>
         <span class="dim-tag">避坑</span>
@@ -1048,7 +1066,7 @@ v=DMARC1; p=quarantine;
     <hr class="section-divider">
 
     <!-- 陆 · 账户架构设计 -->
-    <section class="dim-section fade-section">
+    <section id="s6" class="dim-section fade-section">
       <div class="dim-badge">
         <span class="dim-number">陆</span>
         <span class="dim-tag">培育</span>
@@ -1134,7 +1152,7 @@ v=DMARC1; p=quarantine;
     <hr class="section-divider">
 
     <!-- 柒 · 协议选择：IMAP vs POP3 -->
-    <section class="dim-section fade-section">
+    <section id="s7" class="dim-section fade-section">
       <div class="dim-badge">
         <span class="dim-number">柒</span>
         <span class="dim-tag">避坑</span>
@@ -1183,7 +1201,7 @@ v=DMARC1; p=quarantine;
     <hr class="section-divider">
 
     <!-- 捌 · 决策框架 -->
-    <section class="dim-section fade-section">
+    <section id="s8" class="dim-section fade-section">
       <div class="dim-badge">
         <span class="dim-number">捌</span>
         <span class="dim-tag">决策</span>
@@ -1228,7 +1246,7 @@ v=DMARC1; p=quarantine;
     </section>
 
     <!-- 玖 · 财务健康指标 -->
-    <section class="dim-section fade-section">
+    <section id="s9" class="dim-section fade-section">
       <div class="dim-badge">
         <span class="dim-number">玖</span>
         <span class="dim-tag">决策</span>
@@ -1255,7 +1273,7 @@ v=DMARC1; p=quarantine;
     </section>
 
     <!-- 拾 · 操作清单 -->
-    <section class="dim-section fade-section">
+    <section id="s10" class="dim-section fade-section">
       <div class="dim-badge">
         <span class="dim-number">拾</span>
         <span class="dim-tag">行动</span>
@@ -1320,6 +1338,7 @@ v=DMARC1; p=quarantine;
         <span class="nav-arrow">→</span>
       </a>
     </footer>
+    </div>
   </div>
 
   <script>
@@ -1332,6 +1351,20 @@ v=DMARC1; p=quarantine;
     }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
     document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
+
+    // TOC scroll spy
+    const tocLinks = document.querySelectorAll('.toc-link');
+    const sections = document.querySelectorAll('section[id]');
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(link => link.classList.remove('active'));
+          const activeLink = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+          if (activeLink) activeLink.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-20% 0px -60% 0px' });
+    sections.forEach(section => sectionObserver.observe(section));
   </script>
 </body>
 </html>

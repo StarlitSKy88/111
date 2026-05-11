@@ -1,11 +1,12 @@
 {
   "id": 33,
-  "title": "内容营销与SEO/ASO",
   "slug": "content-marketing",
-  "summary": "公众号、小红书、抖音、搜索优化，有第一单后开始建立内容资产",
+  "title": "内容营销与SEO/ASO",
+  "phase": "产品验证与准备",
   "difficulty": "进阶",
   "category": "1-10",
-  "price_standard": null,
-  "price_consult": 299,
-  "ai_summary": null
+  "summary": "公众号、小红书、抖音、搜索优化，有第一单后开始建立内容资产",
+  "content": "",
+  "created_at": "2026-05-09T00:00:00Z",
+  "updated_at": "2026-05-10T00:00:00Z"
 }

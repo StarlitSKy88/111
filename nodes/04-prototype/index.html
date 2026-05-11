@@ -33,17 +33,26 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; font-weight: 400; line-height: 1.9; letter-spacing: 0.04em; -webkit-font-smoothing: antialiased; }
 
-.page { position: relative; max-width: 1200px; margin: 0 auto; padding: 0 clamp(24px, 8vw, 120px); min-height: 100vh; }
-.page::before { content: ''; position: absolute; top: 0; left: clamp(24px, 8vw, 120px); right: clamp(24px, 8vw, 120px); height: 1px; background: var(--line); }
+.page { position: relative; max-width: 1200px; margin: 0 auto; padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem; display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: clamp(2rem, 4vw, 3rem); }
+.page::before { content: ''; position: absolute; top: 0; left: clamp(1.25rem, 5vw, 3rem); right: clamp(1.25rem, 5vw, 3rem); height: 1px; background: var(--line); }
+.sidebar-toc { position: sticky; top: 5rem; height: fit-content; max-height: calc(100vh - 6rem); overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+.sidebar-toc::-webkit-scrollbar { width: 4px; }
+.sidebar-toc::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+.toc-title { font-size: 0.6875rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 1.25rem; }
+.toc-list { list-style: none; }
+.toc-item { margin-bottom: 0.75rem; }
+.toc-link { font-size: 0.8125rem; color: var(--text-secondary); text-decoration: none; display: block; padding: 0.375rem 0; padding-left: 1rem; border-left: 1px solid var(--line); transition: all 0.3s; line-height: 1.4; }
+.toc-link:hover { color: var(--text-primary); border-left-color: var(--accent); }
+.toc-link.active { color: var(--accent); border-left-color: var(--accent); font-weight: 400; }
+@media (max-width: 900px) { .page { grid-template-columns: 1fr; } .sidebar-toc { display: none; } }
 
-.section-number { position: absolute; top: var(--space-2xl); right: clamp(24px, 8vw, 120px); font-size: clamp(100px, 22vw, 280px); font-weight: 100; color: var(--text-primary); opacity: 0.03; line-height: 1; letter-spacing: -0.05em; font-family: 'Noto Serif JP', serif; pointer-events: none; user-select: none; }
+.section-number { position: fixed; top: var(--space-2xl); right: clamp(24px, 8vw, 120px); font-size: clamp(100px, 22vw, 280px); font-weight: 100; color: var(--text-primary); opacity: 0.03; line-height: 1; letter-spacing: -0.05em; font-family: 'Noto Serif JP', serif; pointer-events: none; user-select: none; z-index: 0; }
 
 .back-link { position: fixed; top: var(--space-xl); left: clamp(24px, 8vw, 120px); z-index: 100; }
 .back-link a { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: opacity 0.3s ease; }
 .back-link a:hover { opacity: 0.6; }
 
 .hero { padding: var(--space-4xl) 0 var(--space-3xl); position: relative; }
-.hero-content { position: relative; z-index: 1; max-width: 800px; }
 .hero-label { font-size: 13px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-md); }
 .hero-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
 .hero-title { font-family: 'Noto Serif JP', serif; font-size: clamp(48px, 10vw, 96px); font-weight: 300; letter-spacing: -0.03em; line-height: 0.95; margin-bottom: var(--space-xl); }
@@ -119,6 +128,20 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
   <div class="section-number">04</div>
 
   <div class="page">
+    <nav class="sidebar-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#s1" class="toc-link">为什么OPC必须做原型</a></li>
+        <li class="toc-item"><a href="#s2" class="toc-link">纸笔原型法</a></li>
+        <li class="toc-item"><a href="#s3" class="toc-link">Figma入门</a></li>
+        <li class="toc-item"><a href="#s4" class="toc-link">一页原型自检清单</a></li>
+        <li class="toc-item"><a href="#s5" class="toc-link">三平台设计规范</a></li>
+        <li class="toc-item"><a href="#s6" class="toc-link">把原型喂给AI</a></li>
+        <li class="toc-item"><a href="#s7" class="toc-link">总纲</a></li>
+      
+        <li class="toc-item"><a href="#s2026" class="toc-link">2026年更新</a></li></ul>
+    </nav>
+    <div class="main-content">
     <header class="hero fade-section">
       <div class="hero-content">
         <div class="hero-label">节点 04 · 产品验证</div>
@@ -127,7 +150,7 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
       </div>
     </header>
 
-    <section class="content-section fade-section">
+    <section id="s1" class="content-section fade-section">
       <div class="section-label">为什么OPC必须做原型</div>
 
       <div class="highlight-box">
@@ -167,7 +190,7 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
       </table>
     </section>
 
-    <section class="content-section fade-section">
+    <section id="s2" class="content-section fade-section">
       <div class="section-label">纸笔原型法：比任何软件都快</div>
 
       <div class="step-list">
@@ -213,7 +236,7 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
       </div>
     </section>
 
-    <section class="content-section fade-section">
+    <section id="s3" class="content-section fade-section">
       <div class="section-label">Figma入门：8步出可交互原型</div>
 
       <div class="two-col" style="margin-bottom: var(--space-lg);">
@@ -299,7 +322,7 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
       </div>
     </section>
 
-    <section class="content-section fade-section">
+    <section id="s4" class="content-section fade-section">
       <div class="section-label">一页原型自检清单</div>
       <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: var(--space-lg); line-height: 1.8;">把原型摆在面前，问自己这5个问题。5个都是绿灯才可以开始开发。有任何一个是红灯，修改原型。</p>
 
@@ -347,7 +370,7 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
       </table>
     </section>
 
-    <section class="content-section fade-section">
+    <section id="s5" class="content-section fade-section">
       <div class="section-label">三平台设计规范速查</div>
       <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: var(--space-lg); line-height: 1.8;">不同平台的原型，有些规则是硬性的（审核不通过）。OPC实战速记：Web优先最自由，小程序最严格，App建议一个平台做成熟了再做另一个。</p>
 
@@ -412,7 +435,7 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
       </div>
     </section>
 
-    <section class="content-section fade-section">
+    <section id="s6" class="content-section fade-section">
       <div class="section-label">把原型喂给AI：Prompt模板</div>
 
       <div class="step-list">
@@ -496,7 +519,7 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
       </div>
     </section>
 
-    <section class="content-section fade-section">
+    <section id="s7" class="content-section fade-section">
       <div class="section-label">总纲</div>
       <div class="quote-block" style="border-left-width: 3px;">
         <p class="quote-text" style="font-size: 18px; color: var(--text-primary);">原型不是设计——原型是沟通工具。它是OPC和AI之间的共同语言。</p>
@@ -515,7 +538,98 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
         原型的目的是被推翻。不要花2天画一个"完美"的原型——那你会不敢改它。<br>
         （本文写于2026年5月。Figma界面可能持续更新，但核心操作逻辑长期不变。）
       </p>
+    
+    <!-- 🔵 2026年时效性内容更新 -->
+    <section id="s2026" class="section fade-section">
+      <div style="margin-bottom:var(--space-lg);">
+        <span style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);">2026 UPDATE</span>
+      </div>
+      <div class="prose" style="max-width:680px;">
+        
+<blockquote style="border-left:2px solid var(--accent);padding:var(--space-sm) var(--space-md);margin:var(--space-md) 0;color:var(--text-secondary);font-style:italic;background:var(--surface);border-radius:0 6px 6px 0;font-size:0.95rem;">**面向OPC**：你有一个想法，但你不能花三个月把它做出来才发现没人要。原型的作用是：用最短的时间，做出"看起来像真的"的东西，拿去给别人看，收集反馈，再决定做不做。</blockquote>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">一、2026年OPC的原型三层次</h3>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">不是所有原型都需要"做出来"</h4>
+
+<table style="width:100%;border-collapse:collapse;margin:var(--space-md) 0;font-size:0.88rem;">
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">层次</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">是什么</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">花多久</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">用来干嘛</td></tr>
+<tr><th style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**纸上原型**</th><th style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">手绘草图/Excalidraw线框图</th><th style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">30分钟</th><th style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">自己理清思路</th></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**可点击原型**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">Figma做交互，看起来像真的App</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">半天</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">拿去给朋友看"你愿意用吗"</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**功能原型**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">用bolt.new/v0 生成可用的网页</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">1天</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">拿给目标用户真的试用</td></tr>
+</table>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">二、2026年原型工具矩阵</h3>
+
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">工具</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">适合</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">费用</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">2026年亮点</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**Excalidraw**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">手绘风格线框图</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">免费开源</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">2026年支持AI生成布局</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**Figma**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">高保真交互原型</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">免费（个人）</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">2026年AI插件可文字生成设计稿</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**v0.dev**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">文字描述→生成UI代码</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">免费额度</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">Vercel出品，直接生成React/Tailwind代码</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**bolt.new**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">一句话→生成全栈应用</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">免费额度</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">StackBlitz出品，直接在线运行</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**Cursor + prompt**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">精准控制代码原型</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">$20/月</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">最灵活，但需要会描述需求</td></tr>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">三、OPC原型设计三原则</h3>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">1. 只画核心流程</h4>
+
+<p style="margin:var(--space-xs) 0;color:var(--text-secondary);line-height:1.9;">不是把所有页面都画出来，只画<strong style="color:var(--text-primary);">用户完成核心任务的那条路径</strong>。</p>
+
+<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code>例：一个AI简历优化工具
+只画：首页 → 上传简历 → 查看优化建议 → 下载优化版
+不画：设置页、个人中心、历史记录、付费页面（原型阶段不考虑）
+</code></pre>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">2. 用真实内容，不用"Lorem Ipsum"</h4>
+
+<p style="margin:var(--space-xs) 0;color:var(--text-secondary);line-height:1.9;">假文字（"标题标题标题"）让人无法判断产品价值。用真实场景的内容。</p>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">3. 原型做完当天就拿给人看</h4>
+
+<p style="margin:var(--space-xs) 0;color:var(--text-secondary);line-height:1.9;">不要打磨原型。粗糙但能传达想法的原型 > 精美但一周后才拿出来的原型。</p>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">四、从原型到验证的完整流程（2026年）</h3>
+
+<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code>Day 1 上午: Excalidraw画核心流程（30分钟）
+Day 1 下午: 用v0.dev/bot.new生成可点击版本（2小时）
+Day 1 傍晚: 发给3个朋友，问"你看懂这是什么了吗？"
+Day 2: 根据反馈修改 → 再发给2个目标用户
+Day 3: 决定：做 / 改方向 / 放弃
+</code></pre>
+
+<p style="margin:var(--space-sm) 0;color:var(--text-secondary);font-weight:400;"><strong>铁律</strong>：原型阶段超过3天=你在做产品，不是在验证想法。</p>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">五、检查清单</h3>
+
+<ul style="list-style:none;padding:0;margin:var(--space-sm) 0;">
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 核心流程已画出（不是全部页面）</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 原型中有真实内容（非Lorem Ipsum）</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 至少3个人看过原型</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 收集了"看不懂的地方"和"愿意用吗"的反馈</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 3天内做出了Go/No-Go决策</li>
+</ul>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">节点资源链接</h3>
+
+<ul style="list-style:none;padding:0;margin:var(--space-sm) 0;">
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点03：问题定义与用户调研</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点05：MVP范围确定</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点06：技术选型</li>
+</ul>
+
+
+      </div>
+      <p style="font-size:12px;color:var(--text-tertiary);margin-top:var(--space-xl);letter-spacing:0.05em;">
+        以上内容基于2026年5月最新实践编写，工具版本和价格可能更新，请以官方文档为准。
+      </p>
     </section>
+
+</section>
 
     <footer class="footer-nav fade-section">
       <a href="/nodes/03-problem-definition/index.html" class="nav-link">
@@ -527,6 +641,7 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
         <span class="nav-arrow">→</span>
       </a>
     </footer>
+    </div>
   </div>
 
   <script>
@@ -536,6 +651,20 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
       });
     }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
     document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
+
+    // TOC scroll spy
+    const tocLinks = document.querySelectorAll('.toc-link');
+    const sections = document.querySelectorAll('section[id]');
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(link => link.classList.remove('active'));
+          const activeLink = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+          if (activeLink) activeLink.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-20% 0px -60% 0px' });
+    sections.forEach(section => sectionObserver.observe(section));
   </script>
 </body>
 </html>

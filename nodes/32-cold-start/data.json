@@ -1,11 +1,12 @@
 {
   "id": 32,
-  "title": "冷启动获客",
   "slug": "cold-start",
-  "summary": "朋友圈、小红书、垂直社群，从认识的人开始拿到第一单",
+  "title": "冷启动获客",
+  "phase": "产品验证与准备",
   "difficulty": "进阶",
   "category": "1-10",
-  "price_standard": null,
-  "price_consult": 299,
-  "ai_summary": null
+  "summary": "朋友圈、小红书、垂直社群，从认识的人开始拿到第一单",
+  "content": "",
+  "created_at": "2026-05-09T00:00:00Z",
+  "updated_at": "2026-05-10T00:00:00Z"
 }

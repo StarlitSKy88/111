@@ -2,11 +2,11 @@
   "id": 28,
   "slug": "audit-submit",
   "title": "提交审核与等待",
-  "phase": "正式上线",
-  "difficulty": "基础",
-  "category": "核心必做",
-  "summary": "Vercel部署/小程序提交/App Store上传，审核等待期间做什么",
+  "phase": "产品验证与准备",
+  "difficulty": "入门",
+  "category": "0-1",
+  "summary": "平台审核资料提交、审核进度跟踪、补充材料应对",
   "content": "",
   "created_at": "2026-05-09T00:00:00Z",
-  "updated_at": "2026-05-09T00:00:00Z"
+  "updated_at": "2026-05-10T00:00:00Z"
 }

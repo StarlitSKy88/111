@@ -1,59 +1,116 @@
 # 节点21：性能基础优化
 
-## 概述
-本节点介绍产品上线前的性能优化工作，确保产品在实际使用中能够流畅运行，提供良好的用户体验。
+> **面向OPC**：产品能用了，Bug也修了，但用户说"有点慢"。一个人怎么做性能优化，不花一分钱，不做过度工程？
 
-## 核心概念
+---
 
-### 性能指标
-- **首屏加载时间**：首次展示内容的时间，目标是<3秒
-- **接口响应时间**：后端API响应时间，目标是<500ms
-- **页面交互响应**：用户操作到反馈的时间，目标是<100ms
-- **FPS**：页面流畅度，目标60FPS
+## 一、先测后优：2026年最省事的性能测试
 
-### OPC性能优化原则
-- 先确保功能正确，再优化性能
-- 选择投入产出比高的优化项
-- 优先优化用户最常用的功能
+### 三个免费工具，覆盖所有场景
 
-## 优化步骤
+| 工具 | 测什么 | 获取方式 |
+|---|---|---|
+| **Lighthouse** | 综合评分（性能/可访问性/SEO） | Chrome DevTools → Lighthouse标签 |
+| **PageSpeed Insights** | 真实用户数据+优化建议 | [pagespeed.web.dev](https://pagespeed.web.dev) |
+| **Web Vitals 扩展** | 实时监控LCP/INP/CLS | Chrome网上应用店搜"Web Vitals" |
 
-### 步骤1：性能测试
-- 测试首屏加载时间
-- 测试关键接口响应时间
-- 测试页面渲染性能
-- 分析性能瓶颈
+### 只看三个指标
 
-### 步骤2：前端优化
-- 优化图片资源（压缩、懒加载）
-- 减少不必要的渲染
-- 优化JavaScript执行
-- 启用缓存策略
+| 指标 | 全称 | 含义 | 及格线 | 优秀线 |
+|---|---|---|---|---|
+| **LCP** | Largest Contentful Paint | 页面"看起来加载完"的时间 | ≤2.5秒 | ≤1.5秒 |
+| **INP** | Interaction to Next Paint | 点按钮到页面反应的时间 | ≤200ms | ≤100ms |
+| **CLS** | Cumulative Layout Shift | 页面跳动的程度 | ≤0.1 | ≤0.05 |
 
-### 步骤3：后端优化
-- 优化数据库查询
-- 增加缓存层
-- 优化接口逻辑
-- 配置CDN加速
+**OPC只看LCP**：对大部分产品来说，LCP≤2.5秒 = 用户感觉"不慢"。INP和CLS是加分项。
 
-### 步骤4：配置优化
-- 服务端 gzip 压缩
-- 浏览器缓存配置
-- HTTP/2 支持
-- SSL证书优化
+---
 
-### 步骤5：上线验证
-- 使用真实网络测试
-- 监控核心指标
-- 收集用户反馈
+## 二、OPC的前端性能三板斧（今天就能做）
 
-## 检查清单
+### 第一斧：图片优化（影响最大，最简单）
 
-- [ ] 性能基线已测试
-- [ ] 前端优化完成
-- [ ] 后端优化完成
-- [ ] 配置优化完成
-- [ ] 上线验证通过
+```html
+<!-- ❌ 之前：一张2MB的PNG -->
+<img src="hero.png" alt="产品截图">
+
+<!-- ✅ 现在：WebP格式 + 指定宽高 + 懒加载 -->
+<img src="hero.webp" width="800" height="400" loading="lazy" decoding="async" alt="产品截图">
+```
+
+**工具**：[Squoosh](https://squoosh.app/) 在线无损转换图片。1分钟把2MB的PNG变成200KB的WebP。
+
+### 第二斧：不用的大文件别加载
+
+```html
+<!-- ❌ 全套Tailwind CDN（300KB+） -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- ✅ 只用你实际需要的CSS，或者用Tailwind CLI按需生成（30KB） -->
+npx tailwindcss -i input.css -o output.css --minify
+```
+
+**OPC数据**：加载时间减少1秒 = 转化率提高2%（Google 2026年最新研究）。
+
+### 第三斧：首屏不需要的，晚点加载
+
+```javascript
+// 核心功能1的代码 → 直接加载
+import { mainFeature } from './core.js';
+
+// 核心功能2的代码 → 用户点了再加载
+button.addEventListener('click', async () => {
+  const { secondaryFeature } = await import('./feature2.js');
+  secondaryFeature();
+});
+```
+
+---
+
+## 三、后端性能：OPC最容易忽略的慢
+
+### Supabase查询慢的三种常见原因
+
+| 问题 | 现象 | 解决 |
+|---|---|---|
+| **缺索引** | 数据多了查询变慢 | `CREATE INDEX idx_user_id ON orders(user_id);` |
+| **N+1查询** | 循环里查数据库 | 用Supabase的`select('*, users(*)')`做联表查询 |
+| **全表扫描** | 每次都查所有数据 | 前端请求带`.limit(20)`，不要一次取所有行 |
+
+### 一个SQL命令自查
+
+```sql
+-- 查看哪些查询最慢（Supabase Dashboard → SQL Editor）
+SELECT query, calls, mean_exec_time 
+FROM pg_stat_statements 
+ORDER BY mean_exec_time DESC 
+LIMIT 10;
+```
+
+---
+
+## 四、不需要做的优化（省时间清单）
+
+| 你以为需要 | 实际上不需要 | 省下时间 |
+|---|---|---|
+| CDN加速 | Vercel/Netlify自带全球CDN | 0天 |
+| 代码压缩混淆 | 构建工具自动做了 | 0天 |
+| 服务端渲染(SSR) | 静态页面CDN已经够快 | 省3天 |
+| Redis缓存 | Supabase自带的查询缓存够用 | 省2天 |
+| 数据库读写分离 | 日活1万以下根本不需要 | 省5天 |
+
+---
+
+## 五、检查清单
+
+- [ ] Lighthouse评分≥90
+- [ ] 首页LCP≤2.5秒（PageSpeed实测）
+- [ ] 所有图片已转WebP格式
+- [ ] 大文件CDN引用而非整包引入
+- [ ] 数据库查询已检查慢查询
+- [ ] 无未加索引的高频查询字段
+
+---
 
 ## 节点资源链接
 

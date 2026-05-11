@@ -2,11 +2,11 @@
   "id": 24,
   "slug": "domain-icp",
   "title": "域名购买与ICP备案",
-  "phase": "上线准备",
-  "difficulty": "基础",
-  "category": "核心必做",
-  "summary": "买域名+实名+备案+解析，三大件必须统一在公司名下",
+  "phase": "产品验证与准备",
+  "difficulty": "入门",
+  "category": "0-1",
+  "summary": "域名选择、DNS解析、ICP备案，提前做需要7-14天审核",
   "content": "",
   "created_at": "2026-05-09T00:00:00Z",
-  "updated_at": "2026-05-09T00:00:00Z"
+  "updated_at": "2026-05-10T00:00:00Z"
 }

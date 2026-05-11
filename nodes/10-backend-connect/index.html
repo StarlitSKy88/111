@@ -564,7 +564,178 @@ Supabase信息：
         你不需要会SQL，不需要搭服务器，不需要配数据库。你只需要把建表操作在网页上点几下，然后把 "Supabase Project URL + anon key" 告诉AI——剩下的代码AI帮你写。<br>
         （本文写于2026年5月。）
       </p>
+    
+    <!-- 🔵 2026年时效性内容更新 -->
+    <section id="s2026" class="section fade-section">
+      <div style="margin-bottom:var(--space-lg);">
+        <span style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);">2026 UPDATE</span>
+      </div>
+      <div class="prose" style="max-width:680px;">
+        
+<blockquote style="border-left:2px solid var(--accent);padding:var(--space-sm) var(--space-md);margin:var(--space-md) 0;color:var(--text-secondary);font-style:italic;background:var(--surface);border-radius:0 6px 6px 0;font-size:0.95rem;">**面向OPC**：Hello World跑通了，但你的页面是死的——没有数据、没有用户、没有记忆。本节点教你2026年OPC最省事的后端方案：Supabase，30分钟从零到有数据库+API。</blockquote>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">一、2026年OPC为什么选Supabase</h3>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">一句话</h4>
+
+<p style="margin:var(--space-xs) 0;color:var(--text-secondary);line-height:1.9;">Supabase = PostgreSQL数据库 + 自动生成的REST API + 用户认证系统 + 文件存储。开源，免费额度够用到1000个用户。</p>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">对比：自己搭 vs Supabase</h4>
+
+<table style="width:100%;border-collapse:collapse;margin:var(--space-md) 0;font-size:0.88rem;">
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">要做的事</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">自己搭</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">Supabase</td></tr>
+<tr><th style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">创建数据库</th><th style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">装PostgreSQL + 配用户 + 配权限（半天）</th><th style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">点"New Project"，30秒</th></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">写API</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">Express手写CRUD（每张表2小时）</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">建表后API自动可用</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">用户认证</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">手写JWT+密码加密+邮箱验证（2天）</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">内置Auth，支持邮箱/手机/OAuth</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">文件存储</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">配S3/OSS（半天）</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">内置Storage</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">实时数据</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">配WebSocket服务器（1天）</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">内置Realtime（3行代码订阅）</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">备份</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">自己写脚本+cron（1天）</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">自动每日备份</td></tr>
+</table>
+
+<p style="margin:var(--space-sm) 0;color:var(--text-secondary);font-weight:400;"><strong>OPC的铁律</strong>：除非你有明确的理由自建后端（比如需要复杂的自定义逻辑），否则一律用Supabase。</p>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">二、30分钟从零到有数据的完整流程</h3>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">步骤1：创建Supabase项目（2分钟）</h4>
+
+<p style="margin:var(--space-xs) 0;color:var(--text-secondary);line-height:1.9;">1. 访问 [supabase.com](https://supabase.com) → Sign in with GitHub</p>
+<p style="margin:var(--space-xs) 0;color:var(--text-secondary);line-height:1.9;">2. New Project → 输入项目名 → 设置数据库密码 → Create</p>
+<p style="margin:var(--space-xs) 0;color:var(--text-secondary);line-height:1.9;">3. 等1-2分钟，项目就绪</p>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">步骤2：建第一张表（3分钟）</h4>
+
+<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code>-- 在Supabase SQL Editor中执行
+CREATE TABLE user_analyses (
+  id BIGSERIAL PRIMARY KEY,
+  user_id UUID REFERENCES auth.users(id),
+  input_text TEXT NOT NULL,
+  result JSONB,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+ 
+-- 开启实时订阅
+ALTER PUBLICATION supabase_realtime ADD TABLE user_analyses;
+</code></pre>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">步骤3：开启Row Level Security（5分钟）</h4>
+
+<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code>-- 用户只能看到自己的数据
+ALTER TABLE user_analyses ENABLE ROW LEVEL SECURITY;
+ 
+CREATE POLICY "用户只能读自己的分析"
+  ON user_analyses FOR SELECT
+  USING (auth.uid() = user_id);
+ 
+CREATE POLICY "用户只能插入自己的分析"
+  ON user_analyses FOR INSERT
+  WITH CHECK (auth.uid() = user_id);
+</code></pre>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">步骤4：前端连接（10分钟）</h4>
+
+<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code>&lt;script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"&gt;&lt;/script&gt;
+&lt;script&gt;
+const supabase = window.supabase.createClient(
+  'https://你的项目ID.supabase.co',
+  '你的anon_key'  // Supabase Dashboard → Settings → API
+);
+ 
+// 插入数据
+await supabase.from('user_analyses').insert({
+  user_id: user.id,
+  input_text: '用户输入的内容',
+  result: { score: 85, suggestion: '...' }
+});
+ 
+// 读取数据
+const { data } = await supabase
+  .from('user_analyses')
+  .select('*')
+  .order('created_at', { ascending: false })
+  .limit(10);
+ 
+// 实时订阅（新数据插入时自动更新页面）
+supabase.channel('analyses')
+  .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'user_analyses' },
+    (payload) =&gt; { console.log('新数据:', payload.new); }
+  )
+  .subscribe();
+&lt;/script&gt;
+</code></pre>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">步骤5：用户认证（10分钟）</h4>
+
+<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code>// 邮箱注册
+const { data, error } = await supabase.auth.signUp({
+  email: 'user@example.com',
+  password: 'password123'
+});
+ 
+// 邮箱登录
+const { data, error } = await supabase.auth.signInWithPassword({
+  email: 'user@example.com',
+  password: 'password123'
+});
+ 
+// 获取当前用户
+const { data: { user } } = await supabase.auth.getUser();
+ 
+// OAuth登录（Google/GitHub，一行配置）
+await supabase.auth.signInWithOAuth({ provider: 'google' });
+</code></pre>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">三、2026年Supabase免费额度</h3>
+
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">资源</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">免费额度</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">够用到多少用户</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">数据库</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">500MB</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">~10万条记录</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">API请求</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">200万次/月</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">~500日活用户</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">认证用户</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">5万MAU</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">够你用到第一轮融资</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">存储</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">1GB</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">~5000张图片</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">实时订阅</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">200个并发连接</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">~500同时在线</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">Edge Functions</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">50万次调用/月</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">够邮件发送等轻量任务</td></tr>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">四、什么时候该离开Supabase</h3>
+
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">场景</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">方案</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">需要复杂后端逻辑（如支付回调处理）</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">Supabase Edge Functions（Deno）</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">数据库查询太慢</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">加索引；还慢就升级Plan</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">需要WebSocket之外的实时通信</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">自建Socket.io服务器</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">需要对接微信支付等国内服务</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">Edge Functions做代理转发</td></tr>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">五、检查清单</h3>
+
+<ul style="list-style:none;padding:0;margin:var(--space-sm) 0;">
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] Supabase项目已创建</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 至少1张业务表已建</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] Row Level Security已开启</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 前端能正常读写数据</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 用户认证流程正常（注册+登录+获取用户）</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] anon_key已存入环境变量（不硬编码）</li>
+
+        <li class="toc-item"><a href="#s2026" class="toc-link">2026年更新</a></li></ul>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">节点资源链接</h3>
+
+<ul style="list-style:none;padding:0;margin:var(--space-sm) 0;">
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点09：Git版本控制</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点11：用户认证系统</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点12：核心功能1开发</li>
+</ul>
+
+
+      </div>
+      <p style="font-size:12px;color:var(--text-tertiary);margin-top:var(--space-xl);letter-spacing:0.05em;">
+        以上内容基于2026年5月最新实践编写，工具版本和价格可能更新，请以官方文档为准。
+      </p>
     </section>
+
+</section>
 
     <footer class="footer-nav fade-section">
       <a href="/nodes/09-git-version/index.html" class="nav-link">

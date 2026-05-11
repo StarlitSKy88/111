@@ -2,11 +2,11 @@
   "id": 7,
   "slug": "dev-environment",
   "title": "开发环境安装",
-  "phase": "环境搭建与Hello World",
+  "phase": "产品验证与准备",
   "difficulty": "入门",
-  "category": "核心必做",
-  "summary": "零基础安装VS Code、Node.js、Git，全部让AI生成命令",
+  "category": "0-1",
+  "summary": "Node.js、pnpm、IDE配置，10分钟完成开发环境搭建",
   "content": "",
   "created_at": "2026-05-09T00:00:00Z",
-  "updated_at": "2026-05-09T00:00:00Z"
+  "updated_at": "2026-05-10T00:00:00Z"
 }

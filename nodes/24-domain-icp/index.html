@@ -1,44 +1,786 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <script src="/auth-guard.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="域名购买与ICP备案 - OPC节点百科">
   <meta name="theme-color" content="#111110">
-  <title>域名购买与ICP备案 - OPC节点百科</title>
+  <title>节点24：域名购买与ICP备案 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-:root { --bg:#111110;--surface:#1A1A18;--text-primary:#F0EDE6;--text-secondary:#7A7670;--text-tertiary:#A8A49E;--accent:#C0392B;--line:#2A2A28; }
-* { margin:0;padding:0;box-sizing:border-box; }
-body { background:var(--bg);color:var(--text-primary);font-family:'Noto Sans SC',sans-serif;font-weight:300;line-height:2;letter-spacing:0.04em;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem; }
-.top-nav { position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem clamp(24px,8vw,120px);border-bottom:1px solid var(--line);background:var(--bg); }
-.back-link { font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-tertiary);text-decoration:none; }
-.back-link:hover { color:var(--text-primary); }
-.node-id { font-family:'Noto Serif JP',serif;font-size:0.75rem;color:var(--text-tertiary);letter-spacing:0.1em; }
-h1 { font-family:'Noto Serif JP',serif;font-size:clamp(48px, 10vw, 96px);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;text-align:center; }
-.phase { font-size:12px;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;text-align:center; }
-.num { font-size:11px;color:var(--text-tertiary);letter-spacing:0.1em;margin-top:0.5rem;text-align:center; }
-.note { font-size:13px;color:var(--text-secondary);text-align:center;max-width:480px;margin-top:1.5rem;line-height:1.9; }
-.footer-nav { display:flex;justify-content:space-between;position:fixed;bottom:0;left:0;right:0;padding:1.5rem clamp(24px,8vw,120px);border-top:1px solid var(--line);background:var(--bg); }
-.nav-link { font-size:0.7rem;color:var(--text-tertiary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;gap:0.5rem; }
-.nav-link:hover { color:var(--text-primary); }
-.nav-arrow { font-size:0.6rem; }
+
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #7A7670;
+  --text-tertiary: #4A4744;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Layout with Sidebar */
+.layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3rem);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
+}
+
+/* Sidebar TOC */
+.sidebar-toc {
+  position: sticky;
+  top: 5rem;
+  height: fit-content;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  padding-top: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.sidebar-toc::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar-toc::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 2px;
+}
+
+.toc-title {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.toc-list {
+  list-style: none;
+}
+
+.toc-item {
+  margin-bottom: 0.75rem;
+}
+
+.toc-link {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: block;
+  padding: 0.375rem 0;
+  padding-left: 1rem;
+  border-left: 1px solid var(--line);
+  transition: all 0.3s;
+  line-height: 1.4;
+}
+
+.toc-link:hover {
+  color: var(--text-primary);
+  border-left-color: var(--accent);
+}
+
+.toc-link.active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  font-weight: 400;
+}
+
+.toc-link.sub {
+  padding-left: 1.75rem;
+  font-size: 0.75rem;
+}
+
+/* Fixed Top Nav */
+.fixed-top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+.back-link {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
+}
+
+.back-link:hover {
+  color: var(--text-primary);
+}
+
+.node-id {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar-toc {
+    display: none;
+  }
+
+  .fixed-top-nav {
+    padding: 0.75rem clamp(1rem, 4vw, 1.5rem);
+  }
+}
+
+/* Header */
+header {
+  padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(2rem, 5vh, 3rem);
+}
+
+/* Main content */
+main {
+  padding-bottom: 5rem;
+}
+
+/* Section anchors offset for sticky header */
+section {
+  scroll-margin-top: 2rem;
+}
+
+section h2 {
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+}
+
+section p, section li {
+  font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
+  line-height: 1.9;
+}
+
+/* Table improvements */
+.table-wrapper {
+  margin: 1.5rem 0;
+  border: 1px solid var(--line);
+}
+
+table {
+  font-size: 0.875rem;
+}
+
+td, th {
+  padding: 0.875rem 1rem;
+}
+
+/* Tool Cards */
+.tool-grid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* Path blocks */
+.path-block {
+  padding: 1.5rem;
+}
+
+.workflow {
+  padding: 1rem 1.25rem;
+  font-size: 0.8125rem;
+}
+
+/* Validation cards */
+.validation-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.validation-card {
+  padding: 1.25rem;
+}
+
+/* Level items */
+.level-grid {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+/* Decision box */
+.decision-box {
+  padding: 1.25rem 1.5rem;
+}
+
+/* Main content */
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+h1 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xl);
+}
+
+.phase-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+.phase-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+
+.subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 44ch;
+  line-height: 1.8;
+}
+
+.node-meta {
+  margin-top: 2rem;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+}
+
+/* Sections */
+section {
+  padding-bottom: clamp(3rem, 10vh, 5rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(3rem, 10vh, 5rem);
+}
+
+section:last-of-type {
+  border-bottom: none;
+}
+
+.section-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.375rem, 4vw, 1.875rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+h3 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.125rem, 3vw, 1.375rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+p {
+  color: var(--text-secondary);
+  line-height: 1.9;
+  margin-bottom: 1.25rem;
+}
+
+.decision-box {
+  background: var(--surface);
+  border-left: 2px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.decision-box p {
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  margin: 0;
+}
+
+/* Tables */
+.table-wrapper {
+  overflow-x: auto;
+  margin: 2rem 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+th {
+  text-align: left;
+  font-weight: 400;
+  font-size: 0.6875rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--text-secondary);
+  vertical-align: top;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+td:first-child {
+  color: var(--text-primary);
+  font-weight: 400;
+}
+
+/* Tool Cards */
+.tool-grid {
+  display: grid;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.tool-card {
+  background: var(--surface);
+  padding: 1.75rem;
+  border: 1px solid var(--line);
+}
+
+.tool-card h4 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.tool-card .tagline {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.tool-card p {
+  font-size: 0.875rem;
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.tool-card .pros {
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+}
+
+.tool-card .price {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.25rem 0.75rem;
+  margin-top: 1rem;
+}
+
+/* Path Section */
+.path-block {
+  background: var(--surface);
+  padding: 2rem;
+  margin: 2rem 0;
+  border: 1px solid var(--line);
+}
+
+.path-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.path-number {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+.path-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.path-tools {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.path-block p {
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+}
+
+.workflow {
+  background: var(--bg);
+  padding: 1.25rem 1.5rem;
+  margin-top: 1.25rem;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.9;
+}
+
+/* Validation Box */
+.validation-grid {
+  display: grid;
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
+
+.validation-card {
+  background: var(--surface);
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+}
+
+.validation-card h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.validation-card p {
+  font-size: 0.8125rem;
+  margin: 0;
+}
+
+.level-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.level-item {
+  background: var(--surface);
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+}
+
+.level-item .num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.5rem;
+  color: var(--accent);
+  opacity: 0.6;
+  margin-bottom: 0.5rem;
+}
+
+.level-item h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.level-item p {
+  font-size: 0.75rem;
+  margin: 0;
+}
+
+/* Cost Control */
+.cost-table {
+  margin: 2rem 0;
+}
+
+/* Quote */
+.quote-block {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+}
+
+.quote-block p {
+  font-size: 1rem;
+  color: var(--text-primary);
+  line-height: 1.8;
+}
+
+/* Network Section */
+.network-alert {
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.network-alert h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.network-alert p {
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Summary Box */
+.summary-box {
+  background: var(--surface);
+  padding: 2rem;
+  margin-top: 3rem;
+  border: 1px solid var(--line);
+}
+
+.summary-box h3 {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+}
+
+.step-list {
+  list-style: none;
+  counter-reset: steps;
+}
+
+.step-list li {
+  counter-increment: steps;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.step-list li::before {
+  content: counter(steps);
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--accent);
+  flex-shrink: 0;
+  width: 1.5rem;
+  padding-top: 0.25rem;
+}
+
+/* Footer Nav - Fixed Bottom */
+.footer-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.9);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
+}
+
+.nav-link {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
+}
+
+.nav-link:hover {
+  color: var(--text-primary);
+}
+
+.nav-link.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
   </style>
 </head>
 <body>
-  <nav class="top-nav">
+  <nav class="fixed-top-nav">
     <a href="/index.html" class="back-link">← 返回首页</a>
     <span class="node-id">节点 24 / 57</span>
   </nav>
-  <div class="phase">上线准备</div>
-  <h1>域名购买与ICP备案</h1>
-  <div class="num">节点 24</div>
-  <p class="note">◈ 内容正在建设中<br>这将是一个面向OPC（一人公司/独立开发者）的实操指南</p>
-  <footer class="footer-nav">
-    <a href="/nodes/23-company-registration/index.html" class="nav-link"><span class="nav-arrow">←</span>节点23：公司注册与主体选择</a>
-    <a href="/nodes/25-website-deployment/index.html" class="nav-link">节点25：网站部署与SSL<span class="nav-arrow">→</span></a>
-  </footer>
+
+  <div class="layout">
+    <main class="container">
+      <header>
+      <div class="phase-label">上线准备</div>
+      <h1>域名购买与ICP备案</h1>
+      <div class="node-meta">节点 24 / 57 · 最后修订：2026年5月11日</div>
+    </header>
+
+    <section id="s1">
+    
+
+<blockquote class="decision-box"><p>产品做好了，但你的网址还是 <code>localhost:3000</code>。现在你需要一个正式的域名，并且让你的网站合法地在中国大陆被访问。两步走：买域名 → 备案。全程一个人可以搞定。</p></blockquote>
+
+<p></section></p>
+<section id="s一">
+<p>      <div class="section-label">一、域名购买（10分钟）</div></p>
+
+<h3>2026年推荐注册商</h3>
+
+<div class="table-wrapper"><table><thead><tr><th>平台</th><th>优势</th><th>.com价格/年</th></tr></thead><tbody><tr><td><strong>阿里云（万网）</strong></td><td>国内最大，备案流程最顺滑</td><td>¥75</td></tr><tr><td><strong>腾讯云</strong></td><td>如果你用腾讯云服务器，备案方便</td><td>¥75</td></tr><tr><td><strong>Cloudflare</strong></td><td>隐私保护免费（隐藏注册人信息）</td><td>$10.44</td></tr><tr><td><strong>Namecheap</strong></td><td>海外老牌，UI简单</td><td>$14</td></tr></tbody></table></div>
+<strong>OPC建议</strong>：如果服务器在国内（阿里云/腾讯云）→ 域名也在同一平台买，备案一站式。如果服务器在海外（Vercel）→ 域名在哪买都行。
+
+<h3>域名选择三原则</h3>
+
+<ol><li><strong>短</strong>：≤10个字符（不含后缀），好记好打</li><li><strong>拼音/英文</strong>：不要中英文混（如"wo的网站.com"）</li><li><strong>.com优先</strong>：.com是用户默认输入的认知。如果.com被注册了，选.cn或.cc，但别选.xyz/.top（给人不正规感）</li></ol>
+<h3>一个省心操作</h3>
+
+<strong>注册10年</strong>（或者最长年限）。域名到期忘记续费 = 网站挂掉 + 被别人抢注。一年的域名费还不够一顿火锅，别省这个。
+
+<p></section></p>
+<section id="s二">
+<p>      <div class="section-label">二、ICP备案：最让OPC头疼但必须做的事</div></p>
+
+<h3>先搞清楚：你需要备案吗？</h3>
+
+<p>``<code></p>
+<p>你的服务器在国内（阿里云/腾讯云等）？</p>
+<p>  ├─ 是 → 必须备案。不备案 = 服务商会阻断访问</p>
+<p>  └─ 否（Vercel/Netlify/海外VPS）</p>
+<p>      ├─ 用户全在国内 → 建议备案（速度快），但技术上不强制</p>
+<p>      └─ 用户有海外 → 不需要</p>
+<p></code>`<code></p>
+
+<h3>备案全流程（2026年现状）</h3>
+
+<div class="table-wrapper"><table><thead><tr><th>步骤</th><th>做什么</th><th>耗时</th><th>在哪做</th></tr></thead><tbody><tr><td>1. 买服务器</td><td>买一台轻量应用服务器（最便宜的就行）</td><td>5分钟</td><td>阿里云/腾讯云控制台</td></tr><tr><td>2. 提交备案</td><td>填写主体信息+网站信息</td><td>30分钟</td><td>服务器商的备案系统</td></tr><tr><td>3. 人脸核验</td><td>用手机扫码做人脸识别</td><td>2分钟</td><td>阿里云/腾讯云App</td></tr><tr><td>4. 等待初审</td><td>服务商先审核你的材料</td><td>1-2个工作日</td><td>-</td></tr><tr><td>5. 短信核验</td><td>收到工信部短信，点链接确认</td><td>1分钟</td><td>手机短信</td></tr><tr><td>6. 等待管局审批</td><td>各省通信管理局最终审核</td><td>3-20个工作日</td><td>-</td></tr><tr><td>7. 备案完成</td><td>获得备案号（如"京ICP备XXXXXXXX号"）</td><td>-</td><td>-</td></tr></tbody></table></div>
+<h3>备案材料清单（个人备案）</h3>
+
+<div class="table-wrapper"><table><thead><tr><th>材料</th><th>要求</th></tr></thead><tbody><tr><td>身份证</td><td>正反面彩色扫描/拍照</td></tr><tr><td>本人现场照片</td><td>备案App人脸识别</td></tr><tr><td>域名证书</td><td>域名注册商后台下载</td></tr><tr><td>网站名称</td><td>不能带"中国""中华""国家"等字样，不能和备案主体无关</td></tr></tbody></table></div>
+<strong>OPC注意</strong>：个人备案的网站不能涉及企业/商业/电商/论坛/社交。如果你做的是商业产品 → 先用个体户或公司备案（参考节点23）。
+
+<p></section></p>
+<section id="s三">
+<p>      <div class="section-label">三、备案通过后的必做操作</div></p>
+
+<h3>1. 网站底部加备案号</h3>
+
+<p></code>`<code>html</p>
+<footer>
+<p>  <a href="https://beian.miit.gov.cn">京ICP备XXXXXXXX号</a></p>
+<p></footer></p>
+<p></code>``</p>
+
+<strong>不加 = 违规。</strong> 管局会抽查。
+
+<h3>2. 公安联网备案（部分地区要求）</h3>
+
+<p>备案通过后30天内，在 <a href="https://www.beian.gov.cn">www.beian.gov.cn</a> 做公安备案。会得到一个"京公网安备XXXXXXXX号"，同样需要挂在网站底部。</p>
+
+<h3>3. 配置HTTPS</h3>
+
+<p>备案通过 → 域名解析生效 → 立刻申请SSL证书（节点25会讲）。</p>
+
+<p></section></p>
+<section id="s四">
+<p>      <div class="section-label">四、常见翻车</div></p>
+
+<div class="table-wrapper"><table><thead><tr><th>翻车</th><th>原因</th><th>避免</th></tr></thead><tbody><tr><td>备案被拒</td><td>网站名称带"中国"或与实际内容不符</td><td>用你产品的真实名字，不加修饰词</td></tr><tr><td>备案被拒</td><td>个人备案但网站内容明显是商业经营</td><td>注册个体户用企业备案</td></tr><tr><td>备案周期拉长</td><td>材料有问题被打回重审</td><td>提交前让服务商客服先看一遍</td></tr><tr><td>域名过期导致备案注销</td><td>备案后域名过期未续费</td><td>域名续费10年，设闹钟提前30天</td></tr></tbody></table></div>
+
+<p></section></p>
+<section id="s五">
+<p>      <div class="section-label">五、检查清单</div></p>
+
+<ul><li><input type="checkbox" disabled> 域名已购买（建议10年）</li><li><input type="checkbox" disabled> 服务器已购买（最便宜配置即可）</li><li><input type="checkbox" disabled> 备案材料已准备（身份证、域名证书）</li><li><input type="checkbox" disabled> 备案已提交</li><li><input type="checkbox" disabled> 备案号已挂网站底部</li><li><input type="checkbox" disabled> 公安备案已完成（如当地要求）</li></ul>
+
+<p></section></p>
+<section id="s节">
+<p>      <div class="section-label">节点资源链接</div></p>
+
+<ul><li>节点22：上线内容填充</li><li>节点23：公司注册与主体选择</li><li>节点25：网站部署与SSL</li></ul>
+    </section>
+
+    <div class="summary-box">
+      <h3>节点24检查清单</h3>
+      <p>完成本节点后，请确认所有检查项已通过。</p>
+    </div>
+    </main>
+  </div>
+
+  <nav class="footer-nav">
+    <a href="/nodes/23-company-registration/index.html" class="nav-link">
+      <span>←</span> 节点23
+    </a>
+    <a href="/nodes/25-website-deployment/index.html" class="nav-link">
+      节点25 <span>→</span>
+    </a>
+  </nav>
+
+  <script>
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').slice(1);
+      const target = document.getElementById(targetId);
+      if (target) {
+        window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+      }
+    });
+  });
+  </script>
 </body>
 </html>

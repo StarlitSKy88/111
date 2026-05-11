@@ -1,44 +1,858 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <script src="/auth-guard.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="核心功能3开发 - OPC节点百科">
   <meta name="theme-color" content="#111110">
-  <title>核心功能3开发 - OPC节点百科</title>
+  <title>节点15：核心功能3开发 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-:root { --bg:#111110;--surface:#1A1A18;--text-primary:#F0EDE6;--text-secondary:#7A7670;--text-tertiary:#A8A49E;--accent:#C0392B;--line:#2A2A28; }
-* { margin:0;padding:0;box-sizing:border-box; }
-body { background:var(--bg);color:var(--text-primary);font-family:'Noto Sans SC',sans-serif;font-weight:300;line-height:2;letter-spacing:0.04em;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem; }
-.top-nav { position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem clamp(24px,8vw,120px);border-bottom:1px solid var(--line);background:var(--bg); }
-.back-link { font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-tertiary);text-decoration:none; }
-.back-link:hover { color:var(--text-primary); }
-.node-id { font-family:'Noto Serif JP',serif;font-size:0.75rem;color:var(--text-tertiary);letter-spacing:0.1em; }
-h1 { font-family:'Noto Serif JP',serif;font-size:clamp(48px, 10vw, 96px);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;text-align:center; }
-.phase { font-size:12px;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;text-align:center; }
-.num { font-size:11px;color:var(--text-tertiary);letter-spacing:0.1em;margin-top:0.5rem;text-align:center; }
-.note { font-size:13px;color:var(--text-secondary);text-align:center;max-width:480px;margin-top:1.5rem;line-height:1.9; }
-.footer-nav { display:flex;justify-content:space-between;position:fixed;bottom:0;left:0;right:0;padding:1.5rem clamp(24px,8vw,120px);border-top:1px solid var(--line);background:var(--bg); }
-.nav-link { font-size:0.7rem;color:var(--text-tertiary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;gap:0.5rem; }
-.nav-link:hover { color:var(--text-primary); }
-.nav-arrow { font-size:0.6rem; }
+
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #7A7670;
+  --text-tertiary: #4A4744;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Layout with Sidebar */
+.layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3rem);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
+}
+
+/* Sidebar TOC */
+.sidebar-toc {
+  position: sticky;
+  top: 5rem;
+  height: fit-content;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  padding-top: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.sidebar-toc::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar-toc::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 2px;
+}
+
+.toc-title {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.toc-list {
+  list-style: none;
+}
+
+.toc-item {
+  margin-bottom: 0.75rem;
+}
+
+.toc-link {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: block;
+  padding: 0.375rem 0;
+  padding-left: 1rem;
+  border-left: 1px solid var(--line);
+  transition: all 0.3s;
+  line-height: 1.4;
+}
+
+.toc-link:hover {
+  color: var(--text-primary);
+  border-left-color: var(--accent);
+}
+
+.toc-link.active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  font-weight: 400;
+}
+
+.toc-link.sub {
+  padding-left: 1.75rem;
+  font-size: 0.75rem;
+}
+
+/* Fixed Top Nav */
+.fixed-top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+.back-link {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
+}
+
+.back-link:hover {
+  color: var(--text-primary);
+}
+
+.node-id {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar-toc {
+    display: none;
+  }
+
+  .fixed-top-nav {
+    padding: 0.75rem clamp(1rem, 4vw, 1.5rem);
+  }
+}
+
+/* Header */
+header {
+  padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(2rem, 5vh, 3rem);
+}
+
+/* Main content */
+main {
+  padding-bottom: 5rem;
+}
+
+/* Section anchors offset for sticky header */
+section {
+  scroll-margin-top: 2rem;
+}
+
+section h2 {
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+}
+
+section p, section li {
+  font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
+  line-height: 1.9;
+}
+
+/* Table improvements */
+.table-wrapper {
+  margin: 1.5rem 0;
+  border: 1px solid var(--line);
+}
+
+table {
+  font-size: 0.875rem;
+}
+
+td, th {
+  padding: 0.875rem 1rem;
+}
+
+/* Tool Cards */
+.tool-grid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* Path blocks */
+.path-block {
+  padding: 1.5rem;
+}
+
+.workflow {
+  padding: 1rem 1.25rem;
+  font-size: 0.8125rem;
+}
+
+/* Validation cards */
+.validation-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.validation-card {
+  padding: 1.25rem;
+}
+
+/* Level items */
+.level-grid {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+/* Decision box */
+.decision-box {
+  padding: 1.25rem 1.5rem;
+}
+
+/* Main content */
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+h1 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xl);
+}
+
+.phase-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+.phase-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+
+.subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 44ch;
+  line-height: 1.8;
+}
+
+.node-meta {
+  margin-top: 2rem;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+}
+
+/* Sections */
+section {
+  padding-bottom: clamp(3rem, 10vh, 5rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(3rem, 10vh, 5rem);
+}
+
+section:last-of-type {
+  border-bottom: none;
+}
+
+.section-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.375rem, 4vw, 1.875rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+h3 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.125rem, 3vw, 1.375rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+p {
+  color: var(--text-secondary);
+  line-height: 1.9;
+  margin-bottom: 1.25rem;
+}
+
+.decision-box {
+  background: var(--surface);
+  border-left: 2px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.decision-box p {
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  margin: 0;
+}
+
+/* Tables */
+.table-wrapper {
+  overflow-x: auto;
+  margin: 2rem 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+th {
+  text-align: left;
+  font-weight: 400;
+  font-size: 0.6875rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--text-secondary);
+  vertical-align: top;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+td:first-child {
+  color: var(--text-primary);
+  font-weight: 400;
+}
+
+/* Tool Cards */
+.tool-grid {
+  display: grid;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.tool-card {
+  background: var(--surface);
+  padding: 1.75rem;
+  border: 1px solid var(--line);
+}
+
+.tool-card h4 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.tool-card .tagline {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.tool-card p {
+  font-size: 0.875rem;
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.tool-card .pros {
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+}
+
+.tool-card .price {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.25rem 0.75rem;
+  margin-top: 1rem;
+}
+
+/* Path Section */
+.path-block {
+  background: var(--surface);
+  padding: 2rem;
+  margin: 2rem 0;
+  border: 1px solid var(--line);
+}
+
+.path-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.path-number {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+.path-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.path-tools {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.path-block p {
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+}
+
+.workflow {
+  background: var(--bg);
+  padding: 1.25rem 1.5rem;
+  margin-top: 1.25rem;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.9;
+}
+
+/* Validation Box */
+.validation-grid {
+  display: grid;
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
+
+.validation-card {
+  background: var(--surface);
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+}
+
+.validation-card h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.validation-card p {
+  font-size: 0.8125rem;
+  margin: 0;
+}
+
+.level-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.level-item {
+  background: var(--surface);
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+}
+
+.level-item .num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.5rem;
+  color: var(--accent);
+  opacity: 0.6;
+  margin-bottom: 0.5rem;
+}
+
+.level-item h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.level-item p {
+  font-size: 0.75rem;
+  margin: 0;
+}
+
+/* Cost Control */
+.cost-table {
+  margin: 2rem 0;
+}
+
+/* Quote */
+.quote-block {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+}
+
+.quote-block p {
+  font-size: 1rem;
+  color: var(--text-primary);
+  line-height: 1.8;
+}
+
+/* Network Section */
+.network-alert {
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.network-alert h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.network-alert p {
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Summary Box */
+.summary-box {
+  background: var(--surface);
+  padding: 2rem;
+  margin-top: 3rem;
+  border: 1px solid var(--line);
+}
+
+.summary-box h3 {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+}
+
+.step-list {
+  list-style: none;
+  counter-reset: steps;
+}
+
+.step-list li {
+  counter-increment: steps;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.step-list li::before {
+  content: counter(steps);
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--accent);
+  flex-shrink: 0;
+  width: 1.5rem;
+  padding-top: 0.25rem;
+}
+
+/* Footer Nav - Fixed Bottom */
+.footer-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.9);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
+}
+
+.nav-link {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
+}
+
+.nav-link:hover {
+  color: var(--text-primary);
+}
+
+.nav-link.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
   </style>
 </head>
 <body>
-  <nav class="top-nav">
+  <nav class="fixed-top-nav">
     <a href="/index.html" class="back-link">← 返回首页</a>
     <span class="node-id">节点 15 / 57</span>
   </nav>
-  <div class="phase">核心功能开发</div>
-  <h1>核心功能3开发</h1>
-  <div class="num">节点 15</div>
-  <p class="note">◈ 内容正在建设中<br>这将是一个面向OPC（一人公司/独立开发者）的实操指南</p>
-  <footer class="footer-nav">
-    <a href="/nodes/14-data-display/index.html" class="nav-link"><span class="nav-arrow">←</span>节点14：数据展示与交互</a>
-    <a href="/nodes/16-payment-code/index.html" class="nav-link">节点16：支付代码集成<span class="nav-arrow">→</span></a>
-  </footer>
+
+  <div class="layout">
+    <main class="container">
+      <header>
+      <div class="phase-label">核心功能开发</div>
+      <h1>核心功能3开发</h1>
+      <div class="node-meta">节点 15 / 57 · 最后修订：2026年5月11日</div>
+    </header>
+
+    <section id="s1">
+    
+
+<blockquote class="decision-box"><p>核心功能1让用户"能用"，核心功能2让用户"留下来"，核心功能3让用户"带人来"。这是产品从工具变成平台的最后一块拼图。</p></blockquote>
+
+<p></section></p>
+<section id="s一">
+<p>      <div class="section-label">一、核心功能3的定位：闭合体验环</div></p>
+
+<h3>不是"再多做一个功能"</h3>
+
+<p>核心功能3 ≠ 功能堆砌。它的使命是<strong>把前两个功能串成一个用户无法离开的环</strong>。</p>
+
+<h3>产品闭环模型</h3>
+
+<p>``<code></p>
+<p>用户使用核心功能1 → 核心功能2展示成果 → 核心功能3让成果扩散/变现</p>
+<p>        ↑                                              │</p>
+<p>        └──────────────── 用户因此回来再用 ──────────────┘</p>
+<p></code>`<code></p>
+
+<h3>四种典型的闭环形态</h3>
+
+<div class="table-wrapper"><table><thead><tr><th>产品类型</th><th>闭环形态</th><th>核心功能3长什么样</th></tr></thead><tbody><tr><td><strong>AI工具</strong></td><td>生成→展示→分享</td><td>"一键生成分享卡片"，用户发朋友圈/推特，带来新用户</td></tr><tr><td><strong>SaaS</strong></td><td>操作→报表→通知</td><td>"每周自动发送数据周报到邮箱"，用户不看产品也会被拉回来</td></tr><tr><td><strong>内容产品</strong></td><td>浏览→收藏→订阅</td><td>"关注/订阅+新内容推送"，用户变成日活</td></tr><tr><td><strong>电商/服务</strong></td><td>浏览→收藏→提醒</td><td>"降价提醒/库存提醒/复购提醒"，把一次购买变持续复购</td></tr></tbody></table></div>
+<h3>选型决策口诀</h3>
+
+<p>> 如果你的产品强在<strong>社交属性</strong> → 选分享裂变  </p>
+<p>> 如果你的产品强在<strong>数据价值</strong> → 选自动报告  </p>
+<p>> 如果你的产品强在<strong>内容更新</strong> → 选订阅推送  </p>
+<p>> 如果你的产品强在<strong>交易转化</strong> → 选智能提醒</p>
+
+<strong>只选一个。</strong> 一次只做一种闭环。
+
+<p></section></p>
+<section id="s二">
+<p>      <div class="section-label">二、四大闭环形态的OPC实现方案（2026年）</div></p>
+
+<h3>方案A：分享裂变（适合AI工具/内容产品）</h3>
+
+<strong>一句话价值</strong>：每个用户变成你的免费推广渠道。
+
+<strong>最轻量实现</strong>：
+
+<p></code>`<code>javascript</p>
+// html2canvas 生成分享卡片（2026年主流方案）
+<p>import html2canvas from 'html2canvas';</p>
+
+<p>async function generateShareCard() {</p>
+<p>  const canvas = await html2canvas(document.getElementById('result-card'));</p>
+<p>  const imageUrl = canvas.toDataURL('image/png');</p>
+<p>  // 触发浏览器分享API（微信/浏览器原生分享）</p>
+<p>  if (navigator.share) {</p>
+<p>    await navigator.share({ title: '我的OPC分析报告', url: imageUrl });</p>
+<p>  }</p>
+<p>}</p>
+<p></code>`<code></p>
+
+<strong>关键数据</strong>：html2canvas 是2026年最成熟的网页截图库，GitHub 30k+星标。3行代码即可把任何DOM节点生成图片。
+
+<strong>避坑指南</strong>：
+<ul><li>分享卡片上必须带你的产品名+域名（否则白给别人引流）</li><li>卡片设计要好看——用户不会分享一张丑图</li><li>canvas尺寸建议750×1000（微信分享最佳比例）</li></ul>
+<h3>方案B：自动报告（适合SaaS/数据分析工具）</h3>
+
+<strong>一句话价值</strong>：用户不来产品，产品主动找用户。
+
+<strong>最轻量实现</strong>：
+
+<p></code>`<code>javascript</p>
+// Supabase Edge Functions + Cron 定时触发
+// 每周一早上8点自动发送上周数据摘要
+<p>import { Resend } from 'resend';  // 2026年最主流的事务邮件API</p>
+
+<p>const resend = new Resend(process.env.RESEND_API_KEY);</p>
+<p>await resend.emails.send({</p>
+<p>  from: 'OPC节点百科 <report@你的域名.com>',</p>
+<p>  to: user.email,</p>
+<p>  subject: '你的上周数据报告已生成',</p>
+<p>  html: </code><h1>上周你完成了 ${weeklyCount} 次分析</h1>...<code></p>
+<p>});</p>
+<p></code>`<code></p>
+
+<strong>关键数据</strong>：Resend 是2026年开发者首选邮件API。免费额度每天100封，足够用到1000个用户。
+
+<strong>避坑指南</strong>：
+<ul><li>第一版只做"周报"，不要做"日报"（日报打开率不到5%，周报打开率40%+）</li><li>邮件标题必须包含一个数字（"你上周完成了247次分析"），打开率比无数字标题高3倍</li><li>用真实发件人域名（</code>@你的域名.com<code>），不要用gmail/qq等个人邮箱</li></ul>
+<h3>方案C：订阅推送（适合内容产品/社区）</h3>
+
+<strong>一句话价值</strong>：用户订阅后，每次更新自动通知，不依赖用户"想起你"。
+
+<strong>最轻量实现</strong>：
+
+<p></code>`<code>javascript</p>
+// 2026年浏览器原生Push API + Service Worker
+// 不需要安装任何第三方SDK
+<p>self.registration.showNotification('OPC节点百科', {</p>
+<p>  body: '节点24"域名购买与ICP备案"已更新',</p>
+<p>  icon: '/icon-192.png',</p>
+<p>  data: { url: '/nodes/24-domain-icp/' }</p>
+<p>});</p>
+<p></code>`<code></p>
+
+<strong>避坑指南</strong>：
+<ul><li>Web Push在iOS上的支持2026年才刚完善（iOS 18.4+），但Android和桌面端全覆盖</li><li>推送频率不超过每周2次，否则用户会关掉通知权限</li><li>微信小程序用"服务通知"模板消息替代Web Push</li></ul>
+<h3>方案D：智能提醒（适合电商/服务预约）</h3>
+
+<strong>一句话价值</strong>：把"用户想到才用"变成"产品替用户记得"。
+
+<strong>2026年实现</strong>：Supabase Cron（2026年3月上线）+ 数据库定时任务。
+
+<p></code>`<code>sql</p>
+<p>-- Supabase Cron: 每天早上9点扫描需要提醒的用户</p>
+<p>select cron.schedule(</p>
+<p>  'daily-reminder',</p>
+<p>  '0 9 * * *',</p>
+<p>  $$ </p>
+<p>    select * from users </p>
+<p>    where last_active < now() - interval '7 days'</p>
+<p>    and reminder_enabled = true</p>
+<p>  $$</p>
+<p>);</p>
+<p></code>``</p>
+
+<p></section></p>
+<section id="s三">
+<p>      <div class="section-label">三、三大功能协同检查（上线前必看）</div></p>
+
+<div class="table-wrapper"><table><thead><tr><th>检查项</th><th>通过标准</th></tr></thead><tbody><tr><td><strong>数据一致性</strong></td><td>核心功能1产生的数据，核心功能2和3能直接读取，不需格式转换</td></tr><tr><td><strong>跳转体验</strong></td><td>从功能1→功能2→功能3的路径，每一步都有明显的"下一步"入口</td></tr><tr><td><strong>权限统一</strong></td><td>一个用户登录后，三个功能区都能访问（不需要分别登录）</td></tr><tr><td><strong>设计统一</strong></td><td>三个功能区的导航栏、配色、字体保持一致</td></tr><tr><td><strong>错误隔离</strong></td><td>核心功能3挂了，不影响核心功能1和2的使用</td></tr></tbody></table></div>
+
+<p></section></p>
+<section id="s四">
+<p>      <div class="section-label">四、一个真实案例：OPC闭环的形成过程</div></p>
+
+<p>假设你的产品是"AI简历优化工具"：</p>
+
+<div class="table-wrapper"><table><thead><tr><th>阶段</th><th>功能</th><th>用户行为</th></tr></thead><tbody><tr><td>核心功能1</td><td>上传简历→AI分析→返回优化建议</td><td>"有用，改完就关了"</td></tr><tr><td>核心功能2</td><td>优化前后的对比评分 + 历史记录</td><td>"能看到自己从45分变78分，挺好的"</td></tr><tr><td>核心功能3（闭环）</td><td>"生成简历分享海报，发朋友圈领取免费优化额度"</td><td>用户发朋友圈 → 朋友扫码 → 新用户注册</td></tr></tbody></table></div>
+<strong>闭环效果</strong>：每10个使用核心功能3的用户，带来3-5个新注册用户。零广告费。
+
+<p></section></p>
+<section id="s五">
+<p>      <div class="section-label">五、常见翻车</div></p>
+
+<div class="table-wrapper"><table><thead><tr><th>翻车方式</th><th>后果</th><th>预防</th></tr></thead><tbody><tr><td><strong>三个闭环全做</strong></td><td>哪个都是半成品，一个都不闭环</td><td>看本文第二节，只选一种</td></tr><tr><td><strong>分享卡片忘记加水印</strong></td><td>别人的朋友圈只有内容，没有你的产品名</td><td>卡片底部必须加"由 [产品名] 生成"</td></tr><tr><td><strong>邮件进了垃圾箱</strong></td><td>周报白写，用户永远看不到</td><td>用Resend/阿里云企业邮，配置SPF+DKIM</td></tr><tr><td><strong>推送太频繁</strong></td><td>用户关闭通知权限，以后再也推不了</td><td>每周≤2次</td></tr></tbody></table></div>
+
+<p></section></p>
+<section id="s六">
+<p>      <div class="section-label">六、检查清单</div></p>
+
+<ul><li><input type="checkbox" disabled> 闭环形态已选定（只选一种：分享/报告/推送/提醒）</li><li><input type="checkbox" disabled> 分享卡片上有产品名+域名</li><li><input type="checkbox" disabled> 邮件使用企业域名发件人（非个人邮箱）</li><li><input type="checkbox" disabled> 推送频率控制在每周≤2次</li><li><input type="checkbox" disabled> 三个功能区的数据能互通、跳转流畅、设计统一</li><li><input type="checkbox" disabled> 核心功能3崩溃不影响前两个功能</li></ul>
+
+<p></section></p>
+<section id="s节">
+<p>      <div class="section-label">节点资源链接</div></p>
+
+<ul><li>节点13：核心功能2开发</li><li>节点14：数据展示与交互</li><li>节点16：支付代码集成</li></ul>
+    </section>
+
+    <div class="summary-box">
+      <h3>节点15检查清单</h3>
+      <p>完成本节点后，请确认所有检查项已通过。</p>
+    </div>
+    </main>
+  </div>
+
+  <nav class="footer-nav">
+    <a href="/nodes/14-data-display/index.html" class="nav-link">
+      <span>←</span> 节点14
+    </a>
+    <a href="/nodes/16-payment-code/index.html" class="nav-link">
+      节点16 <span>→</span>
+    </a>
+  </nav>
+
+  <script>
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').slice(1);
+      const target = document.getElementById(targetId);
+      if (target) {
+        window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+      }
+    });
+  });
+  </script>
 </body>
 </html>

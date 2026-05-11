@@ -492,7 +492,136 @@ git push</div>
       <p style="font-size: 13px; color: var(--text-tertiary); margin-top: var(--space-lg); letter-spacing: 0.05em;">
         （本文写于2026年5月。）
       </p>
+    
+    <!-- 🔵 2026年时效性内容更新 -->
+    <section id="s2026" class="section fade-section">
+      <div style="margin-bottom:var(--space-lg);">
+        <span style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);">2026 UPDATE</span>
+      </div>
+      <div class="prose" style="max-width:680px;">
+        
+<blockquote style="border-left:2px solid var(--accent);padding:var(--space-sm) var(--space-md);margin:var(--space-md) 0;color:var(--text-secondary);font-style:italic;background:var(--surface);border-radius:0 6px 6px 0;font-size:0.95rem;">**面向OPC**：环境搭好了，数据库通了，现在写第一行真正创造价值的代码。核心功能1是你产品的灵魂——用户打开产品就是为了用它。本节点告诉你：怎么一个人把第一个核心功能做出来，而且做对。</blockquote>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">一、先定义，再编码</h3>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">核心功能1的一句话定义</h4>
+
+<blockquote style="border-left:2px solid var(--accent);padding:var(--space-sm) var(--space-md);margin:var(--space-md) 0;color:var(--text-secondary);font-style:italic;background:var(--surface);border-radius:0 6px 6px 0;font-size:0.95rem;">[用户] 通过 [操作] 获得 [结果]</blockquote>
+
+<table style="width:100%;border-collapse:collapse;margin:var(--space-md) 0;font-size:0.88rem;">
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">产品</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">一句话</td></tr>
+<tr><th style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">OPC节点百科</th><th style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">创业者通过节点导航，找到下一步该做什么</th></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">AI简历优化</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">求职者上传简历，3分钟拿到优化建议</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">记账工具</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">用户记录收支，看到本月花了多少钱</td></tr>
+</table>
+
+<p style="margin:var(--space-sm) 0;color:var(--text-secondary);font-weight:400;"><strong>如果你写不出这句话，说明你还没想清楚。别写代码。</strong></p>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">二、2026年OPC开发核心功能1的最优路径</h3>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">路径：AI辅助 + 分步验证</h4>
+
+<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code>1. 用AI生成第一版代码（10分钟）
+2. 本地跑通核心流程（30分钟）
+3. 接入真实数据（1小时）
+4. 处理错误状态（30分钟）
+5. 加Loading/Empty/Error三种状态（30分钟）
+──────────────────────────────
+总计：≈3小时完成核心功能1的80%
+</code></pre>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">步骤1：用AI生成第一版</h4>
+
+<p style="margin:var(--space-xs) 0;color:var(--text-secondary);line-height:1.9;">在Cursor中打开项目，用这个prompt模板：</p>
+
+<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code>我在做一个[产品描述]，技术栈是[前端框架]+Supabase。
+请帮我实现核心功能：[一句话定义]
+要求：
+1. 只需要一个页面，包含输入区和结果展示区
+2. 用Supabase存取数据（表名：[表名]）
+3. 不做登录（先用匿名方式）
+4. 样式简洁，移动端友好
+</code></pre>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">步骤2：本地跑通</h4>
+
+<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code>打开浏览器 → 输入数据 → 点提交 → 看到结果 → 检查Supabase表中是否有数据
+</code></pre>
+
+<p style="margin:var(--space-sm) 0;color:var(--text-secondary);font-weight:400;"><strong>如果这5步有任何一步卡住了 → 回去改prompt重新生成，不要手动改代码。</strong></p>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">步骤3：三种状态的处理</h4>
+
+<p style="margin:var(--space-xs) 0;color:var(--text-secondary);line-height:1.9;">核心功能1必须覆盖三种状态（否则用户会觉得产品是坏的）：</p>
+
+<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code>// 状态1：加载中
+if (loading) return '&lt;div class="loading"&gt;分析中...&lt;/div&gt;';
+ 
+// 状态2：空状态（首次使用）
+if (!data) return '&lt;div class="empty"&gt;上传你的简历，开始第一次分析&lt;/div&gt;';
+ 
+// 状态3：错误
+if (error) return '&lt;div class="error"&gt;出错了：${error.message}，请刷新重试&lt;/div&gt;';
+ 
+// 正常展示
+return renderResult(data);
+</code></pre>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">三、核心功能1的完成标准（上线前自检）</h3>
+
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">标准</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">检查方式</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">输入→输出完整链路</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">无痕浏览器，从头走一遍</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">数据持久化</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">刷新页面，数据还在</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">三种状态都有</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">分别触发Loading/Empty/Error</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">移动端可用</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">手机微信打开，核心流程走通</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">20秒内完成操作</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">计时：从打开到看到结果≤20秒</td></tr>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">四、最容易犯的两个错误</h3>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">错误1：想要"完美"的第一版</h4>
+
+<p style="margin:var(--space-xs) 0;color:var(--text-secondary);line-height:1.9;">❌ 做了3天还在调UI颜色和动画  </p>
+<p style="margin:var(--space-xs) 0;color:var(--text-secondary);line-height:1.9;">✅ 功能跑通就停手。UI优化等节点14一起做。</p>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">错误2：跳过错误处理</h4>
+
+<p style="margin:var(--space-xs) 0;color:var(--text-secondary);line-height:1.9;">❌ "这个输入框用户不会填错的"  </p>
+<p style="margin:var(--space-xs) 0;color:var(--text-secondary);line-height:1.9;">✅ 空输入、超长输入、特殊字符全部处理。自己测试时用真实数据，别用"test"。</p>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">五、检查清单</h3>
+
+<ul style="list-style:none;padding:0;margin:var(--space-sm) 0;">
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 核心功能的一句话定义已写出</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] AI生成的代码核心流程能跑通</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 数据能正确存入Supabase</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 三个状态（Loading/Empty/Error）都已处理</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 手机微信打开核心流程可用</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 从打开到看到结果≤20秒</li>
+
+        <li class="toc-item"><a href="#s2026" class="toc-link">2026年更新</a></li></ul>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">节点资源链接</h3>
+
+<ul style="list-style:none;padding:0;margin:var(--space-sm) 0;">
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点11：用户认证系统</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点13：核心功能2开发</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点14：数据展示与交互</li>
+</ul>
+
+
+      </div>
+      <p style="font-size:12px;color:var(--text-tertiary);margin-top:var(--space-xl);letter-spacing:0.05em;">
+        以上内容基于2026年5月最新实践编写，工具版本和价格可能更新，请以官方文档为准。
+      </p>
     </section>
+
+</section>
 
     <footer class="footer-nav fade-section">
       <a href="/nodes/11-auth-system/index.html" class="nav-link">

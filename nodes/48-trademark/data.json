@@ -1,11 +1,12 @@
 {
   "id": 48,
-  "title": "商标申请",
   "slug": "trademark",
-  "summary": "商标分类、申请流程、异议处理，月收入稳定1万+后开始品牌保护",
+  "title": "商标申请",
+  "phase": "产品验证与准备",
   "difficulty": "进阶",
   "category": "1-10",
-  "price_standard": 199,
-  "price_consult": 299,
-  "ai_summary": null
+  "summary": "商标分类、申请流程、异议处理，月收入稳定1万+后开始品牌保护",
+  "content": "",
+  "created_at": "2026-05-09T00:00:00Z",
+  "updated_at": "2026-05-10T00:00:00Z"
 }

@@ -1,44 +1,884 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <script src="/auth-guard.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="开发者自测流程 - OPC节点百科">
   <meta name="theme-color" content="#111110">
-  <title>开发者自测流程 - OPC节点百科</title>
+  <title>节点18：开发者自测流程 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-:root { --bg:#111110;--surface:#1A1A18;--text-primary:#F0EDE6;--text-secondary:#7A7670;--text-tertiary:#A8A49E;--accent:#C0392B;--line:#2A2A28; }
-* { margin:0;padding:0;box-sizing:border-box; }
-body { background:var(--bg);color:var(--text-primary);font-family:'Noto Sans SC',sans-serif;font-weight:300;line-height:2;letter-spacing:0.04em;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem; }
-.top-nav { position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem clamp(24px,8vw,120px);border-bottom:1px solid var(--line);background:var(--bg); }
-.back-link { font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-tertiary);text-decoration:none; }
-.back-link:hover { color:var(--text-primary); }
-.node-id { font-family:'Noto Serif JP',serif;font-size:0.75rem;color:var(--text-tertiary);letter-spacing:0.1em; }
-h1 { font-family:'Noto Serif JP',serif;font-size:clamp(48px, 10vw, 96px);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;text-align:center; }
-.phase { font-size:12px;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;text-align:center; }
-.num { font-size:11px;color:var(--text-tertiary);letter-spacing:0.1em;margin-top:0.5rem;text-align:center; }
-.note { font-size:13px;color:var(--text-secondary);text-align:center;max-width:480px;margin-top:1.5rem;line-height:1.9; }
-.footer-nav { display:flex;justify-content:space-between;position:fixed;bottom:0;left:0;right:0;padding:1.5rem clamp(24px,8vw,120px);border-top:1px solid var(--line);background:var(--bg); }
-.nav-link { font-size:0.7rem;color:var(--text-tertiary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;gap:0.5rem; }
-.nav-link:hover { color:var(--text-primary); }
-.nav-arrow { font-size:0.6rem; }
+
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #7A7670;
+  --text-tertiary: #4A4744;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Layout with Sidebar */
+.layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3rem);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
+}
+
+/* Sidebar TOC */
+.sidebar-toc {
+  position: sticky;
+  top: 5rem;
+  height: fit-content;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  padding-top: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.sidebar-toc::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar-toc::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 2px;
+}
+
+.toc-title {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.toc-list {
+  list-style: none;
+}
+
+.toc-item {
+  margin-bottom: 0.75rem;
+}
+
+.toc-link {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: block;
+  padding: 0.375rem 0;
+  padding-left: 1rem;
+  border-left: 1px solid var(--line);
+  transition: all 0.3s;
+  line-height: 1.4;
+}
+
+.toc-link:hover {
+  color: var(--text-primary);
+  border-left-color: var(--accent);
+}
+
+.toc-link.active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  font-weight: 400;
+}
+
+.toc-link.sub {
+  padding-left: 1.75rem;
+  font-size: 0.75rem;
+}
+
+/* Fixed Top Nav */
+.fixed-top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+.back-link {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
+}
+
+.back-link:hover {
+  color: var(--text-primary);
+}
+
+.node-id {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar-toc {
+    display: none;
+  }
+
+  .fixed-top-nav {
+    padding: 0.75rem clamp(1rem, 4vw, 1.5rem);
+  }
+}
+
+/* Header */
+header {
+  padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(2rem, 5vh, 3rem);
+}
+
+/* Main content */
+main {
+  padding-bottom: 5rem;
+}
+
+/* Section anchors offset for sticky header */
+section {
+  scroll-margin-top: 2rem;
+}
+
+section h2 {
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+}
+
+section p, section li {
+  font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
+  line-height: 1.9;
+}
+
+/* Table improvements */
+.table-wrapper {
+  margin: 1.5rem 0;
+  border: 1px solid var(--line);
+}
+
+table {
+  font-size: 0.875rem;
+}
+
+td, th {
+  padding: 0.875rem 1rem;
+}
+
+/* Tool Cards */
+.tool-grid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* Path blocks */
+.path-block {
+  padding: 1.5rem;
+}
+
+.workflow {
+  padding: 1rem 1.25rem;
+  font-size: 0.8125rem;
+}
+
+/* Validation cards */
+.validation-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.validation-card {
+  padding: 1.25rem;
+}
+
+/* Level items */
+.level-grid {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+/* Decision box */
+.decision-box {
+  padding: 1.25rem 1.5rem;
+}
+
+/* Main content */
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+h1 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xl);
+}
+
+.phase-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+.phase-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+
+.subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 44ch;
+  line-height: 1.8;
+}
+
+.node-meta {
+  margin-top: 2rem;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+}
+
+/* Sections */
+section {
+  padding-bottom: clamp(3rem, 10vh, 5rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(3rem, 10vh, 5rem);
+}
+
+section:last-of-type {
+  border-bottom: none;
+}
+
+.section-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.375rem, 4vw, 1.875rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+h3 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.125rem, 3vw, 1.375rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+p {
+  color: var(--text-secondary);
+  line-height: 1.9;
+  margin-bottom: 1.25rem;
+}
+
+.decision-box {
+  background: var(--surface);
+  border-left: 2px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.decision-box p {
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  margin: 0;
+}
+
+/* Tables */
+.table-wrapper {
+  overflow-x: auto;
+  margin: 2rem 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+th {
+  text-align: left;
+  font-weight: 400;
+  font-size: 0.6875rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--text-secondary);
+  vertical-align: top;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+td:first-child {
+  color: var(--text-primary);
+  font-weight: 400;
+}
+
+/* Tool Cards */
+.tool-grid {
+  display: grid;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.tool-card {
+  background: var(--surface);
+  padding: 1.75rem;
+  border: 1px solid var(--line);
+}
+
+.tool-card h4 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.tool-card .tagline {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.tool-card p {
+  font-size: 0.875rem;
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.tool-card .pros {
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+}
+
+.tool-card .price {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.25rem 0.75rem;
+  margin-top: 1rem;
+}
+
+/* Path Section */
+.path-block {
+  background: var(--surface);
+  padding: 2rem;
+  margin: 2rem 0;
+  border: 1px solid var(--line);
+}
+
+.path-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.path-number {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+.path-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.path-tools {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.path-block p {
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+}
+
+.workflow {
+  background: var(--bg);
+  padding: 1.25rem 1.5rem;
+  margin-top: 1.25rem;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.9;
+}
+
+/* Validation Box */
+.validation-grid {
+  display: grid;
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
+
+.validation-card {
+  background: var(--surface);
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+}
+
+.validation-card h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.validation-card p {
+  font-size: 0.8125rem;
+  margin: 0;
+}
+
+.level-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.level-item {
+  background: var(--surface);
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+}
+
+.level-item .num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.5rem;
+  color: var(--accent);
+  opacity: 0.6;
+  margin-bottom: 0.5rem;
+}
+
+.level-item h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.level-item p {
+  font-size: 0.75rem;
+  margin: 0;
+}
+
+/* Cost Control */
+.cost-table {
+  margin: 2rem 0;
+}
+
+/* Quote */
+.quote-block {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+}
+
+.quote-block p {
+  font-size: 1rem;
+  color: var(--text-primary);
+  line-height: 1.8;
+}
+
+/* Network Section */
+.network-alert {
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.network-alert h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.network-alert p {
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Summary Box */
+.summary-box {
+  background: var(--surface);
+  padding: 2rem;
+  margin-top: 3rem;
+  border: 1px solid var(--line);
+}
+
+.summary-box h3 {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+}
+
+.step-list {
+  list-style: none;
+  counter-reset: steps;
+}
+
+.step-list li {
+  counter-increment: steps;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.step-list li::before {
+  content: counter(steps);
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--accent);
+  flex-shrink: 0;
+  width: 1.5rem;
+  padding-top: 0.25rem;
+}
+
+/* Footer Nav - Fixed Bottom */
+.footer-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.9);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
+}
+
+.nav-link {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
+}
+
+.nav-link:hover {
+  color: var(--text-primary);
+}
+
+.nav-link.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
   </style>
 </head>
 <body>
-  <nav class="top-nav">
+  <nav class="fixed-top-nav">
     <a href="/index.html" class="back-link">← 返回首页</a>
     <span class="node-id">节点 18 / 57</span>
   </nav>
-  <div class="phase">测试与修复</div>
-  <h1>开发者自测流程</h1>
-  <div class="num">节点 18</div>
-  <p class="note">◈ 内容正在建设中<br>这将是一个面向OPC（一人公司/独立开发者）的实操指南</p>
-  <footer class="footer-nav">
-    <a href="/nodes/17-payment-access/index.html" class="nav-link"><span class="nav-arrow">←</span>节点17：国内支付接入</a>
-    <a href="/nodes/19-friend-testing/index.html" class="nav-link">节点19：亲友灰度测试<span class="nav-arrow">→</span></a>
-  </footer>
+
+  <div class="layout">
+    <main class="container">
+      <header>
+      <div class="phase-label">测试与修复</div>
+      <h1>开发者自测流程</h1>
+      <div class="node-meta">节点 18 / 57 · 最后修订：2026年5月11日</div>
+    </header>
+
+    <section id="s1">
+    
+
+<blockquote class="decision-box"><p>你没有人帮你测。没有QA、没有测试工程师、没有同事帮你点两下。你是写代码的人，你也是唯一负责质量的人。本节点告诉你：一个人怎么测出一个团队的信心。</p></blockquote>
+
+<p></section></p>
+<section id="s一">
+<p>      <div class="section-label">一、OPC自测的第一原理</div></p>
+
+<h3>残酷真相</h3>
+
+<p>大公司的QA团队 = 你的"睡前30分钟"。你没有更多时间了。</p>
+
+<strong>所以OPC的自测不是"测全"，而是"测死"——只测会死人的。</strong>
+
+<h3>什么是"会死人的"？</h3>
+
+<div class="table-wrapper"><table><thead><tr><th>优先级</th><th>定义</th><th>举例</th></tr></thead><tbody><tr><td>🔴 P0</td><td>用户的核心流程断了</td><td>支付后订单没创建、登录后白屏、注册收不到验证码</td></tr><tr><td>🟠 P1</td><td>核心流程能用但数据错了</td><td>金额显示少了一个0、统计数据对不上</td></tr><tr><td>🟡 P2</td><td>功能正常但体验糟糕</td><td>按钮点了没反应（但刷新后好了）、图片加载慢</td></tr><tr><td>🟢 P3</td><td>不影响使用的瑕疵</td><td>文案有个错别字、对齐有点歪</td></tr></tbody></table></div>
+<strong>OPC铁律：上线前P0/P1必须清零。P2可以上线后修，P3可以不管。</strong>
+
+<p></section></p>
+<section id="s二">
+<p>      <div class="section-label">二、OPC自测五步法（每天30分钟）</div></p>
+
+<h3>步骤1：核心路径走查（10分钟）</h3>
+
+<p>打开一个全新的无痕浏览器窗口（模拟新用户），从头到尾走一遍你的产品核心路径：</p>
+
+<p>``<code></p>
+<p>打开首页 → 注册 → 登录 → 核心功能1 → 核心功能2 → 核心功能3 → 支付 → 退出 → 重新登录</p>
+<p></code>`<code></p>
+
+<strong>检查点</strong>：
+<ul><li>每一步的页面是否正常打开（不是白屏）</li><li>每一步的按钮是否可点击（不是灰色的）</li><li>数据是否有留存（退出重新登录后数据还在）</li></ul>
+<strong>用一个清单，每天勾一遍：</strong>
+
+<p></code>`<code></p>
+<p>□ 新用户注册成功</p>
+<p>□ 登录正常（账号密码 / 验证码）</p>
+<p>□ 核心功能1完整走通</p>
+<p>□ 核心功能2数据正确展示</p>
+<p>□ 核心功能3正常触发</p>
+<p>□ 支付流程到确认页（不实际付款）</p>
+<p>□ 退出后重新登录数据还在</p>
+<p>□ 手机端同样流程走一遍</p>
+<p></code>`<code></p>
+
+<h3>步骤2：边界值爆破（5分钟）</h3>
+
+<p>核心功能里所有有"输入"的地方，用以下值逐个测试：</p>
+
+<div class="table-wrapper"><table><thead><tr><th>输入类型</th><th>测试值</th></tr></thead><tbody><tr><td>空值</td><td>什么都不填直接提交</td></tr><tr><td>超长</td><td>复制一篇5000字文章粘贴进去</td></tr><tr><td>特殊字符</td><td></code><script>alert(1)</script><code> / emoji / 零宽字符</td></tr><tr><td>负数</td><td>金额输入 -100</td></tr><tr><td>超大数</td><td>金额输入 9999999999</td></tr><tr><td>手机端</td><td>在手机上重复以上测试</td></tr></tbody></table></div>
+<strong>如果有一个地方崩溃了，这就是今天的P0 Bug。</strong>
+
+<h3>步骤3：网络异常模拟（3分钟）</h3>
+
+<p>打开浏览器开发者工具（F12）→ Network → 选"Offline"或"Slow 3G"：</p>
+
+<p></code>`<code></p>
+<p>□ 断网状态下打开页面（是否有提示，而不是白屏）</p>
+<p>□ 慢网速下核心功能能否在10秒内完成</p>
+<p>□ 支付过程中断网（订单状态是否正确）</p>
+<p>□ 提交表单时断网（数据是否丢失）</p>
+<p></code>`<code></p>
+
+<strong>2026年新增关注</strong>：中国移动/联通/电信的4G网络在某些区域实际速度只有500KB/s。用Slow 3G模拟就是真实用户的体验。
+
+<h3>步骤4：浏览器兼容（2分钟）</h3>
+
+<p>OPC产品的用户大概率用这些：</p>
+
+<div class="table-wrapper"><table><thead><tr><th>环境</th><th>必测原因</th></tr></thead><tbody><tr><td>微信内置浏览器</td><td>国内50%以上的Web流量来自微信内打开</td></tr><tr><td>Safari (iOS)</td><td>iPhone用户在微信里点链接，最终打开的是Safari内核</td></tr><tr><td>Chrome (桌面)</td><td>你开发用的浏览器，自测默认环境</td></tr></tbody></table></div>
+<strong>不需要测</strong>：Firefox、Edge、三星浏览器（市场份额都<3%）。
+
+<h3>步骤5：数据一致性检查（5分钟）</h3>
+
+<p>打开数据库，做以下检查：</p>
+
+<p></code>`<code>sql</p>
+<p>-- 1. 有没有孤儿数据（引用了不存在的用户/订单）</p>
+<p>SELECT * FROM orders WHERE user_id NOT IN (SELECT id FROM users);</p>
+
+<p>-- 2. 有没有重复数据（同一个业务实体存了两份）</p>
+<p>SELECT email, COUNT(*) FROM users GROUP BY email HAVING COUNT(*) > 1;</p>
+
+<p>-- 3. 时间戳是否合理</p>
+<p>SELECT * FROM orders WHERE created_at > NOW();  -- 未来时间的订单</p>
+<p>SELECT * FROM orders WHERE created_at < '2024-01-01';  -- 时间戳明显错误的</p>
+<p></code>`<code></p>
+
+<p></section></p>
+<section id="s三">
+<p>      <div class="section-label">三、2026年OPC可用的自动化测试工具</div></p>
+
+<h3>必学：API测试用 Postman / Bruno</h3>
+
+<p></code>`<code>javascript</p>
+// 把核心API的测试保存为Collection，每次改完代码点一下"Run"
+// Postman Collection: 注册 → 登录 → 创建订单 → 查询订单
+<p>pm.test("注册成功", () => pm.response.to.have.status(201));</p>
+<p>pm.test("返回了token", () => pm.response.json().token.length > 0);</p>
+<p></code>`<code></p>
+
+<strong>Bruno 是2026年崛起的开源替代品</strong>（GitHub 25k+星标）。离线可用、测试文件存Git、不强制注册账号。比Postman更适合OPC。
+
+<h3>可选：前端E2E测试用 Playwright</h3>
+
+<p></code>`<code>javascript</p>
+// 5行代码测试核心流程
+<p>const { test } = require('@playwright/test');</p>
+<p>test('新用户注册到核心功能1', async ({ page }) => {</p>
+<p>  await page.goto('http://localhost:3000');</p>
+<p>  await page.click('text=注册');</p>
+<p>  await page.fill('[name=email]', 'test@opc.test');</p>
+<p>  await page.click('text=提交');</p>
+<p>  await page.waitForURL('**/dashboard'); // 注册成功应跳转</p>
+<p>});</p>
+<p></code>`<code></p>
+
+<strong>Playwright 2026年优势</strong>：
+<ul><li>一个命令录制操作生成测试代码：</code>npx playwright codegen http://localhost:3000<code></li><li>自动等待（不用写sleep），测试稳定不flaky</li><li>支持微信内置浏览器的User-Agent模拟</li></ul>
+<strong>但说实话</strong>：如果你只有一个人，先把P0手动测试跑通，Playwright可以等你有收入后再补。
+
+<h3>可选：后端单元测试用 Vitest</h3>
+
+<p></code>`<code>javascript</p>
+// 测试支付金额计算逻辑
+<p>import { describe, it, expect } from 'vitest';</p>
+<p>describe('calculateAmount', () => {</p>
+<p>  it('会员价格应为9999分', () => {</p>
+<p>    expect(calculateAmount('membership')).toBe(9999);</p>
+<p>  });</p>
+<p>  it('无效productId应抛出错误', () => {</p>
+<p>    expect(() => calculateAmount('invalid')).toThrow();</p>
+<p>  });</p>
+<p>});</p>
+<p></code>`<code></p>
+
+<p></section></p>
+<section id="s四">
+<p>      <div class="section-label">四、自测的时间分配公式</div></p>
+
+<p></code>`<code></p>
+<p>每个功能开发完成后：</p>
+<p>  15分钟 手动走核心路径  (步骤1)</p>
+<p>   5分钟 边界值爆破        (步骤2)</p>
+<p>   3分钟 网络异常模拟      (步骤3)</p>
+<p>   2分钟 浏览器兼容        (步骤4)</p>
+<p>   5分钟 数据一致性检查    (步骤5)</p>
+<p>─────────────────────────</p>
+<p>  30分钟 / 每个功能</p>
+<p></code>`<code></p>
+
+<strong>如果30分钟不够</strong> → 说明这个功能太复杂了，拆成两个功能分别上线。
+
+<p></section></p>
+<section id="s五">
+<p>      <div class="section-label">五、OPC自测防翻车清单</div></p>
+
+<div class="table-wrapper"><table><thead><tr><th>翻车方式</th><th>预防</th></tr></thead><tbody><tr><td><strong>在自己浏览器测完就上线</strong></td><td>必须用全新无痕窗口测一遍（清掉所有缓存和登录态）</td></tr><tr><td><strong>只在桌面测</strong></td><td>上线前手机微信打开走一遍完整流程</td></tr><tr><td><strong>回调只在本地测</strong></td><td>支付回调、OAuth回调必须在公网可访问的环境测一次（用ngrok）</td></tr><tr><td><strong>改了A功能不测B功能</strong></td><td>回归测试：改了支付的代码，重新走一遍注册→登录→功能1的流程</td></tr><tr><td><strong>"我就改了一行CSS"</strong></td><td>改了一行也要走P0核心路径。CSS可能导致按钮错位、文字消失</td></tr></tbody></table></div>
+
+<p></section></p>
+<section id="s六">
+<p>      <div class="section-label">六、自测通过标准（发布前）</div></p>
+
+<p></code>`<code></p>
+<p>□ P0核心路径在无痕窗口通过</p>
+<p>□ P0核心路径在手机微信内通过</p>
+<p>□ 0个P0/P1 Bug</p>
+<p>□ 数据库无孤儿数据/重复数据</p>
+<p>□ 边界值输入不崩溃（至少有错误提示）</p>
+<p>□ 断网情况下有"网络异常"提示（不白屏）</p>
+<p>□ 支付回调在公网环境测试通过（至少一次真实支付）</p>
+<p></code>``</p>
+
+<p></section></p>
+<section id="s节">
+<p>      <div class="section-label">节点资源链接</div></p>
+
+<ul><li>节点17：国内支付接入</li><li>节点19：亲友灰度测试</li><li>节点20：Bug集中修复</li></ul>
+    </section>
+
+    <div class="summary-box">
+      <h3>节点18检查清单</h3>
+      <p>完成本节点后，请确认所有检查项已通过。</p>
+    </div>
+    </main>
+  </div>
+
+  <nav class="footer-nav">
+    <a href="/nodes/17-payment-access/index.html" class="nav-link">
+      <span>←</span> 节点17
+    </a>
+    <a href="/nodes/19-friend-testing/index.html" class="nav-link">
+      节点19 <span>→</span>
+    </a>
+  </nav>
+
+  <script>
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').slice(1);
+      const target = document.getElementById(targetId);
+      if (target) {
+        window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+      }
+    });
+  });
+  </script>
 </body>
 </html>

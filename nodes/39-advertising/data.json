@@ -1,11 +1,12 @@
 {
   "id": 39,
-  "title": "广告投放",
   "slug": "advertising",
-  "summary": "信息流广告、搜索广告、ROI测试，验证自然流量后再放大",
+  "title": "广告投放",
+  "phase": "产品验证与准备",
   "difficulty": "进阶",
   "category": "1-10",
-  "price_standard": null,
-  "price_consult": 399,
-  "ai_summary": null
+  "summary": "信息流广告、搜索广告、ROI测试，验证自然流量后再放大",
+  "content": "",
+  "created_at": "2026-05-09T00:00:00Z",
+  "updated_at": "2026-05-10T00:00:00Z"
 }

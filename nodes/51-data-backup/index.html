@@ -51,19 +51,22 @@ body {
   position: relative;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 clamp(24px, 8vw, 120px);
-  min-height: 100vh;
+  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3rem);
 }
-
-.page::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: clamp(24px, 8vw, 120px);
-  right: clamp(24px, 8vw, 120px);
-  height: 1px;
-  background: var(--line);
-}
+.page::before { content: ''; position: absolute; top: 0; left: clamp(1.25rem, 5vw, 3rem); right: clamp(1.25rem, 5vw, 3rem); height: 1px; background: var(--line); }
+.sidebar-toc { position: sticky; top: 5rem; height: fit-content; max-height: calc(100vh - 6rem); overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+.sidebar-toc::-webkit-scrollbar { width: 4px; }
+.sidebar-toc::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+.toc-title { font-size: 0.6875rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 1.25rem; }
+.toc-list { list-style: none; }
+.toc-item { margin-bottom: 0.75rem; }
+.toc-link { font-size: 0.8125rem; color: var(--text-secondary); text-decoration: none; display: block; padding: 0.375rem 0; padding-left: 1rem; border-left: 1px solid var(--line); transition: all 0.3s; line-height: 1.4; }
+.toc-link:hover { color: var(--text-primary); border-left-color: var(--accent); }
+.toc-link.active { color: var(--accent); border-left-color: var(--accent); font-weight: 400; }
+@media (max-width: 900px) { .page { grid-template-columns: 1fr; } .sidebar-toc { display: none; } }
 
 /* Section number watermark */
 .section-number {
@@ -533,6 +536,21 @@ body {
   <div class="section-number">30</div>
 
   <div class="page">
+    <nav class="sidebar-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#s1" class="toc-link">备份认知</a></li>
+        <li class="toc-item"><a href="#s2" class="toc-link">备份类型</a></li>
+        <li class="toc-item"><a href="#s3" class="toc-link">工具选择</a></li>
+        <li class="toc-item"><a href="#s4" class="toc-link">恢复流程</a></li>
+        <li class="toc-item"><a href="#s5" class="toc-link">安全防护</a></li>
+        <li class="toc-item"><a href="#s6" class="toc-link">冷备方案</a></li>
+        <li class="toc-item"><a href="#s7" class="toc-link">测试验证</a></li>
+        <li class="toc-item"><a href="#s8" class="toc-link">成本优化</a></li>
+        <li class="toc-item"><a href="#s9" class="toc-link">行动清单</a></li>
+      </ul>
+    </nav>
+    <div class="main-content">
     <header class="hero">
       <div class="hero-content">
         <div class="hero-label">节点 51 · 1-10</div>
@@ -542,7 +560,7 @@ body {
     </header>
 
     <!-- 壹: 认知跃迁 -->
-    <section class="content-section fade-section">
+    <section id="s1" class="content-section fade-section">
       <div class="chapter-marker">壹</div>
       <h2 class="chapter-heading">为什么2026年备份是生死线？</h2>
       <div class="grid-asymmetric">
@@ -576,7 +594,7 @@ body {
     </section>
 
     <!-- 贰: 核心原则 -->
-    <section class="content-section fade-section">
+    <section id="s2" class="content-section fade-section">
       <div class="chapter-marker">贰</div>
       <h2 class="chapter-heading">3-2-1-0法则：适配OPC的备份公理</h2>
       <div class="grid-asymmetric">
@@ -629,7 +647,7 @@ body {
     </section>
 
     <!-- 叁: 工具选型 -->
-    <section class="content-section fade-section">
+    <section id="s2" class="content-section fade-section">
       <div class="chapter-marker">叁</div>
       <h2 class="chapter-heading">工具选型：四层架构</h2>
       <div class="grid-asymmetric">
@@ -695,7 +713,7 @@ body {
     </section>
 
     <!-- 肆: 致命误区 -->
-    <section class="content-section fade-section">
+    <section id="s2" class="content-section fade-section">
       <div class="chapter-marker">肆</div>
       <h2 class="chapter-heading">四大致命误区</h2>
       <div class="grid-asymmetric">
@@ -744,7 +762,7 @@ body {
     </section>
 
     <!-- 伍: 恢复验证 -->
-    <section class="content-section fade-section">
+    <section id="s2" class="content-section fade-section">
       <div class="chapter-marker">伍</div>
       <h2 class="chapter-heading">恢复即服务：验证才是终点</h2>
       <div class="grid-asymmetric">
@@ -794,7 +812,7 @@ body {
     </section>
 
     <!-- 陆: 成本分析 -->
-    <section class="content-section fade-section">
+    <section id="s2" class="content-section fade-section">
       <div class="chapter-marker">陆</div>
       <h2 class="chapter-heading">成本与ROI分析</h2>
       <div class="grid-asymmetric">
@@ -849,7 +867,7 @@ body {
     </section>
 
     <!-- 柒: AI时代的新挑战 -->
-    <section class="content-section fade-section">
+    <section id="s2" class="content-section fade-section">
       <div class="chapter-marker">柒</div>
       <h2 class="chapter-heading">AI时代的新挑战</h2>
       <div class="grid-asymmetric">
@@ -890,7 +908,7 @@ body {
     </section>
 
     <!-- 捌: 决策框架 -->
-    <section class="content-section fade-section">
+    <section id="s2" class="content-section fade-section">
       <div class="chapter-marker">捌</div>
       <h2 class="chapter-heading">做 / 不做</h2>
       <div class="balance-intro">
@@ -923,7 +941,7 @@ body {
     </section>
 
     <!-- 玖: 操作清单 -->
-    <section class="content-section fade-section">
+    <section id="s2" class="content-section fade-section">
       <div class="chapter-marker">玖</div>
       <h2 class="chapter-heading">30天执行清单</h2>
       <div class="grid-asymmetric">
@@ -988,7 +1006,7 @@ body {
     </section>
 
     <!-- 拾: 财务健康指标 -->
-    <section class="content-section fade-section">
+    <section id="s10" class="content-section fade-section">
       <div class="chapter-marker">拾</div>
       <div class="section-label">财务健康指标</div>
       <div class="summary-grid">
@@ -1020,6 +1038,7 @@ body {
         <span class="nav-arrow">→</span>
       </a>
     </footer>
+    </div>
   </div>
 
   <script>
@@ -1029,6 +1048,20 @@ body {
       });
     }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
     document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
+
+    // TOC scroll spy
+    const tocLinks = document.querySelectorAll('.toc-link');
+    const sections = document.querySelectorAll('section[id]');
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(link => link.classList.remove('active'));
+          const activeLink = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+          if (activeLink) activeLink.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-20% 0px -60% 0px' });
+    sections.forEach(section => sectionObserver.observe(section));
   </script>
 </body>
 </html>

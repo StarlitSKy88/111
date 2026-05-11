@@ -305,7 +305,142 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
       <p style="font-size: 13px; color: var(--text-tertiary); margin-top: var(--space-lg); letter-spacing: 0.05em;">
         AI只用于加速已确定范围的功能实现，绝不用于生成新的功能方向。
       </p>
+    
+    <!-- 🔵 2026年时效性内容更新 -->
+    <section id="s2026" class="section fade-section">
+      <div style="margin-bottom:var(--space-lg);">
+        <span style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);">2026 UPDATE</span>
+      </div>
+      <div class="prose" style="max-width:680px;">
+        
+<blockquote style="border-left:2px solid var(--accent);padding:var(--space-sm) var(--space-md);margin:var(--space-md) 0;color:var(--text-secondary);font-style:italic;background:var(--surface);border-radius:0 6px 6px 0;font-size:0.95rem;">**面向OPC**：你的想法很好，功能列表写了20条。现在砍到3条——只留那些"不做就会死"的功能。MVP不是"最小产品"，是"最小区间内验证有人愿意付钱"。</blockquote>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">一、2026年OPC的MVP新定义</h3>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">传统定义（已过时）</h4>
+
+<blockquote style="border-left:2px solid var(--accent);padding:var(--space-sm) var(--space-md);margin:var(--space-md) 0;color:var(--text-secondary);font-style:italic;background:var(--surface);border-radius:0 6px 6px 0;font-size:0.95rem;">Minimum Viable Product = 最小可行产品</blockquote>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">2026年OPC定义</h4>
+
+<blockquote style="border-left:2px solid var(--accent);padding:var(--space-sm) var(--space-md);margin:var(--space-md) 0;color:var(--text-secondary);font-style:italic;background:var(--surface);border-radius:0 6px 6px 0;font-size:0.95rem;">Minimum **Valuable** Product = 最小**有价值**产品</blockquote>
+
+<p style="margin:var(--space-xs) 0;color:var(--text-secondary);line-height:1.9;">区别：Viable（可行）=能用就行。Valuable（有价值）=好到有人愿意付钱。</p>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">二、MVP范围的四刀法</h3>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">第一刀：砍掉所有"以后可能有用"的功能</h4>
+
+<table style="width:100%;border-collapse:collapse;margin:var(--space-md) 0;font-size:0.88rem;">
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">功能</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">砍掉理由</td></tr>
+<tr><th style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">用户个人中心/头像</th><th style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">没有人因为"可以换头像"而付费</th></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">暗色模式</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">上线后再做（一行CSS的事）</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">数据导出CSV</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">等有人问了再做</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">多语言</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">中文用户够你吃一年</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">消息通知系统</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">先用微信群代替</td></tr>
+</table>
+
+<p style="margin:var(--space-sm) 0;color:var(--text-secondary);font-weight:400;"><strong>砍完这一刀，功能列表从20条变成6条。</strong></p>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">第二刀：只留"用户核心任务"</h4>
+
+<p style="margin:var(--space-xs) 0;color:var(--text-secondary);line-height:1.9;">问自己：<strong style="color:var(--text-primary);">用户打开我的产品，是为了完成什么任务？</strong></p>
+
+<ul style="list-style:none;padding:0;margin:var(--space-sm) 0;">
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">如果3秒内说不出来 → 这个功能砍掉</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">如果用户不用这个功能也能完成任务 → 砍掉</li>
+
+        <li class="toc-item"><a href="#s2026" class="toc-link">2026年更新</a></li></ul>
+
+<p style="margin:var(--space-sm) 0;color:var(--text-secondary);font-weight:400;"><strong>砍完这一刀，6条变成3条。</strong></p>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">第三刀：3条里选1条最先做</h4>
+
+<p style="margin:var(--space-xs) 0;color:var(--text-secondary);line-height:1.9;">剩下的3条核心功能，按"用户最痛的问题"排序。只做第一条，其他两条用文字先标注"即将上线"。</p>
+
+<p style="margin:var(--space-sm) 0;color:var(--text-secondary);font-weight:400;"><strong>砍完这一刀，只剩下1个核心功能 + 2个文字占位。</strong></p>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">第四刀：这1个功能，只做80%</h4>
+
+<p style="margin:var(--space-xs) 0;color:var(--text-secondary);line-height:1.9;">一个功能有"基本流程"和"各种边界情况"。MVP只做基本流程：</p>
+
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">基本流程（MVP必做）</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">边界情况（MVP不做）</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">用户上传简历→AI分析→显示评分</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">上传PDF格式不对时的提示</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">用户下单→微信支付→支付成功</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">支付超时后的自动退款</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">用户输入→AI生成→展示结果</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">输入超过1000字时的截断处理</td></tr>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">三、MVP范围文档模板</h3>
+
+<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code># [产品名] MVP
+ 
+## 一句话价值主张
+[动词] + [对象] + [结果]
+ 
+## 核心指标（上线后2周内必须达到）
+- 注册用户：≥50人
+- 核心功能使用率：≥40%（注册用户中使用核心功能的比例）
+- 用户反馈中"愿意付费"的比例：≥20%
+ 
+## MVP功能清单
+### P0（必须有）
+1. [核心功能1的80%]
+2. 注册/登录
+3. 页面能正常打开（无白屏）
+ 
+### P1（最好有，没有也能上）
+4. [占位功能2：标注"即将上线"]
+5. [占位功能3：标注"即将上线"]
+ 
+## 明确不做（P2+）
+- 暗色模式
+- 数据导出
+- 个人中心
+- 消息通知
+- 多语言
+</code></pre>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">四、2026年MVP开发时间锚</h3>
+
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">产品类型</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">MVP最长开发时间</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">超过这个时间=你做的不是MVP</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">AI工具/内容站</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">1-2周</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">用v0/Cursor加速，1周够了</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">SaaS</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">2-4周</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">用Supabase省掉后端时间</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">微信小程序</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">2-4周</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">含审核时间</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">电商</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">2-4周</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">用现成模板</td></tr>
+
+<p style="margin:var(--space-sm) 0;color:var(--text-secondary);font-weight:400;"><strong>如果4周做不完→范围砍得不够狠。回去继续砍。</strong></p>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">五、检查清单</h3>
+
+<ul style="list-style:none;padding:0;margin:var(--space-sm) 0;">
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 功能列表已用四刀法砍到1个核心功能</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] MVP范围文档已写完（含目标指标）</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] P0功能清单已确认（≤3项）</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 明确不做清单已写下来（防止自己忍不住加）</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] MVP开发时间估算≤4周</li>
+</ul>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">节点资源链接</h3>
+
+<ul style="list-style:none;padding:0;margin:var(--space-sm) 0;">
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点04：原型设计与工具选择</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点06：技术选型</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点07：本地开发环境搭建</li>
+</ul>
+
+
+      </div>
+      <p style="font-size:12px;color:var(--text-tertiary);margin-top:var(--space-xl);letter-spacing:0.05em;">
+        以上内容基于2026年5月最新实践编写，工具版本和价格可能更新，请以官方文档为准。
+      </p>
     </section>
+
+</section>
 
     <footer class="footer-nav fade-section">
       <a href="/nodes/04-prototype/index.html" class="nav-link">

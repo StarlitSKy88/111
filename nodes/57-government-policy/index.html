@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <script src="/auth-guard.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="政府政策与创业补贴 - OPC节点百科">
@@ -10,21 +9,307 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
   <style>
-:root { --bg:#111110;--surface:#1A1A18;--text-primary:#F0EDE6;--text-secondary:#7A7670;--text-tertiary:#A8A49E;--accent:#C0392B;--line:#2A2A28; }
-* { margin:0;padding:0;box-sizing:border-box; }
-body { background:var(--bg);color:var(--text-primary);font-family:'Noto Sans SC',sans-serif;font-weight:300;line-height:2;letter-spacing:0.04em;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem; }
-.top-nav { position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem clamp(24px,8vw,120px);border-bottom:1px solid var(--line);background:var(--bg); }
-.back-link { font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-tertiary);text-decoration:none; }
-.back-link:hover { color:var(--text-primary); }
-.node-id { font-family:'Noto Serif JP',serif;font-size:0.75rem;color:var(--text-tertiary);letter-spacing:0.1em; }
-h1 { font-family:'Noto Serif JP',serif;font-size:clamp(48px, 10vw, 96px);font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;text-align:center; }
-.phase { font-size:12px;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;text-align:center; }
-.num { font-size:11px;color:var(--text-tertiary);letter-spacing:0.1em;margin-top:0.5rem;text-align:center; }
-.note { font-size:13px;color:var(--text-secondary);text-align:center;max-width:480px;margin-top:1.5rem;line-height:1.9; }
-.footer-nav { display:flex;justify-content:space-between;position:fixed;bottom:0;left:0;right:0;padding:1.5rem clamp(24px,8vw,120px);border-top:1px solid var(--line);background:var(--bg); }
-.nav-link { font-size:0.7rem;color:var(--text-tertiary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;gap:0.5rem; }
-.nav-link:hover { color:var(--text-primary); }
-.nav-arrow { font-size:0.6rem; }
+    :root {
+      --bg: #111110;
+      --surface: #1A1A18;
+      --text-primary: #F0EDE6;
+      --text-secondary: #7A7670;
+      --text-tertiary: #A8A49E;
+      --accent: #C0392B;
+      --line: #2A2A28;
+      --space-xs: 8px;
+      --space-sm: 16px;
+      --space-md: 24px;
+      --space-lg: 32px;
+      --space-xl: 48px;
+      --space-2xl: 64px;
+      --space-3xl: 96px;
+      --space-4xl: 128px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: 'Noto Sans SC', sans-serif;
+      font-weight: 300;
+      line-height: 1.8;
+      letter-spacing: 0.04em;
+      -webkit-font-smoothing: antialiased;
+    }
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 clamp(24px, 8vw, 120px);
+    }
+    .top-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem clamp(24px, 8vw, 120px);
+      border-bottom: 1px solid var(--line);
+      background: var(--bg);
+    }
+    .back-link {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      text-decoration: none;
+    }
+    .back-link:hover { color: var(--text-primary); }
+    .node-id {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 0.75rem;
+      color: var(--text-tertiary);
+      letter-spacing: 0.1em;
+    }
+    .hero {
+      padding: var(--space-4xl) 0 var(--space-3xl);
+      border-bottom: 1px solid var(--line);
+    }
+    .hero-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: var(--space-sm);
+    }
+    h1 {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(48px, 10vw, 96px);
+      font-weight: 300;
+      letter-spacing: -0.03em;
+      line-height: 0.95;
+      margin-bottom: var(--space-md);
+    }
+    .lead {
+      font-size: clamp(15px, 2vw, 17px);
+      color: var(--text-secondary);
+      max-width: 44ch;
+      line-height: 1.8;
+      margin-top: var(--space-md);
+    }
+    .source-note {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      margin-top: var(--space-lg);
+      padding: var(--space-sm) var(--space-md);
+      border-left: 2px solid var(--accent);
+      background: var(--surface);
+    }
+    .section {
+      padding: var(--space-3xl) 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .section:last-of-type { border-bottom: none; }
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: var(--space-sm);
+    }
+    h2 {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-lg);
+    }
+    .highlight-num {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(48px, 8vw, 72px);
+      font-weight: 200;
+      color: var(--accent);
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--space-lg);
+      margin: var(--space-xl) 0;
+    }
+    .stat-item { text-align: left; }
+    .stat-item .label {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-top: var(--space-xs);
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--space-md);
+      margin: var(--space-xl) 0;
+    }
+    .card {
+      background: var(--surface);
+      padding: var(--space-lg);
+      border-left: 2px solid var(--accent);
+    }
+    .card h3 {
+      font-size: 16px;
+      font-weight: 400;
+      margin-bottom: var(--space-sm);
+      color: var(--text-primary);
+    }
+    .card p {
+      font-size: 14px;
+      color: var(--text-tertiary);
+      line-height: 1.7;
+    }
+    .policy-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: var(--space-xl) 0;
+      font-size: 14px;
+    }
+    .policy-table th {
+      text-align: left;
+      padding: var(--space-sm) var(--space-md);
+      border-bottom: 2px solid var(--accent);
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 400;
+      color: var(--text-primary);
+    }
+    .policy-table td {
+      padding: var(--space-sm) var(--space-md);
+      border-bottom: 1px solid var(--line);
+      color: var(--text-tertiary);
+    }
+    .policy-table td strong { color: var(--accent); font-weight: 400; }
+    .policy-table tr:hover td { background: var(--surface); }
+    .tag {
+      display: inline-block;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      padding: 3px 8px;
+      border: 1px solid var(--line);
+      margin: 2px;
+    }
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--space-xl);
+    }
+    .timeline {
+      position: relative;
+      padding-left: var(--space-lg);
+      margin: var(--space-xl) 0;
+    }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--accent);
+    }
+    .timeline-item { position: relative; padding-bottom: var(--space-lg); }
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: calc(-1 * var(--space-lg) - 4px);
+      top: 6px;
+      width: 10px;
+      height: 10px;
+      background: var(--accent);
+    }
+    .timeline-date {
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .timeline-item p {
+      font-size: 14px;
+      color: var(--text-tertiary);
+      margin: 0;
+    }
+    .risk-card {
+      background: var(--surface);
+      padding: var(--space-md);
+      margin-bottom: var(--space-sm);
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-sm);
+    }
+    .risk-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+    .risk-card h4 {
+      font-size: 14px;
+      font-weight: 400;
+      margin-bottom: 4px;
+    }
+    .risk-card p {
+      font-size: 13px;
+      color: var(--text-tertiary);
+      margin: 0;
+    }
+    .checklist {
+      list-style: none;
+      margin: var(--space-xl) 0;
+    }
+    .checklist li {
+      font-size: 14px;
+      color: var(--text-secondary);
+      padding: var(--space-sm) 0;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+    .checklist li::before {
+      content: "×";
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .footer-nav {
+      display: flex;
+      justify-content: space-between;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1.5rem clamp(24px, 8vw, 120px);
+      border-top: 1px solid var(--line);
+      background: var(--bg);
+    }
+    .nav-link {
+      font-size: 0.7rem;
+      color: var(--text-tertiary);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .nav-link:hover { color: var(--text-primary); }
+    .nav-arrow { font-size: 0.6rem; }
+    .main-content { padding-top: 80px; padding-bottom: 100px; }
+    @media (max-width: 768px) {
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .policy-table { font-size: 12px; }
+      .policy-table th, .policy-table td { padding: var(--space-xs) var(--space-sm); }
+    }
   </style>
 </head>
 <body>
@@ -32,12 +317,279 @@ h1 { font-family:'Noto Serif JP',serif;font-size:clamp(48px, 10vw, 96px);font-we
     <a href="/index.html" class="back-link">← 返回首页</a>
     <span class="node-id">节点 57 / 57</span>
   </nav>
-  <div class="phase">并行支撑层</div>
-  <h1>政府政策与创业补贴</h1>
-  <div class="num">节点 57</div>
-  <p class="note">◈ 内容正在建设中<br>这将是一个面向OPC（一人公司/独立开发者）的实操指南</p>
+
+  <main class="main-content">
+    <div class="page">
+      <header class="hero">
+        <div class="hero-label">节点 57 · 并行支撑层</div>
+        <h1>政府政策与创业补贴</h1>
+        <p class="lead">2026年北京六区OPC社区政策全景分析。数据来源：政府官网、官方媒体、行业权威报道。</p>
+        <div class="source-note">
+          信息可信度：政府官网文件（高度可信）> 官方媒体（中度可信）> 行业媒体（参考可信）
+        </div>
+      </header>
+
+      <section class="section">
+        <div class="section-label">一、核心数据</div>
+        <h2>北京OPC社区核心资源</h2>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="highlight-num">3亿</div>
+            <div class="label">亦庄算力+数据+模型券 / 年</div>
+          </div>
+          <div class="stat-item">
+            <div class="highlight-num">200万</div>
+            <div class="label">海淀模型券补贴上限 / 年</div>
+          </div>
+          <div class="stat-item">
+            <div class="highlight-num">100+</div>
+            <div class="label">亦庄优质订单导入 / 年</div>
+          </div>
+          <div class="stat-item">
+            <div class="highlight-num">3000㎡</div>
+            <div class="label">亦庄首期创新空间</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-label">二、北京六区OPC社区</div>
+        <h2>各区核心政策对比</h2>
+        <table class="policy-table">
+          <thead>
+            <tr>
+              <th>区域</th>
+              <th>核心补贴</th>
+              <th>订单机制</th>
+              <th>结算周期</th>
+              <th>适配赛道</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>亦庄模数OPC</strong></td>
+              <td>算力券3亿/年</td>
+              <td>100+/年</td>
+              <td>3工作日</td>
+              <td>AI技术/产业融合</td>
+            </tr>
+            <tr>
+              <td><strong>海淀AI北纬</strong></td>
+              <td>模型券200万</td>
+              <td>接单吧平台</td>
+              <td>3工作日</td>
+              <td>AI原生/工具开发</td>
+            </tr>
+            <tr>
+              <td><strong>朝阳极客部落</strong></td>
+              <td>青创15条</td>
+              <td>链主企业场景</td>
+              <td>待确认</td>
+              <td>数字内容/出海</td>
+            </tr>
+            <tr>
+              <td><strong>石景山头号星系</strong></td>
+              <td>科幻订单50+</td>
+              <td>科幻场景</td>
+              <td>待确认</td>
+              <td>科幻/元宇宙/VR</td>
+            </tr>
+            <tr>
+              <td><strong>丰台青创村</strong></td>
+              <td>灵活工位200</td>
+              <td>平台撮合</td>
+              <td>待确认</td>
+              <td>科技/文创综合</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="section">
+        <div class="section-label">三、亦庄模数OPC社区</div>
+        <h2>全球最大AI超级个体聚集地</h2>
+        <div class="card-grid">
+          <div class="card">
+            <h3>工具赋能 Altools</h3>
+            <p>智能体基础设施，数据监管沙盒，200万条脱敏数据</p>
+          </div>
+          <div class="card">
+            <h3>加速成长 Amplification</h3>
+            <p>开源平台最高100万，高潜项目最高200万专项资金</p>
+          </div>
+          <div class="card">
+            <h3>协同网络 Alliance</h3>
+            <p>线上学习共同体，线下订单互派协作</p>
+          </div>
+          <div class="card">
+            <h3>服务护航 Assistance</h3>
+            <p>"亦城领军人才"最高50万/3年，首年2.5折住房</p>
+          </div>
+        </div>
+        <div class="source-note" style="margin-top: var(--space-lg);">
+          核心获客模式：将大订单拆解为原子化模块，由社区为OPC提供信用背书和交付兜底
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-label">四、海淀AI北纬社区</div>
+        <h2>海淀OPC八条（2026年4月10日发布）</h2>
+        <table class="policy-table">
+          <thead>
+            <tr>
+              <th style="width: 40px;">序号</th>
+              <th>政策内容</th>
+              <th style="width: 200px;">支持力度</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="color: var(--accent);">①</td><td>创业启动资金</td><td style="color: var(--text-primary);">10万元</td></tr>
+            <tr><td style="color: var(--accent);">②</td><td>创赛转化支持</td><td style="color: var(--text-primary);">最高50万元</td></tr>
+            <tr><td style="color: var(--accent);">③</td><td>模型券补贴</td><td style="color: var(--text-primary);">50%折扣，上限200万/年</td></tr>
+            <tr><td style="color: var(--accent);">④</td><td>安居保障</td><td style="color: var(--text-primary);">5折人才房或2000元/月</td></tr>
+            <tr><td style="color: var(--accent);">⑤</td><td>金融赋能</td><td style="color: var(--text-primary);">贷款1000万，约1.5%利息补助</td></tr>
+            <tr><td style="color: var(--accent);">⑥</td><td>研发创新激励</td><td style="color: var(--text-primary);">每年最高10万元</td></tr>
+            <tr><td style="color: var(--accent);">⑦</td><td>商业化突破</td><td style="color: var(--text-primary);">最高10万元</td></tr>
+            <tr><td style="color: var(--accent);">⑧</td><td>社区建设支持</td><td style="color: var(--text-primary);">200万元/年</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="section">
+        <div class="section-label">五、朝阳青创政策</div>
+        <h2>朝阳极客部落 · AI应用生态园</h2>
+        <div class="card-grid">
+          <div class="card">
+            <h3>年龄门槛</h3>
+            <p>35周岁以下，首次创业3年内（可放宽至40岁）</p>
+          </div>
+          <div class="card">
+            <h3>办公支持</h3>
+            <p>最长2年免费办公空间，含注册地址+5个工位</p>
+          </div>
+          <div class="card">
+            <h3>安居补贴</h3>
+            <p>每月2000元，最长2年</p>
+          </div>
+          <div class="card">
+            <h3>品牌出海</h3>
+            <p>出海综合服务平台支持</p>
+          </div>
+        </div>
+        <div class="source-note" style="margin-top: var(--space-lg);">
+          链主企业合作：360集团、猿力未来、飞猪等开放真实业务场景与需求
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-label">六、关键事件时间线</div>
+        <h2>2026年重要节点</h2>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-date">2026年1月31日</div>
+            <p>人工智能产业创新发布会暨模数OPC社区生态伙伴大会举办</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">2026年3月29日</div>
+            <p>石景山头号星系OPC社区揭牌（全国首个"AI+科幻"OPC社区）</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">2026年4月8日</div>
+            <p>AI FUTURE北京亦庄AI未来大会，模数OPC社区正式启航</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">2026年4月10日</div>
+            <p>2026中关村人工智能OPC生态大会，发布"海淀OPC八条"</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">2026年4月18日</div>
+            <p>紫东太初（北京）OPC社区启动，聚焦AI4S与大模型应用</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-label">七、分赛道推荐</div>
+        <h2>最优选择建议</h2>
+        <div class="card-grid">
+          <div class="card">
+            <h3>AI Agent / 大模型应用</h3>
+            <p><strong style="color: var(--accent);">→ 亦庄模数OPC</strong><br>订单兜底 + 算力补贴</p>
+          </div>
+          <div class="card">
+            <h3>AI 工具开发 / SaaS</h3>
+            <p><strong style="color: var(--accent);">→ 海淀AI北纬</strong><br>模型券200万 + 接单吧平台</p>
+          </div>
+          <div class="card">
+            <h3>数字内容 / 创意设计</h3>
+            <p><strong style="color: var(--accent);">→ 朝阳极客部落</strong><br>青创15条 + 链主企业</p>
+          </div>
+          <div class="card">
+            <h3>科幻 / 元宇宙 / VR</h3>
+            <p><strong style="color: var(--accent);">→ 石景山头号星系</strong><br>科幻产业集聚区</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-label">八、风险提示</div>
+        <h2>需要注意的问题</h2>
+        <div class="two-col" style="margin-top: var(--space-lg);">
+          <div>
+            <div class="risk-card">
+              <div class="risk-dot" style="background: #D4A853;"></div>
+              <div>
+                <h4 style="color: #D4A853;">政策稳定性风险</h4>
+                <p>各区政策与产业规划绑定，存在调整可能</p>
+              </div>
+            </div>
+            <div class="risk-card">
+              <div class="risk-dot" style="background: #D4A853;"></div>
+              <div>
+                <h4 style="color: #D4A853;">资源分配不均风险</h4>
+                <p>优质订单向头部OPC倾斜</p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="risk-card">
+              <div class="risk-dot" style="background: var(--accent);"></div>
+              <div>
+                <h4 style="color: var(--accent);">过度依赖社区风险</h4>
+                <p>建议同步构建自主获客渠道</p>
+              </div>
+            </div>
+            <div class="risk-card">
+              <div class="risk-dot" style="background: #5BA87A;"></div>
+              <div>
+                <h4 style="color: #5BA87A;">跨区资源壁垒</h4>
+                <p>海淀接单吧已全市开放，可跨区使用</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-label">九、行动清单</div>
+        <h2>下一步该做什么</h2>
+        <ul class="checklist">
+          <li>确定你的赛道方向（AI技术/工具开发/数字内容/科幻/综合）</li>
+          <li>选择对应区域社区（亦庄/海淀/朝阳/石景山/丰台）</li>
+          <li>联系社区运营方获取最新入驻条件</li>
+          <li>准备营业执照/个人身份证等基础材料</li>
+          <li>实地考察社区环境（模数OPC社区已开放参观）</li>
+          <li>关注各区政府官网获取政策更新</li>
+        </ul>
+      </section>
+
+    </div>
+  </main>
+
   <footer class="footer-nav">
-    <a href="/nodes/56-energy-management/index.html" class="nav-link"><span class="nav-arrow">←</span>节点56：精力与能量管理</a>
+    <a href="/nodes/56-energy-management/index.html" class="nav-link">
+      <span class="nav-arrow">←</span>节点56：精力与能量管理
+    </a>
     <span></span>
   </footer>
 </body>

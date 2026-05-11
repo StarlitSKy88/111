@@ -744,7 +744,145 @@ body {
           <div class="summary-desc">从零重建全部服务</div>
         </div>
       </div>
+    
+    <!-- 🔵 2026年时效性内容更新 -->
+    <section id="s2026" class="section fade-section">
+      <div style="margin-bottom:var(--space-lg);">
+        <span style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);">2026 UPDATE</span>
+      </div>
+      <div class="prose" style="max-width:680px;">
+        
+<blockquote style="border-left:2px solid var(--accent);padding:var(--space-sm) var(--space-md);margin:var(--space-md) 0;color:var(--text-secondary);font-style:italic;background:var(--surface);border-radius:0 6px 6px 0;font-size:0.95rem;">**面向OPC**：你的产品在服务器上跑着，里面有用户的邮箱、密码、支付记录。一个漏洞=所有用户数据泄露=你的生意结束。本节点告诉你一个人怎么守住服务器。</blockquote>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">一、2026年OPC的最低安全基线</h3>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">五条不做就会死的安全规则</h4>
+
+<table style="width:100%;border-collapse:collapse;margin:var(--space-md) 0;font-size:0.88rem;">
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">规则</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">不做会怎样</td></tr>
+<tr><th style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**SSH禁用密码登录，只用密钥**</th><th style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">被暴力破解→服务器变矿机</th></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**所有对外服务只开必要端口**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">多余的端口=多余的攻击面</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**数据库不暴露在公网**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">被拖库→用户数据泄露</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**HTTPS强制启用**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">中间人攻击→用户密码被窃</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**定期更新系统和依赖**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">已知漏洞被利用→入侵</td></tr>
+</table>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">二、30分钟完成基础加固</h3>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">第1步：SSH加固（5分钟）</h4>
+
+<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code># 1. 生成本地密钥对
+ssh-keygen -t ed25519 -C "你的邮箱"
+ 
+# 2. 上传公钥到服务器
+ssh-copy-id root@你的服务器IP
+ 
+# 3. 禁止密码登录
+sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+sudo sed -i 's/#PermitRootLogin yes/PermitRootLogin prohibit-password/' /etc/ssh/sshd_config
+sudo systemctl restart sshd
+</code></pre>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">第2步：防火墙配置（5分钟）</h4>
+
+<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code>sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow 22    # SSH
+sudo ufw allow 80    # HTTP
+sudo ufw allow 443   # HTTPS
+sudo ufw enable
+</code></pre>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">第3步：自动安全更新（2分钟）</h4>
+
+<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code>sudo apt install -y unattended-upgrades
+sudo dpkg-reconfigure unattended-upgrades  # 选"Yes"
+</code></pre>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">第4步：数据库安全（10分钟）</h4>
+
+<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code>-- Supabase 的 Row Level Security 必须开启
+ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+ 
+-- 每个表定义谁能读、谁能写
+CREATE POLICY "用户读自己的数据" ON users
+  FOR SELECT USING (auth.uid() = id);
+ 
+-- 敏感字段不要返回给前端
+-- 查询时永远不要 select * 如果包含密码/密钥字段
+</code></pre>
+
+<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">第5步：环境变量管理（3分钟）</h4>
+
+<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code># ❌ 绝不要在代码里写：
+const API_KEY = "sk-xxxxx";
+ 
+# ✅ 用环境变量：
+const API_KEY = process.env.API_KEY;
+ 
+# .env 文件必须加入 .gitignore
+echo ".env" &gt;&gt; .gitignore
+</code></pre>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">三、2026年免费安全工具</h3>
+
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">工具</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">做什么</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">怎么用</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**Lynis**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">安全审计（扫描服务器找漏洞）</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">`sudo apt install lynis && sudo lynis audit system`</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**Cloudflare**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">DDoS防护+CDN+WAF</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">免费计划，域名DNS切到Cloudflare</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**SSL Labs**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">HTTPS配置评分</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">[ssllabs.com](https://www.ssllabs.com/ssltest/) 输入域名</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**Have I Been Pwned**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">检查域名是否泄露</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">[haveibeenpwned.com](https://haveibeenpwned.com/domain/你的域名)</td></tr>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">四、被入侵的三个信号（发现后立刻处理）</h3>
+
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">信号</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">可能发生了什么</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">立刻做什么</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">CPU突然100%</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">被装了挖矿程序</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">`top` 查异常进程 → `kill` → 改密码 → 查SSH登录日志</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">数据库多了不认识的表</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">数据库被注入/拖库</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">立刻下线 → 从备份恢复 → 查API日志找注入点</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">用户反馈收到垃圾邮件</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">邮件服务器被利用</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">改邮箱密码 → 检查转发规则</td></tr>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">五、OPC不需要做的安全措施（省时间）</h3>
+
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">你以为需要</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">实际上不需要</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">省下时间</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">买商业防火墙</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">Cloudflare免费WAF够用</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">省¥5000/年</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">请安全公司做渗透测试</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">日活<1000不需要</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">省¥20000/次</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">做SOC2/ISO27001认证</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">没有企业客户要求就别做</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">省半年</td></tr>
+<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">自建堡垒机</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">SSH密钥+Fail2ban够用</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">省1周</td></tr>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">六、检查清单</h3>
+
+<ul style="list-style:none;padding:0;margin:var(--space-sm) 0;">
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] SSH只允许密钥登录</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 防火墙仅开放22/80/443</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 系统自动安全更新已配置</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] Supabase RLS已全部开启</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] .env在.gitignore中</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] SSL Labs评分≥A</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 数据库有定期备份</li>
+
+        <li class="toc-item"><a href="#s2026" class="toc-link">2026年更新</a></li></ul>
+
+
+<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">节点资源链接</h3>
+
+<ul style="list-style:none;padding:0;margin:var(--space-sm) 0;">
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点51：数据备份</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点25：网站部署与SSL</li>
+<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点50：广告法合规</li>
+</ul>
+
+
+      </div>
+      <p style="font-size:12px;color:var(--text-tertiary);margin-top:var(--space-xl);letter-spacing:0.05em;">
+        以上内容基于2026年5月最新实践编写，工具版本和价格可能更新，请以官方文档为准。
+      </p>
     </section>
+
+</section>
 
     <footer class="footer-nav">
       <a href="/nodes/51-data-backup/index.html" class="nav-link">
