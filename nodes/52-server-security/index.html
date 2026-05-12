@@ -39,13 +39,7 @@ body {
   letter-spacing: 0.04em;
   -webkit-font-smoothing: antialiased;
 }
-.page {
-  position: relative;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 clamp(24px, 8vw, 120px) 6rem;
-  min-height: 100vh;
-}
+
 
 /* Layout with Sidebar TOC */
 .layout {
@@ -126,15 +120,7 @@ body {
   border-left-color: var(--accent);
   font-weight: 400;
 }
-.page::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: clamp(24px, 8vw, 120px);
-  right: clamp(24px, 8vw, 120px);
-  height: 1px;
-  background: var(--line);
-}
+
 .section-number {
   position: absolute;
   top: var(--space-2xl);
@@ -535,7 +521,7 @@ body {
       </ul>
     </aside>
 
-    <main class="page">
+    <main class="layout">
     <header class="hero">
       <div class="hero-content">
         <div class="hero-label">节点 52 · 1-10</div>

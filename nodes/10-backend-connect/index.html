@@ -33,13 +33,7 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; font-weight: 400; line-height: 1.9; letter-spacing: 0.04em; -webkit-font-smoothing: antialiased; }
 
-.page {
-  position: relative;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 clamp(24px, 8vw, 120px) 6rem;
-  min-height: 100vh;
-}
+
 
 /* Layout with Sidebar TOC */
 .layout {
@@ -120,7 +114,6 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
   border-left-color: var(--accent);
   font-weight: 400;
 }
-.page::before { content: ''; position: absolute; top: 0; left: clamp(24px, 8vw, 120px); right: clamp(24px, 8vw, 120px); height: 1px; background: var(--line); }
 
 .section-number { position: absolute; top: var(--space-2xl); right: clamp(24px, 8vw, 120px); font-size: clamp(100px, 22vw, 280px); font-weight: 100; color: var(--text-primary); opacity: 0.03; line-height: 1; letter-spacing: -0.05em; font-family: 'Noto Serif JP', serif; pointer-events: none; user-select: none; }
 
@@ -283,7 +276,7 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
       </ul>
     </aside>
 
-    <main class="page">
+    <main class="layout">
     <header class="hero fade-section">
       <div class="hero-content">
         <div class="hero-label">节点 10 · 环境搭建</div>
@@ -636,7 +629,7 @@ Supabase信息：
       saveMessage(text)
     }
   })
-&lt;/script&gt;</div>
+</script></div>
       </div>
 
       <table class="setup-table" style="margin-top: var(--space-lg);">
@@ -721,7 +714,7 @@ Supabase信息：
         你不需要会SQL，不需要搭服务器，不需要配数据库。你只需要把建表操作在网页上点几下，然后把 "Supabase Project URL + anon key" 告诉AI——剩下的代码AI帮你写。<br>
         （本文写于2026年5月。）
       </p>
-      </div>
+    </section>
 
     <!-- 🔵 2026年时效性内容更新 -->
     <section id="s2026" class="section fade-section">

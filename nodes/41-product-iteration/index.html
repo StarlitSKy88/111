@@ -42,23 +42,9 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-.page {
-  position: relative;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 clamp(24px, 8vw, 120px) 6rem;
-  min-height: 100vh;
-}
 
-.page::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: clamp(24px, 8vw, 120px);
-  right: clamp(24px, 8vw, 120px);
-  height: 1px;
-  background: var(--line);
-}
+
+
 
 .section-number {
   position: absolute;
@@ -496,7 +482,7 @@ body {
   </nav>
   <div class="section-number">36</div>
 
-  <div class="page">
+  <div class="layout">
     <header class="hero">
       <div class="hero-content">
         <div class="hero-label">节点 41 · 1-10</div>

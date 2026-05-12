@@ -42,16 +42,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-.page {
-  position: relative;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 5rem clamp(1.25rem, 5vw, 3rem) 6rem;
-  display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
-  gap: clamp(2rem, 4vw, 3rem);
-}
-.page::before { content: ''; position: absolute; top: 0; left: clamp(1.25rem, 5vw, 3rem); right: clamp(1.25rem, 5vw, 3rem); height: 1px; background: var(--line); }
+
 .sidebar-toc { position: sticky; top: 5rem; height: fit-content; max-height: calc(100vh - 6rem); overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
 .sidebar-toc::-webkit-scrollbar { width: 4px; }
 .sidebar-toc::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
@@ -483,7 +474,7 @@ body {
   </nav>
   <div class="section-number">27</div>
 
-  <div class="page">
+  <div class="layout">
     <nav class="sidebar-toc">
       <div class="toc-title">目录</div>
       <ul class="toc-list">
