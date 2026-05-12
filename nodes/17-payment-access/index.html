@@ -88,6 +88,24 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
 
 /* 费率对比网格 */
 .rate-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: var(--space-md); }
+/* Layout */
+.layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3rem);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
+}
+
+/* Main content wrapper */
+.main-content {
+  min-width: 0;
+}
+
+/* Responsive layout */
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+
 @media (max-width: 900px) { .rate-grid { grid-template-columns: 1fr; } }
 .rate-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-lg); text-align: center; }
 .rate-card.highlight { border-color: var(--accent); }

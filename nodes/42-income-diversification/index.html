@@ -85,6 +85,24 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
 .section-label::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
 
 .dimensions-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: var(--space-md); margin-bottom: var(--space-2xl); }
+
+/* Layout */
+.layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3rem);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
+}
+
+/* Main content wrapper */
+.main-content {
+  min-width: 0;
+}
+
+/* Responsive layout */
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
 @media (max-width: 900px) { .dimensions-grid { grid-template-columns: 1fr; } }
 
 .dim-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-md); position: relative; overflow: hidden; }
