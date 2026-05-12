@@ -1,0 +1,363 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "← 返回首页" [ref=e3] [cursor=pointer]:
+      - /url: /index.html
+    - generic [ref=e4]: 节点 07 / 57
+  - generic: "07"
+  - generic [ref=e5]:
+    - complementary [ref=e6]:
+      - generic [ref=e7]: 目录
+      - list [ref=e8]:
+        - listitem [ref=e9]:
+          - link "OPC最低环境：只需要3个核心工具" [ref=e10] [cursor=pointer]:
+            - /url: "#s1"
+        - listitem [ref=e11]:
+          - link "不需要装的东西（别浪费时间）" [ref=e12] [cursor=pointer]:
+            - /url: "#s2"
+        - listitem [ref=e13]:
+          - link "Node.js 安装" [ref=e14] [cursor=pointer]:
+            - /url: "#s3"
+        - listitem [ref=e15]:
+          - link "VS Code 安装与配置" [ref=e16] [cursor=pointer]:
+            - /url: "#s4"
+        - listitem [ref=e17]:
+          - link "Git 安装与首次配置" [ref=e18] [cursor=pointer]:
+            - /url: "#s5"
+        - listitem [ref=e19]:
+          - link "环境可用性检验" [ref=e20] [cursor=pointer]:
+            - /url: "#s6"
+        - listitem [ref=e21]:
+          - link "开发目录结构建议" [ref=e22] [cursor=pointer]:
+            - /url: "#s7"
+        - listitem [ref=e23]:
+          - link "总纲" [ref=e24] [cursor=pointer]:
+            - /url: "#s8"
+    - main [ref=e25]:
+      - generic [ref=e27]:
+        - generic [ref=e28]: 节点 07 · 环境搭建
+        - heading "开发环境安装" [level=1] [ref=e29]
+        - paragraph [ref=e30]: 你不需要装Docker、不需要配Kubernetes、不需要学Linux命令行。本章只装3个东西，30分钟内你的电脑就能开始写代码。Mac和Windows都有，全程截屏级步骤。
+      - generic [ref=e31]:
+        - generic [ref=e32]: OPC最低环境：只需要3个核心工具
+        - generic [ref=e33]:
+          - generic [ref=e34]: 2026年实战有效认知
+          - generic [ref=e35]: 2026年做Web开发的工具链已经极度简化。过去需要配Java环境、配数据库、配Tomcat、配Maven——现在你只需要一个JavaScript运行时、一个编辑器、一个版本管理工具。
+        - table [ref=e36]:
+          - rowgroup [ref=e37]:
+            - row "工具 干什么 替代了过去哪些东西" [ref=e38]:
+              - columnheader "工具" [ref=e39]
+              - columnheader "干什么" [ref=e40]
+              - columnheader "替代了过去哪些东西" [ref=e41]
+          - rowgroup [ref=e42]:
+            - row "Node.js 运行JavaScript代码、安装依赖包 Java JDK + Tomcat + npm" [ref=e43]:
+              - cell "Node.js" [ref=e44]
+              - cell "运行JavaScript代码、安装依赖包" [ref=e45]
+              - cell "Java JDK + Tomcat + npm" [ref=e46]
+            - row "VS Code 写代码、装AI插件 Eclipse + Sublime + 各种IDE" [ref=e47]:
+              - cell "VS Code" [ref=e48]
+              - cell "写代码、装AI插件" [ref=e49]
+              - cell "Eclipse + Sublime + 各种IDE" [ref=e50]
+            - row "Git 版本管理、推送到GitHub/Gitee SVN、手动备份" [ref=e51]:
+              - cell "Git" [ref=e52]
+              - cell "版本管理、推送到GitHub/Gitee" [ref=e53]
+              - cell "SVN、手动备份" [ref=e54]
+        - paragraph [ref=e55]: 就这三个。别的都是有了需要再装。
+      - generic [ref=e56]:
+        - generic [ref=e57]: 不需要装的东西（别浪费时间）
+        - table [ref=e58]:
+          - rowgroup [ref=e59]:
+            - row "不装 原因" [ref=e60]:
+              - columnheader "不装" [ref=e61]
+              - columnheader "原因" [ref=e62]
+          - rowgroup [ref=e63]:
+            - row "Docker 你不是运维。Supabase代替了本地数据库" [ref=e64]:
+              - cell "Docker" [ref=e65]
+              - cell "你不是运维。Supabase代替了本地数据库" [ref=e66]
+            - row "MySQL/PostgreSQL本地 Supabase在云端，不需要本地装" [ref=e67]:
+              - cell "MySQL/PostgreSQL本地" [ref=e68]
+              - cell "Supabase在云端，不需要本地装" [ref=e69]
+            - row "Nginx/Apache Vercel帮你部署，不需要配服务器" [ref=e70]:
+              - cell "Nginx/Apache" [ref=e71]
+              - cell "Vercel帮你部署，不需要配服务器" [ref=e72]
+            - row "Python（除非你项目用） Node.js生态足够Web开发" [ref=e73]:
+              - cell "Python（除非你项目用）" [ref=e74]
+              - cell "Node.js生态足够Web开发" [ref=e75]
+            - row "Webpack/Vite手动配 AI工具直接帮你配好" [ref=e76]:
+              - cell "Webpack/Vite手动配" [ref=e77]
+              - cell "AI工具直接帮你配好" [ref=e78]
+      - generic [ref=e79]:
+        - generic [ref=e80]: Node.js 安装（10分钟）
+        - generic [ref=e81]:
+          - generic [ref=e82]:
+            - generic [ref=e83]: Mac 安装
+            - generic [ref=e84]: 方法一：官网安装包（推荐零基础）
+            - generic [ref=e85]:
+              - text: 1. 打开 nodejs.org
+              - text: 2. 点击左侧 LTS 版本（2026年5月为 v22.x）
+              - text: 3. 下载 .pkg 安装包
+              - text: 4. 双击安装，一路点"继续"，不需要改任何设置
+              - text: 5. 安装完成
+          - generic [ref=e86]:
+            - generic [ref=e87]: Windows 安装
+            - generic [ref=e88]: 下载安装包
+            - generic [ref=e89]:
+              - text: 1. 打开 nodejs.org
+              - text: 2. 下载 Windows Installer (.msi) 64-bit
+              - text: 3. 双击运行，勾选"Automatically install the necessary tools"
+              - text: 4. 一路点 Next，安装完成
+        - generic [ref=e90]:
+          - generic [ref=e91]:
+            - generic [ref=e92]: 验证
+            - heading "安装完成后验证" [level=3] [ref=e93]
+          - generic [ref=e94]:
+            - paragraph [ref=e95]:
+              - strong [ref=e96]: Mac
+              - text: ：打开"终端"（在启动台搜索 Terminal），输入：
+            - generic [ref=e97]:
+              - generic [ref=e98]: 终端命令
+              - generic [ref=e99]: "node -v # 应显示 v22.x.x npm -v # 应显示 10.x.x"
+            - paragraph [ref=e100]:
+              - strong [ref=e101]: Windows
+              - text: ：按 Win + R，输入 cmd，回车。在命令行中输入：
+            - generic [ref=e102]:
+              - generic [ref=e103]: 命令提示符
+              - generic [ref=e104]: "node -v npm -v # 两个命令都应该显示版本号"
+        - generic [ref=e105]:
+          - generic [ref=e106]:
+            - generic [ref=e107]: 必须
+            - heading "设置国内镜像源" [level=3] [ref=e108]
+          - generic [ref=e109]:
+            - paragraph [ref=e110]: npm默认从海外服务器下载依赖包，国内速度极慢。安装完Node.js后立刻执行：
+            - generic [ref=e111]:
+              - generic [ref=e112]: 设置淘宝镜像
+              - generic [ref=e113]: npm config set registry https://registry.npmmirror.com
+            - paragraph [ref=e114]: 验证是否设置成功：
+            - generic [ref=e115]:
+              - generic [ref=e116]: 验证镜像
+              - generic [ref=e117]: "npm config get registry # 应显示 https://registry.npmmirror.com"
+            - paragraph [ref=e118]:
+              - text: 如果以后想恢复默认源：
+              - code [ref=e119]: npm config set registry https://registry.npmjs.org
+        - paragraph [ref=e121]:
+          - text: 什么是npm？npm = Node Package Manager。它是"代码的App Store"——别人写好的功能模块打包好放在上面，你执行
+          - code [ref=e122]: npm install 包名
+          - text: 就能下载到你的项目里直接用。
+      - generic [ref=e123]:
+        - generic [ref=e124]: VS Code 安装与配置（10分钟）
+        - generic [ref=e125]:
+          - generic [ref=e126]: 为什么是VS Code
+          - generic [ref=e127]: 免费 + 中文界面 · 微软维护，更新稳定 · AI插件生态最丰富（GitHub Copilot、Trae插件都直接支持） · 轻量——打开只需2秒
+        - generic [ref=e128]:
+          - generic [ref=e129]:
+            - generic [ref=e130]: "1"
+            - generic [ref=e131]:
+              - generic [ref=e132]: 安装
+              - generic [ref=e133]:
+                - text: 1. 打开 code.visualstudio.com
+                - text: 2. 下载对应系统版本（Mac / Windows）
+                - text: 3. Mac：解压后拖到"应用程序"文件夹
+                - text: 4. Windows：双击安装，勾选"添加到PATH"
+          - generic [ref=e134]:
+            - generic [ref=e135]: "2"
+            - generic [ref=e136]:
+              - generic [ref=e137]: 必装插件（3个）
+              - generic [ref=e138]: 打开VS Code → 左侧栏点击"扩展"图标（或按 Ctrl/⌘ + Shift + X） → 搜索以下插件逐个安装：
+        - table [ref=e139]:
+          - rowgroup [ref=e140]:
+            - row "插件 干什么 必装吗" [ref=e141]:
+              - columnheader "插件" [ref=e142]
+              - columnheader "干什么" [ref=e143]
+              - columnheader "必装吗" [ref=e144]
+          - rowgroup [ref=e145]:
+            - row "Chinese (Simplified) VS Code界面汉化 英文不好就装" [ref=e146]:
+              - cell "Chinese (Simplified)" [ref=e147]
+              - cell "VS Code界面汉化" [ref=e148]
+              - cell "英文不好就装" [ref=e149]
+            - row "Prettier 代码自动格式化（保存时自动整理代码） 必装" [ref=e150]:
+              - cell "Prettier" [ref=e151]
+              - cell "代码自动格式化（保存时自动整理代码）" [ref=e152]
+              - cell "必装" [ref=e153]
+            - row "GitHub Copilot AI代码补全 看你的工具选型（见节点06）" [ref=e154]:
+              - cell "GitHub Copilot" [ref=e155]
+              - cell "AI代码补全" [ref=e156]
+              - cell "看你的工具选型（见节点06）" [ref=e157]
+        - generic [ref=e158]:
+          - generic [ref=e159]:
+            - generic [ref=e160]: "3"
+            - heading "初始化设置（3项）" [level=3] [ref=e161]
+          - generic [ref=e162]:
+            - paragraph [ref=e163]: 打开VS Code → 按 Ctrl/⌘ + , → 搜索以下设置：
+            - table [ref=e164]:
+              - rowgroup [ref=e165]:
+                - row "设置项 改为 原因" [ref=e166]:
+                  - columnheader "设置项" [ref=e167]
+                  - columnheader "改为" [ref=e168]
+                  - columnheader "原因" [ref=e169]
+              - rowgroup [ref=e170]:
+                - row "Format On Save 勾选 每次保存代码自动格式化" [ref=e171]:
+                  - cell "Format On Save" [ref=e172]
+                  - cell "勾选" [ref=e173]
+                  - cell "每次保存代码自动格式化" [ref=e174]
+                - row "Auto Save afterDelay 自动保存，避免忘记保存就关了" [ref=e175]:
+                  - cell "Auto Save" [ref=e176]
+                  - cell "afterDelay" [ref=e177]
+                  - cell "自动保存，避免忘记保存就关了" [ref=e178]
+                - row "Tab Size 2 Web开发标准缩进" [ref=e179]:
+                  - cell "Tab Size" [ref=e180]
+                  - cell "2" [ref=e181]
+                  - cell "Web开发标准缩进" [ref=e182]
+        - generic [ref=e183]:
+          - generic [ref=e184]:
+            - generic [ref=e185]: "4"
+            - heading "首次打开项目" [level=3] [ref=e186]
+          - paragraph [ref=e188]:
+            - text: 1. VS Code菜单栏 → "文件" → "打开文件夹"
+            - text: 2. 选择一个空文件夹作为你的第一个项目
+            - text: 3. 按 Ctrl/⌘ + ~ 打开内置终端
+            - text: 4. 以后所有命令行操作都可以在VS Code自带的终端里做，不需要切窗口
+      - generic [ref=e189]:
+        - generic [ref=e190]: Git 安装与首次配置（5分钟）
+        - generic [ref=e191]:
+          - generic [ref=e192]:
+            - generic [ref=e193]: Mac 安装
+            - generic [ref=e194]: 通常自带Git
+            - generic [ref=e195]:
+              - text: 打开终端输入：
+              - code [ref=e196]: git --version
+              - text: 如果没装，系统会提示安装 Xcode Command Line Tools，点"安装"即可。
+          - generic [ref=e197]:
+            - generic [ref=e198]: Windows 安装
+            - generic [ref=e199]: 下载安装
+            - generic [ref=e200]:
+              - text: 1. 打开 git-scm.com
+              - text: 2. 下载 Windows 版本
+              - text: 3. 安装过程中，除了以下两项，其余全部默认：
+              - text: "- \"Default editor\" → 选 \"Use Visual Studio Code as Git's default editor\""
+              - text: "- \"Adjusting the name of the initial branch\" → 选 \"Override\" → 填 main"
+        - generic [ref=e201]:
+          - generic [ref=e202]:
+            - generic [ref=e203]: 必须
+            - heading "首次配置" [level=3] [ref=e204]
+          - generic [ref=e205]:
+            - paragraph [ref=e206]: 在终端中执行（把名字和邮箱换成你自己的）：
+            - generic [ref=e207]:
+              - generic [ref=e208]: Git 配置
+              - generic [ref=e209]: git config --global user.name "你的名字" git config --global user.email "你的邮箱@example.com"
+            - paragraph [ref=e210]: 验证：
+            - generic [ref=e211]:
+              - generic [ref=e212]: 验证配置
+              - generic [ref=e213]: "git config --global user.name git config --global user.email # 这两个信息会出现在你每一次代码提交记录上"
+            - paragraph [ref=e214]: 使用真实姓名和邮箱——如果你以后接外包、做开源项目，这是你的"署名"。
+        - generic [ref=e215]:
+          - generic [ref=e216]: OPC的Git就够了
+          - generic [ref=e217]:
+            - text: 你只需要会3个Git操作（后面节点09会详细讲）：
+            - code [ref=e218]: git add .
+            - text: — 保存所有改动
+            - code [ref=e219]: git commit -m "说明"
+            - text: — 创建一条修改记录
+            - code [ref=e220]: git push
+            - text: — 上传到GitHub/Gitee
+      - generic [ref=e221]:
+        - generic [ref=e222]: 环境可用性检验（2分钟）
+        - paragraph [ref=e223]: 装完3个工具后，跑一遍这个检验清单。6项全部通过，环境就绪，可以开始写代码了。
+        - table [ref=e224]:
+          - rowgroup [ref=e225]:
+            - row "# 检验项 验证命令" [ref=e226]:
+              - columnheader "#" [ref=e227]
+              - columnheader "检验项" [ref=e228]
+              - columnheader "验证命令" [ref=e229]
+          - rowgroup [ref=e230]:
+            - row "1 Node.js 装好了吗？ node -v（应显示版本号，如 v22.x.x）" [ref=e231]:
+              - cell "1" [ref=e232]
+              - cell "Node.js 装好了吗？" [ref=e233]
+              - cell "node -v（应显示版本号，如 v22.x.x）" [ref=e234]
+            - row "2 npm 装好了吗？ npm -v（应显示版本号）" [ref=e235]:
+              - cell "2" [ref=e236]
+              - cell "npm 装好了吗？" [ref=e237]
+              - cell "npm -v（应显示版本号）" [ref=e238]
+            - row "3 npm镜像源改了吗？ npm config get registry（应显示 npmmirror.com）" [ref=e239]:
+              - cell "3" [ref=e240]
+              - cell "npm镜像源改了吗？" [ref=e241]
+              - cell "npm config get registry（应显示 npmmirror.com）" [ref=e242]
+            - row "4 Git 装好了吗？ git --version（应显示版本号）" [ref=e243]:
+              - cell "4" [ref=e244]
+              - cell "Git 装好了吗？" [ref=e245]
+              - cell "git --version（应显示版本号）" [ref=e246]
+            - row "5 Git配置了吗？ git config --global user.name（应显示你的名字）" [ref=e247]:
+              - cell "5" [ref=e248]
+              - cell "Git配置了吗？" [ref=e249]
+              - cell "git config --global user.name（应显示你的名字）" [ref=e250]
+            - row "6 VS Code 能打开吗？ code --version" [ref=e251]:
+              - cell "6" [ref=e252]
+              - cell "VS Code 能打开吗？" [ref=e253]
+              - cell "code --version" [ref=e254]
+        - generic [ref=e255]:
+          - generic [ref=e256]: 常见问题排查
+          - table [ref=e257]:
+            - rowgroup [ref=e258]:
+              - row "问题 解决" [ref=e259]:
+                - columnheader "问题" [ref=e260]
+                - columnheader "解决" [ref=e261]
+            - rowgroup [ref=e262]:
+              - row "node 命令不存在 重启终端/CMD，或重新安装Node.js（安装时勾选\"Add to PATH\"）" [ref=e263]:
+                - cell "node 命令不存在" [ref=e264]
+                - cell "重启终端/CMD，或重新安装Node.js（安装时勾选\"Add to PATH\"）" [ref=e265]
+              - row "npm安装包时报错 ETIMEDOUT 镜像源没改，执行 npm config set registry https://registry.npmmirror.com" [ref=e266]:
+                - cell "npm安装包时报错 ETIMEDOUT" [ref=e267]
+                - cell "镜像源没改，执行 npm config set registry https://registry.npmmirror.com" [ref=e268]
+              - row "Git显示乱码 Windows：git config --global core.quotepath false" [ref=e269]:
+                - cell "Git显示乱码" [ref=e270]
+                - cell "Windows：git config --global core.quotepath false" [ref=e271]
+              - row "VS Code打开后是英文 装了Chinese插件后，按 Ctrl/⌘ + Shift + P → 输入 \"display language\" → 选中文 → 重启" [ref=e272]:
+                - cell "VS Code打开后是英文" [ref=e273]
+                - cell "装了Chinese插件后，按 Ctrl/⌘ + Shift + P → 输入 \"display language\" → 选中文 → 重启" [ref=e274]
+      - generic [ref=e275]:
+        - generic [ref=e276]: 开发目录结构建议
+        - generic [ref=e277]:
+          - generic [ref=e278]: ~/projects/ ← 所有项目放这里
+          - generic [ref=e279]: ├── my-first-app/ ← 第一个产品
+          - generic [ref=e280]: ├── landing-page/ ← 落地页
+          - generic [ref=e281]: └── side-project/ ← 试验项目
+        - generic [ref=e282]:
+          - generic [ref=e283]:
+            - generic [ref=e284]: 每个
+            - heading "项目的标准结构" [level=3] [ref=e285]
+          - generic [ref=e286]:
+            - paragraph [ref=e287]: 当AI帮你生成项目时，推荐使用这个目录结构（让AI初始化）：
+            - generic [ref=e288]:
+              - generic [ref=e289]: my-product/
+              - generic [ref=e290]: ├── index.html ← 主页面
+              - generic [ref=e291]: ├── style.css ← 样式
+              - generic [ref=e292]: ├── script.js ← 逻辑
+              - generic [ref=e293]: ├── assets/ ← 图片/图标
+              - generic [ref=e294]: ├── .gitignore ← 告诉Git忽略哪些文件
+              - generic [ref=e295]: └── README.md ← 项目说明
+        - generic [ref=e296]:
+          - generic [ref=e297]:
+            - generic [ref=e298]: .gitignore 模板
+            - heading "告诉Git不要上传这些文件" [level=3] [ref=e299]
+          - generic [ref=e302]: node_modules/ .env .DS_Store dist/ .vscode/
+      - generic [ref=e303]:
+        - generic [ref=e304]: 总纲
+        - paragraph [ref=e306]: 开发环境不是越全越好，是越少越好。少到你只需要30分钟就能在任何一台新电脑上重建整个环境。
+        - generic [ref=e307]:
+          - generic [ref=e308]: 30分钟清单
+          - generic [ref=e309]:
+            - text: 1. 装 Node.js → 改 npm 淘宝镜像（10分钟）
+            - text: 2. 装 VS Code → 装3个插件 → 设置自动保存（10分钟）
+            - text: 3. 装 Git → 配名字邮箱（5分钟）
+            - text: 4. 跑环境检验 → 6项全过（2分钟）
+            - text: 5. 建好项目目录结构（3分钟）
+        - paragraph [ref=e310]:
+          - text: 环境就绪。下一步：用3条命令创建你的第一个Hello World项目（见节点08）。
+          - text: （本文写于2026年5月。）
+  - navigation [ref=e311]:
+    - link "← 节点06：技术选型（零基础专属）" [ref=e312] [cursor=pointer]:
+      - /url: /nodes/06-tech-selection/index.html
+      - generic [ref=e313]: ←
+      - text: 节点06：技术选型（零基础专属）
+    - link "节点08：Hello World 启动 →" [ref=e314] [cursor=pointer]:
+      - /url: /nodes/08-hello-world/index.html
+      - text: 节点08：Hello World 启动
+      - generic [ref=e315]: →

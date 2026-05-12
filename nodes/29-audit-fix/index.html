@@ -662,7 +662,18 @@ td:first-child {
   </nav>
 
   <div class="layout">
-    <main class="container">
+    <aside class="sidebar-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#s2" class="toc-link">一、解读审核反馈：翻译官上线</a></li>
+        <li class="toc-item"><a href="#s3" class="toc-link">二、打回后的处理SOP（标准操作流程）</a></li>
+        <li class="toc-item"><a href="#s4" class="toc-link">三、二次提交的技巧</a></li>
+        <li class="toc-item"><a href="#s5" class="toc-link">四、如果连续被打回（三次以上）</a></li>
+        <li class="toc-item"><a href="#s6" class="toc-link">五、检查清单</a></li>
+        <li class="toc-item"><a href="#s8" class="toc-link">节点资源链接</a></li>
+      </ul>
+    </aside>
+        <main>
       <header>
       <div class="phase-label">正式上线</div>
       <h1>审核问题处理</h1>
@@ -675,7 +686,7 @@ td:first-child {
 <blockquote class="decision-box"><p>审核被打回了。别慌——这不是失败，这是"平台免费帮你做了一次QA"。每个被打回的审核问题，都是在告诉你"这个地方会让用户不满"。</p></blockquote>
 
 <p></section></p>
-<section id="s一">
+<section id="s2">
 <p>      <div class="section-label">一、解读审核反馈：翻译官上线</div></p>
 
 <p>审核反馈通常写得很官方。以下是最常见的打回原因及真实含义：</p>
@@ -683,7 +694,7 @@ td:first-child {
 <div class="table-wrapper"><table><thead><tr><th>审核员写的</th><th>真实含义</th><th>修改方向</th></tr></thead><tbody><tr><td>"功能不完整"</td><td>你提交的版本有页面空白/按钮无响应</td><td>走一遍核心路径，确保每个按钮都有反应</td></tr><tr><td>"类目不符"</td><td>你选的类目和实际功能不匹配</td><td>重新选择与核心功能最接近的类目</td></tr><tr><td>"缺少必要资质"</td><td>你的功能涉及需要许可证的行业</td><td>上传相关资质，或者暂时去掉该功能</td></tr><tr><td>"存在测试数据"</td><td>审核员看到了开发中留下的假数据</td><td>清空所有测试数据，填充真实内容</td></tr><tr><td>"用户体验不足"</td><td>界面太简陋或操作逻辑混乱</td><td>参考同类已过审产品的最低标准</td></tr><tr><td>"涉及未开放能力"</td><td>你用了平台暂未开放给个人开发者的API</td><td>换成替代方案</td></tr></tbody></table></div>
 
 <p></section></p>
-<section id="s二">
+<section id="s3">
 <p>      <div class="section-label">二、打回后的处理SOP（标准操作流程）</div></p>
 
 <h3>步骤1：冷静分析（10分钟）</h3>
@@ -710,13 +721,13 @@ td:first-child {
 <strong>写修改说明的好处</strong>：审核员会感觉被尊重，二次审核速度通常更快。
 
 <p></section></p>
-<section id="s三">
+<section id="s4">
 <p>      <div class="section-label">三、二次提交的技巧</div></p>
 
 <div class="table-wrapper"><table><thead><tr><th>技巧</th><th>原因</th></tr></thead><tbody><tr><td><strong>在工作日上午提交</strong></td><td>审核员在工作日处理，早上提交可能当天出结果</td></tr><tr><td><strong>附上修改说明</strong></td><td>减少审核员重新排查的时间</td></tr><tr><td><strong>修改不要太多</strong></td><td>改得越多，审核员越需要重新审全部</td></tr><tr><td><strong>保留旧版本截图</strong></td><td>万一新版本又有问题，可以快速回退</td></tr></tbody></table></div>
 
 <p></section></p>
-<section id="s四">
+<section id="s5">
 <p>      <div class="section-label">四、如果连续被打回（三次以上）</div></p>
 
 <h3>三步自救法</h3>
@@ -724,13 +735,13 @@ td:first-child {
 <ol><li><strong>暂停提交</strong>：连续被打回说明你的理解和平台要求有系统性偏差</li><li><strong>找已过审的同类产品对比</strong>：打开竞品，逐页对比：他们有的页面你有吗？他们怎么处理权限/支付/隐私的？</li><li><strong>去官方社区/论坛提问</strong>：微信开放社区（developers.weixin.qq.com/community）有官方人员回复，贴上你的审核反馈截图，一般能得到准确方向</li></ol>
 
 <p></section></p>
-<section id="s五">
+<section id="s6">
 <p>      <div class="section-label">五、检查清单</div></p>
 
 <ul><li><input type="checkbox" disabled> 每条打回原因已理解真实含义</li><li><input type="checkbox" disabled> 修改方案已写成一句话</li><li><input type="checkbox" disabled> 只改了被打回的地方</li><li><input type="checkbox" disabled> 修改说明已写好</li><li><input type="checkbox" disabled> 工作日上午重新提交</li></ul>
 
 <p></section></p>
-<section id="s节">
+<section id="s8">
 <p>      <div class="section-label">节点资源链接</div></p>
 
 <ul><li>节点28：提交审核与等待</li><li>节点30：正式发布</li><li>节点31：数据监控</li></ul>
@@ -764,6 +775,30 @@ td:first-child {
       }
     });
   });
+
+  // Scroll spy for TOC
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+
+  function updateActiveLink() {
+    const scrollPos = window.scrollY + 120;
+    sections.forEach(section => {
+      const top = section.offsetTop;
+      const height = section.offsetHeight;
+      const id = section.getAttribute('id');
+      if (scrollPos >= top && scrollPos < top + height) {
+        tocLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + id) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveLink, { passive: true });
+  updateActiveLink();
   </script>
 </body>
 </html>

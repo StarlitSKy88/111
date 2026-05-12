@@ -662,7 +662,19 @@ td:first-child {
   </nav>
 
   <div class="layout">
-    <main class="container">
+    <aside class="sidebar-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#s2" class="toc-link">一、内容填充的最小必要集</a></li>
+        <li class="toc-item"><a href="#s3" class="toc-link">二、首页文案：一句话公式</a></li>
+        <li class="toc-item"><a href="#s4" class="toc-link">三、使用引导：零文字 > 多文字</a></li>
+        <li class="toc-item"><a href="#s5" class="toc-link">四、法律文本：别自己写，用模板</a></li>
+        <li class="toc-item"><a href="#s6" class="toc-link">五、FAQ怎么写：用真实用户的提问</a></li>
+        <li class="toc-item"><a href="#s7" class="toc-link">六、检查清单</a></li>
+        <li class="toc-item"><a href="#s8" class="toc-link">节点资源链接</a></li>
+      </ul>
+    </aside>
+        <main>
       <header>
       <div class="phase-label">上线准备</div>
       <h1>上线内容填充</h1>
@@ -675,7 +687,7 @@ td:first-child {
 <blockquote class="decision-box"><p>产品做好了，但打开一看——首页只有功能没有说明，注册页没有用户协议，帮助中心是空的。用户来了不知道这是什么、怎么用、安不安全。本节点告诉你：最少的文字量，让产品"看着像真的"。</p></blockquote>
 
 <p></section></p>
-<section id="s一">
+<section id="s2">
 <p>      <div class="section-label">一、内容填充的最小必要集</div></p>
 
 <h3>用户第一次打开你的产品，会在3秒内判断三件事</h3>
@@ -684,7 +696,7 @@ td:first-child {
 <strong>三条及格线</strong>：缺任意一条，用户信任度归零。
 
 <p></section></p>
-<section id="s二">
+<section id="s3">
 <p>      <div class="section-label">二、首页文案：一句话公式</div></p>
 
 <h3>把"我们提供XX解决方案"扔进垃圾桶</h3>
@@ -708,7 +720,7 @@ td:first-child {
 <p></code>``</p>
 
 <p></section></p>
-<section id="s三">
+<section id="s4">
 <p>      <div class="section-label">三、使用引导：零文字 > 多文字</div></p>
 
 <h3>不要写说明书</h3>
@@ -718,7 +730,7 @@ td:first-child {
 <ol><li><strong>空状态引导</strong>：用户第一次打开功能时，页面中间显示"点击这里开始你的第一次分析"，而不是空白页</li><li><strong>示例数据</strong>：没有真实数据时，放一条示例（标注"示例"），让用户一眼看懂这页是干嘛的</li><li><strong>Tooltip气泡</strong>：复杂按钮旁边，hover显示一行解释。不是弹窗，不是教程页。</li></ol>
 
 <p></section></p>
-<section id="s四">
+<section id="s5">
 <p>      <div class="section-label">四、法律文本：别自己写，用模板</div></p>
 
 <h3>两个必须有的页面</h3>
@@ -727,7 +739,7 @@ td:first-child {
 <strong>OPC铁律</strong>：注册流程必须有"我已阅读并同意用户协议和隐私政策"的勾选框。没这个 = 平台审核直接驳回。
 
 <p></section></p>
-<section id="s五">
+<section id="s6">
 <p>      <div class="section-label">五、FAQ怎么写：用真实用户的提问</div></p>
 
 <p>不要自己想"用户可能问什么"——翻节点19的亲友测试记录。</p>
@@ -736,13 +748,13 @@ td:first-child {
 <strong>3-5个FAQ就够了。</strong> 超过10个 = 说明你的产品设计有问题。
 
 <p></section></p>
-<section id="s六">
+<section id="s7">
 <p>      <div class="section-label">六、检查清单</div></p>
 
 <ul><li><input type="checkbox" disabled> 首页有一句话介绍（动词+对象+结果）</li><li><input type="checkbox" disabled> 首页有3个功能亮点</li><li><input type="checkbox" disabled> 每个核心功能有空状态引导文案</li><li><input type="checkbox" disabled> 用户协议和隐私政策页面已上线</li><li><input type="checkbox" disabled> 注册流程有"同意协议"勾选框</li><li><input type="checkbox" disabled> FAQ有3-5条（来源：真实用户提问）</li></ul>
 
 <p></section></p>
-<section id="s节">
+<section id="s8">
 <p>      <div class="section-label">节点资源链接</div></p>
 
 <ul><li>节点21：性能基础优化</li><li>节点23：公司注册与主体选择</li><li>节点24：域名购买与ICP备案</li></ul>
@@ -776,6 +788,30 @@ td:first-child {
       }
     });
   });
+
+  // Scroll spy for TOC
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+
+  function updateActiveLink() {
+    const scrollPos = window.scrollY + 120;
+    sections.forEach(section => {
+      const top = section.offsetTop;
+      const height = section.offsetHeight;
+      const id = section.getAttribute('id');
+      if (scrollPos >= top && scrollPos < top + height) {
+        tocLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + id) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveLink, { passive: true });
+  updateActiveLink();
   </script>
 </body>
 </html>

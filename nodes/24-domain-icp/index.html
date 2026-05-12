@@ -662,7 +662,18 @@ td:first-child {
   </nav>
 
   <div class="layout">
-    <main class="container">
+    <aside class="sidebar-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#s2" class="toc-link">一、域名购买（10分钟）</a></li>
+        <li class="toc-item"><a href="#s3" class="toc-link">二、ICP备案：最让OPC头疼但必须做的事</a></li>
+        <li class="toc-item"><a href="#s4" class="toc-link">三、备案通过后的必做操作</a></li>
+        <li class="toc-item"><a href="#s5" class="toc-link">四、常见翻车</a></li>
+        <li class="toc-item"><a href="#s6" class="toc-link">五、检查清单</a></li>
+        <li class="toc-item"><a href="#s8" class="toc-link">节点资源链接</a></li>
+      </ul>
+    </aside>
+        <main>
       <header>
       <div class="phase-label">上线准备</div>
       <h1>域名购买与ICP备案</h1>
@@ -675,7 +686,7 @@ td:first-child {
 <blockquote class="decision-box"><p>产品做好了，但你的网址还是 <code>localhost:3000</code>。现在你需要一个正式的域名，并且让你的网站合法地在中国大陆被访问。两步走：买域名 → 备案。全程一个人可以搞定。</p></blockquote>
 
 <p></section></p>
-<section id="s一">
+<section id="s2">
 <p>      <div class="section-label">一、域名购买（10分钟）</div></p>
 
 <h3>2026年推荐注册商</h3>
@@ -691,7 +702,7 @@ td:first-child {
 <strong>注册10年</strong>（或者最长年限）。域名到期忘记续费 = 网站挂掉 + 被别人抢注。一年的域名费还不够一顿火锅，别省这个。
 
 <p></section></p>
-<section id="s二">
+<section id="s3">
 <p>      <div class="section-label">二、ICP备案：最让OPC头疼但必须做的事</div></p>
 
 <h3>先搞清楚：你需要备案吗？</h3>
@@ -713,7 +724,7 @@ td:first-child {
 <strong>OPC注意</strong>：个人备案的网站不能涉及企业/商业/电商/论坛/社交。如果你做的是商业产品 → 先用个体户或公司备案（参考节点23）。
 
 <p></section></p>
-<section id="s三">
+<section id="s4">
 <p>      <div class="section-label">三、备案通过后的必做操作</div></p>
 
 <h3>1. 网站底部加备案号</h3>
@@ -735,19 +746,19 @@ td:first-child {
 <p>备案通过 → 域名解析生效 → 立刻申请SSL证书（节点25会讲）。</p>
 
 <p></section></p>
-<section id="s四">
+<section id="s5">
 <p>      <div class="section-label">四、常见翻车</div></p>
 
 <div class="table-wrapper"><table><thead><tr><th>翻车</th><th>原因</th><th>避免</th></tr></thead><tbody><tr><td>备案被拒</td><td>网站名称带"中国"或与实际内容不符</td><td>用你产品的真实名字，不加修饰词</td></tr><tr><td>备案被拒</td><td>个人备案但网站内容明显是商业经营</td><td>注册个体户用企业备案</td></tr><tr><td>备案周期拉长</td><td>材料有问题被打回重审</td><td>提交前让服务商客服先看一遍</td></tr><tr><td>域名过期导致备案注销</td><td>备案后域名过期未续费</td><td>域名续费10年，设闹钟提前30天</td></tr></tbody></table></div>
 
 <p></section></p>
-<section id="s五">
+<section id="s6">
 <p>      <div class="section-label">五、检查清单</div></p>
 
 <ul><li><input type="checkbox" disabled> 域名已购买（建议10年）</li><li><input type="checkbox" disabled> 服务器已购买（最便宜配置即可）</li><li><input type="checkbox" disabled> 备案材料已准备（身份证、域名证书）</li><li><input type="checkbox" disabled> 备案已提交</li><li><input type="checkbox" disabled> 备案号已挂网站底部</li><li><input type="checkbox" disabled> 公安备案已完成（如当地要求）</li></ul>
 
 <p></section></p>
-<section id="s节">
+<section id="s8">
 <p>      <div class="section-label">节点资源链接</div></p>
 
 <ul><li>节点22：上线内容填充</li><li>节点23：公司注册与主体选择</li><li>节点25：网站部署与SSL</li></ul>
@@ -781,6 +792,30 @@ td:first-child {
       }
     });
   });
+
+  // Scroll spy for TOC
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+
+  function updateActiveLink() {
+    const scrollPos = window.scrollY + 120;
+    sections.forEach(section => {
+      const top = section.offsetTop;
+      const height = section.offsetHeight;
+      const id = section.getAttribute('id');
+      if (scrollPos >= top && scrollPos < top + height) {
+        tocLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + id) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveLink, { passive: true });
+  updateActiveLink();
   </script>
 </body>
 </html>

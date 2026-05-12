@@ -662,7 +662,18 @@ td:first-child {
   </nav>
 
   <div class="layout">
-    <main class="container">
+    <aside class="sidebar-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#s2" class="toc-link">一、Bug分类：不是所有Bug都值得你今晚修</a></li>
+        <li class="toc-item"><a href="#s3" class="toc-link">二、OPC修Bug的三步法</a></li>
+        <li class="toc-item"><a href="#s4" class="toc-link">三、你不应该修的三类Bug</a></li>
+        <li class="toc-item"><a href="#s5" class="toc-link">四、修Bug的时间纪律</a></li>
+        <li class="toc-item"><a href="#s6" class="toc-link">五、检查清单</a></li>
+        <li class="toc-item"><a href="#s8" class="toc-link">节点资源链接</a></li>
+      </ul>
+    </aside>
+        <main>
       <header>
       <div class="phase-label">测试与修复</div>
       <h1>Bug集中修复</h1>
@@ -675,7 +686,7 @@ td:first-child {
 <blockquote class="decision-box"><p>亲友测完了，反馈堆在共享表里——有的是页面白屏，有的是数字算错，有的是按钮不好点。一个人怎么从一堆Bug中杀出一条路？</p></blockquote>
 
 <p></section></p>
-<section id="s一">
+<section id="s2">
 <p>      <div class="section-label">一、Bug分类：不是所有Bug都值得你今晚修</div></p>
 
 <h3>四象限法</h3>
@@ -696,7 +707,7 @@ td:first-child {
 <div class="table-wrapper"><table><thead><tr><th>等级</th><th>定义</th><th>OPC处理策略</th></tr></thead><tbody><tr><td><strong>P0</strong></td><td>核心流程中断、数据丢失、安全漏洞</td><td>🔴 立即修，不修不睡觉</td></tr><tr><td><strong>P1</strong></td><td>计算错误、展示异常、逻辑矛盾</td><td>🟠 当天修</td></tr><tr><td><strong>P2</strong></td><td>体验问题、边界情况</td><td>🟡 排入本周计划</td></tr><tr><td><strong>P3</strong></td><td>文案错字、对齐偏差</td><td>🟢 记下来，有时间再说</td></tr></tbody></table></div>
 
 <p></section></p>
-<section id="s二">
+<section id="s3">
 <p>      <div class="section-label">二、OPC修Bug的三步法</div></p>
 
 <h3>步骤1：复现（5分钟）</h3>
@@ -724,7 +735,7 @@ td:first-child {
 <p></code>``</p>
 
 <p></section></p>
-<section id="s三">
+<section id="s4">
 <p>      <div class="section-label">三、你不应该修的三类Bug</div></p>
 
 <h3>1. 只有一个人遇到的Bug</h3>
@@ -740,20 +751,20 @@ td:first-child {
 <p>有些Bug的根因牵连太广，你评估后觉得"修了可能地震" → 记录下来，等有3个同类问题一起重构。</p>
 
 <p></section></p>
-<section id="s四">
+<section id="s5">
 <p>      <div class="section-label">四、修Bug的时间纪律</div></p>
 
 <div class="table-wrapper"><table><thead><tr><th>时段</th><th>做什么</th></tr></thead><tbody><tr><td><strong>上午9:00-9:30</strong></td><td>扫描Bug表，标出今天的P0/P1</td></tr><tr><td><strong>每修完一个Bug</strong></td><td>在表里更新状态 + 跑一遍节点18的核心路径</td></tr><tr><td><strong>晚上8:00</strong></td><td>今天的P0必须清零。P1最多剩1个</td></tr></tbody></table></div>
 <strong>绝对不要</strong>：开发新功能到一半，"顺便"修个Bug —— 上下文切换的成本比你想象的高3倍。
 
 <p></section></p>
-<section id="s五">
+<section id="s6">
 <p>      <div class="section-label">五、检查清单</div></p>
 
 <ul><li><input type="checkbox" disabled> 所有Bug都有复现步骤</li><li><input type="checkbox" disabled> P0已清零</li><li><input type="checkbox" disabled> P1不超过2个</li><li><input type="checkbox" disabled> 每个修复后跑了核心路径回归</li><li><input type="checkbox" disabled> Bug表状态已更新</li></ul>
 
 <p></section></p>
-<section id="s节">
+<section id="s8">
 <p>      <div class="section-label">节点资源链接</div></p>
 
 <ul><li>节点19：亲友灰度测试</li><li>节点21：性能基础优化</li><li>节点22：上线内容填充</li></ul>
@@ -787,6 +798,30 @@ td:first-child {
       }
     });
   });
+
+  // Scroll spy for TOC
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+
+  function updateActiveLink() {
+    const scrollPos = window.scrollY + 120;
+    sections.forEach(section => {
+      const top = section.offsetTop;
+      const height = section.offsetHeight;
+      const id = section.getAttribute('id');
+      if (scrollPos >= top && scrollPos < top + height) {
+        tocLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + id) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveLink, { passive: true });
+  updateActiveLink();
   </script>
 </body>
 </html>

@@ -1,0 +1,260 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "← 返回首页" [ref=e3] [cursor=pointer]:
+      - /url: /index.html
+    - generic [ref=e4]: 节点 05 / 57
+  - generic: "05"
+  - generic [ref=e5]:
+    - complementary [ref=e6]:
+      - generic [ref=e7]: 目录
+      - list [ref=e8]:
+        - listitem [ref=e9]:
+          - link "核心认知" [ref=e10] [cursor=pointer]:
+            - /url: "#s1"
+        - listitem [ref=e11]:
+          - link "六步执行流程" [ref=e12] [cursor=pointer]:
+            - /url: "#s2"
+        - listitem [ref=e13]:
+          - link "5-Day执行清单" [ref=e14] [cursor=pointer]:
+            - /url: "#s3"
+        - listitem [ref=e15]:
+          - link "首版不做清单" [ref=e16] [cursor=pointer]:
+            - /url: "#s4"
+        - listitem [ref=e17]:
+          - link "总纲" [ref=e18] [cursor=pointer]:
+            - /url: "#s5"
+    - main [ref=e19]:
+      - generic [ref=e21]:
+        - generic [ref=e22]: 节点 05 · 核心必做
+        - heading "MVP范围 锁定" [level=1] [ref=e23]:
+          - text: MVP范围
+          - text: 锁定
+        - paragraph [ref=e24]: 砍到只剩一个核心功能，先上线再迭代。OPC的核心优势是快
+      - generic [ref=e25]:
+        - generic [ref=e26]: 核心认知
+        - generic [ref=e27]:
+          - generic [ref=e28]: 2026年实战有效认知
+          - generic [ref=e29]:
+            - text: MVP是一个
+            - strong [ref=e30]: 可被独立销售的实验品
+            - text: ，哪怕它明天就停止迭代，今天的用户依然愿意为它付钱。
+        - generic [ref=e31]:
+          - generic [ref=e32]:
+            - generic [ref=e33]: 假设检验
+            - generic [ref=e34]: 无效假设
+            - generic [ref=e35]:
+              - text: "\"用户有这个需求\""
+              - text: "\"用户会觉得好用\""
+          - generic [ref=e36]:
+            - generic [ref=e37]: 假设检验
+            - generic [ref=e38]: 有效假设
+            - generic [ref=e39]: "\"用户愿意为X行为支付Y元\""
+        - paragraph [ref=e41]: "\"自由摄影师愿意为'一键生成包含用光建议的拍摄方案摘要'支付29元/次。\" — 这才是一个有效的MVP假设。"
+      - generic [ref=e42]:
+        - generic [ref=e43]: 六步执行流程
+        - generic [ref=e44]:
+          - generic [ref=e45]:
+            - generic [ref=e46]: "01"
+            - heading "MVP再定义：从\"简化版\"到\"可收费的实验品\"" [level=3] [ref=e47]
+          - generic [ref=e48]:
+            - paragraph [ref=e49]:
+              - text: 范围锁定的标准不是"能不能跑通一个简化流程"，而是
+              - strong [ref=e50]: "\"能不能立刻产生一次不可逆的价值交换\""
+              - text: 。
+            - paragraph [ref=e51]:
+              - text: 锁定范围的第一步，就是把这一轮实验约束为
+              - strong [ref=e52]: 只验证一个核心假设
+              - text: 。这个假设必须是指向付费行为的断言。
+        - generic [ref=e53]:
+          - generic [ref=e54]:
+            - generic [ref=e55]: "02"
+            - heading "功能二分法：砍掉它还能收费吗？" [level=3] [ref=e56]
+          - generic [ref=e57]:
+            - paragraph [ref=e58]:
+              - text: 把每一个功能单独拎出来，问自己一个非常苛刻的问题——
+              - strong [ref=e59]: "\"砍掉它，我还能不能完成一单完整收费？\""
+            - paragraph [ref=e60]: 如果能，就直接划掉。你会发现，用户资料头像、密码修改、多语言切换、数据导出甚至管理后台，在这一刀面前全部倒下。
+            - paragraph [ref=e61]:
+              - text: 真正留下来的，往往是：
+              - text: 一个极窄的输入 + 一个核心处理逻辑 + 一个收费点 + 一个交付结果
+        - generic [ref=e62]:
+          - generic [ref=e63]:
+            - generic [ref=e64]: "03"
+            - heading "时间硬顶：\"仅此一周\"极限剪裁法" [level=3] [ref=e65]
+          - generic [ref=e66]:
+            - paragraph [ref=e67]:
+              - strong [ref=e68]: "\"仅此一周\"倒计时法"
+              - text: 已经成为一种常见的反拖延机制。设定一个一定会到的最后期限，只要时间一到，无论产品做成什么样，都必须进入收费验证。
+            - paragraph [ref=e69]: 在倒计时的压力下，所有"优化一下""再加一个小功能"的冲动都会在时间耗尽面前自动破灭。
+        - generic [ref=e70]:
+          - generic [ref=e71]:
+            - generic [ref=e72]: "04"
+            - heading "人工后台：用Excel替代自动化" [level=3] [ref=e73]
+          - generic [ref=e74]:
+            - paragraph [ref=e75]:
+              - text: 把"自动化开发"这部分工作从MVP范围里彻底砍掉。
+              - strong [ref=e76]: 你的真实后台，可以就是你本人加一个Excel表格。
+            - paragraph [ref=e77]: 用户在前端完成支付，收到提示："结果将在30分钟内发送至您的邮箱。"这30分钟里，你打开Google Sheets手动生成那份专属报告，然后邮件发给用户。
+        - generic [ref=e78]:
+          - generic [ref=e79]:
+            - generic [ref=e80]: "05"
+            - heading "边界工具登记表：防止范围悄悄蔓延" [level=3] [ref=e81]
+          - generic [ref=e82]:
+            - paragraph [ref=e83]: 把每一个"我用人工替代"的节点写入《边界工具登记表》，并标注截止上线日前绝不改造。
+            - table [ref=e84]:
+              - rowgroup [ref=e85]:
+                - row "功能需求 MVP替代方式 改造冻结至" [ref=e86]:
+                  - columnheader "功能需求" [ref=e87]
+                  - columnheader "MVP替代方式" [ref=e88]
+                  - columnheader "改造冻结至" [ref=e89]
+              - rowgroup [ref=e90]:
+                - row "用户发票 手动通过Gmail发送PDF 上线后14天" [ref=e91]:
+                  - cell "用户发票" [ref=e92]
+                  - cell "手动通过Gmail发送PDF" [ref=e93]
+                  - cell "上线后14天" [ref=e94]
+                - row "内容排版 用户粘贴至Notion模板 首笔验证完成" [ref=e95]:
+                  - cell "内容排版" [ref=e96]
+                  - cell "用户粘贴至Notion模板" [ref=e97]
+                  - cell "首笔验证完成" [ref=e98]
+                - row "数据分析 每周导出CSV手动更新 活跃用户超50人" [ref=e99]:
+                  - cell "数据分析" [ref=e100]
+                  - cell "每周导出CSV手动更新" [ref=e101]
+                  - cell "活跃用户超50人" [ref=e102]
+        - generic [ref=e103]:
+          - generic [ref=e104]:
+            - generic [ref=e105]: "06"
+            - heading "5-Day Rule：极限剪裁执行清单" [level=3] [ref=e106]
+          - paragraph [ref=e108]: 如果一个MVP在5天内不能产生一次完整的价值交付，说明范围还是太大。注意这5天包含你手动处理后端流程的时间，不单是写代码。
+      - generic [ref=e109]:
+        - generic [ref=e110]: 5-Day执行清单
+        - generic [ref=e111]:
+          - generic [ref=e112]:
+            - generic [ref=e113]: "01"
+            - generic [ref=e114]:
+              - generic [ref=e115]: 写下必须完成的唯一结果
+              - generic [ref=e116]: 格式："用户通过【一次操作】，得到【一个可用的输出】"
+          - generic [ref=e117]:
+            - generic [ref=e118]: "02"
+            - generic [ref=e119]:
+              - generic [ref=e120]: 功能三分：保留A类，砍掉B和C
+              - generic [ref=e121]: A类=没有结果就不成立；B类=删掉也能交付但会让用户麻烦；C类=纯体验
+          - generic [ref=e122]:
+            - generic [ref=e123]: "03"
+            - generic [ref=e124]:
+              - generic [ref=e125]: 5天硬截止，不能延长时间
+              - generic [ref=e126]: 5天做不完，只能继续砍功能，而不能延长时间
+          - generic [ref=e127]:
+            - generic [ref=e128]: "04"
+            - generic [ref=e129]:
+              - generic [ref=e130]: 验收标准：有一个陌生用户完成了该结果
+              - generic [ref=e131]: 这强迫你的范围必须窄到足以让你在用户面前全程跟进
+      - generic [ref=e132]:
+        - generic [ref=e133]: 首版不做清单
+        - generic [ref=e134]:
+          - generic [ref=e135]:
+            - generic [ref=e136]: 自动划掉
+            - generic [ref=e137]: 这些功能首版不做
+            - generic [ref=e138]:
+              - text: 用户资料头像
+              - text: 密码修改功能
+              - text: 多语言切换
+              - text: 数据导出
+              - text: 管理后台
+              - text: 历史记录
+              - text: 深色模式
+          - generic [ref=e139]:
+            - generic [ref=e140]: 改造触发条件
+            - generic [ref=e141]: 何时可以开始改造？
+            - generic [ref=e142]:
+              - text: ① 付费用户超过N人
+              - text: ② 特定时间节点到达
+              - text: ③ 收到明确的用户请求
+              - text: ④ 人工处理已成为瓶颈
+      - generic [ref=e143]:
+        - generic [ref=e144]: 总纲
+        - paragraph [ref=e146]:
+          - text: MVP范围锁定最终不是一个规划技巧，而是一种
+          - strong [ref=e147]: 拒绝能力
+          - text: 。每一次对功能说"是"，都等于对交付速度、资金续航和验证纯度说"否"。
+        - paragraph [ref=e148]: AI只用于加速已确定范围的功能实现，绝不用于生成新的功能方向。
+        - generic [ref=e149]:
+          - generic [ref=e150]: 2026 UPDATE
+          - generic [ref=e151]:
+            - blockquote [ref=e152]: "**面向OPC**：你的想法很好，功能列表写了20条。现在砍到3条——只留那些\"不做就会死\"的功能。MVP不是\"最小产品\"，是\"最小区间内验证有人愿意付钱\"。"
+            - heading "一、2026年OPC的MVP新定义" [level=3] [ref=e153]
+            - heading "传统定义（已过时）" [level=4] [ref=e154]
+            - blockquote [ref=e155]: Minimum Viable Product = 最小可行产品
+            - heading "2026年OPC定义" [level=4] [ref=e156]
+            - blockquote [ref=e157]: Minimum **Valuable** Product = 最小**有价值**产品
+            - paragraph [ref=e158]: 区别：Viable（可行）=能用就行。Valuable（有价值）=好到有人愿意付钱。
+            - heading "二、MVP范围的四刀法" [level=3] [ref=e159]
+            - heading "第一刀：砍掉所有\"以后可能有用\"的功能" [level=4] [ref=e160]
+            - table [ref=e161]:
+              - rowgroup [ref=e162]:
+                - row "功能 砍掉理由" [ref=e163]:
+                  - cell "功能" [ref=e164]
+                  - cell "砍掉理由" [ref=e165]
+                - row "用户个人中心/头像 没有人因为\"可以换头像\"而付费" [ref=e166]:
+                  - columnheader "用户个人中心/头像" [ref=e167]
+                  - columnheader "没有人因为\"可以换头像\"而付费" [ref=e168]
+                - row "暗色模式 上线后再做（一行CSS的事）" [ref=e169]:
+                  - cell "暗色模式" [ref=e170]
+                  - cell "上线后再做（一行CSS的事）" [ref=e171]
+                - row "数据导出CSV 等有人问了再做" [ref=e172]:
+                  - cell "数据导出CSV" [ref=e173]
+                  - cell "等有人问了再做" [ref=e174]
+                - row "多语言 中文用户够你吃一年" [ref=e175]:
+                  - cell "多语言" [ref=e176]
+                  - cell "中文用户够你吃一年" [ref=e177]
+                - row "消息通知系统 先用微信群代替" [ref=e178]:
+                  - cell "消息通知系统" [ref=e179]
+                  - cell "先用微信群代替" [ref=e180]
+            - paragraph [ref=e181]:
+              - strong [ref=e182]: 砍完这一刀，功能列表从20条变成6条。
+            - heading "第二刀：只留\"用户核心任务\"" [level=4] [ref=e183]
+            - paragraph [ref=e184]:
+              - text: 问自己：
+              - strong [ref=e185]: 用户打开我的产品，是为了完成什么任务？
+            - list [ref=e186]:
+              - listitem [ref=e187]: 如果3秒内说不出来 → 这个功能砍掉
+              - listitem [ref=e188]: 如果用户不用这个功能也能完成任务 → 砍掉
+              - listitem [ref=e189]:
+                - link "2026年更新" [ref=e190] [cursor=pointer]:
+                  - /url: "#s2026"
+            - paragraph [ref=e191]:
+              - strong [ref=e192]: 砍完这一刀，6条变成3条。
+            - heading "第三刀：3条里选1条最先做" [level=4] [ref=e193]
+            - paragraph [ref=e194]: 剩下的3条核心功能，按"用户最痛的问题"排序。只做第一条，其他两条用文字先标注"即将上线"。
+            - paragraph [ref=e195]:
+              - strong [ref=e196]: 砍完这一刀，只剩下1个核心功能 + 2个文字占位。
+            - heading "第四刀：这1个功能，只做80%" [level=4] [ref=e197]
+            - paragraph [ref=e198]: 一个功能有"基本流程"和"各种边界情况"。MVP只做基本流程：
+            - text: 基本流程（MVP必做）边界情况（MVP不做） 用户上传简历→AI分析→显示评分上传PDF格式不对时的提示 用户下单→微信支付→支付成功支付超时后的自动退款 用户输入→AI生成→展示结果输入超过1000字时的截断处理
+            - heading "三、MVP范围文档模板" [level=3] [ref=e199]
+            - code [ref=e201]: "# [产品名] MVP ## 一句话价值主张 [动词] + [对象] + [结果] ## 核心指标（上线后2周内必须达到） - 注册用户：≥50人 - 核心功能使用率：≥40%（注册用户中使用核心功能的比例） - 用户反馈中\"愿意付费\"的比例：≥20% ## MVP功能清单 ### P0（必须有） 1. [核心功能1的80%] 2. 注册/登录 3. 页面能正常打开（无白屏） ### P1（最好有，没有也能上） 4. [占位功能2：标注\"即将上线\"] 5. [占位功能3：标注\"即将上线\"] ## 明确不做（P2+） - 暗色模式 - 数据导出 - 个人中心 - 消息通知 - 多语言"
+            - heading "四、2026年MVP开发时间锚" [level=3] [ref=e202]
+            - text: 产品类型MVP最长开发时间超过这个时间=你做的不是MVP AI工具/内容站1-2周用v0/Cursor加速，1周够了 SaaS2-4周用Supabase省掉后端时间 微信小程序2-4周含审核时间 电商2-4周用现成模板
+            - paragraph [ref=e203]:
+              - strong [ref=e204]: 如果4周做不完→范围砍得不够狠。回去继续砍。
+            - heading "五、检查清单" [level=3] [ref=e205]
+            - list [ref=e206]:
+              - listitem [ref=e207]: "[ ] 功能列表已用四刀法砍到1个核心功能"
+              - listitem [ref=e208]: "[ ] MVP范围文档已写完（含目标指标）"
+              - listitem [ref=e209]: "[ ] P0功能清单已确认（≤3项）"
+              - listitem [ref=e210]: "[ ] 明确不做清单已写下来（防止自己忍不住加）"
+              - listitem [ref=e211]: "[ ] MVP开发时间估算≤4周"
+            - heading "节点资源链接" [level=3] [ref=e212]
+            - list [ref=e213]:
+              - listitem [ref=e214]: 节点04：原型设计与工具选择
+              - listitem [ref=e215]: 节点06：技术选型
+              - listitem [ref=e216]: 节点07：本地开发环境搭建
+          - paragraph [ref=e217]: 以上内容基于2026年5月最新实践编写，工具版本和价格可能更新，请以官方文档为准。
+  - navigation [ref=e218]:
+    - link "← 节点04：原型设计" [ref=e219] [cursor=pointer]:
+      - /url: /nodes/04-prototype/index.html
+      - generic [ref=e220]: ←
+      - text: 节点04：原型设计
+    - link "节点06：技术选型 →" [ref=e221] [cursor=pointer]:
+      - /url: /nodes/06-tech-selection/index.html
+      - text: 节点06：技术选型
+      - generic [ref=e222]: →

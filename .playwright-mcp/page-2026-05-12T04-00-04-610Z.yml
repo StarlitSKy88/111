@@ -1,0 +1,328 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "← 返回首页" [ref=e3] [cursor=pointer]:
+      - /url: /index.html
+    - generic [ref=e4]: 节点 12 / 57
+  - generic: "12"
+  - generic [ref=e5]:
+    - complementary [ref=e6]:
+      - generic [ref=e7]: 目录
+      - list [ref=e8]:
+        - listitem [ref=e9]:
+          - link "启动前检查清单" [ref=e10] [cursor=pointer]:
+            - /url: "#s1"
+        - listitem [ref=e11]:
+          - link "给AI的完整Prompt模板" [ref=e12] [cursor=pointer]:
+            - /url: "#s2"
+        - listitem [ref=e13]:
+          - link "Vibecoding循环" [ref=e14] [cursor=pointer]:
+            - /url: "#s3"
+        - listitem [ref=e15]:
+          - link "常见踩坑及标准修复Prompt" [ref=e16] [cursor=pointer]:
+            - /url: "#s4"
+        - listitem [ref=e17]:
+          - link "功能完成标志" [ref=e18] [cursor=pointer]:
+            - /url: "#s5"
+        - listitem [ref=e19]:
+          - link "git commit 规范" [ref=e20] [cursor=pointer]:
+            - /url: "#s6"
+        - listitem [ref=e21]:
+          - link "总纲" [ref=e22] [cursor=pointer]:
+            - /url: "#s7"
+    - main [ref=e23]:
+      - generic [ref=e25]:
+        - generic [ref=e26]: 节点 12 · 核心功能开发
+        - heading "核心功能1开发" [level=1] [ref=e27]
+        - paragraph [ref=e28]: 你已经有了登录系统、数据库。现在要做出产品的第一个核心功能——用户真正会用的那个东西。本章不是教你写代码，是教你跟AI配合的Vibecoding循环：一次Prompt → 测试 → 出错 → 修复 → 再测试，直到功能完整可用。
+      - generic [ref=e29]:
+        - generic [ref=e30]: 启动前检查清单
+        - paragraph [ref=e31]: 在给AI写任何一个字之前，先确认下面5件事：
+        - generic [ref=e33]:
+          - text: □ 1. 原型的核心页面截图打开了吗？
+          - text: → 截图就是你的"需求文档"。不用写PRD。
+          - text: □ 2. Supabase的表建好了吗？
+          - text: → 核心功能1涉及几张表？字段都加了吗？
+          - text: → 回顾节点10：每个功能至少对应一张表。
+          - text: □ 3. RLS策略开了吗？
+          - text: → 如果这个功能需要保护用户数据，先配好RLS（见节点11）。
+          - text: □ 4. 明确"核心功能1"是什么——用一句话能说清楚吗？
+          - text: → 好的描述："用户输入一个链接，系统提取关键信息并保存"
+          - text: → 不好的描述："做一个内容分析工具"
+          - text: □ 5. 准备好了一个干净的 git commit 起点吗？
+          - text: → git status 看有没有未提交的改动
+          - text: → 有的话先 commit（见节点09）
+        - paragraph [ref=e34]: 5项全部打勾 → 开始写Prompt。
+      - generic [ref=e35]:
+        - generic [ref=e36]: 给AI的完整Prompt模板
+        - generic [ref=e38]: "【项目背景】 产品名：[你的产品名] 目标用户：[一句话描述你的用户] 核心场景：[用户打开产品后要完成什么任务] 【当前技术栈】 - 前端：纯HTML/CSS/JS，单文件应用 - 后端：Supabase（Project URL + anon key 见下方） - 认证：Supabase Auth（已实现邮箱登录） - 部署：Vercel 【Supabase信息】 - Project URL: https://xxxxxxxxxxxx.supabase.co - anon key: [你的anon key] 【本月要开发的功能】 功能名称：[核心功能1的名称] 功能描述：[用一段话说清楚这个功能从用户视角是怎么工作的] 具体交互流程： 1. 用户看到 [页面A]，上面有 [元素1、元素2] 2. 用户点击/输入 [操作描述] 3. 系统做 [后端逻辑：查询Supabase / 调用AI / 计算 / ...] 4. 用户看到 [结果页面B]，展示 [结果内容] 5. 如果出错，显示 [错误提示文案] 【数据需求】 涉及Supabase表：[表名] 需要调用的API： - 读取：[select什么字段，按什么条件] - 写入：[insert哪些字段，值从哪来] 【UI要求】 - 参考截图：[附上原型截图] - 颜色：主色#C0392B，背景#111110，文字#F0EDE6 - 移动端适配 - 按钮最小触控区44×44px - 交互反馈：加载中显示转圈，成功/失败显示提示 【边界情况】（告诉AI要考虑的特殊场景） - 输入为空时怎么处理？ - 数据不存在时怎么展示？ - 网络断掉时怎么提示？ - 用户连续点击按钮怎么防抖？ 【代码规范】 - 单文件 index.html - CDN引入 supabase-js - ES Module方式（<script type=\"module\">） - 代码分节，用注释标注每个区块是干什么的 - 中文注释"
+        - generic [ref=e39]:
+          - generic [ref=e40]: 使用技巧
+          - generic [ref=e41]:
+            - strong [ref=e42]: 一次只做一个功能。
+            - text: 不要在一段Prompt里塞两个功能——AI容易搞混，出错后你也不知道是哪部分出的问题。
+      - generic [ref=e43]:
+        - generic [ref=e44]: Vibecoding循环：OPC的开发节奏
+        - generic [ref=e45]:
+          - generic [ref=e46]: 什么是Vibecoding
+          - generic [ref=e47]: Vibecoding = 你描述需求 → AI生成代码 → 你测试 → 发现不对 → 描述问题 → AI修复 → 你重新测试 → 直到对为止。
+        - paragraph [ref=e48]: 你不是在"调试代码"。你是在"调试AI的理解"。这个心态转变很重要。
+        - generic [ref=e49]:
+          - generic [ref=e50]: 标准循环流程
+          - generic [ref=e51]: ┌─────────────────────────────────────────────┐ │ Vibecoding 循环 │ │ │ │ ① 写Prompt ──→ ② AI生成代码 │ │ ↑ ↓ │ │ │ │ │ │ ④ 描述差异 ←── ③ 测试发现不对 │ │ │ │ │ │ └────→ ② AI重新生成 ──→ ③ 测试 │ │ │ │ 结束条件：③ 测试全部通过 → git commit │ │ │ │ 熔断条件：连续5轮还是不对 → 换个更小的目标 │ └─────────────────────────────────────────────┘
+        - generic [ref=e52]:
+          - generic [ref=e53]:
+            - generic [ref=e54]: 循环四步
+            - heading "详解" [level=3] [ref=e55]
+          - generic [ref=e56]:
+            - paragraph [ref=e57]:
+              - strong [ref=e58]: ① 写Prompt
+              - text: 把第二节的模板填好，发给AI。
+              - strong [ref=e59]: 关键
+              - text: ：一次只说一个功能。
+            - paragraph [ref=e60]:
+              - strong [ref=e61]: ② AI生成代码
+              - text: AI给你返回代码。你需要做的事（按此顺序）：
+              - text: 1. 复制AI生成的完整HTML代码
+              - text: 2. 粘贴到你的 index.html 中，替换全部内容（Ctrl/⌘ + A → 粘贴 → Ctrl/⌘ + S 保存）
+              - text: 3. 刷新浏览器
+            - paragraph [ref=e62]:
+              - strong [ref=e63]: ③ 测试
+              - text: 在浏览器里，假装你是一个第一次用这个产品的用户：
+            - table [ref=e64]:
+              - rowgroup [ref=e65]:
+                - row "测试什么 怎么测" [ref=e66]:
+                  - columnheader "测试什么" [ref=e67]
+                  - columnheader "怎么测" [ref=e68]
+              - rowgroup [ref=e69]:
+                - row "页面正常打开了吗？ 刷新浏览器，看有没有白屏" [ref=e70]:
+                  - cell "页面正常打开了吗？" [ref=e71]
+                  - cell "刷新浏览器，看有没有白屏" [ref=e72]
+                - row "样式对吗？ 深色背景？按钮颜色对？布局没歪？" [ref=e73]:
+                  - cell "样式对吗？" [ref=e74]
+                  - cell "深色背景？按钮颜色对？布局没歪？" [ref=e75]
+                - row "核心功能走通了吗？ 按原型流程完整走一遍" [ref=e76]:
+                  - cell "核心功能走通了吗？" [ref=e77]
+                  - cell "按原型流程完整走一遍" [ref=e78]
+                - row "边界情况呢？ 输入框留空直接点提交 → 有提示吗？" [ref=e79]:
+                  - cell "边界情况呢？" [ref=e80]
+                  - cell "输入框留空直接点提交 → 有提示吗？" [ref=e81]
+                - row "手机端呢？ 打开浏览器的手机模拟模式（F12 → 手机图标）" [ref=e82]:
+                  - cell "手机端呢？" [ref=e83]
+                  - cell "打开浏览器的手机模拟模式（F12 → 手机图标）" [ref=e84]
+            - paragraph [ref=e85]:
+              - strong [ref=e86]: 关键
+              - text: ：用控制台看有没有报错。
+              - text: Chrome：F12 → Console 标签页
+              - text: 红色文字 = 错误。
+              - strong [ref=e87]: 截图保存。
+              - text: 黄色文字 = 警告。可以暂时忽略。
+            - paragraph [ref=e88]:
+              - strong [ref=e89]: ④ 描述差异
+              - text: 当测试发现不对时，
+              - strong [ref=e90]: 不要自己去改代码
+              - text: 。把问题描述清楚发回给AI：
+            - generic [ref=e92]: 测试发现问题： 1. [具体问题描述] 期望：[应该是什么样的] 实际：[现在是什么样的] 复现步骤：[怎么操作能触发这个问题] 2. [第二个问题] ... 3. 控制台报错截图： [粘贴截图] 请修复以上问题，只改相关部分，保持其他功能不变。
+        - paragraph [ref=e94]:
+          - strong [ref=e95]: 描述问题的黄金法则
+          - text: ：
+          - text: 坏："按钮坏了" → AI不知道怎么修
+          - text: 好："点击'保存'按钮后，页面没反应，控制台显示 'saveMessage is not defined'"
+        - generic [ref=e96]:
+          - generic [ref=e97]:
+            - generic [ref=e98]: 熔断机制
+            - heading "什么时候停下来换个方法" [level=3] [ref=e99]
+          - generic [ref=e100]:
+            - paragraph [ref=e101]: 连续5轮修复后功能还是不对 → 不要继续发同一个Prompt。
+            - paragraph [ref=e102]:
+              - text: 换个策略：
+              - text: "1."
+              - strong [ref=e103]: 缩小目标
+              - text: ："先只做功能的第一小步——只做输入框+按钮，先不管结果展示"
+              - text: "2."
+              - strong [ref=e104]: 换种描述
+              - text: ：用完全不同的语言重新描述功能
+              - text: "3."
+              - strong [ref=e105]: 把问题拆开
+              - text: ："按钮点不动"和"数据没保存"是两个问题，分开报
+      - generic [ref=e106]:
+        - generic [ref=e107]: 常见踩坑及标准修复Prompt
+        - generic [ref=e108]:
+          - generic [ref=e109]:
+            - generic [ref=e110]: 坑1
+            - heading "AI忘了引入Supabase SDK" [level=3] [ref=e111]
+          - generic [ref=e112]:
+            - paragraph [ref=e113]:
+              - strong [ref=e114]: 症状
+              - text: ：控制台报 supabase is not defined 或 createClient is not defined
+            - paragraph [ref=e115]:
+              - strong [ref=e116]: 修复Prompt
+              - text: ：
+            - generic [ref=e118]: "请在index.html的<head>标签内加入Supabase CDN引用： <script type=\"importmap\"> { \"imports\": { \"@supabase/supabase-js\": \"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm\" } } </script> 然后用 import { createClient } from '@supabase/supabase-js' 方式引入。"
+        - generic [ref=e119]:
+          - generic [ref=e120]:
+            - generic [ref=e121]: 坑2
+            - heading "样式丢失" [level=3] [ref=e122]
+          - generic [ref=e123]:
+            - paragraph [ref=e124]:
+              - strong [ref=e125]: 症状
+              - text: ：刷新后页面布局乱了、颜色不对、元素堆在一起
+            - paragraph [ref=e126]:
+              - strong [ref=e127]: 修复Prompt
+              - text: ：
+            - generic [ref=e129]: 样式丢失了。请检查是否有以下问题： 1. <style>标签是否在<head>内？ 2. CSS选择器是否和之前一致？ 3. 是否有重复的CSS规则互相覆盖？ 只检查样式部分，不要改功能代码。
+        - generic [ref=e130]:
+          - generic [ref=e131]:
+            - generic [ref=e132]: 坑3
+            - heading "Supabase操作中user_id没填" [level=3] [ref=e133]
+          - generic [ref=e134]:
+            - paragraph [ref=e135]:
+              - strong [ref=e136]: 症状
+              - text: ：插入数据时报错，或数据插入成功但查不出来
+            - paragraph [ref=e137]:
+              - strong [ref=e138]: 修复Prompt
+              - text: ：
+            - generic [ref=e140]: "现在messages表有user_id字段，所有插入操作需要带上当前登录用户的ID。 请修改所有 supabase.from('messages').insert() 调用，加上： user_id: (await supabase.auth.getUser()).data.user.id 同时修改所有 .select() 调用，加上过滤条件只查当前用户的数据。"
+        - generic [ref=e141]:
+          - generic [ref=e142]:
+            - generic [ref=e143]: 坑4
+            - heading "AI一次改了太多，把之前好的功能改坏了" [level=3] [ref=e144]
+          - generic [ref=e145]:
+            - paragraph [ref=e146]:
+              - strong [ref=e147]: 症状
+              - text: ：修了一个小bug，结果登录功能不工作了
+            - paragraph [ref=e148]:
+              - strong [ref=e149]: 修复Prompt
+              - text: ：
+            - generic [ref=e151]: 之前的功能被你的修改影响了。请恢复到上一版，只修改我指定的这一个问题： [具体问题] 其他所有功能（登录、消息列表等）保持不动。
+        - generic [ref=e152]:
+          - generic [ref=e153]: 防坑策略
+          - generic [ref=e154]:
+            - strong [ref=e155]: 每改完一个功能就 git commit。
+            - text: 这样即使AI改坏了，你可以 git checkout -- index.html 瞬间恢复。
+      - generic [ref=e156]:
+        - generic [ref=e157]: 功能完成标志
+        - paragraph [ref=e158]:
+          - strong [ref=e159]: 判断标准（必须全部通过）
+          - text: ：
+        - table [ref=e160]:
+          - rowgroup [ref=e161]:
+            - row "# 要求" [ref=e162]:
+              - columnheader "#" [ref=e163]
+              - columnheader "要求" [ref=e164]
+          - rowgroup [ref=e165]:
+            - row "1 一个完全不懂你的产品的朋友，能在不问你任何问题的情况下，独立走完核心功能" [ref=e166]:
+              - cell "1" [ref=e167]
+              - cell "一个完全不懂你的产品的朋友，能在不问你任何问题的情况下，独立走完核心功能" [ref=e168]
+            - row "2 在手机端操作一遍，没有任何按钮点不到" [ref=e169]:
+              - cell "2" [ref=e170]
+              - cell "在手机端操作一遍，没有任何按钮点不到" [ref=e171]
+            - row "3 控制台（F12 → Console）没有任何红色错误" [ref=e172]:
+              - cell "3" [ref=e173]
+              - cell "控制台（F12 → Console）没有任何红色错误" [ref=e174]
+            - row "4 输入框留空点提交，有中文提示（不是英文报错）" [ref=e175]:
+              - cell "4" [ref=e176]
+              - cell "输入框留空点提交，有中文提示（不是英文报错）" [ref=e177]
+            - row "5 断网状态下点击按钮，有\"网络异常，请检查连接\"的提示" [ref=e178]:
+              - cell "5" [ref=e179]
+              - cell "断网状态下点击按钮，有\"网络异常，请检查连接\"的提示" [ref=e180]
+            - row "6 连着操作10次，功能正常不出错" [ref=e181]:
+              - cell "6" [ref=e182]
+              - cell "连着操作10次，功能正常不出错" [ref=e183]
+        - paragraph [ref=e184]: 6项全部通过 → 功能1完成。
+      - generic [ref=e185]:
+        - generic [ref=e186]: git commit 规范
+        - generic [ref=e188]: git add . git commit -m "完成核心功能1：[功能名称] - 实现[功能要点1] - 实现[功能要点2] - 修复[数量]个边界情况 - 移动端适配完成" git push
+        - paragraph [ref=e190]:
+          - strong [ref=e191]: 每个功能一个commit
+          - text: 不只是为了记录——以后如果核心功能2的开发弄乱了核心功能1的代码，你可以精确回到"功能1完成时"的那个版本。
+      - generic [ref=e192]:
+        - generic [ref=e193]: 总纲
+        - paragraph [ref=e195]:
+          - text: Vibecoding循环是你作为OPC的核心工作节奏。它不需要你会写代码——但需要你
+          - strong [ref=e196]: 会描述问题
+          - text: 。
+        - generic [ref=e197]:
+          - generic [ref=e198]: OPC开发节奏
+          - generic [ref=e199]:
+            - strong [ref=e200]: 周一上午
+            - text: ：写好Prompt → AI生成
+            - strong [ref=e201]: 周一下午
+            - text: ：测试 → 发现问题 → 描述差异
+            - strong [ref=e202]: 周二上午
+            - text: ：AI修复 → 重新测试
+            - strong [ref=e203]: 周二下午
+            - text: ：功能通过 → git commit
+            - strong [ref=e204]: 周三
+            - text: ：启动核心功能2
+        - paragraph [ref=e205]: （本文写于2026年5月。）
+        - generic [ref=e206]:
+          - generic [ref=e207]: 2026 UPDATE
+          - generic [ref=e208]:
+            - blockquote [ref=e209]: "**面向OPC**：环境搭好了，数据库通了，现在写第一行真正创造价值的代码。核心功能1是你产品的灵魂——用户打开产品就是为了用它。本节点告诉你：怎么一个人把第一个核心功能做出来，而且做对。"
+            - heading "一、先定义，再编码" [level=3] [ref=e210]
+            - heading "核心功能1的一句话定义" [level=4] [ref=e211]
+            - blockquote [ref=e212]: "[用户] 通过 [操作] 获得 [结果]"
+            - table [ref=e213]:
+              - rowgroup [ref=e214]:
+                - row "产品 一句话" [ref=e215]:
+                  - cell "产品" [ref=e216]
+                  - cell "一句话" [ref=e217]
+                - row "OPC节点百科 创业者通过节点导航，找到下一步该做什么" [ref=e218]:
+                  - columnheader "OPC节点百科" [ref=e219]
+                  - columnheader "创业者通过节点导航，找到下一步该做什么" [ref=e220]
+                - row "AI简历优化 求职者上传简历，3分钟拿到优化建议" [ref=e221]:
+                  - cell "AI简历优化" [ref=e222]
+                  - cell "求职者上传简历，3分钟拿到优化建议" [ref=e223]
+                - row "记账工具 用户记录收支，看到本月花了多少钱" [ref=e224]:
+                  - cell "记账工具" [ref=e225]
+                  - cell "用户记录收支，看到本月花了多少钱" [ref=e226]
+            - paragraph [ref=e227]:
+              - strong [ref=e228]: 如果你写不出这句话，说明你还没想清楚。别写代码。
+            - heading "二、2026年OPC开发核心功能1的最优路径" [level=3] [ref=e229]
+            - heading "路径：AI辅助 + 分步验证" [level=4] [ref=e230]
+            - code [ref=e232]: 1. 用AI生成第一版代码（10分钟） 2. 本地跑通核心流程（30分钟） 3. 接入真实数据（1小时） 4. 处理错误状态（30分钟） 5. 加Loading/Empty/Error三种状态（30分钟） ────────────────────────────── 总计：≈3小时完成核心功能1的80%
+            - heading "步骤1：用AI生成第一版" [level=4] [ref=e233]
+            - paragraph [ref=e234]: 在Cursor中打开项目，用这个prompt模板：
+            - code [ref=e236]: 我在做一个[产品描述]，技术栈是[前端框架]+Supabase。 请帮我实现核心功能：[一句话定义] 要求： 1. 只需要一个页面，包含输入区和结果展示区 2. 用Supabase存取数据（表名：[表名]） 3. 不做登录（先用匿名方式） 4. 样式简洁，移动端友好
+            - heading "步骤2：本地跑通" [level=4] [ref=e237]
+            - code [ref=e239]: 打开浏览器 → 输入数据 → 点提交 → 看到结果 → 检查Supabase表中是否有数据
+            - paragraph [ref=e240]:
+              - strong [ref=e241]: 如果这5步有任何一步卡住了 → 回去改prompt重新生成，不要手动改代码。
+            - heading "步骤3：三种状态的处理" [level=4] [ref=e242]
+            - paragraph [ref=e243]: 核心功能1必须覆盖三种状态（否则用户会觉得产品是坏的）：
+            - code [ref=e245]: "// 状态1：加载中 if (loading) return '<div class=\"loading\">分析中...</div>'; // 状态2：空状态（首次使用） if (!data) return '<div class=\"empty\">上传你的简历，开始第一次分析</div>'; // 状态3：错误 if (error) return '<div class=\"error\">出错了：${error.message}，请刷新重试</div>'; // 正常展示 return renderResult(data);"
+            - heading "三、核心功能1的完成标准（上线前自检）" [level=3] [ref=e246]
+            - text: 标准检查方式 输入→输出完整链路无痕浏览器，从头走一遍 数据持久化刷新页面，数据还在 三种状态都有分别触发Loading/Empty/Error 移动端可用手机微信打开，核心流程走通 20秒内完成操作计时：从打开到看到结果≤20秒
+            - heading "四、最容易犯的两个错误" [level=3] [ref=e247]
+            - heading "错误1：想要\"完美\"的第一版" [level=4] [ref=e248]
+            - paragraph [ref=e249]: ❌ 做了3天还在调UI颜色和动画
+            - paragraph [ref=e250]: ✅ 功能跑通就停手。UI优化等节点14一起做。
+            - heading "错误2：跳过错误处理" [level=4] [ref=e251]
+            - paragraph [ref=e252]: ❌ "这个输入框用户不会填错的"
+            - paragraph [ref=e253]: ✅ 空输入、超长输入、特殊字符全部处理。自己测试时用真实数据，别用"test"。
+            - heading "五、检查清单" [level=3] [ref=e254]
+            - list [ref=e255]:
+              - listitem [ref=e256]: "[ ] 核心功能的一句话定义已写出"
+              - listitem [ref=e257]: "[ ] AI生成的代码核心流程能跑通"
+              - listitem [ref=e258]: "[ ] 数据能正确存入Supabase"
+              - listitem [ref=e259]: "[ ] 三个状态（Loading/Empty/Error）都已处理"
+              - listitem [ref=e260]: "[ ] 手机微信打开核心流程可用"
+              - listitem [ref=e261]: "[ ] 从打开到看到结果≤20秒"
+              - listitem [ref=e262]:
+                - link "2026年更新" [ref=e263] [cursor=pointer]:
+                  - /url: "#s2026"
+            - heading "节点资源链接" [level=3] [ref=e264]
+            - list [ref=e265]:
+              - listitem [ref=e266]: 节点11：用户认证系统
+              - listitem [ref=e267]: 节点13：核心功能2开发
+              - listitem [ref=e268]: 节点14：数据展示与交互
+          - paragraph [ref=e269]: 以上内容基于2026年5月最新实践编写，工具版本和价格可能更新，请以官方文档为准。
+  - navigation [ref=e270]:
+    - link "← 节点11：用户认证系统" [ref=e271] [cursor=pointer]:
+      - /url: /nodes/11-auth-system/index.html
+      - generic [ref=e272]: ←
+      - text: 节点11：用户认证系统
+    - link "节点13：核心功能2开发 →" [ref=e273] [cursor=pointer]:
+      - /url: /nodes/13-core-feature-2/index.html
+      - text: 节点13：核心功能2开发
+      - generic [ref=e274]: →

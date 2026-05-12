@@ -1,0 +1,303 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "← 返回首页" [ref=e3] [cursor=pointer]:
+      - /url: /index.html
+    - generic [ref=e4]: 节点 09 / 57
+  - generic: "09"
+  - generic [ref=e5]:
+    - complementary [ref=e6]:
+      - generic [ref=e7]: 目录
+      - list [ref=e8]:
+        - listitem [ref=e9]:
+          - link "用AI理解Git：一句话就够了" [ref=e10] [cursor=pointer]:
+            - /url: "#s1"
+        - listitem [ref=e11]:
+          - link "GitHub / Gitee 是什么" [ref=e12] [cursor=pointer]:
+            - /url: "#s2"
+        - listitem [ref=e13]:
+          - link "注册与SSH配置" [ref=e14] [cursor=pointer]:
+            - /url: "#s3"
+        - listitem [ref=e15]:
+          - link "首次 git init → add → commit → push" [ref=e16] [cursor=pointer]:
+            - /url: "#s4"
+        - listitem [ref=e17]:
+          - link ".gitignore 的正确写法" [ref=e18] [cursor=pointer]:
+            - /url: "#s5"
+        - listitem [ref=e19]:
+          - link "Git日常三件套" [ref=e20] [cursor=pointer]:
+            - /url: "#s6"
+        - listitem [ref=e21]:
+          - link "GitHub/Gitee给OPC的可视化操作" [ref=e22] [cursor=pointer]:
+            - /url: "#s7"
+        - listitem [ref=e23]:
+          - link "常见问题" [ref=e24] [cursor=pointer]:
+            - /url: "#s8"
+        - listitem [ref=e25]:
+          - link "总纲" [ref=e26] [cursor=pointer]:
+            - /url: "#s9"
+    - main [ref=e27]:
+      - generic [ref=e29]:
+        - generic [ref=e30]: 节点 09 · 环境搭建
+        - heading "Git版本控制初始化" [level=1] [ref=e31]
+        - paragraph [ref=e32]: 你把第一个页面做出来了——如果明天电脑崩了、改了一个地方之后整个页面坏了、想把3天前的版本找回来——你需要Git。本章只需要会3条命令，从此再也不怕代码丢失。
+      - generic [ref=e33]:
+        - generic [ref=e34]: 用AI理解Git：一句话就够了
+        - generic [ref=e35]:
+          - generic [ref=e36]: 核心认知
+          - generic [ref=e37]: Git = 代码的"存档系统"。就像玩游戏时的存档——打Boss前存一个档，万一翻车了可以读档重来。Git就是让你随时可以回到之前任意一次"存档"的工具。
+        - table [ref=e38]:
+          - rowgroup [ref=e39]:
+            - row "游戏概念 Git概念 命令" [ref=e40]:
+              - columnheader "游戏概念" [ref=e41]
+              - columnheader "Git概念" [ref=e42]
+              - columnheader "命令" [ref=e43]
+          - rowgroup [ref=e44]:
+            - row "打Boss前存档 创建一次提交(commit) git commit -m \"改完首页样式\"" [ref=e45]:
+              - cell "打Boss前存档" [ref=e46]
+              - cell "创建一次提交(commit)" [ref=e47]
+              - cell "git commit -m \"改完首页样式\"" [ref=e48]
+            - row "上传云端存档 推送到远程仓库(push) git push" [ref=e49]:
+              - cell "上传云端存档" [ref=e50]
+              - cell "推送到远程仓库(push)" [ref=e51]
+              - cell "git push" [ref=e52]
+            - row "读档回到3天前 回退到历史版本 git checkout 版本号（进阶）" [ref=e53]:
+              - cell "读档回到3天前" [ref=e54]
+              - cell "回退到历史版本" [ref=e55]
+              - cell "git checkout 版本号（进阶）" [ref=e56]
+      - generic [ref=e57]:
+        - generic [ref=e58]: GitHub / Gitee 是什么
+        - table [ref=e59]:
+          - rowgroup [ref=e60]:
+            - row "平台 是什么 国内访问" [ref=e61]:
+              - columnheader "平台" [ref=e62]
+              - columnheader "是什么" [ref=e63]
+              - columnheader "国内访问" [ref=e64]
+          - rowgroup [ref=e65]:
+            - row "GitHub 全球最大的代码托管平台，2026年月活超1亿 不稳定" [ref=e66]:
+              - cell "GitHub" [ref=e67]
+              - cell "全球最大的代码托管平台，2026年月活超1亿" [ref=e68]
+              - cell "不稳定" [ref=e69]
+            - row "Gitee（码云） 国内版GitHub，深圳公司运营，服务器国内 流畅" [ref=e70]:
+              - cell "Gitee（码云）" [ref=e71]
+              - cell "国内版GitHub，深圳公司运营，服务器国内" [ref=e72]
+              - cell "流畅" [ref=e73]
+        - generic [ref=e74]:
+          - generic [ref=e75]: 推荐方案
+          - generic [ref=e76]: 两个都注册。日常推送用Gitee（速度快），GitHub做镜像备份（国际影响力）。
+      - generic [ref=e77]:
+        - generic [ref=e78]: 注册与SSH配置（10分钟）
+        - generic [ref=e79]:
+          - generic [ref=e80]:
+            - generic [ref=e81]: "1"
+            - generic [ref=e82]:
+              - generic [ref=e83]: 注册Gitee（如果还没账号）
+              - generic [ref=e84]: 打开 gitee.com → 点"注册"，用手机号或微信注册 → 登录后，点右上角头像 → "设置" → "SSH公钥"（先放着，等下用）
+          - generic [ref=e85]:
+            - generic [ref=e86]: "2"
+            - generic [ref=e87]:
+              - generic [ref=e88]: 注册GitHub（同上）
+              - generic [ref=e89]: 打开 github.com → 点"Sign up"，用邮箱注册 → 登录后，点头像 → "Settings" → "SSH and GPG keys"
+          - generic [ref=e90]:
+            - generic [ref=e91]: "3"
+            - generic [ref=e92]:
+              - generic [ref=e93]: 生成SSH密钥（关键步骤）
+              - generic [ref=e94]:
+                - text: SSH密钥 = 你的电脑和Gitee/GitHub之间的"身份卡"。配好之后，推送代码不需要每次输密码。
+                - text: 在VS Code终端中执行（一路回车，不要设密码）：
+        - generic [ref=e95]:
+          - generic [ref=e96]: 终端命令
+          - generic [ref=e97]: ssh-keygen -t ed25519 -C "你的邮箱@example.com"
+        - paragraph [ref=e98]: 终端会显示密钥保存位置。默认在：
+        - list [ref=e99]:
+          - listitem [ref=e100]: Mac：/Users/你的用户名/.ssh/id_ed25519.pub
+          - listitem [ref=e101]: Windows：C:\Users\你的用户名\.ssh\id_ed25519.pub
+        - generic [ref=e102]:
+          - generic [ref=e103]:
+            - generic [ref=e104]: 复制公钥 - Mac
+            - generic [ref=e105]: 终端执行
+            - generic [ref=e106]: cat ~/.ssh/id_ed25519.pub
+          - generic [ref=e107]:
+            - generic [ref=e108]: 复制公钥 - Windows
+            - generic [ref=e109]: PowerShell执行
+            - generic [ref=e110]: type $env:USERPROFILE\.ssh\id_ed25519.pub
+        - paragraph [ref=e111]:
+          - text: 输出的内容类似
+          - code [ref=e112]: ssh-ed25519 AAAAC3... 你的邮箱
+          - text: 。复制全部。
+        - generic [ref=e113]:
+          - generic [ref=e114]: 粘贴到Gitee和GitHub
+          - paragraph [ref=e116]:
+            - text: 1. Gitee：设置 → SSH公钥 → 粘贴 → 标题写"我的Mac" → 确定
+            - text: 2. GitHub：Settings → SSH and GPG keys → New SSH key → 粘贴 → 标题写"我的Mac"
+        - generic [ref=e117]:
+          - generic [ref=e118]: 验证
+          - generic [ref=e119]:
+            - generic [ref=e120]:
+              - generic [ref=e121]: 测试Gitee
+              - generic [ref=e122]: "ssh -T git@gitee.com # 成功会显示：Hi 你的用户名! You've successfully authenticated..."
+            - generic [ref=e123]:
+              - generic [ref=e124]: 测试GitHub
+              - generic [ref=e125]: "ssh -T git@github.com # 成功会显示：Hi 你的用户名! You've successfully authenticated..."
+            - paragraph [ref=e126]: 两个都显示成功 → SSH配置完成。
+      - generic [ref=e127]:
+        - generic [ref=e128]: 首次 git init → add → commit → push
+        - generic [ref=e129]:
+          - generic [ref=e130]:
+            - text: 第一步
+            - heading "在Gitee上创建远程仓库" [level=3] [ref=e131]
+          - paragraph [ref=e133]:
+            - text: 1. 点右上角 "+" → "新建仓库"
+            - text: 2. 仓库名称：my-first-app
+            - text: 3. 可见性：选"私有"（你的产品代码不要公开）
+            - text: "4."
+            - strong [ref=e134]: 不要勾选
+            - text: "\"使用Readme文件初始化仓库\"（重要！因为你本地已经有代码了）"
+            - text: 5. 点"创建"
+        - generic [ref=e135]:
+          - generic [ref=e136]:
+            - text: 第二步
+            - heading "在本地项目中执行（VS Code终端）" [level=3] [ref=e137]
+          - generic [ref=e139]:
+            - generic [ref=e140]: 完整命令序列
+            - generic [ref=e141]: "# 第1步：初始化Git仓库 git init # 第2步：创建.gitignore（告诉Git忽略哪些文件） echo \"node_modules/ .env .DS_Store\" > .gitignore # 第3步：把所有文件加入暂存区 git add . # 第4步：创建第一次提交 git commit -m \"第一个页面：Hello World\" # 第5步：关联远程仓库（替换为你的仓库地址） git remote add origin git@gitee.com:你的用户名/my-first-app.git # 第6步：推送到Gitee git push -u origin main"
+        - generic [ref=e142]:
+          - generic [ref=e143]:
+            - text: 第三步
+            - heading "同时推送到GitHub（可选）" [level=3] [ref=e144]
+          - generic [ref=e145]:
+            - generic [ref=e147]: "# 添加GitHub作为第二个远程仓库 git remote add github git@github.com:你的用户名/my-first-app.git # 推送到GitHub git push -u github main"
+            - paragraph [ref=e148]:
+              - text: 以后每次改完代码：
+              - code [ref=e149]: git push
+              - text: — 推送到Gitee
+              - code [ref=e150]: git push github
+              - text: — 推送到GitHub
+        - paragraph [ref=e151]: 打开Gitee → 进入 my-first-app 仓库 → 你应该能看到你的 index.html 和 package.json。
+      - generic [ref=e152]:
+        - generic [ref=e153]: .gitignore 的正确写法
+        - paragraph [ref=e154]: 告诉Git"这些文件/文件夹不要管它们，不要上传"。
+        - generic [ref=e155]:
+          - generic [ref=e156]: OPC项目标准 .gitignore
+          - generic [ref=e157]: "# 依赖包（太大，通过package.json记录就够了，不需要上传几万个小文件） node_modules/ # 环境变量（里面有密码、API密钥，绝对不能上传！） .env .env.local .env.*.local # 系统文件 .DS_Store # Mac自动生成的文件夹信息 Thumbs.db # Windows自动生成的缩略图 # 构建输出 dist/ build/ .next/ # IDE配置 .vscode/ .idea/ # 调试文件 *.log npm-debug.log*"
+        - generic [ref=e158]:
+          - generic [ref=e159]:
+            - text: 不小心
+            - heading "已经上传了不该上传的东西？" [level=3] [ref=e160]
+          - generic [ref=e163]: "# 1. 先把文件加入.gitignore（比如你忘了忽略 node_modules） echo \"node_modules/\" >> .gitignore # 2. 从Git跟踪中移除（但不删除本地文件） git rm -r --cached node_modules/ # 3. 提交这个改动 git add .gitignore git commit -m \"添加.gitignore，移除误上传的node_modules\" # 4. 推送 git push"
+      - generic [ref=e164]:
+        - generic [ref=e165]: Git日常三件套
+        - paragraph [ref=e166]: 每次改完代码后的标准操作：
+        - generic [ref=e167]:
+          - generic [ref=e168]: 日常四步
+          - generic [ref=e169]: "# ① 查看改了哪些文件 git status # ② 把所有改动加入暂存区 git add . # ③ 创建提交（用一句话说明你做了什么） git commit -m \"做了什么修改\" # ④ 推送到远程仓库 git push"
+        - generic [ref=e170]:
+          - generic [ref=e171]:
+            - text: 让AI帮你写
+            - heading "commit message 怎么写" [level=3] [ref=e172]
+          - generic [ref=e173]:
+            - paragraph [ref=e174]: 不需要写成英文。用中文写清楚你做了什么就行：
+            - table [ref=e175]:
+              - rowgroup [ref=e176]:
+                - row "好的 commit message 不好的" [ref=e177]:
+                  - columnheader "好的 commit message" [ref=e178]
+                  - columnheader "不好的" [ref=e179]
+              - rowgroup [ref=e180]:
+                - row "首页布局改为居中，按钮颜色改成红色 改了一下" [ref=e181]:
+                  - cell "首页布局改为居中，按钮颜色改成红色" [ref=e182]
+                  - cell "改了一下" [ref=e183]
+                - row "修复登录页面手机端按钮点不到的问题 fix bug" [ref=e184]:
+                  - cell "修复登录页面手机端按钮点不到的问题" [ref=e185]
+                  - cell "fix bug" [ref=e186]
+                - row "新增搜索结果页，展示卡片列表 update" [ref=e187]:
+                  - cell "新增搜索结果页，展示卡片列表" [ref=e188]
+                  - cell "update" [ref=e189]
+                - row "替换首页配图为高清版本 改图片" [ref=e190]:
+                  - cell "替换首页配图为高清版本" [ref=e191]
+                  - cell "改图片" [ref=e192]
+            - paragraph [ref=e193]:
+              - text: 让AI帮你写 commit message：
+              - text: "\"帮我总结这次改了哪些文件，写一条中文git commit message\""
+      - generic [ref=e194]:
+        - generic [ref=e195]: GitHub/Gitee给OPC的可视化操作
+        - paragraph [ref=e196]: 你不需要记住所有Git概念。这两个平台都提供了Web操作界面：
+        - table [ref=e197]:
+          - rowgroup [ref=e198]:
+            - row "操作 怎么在网页上做" [ref=e199]:
+              - columnheader "操作" [ref=e200]
+              - columnheader "怎么在网页上做" [ref=e201]
+          - rowgroup [ref=e202]:
+            - row "看历史版本 仓库主页 → 点击 \"commits\"（提交记录）" [ref=e203]:
+              - cell "看历史版本" [ref=e204]
+              - cell "仓库主页 → 点击 \"commits\"（提交记录）" [ref=e205]
+            - row "看某次改了什么 点某条commit → 绿色是新增，红色是删除" [ref=e206]:
+              - cell "看某次改了什么" [ref=e207]
+              - cell "点某条commit → 绿色是新增，红色是删除" [ref=e208]
+            - row "回退到旧版本 点某条commit → 点 \"Browse files\" → 能看到当时的完整代码" [ref=e209]:
+              - cell "回退到旧版本" [ref=e210]
+              - cell "点某条commit → 点 \"Browse files\" → 能看到当时的完整代码" [ref=e211]
+            - row "下载旧版本 Code → Download ZIP" [ref=e212]:
+              - cell "下载旧版本" [ref=e213]
+              - cell "Code → Download ZIP" [ref=e214]
+      - generic [ref=e215]:
+        - generic [ref=e216]: 常见问题
+        - table [ref=e217]:
+          - rowgroup [ref=e218]:
+            - row "问题 解决" [ref=e219]:
+              - columnheader "问题" [ref=e220]
+              - columnheader "解决" [ref=e221]
+          - rowgroup [ref=e222]:
+            - row "\"git push\" 报错 permission denied SSH密钥没配好。重新走本章第二步（生成SSH → 粘贴到Gitee/GitHub）。" [ref=e223]:
+              - cell "\"git push\" 报错 permission denied" [ref=e224]
+              - cell "SSH密钥没配好。重新走本章第二步（生成SSH → 粘贴到Gitee/GitHub）。" [ref=e225]
+            - 'row "\"fatal: remote origin already exists\" 你已经关联过了，不需要再 git remote add。直接 git push 就行。" [ref=e226]':
+              - 'cell "\"fatal: remote origin already exists\"" [ref=e227]'
+              - cell "你已经关联过了，不需要再 git remote add。直接 git push 就行。" [ref=e228]
+            - row "\"Updates were rejected because the remote contains work\" 远程仓库有本地没有的代码（比如你在网页上改过文件）。 git pull origin main --rebase 然后 git push" [ref=e229]:
+              - cell "\"Updates were rejected because the remote contains work\"" [ref=e230]
+              - cell "远程仓库有本地没有的代码（比如你在网页上改过文件）。 git pull origin main --rebase 然后 git push" [ref=e231]:
+                - text: 远程仓库有本地没有的代码（比如你在网页上改过文件）。
+                - code [ref=e232]: git pull origin main --rebase
+                - text: 然后
+                - code [ref=e233]: git push
+            - row "改错了一个文件想撤销 git checkout -- 文件名（回到上次commit的状态） git checkout -- .（撤销所有修改，危险！谨慎使用）" [ref=e234]:
+              - cell "改错了一个文件想撤销" [ref=e235]
+              - cell "git checkout -- 文件名（回到上次commit的状态） git checkout -- .（撤销所有修改，危险！谨慎使用）" [ref=e236]:
+                - code [ref=e237]: git checkout -- 文件名
+                - text: （回到上次commit的状态）
+                - code [ref=e238]: git checkout -- .
+                - text: （撤销所有修改，危险！谨慎使用）
+            - row "想回到之前的某次提交看看 git log --oneline 查看提交历史 git checkout 提交ID的前6位 回到某次提交（只读，不修改） git checkout main 回到最新提交" [ref=e239]:
+              - cell "想回到之前的某次提交看看" [ref=e240]
+              - cell "git log --oneline 查看提交历史 git checkout 提交ID的前6位 回到某次提交（只读，不修改） git checkout main 回到最新提交" [ref=e241]:
+                - code [ref=e242]: git log --oneline
+                - text: 查看提交历史
+                - code [ref=e243]: git checkout 提交ID的前6位
+                - text: 回到某次提交（只读，不修改）
+                - code [ref=e244]: git checkout main
+                - text: 回到最新提交
+      - generic [ref=e245]:
+        - generic [ref=e246]: 总纲
+        - paragraph [ref=e248]: Git是OPC的"后悔药"和"时光机"。你永远可以回到过去任一时刻的代码状态——这个安全感比你想象的更重要。
+        - generic [ref=e249]:
+          - generic [ref=e250]: 日常四步
+          - generic [ref=e251]:
+            - code [ref=e252]: git status
+            - text: — 看看改了啥
+            - code [ref=e253]: git add .
+            - text: — 全部暂存
+            - code [ref=e254]: git commit -m "..."
+            - text: — 创建存档
+            - code [ref=e255]: git push
+            - text: — 上传云端
+        - paragraph [ref=e256]:
+          - text: 从今天开始：每改完一个功能就commit一次，每次结束工作就push一次。
+          - text: （本文写于2026年5月。）
+  - navigation [ref=e257]:
+    - link "← 节点08：Hello World 启动" [ref=e258] [cursor=pointer]:
+      - /url: /nodes/08-hello-world/index.html
+      - generic [ref=e259]: ←
+      - text: 节点08：Hello World 启动
+    - link "节点10：后端CRUD连接测试 →" [ref=e260] [cursor=pointer]:
+      - /url: /nodes/10-backend-connect/index.html
+      - text: 节点10：后端CRUD连接测试
+      - generic [ref=e261]: →

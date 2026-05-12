@@ -662,7 +662,19 @@ td:first-child {
   </nav>
 
   <div class="layout">
-    <main class="container">
+    <aside class="sidebar-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#s2" class="toc-link">一、先理解：微信支付的钱是怎么到你账户的</a></li>
+        <li class="toc-item"><a href="#s3" class="toc-link">二、2026年微信支付的三条路径</a></li>
+        <li class="toc-item"><a href="#s4" class="toc-link">三、微信支付API V3 核心代码（2026年现行版本）</a></li>
+        <li class="toc-item"><a href="#s5" class="toc-link">四、OPC支付系统的安全铁律</a></li>
+        <li class="toc-item"><a href="#s6" class="toc-link">五、常见翻车与解决</a></li>
+        <li class="toc-item"><a href="#s7" class="toc-link">六、检查清单</a></li>
+        <li class="toc-item"><a href="#s8" class="toc-link">节点资源链接</a></li>
+      </ul>
+    </aside>
+        <main>
       <header>
       <div class="phase-label">核心功能开发</div>
       <h1>支付代码集成</h1>
@@ -675,7 +687,7 @@ td:first-child {
 <blockquote class="decision-box"><p>产品做好了，用户也来了，但钱进不来。微信支付是国内OPC绕不开的关卡。本节点用最直白的方式讲清楚：从零到收到第一笔钱，代码该怎么写。</p></blockquote>
 
 <p></section></p>
-<section id="s一">
+<section id="s2">
 <p>      <div class="section-label">一、先理解：微信支付的钱是怎么到你账户的</div></p>
 
 <p>别一头扎进代码。先理解钱流动的过程：</p>
@@ -699,7 +711,7 @@ td:first-child {
 <strong>关键认知</strong>：整个流程中，你的后端从来不会"收到钱"。钱是微信代收，T+1结算到你的对公账户。你的后端只负责两件事：<strong>发起支付请求</strong> 和 <strong>确认支付结果</strong>。
 
 <p></section></p>
-<section id="s二">
+<section id="s3">
 <p>      <div class="section-label">二、2026年微信支付的三条路径</div></p>
 
 <div class="table-wrapper"><table><thead><tr><th>路径</th><th>适用场景</th><th>开发复杂度</th><th>费率</th></tr></thead><tbody><tr><td><strong>JSAPI支付</strong></td><td>微信内网页、公众号</td><td>⭐⭐ 中</td><td>0.6%</td></tr><tr><td><strong>小程序支付</strong></td><td>微信小程序内</td><td>⭐⭐ 中</td><td>0.6%</td></tr><tr><td><strong>Native支付</strong></td><td>PC网页（扫码付）</td><td>⭐ 最低</td><td>0.6%</td></tr><tr><td><strong>H5支付</strong></td><td>手机浏览器网页</td><td>⭐⭐⭐ 最高</td><td>0.6%</td></tr></tbody></table></div>
@@ -708,7 +720,7 @@ td:first-child {
 <ul><li>如果你做了微信小程序 → 小程序支付</li><li>如果你只做了Web → JSAPI（微信内打开）/ Native（电脑打开扫码）</li><li>别做H5支付，申请难度大，需要额外资质</li></ul>
 
 <p></section></p>
-<section id="s三">
+<section id="s4">
 <p>      <div class="section-label">三、微信支付API V3 核心代码（2026年现行版本）</div></p>
 
 <p>微信支付API V3是2020年推出的，2026年已经是唯一在用的版本。<strong>V2已经完全停用，不要看任何V2教程。</strong></p>
@@ -844,7 +856,7 @@ td:first-child {
 <p></code>`<code></p>
 
 <p></section></p>
-<section id="s四">
+<section id="s5">
 <p>      <div class="section-label">四、OPC支付系统的安全铁律</div></p>
 
 <h3>必须遵守的5条</h3>
@@ -855,19 +867,19 @@ td:first-child {
 <p>微信支付提供了沙箱环境（</code>https://api.mch.weixin.qq.com/sandboxnew/`），但2026年沙箱已经逐步废弃。<strong>建议直接在正式环境做1分钱测试。</strong></p>
 
 <p></section></p>
-<section id="s五">
+<section id="s6">
 <p>      <div class="section-label">五、常见翻车与解决</div></p>
 
 <div class="table-wrapper"><table><thead><tr><th>翻车</th><th>现象</th><th>根因</th><th>解决</th></tr></thead><tbody><tr><td><strong>signature error</strong></td><td>预支付订单创建失败</td><td>签名算法有误或证书路径不对</td><td>用微信官方调试工具验证签名</td></tr><tr><td><strong>回调收不到</strong></td><td>用户付了钱订单状态不变</td><td>notify_url不可达或没有公网IP</td><td>本地开发用ngrok穿透；生产环境检查防火墙</td></tr><tr><td><strong>重复支付</strong></td><td>同一个订单用户付了两次</td><td>未做幂等处理</td><td>回调入口第一行就查订单状态</td></tr><tr><td><strong>金额不对</strong></td><td>用户付了1分钱获得999元的会员</td><td>前端传了amount参数</td><td>从前端只接收productId，后端查数据库获取价格</td></tr><tr><td><strong>openid获取失败</strong></td><td>JSAPI支付无法发起</td><td>未在微信内打开或未授权</td><td>确保页面在微信内打开，已完成网页授权</td></tr></tbody></table></div>
 
 <p></section></p>
-<section id="s六">
+<section id="s7">
 <p>      <div class="section-label">六、检查清单</div></p>
 
 <ul><li><input type="checkbox" disabled> 微信商户号已申请</li><li><input type="checkbox" disabled> APIv3证书已下载并配置到服务器环境变量</li><li><input type="checkbox" disabled> 金额完全在后端计算</li><li><input type="checkbox" disabled> 回调接口已验证能正常接收+验签</li><li><input type="checkbox" disabled> 订单状态变更有幂等保护</li><li><input type="checkbox" disabled> 做过1分钱真实支付测试</li><li><input type="checkbox" disabled> HTTPS已配置</li><li><input type="checkbox" disabled> 前端从未出现API密钥</li></ul>
 
 <p></section></p>
-<section id="s节">
+<section id="s8">
 <p>      <div class="section-label">节点资源链接</div></p>
 
 <ul><li>节点15：核心功能3开发</li><li>节点17：国内支付接入</li><li>节点18：开发者自测流程</li></ul>
@@ -901,6 +913,30 @@ td:first-child {
       }
     });
   });
+
+  // Scroll spy for TOC
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+
+  function updateActiveLink() {
+    const scrollPos = window.scrollY + 120;
+    sections.forEach(section => {
+      const top = section.offsetTop;
+      const height = section.offsetHeight;
+      const id = section.getAttribute('id');
+      if (scrollPos >= top && scrollPos < top + height) {
+        tocLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + id) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveLink, { passive: true });
+  updateActiveLink();
   </script>
 </body>
 </html>

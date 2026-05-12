@@ -662,7 +662,20 @@ td:first-child {
   </nav>
 
   <div class="layout">
-    <main class="container">
+    <aside class="sidebar-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#s2" class="toc-link">一、OPC的数据展示第一原理</a></li>
+        <li class="toc-item"><a href="#s3" class="toc-link">二、2026年最省力的数据可视化方案</a></li>
+        <li class="toc-item"><a href="#s4" class="toc-link">三、图表选择决策树（实战版）</a></li>
+        <li class="toc-item"><a href="#s5" class="toc-link">四、三个最常见的数据页面模板</a></li>
+        <li class="toc-item"><a href="#s6" class="toc-link">五、交互设计的最小必要集</a></li>
+        <li class="toc-item"><a href="#s7" class="toc-link">六、移动端适配（一个人也要做）</a></li>
+        <li class="toc-item"><a href="#s七" class="toc-link">七、检查清单</a></li>
+        <li class="toc-item"><a href="#s8" class="toc-link">节点资源链接</a></li>
+      </ul>
+    </aside>
+        <main>
       <header>
       <div class="phase-label">核心功能开发</div>
       <h1>数据展示与交互</h1>
@@ -675,7 +688,7 @@ td:first-child {
 <blockquote class="decision-box"><p>你做了功能，也存了数据，但用户打开页面看到一堆文字和数字就跑。怎么用最少的代码，让数据"自己会说话"？</p></blockquote>
 
 <p></section></p>
-<section id="s一">
+<section id="s2">
 <p>      <div class="section-label">一、OPC的数据展示第一原理</div></p>
 
 <h3>一个残酷的事实</h3>
@@ -694,7 +707,7 @@ td:first-child {
 <strong>正面案例</strong>：同样是这个OPC，把数据页砍到只剩"本周收入 ¥1,247"一个大数字 + 一个7天收入折线图。DAU翻了三倍。
 
 <p></section></p>
-<section id="s二">
+<section id="s3">
 <p>      <div class="section-label">二、2026年最省力的数据可视化方案</div></p>
 
 <h3>场景1：纯静态页面 / 原生JS → Chart.js v5</h3>
@@ -738,7 +751,7 @@ td:first-child {
 <strong>仅在使用地图/热力图/桑基图时才选ECharts。</strong> 基础图表用Chart.js完全够用。
 
 <p></section></p>
-<section id="s三">
+<section id="s4">
 <p>      <div class="section-label">三、图表选择决策树（实战版）</div></p>
 
 <p></code>`<code></p>
@@ -762,7 +775,7 @@ td:first-child {
 <p></code>`<code></p>
 
 <p></section></p>
-<section id="s四">
+<section id="s5">
 <p>      <div class="section-label">四、三个最常见的数据页面模板</div></p>
 
 <h3>模板1：Dashboard概览（任何产品的首页数据区）</h3>
@@ -805,7 +818,7 @@ td:first-child {
 <p>四个卡片并排，每个卡片：数字在上（大号），标签在下（小号灰色）。</p>
 
 <p></section></p>
-<section id="s五">
+<section id="s6">
 <p>      <div class="section-label">五、交互设计的最小必要集</div></p>
 
 <h3>永远要加的三个交互</h3>
@@ -816,7 +829,7 @@ td:first-child {
 <ol><li>❌ <strong>日期选择器</strong>：90%用户只用默认的"最近7天"和"最近30天"，放两个切换按钮即可</li><li>❌ <strong>导出CSV/Excel</strong>：第一版不要做，等有用户明确要了再说。这一项能省你半天开发时间</li><li>❌ <strong>自定义看板/拖拽布局</strong>：功能堆砌，OPC第一版不需要</li></ol>
 
 <p></section></p>
-<section id="s六">
+<section id="s7">
 <p>      <div class="section-label">六、移动端适配（一个人也要做）</div></p>
 
 <p>OPC的产品50%以上的流量来自手机。<strong>数据页面在手机上出问题 = 丢掉一半用户。</strong></p>
@@ -841,7 +854,7 @@ td:first-child {
 <ul><li><input type="checkbox" disabled> 页面核心是一个大数字（≥36px移动端 / ≥48px桌面端）</li><li><input type="checkbox" disabled> 只有一个趋势图（折线或柱状），没有多余图表</li><li><input type="checkbox" disabled> 没有日期选择器、导出按钮、自定义布局</li><li><input type="checkbox" disabled> 空状态有引导文案</li><li><input type="checkbox" disabled> 图表hover能看具体数值</li><li><input type="checkbox" disabled> 手机横屏/竖屏都正常显示</li><li><input type="checkbox" disabled> 页面加载≤2秒（图表CDN引入，非打包）</li></ul>
 
 <p></section></p>
-<section id="s节">
+<section id="s8">
 <p>      <div class="section-label">节点资源链接</div></p>
 
 <ul><li>节点13：核心功能2开发</li><li>节点15：核心功能3开发</li><li>节点19：亲友灰度测试</li></ul>
@@ -875,6 +888,30 @@ td:first-child {
       }
     });
   });
+
+  // Scroll spy for TOC
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+
+  function updateActiveLink() {
+    const scrollPos = window.scrollY + 120;
+    sections.forEach(section => {
+      const top = section.offsetTop;
+      const height = section.offsetHeight;
+      const id = section.getAttribute('id');
+      if (scrollPos >= top && scrollPos < top + height) {
+        tocLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + id) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveLink, { passive: true });
+  updateActiveLink();
   </script>
 </body>
 </html>

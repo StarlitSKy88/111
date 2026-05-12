@@ -1,0 +1,185 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "← 返回首页" [ref=e3] [cursor=pointer]:
+      - /url: /index.html
+    - generic [ref=e4]: 节点 02 / 57
+  - generic: "02"
+  - generic [ref=e5]:
+    - complementary [ref=e6]:
+      - generic [ref=e7]: 目录
+      - list [ref=e8]:
+        - listitem [ref=e9]:
+          - link "核心观点" [ref=e10] [cursor=pointer]:
+            - /url: "#s1"
+        - listitem [ref=e11]:
+          - link "01 能力自检矩阵" [ref=e12] [cursor=pointer]:
+            - /url: "#s2"
+        - listitem [ref=e13]:
+          - link "02 最小闭环验证流程" [ref=e14] [cursor=pointer]:
+            - /url: "#s3"
+        - listitem [ref=e15]:
+          - link "03 付费验证：数字摆摊法则" [ref=e16] [cursor=pointer]:
+            - /url: "#s4"
+        - listitem [ref=e17]:
+          - link "04 法律形式对比" [ref=e18] [cursor=pointer]:
+            - /url: "#s5"
+        - listitem [ref=e19]:
+          - link "05 能量管理" [ref=e20] [cursor=pointer]:
+            - /url: "#s6"
+        - listitem [ref=e21]:
+          - link "06 能力资产化路径" [ref=e22] [cursor=pointer]:
+            - /url: "#s7"
+    - main [ref=e23]:
+      - generic [ref=e24]:
+        - generic [ref=e25]: 节点 02 · 核心必做
+        - heading "个人能力 与资源 盘点" [level=1] [ref=e26]:
+          - text: 个人能力
+          - text: 与资源
+          - text: 盘点
+        - complementary [ref=e27]:
+          - paragraph [ref=e28]:
+            - text: OPC的生死线，不在于市场，而在于
+            - emphasis [ref=e29]: 你是否具备独立完成价值闭环的能力
+            - text: 。
+      - generic [ref=e30]:
+        - paragraph [ref=e31]: 盘点不是罗列名单，而是评估你被别人需要的程度。83%的一人公司失败，源于创始人未经验证就上场。
+        - paragraph [ref=e32]: — OPC节点百科 · 节点02
+      - generic [ref=e33]:
+        - generic [ref=e34]:
+          - generic [ref=e35]: "01"
+          - heading "能力自检矩阵" [level=2] [ref=e36]
+        - generic [ref=e37]:
+          - generic [ref=e38]:
+            - generic [ref=e39]: D1 · 核心
+            - heading "最小商业闭环" [level=3] [ref=e40]
+            - paragraph [ref=e41]: 从引流到售后的全链路能力——你能否独立完成一个完整商业交付？这是OPC的生死线。
+            - paragraph [ref=e43]: 完成节点01测试后显示
+          - generic [ref=e44]:
+            - generic [ref=e45]: D2 · 结构
+            - heading "T型/π型能力" [level=3] [ref=e46]
+            - paragraph [ref=e47]: 一项精深技能 + 周边知识广度 + AI协同能力
+            - paragraph [ref=e49]: 完成节点01测试后显示
+          - generic [ref=e50]:
+            - generic [ref=e51]: D3 · 连接
+            - heading "资源网络" [level=3] [ref=e52]
+            - paragraph [ref=e53]: 从"占有"转向"可连接"——弱关系网络与非对称资源
+            - paragraph [ref=e55]: 完成节点01测试后显示
+          - generic [ref=e56]:
+            - generic [ref=e57]: D4 · 领导
+            - heading "AI领导力" [level=3] [ref=e58]
+            - paragraph [ref=e59]: 定义问题、拆解任务、指挥多个AI智能体协同
+            - paragraph [ref=e61]: 完成节点01测试后显示
+          - generic [ref=e62]:
+            - generic [ref=e63]: D5 · 财务
+            - heading "公私隔离" [level=3] [ref=e64]
+            - paragraph [ref=e65]: 公私账户混同的无限连带责任陷阱
+            - paragraph [ref=e67]: 完成节点01测试后显示
+          - generic [ref=e68]:
+            - generic [ref=e69]: D6 · 决策
+            - heading "法律形式" [level=3] [ref=e70]
+            - paragraph [ref=e71]: 个体工商户与一人有限公司的决策框架
+            - paragraph [ref=e73]: 完成节点01测试后显示
+      - generic [ref=e74]:
+        - generic [ref=e75]:
+          - generic [ref=e76]: "02"
+          - heading "最小闭环验证流程" [level=2] [ref=e77]
+        - generic [ref=e78]:
+          - generic [ref=e79]:
+            - generic [ref=e80]:
+              - generic [ref=e81]: 一
+              - generic [ref=e82]:
+                - generic [ref=e83]: 获取第一批付费用户
+                - paragraph [ref=e84]: 在任何平台，通过内容或服务，证明有人愿意为你付费。这是商业验证的起点，而非"有个好想法"。
+            - generic [ref=e85]:
+              - generic [ref=e86]: 二
+              - generic [ref=e87]:
+                - generic [ref=e88]: 核心交付能力
+                - paragraph [ref=e89]: 你能独立完成对用户的价值承诺，不依赖外部团队、外包或合伙人。这是OPC的本质要求。
+            - generic [ref=e90]:
+              - generic [ref=e91]: 三
+              - generic [ref=e92]:
+                - generic [ref=e93]: 收款与持续服务
+                - paragraph [ref=e94]: 建立稳定的收款通道和维护体系，确保现金流的健康循环，而非一锤子买卖。
+          - complementary [ref=e95]:
+            - paragraph [ref=e96]: 据抖音电商近期数据，采用"内容MVP"验证模式的一人公司，首年存活率较未验证者提升约40%。
+      - generic [ref=e97]:
+        - generic [ref=e98]:
+          - generic [ref=e99]: "03"
+          - heading "付费验证：数字摆摊法则" [level=2] [ref=e100]
+        - generic [ref=e101]:
+          - generic [ref=e102]: 100条内容
+          - generic [ref=e103]: →
+          - generic [ref=e104]: 10个咨询
+          - generic [ref=e105]: →
+          - generic [ref=e106]: 3个付费
+          - generic [ref=e107]: →
+          - generic [ref=e108]: 验证成功
+          - generic [ref=e109]: →
+          - generic [ref=e110]: 正式注册
+        - paragraph [ref=e111]: 没有经过付费验证的想法，仅是待测试的假设。先跑通最小闭环，再考虑公司化。
+      - generic [ref=e112]:
+        - generic [ref=e113]:
+          - generic [ref=e114]: "04"
+          - heading "法律形式：个体户 vs 一人有限公司" [level=2] [ref=e115]
+        - generic [ref=e116]:
+          - generic [ref=e117]:
+            - generic [ref=e118]: 个体工商户
+            - generic [ref=e119]: — 无限责任（但经营风险可控）
+            - generic [ref=e120]: — 税负低，政策减半征收至2027年
+            - generic [ref=e121]: — 财务合规要求相对宽松
+            - generic [ref=e122]: — 无需实缴注册资本
+            - generic [ref=e123]: — 适合初创验证阶段
+          - generic [ref=e124]:
+            - generic [ref=e125]: 一人有限公司
+            - generic [ref=e126]: — 有条件的有限责任（需财产隔离）
+            - generic [ref=e127]: — 需严格财务合规
+            - generic [ref=e128]: — 5年内需实缴注册资本
+            - generic [ref=e129]: — 存在"揭开面纱"风险
+            - generic [ref=e130]: — 适合收入稳定后升级
+      - generic [ref=e131]:
+        - generic [ref=e132]:
+          - generic [ref=e133]: "05"
+          - heading "能量管理：一人公司最大的倒闭风险" [level=2] [ref=e134]
+        - generic [ref=e135]:
+          - generic [ref=e136]:
+            - generic [ref=e137]: 心
+            - generic [ref=e138]: 心力 · 情绪韧性
+          - generic [ref=e139]:
+            - generic [ref=e140]: 体
+            - generic [ref=e141]: 体力 · 深度专注
+          - generic [ref=e142]:
+            - generic [ref=e143]: 知
+            - generic [ref=e144]: 知力 · 数字戒断
+        - paragraph [ref=e145]: 三者构成OPC的能量三角。任一缺失，商业闭环即会崩溃。
+      - generic [ref=e146]:
+        - generic [ref=e147]:
+          - generic [ref=e148]: "06"
+          - heading "能力资产化路径" [level=2] [ref=e149]
+        - generic [ref=e150]:
+          - generic [ref=e151]:
+            - generic [ref=e152]:
+              - generic [ref=e153]: A
+              - generic [ref=e154]:
+                - generic [ref=e155]: 方法论 → 标准化服务
+                - paragraph [ref=e156]: 将经验固化为可复用的服务流程，如"企业谈判顾问服务包"、"独立开发者法律风险检查清单"
+            - generic [ref=e157]:
+              - generic [ref=e158]: B
+              - generic [ref=e159]:
+                - generic [ref=e160]: 知识体系 → 数字产品
+                - paragraph [ref=e161]: 封装为录播课程或训练营，实现一次生产、多次销售的被动收入结构
+            - generic [ref=e162]:
+              - generic [ref=e163]: C
+              - generic [ref=e164]:
+                - generic [ref=e165]: 综合能力 → 个人品牌
+                - paragraph [ref=e166]: 持续输出行业洞见，建立专业认知壁垒，形成定价权与获客溢价
+          - complementary [ref=e167]:
+            - paragraph [ref=e168]: 资产化的本质：从出卖时间，转向出卖可复制的价值。从服务者，进化为产品者。
+  - contentinfo [ref=e169]:
+    - link "← 节点01：OPC适配测试" [ref=e170] [cursor=pointer]:
+      - /url: /nodes/01-opc-fit-test/index.html
+      - generic [ref=e171]: ←
+      - text: 节点01：OPC适配测试
+    - link "节点03：创业想法筛选与验证 →" [ref=e172] [cursor=pointer]:
+      - /url: /nodes/03-idea-validation/index.html
+      - text: 节点03：创业想法筛选与验证
+      - generic [ref=e173]: →

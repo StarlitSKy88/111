@@ -662,7 +662,18 @@ td:first-child {
   </nav>
 
   <div class="layout">
-    <main class="container">
+    <aside class="sidebar-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#s2" class="toc-link">一、先测后优：2026年最省事的性能测试</a></li>
+        <li class="toc-item"><a href="#s3" class="toc-link">二、OPC的前端性能三板斧（今天就能做）</a></li>
+        <li class="toc-item"><a href="#s4" class="toc-link">三、后端性能：OPC最容易忽略的慢</a></li>
+        <li class="toc-item"><a href="#s5" class="toc-link">四、不需要做的优化（省时间清单）</a></li>
+        <li class="toc-item"><a href="#s6" class="toc-link">五、检查清单</a></li>
+        <li class="toc-item"><a href="#s8" class="toc-link">节点资源链接</a></li>
+      </ul>
+    </aside>
+        <main>
       <header>
       <div class="phase-label">测试与修复</div>
       <h1>性能基础优化</h1>
@@ -675,7 +686,7 @@ td:first-child {
 <blockquote class="decision-box"><p>产品能用了，Bug也修了，但用户说"有点慢"。一个人怎么做性能优化，不花一分钱，不做过度工程？</p></blockquote>
 
 <p></section></p>
-<section id="s一">
+<section id="s2">
 <p>      <div class="section-label">一、先测后优：2026年最省事的性能测试</div></p>
 
 <h3>三个免费工具，覆盖所有场景</h3>
@@ -687,7 +698,7 @@ td:first-child {
 <strong>OPC只看LCP</strong>：对大部分产品来说，LCP≤2.5秒 = 用户感觉"不慢"。INP和CLS是加分项。
 
 <p></section></p>
-<section id="s二">
+<section id="s3">
 <p>      <div class="section-label">二、OPC的前端性能三板斧（今天就能做）</div></p>
 
 <h3>第一斧：图片优化（影响最大，最简单）</h3>
@@ -728,7 +739,7 @@ td:first-child {
 <p></code>`<code></p>
 
 <p></section></p>
-<section id="s三">
+<section id="s4">
 <p>      <div class="section-label">三、后端性能：OPC最容易忽略的慢</div></p>
 
 <h3>Supabase查询慢的三种常见原因</h3>
@@ -745,19 +756,19 @@ td:first-child {
 <p></code>``</p>
 
 <p></section></p>
-<section id="s四">
+<section id="s5">
 <p>      <div class="section-label">四、不需要做的优化（省时间清单）</div></p>
 
 <div class="table-wrapper"><table><thead><tr><th>你以为需要</th><th>实际上不需要</th><th>省下时间</th></tr></thead><tbody><tr><td>CDN加速</td><td>Vercel/Netlify自带全球CDN</td><td>0天</td></tr><tr><td>代码压缩混淆</td><td>构建工具自动做了</td><td>0天</td></tr><tr><td>服务端渲染(SSR)</td><td>静态页面CDN已经够快</td><td>省3天</td></tr><tr><td>Redis缓存</td><td>Supabase自带的查询缓存够用</td><td>省2天</td></tr><tr><td>数据库读写分离</td><td>日活1万以下根本不需要</td><td>省5天</td></tr></tbody></table></div>
 
 <p></section></p>
-<section id="s五">
+<section id="s6">
 <p>      <div class="section-label">五、检查清单</div></p>
 
 <ul><li><input type="checkbox" disabled> Lighthouse评分≥90</li><li><input type="checkbox" disabled> 首页LCP≤2.5秒（PageSpeed实测）</li><li><input type="checkbox" disabled> 所有图片已转WebP格式</li><li><input type="checkbox" disabled> 大文件CDN引用而非整包引入</li><li><input type="checkbox" disabled> 数据库查询已检查慢查询</li><li><input type="checkbox" disabled> 无未加索引的高频查询字段</li></ul>
 
 <p></section></p>
-<section id="s节">
+<section id="s8">
 <p>      <div class="section-label">节点资源链接</div></p>
 
 <ul><li>节点20：Bug集中修复</li><li>节点22：上线内容填充</li><li>节点25：网站部署与SSL</li></ul>
@@ -791,6 +802,30 @@ td:first-child {
       }
     });
   });
+
+  // Scroll spy for TOC
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+
+  function updateActiveLink() {
+    const scrollPos = window.scrollY + 120;
+    sections.forEach(section => {
+      const top = section.offsetTop;
+      const height = section.offsetHeight;
+      const id = section.getAttribute('id');
+      if (scrollPos >= top && scrollPos < top + height) {
+        tocLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + id) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveLink, { passive: true });
+  updateActiveLink();
   </script>
 </body>
 </html>

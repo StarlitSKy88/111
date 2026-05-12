@@ -662,7 +662,19 @@ td:first-child {
   </nav>
 
   <div class="layout">
-    <main class="container">
+    <aside class="sidebar-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#s2" class="toc-link">一、核心功能3的定位：闭合体验环</a></li>
+        <li class="toc-item"><a href="#s3" class="toc-link">二、四大闭环形态的OPC实现方案（2026年）</a></li>
+        <li class="toc-item"><a href="#s4" class="toc-link">三、三大功能协同检查（上线前必看）</a></li>
+        <li class="toc-item"><a href="#s5" class="toc-link">四、一个真实案例：OPC闭环的形成过程</a></li>
+        <li class="toc-item"><a href="#s6" class="toc-link">五、常见翻车</a></li>
+        <li class="toc-item"><a href="#s7" class="toc-link">六、检查清单</a></li>
+        <li class="toc-item"><a href="#s8" class="toc-link">节点资源链接</a></li>
+      </ul>
+    </aside>
+        <main>
       <header>
       <div class="phase-label">核心功能开发</div>
       <h1>核心功能3开发</h1>
@@ -675,7 +687,7 @@ td:first-child {
 <blockquote class="decision-box"><p>核心功能1让用户"能用"，核心功能2让用户"留下来"，核心功能3让用户"带人来"。这是产品从工具变成平台的最后一块拼图。</p></blockquote>
 
 <p></section></p>
-<section id="s一">
+<section id="s2">
 <p>      <div class="section-label">一、核心功能3的定位：闭合体验环</div></p>
 
 <h3>不是"再多做一个功能"</h3>
@@ -703,7 +715,7 @@ td:first-child {
 <strong>只选一个。</strong> 一次只做一种闭环。
 
 <p></section></p>
-<section id="s二">
+<section id="s3">
 <p>      <div class="section-label">二、四大闭环形态的OPC实现方案（2026年）</div></p>
 
 <h3>方案A：分享裂变（适合AI工具/内容产品）</h3>
@@ -792,13 +804,13 @@ td:first-child {
 <p></code>``</p>
 
 <p></section></p>
-<section id="s三">
+<section id="s4">
 <p>      <div class="section-label">三、三大功能协同检查（上线前必看）</div></p>
 
 <div class="table-wrapper"><table><thead><tr><th>检查项</th><th>通过标准</th></tr></thead><tbody><tr><td><strong>数据一致性</strong></td><td>核心功能1产生的数据，核心功能2和3能直接读取，不需格式转换</td></tr><tr><td><strong>跳转体验</strong></td><td>从功能1→功能2→功能3的路径，每一步都有明显的"下一步"入口</td></tr><tr><td><strong>权限统一</strong></td><td>一个用户登录后，三个功能区都能访问（不需要分别登录）</td></tr><tr><td><strong>设计统一</strong></td><td>三个功能区的导航栏、配色、字体保持一致</td></tr><tr><td><strong>错误隔离</strong></td><td>核心功能3挂了，不影响核心功能1和2的使用</td></tr></tbody></table></div>
 
 <p></section></p>
-<section id="s四">
+<section id="s5">
 <p>      <div class="section-label">四、一个真实案例：OPC闭环的形成过程</div></p>
 
 <p>假设你的产品是"AI简历优化工具"：</p>
@@ -807,19 +819,19 @@ td:first-child {
 <strong>闭环效果</strong>：每10个使用核心功能3的用户，带来3-5个新注册用户。零广告费。
 
 <p></section></p>
-<section id="s五">
+<section id="s6">
 <p>      <div class="section-label">五、常见翻车</div></p>
 
 <div class="table-wrapper"><table><thead><tr><th>翻车方式</th><th>后果</th><th>预防</th></tr></thead><tbody><tr><td><strong>三个闭环全做</strong></td><td>哪个都是半成品，一个都不闭环</td><td>看本文第二节，只选一种</td></tr><tr><td><strong>分享卡片忘记加水印</strong></td><td>别人的朋友圈只有内容，没有你的产品名</td><td>卡片底部必须加"由 [产品名] 生成"</td></tr><tr><td><strong>邮件进了垃圾箱</strong></td><td>周报白写，用户永远看不到</td><td>用Resend/阿里云企业邮，配置SPF+DKIM</td></tr><tr><td><strong>推送太频繁</strong></td><td>用户关闭通知权限，以后再也推不了</td><td>每周≤2次</td></tr></tbody></table></div>
 
 <p></section></p>
-<section id="s六">
+<section id="s7">
 <p>      <div class="section-label">六、检查清单</div></p>
 
 <ul><li><input type="checkbox" disabled> 闭环形态已选定（只选一种：分享/报告/推送/提醒）</li><li><input type="checkbox" disabled> 分享卡片上有产品名+域名</li><li><input type="checkbox" disabled> 邮件使用企业域名发件人（非个人邮箱）</li><li><input type="checkbox" disabled> 推送频率控制在每周≤2次</li><li><input type="checkbox" disabled> 三个功能区的数据能互通、跳转流畅、设计统一</li><li><input type="checkbox" disabled> 核心功能3崩溃不影响前两个功能</li></ul>
 
 <p></section></p>
-<section id="s节">
+<section id="s8">
 <p>      <div class="section-label">节点资源链接</div></p>
 
 <ul><li>节点13：核心功能2开发</li><li>节点14：数据展示与交互</li><li>节点16：支付代码集成</li></ul>
@@ -853,6 +865,30 @@ td:first-child {
       }
     });
   });
+
+  // Scroll spy for TOC
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+
+  function updateActiveLink() {
+    const scrollPos = window.scrollY + 120;
+    sections.forEach(section => {
+      const top = section.offsetTop;
+      const height = section.offsetHeight;
+      const id = section.getAttribute('id');
+      if (scrollPos >= top && scrollPos < top + height) {
+        tocLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + id) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveLink, { passive: true });
+  updateActiveLink();
   </script>
 </body>
 </html>

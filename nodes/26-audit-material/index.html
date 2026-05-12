@@ -662,7 +662,18 @@ td:first-child {
   </nav>
 
   <div class="layout">
-    <main class="container">
+    <aside class="sidebar-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#s2" class="toc-link">一、你需要通过哪些审核？</a></li>
+        <li class="toc-item"><a href="#s3" class="toc-link">二、微信小程序审核（国内OPC最常遇到的）</a></li>
+        <li class="toc-item"><a href="#s4" class="toc-link">三、App Store审核（如果做iOS）</a></li>
+        <li class="toc-item"><a href="#s5" class="toc-link">四、审核材料模板（通用）</a></li>
+        <li class="toc-item"><a href="#s6" class="toc-link">五、检查清单</a></li>
+        <li class="toc-item"><a href="#s8" class="toc-link">节点资源链接</a></li>
+      </ul>
+    </aside>
+        <main>
       <header>
       <div class="phase-label">上线准备</div>
       <h1>审核材料准备</h1>
@@ -675,13 +686,13 @@ td:first-child {
 <blockquote class="decision-box"><p>产品要在平台上发布（App Store、微信小程序、应用市场），审核是第一道关卡。审核不通过 = 你的产品见不到用户。本节点告诉你：不同平台审什么、怎么准备材料一次过。</p></blockquote>
 
 <p></section></p>
-<section id="s一">
+<section id="s2">
 <p>      <div class="section-label">一、你需要通过哪些审核？</div></p>
 
 <div class="table-wrapper"><table><thead><tr><th>你的产品形态</th><th>需要过的审核</th><th>审核周期</th><th>难度</th></tr></thead><tbody><tr><td><strong>Web网站</strong></td><td>无需审核（直接上线）</td><td>0天</td><td>⭐</td></tr><tr><td><strong>微信小程序</strong></td><td>微信小程序审核</td><td>1-7个工作日</td><td>⭐⭐</td></tr><tr><td><strong>iOS App</strong></td><td>App Store审核</td><td>1-3个工作日</td><td>⭐⭐⭐</td></tr><tr><td><strong>安卓App</strong></td><td>各应用市场审核</td><td>1-5个工作日</td><td>⭐⭐</td></tr><tr><td><strong>支付功能</strong></td><td>微信/支付宝商户审核</td><td>1-5个工作日</td><td>⭐⭐</td></tr></tbody></table></div>
 
 <p></section></p>
-<section id="s二">
+<section id="s3">
 <p>      <div class="section-label">二、微信小程序审核（国内OPC最常遇到的）</div></p>
 
 <h3>审核看什么（2026年微信审核规则）</h3>
@@ -695,7 +706,7 @@ td:first-child {
 <p>> <strong>提交审核前，用微信官方的"小程序开发助手"自查。</strong> 它能检测出大部分格式问题。</p>
 
 <p></section></p>
-<section id="s三">
+<section id="s4">
 <p>      <div class="section-label">三、App Store审核（如果做iOS）</div></p>
 
 <h3>最容易被打回的5条</h3>
@@ -706,7 +717,7 @@ td:first-child {
 <ul><li>开发者账号（$99/年）</li><li>App图标（1024×1024px）</li><li>App截图（iPhone 5.5寸和6.5寸各一组，至少3张）</li><li>隐私政策URL</li><li>测试账号</li></ul>
 
 <p></section></p>
-<section id="s四">
+<section id="s5">
 <p>      <div class="section-label">四、审核材料模板（通用）</div></p>
 
 <h3>产品介绍文案（每个平台都需要）</h3>
@@ -731,13 +742,13 @@ td:first-child {
 <p></code>``</p>
 
 <p></section></p>
-<section id="s五">
+<section id="s6">
 <p>      <div class="section-label">五、检查清单</div></p>
 
 <ul><li><input type="checkbox" disabled> 审核平台已确定（小程序/App Store/应用市场）</li><li><input type="checkbox" disabled> 类目已正确选择</li><li><input type="checkbox" disabled> 产品截图已准备（≥3张）</li><li><input type="checkbox" disabled> 测试账号已创建+已测试可用</li><li><input type="checkbox" disabled> 隐私政策页面已上线+链接有效</li><li><input type="checkbox" disabled> 产品介绍文案已准备</li><li><input type="checkbox" disabled> 营业执照/资质文件已扫描</li></ul>
 
 <p></section></p>
-<section id="s节">
+<section id="s8">
 <p>      <div class="section-label">节点资源链接</div></p>
 
 <ul><li>节点25：网站部署与SSL</li><li>节点27：上线前检查清单</li><li>节点28：提交审核与等待</li></ul>
@@ -771,6 +782,30 @@ td:first-child {
       }
     });
   });
+
+  // Scroll spy for TOC
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+
+  function updateActiveLink() {
+    const scrollPos = window.scrollY + 120;
+    sections.forEach(section => {
+      const top = section.offsetTop;
+      const height = section.offsetHeight;
+      const id = section.getAttribute('id');
+      if (scrollPos >= top && scrollPos < top + height) {
+        tocLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + id) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveLink, { passive: true });
+  updateActiveLink();
   </script>
 </body>
 </html>

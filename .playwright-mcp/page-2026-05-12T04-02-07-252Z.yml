@@ -1,0 +1,369 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "← 返回首页" [ref=e3] [cursor=pointer]:
+      - /url: /index.html
+    - generic [ref=e4]: 节点 04 / 57
+  - generic: "04"
+  - generic [ref=e5]:
+    - navigation [ref=e6]:
+      - generic [ref=e7]: 目录
+      - list [ref=e8]:
+        - listitem [ref=e9]:
+          - link "为什么OPC必须做原型" [ref=e10] [cursor=pointer]:
+            - /url: "#s1"
+        - listitem [ref=e11]:
+          - link "纸笔原型法" [ref=e12] [cursor=pointer]:
+            - /url: "#s2"
+        - listitem [ref=e13]:
+          - link "Figma入门" [ref=e14] [cursor=pointer]:
+            - /url: "#s3"
+        - listitem [ref=e15]:
+          - link "一页原型自检清单" [ref=e16] [cursor=pointer]:
+            - /url: "#s4"
+        - listitem [ref=e17]:
+          - link "三平台设计规范" [ref=e18] [cursor=pointer]:
+            - /url: "#s5"
+        - listitem [ref=e19]:
+          - link "把原型喂给AI" [ref=e20] [cursor=pointer]:
+            - /url: "#s6"
+        - listitem [ref=e21]:
+          - link "总纲" [ref=e22] [cursor=pointer]:
+            - /url: "#s7"
+        - listitem [ref=e23]:
+          - link "2026年更新" [ref=e24] [cursor=pointer]:
+            - /url: "#s2026"
+    - generic [ref=e25]:
+      - banner [ref=e26]:
+        - generic [ref=e27]:
+          - generic [ref=e28]: 节点 04 · 产品验证
+          - heading "产品原型设计" [level=1] [ref=e29]
+          - paragraph [ref=e30]: 你不会用Figma、不会画UI、不知道什么叫"设计规范"。没关系——原型不是设计稿，原型是"让你的脑袋里的想法变成别人能看懂的东西"。本章零设计基础，30分钟出第一版原型。
+      - generic [ref=e31]:
+        - generic [ref=e32]: 为什么OPC必须做原型
+        - generic [ref=e33]:
+          - generic [ref=e34]: 核心认知
+          - generic [ref=e35]: 原型是"你脑子里的产品"和"AI写出来的产品"之间的翻译层。
+        - paragraph [ref=e37]: 原型只有一个目的：让一个完全不了解你产品的人，看了之后能在10秒内说出"这个东西是用来干嘛的"。
+        - table [ref=e38]:
+          - rowgroup [ref=e39]:
+            - row "直接写代码 先做原型" [ref=e40]:
+              - columnheader "直接写代码" [ref=e41]
+              - columnheader "先做原型" [ref=e42]
+          - rowgroup [ref=e43]:
+            - row "写了3天代码发现页面跳转逻辑不对 10分钟纸笔画出问题，改两笔就行" [ref=e44]:
+              - cell "写了3天代码发现页面跳转逻辑不对" [ref=e45]
+              - cell "10分钟纸笔画出问题，改两笔就行" [ref=e46]
+            - row "做完给朋友看，朋友说\"这按钮在哪\" 原型阶段就发现入口不明显" [ref=e47]:
+              - cell "做完给朋友看，朋友说\"这按钮在哪\"" [ref=e48]
+              - cell "原型阶段就发现入口不明显" [ref=e49]
+            - row "需求改了，前端代码废掉一半 纸上擦掉重来，零沉没成本" [ref=e50]:
+              - cell "需求改了，前端代码废掉一半" [ref=e51]
+              - cell "纸上擦掉重来，零沉没成本" [ref=e52]
+            - row "喂给AI开发时描述不清楚 一张原型截图+prompt，AI直接理解" [ref=e53]:
+              - cell "喂给AI开发时描述不清楚" [ref=e54]
+              - cell "一张原型截图+prompt，AI直接理解" [ref=e55]
+      - generic [ref=e56]:
+        - generic [ref=e57]: 纸笔原型法：比任何软件都快
+        - generic [ref=e58]:
+          - generic [ref=e59]:
+            - generic [ref=e60]: "1"
+            - generic [ref=e61]:
+              - generic [ref=e62]: 画方框
+              - generic [ref=e63]: 在一张纸上画一个手机屏幕大小的矩形。在里面画3-4个方框——这是你产品的核心区域。不用画任何细节。方框就够了。
+          - generic [ref=e64]:
+            - generic [ref=e65]: "2"
+            - generic [ref=e66]:
+              - generic [ref=e67]: 写按钮名
+              - generic [ref=e68]: 在每个方框旁边写一句话，说明这个方框里会发生什么。比如："用户点这里上传文件"、"这里显示分析结果"、"点这里付款"。
+          - generic [ref=e69]:
+            - generic [ref=e70]: "3"
+            - generic [ref=e71]:
+              - generic [ref=e72]: 画箭头
+              - generic [ref=e73]:
+                - text: 用箭头把方框连起来，表示用户的操作流程。
+                - code [ref=e74]: "[首页] → [上传文件] → [分析中] → [查看结果] → [付款]"
+          - generic [ref=e75]:
+            - generic [ref=e76]: "4"
+            - generic [ref=e77]:
+              - generic [ref=e78]: 标注3个按钮
+              - generic [ref=e79]: 用红笔圈出最核心的3个按钮。问自己：用户第一眼能看到它们吗？如果用户10秒内找不到——按钮位置不对。
+          - generic [ref=e80]:
+            - generic [ref=e81]: "5"
+            - generic [ref=e82]:
+              - generic [ref=e83]: 拍照
+              - generic [ref=e84]: 用手机拍下这张纸。这就是你的第一版原型。
+        - paragraph [ref=e86]: 2024年，一位深圳独立开发者想做小红书数据分析工具。他在咖啡馆餐巾纸上画了三个页面，照片发到即刻上配文"打算做这个，需要的人扣1"。2小时内72个回复。他周末两天用Cursor写出了第一版。如果先写代码再找用户——他可能花两周才发现需求根本不对。
+      - generic [ref=e87]:
+        - generic [ref=e88]: Figma入门：8步出可交互原型
+        - generic [ref=e89]:
+          - generic [ref=e90]:
+            - generic [ref=e91]: 为什么是Figma
+            - generic [ref=e92]: 免费且国内可访问
+            - generic [ref=e93]:
+              - text: 个人用户免费，最多3个项目
+              - text: 浏览器运行，不需要安装
+              - text: 国内可直接访问
+              - text: AI友好：Figma截图喂给AI能直接生成代码
+          - generic [ref=e94]:
+            - generic [ref=e95]: 8步总耗时
+            - generic [ref=e96]: 约15分钟
+            - generic [ref=e97]:
+              - text: 第一次可能30分钟
+              - text: 跟着做就能完成
+              - text: 不需要任何设计基础
+              - text: 只需要会上网
+        - generic [ref=e98]:
+          - generic [ref=e99]:
+            - generic [ref=e100]: "1"
+            - generic [ref=e101]:
+              - generic [ref=e102]: 注册（1分钟）
+              - generic [ref=e103]: 打开 figma.com → 点击"Get started for free" → 用Google/邮箱注册 → 选择"Personal"免费计划。
+          - generic [ref=e104]:
+            - generic [ref=e105]: "2"
+            - generic [ref=e106]:
+              - generic [ref=e107]: 新建Frame（30秒）
+              - generic [ref=e108]:
+                - text: 点击左上角"Design file"新建文件 → 按键盘
+                - code [ref=e109]: F
+                - text: → 右侧面板选"iPhone 15 Pro"（或你目标用户最常用的设备尺寸）。
+          - generic [ref=e110]:
+            - generic [ref=e111]: "3"
+            - generic [ref=e112]:
+              - generic [ref=e113]: 画矩形（1分钟）
+              - generic [ref=e114]:
+                - text: 按键盘
+                - code [ref=e115]: R
+                - text: （矩形工具） → 在Frame里拖出一个矩形。这是你的一个页面区域。再按
+                - code [ref=e116]: R
+                - text: 多画几个矩形——每个矩形代表一个内容模块。
+          - generic [ref=e117]:
+            - generic [ref=e118]: "4"
+            - generic [ref=e119]:
+              - generic [ref=e120]: 加文字（2分钟）
+              - generic [ref=e121]:
+                - text: 按键盘
+                - code [ref=e122]: T
+                - text: （文字工具） → 点击任意位置输入文字。不用管字体、字号、颜色。你需要写的文字只有：页面标题、按钮文字（比如"上传文件""立即购买"）、每个模块的简短说明。
+          - generic [ref=e123]:
+            - generic [ref=e124]: "5"
+            - generic [ref=e125]:
+              - generic [ref=e126]: 改颜色（1分钟，可选）
+              - generic [ref=e127]:
+                - text: 选中任意矩形 → 右侧面板 Fill → 点颜色块 → 选一个颜色。OPC配色建议：背景用白或极浅灰，主按钮用一个鲜明颜色（比如蓝
+                - code [ref=e128]: "#3B82F6"
+                - text: 或红
+                - code [ref=e129]: "#C0392B"
+                - text: ），文字用黑。
+          - generic [ref=e130]:
+            - generic [ref=e131]: "6"
+            - generic [ref=e132]:
+              - generic [ref=e133]: 复制页面（30秒）
+              - generic [ref=e134]:
+                - text: 在左侧图层栏，选中你的Frame →
+                - code [ref=e135]: Ctrl/⌘ + D
+                - text: 复制一份。在复制出的第二个Frame里，改成另一个页面的内容。每个页面一个Frame。一个简单产品通常3-5个页面。
+          - generic [ref=e136]:
+            - generic [ref=e137]: "7"
+            - generic [ref=e138]:
+              - generic [ref=e139]: 加交互连线（3分钟）
+              - generic [ref=e140]: 切换到"Prototype"模式（右上角标签）。点击第一个页面上的按钮 → 拖出蓝色的线 → 连到第二个页面。弹出的面板里选 "On click" → "Navigate to"。这样在预览模式下，点击按钮就能跳转到对应页面。
+          - generic [ref=e141]:
+            - generic [ref=e142]: "8"
+            - generic [ref=e143]:
+              - generic [ref=e144]: 手机预览（1分钟）
+              - generic [ref=e145]: 安装 Figma 手机APP（iOS/Android都有）。在手机APP上打开你的文件 → 点击"播放"按钮 → 就可以像真App一样操作你的原型。发给朋友测试：让对方在手机上操作，你在旁边看——一句话都不要解释。如果对方卡住了——那是原型的问题，不是对方的问题。
+      - generic [ref=e146]:
+        - generic [ref=e147]: 一页原型自检清单
+        - paragraph [ref=e148]: 把原型摆在面前，问自己这5个问题。5个都是绿灯才可以开始开发。有任何一个是红灯，修改原型。
+        - table [ref=e149]:
+          - rowgroup [ref=e150]:
+            - row "# 问题 绿灯标准 常见问题" [ref=e151]:
+              - columnheader "#" [ref=e152]
+              - columnheader "问题" [ref=e153]
+              - columnheader "绿灯标准" [ref=e154]
+              - columnheader "常见问题" [ref=e155]
+          - rowgroup [ref=e156]:
+            - row "1 用户能在10秒内看懂这页是干什么的吗？ 不解释，对方直接说\"哦这是做XX的\" 标题太业余、布局混乱" [ref=e157]:
+              - cell "1" [ref=e158]
+              - cell "用户能在10秒内看懂这页是干什么的吗？" [ref=e159]
+              - cell "不解释，对方直接说\"哦这是做XX的\"" [ref=e160]
+              - cell "标题太业余、布局混乱" [ref=e161]
+            - row "2 核心按钮在首屏看得见吗？（不用滚动） 打开页面第一眼就能看到 按钮太小、颜色和背景太接近" [ref=e162]:
+              - cell "2" [ref=e163]
+              - cell "核心按钮在首屏看得见吗？（不用滚动）" [ref=e164]
+              - cell "打开页面第一眼就能看到" [ref=e165]
+              - cell "按钮太小、颜色和背景太接近" [ref=e166]
+            - row "3 从进入产品到完成核心操作，点击次数 ≤ 3次吗？ 首页 → 核心页 → 结果页，三页闭环 中间塞了太多设置页" [ref=e167]:
+              - cell "3" [ref=e168]
+              - cell "从进入产品到完成核心操作，点击次数 ≤ 3次吗？" [ref=e169]
+              - cell "首页 → 核心页 → 结果页，三页闭环" [ref=e170]
+              - cell "中间塞了太多设置页" [ref=e171]
+            - row "4 原型上的文字用户能看懂吗？（不是\"你\"能看懂） 没有行业黑话、没有\"系统将为您\" \"输入分析参数\"\"立即查询\" vs \"粘贴链接\"\"一键分析\"" [ref=e172]:
+              - cell "4" [ref=e173]
+              - cell "原型上的文字用户能看懂吗？（不是\"你\"能看懂）" [ref=e174]
+              - cell "没有行业黑话、没有\"系统将为您\"" [ref=e175]
+              - cell "\"输入分析参数\"\"立即查询\" vs \"粘贴链接\"\"一键分析\"" [ref=e176]
+            - row "5 用手机打开原型，手指能点到所有按钮吗？ 按钮至少 44×44 像素（指甲盖大小） 桌面做得好看，手机上点不到" [ref=e177]:
+              - cell "5" [ref=e178]
+              - cell "用手机打开原型，手指能点到所有按钮吗？" [ref=e179]
+              - cell "按钮至少 44×44 像素（指甲盖大小）" [ref=e180]
+              - cell "桌面做得好看，手机上点不到" [ref=e181]
+      - generic [ref=e182]:
+        - generic [ref=e183]: 三平台设计规范速查
+        - paragraph [ref=e184]: 不同平台的原型，有些规则是硬性的（审核不通过）。OPC实战速记：Web优先最自由，小程序最严格，App建议一个平台做成熟了再做另一个。
+        - table [ref=e185]:
+          - rowgroup [ref=e186]:
+            - row "规范项 Web 微信小程序 移动App" [ref=e187]:
+              - columnheader "规范项" [ref=e188]
+              - columnheader "Web" [ref=e189]
+              - columnheader "微信小程序" [ref=e190]
+              - columnheader "移动App" [ref=e191]
+          - rowgroup [ref=e192]:
+            - 'row "最小触控区 无硬性规定（建议 44×44px） 必须 ≥ 44×44px（微信审核硬性要求） iOS: 44×44pt, Android: 48×48dp" [ref=e193]':
+              - cell "最小触控区" [ref=e194]
+              - cell "无硬性规定（建议 44×44px）" [ref=e195]
+              - cell "必须 ≥ 44×44px（微信审核硬性要求）" [ref=e196]:
+                - strong [ref=e197]: 必须 ≥ 44×44px
+                - text: （微信审核硬性要求）
+              - 'cell "iOS: 44×44pt, Android: 48×48dp" [ref=e198]'
+            - 'row "导航方式 顶部导航栏 + 底部可选 底部TabBar必须2-5个，每个图标+文字 iOS: TabBar / Android: 底部导航或侧边抽屉" [ref=e199]':
+              - cell "导航方式" [ref=e200]
+              - cell "顶部导航栏 + 底部可选" [ref=e201]
+              - cell "底部TabBar必须2-5个，每个图标+文字" [ref=e202]:
+                - strong [ref=e203]: 底部TabBar必须2-5个
+                - text: ，每个图标+文字
+              - 'cell "iOS: TabBar / Android: 底部导航或侧边抽屉" [ref=e204]'
+            - row "安全区 浏览器视口内 顶部状态栏 + 底部Home指示条（iPhone X以上机型）注意避开 顶部刘海区 + 底部手势条区不可交互" [ref=e205]:
+              - cell "安全区" [ref=e206]
+              - cell "浏览器视口内" [ref=e207]
+              - cell "顶部状态栏 + 底部Home指示条（iPhone X以上机型）注意避开" [ref=e208]
+              - cell "顶部刘海区 + 底部手势条区不可交互" [ref=e209]
+            - row "返回逻辑 浏览器自带返回 左上角必须有返回按钮，或安卓实体返回键 iOS左滑返回，Android返回键" [ref=e210]:
+              - cell "返回逻辑" [ref=e211]
+              - cell "浏览器自带返回" [ref=e212]
+              - cell "左上角必须有返回按钮，或安卓实体返回键" [ref=e213]
+              - cell "iOS左滑返回，Android返回键" [ref=e214]
+            - row "字体 不限 必须用系统默认（iOS苹方/Android思源），不可用自定义web字体 系统默认" [ref=e215]:
+              - cell "字体" [ref=e216]
+              - cell "不限" [ref=e217]
+              - cell "必须用系统默认（iOS苹方/Android思源），不可用自定义web字体" [ref=e218]:
+                - strong [ref=e219]: 必须用系统默认
+                - text: （iOS苹方/Android思源），不可用自定义web字体
+              - cell "系统默认" [ref=e220]
+            - row "启动页 无 必须有（可在后台配置，尺寸 430×932px） iOS要求Launch Screen，Android要求Splash Screen" [ref=e221]:
+              - cell "启动页" [ref=e222]
+              - cell "无" [ref=e223]
+              - cell "必须有（可在后台配置，尺寸 430×932px）" [ref=e224]
+              - cell "iOS要求Launch Screen，Android要求Splash Screen" [ref=e225]
+            - row "分享 链接复制 分享按钮强制在右上角（微信规定） 各平台自由设计" [ref=e226]:
+              - cell "分享" [ref=e227]
+              - cell "链接复制" [ref=e228]
+              - cell "分享按钮强制在右上角（微信规定）" [ref=e229]:
+                - strong [ref=e230]: 分享按钮强制在右上角
+                - text: （微信规定）
+              - cell "各平台自由设计" [ref=e231]
+        - generic [ref=e232]:
+          - generic [ref=e233]: 微信小程序设计指南
+          - link "https://developers.weixin.qq.com/miniprogram/design/" [ref=e235] [cursor=pointer]:
+            - /url: https://developers.weixin.qq.com/miniprogram/design/
+      - generic [ref=e236]:
+        - generic [ref=e237]: 把原型喂给AI：Prompt模板
+        - generic [ref=e238]:
+          - generic [ref=e239]:
+            - generic [ref=e240]: A
+            - generic [ref=e241]:
+              - generic [ref=e242]: 从Figma截图到代码
+              - generic [ref=e244]: 我需要你根据这张设计截图生成完整的前端代码。 项目环境： - 框架：[React / Vue / 原生HTML] - 样式方案：[Tailwind CSS / 纯CSS] - 数据库：Supabase - 部署：Vercel 页面的核心功能： 1. [功能描述] 2. [功能描述] 3. [功能描述] 交互逻辑： - 用户点击[按钮A] → 跳转到[页面B] - 用户输入[内容] → 调取Supabase → 展示结果 请生成以下文件： 1. index.html（或App.jsx）——主页面 2. [其他需要的文件] 注意： - 使用Tailwind CSS（CDN引入），颜色主题参考截图 - 按钮确保 44×44px 最小触控区 - 移动端优先设计
+          - generic [ref=e245]:
+            - generic [ref=e246]: B
+            - generic [ref=e247]:
+              - generic [ref=e248]: 从纸笔原型到代码
+              - generic [ref=e250]: 附上一张手绘原型照片。 这是一个[产品类型]，目标用户是[用户画像]。 页面流程： [首页：功能A] → [操作页：输入XX] → [结果页：展示YY] 需要实现的功能： 1. 按钮A：触发[某操作] 2. 输入框B：接收[某内容]，调用Supabase查询 3. 结果区域C：展示查询结果 请用[纯HTML+CSS+JS]生成完整的单文件应用。要求： - 移动端适配 - 按钮位置和大小参考原型的标注 - 颜色：主色[#颜色值]，背景[#颜色值]
+          - generic [ref=e251]:
+            - generic [ref=e252]: C
+            - generic [ref=e253]:
+              - generic [ref=e254]: 迭代修改原型
+              - generic [ref=e256]: 这是当前实现：[截图] 参考原型：[原型截图] 需要修改的地方： 1. 按钮[名称]的[位置/大小/颜色]需要调整：[具体修改] 2. 页面[名称]增加一个[功能描述] 3. [其他修改] 请只修改相关的代码块，不要动其他部分。
+      - generic [ref=e257]:
+        - generic [ref=e258]: 总纲
+        - paragraph [ref=e260]: 原型不是设计——原型是沟通工具。它是OPC和AI之间的共同语言。
+        - generic [ref=e261]:
+          - generic [ref=e262]: 三步出原型
+          - generic [ref=e263]:
+            - strong [ref=e264]: 1. 纸笔
+            - text: （10分钟）→ 确认方向对不对
+            - strong [ref=e265]: 2. Figma
+            - text: （30分钟）→ 确认交互顺不顺
+            - strong [ref=e266]: 3. 喂给AI
+            - text: （5分钟）→ 变成可以运行的代码
+        - paragraph [ref=e267]:
+          - text: 原型的目的是被推翻。不要花2天画一个"完美"的原型——那你会不敢改它。
+          - text: （本文写于2026年5月。Figma界面可能持续更新，但核心操作逻辑长期不变。）
+        - generic [ref=e268]:
+          - generic [ref=e269]: 2026 UPDATE
+          - generic [ref=e270]:
+            - blockquote [ref=e271]: "**面向OPC**：你有一个想法，但你不能花三个月把它做出来才发现没人要。原型的作用是：用最短的时间，做出\"看起来像真的\"的东西，拿去给别人看，收集反馈，再决定做不做。"
+            - heading "一、2026年OPC的原型三层次" [level=3] [ref=e272]
+            - heading "不是所有原型都需要\"做出来\"" [level=4] [ref=e273]
+            - table [ref=e274]:
+              - rowgroup [ref=e275]:
+                - row "层次 是什么 花多久 用来干嘛" [ref=e276]:
+                  - cell "层次" [ref=e277]
+                  - cell "是什么" [ref=e278]
+                  - cell "花多久" [ref=e279]
+                  - cell "用来干嘛" [ref=e280]
+                - row "**纸上原型** 手绘草图/Excalidraw线框图 30分钟 自己理清思路" [ref=e281]:
+                  - columnheader "**纸上原型**" [ref=e282]
+                  - columnheader "手绘草图/Excalidraw线框图" [ref=e283]
+                  - columnheader "30分钟" [ref=e284]
+                  - columnheader "自己理清思路" [ref=e285]
+                - row "**可点击原型** Figma做交互，看起来像真的App 半天 拿去给朋友看\"你愿意用吗\"" [ref=e286]:
+                  - cell "**可点击原型**" [ref=e287]
+                  - cell "Figma做交互，看起来像真的App" [ref=e288]
+                  - cell "半天" [ref=e289]
+                  - cell "拿去给朋友看\"你愿意用吗\"" [ref=e290]
+                - row "**功能原型** 用bolt.new/v0 生成可用的网页 1天 拿给目标用户真的试用" [ref=e291]:
+                  - cell "**功能原型**" [ref=e292]
+                  - cell "用bolt.new/v0 生成可用的网页" [ref=e293]
+                  - cell "1天" [ref=e294]
+                  - cell "拿给目标用户真的试用" [ref=e295]
+            - heading "二、2026年原型工具矩阵" [level=3] [ref=e296]
+            - text: 工具适合费用2026年亮点 **Excalidraw**手绘风格线框图免费开源2026年支持AI生成布局 **Figma**高保真交互原型免费（个人）2026年AI插件可文字生成设计稿 **v0.dev**文字描述→生成UI代码免费额度Vercel出品，直接生成React/Tailwind代码 **bolt.new**一句话→生成全栈应用免费额度StackBlitz出品，直接在线运行 **Cursor + prompt**精准控制代码原型$20/月最灵活，但需要会描述需求
+            - heading "三、OPC原型设计三原则" [level=3] [ref=e297]
+            - heading "1. 只画核心流程" [level=4] [ref=e298]
+            - paragraph [ref=e299]:
+              - text: 不是把所有页面都画出来，只画
+              - strong [ref=e300]: 用户完成核心任务的那条路径
+              - text: 。
+            - code [ref=e302]: 例：一个AI简历优化工具 只画：首页 → 上传简历 → 查看优化建议 → 下载优化版 不画：设置页、个人中心、历史记录、付费页面（原型阶段不考虑）
+            - heading "2. 用真实内容，不用\"Lorem Ipsum\"" [level=4] [ref=e303]
+            - paragraph [ref=e304]: 假文字（"标题标题标题"）让人无法判断产品价值。用真实场景的内容。
+            - heading "3. 原型做完当天就拿给人看" [level=4] [ref=e305]
+            - paragraph [ref=e306]: 不要打磨原型。粗糙但能传达想法的原型 > 精美但一周后才拿出来的原型。
+            - heading "四、从原型到验证的完整流程（2026年）" [level=3] [ref=e307]
+            - code [ref=e309]: "Day 1 上午: Excalidraw画核心流程（30分钟） Day 1 下午: 用v0.dev/bot.new生成可点击版本（2小时） Day 1 傍晚: 发给3个朋友，问\"你看懂这是什么了吗？\" Day 2: 根据反馈修改 → 再发给2个目标用户 Day 3: 决定：做 / 改方向 / 放弃"
+            - paragraph [ref=e310]:
+              - strong [ref=e311]: 铁律
+              - text: ：原型阶段超过3天=你在做产品，不是在验证想法。
+            - heading "五、检查清单" [level=3] [ref=e312]
+            - list [ref=e313]:
+              - listitem [ref=e314]: "[ ] 核心流程已画出（不是全部页面）"
+              - listitem [ref=e315]: "[ ] 原型中有真实内容（非Lorem Ipsum）"
+              - listitem [ref=e316]: "[ ] 至少3个人看过原型"
+              - listitem [ref=e317]: "[ ] 收集了\"看不懂的地方\"和\"愿意用吗\"的反馈"
+              - listitem [ref=e318]: "[ ] 3天内做出了Go/No-Go决策"
+            - heading "节点资源链接" [level=3] [ref=e319]
+            - list [ref=e320]:
+              - listitem [ref=e321]: 节点03：问题定义与用户调研
+              - listitem [ref=e322]: 节点05：MVP范围确定
+              - listitem [ref=e323]: 节点06：技术选型
+          - paragraph [ref=e324]: 以上内容基于2026年5月最新实践编写，工具版本和价格可能更新，请以官方文档为准。
+      - navigation [ref=e325]:
+        - link "← 节点03：问题定义与用户调研" [ref=e326] [cursor=pointer]:
+          - /url: /nodes/03-problem-definition/index.html
+          - generic [ref=e327]: ←
+          - text: 节点03：问题定义与用户调研
+        - link "节点05：MVP功能清单 →" [ref=e328] [cursor=pointer]:
+          - /url: /nodes/05-mvp-scope/index.html
+          - text: 节点05：MVP功能清单
+          - generic [ref=e329]: →

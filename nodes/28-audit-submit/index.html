@@ -662,7 +662,19 @@ td:first-child {
   </nav>
 
   <div class="layout">
-    <main class="container">
+    <aside class="sidebar-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#s2" class="toc-link">一、提交前的最终检查（5分钟）</a></li>
+        <li class="toc-item"><a href="#s3" class="toc-link">二、审核周期真相</a></li>
+        <li class="toc-item"><a href="#s4" class="toc-link">三、等待期的三要三不要</a></li>
+        <li class="toc-item"><a href="#s5" class="toc-link">四、审核被打回的第一反应</a></li>
+        <li class="toc-item"><a href="#s6" class="toc-link">五、审核通过后的第一个操作</a></li>
+        <li class="toc-item"><a href="#s7" class="toc-link">六、检查清单</a></li>
+        <li class="toc-item"><a href="#s8" class="toc-link">节点资源链接</a></li>
+      </ul>
+    </aside>
+        <main>
       <header>
       <div class="phase-label">正式上线</div>
       <h1>提交审核与等待</h1>
@@ -675,7 +687,7 @@ td:first-child {
 <blockquote class="decision-box"><p>审核材料准备好了，现在点下"提交审核"按钮。然后就是等待——但等待不是闲着。审核期间做错一件事，可能再等一周。</p></blockquote>
 
 <p></section></p>
-<section id="s一">
+<section id="s2">
 <p>      <div class="section-label">一、提交前的最终检查（5分钟）</div></p>
 
 <h3>逐项确认清单</h3>
@@ -691,14 +703,14 @@ td:first-child {
 <p>□ 版本号已更新（不是0.0.1）</p>
 
 <p></section></p>
-<section id="s二">
+<section id="s3">
 <p>      <div class="section-label">二、审核周期真相</div></p>
 
 <div class="table-wrapper"><table><thead><tr><th>平台</th><th>官方说的</th><th>实际体验（2026年）</th></tr></thead><tbody><tr><td>微信小程序</td><td>1-7个工作日</td><td>首次审核通常3-5天，二次提交1-2天</td></tr><tr><td>App Store</td><td>1-3个工作日</td><td>通常24-48小时</td></tr><tr><td>华为应用市场</td><td>1-5个工作日</td><td>通常2-3天</td></tr><tr><td>小米应用商店</td><td>1-3个工作日</td><td>通常24小时</td></tr><tr><td>微信支付商户</td><td>1-5个工作日</td><td>通常2-3天</td></tr></tbody></table></div>
 <strong>周末和节假日不计入工作日。</strong> 周五提交 = 最早下周一下午出结果。
 
 <p></section></p>
-<section id="s三">
+<section id="s4">
 <p>      <div class="section-label">三、等待期的三要三不要</div></p>
 
 <h3>✅ 要做的</h3>
@@ -709,7 +721,7 @@ td:first-child {
 <ol><li><strong>不要在此期间改代码</strong>：审核员看的版本是你提交时的版本，你现在改了也没用</li><li><strong>不要在审核期间更新域名解析/服务器配置</strong>：可能导致审核员访问不到你的产品</li><li><strong>不要频繁刷新审核状态</strong>：一天看一次够了，看多了只会焦虑</li></ol>
 
 <p></section></p>
-<section id="s四">
+<section id="s5">
 <p>      <div class="section-label">四、审核被打回的第一反应</div></p>
 
 <h3>不要做的事</h3>
@@ -720,7 +732,7 @@ td:first-child {
 <ol><li><strong>逐字阅读审核反馈</strong>：审核反馈一般很简短，但每一个字都有信息量</li><li><strong>对照审核规范自查</strong>：打开平台的审核指南，逐条核对</li><li><strong>修改→验证→再提交</strong>：参考节点29的详细流程</li></ol>
 
 <p></section></p>
-<section id="s五">
+<section id="s6">
 <p>      <div class="section-label">五、审核通过后的第一个操作</div></p>
 
 <h3>先别急着发朋友圈</h3>
@@ -730,13 +742,13 @@ td:first-child {
 <ol><li>删除测试账号（如果不需要了）</li><li>检查生产环境配置（API密钥、数据库连接等是否指向生产环境）</li><li>跑一遍核心路径（无痕浏览器 + 手机微信）</li><li>确认支付功能切换到正式环境</li><li>现在可以发朋友圈了</li></ol></code>``
 
 <p></section></p>
-<section id="s六">
+<section id="s7">
 <p>      <div class="section-label">六、检查清单</div></p>
 
 <ul><li><input type="checkbox" disabled> 提交前清单全部确认完毕</li><li><input type="checkbox" disabled> 手机保持畅通</li><li><input type="checkbox" disabled> 审核期间未修改代码和服务器</li><li><input type="checkbox" disabled> 审核结果已记录（无论通过还是打回）</li><li><input type="checkbox" disabled> 通过后已完成生产环境检查</li></ul>
 
 <p></section></p>
-<section id="s节">
+<section id="s8">
 <p>      <div class="section-label">节点资源链接</div></p>
 
 <ul><li>节点27：上线前检查清单</li><li>节点29：审核问题处理</li><li>节点30：正式发布</li></ul>
@@ -770,6 +782,30 @@ td:first-child {
       }
     });
   });
+
+  // Scroll spy for TOC
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+
+  function updateActiveLink() {
+    const scrollPos = window.scrollY + 120;
+    sections.forEach(section => {
+      const top = section.offsetTop;
+      const height = section.offsetHeight;
+      const id = section.getAttribute('id');
+      if (scrollPos >= top && scrollPos < top + height) {
+        tocLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + id) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveLink, { passive: true });
+  updateActiveLink();
   </script>
 </body>
 </html>

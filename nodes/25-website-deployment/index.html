@@ -662,7 +662,18 @@ td:first-child {
   </nav>
 
   <div class="layout">
-    <main class="container">
+    <aside class="sidebar-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#s2" class="toc-link">一、Vercel vs 云服务器：OPC的终极选择</a></li>
+        <li class="toc-item"><a href="#s3" class="toc-link">二、路径A：Vercel部署（5分钟上线）</a></li>
+        <li class="toc-item"><a href="#s4" class="toc-link">三、路径B：云服务器部署（完整控制）</a></li>
+        <li class="toc-item"><a href="#s5" class="toc-link">四、部署后的安全必做项</a></li>
+        <li class="toc-item"><a href="#s6" class="toc-link">五、检查清单</a></li>
+        <li class="toc-item"><a href="#s8" class="toc-link">节点资源链接</a></li>
+      </ul>
+    </aside>
+        <main>
       <header>
       <div class="phase-label">上线准备</div>
       <h1>网站部署与SSL</h1>
@@ -675,7 +686,7 @@ td:first-child {
 <blockquote class="decision-box"><p>代码在本地跑得好好的，现在要让全世界都能访问。2026年OPC部署只有两条路——选Vercel（零运维）或选云服务器（完全控制）。本节点给你两条路的完整走法。</p></blockquote>
 
 <p></section></p>
-<section id="s一">
+<section id="s2">
 <p>      <div class="section-label">一、Vercel vs 云服务器：OPC的终极选择</div></p>
 
 <div class="table-wrapper"><table><thead><tr><th>维度</th><th>Vercel</th><th>阿里云/腾讯云轻量服务器</th></tr></thead><tbody><tr><td><strong>部署方式</strong></td><td><code>git push</code> 自动部署</td><td>SSH手动上传 / Git CI/CD</td></tr><tr><td><strong>月费</strong></td><td>免费（个人版）</td><td>¥24起（2核2G）</td></tr><tr><td><strong>SSL证书</strong></td><td>自动配置+续期</td><td>手动申请（免费Let's Encrypt）</td></tr><tr><td><strong>ICP备案</strong></td><td>不需要（服务器在海外）</td><td>必须备案</td></tr><tr><td><strong>国内访问速度</strong></td><td>中等（CDN节点在日韩）</td><td>快（国内节点）</td></tr><tr><td><strong>数据库</strong></td><td>需外挂Supabase/PlanetScale</td><td>可自建</td></tr><tr><td><strong>运维工作</strong></td><td>零</td><td>需要配Nginx、防火墙、日志</td></tr></tbody></table></div>
@@ -683,7 +694,7 @@ td:first-child {
 <ul><li>你的用户全在国内，对速度要求高 → 云服务器</li><li>你的用户有海外，你不想碰运维 → Vercel</li><li>你需要微信小程序 → 云服务器（小程序要求国内服务器+备案）</li></ul>
 
 <p></section></p>
-<section id="s二">
+<section id="s3">
 <p>      <div class="section-label">二、路径A：Vercel部署（5分钟上线）</div></p>
 
 <h3>一步部署</h3>
@@ -714,7 +725,7 @@ td:first-child {
 <strong>SSL证书自动生成，5分钟内生效。</strong> 完全免费。
 
 <p></section></p>
-<section id="s三">
+<section id="s4">
 <p>      <div class="section-label">三、路径B：云服务器部署（完整控制）</div></p>
 
 <h3>步骤1：买服务器+登录（10分钟）</h3>
@@ -806,7 +817,7 @@ td:first-child {
 <p></code>`<code></p>
 
 <p></section></p>
-<section id="s四">
+<section id="s5">
 <p>      <div class="section-label">四、部署后的安全必做项</div></p>
 
 <p></code>`<code>bash</p>
@@ -827,13 +838,13 @@ td:first-child {
 <p></code>``</p>
 
 <p></section></p>
-<section id="s五">
+<section id="s6">
 <p>      <div class="section-label">五、检查清单</div></p>
 
 <ul><li><input type="checkbox" disabled> 网站通过域名可正常访问</li><li><input type="checkbox" disabled> HTTPS正常（浏览器地址栏有图标）</li><li><input type="checkbox" disabled> 强制HTTP跳转HTTPS</li><li><input type="checkbox" disabled> 防火墙已开启（仅开放22/80/443端口）</li><li><input type="checkbox" disabled> PM2已设置开机自启</li><li><input type="checkbox" disabled> SSL证书自动续期已配置</li></ul>
 
 <p></section></p>
-<section id="s节">
+<section id="s8">
 <p>      <div class="section-label">节点资源链接</div></p>
 
 <ul><li>节点24：域名购买与ICP备案</li><li>节点26：审核材料准备</li><li>节点27：上线前检查清单</li></ul>
@@ -867,6 +878,30 @@ td:first-child {
       }
     });
   });
+
+  // Scroll spy for TOC
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+
+  function updateActiveLink() {
+    const scrollPos = window.scrollY + 120;
+    sections.forEach(section => {
+      const top = section.offsetTop;
+      const height = section.offsetHeight;
+      const id = section.getAttribute('id');
+      if (scrollPos >= top && scrollPos < top + height) {
+        tocLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + id) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveLink, { passive: true });
+  updateActiveLink();
   </script>
 </body>
 </html>

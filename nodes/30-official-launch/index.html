@@ -662,7 +662,19 @@ td:first-child {
   </nav>
 
   <div class="layout">
-    <main class="container">
+    <aside class="sidebar-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#s2" class="toc-link">一、发布策略：别一次全放</a></li>
+        <li class="toc-item"><a href="#s3" class="toc-link">二、发布后48小时监控清单</a></li>
+        <li class="toc-item"><a href="#s4" class="toc-link">三、最可能发生的三种紧急状况</a></li>
+        <li class="toc-item"><a href="#s5" class="toc-link">四、发布后的第一周：不要做这些事</a></li>
+        <li class="toc-item"><a href="#s6" class="toc-link">五、发布后必做的一件事</a></li>
+        <li class="toc-item"><a href="#s7" class="toc-link">六、检查清单</a></li>
+        <li class="toc-item"><a href="#s8" class="toc-link">节点资源链接</a></li>
+      </ul>
+    </aside>
+        <main>
       <header>
       <div class="phase-label">正式上线</div>
       <h1>正式发布</h1>
@@ -675,7 +687,7 @@ td:first-child {
 <blockquote class="decision-box"><p>审核通过了。现在你的产品正式面向全世界。这一刻很重要——不是因为"仪式感"，而是因为发布后的48小时，决定了你的产品能不能活下去。</p></blockquote>
 
 <p></section></p>
-<section id="s一">
+<section id="s2">
 <p>      <div class="section-label">一、发布策略：别一次全放</div></p>
 
 <h3>OPC唯一推荐的策略：灰度发布</h3>
@@ -690,7 +702,7 @@ td:first-child {
 <strong>OPC现实</strong>：大部分OPC产品第一次发布没有"旧版本"。那就用第一种——先小范围扩散，观察有没有崩溃级Bug。
 
 <p></section></p>
-<section id="s二">
+<section id="s3">
 <p>      <div class="section-label">二、发布后48小时监控清单</div></p>
 
 <h3>每小时看一次（前4小时）</h3>
@@ -701,7 +713,7 @@ td:first-child {
 <div class="table-wrapper"><table><thead><tr><th>指标</th><th>关注点</th></tr></thead><tbody><tr><td>新增用户数</td><td>有没有增长？增长来源是哪里？</td></tr><tr><td>核心功能使用率</td><td>注册的用户有多少用了核心功能？<30% = 引导有问题</td></tr><tr><td>用户反馈</td><td>有没有集中的负面反馈？（多个用户说同一个问题）</td></tr><tr><td>崩溃率</td><td>>1% = 立刻修</td></tr></tbody></table></div>
 
 <p></section></p>
-<section id="s三">
+<section id="s4">
 <p>      <div class="section-label">三、最可能发生的三种紧急状况</div></p>
 
 <h3>状况1：服务器崩了</h3>
@@ -737,13 +749,13 @@ td:first-child {
 <p></code>`<code></p>
 
 <p></section></p>
-<section id="s四">
+<section id="s5">
 <p>      <div class="section-label">四、发布后的第一周：不要做这些事</div></p>
 
 <div class="table-wrapper"><table><thead><tr><th>❌ 不要做</th><th>原因</th></tr></thead><tbody><tr><td>不要加新功能</td><td>先把现有功能稳住</td></tr><tr><td>不要大改UI</td><td>刚来的用户需要时间适应</td></tr><tr><td>不要调整价格</td><td>除非发现定价明显错误（如少了一个0）</td></tr><tr><td>不要在半夜发布修复</td><td>半夜发的修复没人看到，出了问题没人响应</td></tr></tbody></table></div>
 
 <p></section></p>
-<section id="s五">
+<section id="s6">
 <p>      <div class="section-label">五、发布后必做的一件事</div></p>
 
 <h3>给最早的用户写一封感谢信</h3>
@@ -758,13 +770,13 @@ td:first-child {
 <strong>为什么做</strong>：早期用户的流失率极高。一封个人化的感谢信，能把流失率降低30%以上（来源：SaaS行业基准数据）。
 
 <p></section></p>
-<section id="s六">
+<section id="s7">
 <p>      <div class="section-label">六、检查清单</div></p>
 
 <ul><li><input type="checkbox" disabled> 灰度策略已执行（先小范围，后全量）</li><li><input type="checkbox" disabled> 监控告警已就绪（至少CPU>90%要知道）</li><li><input type="checkbox" disabled> 发布后48小时核心指标正常</li><li><input type="checkbox" disabled> 服务器有应急升级方案（知道怎么升配置）</li><li><input type="checkbox" disabled> 给早期用户发了感谢信</li></ul>
 
 <p></section></p>
-<section id="s节">
+<section id="s8">
 <p>      <div class="section-label">节点资源链接</div></p>
 
 <ul><li>节点29：审核问题处理</li><li>节点31：数据监控</li><li>节点32：冷启动获客</li></ul>
@@ -798,6 +810,30 @@ td:first-child {
       }
     });
   });
+
+  // Scroll spy for TOC
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+
+  function updateActiveLink() {
+    const scrollPos = window.scrollY + 120;
+    sections.forEach(section => {
+      const top = section.offsetTop;
+      const height = section.offsetHeight;
+      const id = section.getAttribute('id');
+      if (scrollPos >= top && scrollPos < top + height) {
+        tocLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + id) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveLink, { passive: true });
+  updateActiveLink();
   </script>
 </body>
 </html>

@@ -662,7 +662,19 @@ td:first-child {
   </nav>
 
   <div class="layout">
-    <main class="container">
+    <aside class="sidebar-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#s2" class="toc-link">一、为什么亲友测试是OPC的生死线</a></li>
+        <li class="toc-item"><a href="#s3" class="toc-link">二、找谁测试：四种人缺一不可</a></li>
+        <li class="toc-item"><a href="#s4" class="toc-link">三、怎么测试：给任务，不给指导</a></li>
+        <li class="toc-item"><a href="#s5" class="toc-link">四、反馈收集：用飞书/腾讯文档建一个共享表</a></li>
+        <li class="toc-item"><a href="#s6" class="toc-link">五、测试后必做的三件事</a></li>
+        <li class="toc-item"><a href="#s7" class="toc-link">六、检查清单</a></li>
+        <li class="toc-item"><a href="#s8" class="toc-link">节点资源链接</a></li>
+      </ul>
+    </aside>
+        <main>
       <header>
       <div class="phase-label">测试与修复</div>
       <h1>亲友灰度测试</h1>
@@ -675,7 +687,7 @@ td:first-child {
 <blockquote class="decision-box"><p>代码写完了、自测通过了，现在你需要真人来用。但你不是大厂，没有"灰度发布系统"——你只有微信里的5-10个朋友。</p></blockquote>
 
 <p></section></p>
-<section id="s一">
+<section id="s2">
 <p>      <div class="section-label">一、为什么亲友测试是OPC的生死线</div></p>
 
 <h3>三个事实</h3>
@@ -688,14 +700,14 @@ td:first-child {
 <strong>5个人就够了。10个人最好。超过10个是浪费。</strong>
 
 <p></section></p>
-<section id="s二">
+<section id="s3">
 <p>      <div class="section-label">二、找谁测试：四种人缺一不可</div></p>
 
 <div class="table-wrapper"><table><thead><tr><th>类型</th><th>特征</th><th>人数</th></tr></thead><tbody><tr><td><strong>完全不懂技术的人</strong></td><td>你爸妈、不做技术的朋友</td><td>2人</td></tr><tr><td><strong>你的目标用户</strong></td><td>符合你产品定位的人</td><td>3人</td></tr><tr><td><strong>比你还懂的人</strong></td><td>同领域更深经验的OPC</td><td>1-2人</td></tr><tr><td><strong>用过竞品的人</strong></td><td>从竞品切过来的用户</td><td>1-2人</td></tr></tbody></table></div>
 <strong>为什么需要"完全不懂技术的人"</strong>：你爸妈能走通的流程 = 任何人都能走通。你爸妈卡住的地方 = 你的产品设计有问题。
 
 <p></section></p>
-<section id="s三">
+<section id="s4">
 <p>      <div class="section-label">三、怎么测试：给任务，不给指导</div></p>
 
 <h3>❌ 错误做法</h3>
@@ -715,26 +727,26 @@ td:first-child {
 <strong>全程不要说话。</strong> 除非他明确说"我不行了，告诉我怎么做"。
 
 <p></section></p>
-<section id="s四">
+<section id="s5">
 <p>      <div class="section-label">四、反馈收集：用飞书/腾讯文档建一个共享表</div></p>
 
 <div class="table-wrapper"><table><thead><tr><th>发现者</th><th>问题描述</th><th>严重程度</th><th>截图</th><th>状态</th></tr></thead><tbody><tr><td>张三</td><td>注册后页面空白，刷新才出现</td><td>P0</td><td>[图]</td><td>待修复</td></tr><tr><td>李四</td><td>不知道"OPC"是什么意思</td><td>P2</td><td>-</td><td>待优化</td></tr></tbody></table></div>
 <ul><li><strong>P0</strong>：核心流程中断（立即修）</li><li><strong>P1</strong>：数据错误（当天修）</li><li><strong>P2</strong>：体验问题（记录，下版本修）</li></ul>
 
 <p></section></p>
-<section id="s五">
+<section id="s6">
 <p>      <div class="section-label">五、测试后必做的三件事</div></p>
 
 <ol><li><strong>48小时内修复所有P0</strong>：别拖，拖了就不想修了</li><li><strong>回复每一个测试者</strong>："你提到的XX问题我已经修了，谢谢你"——这不是客套，是让他愿意下次再帮你测</li><li><strong>记录"啊哈时刻"</strong>：测试者的哪句话让你觉得"他get到了"？这句话将来写进你的产品介绍页</li></ol>
 
 <p></section></p>
-<section id="s六">
+<section id="s7">
 <p>      <div class="section-label">六、检查清单</div></p>
 
 <ul><li><input type="checkbox" disabled> 至少找了5个人（含2个完全不懂技术的）</li><li><input type="checkbox" disabled> 每个测试者给了具体任务，没给操作指导</li><li><input type="checkbox" disabled> 观察了犹豫点、误操作点、提问、笑容</li><li><input type="checkbox" disabled> 反馈已录入共享表（严重程度已标注）</li><li><input type="checkbox" disabled> P0问题48小时内已修复</li><li><input type="checkbox" disabled> 每个测试者已收到回复</li></ul>
 
 <p></section></p>
-<section id="s节">
+<section id="s8">
 <p>      <div class="section-label">节点资源链接</div></p>
 
 <ul><li>节点18：开发者自测流程</li><li>节点20：Bug集中修复</li><li>节点21：性能基础优化</li></ul>
@@ -768,6 +780,30 @@ td:first-child {
       }
     });
   });
+
+  // Scroll spy for TOC
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+
+  function updateActiveLink() {
+    const scrollPos = window.scrollY + 120;
+    sections.forEach(section => {
+      const top = section.offsetTop;
+      const height = section.offsetHeight;
+      const id = section.getAttribute('id');
+      if (scrollPos >= top && scrollPos < top + height) {
+        tocLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + id) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveLink, { passive: true });
+  updateActiveLink();
   </script>
 </body>
 </html>
