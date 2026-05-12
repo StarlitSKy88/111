@@ -245,14 +245,6 @@ td, th {
   padding: 1.25rem 1.5rem;
 }
 
-/* Main content */
-  font-size: 0.6875rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 1.25rem;
-}
-
 h1 {
   font-family: 'Noto Serif JP', serif;
   font-size: clamp(48px, 10vw, 96px);
@@ -662,7 +654,20 @@ td:first-child {
   </nav>
 
   <div class="layout">
-    <main class="container">
+    <aside class="sidebar-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#s1" class="toc-link">自测是 OPC 的生死线</a></li>
+        <li class="toc-item"><a href="#s2" class="toc-link">一、OPC自测的第一原理</a></li>
+        <li class="toc-item"><a href="#s3" class="toc-link">二、OPC自测五步法</a></li>
+        <li class="toc-item"><a href="#s4" class="toc-link">三、自动化测试工具</a></li>
+        <li class="toc-item"><a href="#s5" class="toc-link">四、自测时间分配公式</a></li>
+        <li class="toc-item"><a href="#s6" class="toc-link">五、自测防翻车清单</a></li>
+        <li class="toc-item"><a href="#s7" class="toc-link">六、自测通过标准</a></li>
+        <li class="toc-item"><a href="#s8" class="toc-link">节点资源链接</a></li>
+      </ul>
+    </aside>
+    <main>
       <header>
       <div class="phase-label">测试与修复</div>
       <h1>开发者自测流程</h1>
@@ -674,8 +679,8 @@ td:first-child {
 
 <blockquote class="decision-box"><p>你没有人帮你测。没有QA、没有测试工程师、没有同事帮你点两下。你是写代码的人，你也是唯一负责质量的人。本节点告诉你：一个人怎么测出一个团队的信心。</p></blockquote>
 
-<p></section></p>
-<section id="s一">
+</section>
+<section id="s2">
 <p>      <div class="section-label">一、OPC自测的第一原理</div></p>
 
 <h3>残酷真相</h3>
@@ -689,8 +694,8 @@ td:first-child {
 <div class="table-wrapper"><table><thead><tr><th>优先级</th><th>定义</th><th>举例</th></tr></thead><tbody><tr><td>🔴 P0</td><td>用户的核心流程断了</td><td>支付后订单没创建、登录后白屏、注册收不到验证码</td></tr><tr><td>🟠 P1</td><td>核心流程能用但数据错了</td><td>金额显示少了一个0、统计数据对不上</td></tr><tr><td>🟡 P2</td><td>功能正常但体验糟糕</td><td>按钮点了没反应（但刷新后好了）、图片加载慢</td></tr><tr><td>🟢 P3</td><td>不影响使用的瑕疵</td><td>文案有个错别字、对齐有点歪</td></tr></tbody></table></div>
 <strong>OPC铁律：上线前P0/P1必须清零。P2可以上线后修，P3可以不管。</strong>
 
-<p></section></p>
-<section id="s二">
+</section>
+<section id="s3">
 <p>      <div class="section-label">二、OPC自测五步法（每天30分钟）</div></p>
 
 <h3>步骤1：核心路径走查（10分钟）</h3>
@@ -759,8 +764,8 @@ td:first-child {
 <p>SELECT * FROM orders WHERE created_at < '2024-01-01';  -- 时间戳明显错误的</p>
 <p></code>`<code></p>
 
-<p></section></p>
-<section id="s三">
+</section>
+<section id="s4">
 <p>      <div class="section-label">三、2026年OPC可用的自动化测试工具</div></p>
 
 <h3>必学：API测试用 Postman / Bruno</h3>
@@ -807,8 +812,8 @@ td:first-child {
 <p>});</p>
 <p></code>`<code></p>
 
-<p></section></p>
-<section id="s四">
+</section>
+<section id="s5">
 <p>      <div class="section-label">四、自测的时间分配公式</div></p>
 
 <p></code>`<code></p>
@@ -824,14 +829,14 @@ td:first-child {
 
 <strong>如果30分钟不够</strong> → 说明这个功能太复杂了，拆成两个功能分别上线。
 
-<p></section></p>
-<section id="s五">
+</section>
+<section id="s6">
 <p>      <div class="section-label">五、OPC自测防翻车清单</div></p>
 
 <div class="table-wrapper"><table><thead><tr><th>翻车方式</th><th>预防</th></tr></thead><tbody><tr><td><strong>在自己浏览器测完就上线</strong></td><td>必须用全新无痕窗口测一遍（清掉所有缓存和登录态）</td></tr><tr><td><strong>只在桌面测</strong></td><td>上线前手机微信打开走一遍完整流程</td></tr><tr><td><strong>回调只在本地测</strong></td><td>支付回调、OAuth回调必须在公网可访问的环境测一次（用ngrok）</td></tr><tr><td><strong>改了A功能不测B功能</strong></td><td>回归测试：改了支付的代码，重新走一遍注册→登录→功能1的流程</td></tr><tr><td><strong>"我就改了一行CSS"</strong></td><td>改了一行也要走P0核心路径。CSS可能导致按钮错位、文字消失</td></tr></tbody></table></div>
 
-<p></section></p>
-<section id="s六">
+</section>
+<section id="s7">
 <p>      <div class="section-label">六、自测通过标准（发布前）</div></p>
 
 <p></code>`<code></p>
@@ -844,8 +849,8 @@ td:first-child {
 <p>□ 支付回调在公网环境测试通过（至少一次真实支付）</p>
 <p></code>``</p>
 
-<p></section></p>
-<section id="s节">
+</section>
+<section id="s8">
 <p>      <div class="section-label">节点资源链接</div></p>
 
 <ul><li>节点17：国内支付接入</li><li>节点19：亲友灰度测试</li><li>节点20：Bug集中修复</li></ul>
@@ -879,6 +884,30 @@ td:first-child {
       }
     });
   });
+
+  // Scroll spy for TOC
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+
+  function updateActiveLink() {
+    const scrollPos = window.scrollY + 120;
+    sections.forEach(section => {
+      const top = section.offsetTop;
+      const height = section.offsetHeight;
+      const id = section.getAttribute('id');
+      if (scrollPos >= top && scrollPos < top + height) {
+        tocLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + id) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveLink, { passive: true });
+  updateActiveLink();
   </script>
 </body>
 </html>
