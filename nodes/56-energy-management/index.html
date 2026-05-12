@@ -239,6 +239,51 @@ body {
   min-width: 0;
 }
 
+/* Sidebar TOC */
+.sidebar-toc {
+  position: sticky;
+  top: 5rem;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  padding-right: var(--space-sm);
+}
+
+.toc-title {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+}
+
+.toc-list {
+  list-style: none;
+}
+
+.toc-item {
+  margin-bottom: var(--space-sm);
+}
+
+.toc-link {
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  display: block;
+  padding: 4px 0;
+}
+
+.toc-link:hover,
+.toc-link.active {
+  color: var(--text-primary);
+}
+
+.toc-link.active {
+  color: var(--accent);
+}
+
 /* Responsive layout */
 @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
 @media (max-width: 900px) {
@@ -487,16 +532,29 @@ body {
   <div class="section-number">56</div>
 
   <div class="layout">
+    <nav class="sidebar-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#s1" class="toc-link">六维结构</a></li>
+        <li class="toc-item"><a href="#s2" class="toc-link">D1 精力本质</a></li>
+        <li class="toc-item"><a href="#s3" class="toc-link">D2 时间块</a></li>
+        <li class="toc-item"><a href="#s4" class="toc-link">D3 番茄工作法</a></li>
+        <li class="toc-item"><a href="#s5" class="toc-link">D4 能量分配</a></li>
+        <li class="toc-item"><a href="#s6" class="toc-link">D5 外部节奏</a></li>
+        <li class="toc-item"><a href="#fin" class="toc-link">FIN</a></li>
+      </ul>
+    </nav>
+    <main class="main-content">
     <header class="hero">
       <div class="hero-content">
-        <div class="hero-label">节点 56 · 1-10</div>
+        <div class="hero-label">节点 56 · 核心必做</div>
         <h1 class="hero-title">个人精力管理</h1>
         <p class="hero-desc">时间块、番茄工作法、精力分配，OPC最宝贵资源，很多人3个月就burnout</p>
       </div>
     </header>
 
     <!-- D1-D6 Dimensions -->
-    <section class="content-section fade-section">
+    <section id="s1" class="content-section fade-section">
       <div class="section-label">六维结构</div>
       <div class="dimensions-grid">
         <div class="dim-badge d1">
@@ -533,7 +591,7 @@ body {
     </section>
 
     <!-- D1: 核心 -->
-    <section class="content-section fade-section">
+    <section id="s2" class="content-section fade-section">
       <div class="grid-asymmetric">
         <div class="main-content">
           <h2 class="chapter-heading">为什么2026年精力管理是OPC的生死线</h2>
@@ -563,7 +621,7 @@ body {
     </section>
 
     <!-- D2: 模型 -->
-    <section class="content-section fade-section">
+    <section id="s3" class="content-section fade-section">
       <div class="grid-asymmetric">
         <div class="main-content">
           <h2 class="chapter-heading">高认知窗口锁定：像管理现金流一样管理精力</h2>
@@ -604,7 +662,7 @@ body {
     </section>
 
     <!-- D3: 培育 - AI沙盒 -->
-    <section class="content-section fade-section">
+    <section id="s4" class="content-section fade-section">
       <div class="grid-asymmetric">
         <div class="main-content">
           <h2 class="chapter-heading">AI精力沙盒：一人公司的注意力防护墙</h2>
@@ -645,7 +703,7 @@ body {
     </section>
 
     <!-- D4: 避坑 - 五大崩溃信号 -->
-    <section class="content-section fade-section">
+    <section id="s5" class="content-section fade-section">
       <div class="grid-asymmetric">
         <div class="main-content">
           <h2 class="chapter-heading">五大精力崩溃信号：你的自我预警系统</h2>
@@ -696,7 +754,7 @@ body {
     </section>
 
     <!-- D5: 培育 - 工具栈 -->
-    <section class="content-section fade-section">
+    <section id="s6" class="content-section fade-section">
       <div class="grid-asymmetric">
         <div class="main-content">
           <h2 class="chapter-heading">2026年专属工具栈：四位一体的精力保护生态系统</h2>
@@ -723,7 +781,7 @@ body {
     </section>
 
     <!-- D6: 决策 -->
-    <section class="content-section fade-section">
+    <section id="s7" class="content-section fade-section">
       <div class="section-label">决策矩阵</div>
       <h2 class="balance-section-title">做 / 不做</h2>
       <p class="balance-intro">精力是OPC最不可替代的生产资料。每项任务都要问：这件事与我的高价值任务有没有交叉点？如果没有，<strong>立即拒绝</strong>。</p>
