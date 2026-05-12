@@ -686,7 +686,7 @@ td:first-child {
 
 <blockquote class="decision-box"><p>产品上线了，用户来了，也走了。你不知道他们为什么走，因为没人告诉你。用户反馈不是"锦上添花"——它是OPC唯一的市场调研部门。</p></blockquote>
 
-<p></section></p>
+</section>
 <section id="s2">
 <p>      <div class="section-label">一、反馈渠道：在哪里等着用户</div></p>
 
@@ -695,26 +695,24 @@ td:first-child {
 <div class="table-wrapper"><table><thead><tr><th>渠道</th><th>搭建成本</th><th>适合场景</th></tr></thead><tbody><tr><td><strong>产品内反馈入口</strong></td><td>写一个表单，30分钟</td><td>所有产品必须有</td></tr><tr><td><strong>微信群</strong></td><td>0元，5分钟建群</td><td>早期用户、付费用户</td></tr><tr><td><strong>应用商店评论</strong></td><td>0元，上线就有</td><td>小程序/App必看</td></tr><tr><td><strong>客服邮箱</strong></td><td>域名邮箱免费</td><td>企业客户/正式反馈</td></tr></tbody></table></div>
 <h3>产品内反馈入口的最简实现</h3>
 
-<p>``<code>html</p>
-<p><!-- 页面右下角固定一个反馈按钮 --></p>
-<button onclick="showFeedback()" 
-<p>  style="position:fixed;bottom:20px;right:20px;z-index:9999;</p>
-<p>         background:#C0392B;color:#fff;border:none;</p>
-<p>         padding:12px 20px;border-radius:8px;cursor:pointer;"></p>
-<p>  💬 反馈</p>
-<p></button></p>
+<pre><code>&lt;!-- 页面右下角固定一个反馈按钮 --&gt;
+&lt;button onclick="showFeedback()"
+  style="position:fixed;bottom:20px;right:20px;z-index:9999;
+         background:#C0392B;color:#fff;border:none;
+         padding:12px 20px;border-radius:8px;cursor:pointer;"&gt;
+  💬 反馈
+&lt;/button&gt;
 
-<p><!-- 最简单的反馈表单 --></p>
-<div id="feedback-form" style="display:none;...">
-<p>  <textarea id="feedback-text" placeholder="告诉我们你的想法..."></textarea></p>
-<p>  <input id="feedback-contact" placeholder="微信/邮箱（选填）"></p>
-<p>  <button onclick="submitFeedback()">提交</button></p>
-<p></div></p>
-<p></code>`<code></p>
+&lt;!-- 最简单的反馈表单 --&gt;
+&lt;div id="feedback-form" style="display:none;..."&gt;
+  &lt;textarea id="feedback-text" placeholder="告诉我们你的想法..."&gt;&lt;/textarea&gt;
+  &lt;input id="feedback-contact" placeholder="微信/邮箱（选填）"&gt;
+  &lt;button onclick="submitFeedback()"&gt;提交&lt;/button&gt;
+&lt;/div&gt;</code></pre>
 
 <strong>关键</strong>：反馈入口必须只需要写文字+点提交。不要要求用户填"反馈类型""优先级""截图"——每多一个字段，提交率降低40%。
 
-<p></section></p>
+</section>
 <section id="s3">
 <p>      <div class="section-label">二、微信群运营：OPC最有效的反馈渠道</div></p>
 
@@ -726,12 +724,8 @@ td:first-child {
 <ol><li><strong>你必须在群里</strong>：作为创始人，亲自回复。别让AI替你。</li><li><strong>感谢每一个反馈</strong>：即使是吐槽。回复"谢谢你告诉我，我来看看"——下次他还会说</li><li><strong>公开问题公开修</strong>：在群里说"刚才张三提到的问题我已经修复了"，让所有人看到你在行动</li></ol>
 <h3>一个高效模板</h3>
 
-<p></code>`<code></p>
-<p>群公告：</p>
-<p>欢迎来到OPC节点百科用户群！🎉</p>
-<ul><li>遇到Bug：@我 + 截图，我会在24小时内修复</li><li>功能建议：直接说，我会记录</li><li>吐槽也欢迎，但请具体（"不好用" → "哪个环节不好用"）</li></ul></code>`<code>
 
-<p></section></p>
+</section>
 <section id="s4">
 <p>      <div class="section-label">三、反馈的日常处理SOP</div></p>
 
@@ -742,7 +736,7 @@ td:first-child {
 
 <div class="table-wrapper"><table><thead><tr><th>发现者</th><th>渠道</th><th>反馈内容</th><th>类型</th><th>处理状态</th></tr></thead><tbody><tr><td>张三</td><td>微信群</td><td>支付完没反应</td><td>P0 Bug</td><td>✅ 已修复</td></tr><tr><td>李四</td><td>反馈表单</td><td>想要暗色模式</td><td>建议</td><td>📋 需求池</td></tr><tr><td>王五</td><td>App Store</td><td>"太好用了"</td><td>好评</td><td>✅ 已感谢</td></tr></tbody></table></div>
 
-<p></section></p>
+</section>
 <section id="s5">
 <p>      <div class="section-label">四、如何从反馈中发现产品方向</div></p>
 
@@ -750,25 +744,23 @@ td:first-child {
 
 <div class="table-wrapper"><table><thead><tr><th>信号</th><th>含义</th><th>行动</th></tr></thead><tbody><tr><td>1个人提1次</td><td>噪音</td><td>记录，观察</td></tr><tr><td>不同人提同1个问题（≥3次）</td><td>真实痛点</td><td>排入下周计划</td></tr><tr><td>同1个问题持续被提</td><td>核心体验问题</td><td>本周解决</td></tr><tr><td>用户说你"少了某功能"</td><td>竞品有而你没有</td><td>评估是否与你的核心定位冲突</td></tr></tbody></table></div>
 
-<p></section></p>
+</section>
 <section id="s6">
 <p>      <div class="section-label">五、一个OPC的反馈闭环案例</div></p>
 
-<p></code>`<code></p>
 <p>用户A在群里说："为什么不能导出数据？"</p>
 
 <p>你的处理：</p>
 <ol><li>回复："收到，我评估一下"（即时）</li><li>查看是否有其他人提过（3人提过）</li><li>评估开发成本（1天）</li><li>在群里说："导出功能已排入下周计划"（透明）</li><li>上线后在群里@A："导出功能上线了，你试试"（闭环）</li></ol>
 <p>结果：用户A成了你的自来水推广——他告诉同事"这个产品的开发者会听用户的话"</p>
-<p></code>``</p>
 
-<p></section></p>
+</section>
 <section id="s7">
 <p>      <div class="section-label">六、检查清单</div></p>
 
 <ul><li><input type="checkbox" disabled> 产品内反馈入口已上线（只需文字+提交）</li><li><input type="checkbox" disabled> 反馈处理群已建立（你在群里）</li><li><input type="checkbox" disabled> 每天花15分钟处理反馈（有固定时间）</li><li><input type="checkbox" disabled> 反馈有分类记录（Bug/建议/好评）</li><li><input type="checkbox" disabled> 每条反馈有回复</li><li><input type="checkbox" disabled> 同问题≥3人反馈 → 已排入计划</li></ul>
 
-<p></section></p>
+</section>
 <section id="s8">
 <p>      <div class="section-label">节点资源链接</div></p>
 
