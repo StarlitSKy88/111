@@ -826,12 +826,36 @@ body {
   </div>
 
   <script>
+    // Fade-in animation observer
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) entry.target.classList.add('visible');
       });
     }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
     document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
+
+    // Scroll spy for TOC
+    const sections = document.querySelectorAll('section[id]');
+    const tocLinks = document.querySelectorAll('.toc-link');
+
+    function updateActiveLink() {
+      const scrollPos = window.scrollY + 120;
+      let current = '';
+      sections.forEach(section => {
+        if (scrollPos >= section.offsetTop) {
+          current = section.getAttribute('id');
+        }
+      });
+      tocLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+          link.classList.add('active');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', updateActiveLink, { passive: true });
+    updateActiveLink();
   </script>
 </body>
 </html>
