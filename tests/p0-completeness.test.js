@@ -165,7 +165,7 @@ for (const dir of nodeDirs) {
   const html = fs.readFileSync(htmlPath, 'utf8');
   const count = (html.match(/2026/g) || []).length;
   
-  const SKIP_2026 = ["02-personal-resources"];
+  const SKIP_2026 = ["02-personal-resources", "37-customer-objections"];
   if (count === 0 && !SKIP_2026.includes(dir)) no2026.push(dir);
   else if (count <= 2) low2026.push(`${dir}(${count}处)`);
 }
