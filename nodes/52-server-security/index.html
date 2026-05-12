@@ -410,7 +410,7 @@ body {
   left: 0;
   right: 0;
   z-index: 100;
-  padding: var(--space-2xl) clamp(1.25rem, 4vw, 2.5rem);
+  padding: var(--space-lg) clamp(1.25rem, 4vw, 2.5rem);
   border-top: 1px solid var(--line);
   display: flex;
   justify-content: space-between;
@@ -505,7 +505,7 @@ body {
     <a href="/"><span>←</span> 返回首页</a>
     <span class="nav-center">节点 52 / 57</span>
   </nav>
-  <div class="section-number">31</div>
+  <div class="section-number">52</div>
 
   <div class="layout">
     <aside class="sidebar-toc">
@@ -521,7 +521,7 @@ body {
       </ul>
     </aside>
 
-    <main class="layout">
+    <main class="main-content">
     <header class="hero">
       <div class="hero-content">
         <div class="hero-label">节点 52 · 1-10</div>
@@ -983,17 +983,19 @@ echo ".env" &gt;&gt; .gitignore
       </p>
     </section>
 
-    <nav class="footer-nav">
-      <a href="/nodes/51-data-backup/index.html" class="nav-link">
-        <span class="nav-arrow">←</span>
-        节点51：数据备份与恢复
-      </a>
-      <a href="/nodes/53-global-payment/index.html" class="nav-link">
-        节点53：海外支付方案
-        <span class="nav-arrow">→</span>
-      </a>
-    </nav>
-  </main>
+    </main>
+  </div>
+
+  <nav class="footer-nav">
+    <a href="/nodes/51-data-backup/index.html" class="nav-link">
+      <span class="nav-arrow">←</span>
+      节点51：数据备份与恢复
+    </a>
+    <a href="/nodes/53-global-payment/index.html" class="nav-link">
+      节点53：海外支付方案
+      <span class="nav-arrow">→</span>
+    </a>
+  </nav>
 
   <script>
     const observer = new IntersectionObserver((entries) => {
