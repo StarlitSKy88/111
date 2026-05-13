@@ -79,7 +79,7 @@
     },
     {
       "id": 8,
-      "title": "Hello World启动",
+      "title": "Hello World 启动",
       "slug": "hello-world",
       "summary": "Web/小程序/App三种Hello World，三步之内跑通第一个程序",
       "difficulty": "入门",
