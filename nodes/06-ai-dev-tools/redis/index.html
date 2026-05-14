@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Redis 完整教程 - 内存数据结构服务器，缓存/会话/队列/速率限制，OPC节点百科配套教程">
+  <meta name="theme-color" content="#111110">
+  <title>Redis 教程 - OPC节点百科</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #7A7670;
+  --text-tertiary: #4A4744;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3rem);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
+}
+
+.sidebar-toc {
+  position: sticky;
+  top: 5rem;
+  height: fit-content;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.sidebar-toc::-webkit-scrollbar { width: 4px; }
+.sidebar-toc::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+.toc-title {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.toc-list { list-style: none; }
+.toc-item { margin-bottom: 0.75rem; }
+
+.toc-link {
+  cursor: pointer;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: block;
+  padding: 0.75rem 0.5rem;
+  padding-left: 1rem;
+  border-left: 1px solid var(--line);
+  transition: all 0.3s;
+  line-height: 1.4;
+}
+
+.toc-link:hover { color: var(--text-primary); border-left-color: var(--accent); }
+.toc-link.active { color: var(--accent); border-left-color: var(--accent); font-weight: 400; }
+
+.fixed-top-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0; z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+.back-link {
+  cursor: pointer;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
+}
+
+.back-link:hover { color: var(--text-primary); }
+
+.node-id {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar-toc { display: none; }
+  .fixed-top-nav { padding: 0.75rem clamp(1rem, 4vw, 1.5rem); }
+}
+
+header {
+  padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(2rem, 5vh, 3rem);
+}
+
+main { padding-bottom: 5rem; }
+section { scroll-margin-top: 2rem; }
+
+.phase-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+h1 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xl);
+}
+
+.subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 44ch;
+  line-height: 1.8;
+}
+
+.node-meta {
+  margin-top: 2rem;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+}
+
+section { padding-bottom: clamp(3rem, 10vh, 5rem); border-bottom: 1px solid var(--line); margin-bottom: clamp(3rem, 10vh, 5rem); }
+section:last-of-type { border-bottom: none; }
+
+.section-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.375rem, 4vw, 1.875rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+h3 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.125rem, 3vw, 1.375rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+p { color: var(--text-secondary); line-height: 1.9; margin-bottom: 1.25rem; }
+
+.decision-box {
+  background: var(--surface);
+  border-left: 2px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.decision-box p { color: var(--text-primary); font-size: 0.9375rem; margin: 0; }
+
+.table-wrapper { overflow-x: auto; margin: 2rem 0; -webkit-overflow-scrolling: touch; }
+table { width: 100%; min-width: 560px; border-collapse: collapse; font-size: 0.875rem; }
+
+th {
+  text-align: left;
+  font-weight: 400;
+  font-size: 0.6875rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+td { padding: 1rem; border-bottom: 1px solid var(--line); color: var(--text-secondary); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+td:first-child { color: var(--text-primary); font-weight: 400; }
+
+.tool-grid { display: grid; gap: 1.5rem; margin: 2rem 0; }
+.tool-card { background: var(--surface); padding: 1.75rem; border: 1px solid var(--line); }
+
+.tool-card h4 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.tool-card .tagline { font-size: 0.8125rem; color: var(--text-tertiary); margin-bottom: 1.25rem; }
+.tool-card p { font-size: 0.875rem; line-height: 1.8; margin-bottom: 0.75rem; }
+
+.code-block {
+  background: var(--bg);
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+}
+
+.code-block code {
+  color: var(--text-primary);
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+
+.cmd { color: var(--accent); }
+.comment { color: var(--text-tertiary); }
+
+.quote-block {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+}
+
+.quote-block p { font-size: 1rem; color: var(--text-primary); line-height: 1.8; }
+
+.summary-box { background: var(--surface); padding: 2rem; margin-top: 3rem; border: 1px solid var(--line); }
+.summary-box h3 { margin-top: 0; margin-bottom: 1.25rem; }
+
+.step-list { list-style: none; counter-reset: steps; }
+.step-list li { counter-increment: steps; display: flex; gap: 1rem; margin-bottom: 1rem; font-size: 0.875rem; color: var(--text-secondary); }
+.step-list li::before { content: counter(steps); font-family: 'Noto Serif JP', serif; font-size: 0.75rem; color: var(--accent); flex-shrink: 0; width: 1.5rem; padding-top: 0.25rem; }
+
+.footer-nav {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.9);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
+}
+
+.nav-link {
+  cursor: pointer;
+  font-size: 0.75rem; color: var(--text-tertiary); text-decoration: none;
+  letter-spacing: 0.08em; display: flex; align-items: center;
+  gap: 0.5rem; transition: color 0.3s;
+}
+
+.nav-link:hover { color: var(--text-primary); }
+.nav-link.disabled { opacity: 0.3; pointer-events: none; }
+
+.price-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.25rem 0.75rem;
+  margin-top: 1rem;
+}
+
+.check-list { list-style: none; margin: 1rem 0; }
+.check-list li { font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative; }
+.check-list li::before { content: '✓'; position: absolute; left: 0; color: var(--accent); font-weight: 600; }
+
+.problem-box {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 1.5rem 2rem;
+  margin: 1.5rem 0;
+}
+
+.problem-box h4 { font-size: 0.875rem; font-weight: 400; color: var(--text-primary); margin-bottom: 0.75rem; }
+.problem-box p { font-size: 0.8125rem; margin: 0; }
+  </style>
+</head>
+<body>
+  <nav class="fixed-top-nav">
+    <a href="/nodes/06-tech-selection/index.html" class="back-link">← 技术选型</a>
+    <span class="node-id">06 / 工具教程</span>
+  </nav>
+
+  <div class="layout">
+    <aside class="sidebar-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#s1" class="toc-link">一、核心定位</a></li>
+        <li class="toc-item"><a href="#s2" class="toc-link">二、快速上手</a></li>
+        <li class="toc-item"><a href="#s3" class="toc-link">三、数据类型</a></li>
+        <li class="toc-item"><a href="#s4" class="toc-link">四、适用场景</a></li>
+        <li class="toc-item"><a href="#s5" class="toc-link">五、核心命令</a></li>
+        <li class="toc-item"><a href="#s6" class="toc-link">六、客户端库</a></li>
+        <li class="toc-item"><a href="#s7" class="toc-link">七、生产环境</a></li>
+        <li class="toc-item"><a href="#s8" class="toc-link">八、定价方案</a></li>
+        <li class="toc-item"><a href="#s9" class="toc-link">九、常见问题</a></li>
+      </ul>
+    </aside>
+
+    <main>
+      <header>
+        <div class="phase-label">06 / AI开发工具</div>
+        <h1>Redis</h1>
+        <p class="subtitle">开源内存数据结构服务器。用作缓存层加速读写、用作会话存储、用作消息队列实现异步处理、用作速率限制保护API。是OPC提升系统性能的"加速器"。</p>
+        <div class="node-meta">最后修订：2026年5月14日 · 官方文档：redis.io</div>
+      </header>
+
+      <section id="s1">
+        <div class="section-label">一、核心定位</div>
+        <h2>Redis是什么</h2>
+        <p>Redis（Remote Dictionary Server）是一个开源的内存数据结构服务器。它将数据存储在内存中，因此读写速度极快（微秒级延迟），同时支持将数据持久化到磁盘。</p>
+
+        <div class="tool-grid">
+          <div class="tool-card">
+            <h4>核心特性</h4>
+            <p><strong>内存存储</strong>：所有数据在内存中，读写延迟低于1毫秒。适合需要极速响应的场景。</p>
+            <p><strong>数据结构丰富</strong>：不只是字符串，还支持列表、集合、哈希、有序集合等。</p>
+            <p><strong>持久化选项</strong>：可以选择将数据保存到磁盘，防止重启后丢失。</p>
+            <p><strong>主从复制</strong>：支持读写分离，提高可用性和读取吞吐量。</p>
+          </div>
+        </div>
+
+        <h3>什么时候OPC需要Redis</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>场景</th><th>不用Redis</th><th>用Redis</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>会话存储</td><td>每次查询数据库验证用户状态</td><td>用户数据毫秒级读取</td></tr>
+              <tr><td>API缓存</td><td>重复请求直接打到数据库</td><td>热点数据从缓存返回</td></tr>
+              <tr><td>速率限制</td><td>复杂计数器表或外部服务</td><td>简单INCR原子操作</td></tr>
+              <tr><td>任务队列</td><td>轮询数据库或外部MQ</td><td>轻量级队列实现</td></tr>
+              <tr><td>实时数据</td><td>频繁刷新数据库</td><td>发布订阅机制</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="decision-box">
+          <p><strong>OPC判断标准：</strong>当你的应用出现响应变慢、数据库压力增大、用户抱怨卡顿的时候，先考虑Redis。如果你的MVP数据量小于10万条，会话管理简单，可以先跳过Redis。</p>
+        </div>
+      </section>
+
+      <section id="s2">
+        <div class="section-label">二、快速上手</div>
+        <h2>安装与配置</h2>
+
+        <h3>本地安装</h3>
+        <div class="code-block">
+<span class="comment"># macOS</span>
+<span class="cmd">brew</span> install redis
+<span class="cmd">brew</span> services start redis
+
+<span class="comment"># Ubuntu/Debian</span>
+<span class="cmd">sudo</span> apt-get install redis-server
+<span class="cmd">sudo</span> systemctl start redis
+
+<span class="comment"># 验证安装</span>
+<span class="cmd">redis-cli</span> ping
+<span class="comment"># 返回：PONG</span>
+        </div>
+
+        <h3>Docker快速启动</h3>
+        <div class="code-block">
+<span class="cmd">docker</span> run -d --name redis \
+  -p 6379:6379 \
+  redis:latest
+
+<span class="comment"># 连接测试</span>
+<span class="cmd">docker</span> exec -it redis redis-cli
+        </div>
+
+        <h3>云服务（推荐OPC）</h3>
+        <div class="tool-grid">
+          <div class="tool-card">
+            <h4>Redis Cloud</h4>
+            <p class="tagline">Redis官方托管服务</p>
+            <p>由Redis官方提供，企业级可靠性。免费额度30MB，适合开发和小型项目。全球多节点，支持TLS加密。</p>
+            <span class="price-tag">免费额度：30MB</span>
+          </div>
+          <div class="tool-card">
+            <h4>Upstash</h4>
+            <p class="tagline">Serverless Redis</p>
+            <p>专为Serverless场景设计，按请求计费而非按连接数。与Cloudflare Workers、Vercel等平台天然集成。</p>
+            <span class="price-tag">免费额度：10K请求/天</span>
+          </div>
+          <div class="tool-card">
+            <h4>腾讯云Redis</h4>
+            <p class="tagline">国内访问低延迟</p>
+            <p>国内节点，访问延迟最低。不需要备案，适合面向国内用户的项目。价格相对海外略高。</p>
+            <span class="price-tag">入门版：约¥30/月</span>
+          </div>
+        </div>
+
+        <div class="problem-box">
+          <h4>OPC建议</h4>
+          <p>开发测试用Redis Cloud免费版或Upstash。项目上线后根据数据量选择：如果面向海外用Redis Cloud，面向国内用腾讯云Redis。</p>
+        </div>
+      </section>
+
+      <section id="s3">
+        <div class="section-label">三、数据类型</div>
+        <h2>核心数据结构</h2>
+        <p>Redis支持五种基础数据类型，每种类型都有特定的适用场景。</p>
+
+        <h3>1. String（字符串）</h3>
+        <p>最基础的数据类型。可以存储字符串、整数或浮点数。最大512MB。</p>
+        <div class="code-block">
+<span class="cmd">SET</span> user:1001:name "张三"
+<span class="cmd">GET</span> user:1001:name
+<span class="comment"># "张三"</span>
+
+<span class="cmd">SET</span> counter 100
+<span class="cmd">INCR</span> counter
+<span class="comment"># 101</span>
+
+<span class="cmd">SETEX</span> session:abc 3600 "user_data"
+<span class="comment"># 设置值并指定过期时间（秒）</span>
+        </div>
+
+        <h3>2. List（列表）</h3>
+        <p>有序的字符串列表。支持两端操作，适合消息队列、任务列表。</p>
+        <div class="code-block">
+<span class="cmd">RPUSH</span> tasks "发送邮件"
+<span class="cmd">RPUSH</span> tasks "生成报表"
+<span class="cmd">LPUSH</span> tasks "优先级任务"
+
+<span class="cmd">LRANGE</span> tasks 0 -1
+<span class="comment"># 1) "优先级任务" 2) "发送邮件" 3) "生成报表"</span>
+
+<span class="cmd">LPOP</span> tasks
+<span class="comment"># "优先级任务"</span>
+        </div>
+
+        <h3>3. Set（集合）</h3>
+        <p>无序且唯一的字符串集合。适合标签、关注列表、去重。</p>
+        <div class="code-block">
+<span class="cmd">SADD</span> tags:article:1 "技术" "Redis" "数据库"
+<span class="cmd">SADD</span> tags:article:1 "Redis"
+<span class="comment"># 0（已存在，不重复添加）</span>
+
+<span class="cmd">SMEMBERS</span> tags:article:1
+<span class="comment"># 1) "技术" 2) "Redis" 3) "数据库"</span>
+
+<span class="cmd">SISMEMBER</span> tags:article:1 "Redis"
+<span class="comment"># 1（存在）</span>
+        </div>
+
+        <h3>4. Hash（哈希）</h3>
+        <p>字段值对的映射。适合存储对象、用户信息、配置。</p>
+        <div class="code-block">
+<span class="cmd">HSET</span> user:1001 name "张三" email "zhang@example.com" age "28"
+<span class="comment"># OK</span>
+
+<span class="cmd">HGET</span> user:1001 name
+<span class="comment"># "张三"</span>
+
+<span class="cmd">HGETALL</span> user:1001
+<span class="comment"># 1) "name" 2) "张三" 3) "email" 4) "zhang@example.com" 5) "age" 6) "28"</span>
+
+<span class="cmd">HINCRBY</span> user:1001 age 1
+<span class="comment"># 29</span>
+        </div>
+
+        <h3>5. Sorted Set（有序集合）</h3>
+        <p>每个元素带有分数，按分数排序。适合排行榜、优先级队列。</p>
+        <div class="code-block">
+<span class="cmd">ZADD</span> leaderboard 1000 "Alice"
+<span class="cmd">ZADD</span> leaderboard 850 "Bob"
+<span class="cmd">ZADD</span> leaderboard 1200 "Charlie"
+
+<span class="cmd">ZREVRANGE</span> leaderboard 0 -1 WITHSCORES
+<span class="comment"># 1) "Charlie" 2) "1200" 3) "Alice" 4) "1000" 5) "Bob" 6) "850"</span>
+
+<span class="cmd">ZRANK</span> leaderboard "Alice"
+<span class="comment"># 1（第二名，0-indexed）</span>
+        </div>
+
+        <div class="quote-block">
+          <p><strong>OPC实战技巧：</strong>Redis的key命名建议用冒号分隔层级，如<code>user:1001:profile</code>、<code>session:abc123</code>、<code>cache:product:456</code>。这样便于分类管理和使用SCAN命令扫描。</p>
+        </div>
+      </section>
+
+      <section id="s4">
+        <div class="section-label">四、适用场景</div>
+        <h2>OPC典型用例</h2>
+
+        <h3>1. 会话缓存</h3>
+        <p>将用户登录状态、购物车内容等存储在Redis，比数据库查询快100倍以上。</p>
+        <div class="code-block">
+<span class="comment"># Node.js + ioredis 示例</span>
+<span class="cmd">await</span> redis.setex(`session:${userId}`, 86400, JSON.stringify(sessionData))
+<span class="comment"># 24小时后自动过期</span>
+
+<span class="cmd">const</span> session = JSON.parse(await redis.get(`session:${userId}`))
+        </div>
+
+        <h3>2. API响应缓存</h3>
+        <p>缓存数据库查询结果、第三方API响应，大幅降低响应时间。</p>
+        <div class="code-block">
+<span class="cmd">async function</span> getProduct(id) {
+  <span class="cmd">const</span> cacheKey = `cache:product:${id}`
+  <span class="cmd">const</span> cached = <span class="cmd">await</span> redis.get(cacheKey)
+
+  <span class="cmd">if</span> (cached) {
+    <span class="cmd">return</span> JSON.parse(cached)
+  }
+
+  <span class="cmd">const</span> product = <span class="cmd">await</span> db.query('SELECT * FROM products WHERE id = ?', [id])
+  <span class="cmd">await</span> redis.setex(cacheKey, 3600, JSON.stringify(product))
+  <span class="cmd">return</span> product
+}
+        </div>
+
+        <h3>3. 速率限制</h3>
+        <p>用Redis实现简单的API限流，保护后端服务。</p>
+        <div class="code-block">
+<span class="comment"># 滑动窗口限流</span>
+<span class="cmd">const</span> key = `ratelimit:${ip}:${Math.floor(Date.now() / 1000)}`
+<span class="cmd">const</span> count = <span class="cmd">await</span> redis.incr(key)
+
+<span class="cmd">if</span> (count > 100) {
+  <span class="comment"># 超过限制</span>
+  <span class="cmd">return</span> res.status(429).json({ error: '请求过于频繁' })
+}
+
+<span class="cmd">if</span> (count === 1) {
+  <span class="cmd">await</span> redis.expire(key, 60)
+}
+        </div>
+
+        <h3>4. 任务队列</h3>
+        <p>用List实现简单的异步任务队列，如发送邮件、生成报表。</p>
+        <div class="code-block">
+<span class="comment"># 生产者：添加任务</span>
+<span class="cmd">await</span> redis.rpush('queue:emails', JSON.stringify({
+  to: 'user@example.com',
+  subject: '欢迎注册',
+  body: '感谢您注册...'
+}))
+
+<span class="comment"># 消费者：获取并处理任务</span>
+<span class="cmd">while</span> (<span class="cmd">true</span>) {
+  <span class="cmd">const</span> task = <span class="cmd">await</span> redis.lpop('queue:emails')
+  <span class="cmd">if</span> (!task) <span class="cmd">break</span>
+  <span class="cmd">await</span> sendEmail(JSON.parse(task))
+}
+        </div>
+
+        <h3>5. 分布式锁</h3>
+        <p>在多实例环境下控制对共享资源的访问。</p>
+        <div class="code-block">
+<span class="cmd">async function</span> acquireLock(key, ttl = 5000) {
+  <span class="cmd">const</span> lockKey = `lock:${key}`
+  <span class="cmd">const</span> result = <span class="cmd">await</span> redis.set(lockKey, '1', 'PX', ttl, 'NX')
+  <span class="cmd">return</span> result === 'OK'
+}
+
+<span class="cmd">async function</span> releaseLock(key) {
+  <span class="cmd">await</span> redis.del(`lock:${key}`)
+}
+        </div>
+      </section>
+
+      <section id="s5">
+        <div class="section-label">五、核心命令</div>
+        <h2>常用命令参考</h2>
+
+        <h3>字符串操作</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>命令</th><th>说明</th><th>示例</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>SET key value</code></td><td>设置键值</td><td><code>SET name "Alice"</code></td></tr>
+              <tr><td><code>GET key</code></td><td>获取值</td><td><code>GET name</code></td></tr>
+              <tr><td><code>DEL key</code></td><td>删除键</td><td><code>DEL name</code></td></tr>
+              <tr><td><code>EXPIRE key seconds</code></td><td>设置过期</td><td><code>EXPIRE name 3600</code></td></tr>
+              <tr><td><code>SETEX key seconds value</code></td><td>设置值+过期</td><td><code>SETEX session 86400 data</code></td></tr>
+              <tr><td><code>INCR key</code></td><td>原子+1</td><td><code>INCR counter</code></td></tr>
+              <tr><td><code>INCRBY key n</code></td><td>原子+n</td><td><code>INCRBY counter 10</code></td></tr>
+              <tr><td><code>EXISTS key</code></td><td>键是否存在</td><td><code>EXISTS name</code></td></tr>
+              <tr><td><code>TTL key</code></td><td>剩余TTL</td><td><code>TTL name</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>哈希操作</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>命令</th><th>说明</th><th>示例</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>HSET key field value</code></td><td>设置哈希字段</td><td><code>HSET user:1 name "Alice"</code></td></tr>
+              <tr><td><code>HGET key field</code></td><td>获取字段值</td><td><code>HGET user:1 name</code></td></tr>
+              <tr><td><code>HSET key field1 v1 field2 v2</code></td><td>批量设置</td><td><code>HSET user:1 name "A" age "28"</code></td></tr>
+              <tr><td><code>HGETALL key</code></td><td>获取全部字段</td><td><code>HGETALL user:1</code></td></tr>
+              <tr><td><code>HDEL key field</code></td><td>删除字段</td><td><code>HDEL user:1 age</code></td></tr>
+              <tr><td><code>HINCRBY key field n</code></td><td>字段原子+n</td><td><code>HINCRBY user:1 age 1</code></td></tr>
+              <tr><td><code>HEXISTS key field</code></td><td>字段是否存在</td><td><code>HEXISTS user:1 name</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>列表操作</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>命令</th><th>说明</th><th>示例</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>LPUSH key value</code></td><td>头部插入</td><td><code>LPUSH tasks "task1"</code></td></tr>
+              <tr><td><code>RPUSH key value</code></td><td>尾部插入</td><td><code>RPUSH tasks "task2"</code></td></tr>
+              <tr><td><code>LPOP key</code></td><td>头部弹出</td><td><code>LPOP tasks</code></td></tr>
+              <tr><td><code>RPOP key</code></td><td>尾部弹出</td><td><code>RPOP tasks</code></td></tr>
+              <tr><td><code>LRANGE key start end</code></td><td>范围查询</td><td><code>LRANGE tasks 0 -1</code></td></tr>
+              <tr><td><code>LLEN key</code></td><td>列表长度</td><td><code>LLEN tasks</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>集合操作</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>命令</th><th>说明</th><th>示例</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>SADD key member...</code></td><td>添加成员</td><td><code>SADD tags "redis" "db"</code></td></tr>
+              <tr><td><code>SMEMBERS key</code></td><td>获取全部成员</td><td><code>SMEMBERS tags</code></td></tr>
+              <tr><td><code>SISMEMBER key member</code></td><td>是否成员</td><td><code>SISMEMBER tags "redis"</code></td></tr>
+              <tr><td><code>SREM key member</code></td><td>移除成员</td><td><code>SREM tags "db"</code></td></tr>
+              <tr><td><code>SCARD key</code></td><td>成员数量</td><td><code>SCARD tags</code></td></tr>
+              <tr><td><code>SINTER key1 key2</code></td><td>交集</td><td><code>SINTER tags1 tags2</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="s6">
+        <div class="section-label">六、客户端库</div>
+        <h2>主要语言客户端</h2>
+
+        <h3>Node.js - ioredis</h3>
+        <p>最流行的Node.js Redis客户端，支持Promise、连接池、集群、自动重连。</p>
+        <div class="code-block">
+<span class="comment"># 安装</span>
+<span class="cmd">npm install</span> ioredis
+
+<span class="comment"># 基本用法</span>
+<span class="cmd">const</span> Redis = require('ioredis')
+<span class="cmd">const</span> redis = <span class="cmd">new</span> Redis({
+  host: 'localhost',
+  port: 6379,
+  password: 'your-password',
+  retryStrategy: (times) => Math.min(times * 50, 2000)
+})
+
+<span class="comment">// 字符串操作</span>
+<span class="cmd">await</span> redis.set('key', 'value')
+<span class="cmd">const</span> value = <span class="cmd">await</span> redis.get('key')
+
+<span class="comment">// 哈希操作</span>
+<span class="cmd">await</span> redis.hset('user:1', { name: 'Alice', age: 28 })
+<span class="cmd">const</span> user = <span class="cmd">await</span> redis.hgetall('user:1')
+
+<span class="comment">// 列表操作</span>
+<span class="cmd">await</span> redis.rpush('queue', JSON.stringify({ task: 'send-email' }))
+<span class="cmd">const</span> task = <span class="cmd">await</span> redis.lpop('queue')
+
+<span class="comment">// 关闭连接</span>
+redis.disconnect()
+        </div>
+
+        <h3>Python - redis-py</h3>
+        <p>Python标准Redis客户端，简单易用。</p>
+        <div class="code-block">
+<span class="comment"># 安装</span>
+<span class="cmd">pip install</span> redis
+
+<span class="comment"># 基本用法</span>
+<span class="cmd">import</span> redis
+
+r = redis.Redis(host='localhost', port=6379, decode_responses=True)
+
+<span class="comment"># 字符串操作</span>
+r.set('key', 'value')
+value = r.get('key')
+
+<span class="comment"># 哈希操作</span>
+r.hset('user:1', mapping={'name': 'Alice', 'age': '28'})
+user = r.hgetall('user:1')
+
+<span class="comment"># 列表操作</span>
+r.rpush('queue', 'task1', 'task2')
+task = r.lpop('queue')
+
+<span class="comment"># 连接池（推荐）</span>
+pool = redis.ConnectionPool(host='localhost', port=6379, max_connections=10)
+r = redis.Redis(connection_pool=pool)
+        </div>
+
+        <h3>其他语言</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>语言</th><th>客户端</th><th>特点</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Go</td><td>go-redis/redis</td><td>高性能，连接池，哨兵，集群支持</td></tr>
+              <tr><td>Java</td><td>Lettuce / Jedis</td><td>Spring Boot默认Lettuce，线程安全</td></tr>
+              <tr><td>PHP</td><td>predis / phpredis</td><td>predis纯PHP，phpredis是C扩展更快</td></tr>
+              <tr><td>Ruby</td><td>ruby-redis</td><td>Ruby惯用风格</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="problem-box">
+          <h4>连接池重要性</h4>
+          <p>生产环境务必使用连接池管理连接，避免每次操作都创建新连接导致的性能开销。ioredis和redis-py都内置连接池支持。</p>
+        </div>
+      </section>
+
+      <section id="s7">
+        <div class="section-label">七、生产环境</div>
+        <h2>部署注意事项</h2>
+
+        <h3>持久化策略</h3>
+        <p>Redis提供了两种持久化方式，各有优劣。</p>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>方式</th><th>原理</th><th>优点</th><th>缺点</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>RDB</td><td>定时快照，保存内存数据到文件</td><td>恢复快，文件紧凑</td><td>可能丢失最近数据</td></tr>
+              <tr><td>AOF</td><td>记录每个写命令到日志文件</td><td>数据安全性高</td><td>文件较大，恢复慢</td></tr>
+              <tr><td>RDB+AOF</td><td>同时启用两种方式</td><td>兼顾性能和安全</td><td>配置复杂</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="code-block">
+<span class="comment"># 推荐配置（redis.conf）</span>
+appendonly yes
+appendfsync everysec
+dir /var/lib/redis
+        </div>
+
+        <h3>内存管理</h3>
+        <p>Redis运行在内存中，需要注意内存使用控制和淘汰策略。</p>
+        <div class="code-block">
+<span class="comment"># 设置最大内存</span>
+maxmemory 256mb
+maxmemory-policy allkeys-lru
+
+<span class="comment"># 淘汰策略说明：</span>
+<span class="comment"># allkeys-lru: 所有键使用LRU淘汰（最常用）</span>
+<span class="comment"># volatile-lru: 仅设置过期时间的键使用LRU</span>
+<span class="comment"># noeviction: 不淘汰，返回错误（保守）</span>
+        </div>
+
+        <h3>安全配置</h3>
+        <div class="code-block">
+<span class="comment"># redis.conf</span>
+<span class="comment"># 绑定IP（生产环境绑定内网）</span>
+bind 127.0.0.1
+
+<span class="comment"># 设置密码</span>
+requirepass your-strong-password
+
+<span class="comment"># 重命名危险命令</span>
+rename-command FLUSHDB ""
+rename-command FLUSHALL ""
+rename-command CONFIG "A1B2C3D4E5F6"
+        </div>
+
+        <h3>主从复制</h3>
+        <p>主从复制提高读取吞吐量和故障恢复能力。</p>
+        <div class="code-block">
+<span class="comment"># 从节点配置 (redis.conf)</span>
+replicaof 192.168.1.100 6379
+replica-serve-stale-data yes
+replica-read-only yes
+        </div>
+
+        <h3>监控指标</h3>
+        <div class="code-block">
+<span class="comment"># 监控内存使用</span>
+<span class="cmd">redis-cli</span> info memory
+
+<span class="comment"># 监控客户端连接</span>
+<span class="cmd">redis-cli</span> info clients
+
+<span class="comment"># 监控命中率</span>
+<span class="cmd">redis-cli</span> info stats | grep -E "keyspace_hits|keyspace_misses"
+
+<span class="comment"># 实时查看命令</span>
+<span class="cmd">redis-cli</span> monitor
+        </div>
+
+        <div class="quote-block">
+          <p><strong>OPC最小生产配置：</strong>Redis Cloud或腾讯云Redis主从版 + AOF持久化 + 密码认证 + 合理maxmemory。这样即使服务器重启也不会丢数据，可用性有保障。</p>
+        </div>
+      </section>
+
+      <section id="s8">
+        <div class="section-label">八、定价方案</div>
+        <h2>成本分析</h2>
+
+        <h3>自托管</h3>
+        <div class="tool-grid">
+          <div class="tool-card">
+            <h4>成本：$0</h4>
+            <p class="tagline">完全免费</p>
+            <p>使用开源Redis，自己部署在服务器。需要自己负责运维、备份、安全。</p>
+            <p>适合：有服务器、有运维能力、数据量可控的场景。</p>
+          </div>
+        </div>
+
+        <h3>云服务</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>服务商</th><th>免费额度</th><th>付费起点</th><th>特点</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Redis Cloud</td><td>30MB</td><td>$5/月起</td><td>官方托管，稳定可靠</td></tr>
+              <tr><td>Upstash</td><td>10K请求/天</td><td>$10/月起</td><td>Serverless，按请求计费</td></tr>
+              <tr><td>腾讯云Redis</td><td>无</td><td>约¥30/月</td><td>国内低延迟，需要备案</td></tr>
+              <tr><td>阿里云Redis</td><td>无</td><td>约¥50/月</td><td>国内节点，生态完善</td></tr>
+              <tr><td>AWS ElastiCache</td><td>无</td><td>$约$15/月</td><td>与AWS其他服务集成</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="decision-box">
+          <p><strong>OPC选择建议：</strong></p>
+          <p>开发测试：Redis Cloud免费版（30MB）或Upstash免费版</p>
+          <p>小型项目（月活&lt;1000）：Redis Cloud $5/月或腾讯云基础版</p>
+          <p>中型项目：Redis Cloud标准版或腾讯云高可用版</p>
+        </div>
+
+        <h3>成本优化技巧</h3>
+        <ul class="check-list">
+          <li>设置合理的过期时间，让不活跃数据自动清理</li>
+          <li>使用压缩（如redis-protobuf）减少内存占用</li>
+          <li>敏感数据用短key命名，减少key本身的空间开销</li>
+          <li>按需选择云服务商，国内项目优先国内云</li>
+          <li>利用云服务商的免费试用期（月度额度）</li>
+        </ul>
+      </section>
+
+      <section id="s9">
+        <div class="section-label">九、常见问题</div>
+        <h2>FAQ</h2>
+
+        <h3>Q: Redis和Memcached有什么区别？</h3>
+        <p><strong>A:</strong> Redis支持更丰富的数据类型（List、Set、Hash等），支持持久化，有主从复制。Memcached只支持简单的Key-Value，纯粹内存存储。如果只是缓存简单字符串，两者可互换；如果需要复杂数据结构，Redis是唯一选择。</p>
+
+        <h3>Q: Redis数据过期后立即被删除吗？</h3>
+        <p><strong>A:</strong> 不是立即删除。Redis使用惰性删除（访问时检查过期）和定期删除（后台定时扫描）相结合的方式。这意味着即使key过期了，在定期删除扫描到它之前，它仍然占用内存。如果需要严格过期，考虑使用Redis的Sorted Set实现定时器。</p>
+
+        <h3>Q: Redis重启后数据会丢失吗？</h3>
+        <p><strong>A:</strong> 如果没有开启持久化，数据会丢失。开启RDB快照会丢失最后一次快照之后的数据。开启AOF并配置everysec策略，最多丢失1秒数据。建议生产环境同时开启RDB和AOF。</p>
+
+        <h3>Q: Redis的内存满了怎么办？</h3>
+        <p><strong>A:</strong> 配置maxmemory和淘汰策略。当内存达到上限，Redis会根据淘汰策略自动删除旧数据。常用策略是allkeys-lru（删除最近最少使用的key）。如果需要更保守，可以设置更小的maxmemory并提前告警。</p>
+
+        <h3>Q: 一个Redis实例够用吗？</h3>
+        <p><strong>A:</strong> 对于大多数MVP场景，一个Redis实例足够。当需要更高吞吐量时，可以：1）升级到云服务商的更高规格；2）使用Redis Cluster做数据分片。但分片会增加复杂度，OPC建议先用单机版优化。</p>
+
+        <h3>Q: Redis如何做备份？</h3>
+        <p><strong>A:</strong> 云服务通常自动备份。自建Redis可以用BGSAVE命令触发RDB快照，或使用redis-cli --rdb命令在线备份。云服务还支持Point-in-Time恢复，可恢复到指定时间点。</p>
+
+        <h3>Q: Redis连接数有限制吗？</h3>
+        <p><strong>A:</strong> Redis本身没有连接数限制，但受服务器资源限制。每个连接都会占用文件描述符和一定内存。使用连接池可以复用连接，减少连接数。注意云服务商的连接数限制（如Redis Cloud免费版限制30连接）。</p>
+
+        <h3>Q: Redis支持事务吗？</h3>
+        <p><strong>A:</strong> 支持，但与传统数据库事务不同。Redis事务使用MULTI/EXEC，将命令打包批量执行，中间不会插入其他命令。但Redis事务不支持回滚（因为Redis设计哲学是简单高性能）。如果需要真正的原子性，考虑使用Lua脚本。</p>
+
+        <div class="summary-box">
+          <h3>快速开始 Checklist</h3>
+          <ul class="step-list">
+            <li>本地安装Redis或注册云服务（Redis Cloud/Upstash）</li>
+            <li>安装对应语言的客户端（ioredis/redis-py）</li>
+            <li>连接测试：redis-cli ping 应返回PONG</li>
+            <li>实现一个简单的缓存功能（如用户会话）</li>
+            <li>配置密码认证和安全设置</li>
+            <li>了解关键命令：SET/GET/EXPIRE/INCR/HSET/HGET</li>
+            <li>配置监控：内存使用、连接数、命中率</li>
+          </ul>
+          <div class="quote-block" style="margin-top: 2rem;">
+            <p><strong>记住：</strong>Redis是OPC的性能加速器，不是必选项。MVP阶段如果数据量小、请求量低，可以先用数据库代替。当性能成为瓶颈时，再引入Redis。</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <nav class="footer-nav">
+    <a href="/nodes/06-ai-dev-tools/sentry/index.html" class="nav-link">
+      <span>←</span> Sentry 教程
+    </a>
+    <a href="/nodes/06-ai-dev-tools/traefik/index.html" class="nav-link">
+      Traefik 教程 <span>→</span>
+    </a>
+  </nav>
+
+<script>
+document.querySelectorAll('.toc-link').forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    const targetId = this.getAttribute('href').slice(1);
+    const target = document.getElementById(targetId);
+    if (target) {
+      const offsetTop = target.offsetTop - 80;
+      window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+    }
+  });
+});
+
+const sections = document.querySelectorAll('section[id]');
+const tocLinks = document.querySelectorAll('.toc-link');
+
+function updateActiveLink() {
+  const scrollPos = window.scrollY + 120;
+  sections.forEach(section => {
+    const top = section.offsetTop;
+    const height = section.offsetHeight;
+    const id = section.getAttribute('id');
+    if (scrollPos >= top && scrollPos < top + height) {
+      tocLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${id}`) {
+          link.classList.add('active');
+        }
+      });
+    }
+  });
+}
+
+window.addEventListener('scroll', updateActiveLink, { passive: true });
+updateActiveLink();
+</script>
+</body>
+</html>

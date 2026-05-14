@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Clash 完整教程 - 2026年国内OPC开发必备工具，海外网络加速，支持订阅链接、规则配置、umi微测">
+  <meta name="theme-color" content="#111110">
+  <title>Clash 教程 - OPC节点百科</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #7A7670;
+  --text-tertiary: #4A4744;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3rem);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
+}
+
+.sidebar-toc {
+  position: sticky;
+  top: 5rem;
+  height: fit-content;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.sidebar-toc::-webkit-scrollbar { width: 4px; }
+.sidebar-toc::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+.toc-title {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.toc-list { list-style: none; }
+.toc-item { margin-bottom: 0.75rem; }
+
+.toc-link {
+  cursor: pointer;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: block;
+  padding: 0.75rem 0.5rem;
+  padding-left: 1rem;
+  border-left: 1px solid var(--line);
+  transition: all 0.3s;
+  line-height: 1.4;
+}
+
+.toc-link:hover { color: var(--text-primary); border-left-color: var(--accent); }
+.toc-link.active { color: var(--accent); border-left-color: var(--accent); font-weight: 400; }
+
+.fixed-top-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0; z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+.back-link {
+  cursor: pointer;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
+}
+
+.back-link:hover { color: var(--text-primary); }
+
+.node-id {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar-toc { display: none; }
+  .fixed-top-nav { padding: 0.75rem clamp(1rem, 4vw, 1.5rem); }
+}
+
+header {
+  padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(2rem, 5vh, 3rem);
+}
+
+main { padding-bottom: 5rem; }
+section { scroll-margin-top: 2rem; }
+
+.phase-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+h1 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xl);
+}
+
+.subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 44ch;
+  line-height: 1.8;
+}
+
+.node-meta {
+  margin-top: 2rem;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+}
+
+section { padding-bottom: clamp(3rem, 10vh, 5rem); border-bottom: 1px solid var(--line); margin-bottom: clamp(3rem, 10vh, 5rem); }
+section:last-of-type { border-bottom: none; }
+
+.section-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.375rem, 4vw, 1.875rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+h3 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.125rem, 3vw, 1.375rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+p { color: var(--text-secondary); line-height: 1.9; margin-bottom: 1.25rem; }
+
+.decision-box {
+  background: var(--surface);
+  border-left: 2px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.decision-box p { color: var(--text-primary); font-size: 0.9375rem; margin: 0; }
+
+.table-wrapper { overflow-x: auto; margin: 2rem 0; -webkit-overflow-scrolling: touch; }
+table { width: 100%; min-width: 560px; border-collapse: collapse; font-size: 0.875rem; }
+
+th {
+  text-align: left;
+  font-weight: 400;
+  font-size: 0.6875rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+td { padding: 1rem; border-bottom: 1px solid var(--line); color: var(--text-secondary); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+td:first-child { color: var(--text-primary); font-weight: 400; }
+
+.tool-grid { display: grid; gap: 1.5rem; margin: 2rem 0; }
+.tool-card { background: var(--surface); padding: 1.75rem; border: 1px solid var(--line); }
+
+.tool-card h4 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.tool-card .tagline { font-size: 0.8125rem; color: var(--text-tertiary); margin-bottom: 1.25rem; }
+.tool-card p { font-size: 0.875rem; line-height: 1.8; margin-bottom: 0.75rem; }
+
+.code-block {
+  background: var(--bg);
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+
+.cmd { color: var(--accent); }
+.comment { color: var(--text-tertiary); }
+
+.quote-block {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+}
+
+.quote-block p { font-size: 1rem; color: var(--text-primary); line-height: 1.8; }
+
+.path-block { background: var(--surface); padding: 2rem; margin: 2rem 0; border: 1px solid var(--line); }
+.path-header { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1.25rem; }
+.path-number { font-family: 'Noto Serif JP', serif; font-size: 0.75rem; color: var(--accent); letter-spacing: 0.1em; }
+.path-title { font-family: 'Noto Serif JP', serif; font-size: 1.25rem; font-weight: 400; color: var(--text-primary); }
+.path-block p { font-size: 0.875rem; margin-bottom: 0.75rem; }
+
+.summary-box { background: var(--surface); padding: 2rem; margin-top: 3rem; border: 1px solid var(--line); }
+.summary-box h3 { margin-top: 0; margin-bottom: 1.25rem; }
+
+.step-list { list-style: none; counter-reset: steps; }
+.step-list li { counter-increment: steps; display: flex; gap: 1rem; margin-bottom: 1rem; font-size: 0.875rem; color: var(--text-secondary); }
+.step-list li::before { content: counter(steps); font-family: 'Noto Serif JP', serif; font-size: 0.75rem; color: var(--accent); flex-shrink: 0; width: 1.5rem; padding-top: 0.25rem; }
+
+.footer-nav {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.9);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
+}
+
+.nav-link {
+  cursor: pointer;
+  font-size: 0.75rem; color: var(--text-tertiary); text-decoration: none;
+  letter-spacing: 0.08em; display: flex; align-items: center;
+  gap: 0.5rem; transition: color 0.3s;
+}
+
+.nav-link:hover { color: var(--text-primary); }
+.nav-link.disabled { opacity: 0.3; pointer-events: none; }
+
+.price-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.25rem 0.75rem;
+  margin-top: 1rem;
+}
+
+.check-list { list-style: none; margin: 1rem 0; }
+.check-list li { font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative; }
+.check-list li::before { content: '✓'; position: absolute; left: 0; color: var(--accent); font-weight: 600; }
+
+.problem-box {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 1.5rem 2rem;
+  margin: 1.5rem 0;
+}
+
+.problem-box h4 { font-size: 0.875rem; font-weight: 400; color: var(--text-primary); margin-bottom: 0.75rem; }
+.problem-box p { font-size: 0.8125rem; margin: 0; }
+
+.warning-box {
+  background: rgba(192, 57, 43, 0.1);
+  border: 1px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 1.5rem 0;
+}
+
+.warning-box h4 { font-size: 0.875rem; font-weight: 400; color: var(--accent); margin-bottom: 0.75rem; }
+.warning-box p { font-size: 0.8125rem; margin: 0; }
+  </style>
+</head>
+<body>
+  <nav class="fixed-top-nav">
+    <a href="/nodes/06-tech-selection/index.html" class="back-link">← 技术选型</a>
+    <span class="node-id">06 / 工具教程</span>
+  </nav>
+
+  <div class="layout">
+    <aside class="sidebar-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#s1" class="toc-link">一、核心定位</a></li>
+        <li class="toc-item"><a href="#s2" class="toc-link">二、Clash生态</a></li>
+        <li class="toc-item"><a href="#s3" class="toc-link">三、机场订阅</a></li>
+        <li class="toc-item"><a href="#s4" class="toc-link">四、规则配置</a></li>
+        <li class="toc-item"><a href="#s5" class="toc-link">五、开发场景</a></li>
+        <li class="toc-item"><a href="#s6" class="toc-link">六、常见问题</a></li>
+      </ul>
+    </aside>
+
+    <main>
+      <header>
+        <div class="phase-label">06 / 网络工具</div>
+        <h1>Clash</h1>
+        <p class="subtitle">国内OPC开发必备网络工具。访问GitHub、npm、Anthropic API等海外服务。Clash Verge、ClashX等客户端订阅配置教程。</p>
+        <div class="node-meta">最后修订：2026年5月14日</div>
+      </header>
+
+      <section id="s1">
+        <div class="section-label">一、核心定位</div>
+        <h2>为什么OPC需要Clash</h2>
+        <p>在中国大陆，使用AI编码工具（Claude Code、Cursor）、访问海外服务（GitHub、npm、PyPI）需要特殊的网络连接。Clash是目前最流行的代理工具，支持订阅链接、规则分流、负载均衡。</p>
+
+        <div class="warning-box">
+          <h4>法律风险提示</h4>
+          <p>根据现行法规，使用VPN工具访问境外服务器存在法律风险。请自行了解相关法规并承担相应责任。本教程仅提供技术说明，不构成使用建议。</p>
+        </div>
+
+        <div class="quote-block">
+          <p><strong>OPC的现实：</strong>2026年国内网络环境下，不使用任何网络优化工具，几乎无法正常进行AI辅助开发。这是OPC必须面对的基础设施问题。</p>
+        </div>
+
+        <h3>Clash vs 其他方案</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>方案</th><th>价格</th><th>稳定性</th><th>配置难度</th><th>适用场景</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Clash（推荐）</td><td>¥20-100/月</td><td>高</td><td>中</td><td>日常开发、全局/规则代理</td></tr>
+              <tr><td>Proxifier</td><td>¥200/终身</td><td>中</td><td>低</td><td>单一应用代理</td></tr>
+              <tr><td>VPN客户端</td><td>¥50-200/月</td><td>低</td><td>低</td><td>全局翻墙（不推荐）</td></tr>
+              <tr><td>自建VPS</td><td>¥50-200/月</td><td>中</td><td>高</td><td>有技术背景的用户</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="s2">
+        <div class="section-label">二、Clash生态</div>
+        <h2>Clash客户端选择</h2>
+
+        <h3>Windows / macOS</h3>
+        <div class="tool-grid">
+          <div class="tool-card">
+            <h4>Clash Verge <span class="badge-recommend" style="background: var(--accent); color: var(--text-primary); padding: 0.125rem 0.5rem; font-size: 0.625rem; border-radius: 2px; margin-left: 0.5rem;">推荐</span></h4>
+            <p><strong>平台：</strong>Windows / macOS / Linux</p>
+            <p><strong>特点：</strong>现代化UI、支持订阅链接、可视化规则编辑、系统代理+应用代理双模式</p>
+            <p><strong>下载地址：</strong>GitHub: ClashVerge/Clash.Verge</p>
+            <span class="price-tag">免费开源</span>
+          </div>
+
+          <div class="tool-card">
+            <h4>ClashX</h4>
+            <p><strong>平台：</strong>macOS</p>
+            <p><strong>特点：</strong>轻量、菜单栏工具、操作简单</p>
+            <p><strong>注意：</strong>已停止维护，建议用Clash Verge替代</p>
+            <span class="price-tag">免费开源</span>
+          </div>
+        </div>
+
+        <h3>Android / iOS</h3>
+        <div class="tool-grid">
+          <div class="tool-card">
+            <h4>Clash for Android</h4>
+            <p><strong>平台：</strong>Android</p>
+            <p><strong>特点：</strong>开源、功能完整、支持订阅</p>
+            <p><strong>下载地址：</strong>GitHub: Kr328/ClashForAndroid</p>
+          </div>
+
+          <div class="tool-card">
+            <h4>Shadowrocket</h4>
+            <p><strong>平台：</strong>iOS</p>
+            <p><strong>特点：</strong>App Store付费应用（¥30）、简洁稳定、支持订阅</p>
+            <p><strong>注意：</strong>iOS上唯一的合规代理工具</p>
+            <span class="price-tag">¥30</span>
+          </div>
+        </div>
+
+        <h3>安装后配置</h3>
+        <div class="code-block">
+<span class="comment"># 首次打开Clash Verge</span>
+<span class="comment"># 1. 设置 → 网络设置 → 勾选"启动时自动连接"</span>
+<span class="comment"># 2. 设置 → 端口设置 → 确认HTTP代理端口（默认7890）</span>
+<span class="comment"># 3. 配置 → 订阅管理 → 添加订阅URL</span>
+        </div>
+      </section>
+
+      <section id="s3">
+        <div class="section-label">三、机场订阅</div>
+        <h2>订阅配置</h2>
+
+        <h3>什么是机场</h3>
+        <p>机场是提供代理节点服务的商家。用户通过订阅链接获取节点列表，在Clash中导入订阅后即可使用。</p>
+
+        <div class="problem-box">
+          <h4>如何获取订阅链接</h4>
+          <p>在机场官网注册账号 → 购买套餐 → 找到"订阅链接"或"Clash配置"复制链接地址。订阅链接格式类似：<code>https://xxx.com/api/v1/client/subscribe?token=xxxxx</code></p>
+        </div>
+
+        <h3>添加订阅</h3>
+        <div class="code-block">
+<span class="comment"># 在Clash Verge中添加订阅</span>
+<span class="comment"># 1. 配置 → 订阅管理 → 点击 +</span>
+<span class="comment"># 2. 粘贴订阅链接</span>
+<span class="comment"># 3. 填写名称（如"我的机场"）</span>
+<span class="comment"># 4. 点击保存</span>
+<span class="comment"># 5. 点击"更新"获取最新节点</span>
+
+<span class="comment"># 订阅会自动定时更新（可在设置中配置）</span>
+        </div>
+
+        <h3>订阅来源推荐</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>平台</th><th>价格</th><th>节点数量</th><th>特点</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>SSRDoge</td><td>¥20/月起</td><td>50+</td><td>老牌稳定、客服好</td></tr>
+             牢 <tr><td>Nexitally</td><td>¥50/月起</td><td>100+</td><td>高端线路、速度快</td></tr>
+              <tr><td>mojie</td><td>¥15/月起</td><td>30+</td><td>性价比高</td></tr>
+              <tr><td>Feiniao's</td><td>¥25/月起</td><td>60+</td><td>IPLC线路稳定</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="decision-box">
+          <p><strong>OPC建议：</strong>选择有「IPLC」或「IEPL」线路的机场，延迟低、稳定性好。价格¥20-50/月足够。避免选择过于便宜的（线路质量差）和过于昂贵的（性价比低）。</p>
+        </div>
+
+        <h3>订阅格式</h3>
+        <p>Clash订阅实际上是YAML格式的配置文件。订阅链接返回的内容示例：</p>
+        <div class="code-block">
+<span class="comment"># 订阅链接返回内容示例</span>
+<span class="cmd">mixed-port</span>: 7890
+<span class="cmd">allow-lan</span>: false
+<span class="cmd">mode</span>: rule
+<span class="cmd">rules</span>:
+  - DOMAIN-SUFFIX,github.com,Proxy
+  - DOMAIN-SUFFIX,npmjs.org,Proxy
+  - DOMAIN-KEYWORD,anthropic,Proxy
+  - MATCH,DIRECT
+
+<span class="cmd">proxies</span>:
+  - <span class="cmd">name</span>: HK-01
+    <span class="cmd">type</span>: ss
+    <span class="cmd">server</span>: hk01.example.com
+    <span class="cmd">port</span>: 443
+    <span class="cmd">cipher</span>: aes-256-gcm
+    <span class="cmd">password</span>: xxxxx
+  - <span class="cmd">name</span>: US-01
+    <span class="cmd">type</span>: vmess
+    <span class="cmd">server</span>: us01.example.com
+    <span class="cmd">port</span>: 443
+    <span class="cmd">uuid</span>: xxxxx
+</div>
+      </section>
+
+      <section id="s4">
+        <div class="section-label">四、规则配置</div>
+        <h2>分流规则</h2>
+
+        <p>Clash支持规则分流，只对特定域名/IP走代理，其他流量直连。这对OPC开发非常重要：</p>
+        <ul class="check-list">
+          <li>GitHub、npm、PyPI 等开发相关域名走代理</li>
+          <li>国内网站（百度、淘宝）直连，不走代理</li>
+          <li>AI服务（Anthropic、OpenAI）走代理</li>
+        </ul>
+
+        <h3>基础规则类型</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>规则类型</th><th>说明</th><th>示例</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>DOMAIN-SUFFIX</td><td>域名后缀匹配</td><td>github.com 匹配 *.github.com</td></tr>
+              <tr><td>DOMAIN-KEYWORD</td><td>域名包含关键词</td><td>anthropic 匹配 api.anthropic.com</td></tr>
+              <tr><td>DOMAIN</td><td>精确域名</td><td>www.google.com</td></tr>
+              <tr><td>GEOIP</td><td>IP地理位置</td><td>GEOIP,CN 直连中国IP</td></tr>
+              <tr><td>IP-CIDR</td><td>IP段</td><td>10.0.0.0/8</td></tr>
+              <tr><td>MATCH</td><td>最后匹配（兜底）</td><td>其他全部 DIRECT 或 Proxy</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>推荐开发规则</h3>
+        <div class="code-block">
+<span class="comment"># Clash Verge → 配置 → 规则设置</span>
+<span class="comment"># 建议规则顺序：</span>
+
+<span class="comment"># 1. 国内直连</span>
+<span class="cmd">DOMAIN-SUFFIX</span>,cn,DIRECT
+<span class="cmd">DOMAIN-KEYWORD</span>,baidu,DIRECT
+<span class="cmd">DOMAIN-KEYWORD</span>,alibaba,DIRECT
+<span class="cmd">DOMAIN-KEYWORD</span>,tencent,DIRECT
+<span class="cmd">GEOIP</span>,CN,DIRECT
+
+<span class="comment"># 2. 开发工具</span>
+<span class="cmd">DOMAIN-SUFFIX</span>,github.com,Proxy
+<span class="cmd">DOMAIN-SUFFIX</span>,githubusercontent.com,Proxy
+<span class="cmd">DOMAIN-SUFFIX</span>,npmjs.org,Proxy
+<span class="cmd">DOMAIN-SUFFIX</span>,npx.com,Proxy
+<span class="cmd">DOMAIN-SUFFIX</span>,pypi.org,Proxy
+<span class="cmd">DOMAIN-SUFFIX</span>,pythonhosted.org,Proxy
+
+<span class="comment"># 3. AI服务</span>
+<span class="cmd">DOMAIN-KEYWORD</span>,anthropic,Proxy
+<span class="cmd">DOMAIN-KEYWORD</span>,openai,Proxy
+<span class="cmd">DOMAIN-KEYWORD</span>,openrouter,Proxy
+<span class="cmd">DOMAIN-KEYWORD</span>,cloudflare,Proxy
+
+<span class="comment"># 4. 其他海外服务</span>
+<span class="cmd">DOMAIN-SUFFIX</span>,google.com,Proxy
+<span class="cmd">DOMAIN-SUFFIX</span>,stackoverflow.com,Proxy
+<span class="cmd">DOMAIN-SUFFIX</span>,stackoverflow.co,Proxy
+
+<span class="comment"># 5. 兜底</span>
+<span class="cmd">MATCH</span>,DIRECT
+</div>
+
+        <h3>订阅内置规则 vs 自定义规则</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>方式</th><th>优点</th><th>缺点</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>使用订阅内置规则</td><td>简单，机场提供</td><td>可能不包含最新域名</td></tr>
+              <tr><td>自定义规则</td><td>灵活，按需配置</td><td>需要手动维护</td></tr>
+              <tr><td>混合模式</td><td>最佳平衡</td><td>配置稍复杂</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="path-block">
+          <div class="path-header">
+            <span class="path-number">推荐</span>
+            <span class="path-title">混合模式配置</span>
+          </div>
+          <p><strong>步骤：</strong></p>
+          <p>1. 订阅配置 → 关闭"覆盖规则"（保留订阅的内置规则）</p>
+          <p>2. 在订阅配置底部添加"额外规则"</p>
+          <p>3. 将自定义规则添加进去</p>
+          <p>这样订阅更新时不会覆盖你的自定义规则。</p>
+        </div>
+      </section>
+
+      <section id="s5">
+        <div class="section-label">五、开发场景</div>
+        <h2>OPC开发必备配置</h2>
+
+        <h3>场景一：npm/yarn/pnpm 加速</h3>
+        <div class="code-block">
+<span class="comment"># 设置npm镜像（适合不需要代理的场景）</span>
+<span class="cmd">npm config set</span> registry https://registry.npmmirror.com
+
+<span class="comment"># 如果npm安装特定包需要从GitHub下载源码</span>
+<span class="comment"># 确保git可以访问github.com</span>
+<span class="cmd">git config</span> --global url."https://github.com/".insteadOf git://github.com/
+
+<span class="comment"># 如果遇到私有包需要SSH</span>
+<span class="cmd">eval</span> "$(ssh-agent -s)"
+<span class="cmd">ssh-add</span> ~/.ssh/id_rsa
+        </div>
+
+        <h3>场景二：Claude Code / Cursor 网络配置</h3>
+        <div class="code-block">
+<span class="comment"># 让AI工具使用系统代理</span>
+<span class="comment"># 确保Clash开启"系统代理"模式</span>
+
+<span class="comment"># 或者设置环境变量</span>
+<span class="cmd">export</span> https_proxy=http://127.0.0.1:7890
+<span class="cmd">export</span> http_proxy=http://127.0.0.1:7890
+<span class="cmd">export</span> all_proxy=socks5://127.0.0.1:7890
+
+<span class="comment"># Windows PowerShell</span>
+<span class="cmd">$env:HTTPS_PROXY</span> = "http://127.0.0.1:7890"
+<span class="cmd">$env:HTTP_PROXY</span> = "http://127.0.0.1:7890"
+        </div>
+
+        <h3>场景三：Git 加速</h3>
+        <div class="code-block">
+<span class="comment"># GitHub 加速</span>
+<span class="comment"># 方法1：使用镜像站</span>
+<span class="cmd">git clone</span> https://hub.fastgit.xyz/owner/repo.git
+
+<span class="comment"># 方法2：修改hosts文件</span>
+<span class="comment"># 添加到 /etc/hosts (macOS/Linux) 或 C:\Windows\System32\drivers\etc\hosts</span>
+<span class="cmd">140.82.121.4</span> github.com
+<span class="cmd">199.232.69.194</span> github.global.ssl.fastly.net
+
+<span class="comment"># 方法3：通过代理</span>
+<span class="cmd">git config</span> --global http.proxy http://127.0.0.1:7890
+<span class="cmd">git config</span> --global https.proxy http://127.0.0.1:7890
+
+<span class="comment"># 取消代理</span>
+<span class="cmd">git config</span> --global --unset http.proxy
+<span class="cmd">git config</span> --global --unset https.proxy
+        </div>
+
+        <h3>场景四：应用级代理（Proxifier）</h3>
+        <p>有些应用不支持系统代理，需要使用Proxifier进行应用级代理。</p>
+        <div class="code-block">
+<span class="comment"># Proxifier 配置</span>
+<span class="comment"># 1. Profile → Proxy Servers → 添加</span>
+<span class="comment">#    Address: 127.0.0.1</span>
+<span class="comment">#    Port: 7890 (Clash HTTP代理端口)</span>
+<span class="comment">#    Protocol: SOCKS5 (或HTTP，根据Clash配置)</span>
+
+<span class="comment"># 2. Profile → Proxification Rules → 添加规则</span>
+<span class="comment">#    应用程序：选择需要代理的应用</span>
+<span class="comment">#    动作：指向Clash代理服务器</span>
+        </div>
+
+        <h3>场景五：终端代理（proxychains）</h3>
+        <div class="code-block">
+<span class="comment"># macOS 安装 proxychains-ng</span>
+<span class="cmd">brew install</span> proxychains-ng
+
+<span class="comment"># 配置 /usr/local/etc/proxychains.conf</span>
+<span class="comment"># 在 [ProxyList] 下添加</span>
+<span class="cmd">socks5</span>  127.0.0.1 7890
+
+<span class="comment"># 使用</span>
+<span class="cmd">proxychains4</span> curl https://api.anthropic.com
+<span class="cmd">proxychains4</span> git clone https://github.com/xxx/xxx.git
+        </div>
+      </section>
+
+      <section id="s6">
+        <div class="section-label">六、常见问题</div>
+        <h2>FAQ</h2>
+
+        <h3>Q: 订阅链接打不开怎么办？</h3>
+        <p><strong>A:</strong> 首先确认链接是否正确。可能是订阅过期或欠费。尝试在浏览器中打开订阅链接，如果显示乱码说明链接正确，如果显示"需要登录"说明链接已失效。</p>
+
+        <h3>Q: 节点速度很慢怎么办？</h3>
+        <p><strong>A:</strong> 切换到其他节点测试。不同节点在不同地区有不同速度。优先选择延迟低（< 150ms）的节点。如果所有节点都慢，可能是机场带宽不足，考虑换一家。</p>
+
+        <h3>Q: 如何测试速度？</h3>
+        <p><strong>A:</strong> 在Clash Verge中，右键节点 → "延迟测试"。也可以直接访问 speedtest.net 测试实际带宽。</p>
+
+        <h3>Q: 订阅需要多久更新一次？</h3>
+        <p><strong>A:</strong> 通常建议每天自动更新一次（Clash Verge可配置）。节点IP可能会变化，不更新会导致连接失败。</p>
+
+        <h3>Q: 如何让特定应用走代理？</h3>
+        <p><strong>A:</strong> 方案1：使用Proxifier（应用级代理）。方案2：Clash Verge的"增强模式"可以按应用分流。方案3：终端中使用proxychains。</p>
+
+        <h3>Q: 工作正常但突然断了？</h3>
+        <p><strong>A:</strong> 常见原因：1）节点被封（切换节点）；2）订阅过期（续费）；3）流量用完（检查用量）；4）当地网络波动（等恢复）。</p>
+
+        <h3>Q: 国内需要访问的服务走不了？</h3>
+        <p><strong>A:</strong> 在规则中添加对应域名即可。例如微信相关服务走DIRECT（国内直连），不要添加代理规则。</p>
+
+        <div class="summary-box">
+          <h3>快速开始 Checklist</h3>
+          <ul class="step-list">
+            <li>下载安装 Clash Verge</li>
+            <li>获取机场订阅链接</li>
+            <li>在Clash中添加并更新订阅</li>
+            <li>测试节点延迟，选择优质节点</li>
+            <li>配置分流规则（参考推荐规则）</li>
+            <li>设置系统代理为Clash</li>
+            <li>测试访问 github.com 和 npmjs.com</li>
+          </ul>
+          <div class="quote-block" style="margin-top: 2rem;">
+            <p><strong>记住：</strong>Clash是OPC的"网络基础设施"。稳定、规则合理的Clash配置，能让你的开发效率提升50%以上。</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <nav class="footer-nav">
+    <a href="/nodes/06-ai-dev-tools/tengxunyun/index.html" class="nav-link">
+      <span>←</span> 06：腾讯云教程
+    </a>
+    <a href="/nodes/06-ai-dev-tools/index.html" class="nav-link">
+      返回工具列表 <span>→</span>
+    </a>
+  </nav>
+
+<script>
+document.querySelectorAll('.toc-link').forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    const targetId = this.getAttribute('href').slice(1);
+    const target = document.getElementById(targetId);
+    if (target) {
+      const offsetTop = target.offsetTop - 80;
+      window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+    }
+  });
+});
+
+const sections = document.querySelectorAll('section[id]');
+const tocLinks = document.querySelectorAll('.toc-link');
+
+function updateActiveLink() {
+  const scrollPos = window.scrollY + 120;
+  sections.forEach(section => {
+    const top = section.offsetTop;
+    const height = section.offsetHeight;
+    const id = section.getAttribute('id');
+    if (scrollPos >= top && scrollPos < top + height) {
+      tocLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${id}`) {
+          link.classList.add('active');
+        }
+      });
+    }
+  });
+}
+
+window.addEventListener('scroll', updateActiveLink, { passive: true });
+updateActiveLink();
+</script>
+</body>
+</html>

@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="微信支付完整教程 - 国内必备支付能力，接入微信商户平台，支持JSAPI/Native/H5多种支付方式">
+  <meta name="theme-color" content="#111110">
+  <title>微信支付教程 - OPC节点百科</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #7A7670;
+  --text-tertiary: #4A4744;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3rem);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
+}
+
+.sidebar-toc {
+  position: sticky;
+  top: 5rem;
+  height: fit-content;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.sidebar-toc::-webkit-scrollbar { width: 4px; }
+.sidebar-toc::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+.toc-title {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.toc-list { list-style: none; }
+.toc-item { margin-bottom: 0.75rem; }
+
+.toc-link {
+  cursor: pointer;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: block;
+  padding: 0.75rem 0.5rem;
+  padding-left: 1rem;
+  border-left: 1px solid var(--line);
+  transition: all 0.3s;
+  line-height: 1.4;
+}
+
+.toc-link:hover { color: var(--text-primary); border-left-color: var(--accent); }
+.toc-link.active { color: var(--accent); border-left-color: var(--accent); font-weight: 400; }
+
+.fixed-top-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0; z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+.back-link {
+  cursor: pointer;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
+}
+
+.back-link:hover { color: var(--text-primary); }
+
+.node-id {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar-toc { display: none; }
+  .fixed-top-nav { padding: 0.75rem clamp(1rem, 4vw, 1.5rem); }
+}
+
+header {
+  padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(2rem, 5vh, 3rem);
+}
+
+main { padding-bottom: 5rem; }
+section { scroll-margin-top: 2rem; }
+
+.phase-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+h1 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xl);
+}
+
+.subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 44ch;
+  line-height: 1.8;
+}
+
+.node-meta {
+  margin-top: 2rem;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+}
+
+section { padding-bottom: clamp(3rem, 10vh, 5rem); border-bottom: 1px solid var(--line); margin-bottom: clamp(3rem, 10vh, 5rem); }
+section:last-of-type { border-bottom: none; }
+
+.section-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.375rem, 4vw, 1.875rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+h3 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.125rem, 3vw, 1.375rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+p { color: var(--text-secondary); line-height: 1.9; margin-bottom: 1.25rem; }
+
+.decision-box {
+  background: var(--surface);
+  border-left: 2px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.decision-box p { color: var(--text-primary); font-size: 0.9375rem; margin: 0; }
+
+.table-wrapper { overflow-x: auto; margin: 2rem 0; -webkit-overflow-scrolling: touch; }
+table { width: 100%; min-width: 560px; border-collapse: collapse; font-size: 0.875rem; }
+
+th {
+  text-align: left;
+  font-weight: 400;
+  font-size: 0.6875rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+td { padding: 1rem; border-bottom: 1px solid var(--line); color: var(--text-secondary); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+td:first-child { color: var(--text-primary); font-weight: 400; }
+
+.tool-grid { display: grid; gap: 1.5rem; margin: 2rem 0; }
+.tool-card { background: var(--surface); padding: 1.75rem; border: 1px solid var(--line); }
+
+.tool-card h4 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.tool-card .tagline { font-size: 0.8125rem; color: var(--text-tertiary); margin-bottom: 1.25rem; }
+.tool-card p { font-size: 0.875rem; line-height: 1.8; margin-bottom: 0.75rem; }
+
+.code-block {
+  background: var(--bg);
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+}
+
+.code-block code {
+  color: var(--text-primary);
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+
+.cmd { color: var(--accent); }
+.comment { color: var(--text-tertiary); }
+
+.quote-block {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+}
+
+.quote-block p { font-size: 1rem; color: var(--text-primary); line-height: 1.8; }
+
+.path-block { background: var(--surface); padding: 2rem; margin: 2rem 0; border: 1px solid var(--line); }
+.path-header { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1.25rem; }
+.path-number { font-family: 'Noto Serif JP', serif; font-size: 0.75rem; color: var(--accent); letter-spacing: 0.1em; }
+.path-title { font-family: 'Noto Serif JP', serif; font-size: 1.25rem; font-weight: 400; color: var(--text-primary); }
+.path-block p { font-size: 0.875rem; margin-bottom: 0.75rem; }
+
+.summary-box { background: var(--surface); padding: 2rem; margin-top: 3rem; border: 1px solid var(--line); }
+.summary-box h3 { margin-top: 0; margin-bottom: 1.25rem; }
+
+.step-list { list-style: none; counter-reset: steps; }
+.step-list li { counter-increment: steps; display: flex; gap: 1rem; margin-bottom: 1rem; font-size: 0.875rem; color: var(--text-secondary); }
+.step-list li::before { content: counter(steps); font-family: 'Noto Serif JP', serif; font-size: 0.75rem; color: var(--accent); flex-shrink: 0; width: 1.5rem; padding-top: 0.25rem; }
+
+.footer-nav {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.9);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
+}
+
+.nav-link {
+  cursor: pointer;
+  font-size: 0.75rem; color: var(--text-tertiary); text-decoration: none;
+  letter-spacing: 0.08em; display: flex; align-items: center;
+  gap: 0.5rem; transition: color 0.3s;
+}
+
+.nav-link:hover { color: var(--text-primary); }
+.nav-link.disabled { opacity: 0.3; pointer-events: none; }
+
+.pricing-table { margin: 2rem 0; }
+
+.price-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.25rem 0.75rem;
+  margin-top: 1rem;
+}
+
+.check-list { list-style: none; margin: 1rem 0; }
+.check-list li { font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative; }
+.check-list li::before { content: '✓'; position: absolute; left: 0; color: var(--accent); font-weight: 600; }
+
+.problem-box {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 1.5rem 2rem;
+  margin: 1.5rem 0;
+}
+
+.problem-box h4 { font-size: 0.875rem; font-weight: 400; color: var(--text-primary); margin-bottom: 0.75rem; }
+.problem-box p { font-size: 0.8125rem; margin: 0; }
+  </style>
+</head>
+<body>
+  <nav class="fixed-top-nav">
+    <a href="/nodes/06-ai-dev-tools/index.html" class="back-link">← AI开发工具</a>
+    <span class="node-id">06 / 工具教程</span>
+  </nav>
+
+  <div class="layout">
+    <aside class="sidebar-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#s1" class="toc-link">一、核心定位</a></li>
+        <li class="toc-item"><a href="#s2" class="toc-link">二、入门准备</a></li>
+        <li class="toc-item"><a href="#s3" class="toc-link">三、支付类型</a></li>
+        <li class="toc-item"><a href="#s4" class="toc-link">四、后端集成</a></li>
+        <li class="toc-item"><a href="#s5" class="toc-link">五、费用结构</a></li>
+        <li class="toc-item"><a href="#s6" class="toc-link">六、实战案例</a></li>
+        <li class="toc-item"><a href="#s7" class="toc-link">七、结算规则</a></li>
+        <li class="toc-item"><a href="#s8" class="toc-link">八、常见问题</a></li>
+      </ul>
+    </aside>
+
+    <main>
+      <header>
+        <div class="phase-label">06 / AI开发工具</div>
+        <h1>微信支付</h1>
+        <p class="subtitle">国内必备支付能力。微信月活超13亿，微信支付渗透率近100%。如果你面向中国大陆用户，微信支付是绕不开的基础设施。</p>
+        <div class="node-meta">最后修订：2026年5月14日 · 官方文档：pay.weixin.qq.com</div>
+      </header>
+
+      <section id="s1">
+        <div class="section-label">一、核心定位</div>
+        <h2>微信支付是什么</h2>
+        <p>微信支付是腾讯旗下支付品牌，由财付通提供技术支持。与支付宝共同占据中国第三方移动支付超过90%的市场份额。对国内用户来说，微信支付几乎是"默认选项"——打开微信就能付，不需要额外安装任何东西。</p>
+
+        <div class="tool-grid">
+          <div class="tool-card">
+            <h4>核心特点</h4>
+            <p><strong>生态内支付</strong>：微信支付内嵌于微信App，用户无需跳出微信即可完成支付，转化路径最短。</p>
+            <p><strong>超高渗透率</strong>：微信月活13.4亿，微信支付绑定用户超8亿。目标用户几乎100%已有微信支付能力。</p>
+            <p><strong>多种支付场景</strong>：JSAPI支付（公众号/小程序）、Native支付（PC网站）、H5支付（移动网页）、扫码支付、APP支付等。</p>
+          </div>
+        </div>
+
+        <h3>微信支付 vs 支付宝</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>对比维度</th><th>微信支付</th><th>支付宝</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>市场地位</td><td>约55%份额</td><td>约40%份额</td></tr>
+              <tr><td>生态绑定</td><td>微信社交生态</td><td>阿里电商生态</td></tr>
+              <tr><td>用户特征</td><td>高频、小额、日常</td><td>大额、商业、转账</td></tr>
+              <tr><td>退款速度</td><td>通常当日</td><td>通常当日</td></tr>
+              <tr><td>商户服务费</td><td>0.6%-1%</td><td>0.6%-1%</td></tr>
+              <tr><td>技术文档</td><td>pay.weixin.qq.com</td><td>open.alipay.com</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-block">
+          <p><strong>什么时候用微信支付：</strong>面向中国大陆用户提供服务，用户主要通过微信访问你的产品。小程序、公众号、微信内H5页面优先选择微信支付。</p>
+        </div>
+
+        <div class="problem-box">
+          <h4>重要限制</h4>
+          <p>微信支付<strong>仅支持中国大陆企业主体</strong>。个人开发者、境外企业无法直接申请微信支付商户。如果你是境外主体，需要找第三方聚合支付服务商（如Ping++、NowPay等）来接入。</p>
+        </div>
+      </section>
+
+      <section id="s2">
+        <div class="section-label">二、入门准备</div>
+        <h2>申请微信支付商户</h2>
+
+        <h3>前置条件</h3>
+        <ul class="check-list">
+          <li>中国大陆境内注册的企业营业执照（个体工商户也可）</li>
+          <li>法定代表人身份证</li>
+          <li>银行对公账户（用于接收结算资金）</li>
+          <li>已备案的域名（微信支付要求商户 domain verification）</li>
+          <li>微信公众平台账号（服务号/小程序）</li>
+        </ul>
+
+        <h3>申请步骤</h3>
+        <div class="code-block">
+<span class="comment"># 第一步：注册微信支付商户平台</span>
+<span class="cmd">访问</span> https://pay.weixin.qq.com
+
+<span class="comment"># 第二步：登录商户平台</span>
+<span class="comment"># 使用微信扫码登录商户平台</span>
+
+<span class="comment"># 第三步：提交商户资料</span>
+<span class="comment"># 填写企业信息、法人信息、银行账户信息</span>
+
+<span class="comment"># 第四步：签署支付协议</span>
+<span class="comment"># 在线签署电子协议</span>
+
+<span class="comment"># 第五步：获取商户号和API密钥</span>
+<span class="comment"># 商户号(mch_id)：10位数字</span>
+<span class="comment"># API密钥：32位字符串（需要自行生成）</span>
+
+<span class="comment"># 第六步：配置支付目录</span>
+<span class="comment"># 在商户平台设置授权支付目录</span>
+<span class="comment"># 必须与实际发起支付的目录一致</span>
+        </div>
+
+        <h3>获取必要凭证</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>凭证</th><th>格式</th><th>用途</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>商户号 (mch_id)</td><td>10位纯数字</td><td>接口调用必需</td></tr>
+              <tr><td>API密钥</td><td>32位字符串</td><td>签名验证（需手动生成并安全保管）</td></tr>
+              <tr><td>AppID</td><td>wx开头18位</td><td>公众号/小程序标识</td></tr>
+              <tr><td>证书 (apiclient_cert.p12)</td><td>.p12文件</td><td>退款/红包等高级接口必需</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="decision-box">
+          <p><strong>OPC注意：</strong>微信支付API密钥一旦泄露，攻击者可以代用户完成支付。请务必将密钥存储在环境变量中，切勿硬编码在代码里。生产环境务必开启签名验证。</p>
+        </div>
+
+        <h3>配置授权目录</h3>
+        <p>微信支付要求发起支付的页面必须位于已配置的授权目录下。在商户平台「产品中心」→「开发配置」中添加授权目录。</p>
+        <div class="code-block">
+<span class="comment"># 授权目录示例（必须以斜杠结尾）</span>
+https://yourdomain.com/payment/
+https://yourdomain.com/order/pay/
+
+<span class="comment"># 调试时可开启沙箱模式</span>
+<span class="comment"># 沙箱环境：https://api.mch.weixin.qq.com/sandboxnew/</span>
+        </div>
+      </section>
+
+      <section id="s3">
+        <div class="section-label">三、支付类型</div>
+        <h2>选择合适的支付方式</h2>
+        <p>微信支付针对不同场景提供了多种支付产品，选择正确的产品能大幅提升支付成功率。</p>
+
+        <h3>JSAPI支付（公众号/小程序）</h3>
+        <p>在微信内置浏览器或小程序内发起支付。用户点击后自动打开微信支付中间页，全程在微信内完成，转化率最高。</p>
+        <div class="tool-grid">
+          <div class="tool-card">
+            <h4>适用场景</h4>
+            <p>微信公众号网页、微信小程序、微信内H5页面</p>
+            <p class="tagline">最适合中国境内ToC产品</p>
+          </div>
+        </div>
+
+        <h3>Native支付（PC网站）</h3>
+        <p>生成预支付订单后，后端返回二维码链接，前端展示二维码供用户扫码支付。适用于PC网站场景。</p>
+        <div class="code-block">
+<span class="comment"># Native支付流程</span>
+<span class="comment"># 1. 后端创建预订单</span>
+<span class="comment"># 2. 获取二维码链接code_url</span>
+<span class="comment"># 3. 前端生成二维码（使用qrcode.js等库）</span>
+<span class="comment"># 4. 用户用微信扫码支付</span>
+<span class="comment"># 5. 微信回调通知 + 前端轮询查询</span>
+        </div>
+
+        <h3>H5支付（移动网页）</h3>
+        <p>适用于在手机浏览器内发起支付。微信会打开一个中间页引导用户跳转。注意：iOS微信内浏览器请使用JSAPI，H5支付在iOS微信内不可用。</p>
+        <div class="problem-box">
+          <h4>H5支付限制</h4>
+          <p>H5支付需要在微信支付商户平台单独申请，且<strong>不建议在微信内置浏览器中使用</strong>（会被拦截）。如果是微信内H5页面，请使用JSAPI支付。</p>
+        </div>
+
+        <h3>支付类型对比</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>类型</th><th>场景</th><th>要求</th><th>体验评分</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>JSAPI</td><td>公众号/小程序</td><td>必须微信公众号</td><td>★★★★★</td></tr>
+              <tr><td>Native</td><td>PC网站</td><td>需生成二维码</td><td>★★★★</td></tr>
+              <tr><td>H5</td><td>手机浏览器</td><td>需单独申请</td><td>★★★</td></tr>
+              <tr><td>APP支付</td><td>手机App内</td><td>需移动应用资质</td><td>★★★★</td></tr>
+              <tr><td>扫码支付</td><td>线下场景</td><td>需配置支付设备</td><td>★★★★</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="decision-box">
+          <p><strong>OPC建议：</strong>如果你的产品运行在微信内（小程序/公众号），<strong>必须用JSAPI支付</strong>。如果是PC网站或H5站，根据场景选择Native或H5。</p>
+        </div>
+      </section>
+
+      <section id="s4">
+        <div class="section-label">四、后端集成</div>
+        <h2>Node.js 接入微信支付</h2>
+        <p>微信支付提供官方SDK（Java/Php/Python/.NET/Node.js），也可以直接调用REST API。这里介绍Node.js原生实现。</p>
+
+        <h3>安装依赖</h3>
+        <div class="code-block">
+<span class="cmd">npm install</span> axios xml2js crypto-js
+
+<span class="comment"># xml2js 用于解析微信返回的XML格式</span>
+<span class="comment"># crypto-js 用于生成签名（也可使用Node原生crypto）</span>
+        </div>
+
+        <h3>微信支付工具函数</h3>
+        <div class="code-block">
+<span class="comment">// utils/wechatpay.js</span>
+<span class="cmd">const</span> crypto = require('crypto');
+<span class="cmd">const</span> axios = require('axios');
+<span class="cmd">const</span> xml2js = require('xml2js');
+
+<span class="comment">// 微信支付配置</span>
+<span class="cmd">const</span> WXPAY_CONFIG = {
+  mch_id: process.env.WXPAY_MCH_ID,        <span class="comment">// 商户号</span>
+  appid: process.env.WXPAY_APP_ID,          <span class="comment">// 应用ID</span>
+  api_key: process.env.WXPAY_API_KEY,       <span class="comment">// API密钥</span>
+  notify_url: 'https://yourdomain.com/api/wxpay/callback', <span class="comment">// 回调地址</span>
+};
+
+<span class="comment">// 生成随机字符串</span>
+<span class="cmd">function</span> generateNonceStr(length = 32) {
+  <span class="cmd">return</span> crypto.randomBytes(length).toString('hex').slice(0, length);
+}
+
+<span class="comment">// 生成签名</span>
+<span class="cmd">function</span> sign(params, key) {
+  <span class="cmd">const</span> sortedKeys = Object.keys(params).sort();
+  <span class="cmd">const</span> signStr = sortedKeys
+    .filter(k => params[k] !== '' && params[k] !== undefined && k !== 'sign')
+    .map(k => `${k}=${params[k]}`)
+    .join('&') + `&key=${key}`;
+  <span class="cmd">return</span> crypto.createHash('md5').update(signStr).digest('hex').toUpperCase();
+}
+
+<span class="comment">// 解析XML响应</span>
+<span class="cmd">async function</span> parseXML(xml) {
+  <span class="cmd">const</span> result = <span class="cmd">await</span> xml2js.parseStringPromise(xml, { explicitArray: false });
+  <span class="cmd">return</span> result.xml;
+}
+        </div>
+
+        <h3>创建JSAPI支付订单</h3>
+        <div class="code-block">
+<span class="comment">// 创建统一下单（JSAPI）</span>
+<span class="cmd">async function</span> createJsapiOrder(openid, orderId, totalFee, subject) {
+  <span class="cmd">const</span> timeStamp = Math.floor(Date.now() / 1000).toString();
+  <span class="cmd">const</span> nonceStr = generateNonceStr();
+
+  <span class="comment">// 统一下单请求参数</span>
+  <span class="cmd">const</span> params = {
+    appid: WXPAY_CONFIG.appid,
+    mch_id: WXPAY_CONFIG.mch_id,
+    nonce_str: nonceStr,
+    body: subject,                    <span class="comment">// 商品描述</span>
+    out_trade_no: orderId,           <span class="comment">// 商户订单号</span>
+    total_fee: totalFee,             <span class="comment">// 金额（分）</span>
+    spbill_create_ip: 'YOUR_SERVER_IP',
+    notify_url: WXPAY_CONFIG.notify_url,
+    trade_type: 'JSAPI',
+    openid: openid,                  <span class="comment">// 用户openid（JSAPI必需）</span>
+  };
+
+  <span class="comment">// 生成签名</span>
+  params.sign = sign(params, WXPAY_CONFIG.api_key);
+
+  <span class="comment">// 发送请求</span>
+  <span class="cmd">const</span> xmlData = Object.keys(params)
+    .map(k => `<${k}>${params[k]}</${k}>`)
+    .join('');
+  <span class="cmd">const</span> response = <span class="cmd">await</span> axios.post(
+    'https://api.mch.weixin.qq.com/pay/unifiedorder',
+    `<xml>${xmlData}</xml>`,
+    { headers: { 'Content-Type': 'text/xml' } }
+  );
+
+  <span class="cmd">const</span> result = <span class="cmd">await</span> parseXML(response.data);
+
+  <span class="cmd">if</span> (result.return_code === 'SUCCESS' && result.result_code === 'SUCCESS') {
+    <span class="comment">// 返回唤起支付的参数</span>
+    <span class="cmd">return</span> {
+      prepay_id: result.prepay_id,
+      signType: 'MD5',
+      timeStamp,
+      nonceStr,
+      package: `prepay_id=${result.prepay_id}`,
+    };
+  } <span class="cmd">else</span> {
+    <span class="cmd">throw new</span> Error(result.err_code_des || '创建订单失败');
+  }
+}
+        </div>
+
+        <h3>唤起支付（前端）</h3>
+        <div class="code-block">
+<span class="comment">// 前端调用支付示例（Weixin JSSDK）</span>
+<span class="cmd">function</span> callWxPay(payParams) {
+  <span class="comment">// 从后端获取payParams后，调用微信内支付</span>
+  WeixinJSBridge.invoke(
+    'getBrandWCPayRequest', {
+      appId: payParams.appId,
+      timeStamp: payParams.timeStamp,
+      nonceStr: payParams.nonceStr,
+      package: payParams.package,
+      signType: payParams.signType,
+      paySign: payParams.paySign,
+    },
+    <span class="cmd">function</span>(res) {
+      <span class="cmd">if</span> (res.err_msg === 'get_brand_wcpay_request:ok') {
+        <span class="comment">// 支付成功</span>
+        console.log('Payment successful');
+      } <span class="cmd">else if</span> (res.err_msg === 'get_brand_wcpay_request:cancel') {
+        <span class="comment">// 用户取消</span>
+        console.log('Payment cancelled');
+      } <span class="cmd">else</span> {
+        <span class="comment">// 支付失败</span>
+        console.error('Payment failed:', res.err_msg);
+      }
+    }
+  );
+}
+        </div>
+
+        <h3>支付回调处理</h3>
+        <div class="code-block">
+<span class="comment">// 处理微信支付回调（Node.js Express）</span>
+app.post('/api/wxpay/callback', <span class="cmd">async</span> (req, res) => {
+  <span class="cmd">const</span> xml = req.body.toString('utf-8');
+  <span class="cmd">const</span> data = <span class="cmd">await</span> parseXML(xml);
+
+  <span class="comment">// 验证签名</span>
+  <span class="cmd">const</span> generatedSign = sign(data, WXPAY_CONFIG.api_key);
+  <span class="cmd">if</span> (data.sign !== generatedSign) {
+    <span class="cmd">return</span> res.send('<xml><return_code><![CDATA[FAIL]]></return_code></xml>');
+  }
+
+  <span class="cmd">if</span> (data.return_code === 'SUCCESS' && data.result_code === 'SUCCESS') {
+    <span class="comment">// 支付成功，处理你的业务逻辑</span>
+    <span class="cmd">const</span> orderId = data.out_trade_no;
+    <span class="cmd">const</span> transactionId = data.transaction_id;
+
+    <span class="comment">// 更新订单状态、发送通知等</span>
+    <span class="cmd">await</span> updateOrderStatus(orderId, 'paid', transactionId);
+
+    <span class="comment">// 返回成功</span>
+    <span class="cmd">return</span> res.send('<xml><return_code><![CDATA[SUCCESS]]></return_code></xml>');
+  }
+
+  res.send('<xml><return_code><![CDATA[FAIL]]></return_code></xml>');
+});
+        </div>
+
+        <h3>查询订单状态</h3>
+        <div class="code-block">
+<span class="comment">// 查询订单状态</span>
+<span class="cmd">async function</span> queryOrder(out_trade_no) {
+  <span class="cmd">const</span> nonceStr = generateNonceStr();
+  <span class="cmd">const</span> params = {
+    appid: WXPAY_CONFIG.appid,
+    mch_id: WXPAY_CONFIG.mch_id,
+    out_trade_no,
+    nonce_str: nonceStr,
+  };
+  params.sign = sign(params, WXPAY_CONFIG.api_key);
+
+  <span class="cmd">const</span> xmlData = Object.keys(params)
+    .map(k => `<${k}>${params[k]}</${k}>`)
+    .join('');
+
+  <span class="cmd">const</span> response = <span class="cmd">await</span> axios.post(
+    'https://api.mch.weixin.qq.com/pay/orderquery',
+    `<xml>${xmlData}</xml>`,
+    { headers: { 'Content-Type': 'text/xml' } }
+  );
+
+  <span class="cmd">return await</span> parseXML(response.data);
+}
+        </div>
+
+        <h3>申请退款</h3>
+        <div class="code-block">
+<span class="comment">// 退款（需要使用证书）</span>
+<span class="cmd">async function</span> refund(out_trade_no, total_fee, refund_fee) {
+  <span class="cmd">const</span> nonceStr = generateNonceStr();
+  <span class="cmd">const</span> params = {
+    appid: WXPAY_CONFIG.appid,
+    mch_id: WXPAY_CONFIG.mch_id,
+    nonce_str: nonceStr,
+    out_trade_no,
+    out_refund_no: `refund_${out_trade_no}`,
+    total_fee,
+    refund_fee,
+    op_user_id: WXPAY_CONFIG.mch_id,
+  };
+  params.sign = sign(params, WXPAY_CONFIG.api_key);
+
+  <span class="comment">// 退款必须使用证书，需要加载p12文件</span>
+  <span class="cmd">const</span> cert = fs.readFileSync('./apiclient_cert.p12');
+  <span class="cmd">const</span> response = <span class="cmd">await</span> axios.post(
+    'https://api.mch.weixin.qq.com/secapi/pay/refund',
+    `<xml>${Object.keys(params).map(k => `<${k}>${params[k]}</${k}>`).join('')}</xml>`,
+    {
+      headers: { 'Content-Type': 'text/xml' },
+      httpsAgent: <span class="cmd">new</span> https.Agent({
+        pfx: cert,
+        passphrase: WXPAY_CONFIG.mch_id,
+      }),
+    }
+  );
+
+  <span class="cmd">return await</span> parseXML(response.data);
+}
+        </div>
+      </section>
+
+      <section id="s5">
+        <div class="section-label">五、费用结构</div>
+        <h2>微信支付收费明细</h2>
+        <p>微信支付收取交易手续费，这是商户的主要成本之一。</p>
+
+        <h3>费率标准</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>行业类目</th><th>费率</th><th>说明</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>实物商品（零售）</td><td>0.6%</td><td>最低档，量大可申请更低</td></tr>
+              <tr><td>虚拟商品（游戏/会员）</td><td>1%</td><td>含游戏点卡、付费内容等</td></tr>
+              <tr><td>餐饮/生活服务</td><td>0.6%-1%</td><td>根据具体品类</td></tr>
+              <tr><td>线下扫码</td><td>0.6%</td><td>扫码枪收款</td></tr>
+              <tr><td>小程序/EC电商</td><td>0.6%</td><td>标准电商费率</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>大客户费率优惠</h3>
+        <div class="tool-grid">
+          <div class="tool-card">
+            <h4>月交易额达到标准可申请优惠</h4>
+            <p>月交易额超过一定门槛后，可向微信支付客户经理申请降低费率。大型电商平台可谈到0.35%-0.5%。</p>
+            <span class="price-tag">量大可谈</span>
+          </div>
+        </div>
+
+        <h3>费用计算示例</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>交易金额</th><th>费率</th><th>手续费</th><th>实际到账</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>¥100</td><td>0.6%</td><td>¥0.60</td><td>¥99.40</td></tr>
+              <tr><td>¥1,000</td><td>0.6%</td><td>¥6.00</td><td>¥994.00</td></tr>
+              <tr><td>¥10,000</td><td>0.6%</td><td>¥60.00</td><td>¥9,940.00</td></tr>
+              <tr><td>¥100,000</td><td>0.6%</td><td>¥600.00</td><td>¥99,400.00</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-block">
+          <p><strong>注意：</strong>微信支付手续费按笔收取，无论金额大小。退款同样收取手续费（但部分情况下可申请豁免）。</p>
+        </div>
+      </section>
+
+      <section id="s6">
+        <div class="section-label">六、实战案例</div>
+        <h2>OPC典型集成场景</h2>
+
+        <div class="path-block">
+          <div class="path-header">
+            <span class="path-number">案例一</span>
+            <span class="path-title">Node.js + Express 完整接入</span>
+          </div>
+          <p><strong>场景：</strong>在Express后端实现微信JSAPI支付，从下单到回调完整流程。</p>
+          <div class="code-block">
+<span class="comment">// routes/wxpay.js</span>
+<span class="cmd">const</span> express = require('express');
+<span class="cmd">const</span> router = express.Router();
+<span class="cmd">const</span> { createJsapiOrder, parseXML, sign, generateNonceStr } = require('../utils/wechatpay');
+
+<span class="comment">// 发起支付</span>
+router.post('/create-order', <span class="cmd">async</span> (req, res) => {
+  <span class="cmd">try</span> {
+    <span class="cmd">const</span> { openid, orderId, amount, subject } = req.body;
+
+    <span class="comment">// 校验金额（分）</span>
+    <span class="cmd">if</span> (!amount || amount < 1) {
+      <span class="cmd">return</span> res.status(400).json({ error: 'Invalid amount' });
+    }
+
+    <span class="cmd">const</span> payParams = <span class="cmd">await</span> createJsapiOrder(openid, orderId, amount, subject);
+
+    <span class="comment">// 生成前端唤起支付的签名</span>
+    <span class="cmd">const</span> paySignParams = {
+      appId: process.env.WXPAY_APP_ID,
+      timeStamp: payParams.timeStamp,
+      nonceStr: payParams.nonceStr,
+      package: payParams.package,
+      signType: 'MD5',
+    };
+    paySignParams.paySign = sign(paySignParams, process.env.WXPAY_API_KEY);
+
+    res.json(paySignParams);
+  } <span class="cmd">catch</span> (err) {
+    console.error('Create order failed:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+<span class="comment">// 支付回调</span>
+router.post('/callback', <span class="cmd">async</span> (req, res) => {
+  <span class="cmd">const</span> xml = req.body.toString('utf-8');
+  <span class="cmd">const</span> data = <span class="cmd">await</span> parseXML(xml);
+
+  <span class="cmd">if</span> (data.sign !== sign(data, process.env.WXPAY_API_KEY)) {
+    <span class="cmd">return</span> res.send('<xml><return_code><![CDATA[FAIL]]></return_code></xml>');
+  }
+
+  <span class="cmd">if</span> (data.return_code === 'SUCCESS') {
+    <span class="comment">// 处理订单</span>
+    <span class="cmd">await</span> handlePaidOrder(data.out_trade_no, data.transaction_id);
+  }
+
+  res.send('<xml><return_code><![CDATA[SUCCESS]]></return_code></xml>');
+});
+
+<span class="comment">// 查询订单</span>
+router.get('/query/:orderId', <span class="cmd">async</span> (req, res) => {
+  <span class="cmd">const</span> result = <span class="cmd">await</span> queryOrder(req.params.orderId);
+  res.json(result);
+});
+          </div>
+        </div>
+
+        <div class="path-block">
+          <div class="path-header">
+            <span class="path-number">案例二</span>
+            <span class="path-title">小程序支付</span>
+          </div>
+          <p><strong>场景：</strong>微信小程序内集成支付，与JSAPI类似但有细节差异。</p>
+          <div class="code-block">
+<span class="comment">// 小程序端代码（使用wx.requestPayment）</span>
+
+<span class="comment">// 1. 从后端获取支付参数</span>
+<span class="cmd">async function</span> requestPayment(orderId) {
+  <span class="comment">// 获取用户openid（需要后端通过code换openid）</span>
+  <span class="cmd">const</span> loginRes = <span class="cmd">await</span> wx.login();
+  <span class="cmd">const</span> openid = <span class="cmd">await</span> backend.getOpenid(loginRes.code);
+
+  <span class="comment">// 2. 向后端请求创建订单</span>
+  <span class="cmd">const</span> payParams = <span class="cmd">await</span> backend.createWxPayOrder({
+    openid,
+    orderId,
+    amount: 1, <span class="comment">// 分</span>
+    subject: '商品名称',
+  });
+
+  <span class="comment">// 3. 调起微信支付</span>
+  <span class="cmd">await</span> wx.requestPayment({
+    timeStamp: payParams.timeStamp,
+    nonceStr: payParams.nonceStr,
+    package: payParams.package,
+    signType: 'MD5',
+    paySign: payParams.paySign,
+  });
+
+  <span class="comment">// 4. 支付成功后处理</span>
+  wx.showToast({ title: '支付成功', icon: 'success' });
+}
+          </div>
+
+          <div class="code-block">
+<span class="comment">// 后端：通过code获取openid</span>
+<span class="cmd">async function</span> getOpenid(code) {
+  <span class="cmd">const</span> res = <span class="cmd">await</span> axios.get('https://api.weixin.qq.com/sns/jscode2session', {
+    params: {
+      appid: process.env.WXPAY_APP_ID,
+      secret: process.env.WXPAY_APP_SECRET,
+      js_code: code,
+      grant_type: 'authorization_code',
+    },
+  });
+  <span class="cmd">return</span> res.data.openid;
+}
+          </div>
+        </div>
+
+        <div class="path-block">
+          <div class="path-header">
+            <span class="path-number">案例三</span>
+            <span class="path-title">Native支付（PC网站二维码）</span>
+          </div>
+          <p><strong>场景：</strong>在PC网页上展示微信支付二维码，用户扫码支付。</p>
+          <div class="code-block">
+<span class="comment">// 后端：创建Native支付订单</span>
+<span class="cmd">async function</span> createNativeOrder(orderId, amount, subject) {
+  <span class="cmd">const</span> nonceStr = generateNonceStr();
+  <span class="cmd">const</span> params = {
+    appid: WXPAY_CONFIG.appid,
+    mch_id: WXPAY_CONFIG.mch_id,
+    nonce_str: nonceStr,
+    body: subject,
+    out_trade_no: orderId,
+    total_fee: amount,
+    spbill_create_ip: getClientIP(req),
+    notify_url: WXPAY_CONFIG.notify_url,
+    trade_type: 'NATIVE',
+  };
+  params.sign = sign(params, WXPAY_CONFIG.api_key);
+
+  <span class="comment">// 生成XML并调用统一下单接口</span>
+  <span class="comment">// 返回 code_url 用于生成二维码</span>
+}
+
+<span class="comment">// 前端：使用qrcode.js生成二维码</span>
+<span class="cmd">const</span> QRCode = require('qrcode');
+
+<span class="cmd">async function</span> showQRCode(codeUrl) {
+  <span class="cmd">const</span> canvas = document.getElementById('qrcode');
+  <span class="cmd">await</span> QRCode.toCanvas(canvas, codeUrl, {
+    width: 200,
+    margin: 2,
+  });
+
+  <span class="comment">// 轮询订单状态</span>
+  <span class="cmd">const</span> interval = setInterval(<span class="cmd">async</span> () => {
+    <span class="cmd">const</span> result = <span class="cmd">await</span> queryOrder(orderId);
+    <span class="cmd">if</span> (result.trade_state === 'SUCCESS') {
+      clearInterval(interval);
+      <span class="comment">// 支付成功，跳转页面</span>
+      window.location.href = '/order/success';
+    }
+  }, 2000);
+}
+          </div>
+        </div>
+      </section>
+
+      <section id="s7">
+        <div class="section-label">七、结算规则</div>
+        <h2>资金结算机制</h2>
+        <p>微信支付采用T+1结算机制，商户收款后资金不会立即到账。</p>
+
+        <h3>T+1 结算</h3>
+        <div class="tool-grid">
+          <div class="tool-card">
+            <h4>结算周期</h4>
+            <p><strong>T日</strong>：用户完成支付的日期</p>
+            <p><strong>T+1日</strong>：微信在次日凌晨对前一日的交易进行清算，资金通常在上午9点至12点间到达商户银行账户</p>
+          </div>
+        </div>
+
+        <h3>最低结算金额</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>商户类型</th><th>最低结算金额</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>一般企业商户</td><td>¥1.00</td></tr>
+              <tr><td>个体工商户</td><td>¥0.01（部分情况豁免）</td></tr>
+              <tr><td>特殊行业</td><td>可能更高，详见商户平台</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>提现与转账</h3>
+        <ul class="check-list">
+          <li>微信支付商户平台支持自动提现和手动提现</li>
+          <li>可以设置每日自动提现，将结算资金自动转入指定银行账户</li>
+          <li>支持服务商分账，可自动将资金分给供应商/合伙人</li>
+        </ul>
+
+        <h3>账单与对账</h3>
+        <p>微信支付提供完整的对账文件，商户可以在商户平台下载每日的交易流水和资金流水。</p>
+        <div class="code-block">
+<span class="comment"># 对账文件获取（通过API）</span>
+<span class="comment"># 下载格式：GZIP压缩的CSV文件</span>
+
+<span class="comment"># 对账日期（昨日）</span>
+<span class="cmd">const</span> yesterday = <span class="cmd">new</span> Date(Date.now() - 86400000);
+<span class="cmd">const</span> dateStr = yesterday.toISOString().slice(0, 10).replace(/-/g, '');
+
+<span class="comment"># API路径</span>
+https://api.mch.weixin.qq.com/pay/downloadbill?bill_date={dateStr}&bill_type=ALL
+        </div>
+
+        <div class="problem-box">
+          <h4>资金冻结</h4>
+          <p>如果商户交易存在异常（用户投诉、涉嫌欺诈、风控预警等），微信可能会对资金进行冻结，延迟结算或扣除异常资金。请确保交易真实合理，保持良好的客诉处理。</p>
+        </div>
+      </section>
+
+      <section id="s8">
+        <div class="section-label">八、常见问题</div>
+        <h2>FAQ</h2>
+
+        <h3>Q: 个人开发者可以申请微信支付吗？</h3>
+        <p><strong>A:</strong> 不能。微信支付仅对在中国大陆注册的企业、个体工商户开放。如果你是个人开发者或境外主体，只能通过第三方聚合支付服务商（如Ping++、WePay等）间接接入，或者寻找有商户资质的合伙人代收。</p>
+
+        <h3>Q: 微信支付需要多久才能申请下来？</h3>
+        <p><strong>A:</strong> 资料齐全的情况下，审核通常需要1-3个工作日。如果资料有问题需要补充，时间会更长。建议提前准备好所有资料。</p>
+
+        <h3>Q: 微信支付的回调通知一直收不到怎么办？</h3>
+        <p><strong>A:</strong> 首先检查：1）回调URL是否可公网访问；2）是否正确返回了SUCCESS的XML；3）检查商户平台「开发配置」中的回调地址是否正确。如果仍有问题，可使用「交易维权」接口或联系微信支付技术支持。</p>
+
+        <h3>Q: 支付成功后如何查询订单状态？</h3>
+        <p><strong>A:</strong> 有三种方式：1）微信支付商户平台手动查询；2）调用订单查询API；3）接收微信的支付回调通知。推荐以回调通知为主、主动查询为辅的方式。</p>
+
+        <h3>Q: 微信支付的签名一直验证失败？</h3>
+        <p><strong>A:</strong> 签名失败常见原因：1）参数没有按ASCII码排序；2）空值参数没有过滤；3）使用了错误的密钥（注意API密钥和AppSecret是不同的）；4）编码问题（中文需要UTF-8）。</p>
+
+        <h3>Q: 如何处理重复回调？</h3>
+        <p><strong>A:</strong> 微信支付可能对同一笔交易发送多次回调。处理方式：在更新订单状态时检查是否已处理过（幂等性），或者使用数据库事务确保状态更新是原子的。</p>
+
+        <h3>Q: 微信支付支持海外用户支付吗？</h3>
+        <p><strong>A:</strong> 微信支付主要面向中国大陆用户。境外用户如果绑定了中国大陆银行卡可以支付，但体验不稳定。如果你需要服务海外用户，建议同时接入PayPal、Stripe等国际支付方式。</p>
+
+        <h3>Q: 退款多久到账？</h3>
+        <p><strong>A:</strong> 微信支付退款通常是即时处理，资金会在1-7个工作日内原路返回到支付账户（微信零钱或银行卡）。如果超过7天未到账，建议联系微信支付客服。</p>
+
+        <div class="summary-box">
+          <h3>快速开始 Checklist</h3>
+          <ul class="step-list">
+            <li>注册微信商户平台账号</li>
+            <li>准备企业营业执照、法人身份证、银行账户</li>
+            <li>提交申请并等待审核（1-3个工作日）</li>
+            <li>获取商户号、API密钥、AppID</li>
+            <li>配置授权支付目录</li>
+            <li>安装依赖并集成统一下单接口</li>
+            <li>配置支付回调URL（必须是HTTPS）</li>
+            <li>完成测试后切换正式环境</li>
+          </ul>
+          <div class="quote-block" style="margin-top: 2rem;">
+            <p><strong>记住：</strong>微信支付是中国大陆用户的"默认选项"。接入微信支付意味着你能触达几乎所有国内用户。但注意：它仅支持中国大陆企业主体，请在公司注册完成后第一时间申请。</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <nav class="footer-nav">
+    <a href="/nodes/06-ai-dev-tools/stripe/index.html" class="nav-link">
+      <span>←</span> Stripe教程
+    </a>
+    <a href="/nodes/06-ai-dev-tools/cloudflare/index.html" class="nav-link">
+      Cloudflare教程 <span>→</span>
+    </a>
+  </nav>
+
+<script>
+document.querySelectorAll('.toc-link').forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    const targetId = this.getAttribute('href').slice(1);
+    const target = document.getElementById(targetId);
+    if (target) {
+      const offsetTop = target.offsetTop - 80;
+      window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+    }
+  });
+});
+
+const sections = document.querySelectorAll('section[id]');
+const tocLinks = document.querySelectorAll('.toc-link');
+
+function updateActiveLink() {
+  const scrollPos = window.scrollY + 120;
+  sections.forEach(section => {
+    const top = section.offsetTop;
+    const height = section.offsetHeight;
+    const id = section.getAttribute('id');
+    if (scrollPos >= top && scrollPos < top + height) {
+      tocLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${id}`) {
+          link.classList.add('active');
+        }
+      });
+    }
+  });
+}
+
+window.addEventListener('scroll', updateActiveLink, { passive: true });
+updateActiveLink();
+</script>
+</body>
+</html>

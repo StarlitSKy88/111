@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="腾讯云完整教程 - 2026年OPC首选云服务，涵盖云服务器CVM、域名注册、ICP备案、CDN加速、数据库等">
+  <meta name="theme-color" content="#111110">
+  <title>腾讯云教程 - OPC节点百科</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #7A7670;
+  --text-tertiary: #4A4744;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3rem);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
+}
+
+.sidebar-toc {
+  position: sticky;
+  top: 5rem;
+  height: fit-content;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.sidebar-toc::-webkit-scrollbar { width: 4px; }
+.sidebar-toc::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+.toc-title {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.toc-list { list-style: none; }
+.toc-item { margin-bottom: 0.75rem; }
+
+.toc-link {
+  cursor: pointer;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: block;
+  padding: 0.75rem 0.5rem;
+  padding-left: 1rem;
+  border-left: 1px solid var(--line);
+  transition: all 0.3s;
+  line-height: 1.4;
+}
+
+.toc-link:hover { color: var(--text-primary); border-left-color: var(--accent); }
+.toc-link.active { color: var(--accent); border-left-color: var(--accent); font-weight: 400; }
+
+.fixed-top-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0; z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+.back-link {
+  cursor: pointer;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
+}
+
+.back-link:hover { color: var(--text-primary); }
+
+.node-id {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar-toc { display: none; }
+  .fixed-top-nav { padding: 0.75rem clamp(1rem, 4vw, 1.5rem); }
+}
+
+header {
+  padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(2rem, 5vh, 3rem);
+}
+
+main { padding-bottom: 5rem; }
+section { scroll-margin-top: 2rem; }
+
+.phase-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+h1 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xl);
+}
+
+.subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 44ch;
+  line-height: 1.8;
+}
+
+.node-meta {
+  margin-top: 2rem;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+}
+
+section { padding-bottom: clamp(3rem, 10vh, 5rem); border-bottom: 1px solid var(--line); margin-bottom: clamp(3rem, 10vh, 5rem); }
+section:last-of-type { border-bottom: none; }
+
+.section-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.375rem, 4vw, 1.875rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+h3 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.125rem, 3vw, 1.375rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+p { color: var(--text-secondary); line-height: 1.9; margin-bottom: 1.25rem; }
+
+.decision-box {
+  background: var(--surface);
+  border-left: 2px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.decision-box p { color: var(--text-primary); font-size: 0.9375rem; margin: 0; }
+
+.table-wrapper { overflow-x: auto; margin: 2rem 0; -webkit-overflow-scrolling: touch; }
+table { width: 100%; min-width: 560px; border-collapse: collapse; font-size: 0.875rem; }
+
+th {
+  text-align: left;
+  font-weight: 400;
+  font-size: 0.6875rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+td { padding: 1rem; border-bottom: 1px solid var(--line); color: var(--text-secondary); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+td:first-child { color: var(--text-primary); font-weight: 400; }
+
+.tool-grid { display: grid; gap: 1.5rem; margin: 2rem 0; }
+.tool-card { background: var(--surface); padding: 1.75rem; border: 1px solid var(--line); }
+
+.tool-card h4 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.tool-card .tagline { font-size: 0.8125rem; color: var(--text-tertiary); margin-bottom: 1.25rem; }
+.tool-card p { font-size: 0.875rem; line-height: 1.8; margin-bottom: 0.75rem; }
+
+.code-block {
+  background: var(--bg);
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+
+.cmd { color: var(--accent); }
+.comment { color: var(--text-tertiary); }
+
+.quote-block {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+}
+
+.quote-block p { font-size: 1rem; color: var(--text-primary); line-height: 1.8; }
+
+.path-block { background: var(--surface); padding: 2rem; margin: 2rem 0; border: 1px solid var(--line); }
+.path-header { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1.25rem; }
+.path-number { font-family: 'Noto Serif JP', serif; font-size: 0.75rem; color: var(--accent); letter-spacing: 0.1em; }
+.path-title { font-family: 'Noto Serif JP', serif; font-size: 1.25rem; font-weight: 400; color: var(--text-primary); }
+.path-block p { font-size: 0.875rem; margin-bottom: 0.75rem; }
+
+.summary-box { background: var(--surface); padding: 2rem; margin-top: 3rem; border: 1px solid var(--line); }
+.summary-box h3 { margin-top: 0; margin-bottom: 1.25rem; }
+
+.step-list { list-style: none; counter-reset: steps; }
+.step-list li { counter-increment: steps; display: flex; gap: 1rem; margin-bottom: 1rem; font-size: 0.875rem; color: var(--text-secondary); }
+.step-list li::before { content: counter(steps); font-family: 'Noto Serif JP', serif; font-size: 0.75rem; color: var(--accent); flex-shrink: 0; width: 1.5rem; padding-top: 0.25rem; }
+
+.footer-nav {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.9);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
+}
+
+.nav-link {
+  cursor: pointer;
+  font-size: 0.75rem; color: var(--text-tertiary); text-decoration: none;
+  letter-spacing: 0.08em; display: flex; align-items: center;
+  gap: 0.5rem; transition: color 0.3s;
+}
+
+.nav-link:hover { color: var(--text-primary); }
+.nav-link.disabled { opacity: 0.3; pointer-events: none; }
+
+.price-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.25rem 0.75rem;
+  margin-top: 1rem;
+}
+
+.check-list { list-style: none; margin: 1rem 0; }
+.check-list li { font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative; }
+.check-list li::before { content: '✓'; position: absolute; left: 0; color: var(--accent); font-weight: 600; }
+
+.problem-box {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 1.5rem 2rem;
+  margin: 1.5rem 0;
+}
+
+.problem-box h4 { font-size: 0.875rem; font-weight: 400; color: var(--text-primary); margin-bottom: 0.75rem; }
+.problem-box p { font-size: 0.8125rem; margin: 0; }
+
+.badge {
+  display: inline-block;
+  font-size: 0.625rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 2px;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
+.badge-recommend { background: var(--accent); color: var(--text-primary); }
+.badge-free { background: #1A3D1A; color: #6FCF6F; }
+  </style>
+</head>
+<body>
+  <nav class="fixed-top-nav">
+    <a href="/nodes/06-tech-selection/index.html" class="back-link">← 技术选型</a>
+    <span class="node-id">06 / 工具教程</span>
+  </nav>
+
+  <div class="layout">
+    <aside class="sidebar-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#s1" class="toc-link">一、为什么选腾讯云</a></li>
+        <li class="toc-item"><a href="#s2" class="toc-link">二、核心产品</a></li>
+        <li class="toc-item"><a href="#s3" class="toc-link">三、域名与备案</a></li>
+        <li class="toc-item"><a href="#s4" class="toc-link">四、CVM服务器</a></li>
+        <li class="toc-item"><a href="#s5" class="toc-link">五、数据库服务</a></li>
+        <li class="toc-item"><a href="#s6" class="toc-link">六、费用优化</a></li>
+        <li class="toc-item"><a href="#s7" class="toc-link">七、常见问题</a></li>
+      </ul>
+    </aside>
+
+    <main>
+      <header>
+        <div class="phase-label">06 / 云服务</div>
+        <h1>腾讯云</h1>
+        <p class="subtitle">国内OPC首选云服务。稳定、高性价比、备案便捷。覆盖域名注册、服务器部署、数据库、CDN等全链路。本教程聚焦OPC常用的核心功能。</p>
+        <div class="node-meta">最后修订：2026年5月14日 · 官方：cloud.tencent.com</div>
+      </header>
+
+      <section id="s1">
+        <div class="section-label">一、为什么选腾讯云</div>
+        <h2>国内OPC云服务选择</h2>
+        <p>国内做网站/应用，服务器必须在国内。这是工信部规定，不存在"技术绕过"。因此阿里云和腾讯云是唯二选择。</p>
+
+        <h3>腾讯云 vs 阿里云</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>维度</th><th>腾讯云</th><th>阿里云</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>价格</td><td>新客首年低至¥30/年起</td><td>新客首年¥36/年起</td></tr>
+              <tr><td>备案体验</td><td>备案系统较流畅，APP备案便捷</td><td>备案严格，流程较长</td></tr>
+              <tr><td>海外接入</td><td>国际版节点多，海外用户访问好</td><td>海外节点相对少</td></tr>
+              <tr><td>微信生态</td><td>与微信深度集成，微信支付商户号申请便捷</td><td>无原生微信集成</td></tr>
+              <tr><td>文档质量</td><td>中文文档完善，社区活跃</td><td>中文文档完善</td></tr>
+              <tr><td>学生优惠</td><td>学生认证后¥1/月即可用CVM</td><td>学生优惠类似</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="decision-box">
+          <p><strong>OPC建议：</strong>如果你的项目涉及微信生态（小程序、公众号、微信支付），选<strong>腾讯云</strong>。如果面向纯海外用户，选<strong>阿里云国际版</strong>。两者价格差异不大。</p>
+        </div>
+      </section>
+
+      <section id="s2">
+        <div class="section-label">二、核心产品</div>
+        <h2>OPC常用的腾讯云产品</h2>
+
+        <h3>必选产品</h3>
+        <div class="tool-grid">
+          <div class="tool-card">
+            <h4>域名注册 <span class="badge badge-recommend">必选</span></h4>
+            <p><strong>用途：</strong>网站唯一地址，如 opcone.cn</p>
+            <p><strong>价格：</strong>首年¥1（.cn域名，部分促销），续费¥35/年</p>
+            <p><strong>购买渠道：</strong>腾讯云域名注册</p>
+            <p><strong>注意：</strong>需要实名认证（个人可绑身份证）</p>
+          </div>
+
+          <div class="tool-card">
+            <h4>云服务器 CVM <span class="badge badge-recommend">必选</span></h4>
+            <p><strong>用途：</strong>部署网站后端、数据库、应用服务</p>
+            <p><strong>价格：</strong>¥30/月起（1核1G入门款）</p>
+            <p><strong>替代方案：</strong>如果只是静态网站，可用轻量应用服务器（¥24/月），更高性价比</p>
+          </div>
+
+          <div class="tool-card">
+            <h4>ICP备案 <span class="badge badge-recommend">必选</span></h4>
+            <p><strong>用途：</strong>国内服务器上线必须，否则会被封禁</p>
+            <p><strong>时间：</strong>约2-3周（腾讯云代备案）</p>
+            <p><strong>材料：</strong>身份证、网站真实性核验单、域名证书</p>
+          </div>
+
+          <div class="tool-card">
+            <h4>SSL证书 <span class="badge badge-recommend">必选</span></h4>
+            <p><strong>用途：</strong>HTTPS加密，浏览器显示"安全"标识</p>
+            <p><strong>价格：</strong>腾讯云有免费版（TrustAsia DV）</p>
+            <p><strong>替代：</strong>Let's Encrypt免费证书（需手动续期）</p>
+          </div>
+        </div>
+
+        <h3>可选产品</h3>
+        <div class="tool-grid">
+          <div class="tool-card">
+            <h4>内容分发网络 CDN</h4>
+            <p><strong>用途：</strong>加速全国用户访问，降低服务器压力</p>
+            <p><strong>价格：</strong>按流量计费，约¥0.21/GB</p>
+            <p><strong>建议：</strong>用户分布全国时再考虑</p>
+          </div>
+
+          <div class="tool-card">
+            <h4>云数据库 MySQL</h4>
+            <p><strong>用途：</strong>替代自建MySQL，省去运维工作</p>
+            <p><strong>价格：</strong>¥15/月起（入门款）</p>
+            <p><strong>注意：</strong>OPC阶段可用轻量应用服务器自带MySQL</p>
+          </div>
+
+          <div class="tool-card">
+            <h4>对象存储 COS</h4>
+            <p><strong>用途：</strong>存储图片、视频、文件</p>
+            <p><strong>价格：</strong>¥0.118/GB/月（标准存储）</p>
+            <p><strong>建议：</strong>需要存储用户上传文件时使用</p>
+          </div>
+
+          <div class="tool-card">
+            <h4>云监控</h4>
+            <p><strong>用途：</strong>监控服务器CPU、内存、网络</p>
+            <p><strong>价格：</strong>免费</p>
+            <p><strong>建议：</strong>必开，及时发现异常</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="s3">
+        <div class="section-label">三、域名与备案</div>
+        <h2>域名全流程</h2>
+
+        <h3>第一步：域名注册</h3>
+        <ul class="check-list">
+          <li>访问 <strong>cloud.tencent.com/domain</strong></li>
+          <li>查询想要的域名（建议 .cn 或 .com）</li>
+          <li>选择年限（建议首次买1年，观察价格）</li>
+          <li>完成实名认证（个人：身份证，企业：营业执照）</li>
+        </ul>
+
+        <div class="problem-box">
+          <h4>域名推荐</h4>
+          <p><strong>国内项目：</strong>.cn（中国域名，辨识度高）</p>
+          <p><strong>国际项目：</strong>.com（全球通用）</p>
+          <p><strong>创意项目：</strong>.io（技术感）、.me（个人品牌）</p>
+          <p><strong>价格红线：</strong>不要买超过¥60/年的域名，溢价严重</p>
+        </div>
+
+        <h3>第二步：ICP备案</h3>
+        <p>如果服务器在大陆，必须进行ICP备案。这是国家规定，不备案的域名会被运营商封禁。</p>
+
+        <div class="path-block">
+          <div class="path-header">
+            <span class="path-number">流程</span>
+            <span class="path-title">备案步骤</span>
+          </div>
+          <p><strong>1. 前期准备：</strong>域名（完成实名）、服务器（购买时长≥3个月）、身份证</p>
+          <p><strong>2. 在腾讯云提交：</strong>登录备案控制台 → 开始备案</p>
+          <p><strong>3. 填写信息：</strong>网站信息、主体信息、服务内容</p>
+          <p><strong>4. 真实性核验：</strong>手机APP人脸识别 或 幕布拍照</p>
+          <p><strong>5. 管局审核：</strong>腾讯云初审（1-2天）→ 管局终审（7-20天）</p>
+          <p><strong>6. 备案成功：</strong>获得备案号，添加到网站底部</p>
+        </div>
+
+        <div class="quote-block">
+          <p><strong>备案冷知识：</strong>一个腾讯云账号可备案5个域名。如果有多个网站，可以共用一个备案主体（个人或公司）。</p>
+        </div>
+
+        <h3>第三步：域名解析</h3>
+        <div class="code-block">
+<span class="comment"># 在腾讯云控制台 → 域名服务 → DNS解析</span>
+<span class="comment"># 添加记录：</span>
+<span class="comment"># 记录类型    主机记录    记录值</span>
+<span class="comment"># A           @          服务器IP</span>
+<span class="comment"># A           www        服务器IP</span>
+<span class="comment"># CNAME       api        your-app.vercel.app</span>
+
+<span class="comment"># 生效时间：几分钟~24小时不等</span>
+        </div>
+      </section>
+
+      <section id="s4">
+        <div class="section-label">四、CVM服务器</div>
+        <h2>云服务器配置</h2>
+
+        <h3>OPC推荐配置</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>阶段</th><th>配置</th><th>价格/月</th><th>适用场景</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>验证期</td><td>1核1G轻量应用服务器</td><td>¥24</td><td>静态网站、小型API</td></tr>
+              <tr><td>MVP期</td><td>1核2G CVM</td><td>¥60</td><td>有数据库、简单动态网站</td></tr>
+              <tr><td>成长期</td><td>2核4G CVM</td><td>¥150</td><td>用户量破千、有负载需求</td></tr>
+              <tr><td>规模期</td><td>4核8G CVM + 负载均衡</td><td>¥500+</td><td>用户量破万</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>系统选择</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>系统</th><th>特点</th><th>推荐度</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Ubuntu 22.04 LTS</td><td>社区最活跃，文档最多，兼容性好</td><td>★★★★★</td></tr>
+              <tr><td>CentOS 7（即将停更）</td><td>老牌系统，但2024年停止维护</td><td>不推荐</td></tr>
+              <tr><td>TencentOS Server</td><td>腾讯自研，兼容RHEL，腾讯云深度优化</td><td>★★★</td></tr>
+              <tr><td>Windows Server</td><td>需要.NET环境才用</td><td>不推荐</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>连接服务器</h3>
+        <div class="code-block">
+<span class="comment"># macOS / Linux 使用 SSH</span>
+<span class="cmd">ssh</span> root@你的服务器IP
+
+<span class="comment"># Windows 推荐使用 XShell 或 PowerShell</span>
+<span class="cmd">ssh</span> root@你的服务器IP
+
+<span class="comment"># 首次登录需要输入密码（腾讯云控制台 → 实例 → 管理 → 设置密码）</span>
+
+<span class="comment"># 基本环境配置</span>
+<span class="cmd">apt update && apt upgrade -y</span>        <span class="comment"># 更新系统</span>
+<span class="cmd">apt install</span> -y nginx mysql-server   <span class="comment"># 安装Nginx + MySQL</span>
+<span class="cmd">ufw allow 22/tcp</span>                      <span class="comment"># 开放SSH端口</span>
+<span class="cmd">ufw allow 80/tcp</span>                      <span class="comment"># 开放HTTP</span>
+<span class="cmd">ufw allow 443/tcp</span>                     <span class="comment"># 开放HTTPS</span>
+        </div>
+
+        <h3>安全组配置</h3>
+        <p>安全组是服务器防火墙。腾讯云默认只开放22端口（SSH）和3389端口（Windows）。</p>
+        <div class="code-block">
+<span class="comment"># 腾讯云控制台 → 安全组 → 入站规则</span>
+<span class="comment"># 必开端口：</span>
+<span class="comment"># 22   TCP  SSH远程连接</span>
+<span class="comment"># 80   TCP  HTTP网站</span>
+<span class="comment"># 443  TCP  HTTPS网站</span>
+<span class="comment"># 3306 TCP  MySQL（仅限特定IP访问，建议不开）</span>
+        </div>
+      </section>
+
+      <section id="s5">
+        <div class="section-label">五、数据库服务</div>
+        <h2>MySQL部署方案</h2>
+
+        <h3>方案对比</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>方案</th><th>价格/月</th><th>适用场景</th><th>运维工作</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>自建MySQL（轻量应用服务器）</td><td>¥0（共用服务器）</td><td>低流量、数据量小</td><td>需自己备份</td></tr>
+              <tr><td>云数据库MySQL基础版</td><td>¥15</td><td>MVP阶段</td><td>腾讯云托管</td></tr>
+              <tr><td>云数据库MySQL高可用版</td><td>¥88</td><td>生产环境</td><td>腾讯云托管</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>OPC推荐：轻量应用服务器 + 自建MySQL</h3>
+        <div class="code-block">
+<span class="comment"># 安装MySQL</span>
+<span class="cmd">apt install</span> mysql-server -y
+
+<span class="cmd">systemctl</span> enable mysql
+<span class="cmd">systemctl</span> start mysql
+
+<span class="comment"># 安全配置</span>
+<span class="cmd">mysql_secure_installation</span>
+
+<span class="comment"># 创建数据库和用户</span>
+<span class="cmd">mysql</span> -u root -p
+
+mysql> <span class="cmd">CREATE DATABASE</span> opcone CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+mysql> <span class="cmd">CREATE USER</span> 'opcone'@'localhost' IDENTIFIED BY '你的强密码';
+mysql> <span class="cmd">GRANT ALL PRIVILEGES ON</span> opcone.* TO 'opcone'@'localhost';
+mysql> <span class="cmd">FLUSH PRIVILEGES;</span>
+        </div>
+
+        <h3>数据备份</h3>
+        <div class="code-block">
+<span class="comment"># 手动备份</span>
+<span class="cmd">mysqldump</span> -u opcone -p opcone > backup_$(date +%Y%m%d).sql
+
+<span class="comment"># 自动备份脚本（每天凌晨3点执行）</span>
+<span class="cmd">0</span> 3 * * * /path/to/backup.sh >> /var/log/mysql_backup.log 2>&1
+        </div>
+      </section>
+
+      <section id="s6">
+        <div class="section-label">六、费用优化</div>
+        <h2>控制云成本</h2>
+
+        <div class="decision-box">
+          <p><strong>OPC云服务月成本红线：</strong>验证期¥30以内，MVP期¥100以内，成长期¥300以内。超过这个数，说明配置选型有问题。</p>
+        </div>
+
+        <h3>省钱策略</h3>
+        <div class="tool-grid">
+          <div class="tool-card">
+            <h4>策略一：选对时机</h4>
+            <p>腾讯云常年有促销活动（618、双11、年中惠）。新客首年价格是原价的2-3折。趁促销买2-3年，锁定低价。</p>
+          </div>
+          <div class="tool-card">
+            <h4>策略二：按需升级</h4>
+            <p>不要一开始就买高配。从最低配置开始，等用户量上来再升级。腾讯云支持热升级，不影响服务。</p>
+          </div>
+          <div class="tool-card">
+            <h4>策略三：用免费服务</h4>
+            <p>SSL证书用免费的，监控用免费的，CDN前期不需要。每一项收费服务都要问"现在真的需要吗？"</p>
+          </div>
+          <div class="tool-card">
+            <h4>策略四：学生优惠</h4>
+            <p>25岁以下可直接享受学生优惠：¥1/月用CVM。需要学生认证，适合在校创业者。</p>
+          </div>
+        </div>
+
+        <h3>费用监控</h3>
+        <div class="code-block">
+<span class="comment"># 在腾讯云控制台设置预算警报</span>
+<span class="comment"># 费用中心 → 费用预警 → 设置月度预算</span>
+<span class="comment"># 建议设置两个预警阈值：</span>
+<span class="comment"># 预警线1：月度预算的80%</span>
+<span class="comment"># 预警线2：月度预算的100%</span>
+        </div>
+      </section>
+
+      <section id="s7">
+        <div class="section-label">七、常见问题</div>
+        <h2>FAQ</h2>
+
+        <h3>Q: 腾讯云和阿里云哪个更便宜？</h3>
+        <p><strong>A:</strong> 两者价格差异不大，日常促销价基本一致。腾讯云的优势在于与微信生态的深度集成。如果不做微信相关开发，选便宜的即可。</p>
+
+        <h3>Q: 必须备案吗？</h3>
+        <p><strong>A:</strong> 如果服务器在大陆且使用域名，必须备案。不备案的域名会被运营商封禁（DNS解析层面）。如果不想备案，可以选择香港/海外服务器，但国内用户访问速度会慢。</p>
+
+        <h3>Q: 服务器被攻击了怎么办？</h3>
+        <p><strong>A:</strong> 立即打开云防火墙，限制来源IP。腾讯云提供免费DDoS防护（基础版）。如果是CC攻击，可能需要购买高防IP。日常做好：SSH禁用密码登录、使用强密码、开启云监控。</p>
+
+        <h3>Q: 数据丢了怎么办？</h3>
+        <p><strong>A:</strong> 永远假设数据会丢。必须做：1）MySQL定期自动备份；2）备份文件上传到COS（对象存储）；3）重要代码提交到GitHub。腾讯云也有数据库备份功能，可以开启自动备份。</p>
+
+        <h3>Q: 服务器卡顿了怎么办？</h3>
+        <p><strong>A:</strong> 首先用云监控查看CPU/内存/带宽占用。如果只是内存不足，可能需要重启服务或升级配置。CPU长期100%说明代码有性能问题，需要优化。带宽跑满可以考虑加CDN。</p>
+
+        <h3>Q: 域名转移需要收费吗？</h3>
+        <p><strong>A:</strong> 域名转出免费，但转入可能需要续费一年（各注册商政策不同）。腾讯云域名转出到其他平台，通常15天内完成。</p>
+
+        <div class="summary-box">
+          <h3>快速开始 Checklist</h3>
+          <ul class="step-list">
+            <li>注册腾讯云账号，完成实名认证</li>
+            <li>购买域名（.cn 或 .com）</li>
+            <li>购买轻量应用服务器（¥24/月起）</li>
+            <li>在控制台配置安全组（开放22/80/443端口）</li>
+            <li>连接服务器，配置Nginx</li>
+            <li>安装MySQL，创建数据库</li>
+            <li>提交ICP备案</li>
+            <li>申请SSL证书，配置HTTPS</li>
+            <li>部署代码，测试上线</li>
+          </ul>
+          <div class="quote-block" style="margin-top: 2rem;">
+            <p><strong>记住：</strong>腾讯云是OPC在国内的"地基"。选好配置、做好备案、控制好成本，后面的开发工作才能顺利开展。</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <nav class="footer-nav">
+    <a href="/nodes/06-ai-dev-tools/openrouter/index.html" class="nav-link">
+      <span>←</span> 06：OpenRouter教程
+    </a>
+    <a href="/nodes/06-ai-dev-tools/clash/index.html" class="nav-link">
+      07：Clash教程 <span>→</span>
+    </a>
+  </nav>
+
+<script>
+document.querySelectorAll('.toc-link').forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    const targetId = this.getAttribute('href').slice(1);
+    const target = document.getElementById(targetId);
+    if (target) {
+      const offsetTop = target.offsetTop - 80;
+      window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+    }
+  });
+});
+
+const sections = document.querySelectorAll('section[id]');
+const tocLinks = document.querySelectorAll('.toc-link');
+
+function updateActiveLink() {
+  const scrollPos = window.scrollY + 120;
+  sections.forEach(section => {
+    const top = section.offsetTop;
+    const height = section.offsetHeight;
+    const id = section.getAttribute('id');
+    if (scrollPos >= top && scrollPos < top + height) {
+      tocLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${id}`) {
+          link.classList.add('active');
+        }
+      });
+    }
+  });
+}
+
+window.addEventListener('scroll', updateActiveLink, { passive: true });
+updateActiveLink();
+</script>
+</body>
+</html>

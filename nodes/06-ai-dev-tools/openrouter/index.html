@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="OpenRouter 完整教程 - 2026年AI模型聚合平台，一站式访问100+大模型，支持Claude/GPT/Gemini/国产模型">
+  <meta name="theme-color" content="#111110">
+  <title>OpenRouter 教程 - OPC节点百科</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #7A7670;
+  --text-tertiary: #4A4744;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3rem);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
+}
+
+.sidebar-toc {
+  position: sticky;
+  top: 5rem;
+  height: fit-content;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.sidebar-toc::-webkit-scrollbar { width: 4px; }
+.sidebar-toc::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+.toc-title {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.toc-list { list-style: none; }
+.toc-item { margin-bottom: 0.75rem; }
+
+.toc-link {
+  cursor: pointer;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: block;
+  padding: 0.75rem 0.5rem;
+  padding-left: 1rem;
+  border-left: 1px solid var(--line);
+  transition: all 0.3s;
+  line-height: 1.4;
+}
+
+.toc-link:hover { color: var(--text-primary); border-left-color: var(--accent); }
+.toc-link.active { color: var(--accent); border-left-color: var(--accent); font-weight: 400; }
+
+.fixed-top-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0; z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+.back-link {
+  cursor: pointer;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
+}
+
+.back-link:hover { color: var(--text-primary); }
+
+.node-id {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar-toc { display: none; }
+  .fixed-top-nav { padding: 0.75rem clamp(1rem, 4vw, 1.5rem); }
+}
+
+header {
+  padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(2rem, 5vh, 3rem);
+}
+
+main { padding-bottom: 5rem; }
+section { scroll-margin-top: 2rem; }
+
+.phase-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+h1 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xl);
+}
+
+.subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 44ch;
+  line-height: 1.8;
+}
+
+.node-meta {
+  margin-top: 2rem;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+}
+
+section { padding-bottom: clamp(3rem, 10vh, 5rem); border-bottom: 1px solid var(--line); margin-bottom: clamp(3rem, 10vh, 5rem); }
+section:last-of-type { border-bottom: none; }
+
+.section-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.375rem, 4vw, 1.875rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+h3 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.125rem, 3vw, 1.375rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+p { color: var(--text-secondary); line-height: 1.9; margin-bottom: 1.25rem; }
+
+.decision-box {
+  background: var(--surface);
+  border-left: 2px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.decision-box p { color: var(--text-primary); font-size: 0.9375rem; margin: 0; }
+
+.table-wrapper { overflow-x: auto; margin: 2rem 0; -webkit-overflow-scrolling: touch; }
+table { width: 100%; min-width: 560px; border-collapse: collapse; font-size: 0.875rem; }
+
+th {
+  text-align: left;
+  font-weight: 400;
+  font-size: 0.6875rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+td { padding: 1rem; border-bottom: 1px solid var(--line); color: var(--text-secondary); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+td:first-child { color: var(--text-primary); font-weight: 400; }
+
+.tool-grid { display: grid; gap: 1.5rem; margin: 2rem 0; }
+.tool-card { background: var(--surface); padding: 1.75rem; border: 1px solid var(--line); }
+
+.tool-card h4 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.tool-card .tagline { font-size: 0.8125rem; color: var(--text-tertiary); margin-bottom: 1.25rem; }
+.tool-card p { font-size: 0.875rem; line-height: 1.8; margin-bottom: 0.75rem; }
+
+.code-block {
+  background: var(--bg);
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+
+.cmd { color: var(--accent); }
+.comment { color: var(--text-tertiary); }
+
+.quote-block {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+}
+
+.quote-block p { font-size: 1rem; color: var(--text-primary); line-height: 1.8; }
+
+.path-block { background: var(--surface); padding: 2rem; margin: 2rem 0; border: 1px solid var(--line); }
+.path-header { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1.25rem; }
+.path-number { font-family: 'Noto Serif JP', serif; font-size: 0.75rem; color: var(--accent); letter-spacing: 0.1em; }
+.path-title { font-family: 'Noto Serif JP', serif; font-size: 1.25rem; font-weight: 400; color: var(--text-primary); }
+.path-block p { font-size: 0.875rem; margin-bottom: 0.75rem; }
+
+.summary-box { background: var(--surface); padding: 2rem; margin-top: 3rem; border: 1px solid var(--line); }
+.summary-box h3 { margin-top: 0; margin-bottom: 1.25rem; }
+
+.step-list { list-style: none; counter-reset: steps; }
+.step-list li { counter-increment: steps; display: flex; gap: 1rem; margin-bottom: 1rem; font-size: 0.875rem; color: var(--text-secondary); }
+.step-list li::before { content: counter(steps); font-family: 'Noto Serif JP', serif; font-size: 0.75rem; color: var(--accent); flex-shrink: 0; width: 1.5rem; padding-top: 0.25rem; }
+
+.footer-nav {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.9);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
+}
+
+.nav-link {
+  cursor: pointer;
+  font-size: 0.75rem; color: var(--text-tertiary); text-decoration: none;
+  letter-spacing: 0.08em; display: flex; align-items: center;
+  gap: 0.5rem; transition: color 0.3s;
+}
+
+.nav-link:hover { color: var(--text-primary); }
+.nav-link.disabled { opacity: 0.3; pointer-events: none; }
+
+.price-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.25rem 0.75rem;
+  margin-top: 1rem;
+}
+
+.check-list { list-style: none; margin: 1rem 0; }
+.check-list li { font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative; }
+.check-list li::before { content: '✓'; position: absolute; left: 0; color: var(--accent); font-weight: 600; }
+
+.problem-box {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 1.5rem 2rem;
+  margin: 1.5rem 0;
+}
+
+.problem-box h4 { font-size: 0.875rem; font-weight: 400; color: var(--text-primary); margin-bottom: 0.75rem; }
+.problem-box p { font-size: 0.8125rem; margin: 0; }
+
+.badge {
+  display: inline-block;
+  font-size: 0.625rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 2px;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
+.badge-hot { background: var(--accent); color: var(--text-primary); }
+.badge-new { background: #2A2A28; color: var(--text-secondary); }
+.badge-free { background: #1A3D1A; color: #6FCF6F; }
+  </style>
+</head>
+<body>
+  <nav class="fixed-top-nav">
+    <a href="/nodes/06-tech-selection/index.html" class="back-link">← 技术选型</a>
+    <span class="node-id">06 / 工具教程</span>
+  </nav>
+
+  <div class="layout">
+    <aside class="sidebar-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#s1" class="toc-link">一、核心定位</a></li>
+        <li class="toc-item"><a href="#s2" class="toc-link">二、模型矩阵</a></li>
+        <li class="toc-item"><a href="#s3" class="toc-link">三、接入配置</a></li>
+        <li class="toc-item"><a href="#s4" class="toc-link">四、定价与成本</a></li>
+        <li class="toc-item"><a href="#s5" class="toc-link">五、API使用</a></li>
+        <li class="toc-item"><a href="#s6" class="toc-link">六、国产模型</a></li>
+        <li class="toc-item"><a href="#s7" class="toc-link">七、实战案例</a></li>
+        <li class="toc-item"><a href="#s8" class="toc-link">八、常见问题</a></li>
+      </ul>
+    </aside>
+
+    <main>
+      <header>
+        <div class="phase-label">06 / AI开发工具</div>
+        <h1>OpenRouter</h1>
+        <p class="subtitle">AI模型的聚合平台，一站式访问100+大模型API。支持Claude、GPT-4o、Gemini、国产模型（DeepSeek、Qwen等）。统一接口，按量计费。</p>
+        <div class="node-meta">最后修订：2026年5月14日 · 官方：openrouter.ai</div>
+      </header>
+
+      <section id="s1">
+        <div class="section-label">一、核心定位</div>
+        <h2>为什么需要OpenRouter</h2>
+        <p>2026年AI模型市场碎片化严重。OpenAI、Anthropic、Google、国内阿里百度字节……每个平台有自己的API、定价、限流规则。OPC如果需要切换模型，逐一对接每个平台会消耗大量时间。</p>
+
+        <div class="tool-grid">
+          <div class="tool-card">
+            <h4>OpenRouter的核心价值</h4>
+            <p><strong>统一接口：</strong>无论接入多少模型，API格式完全一致。一个base URL + 一个key，切换模型只需改参数。</p>
+            <p><strong>模型聚合：</strong>100+模型，包括Claude 3.7、GPT-4o、Gemini 2.0、DeepSeek V3、Qwen 2.5等。</p>
+            <p><strong>透明定价：</strong>明码标价，平台不赚差价（官方价格+少量服务费）。</p>
+            <p><strong>路由优化：</strong>自动选择性价比最高的模型，支持"用最便宜模型达到同样效果"的策略。</p>
+          </div>
+        </div>
+
+        <h3>OpenRouter vs 直连官方</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>对比维度</th><th>OpenRouter</th><th>直连官方</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>模型数量</td><td>100+</td><td>1个平台</td></tr>
+              <tr><td>API格式</td><td>统一（OpenAI兼容）</td><td>各平台独立</td></tr>
+              <tr><td>切换成本</td><td>改参数即可</td><td>需要改代码</td></tr>
+              <tr><td>价格</td><td>官方价+5-10%服务费</td><td>官方价</td></tr>
+              <tr><td>稳定性</td><td>多区域备份</td><td>依赖单平台</td></tr>
+              <tr><td>开票</td><td>支持</td><td>支持</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-block">
+          <p><strong>什么时候用OpenRouter：</strong>需要灵活切换模型、对比不同模型效果、同时使用国内外模型的OPC。单一模型深度使用直接找官方（更便宜）。</p>
+        </div>
+      </section>
+
+      <section id="s2">
+        <div class="section-label">二、模型矩阵</div>
+        <h2>支持的主要模型</h2>
+
+        <h3>海外旗舰模型</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>模型</th><th>机构</th><th>上下文</th><th>输入$/1M</th><th>输出$/1M</th><th>适用场景</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>claude-3.7-sonnet <span class="badge badge-hot">热门</span></td>
+                <td>Anthropic</td>
+                <td>200K</td>
+                <td>$3</td>
+                <td>$15</td>
+                <td>复杂推理、代码生成</td>
+              </tr>
+              <tr>
+                <td>claude-3.5-sonnet</td>
+                <td>Anthropic</td>
+                <td>200K</td>
+                <td>$3</td>
+                <td>$15</td>
+                <td>日常开发首选</td>
+              </tr>
+              <tr>
+                <td>gpt-4o</td>
+                <td>OpenAI</td>
+                <td>128K</td>
+                <td>$2.5</td>
+                <td>$10</td>
+                <td>多模态、文档理解</td>
+              </tr>
+              <tr>
+                <td>gpt-4o-mini</td>
+                <td>OpenAI</td>
+                <td>128K</td>
+                <td>$0.15</td>
+                <td>$0.6</td>
+                <td>低成本日常任务</td>
+              </tr>
+              <tr>
+                <td>gemini-2.0-flash</td>
+                <td>Google</td>
+                <td>1M</td>
+                <td>$0</td>
+                <td>$0</td>
+                <td>免费额度大</td>
+              </tr>
+              <tr>
+                <td>gemini-pro-1.5</td>
+                <td>Google</td>
+                <td>2M</td>
+                <td>$1.25</td>
+                <td>$5</td>
+                <td>超长上下文</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>国产模型（重点）</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>模型</th><th>机构</th><th>上下文</th><th>输入$/1M</th><th>输出$/1M</th><th>国内可用</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>deepseek-chat <span class="badge badge-hot">热门</span></td>
+                <td>深度求索</td>
+                <td>64K</td>
+                <td>$0.14</td>
+                <td>$0.28</td>
+                <td>✓ 直连流畅</td>
+              </tr>
+              <tr>
+                <td>deepseek-coder</td>
+                <td>深度求索</td>
+                <td>64K</td>
+                <td>$0.14</td>
+                <td>$0.28</td>
+                <td>✓ 编码专项</td>
+              </tr>
+              <tr>
+                <td>qwen-2.5-72b-instruct</td>
+                <td>阿里云</td>
+                <td>32K</td>
+                <td>$0.5</td>
+                <td>$1</td>
+                <td>✓ 中文优化</td>
+              </tr>
+              <tr>
+                <td>qwen-2.5-coder-32b</td>
+                <td>阿里云</td>
+                <td>32K</td>
+                <td>$0.24</td>
+                <td>$0.96</td>
+                <td>✓ 编码+中文</td>
+              </tr>
+              <tr>
+                <td>minimax-text-01</td>
+                <td>MiniMax</td>
+                <td>100K</td>
+                <td>$0</td>
+                <td>$0</td>
+                <td>✓ 免费使用</td>
+              </tr>
+              <tr>
+                <td>moonshot-v1-32k</td>
+                <td>月之暗面</td>
+                <td>32K</td>
+                <td>$0.12</td>
+                <td>$0.12</td>
+                <td>✓ Kimi同款</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="decision-box">
+          <p><strong>OPC推荐组合：</strong>Claude 3.7 Sonnet（复杂任务）+ DeepSeek V3（日常任务/省钱）+ Qwen 2.5（中文场景）。三剑客覆盖95%场景。</p>
+        </div>
+      </section>
+
+      <section id="s3">
+        <div class="section-label">三、接入配置</div>
+        <h2>快速开始</h2>
+
+        <h3>注册与充值</h3>
+        <ul class="check-list">
+          <li>访问 <a href="https://openrouter.ai" style="color: var(--text-primary);">openrouter.ai</a>，使用Google/GitHub账号登录</li>
+          <li>进入Credit购买页面，支持支付宝</li>
+          <li>最小充值$5，建议首次充值$20测试</li>
+          <li>获取API Key（个人设置 → API Keys）</li>
+        </ul>
+
+        <h3>API Key配置</h3>
+        <div class="code-block">
+<span class="comment"># 环境变量配置</span>
+<span class="cmd">export</span> OPENROUTER_API_KEY=sk-or-v1-xxxxx
+
+<span class="comment"># 如果代码需要OpenAI兼容格式</span>
+<span class="cmd">export</span> OPENAI_API_KEY=$OPENROUTER_API_KEY
+<span class="cmd">export</span> OPENAI_API_BASE=https://openrouter.ai/api/v1
+        </div>
+
+        <h3>模型列表查询</h3>
+        <div class="code-block">
+<span class="comment"># 查看所有可用模型</span>
+<span class="cmd">curl</span> https://openrouter.ai/api/v1/models \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY"
+
+<span class="comment"># 返回JSON包含所有模型ID、定价、上下文长度</span>
+        </div>
+
+        <h3>SDK接入</h3>
+        <div class="code-block">
+<span class="comment"># Node.js (使用 OpenAI SDK)</span>
+<span class="cmd">npm install</span> openai
+
+<span class="comment"># JavaScript</span>
+<span class="cmd">const</span> OpenAI = require('openai');
+
+<span class="cmd">const</span> client = <span class="cmd">new</span> OpenAI({
+  apiKey: process.env.OPENROUTER_API_KEY,
+  baseURL: 'https://openrouter.ai/api/v1'
+});
+
+<span class="comment">// 调用Claude</span>
+<span class="cmd">const</span> response = <span class="cmd">await</span> client.chat.completions.create({
+  model: 'anthropic/claude-3.7-sonnet',
+  messages: [{ role: 'user', content: 'Hello' }]
+});
+
+<span class="comment">// 切换到DeepSeek（只需改model参数）</span>
+<span class="cmd">const</span> response2 = <span class="cmd">await</span> client.chat.completions.create({
+  model: 'deepseek/deepseek-chat-v3-0324',
+  messages: [{ role: 'user', content: '你好' }]
+});
+        </div>
+
+        <div class="problem-box">
+          <h4>Python接入</h4>
+          <div class="code-block">
+<span class="cmd">pip install</span> openai
+
+<span class="comment"># Python</span>
+<span class="cmd">from</span> openai <span class="cmd">import</span> OpenAI
+
+client = OpenAI(
+    api_key=os.getenv("OPENROUTER_API_KEY"),
+    base_url="https://openrouter.ai/api/v1"
+)
+
+response = client.chat.completions.create(
+    model="deepseek/deepseek-chat-v3-0324",
+    messages=[{"role": "user", "content": "用Python写一个快速排序"}]
+)
+print(response.choices[0].message.content)
+          </div>
+        </div>
+      </section>
+
+      <section id="s4">
+        <div class="section-label">四、定价与成本</div>
+        <h2>费用结构</h2>
+
+        <h3>价格透明</h3>
+        <p>OpenRouter价格 = 官方价格 + 5-10%服务费。所有价格在其网站明码标价，无隐藏费用。</p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>模型</th><th>官方输入</th><th>OpenRouter输入</th><th>溢价</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Claude 3.7 Sonnet</td><td>$3/M</td><td>$3.50/M</td><td>+17%</td></tr>
+              <tr><td>GPT-4o</td><td>$2.50/M</td><td>$2.75/M</td><td>+10%</td></tr>
+              <tr><td>DeepSeek V3</td><td>$0.14/M</td><td>$0.15/M</td><td>+7%</td></tr>
+              <tr><td>Gemini 2.0 Flash</td><td>免费</td><td>免费</td><td>0</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>成本优化策略</h3>
+        <div class="tool-grid">
+          <div class="tool-card">
+            <h4>策略一：模型分级</h4>
+            <p>简单任务（闲聊、格式转换）→ DeepSeek/Qwen（$0.15/M）</p>
+            <p>中等任务（代码补全、翻译）→ GPT-4o-mini（$0.15/M）</p>
+            <p>复杂任务（复杂推理、重构）→ Claude 3.7（$3.50/M）</p>
+          </div>
+          <div class="tool-card">
+            <h4>策略二：使用路由</h4>
+            <p>OpenRouter提供自动路由功能，让平台自动选择"最便宜的能达到同等效果的模型"。</p>
+            <p>配置方式：在model参数填入<code>openrouter/auto</code></p>
+          </div>
+        </div>
+
+        <h3>用量监控</h3>
+        <div class="code-block">
+<span class="comment"># 查看当前账户余额和用量</span>
+<span class="cmd">curl</span> https://openrouter.ai/api/v1/auth/key \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY"
+
+<span class="comment"># 返回示例</span>
+{
+  "data": {
+    "id": "sk-or-v1-xxxxx",
+    "label": "default",
+    "usage": 123456789,
+    "limit": null,
+    "created_at": "2024-01-01T00:00:00Z"
+  }
+}
+
+<span class="comment"># usage单位是nanodollar，$1 = 1,000,000,000</span>
+<span class="comment"># 当前用量 = 123456789 / 1e9 = $0.123</span>
+        </div>
+
+        <div class="quote-block">
+          <p><strong>OPC成本红线：</strong>AI模型月成本应控制在¥200以内。DeepSeek/Qwen作为主力模型（$0.15/M），1美元可以处理约660万token中文文本，足够一个月的高频使用。</p>
+        </div>
+      </section>
+
+      <section id="s5">
+        <div class="section-label">五、API使用</div>
+        <h2>进阶功能</h2>
+
+        <h3>指定模型参数</h3>
+        <div class="code-block">
+<span class="comment"># 完整参数示例</span>
+<span class="cmd">const</span> response = <span class="cmd">await</span> client.chat.completions.create({
+  model: 'anthropic/claude-3.7-sonnet',
+  messages: [
+    { role: 'system', content: '你是一个专业的产品经理' },
+    { role: 'user', content: '帮我写一个用户注册的功能需求' }
+  ],
+  temperature: 0.7,          <span class="comment">// 创造性 0-2</span>
+  max_tokens: 2000,          <span class="comment">// 最大输出token</span>
+  top_p: 1,                  <span class="comment">// 核采样</span>
+  frequency_penalty: 0,      <span class="comment">// 频率惩罚</span>
+  presence_penalty: 0,        <span class="comment">// 存在惩罚</span>
+  stop: null,                <span class="comment">// 停止词</span>
+});
+        </div>
+
+        <h3>使用Prompt模板</h3>
+        <div class="code-block">
+<span class="comment"># OpenRouter支持自定义Prompt模板（社区功能）</span>
+<span class="comment"># 格式：owner/prompt-name</span>
+
+<span class="cmd">const</span> response = <span class="cmd">await</span> client.chat.completions.create({
+  model: 'anthropic/claude-3.7-sonnet',
+  messages: [{ role: 'user', content: '写一个注册功能' }],
+  extra_body: {
+    prompt: {
+      template: '你是一个经验丰富的后端工程师，擅长{language}，遵循{style}风格'
+    }
+  }
+});
+        </div>
+
+        <h3>获取使用统计</h3>
+        <div class="code-block">
+<span class="comment"># 查看每日用量</span>
+<span class="cmd">curl</span> 'https://openrouter.ai/api/v1/usage' \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY"
+
+<span class="comment"># 返回</span>
+{
+  "data": [
+    {
+      "date": "2026-05-14",
+      "total_cost": 1234567,
+      "requests": 156,
+      "tokens": {
+        "input": 123456,
+        "output": 78901
+      }
+    }
+  ]
+}
+        </div>
+      </section>
+
+      <section id="s6">
+        <div class="section-label">六、国产模型</div>
+        <h2>国内模型专项</h2>
+
+        <div class="decision-box">
+          <p><strong>国内OPC的独特优势：</strong>可以使用国产大模型（DeepSeek、Qwen、MiniMax），这些模型对中文理解好、价格低、国内直连稳定。建议作为主力模型使用。</p>
+        </div>
+
+        <h3>DeepSeek V3（强烈推荐）</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>维度</th><th>参数</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>模型ID</td><td><code>deepseek/deepseek-chat-v3-0324</code></td></tr>
+              <tr><td>上下文</td><td>64K</td></tr>
+              <tr><td>价格</td><td>$0.14/M输入，$0.28/M输出</td></tr>
+              <tr><td>优势</td><td>数学、代码、中文理解强</td></tr>
+              <tr><td>国内访问</td><td>✓ 直连稳定</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Qwen 2.5（阿里系）</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>模型ID</th><th>特点</th><th>价格</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>qwen/qwen-2.5-72b-instruct</code></td><td>中文优化、指令跟随好</td><td>$0.50/M</td></tr>
+              <tr><td><code>qwen/qwen-2.5-coder-32b</code></td><td>代码+中文双强</td><td>$0.24/M</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>MiniMax（免费额度大）</h3>
+        <div class="tool-card">
+          <h4>moonshot-v1-32k</h4>
+          <p><strong>月之暗面出品</strong>，Kimi同款模型。OpenRouter上免费使用，适合轻量任务。</p>
+          <p><strong>使用方式：</strong>model填入<code>moonshot moonshot-v1-32k</code></p>
+        </div>
+
+        <div class="path-block">
+          <div class="path-header">
+            <span class="path-number">国产模型</span>
+            <span class="path-title">使用建议</span>
+          </div>
+          <p><strong>日常任务：</strong>DeepSeek V3（性价比最高）</p>
+          <p><strong>中文创作/写作：</strong>Qwen 2.5（阿里调教，中文韵味好）</p>
+          <p><strong>代码审查：</strong>DeepSeek Coder（专项优化）</p>
+          <p><strong>轻量闲聊：</strong>MiniMax（免费）</p>
+        </div>
+      </section>
+
+      <section id="s7">
+        <div class="section-label">七、实战案例</div>
+        <h2>OPC典型场景</h2>
+
+        <div class="path-block">
+          <div class="path-header">
+            <span class="path-number">案例一</span>
+            <span class="path-title">Claude Code + OpenRouter</span>
+          </div>
+          <p><strong>场景：</strong>配置Claude Code使用OpenRouter作为API来源，而非直接用Anthropic API。</p>
+          <div class="code-block">
+<span class="comment"># 设置环境变量</span>
+<span class="cmd">export</span> ANTHROPIC_API_KEY=$OPENROUTER_API_KEY
+<span class="cmd">export</span> ANTHROPIC_API_BASE=https://openrouter.ai/api/v1
+
+<span class="comment"># 注意：需要使用支持OpenAI兼容格式的Claude Code分支</span>
+<span class="comment"># 或者使用第三方Claude Code（如 claude-code-openrouter）</span>
+          </div>
+        </div>
+
+        <div class="path-block">
+          <div class="path-header">
+            <span class="path-number">案例二</span>
+            <span class="path-title">模型对比实验</span>
+          </div>
+          <p><strong>场景：</strong>用同一个Prompt测试不同模型效果，选择最优。</p>
+          <div class="code-block">
+<span class="comment"># 测试脚本 test-models.js</span>
+<span class="cmd">const</span> models = [
+  'anthropic/claude-3.7-sonnet',
+  'deepseek/deepseek-chat-v3-0324',
+  'qwen/qwen-2.5-72b-instruct'
+];
+
+<span class="cmd">const</span> prompt = '用一句话解释什么是OPC一人公司';
+
+<span class="cmd">for</span> (model <span class="cmd">of</span> models) {
+  <span class="cmd">const</span> response = <span class="cmd">await</span> client.chat.completions.create({
+    model,
+    messages: [{ role: 'user', content: prompt }]
+  });
+  console.log(`<span class="cmd">${</span>model}: <span class="cmd">${</span>response.choices[0].message.content}`);
+}
+          </div>
+        </div>
+
+        <div class="path-block">
+          <div class="path-header">
+            <span class="path-number">案例三</span>
+            <span class="path-title">成本监控脚本</span>
+          </div>
+          <p><strong>场景：</strong>每月自动统计各模型用量，控制成本。</p>
+          <div class="code-block">
+<span class="comment"># 获取每日用量</span>
+<span class="cmd">curl</span> 'https://openrouter.ai/api/v1/usage' \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" | \
+  jq '.data | map(select(.date | startswith("2026-05")))'
+
+<span class="comment"># 输出</span>
+<span class="comment">#[</span>
+<span class="comment">#  {</span>
+<span class="comment">#    "date": "2026-05-01",</span>
+<span class="comment">#    "total_cost": 123456,</span>
+<span class="comment">#    "requests": 45</span>
+<span class="comment">#  },</span>
+<span class="comment">#  ...</span>
+<span class="comment">#]</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="s8">
+        <div class="section-label">八、常见问题</div>
+        <h2>FAQ</h2>
+
+        <h3>Q: OpenRouter安全吗？API Key会不会被盗用？</h3>
+        <p><strong>A:</strong> OpenRouter是正规平台，采用与官方相同的安全标准。建议：只在服务端使用API Key（不要暴露在前端）、定期更换Key、在平台设置用量限制（Limit）。</p>
+
+        <h3>Q: 为什么通过OpenRouter比官方贵？</h3>
+        <p><strong>A:</strong> OpenRouter收取5-17%的服务费，用于覆盖信用卡手续费、多区域服务器成本、客户支持等。对于需要切换多模型的项目，这个溢价是值得的。</p>
+
+        <h3>Q: 国内访问OpenRouter稳定吗？</h3>
+        <p><strong>A:</strong> OpenRouter服务器主要在海外，国内访问不稳定。但其聚合的国产模型（DeepSeek、Qwen）可以通过国内节点访问。建议国内OPC使用VPN。</p>
+
+        <h3>Q: 如何设置用量限制防止超支？</h3>
+        <p><strong>A:</strong> 在OpenRouter Dashboard → API Keys → 设置limit（单位：美元/月）。当月用量达到限制后，API会返回错误。</p>
+
+        <h3>Q: 充值后多久到账？</h3>
+        <p><strong>A:</strong> 支付宝/微信支付通常秒到账。信用卡可能需要1-2分钟。</p>
+
+        <h3>Q: 可以开票报销吗？</h3>
+        <p><strong>A:</strong> OpenRouter支持企业发票（Invoice），可在Dashboard申请。发票抬头必须是公司名称。</p>
+
+        <h3>Q: DeepSeek和Qwen用哪个？</h3>
+        <p><strong>A:</strong> DeepSeek在代码和数学推理上更强；Qwen在中文内容创作上更自然。OPC建议：开发相关用DeepSeek，内容相关用Qwen。</p>
+
+        <div class="summary-box">
+          <h3>快速开始 Checklist</h3>
+          <ul class="step-list">
+            <li>注册 OpenRouter 账号</li>
+            <li>完成首次充值（建议$20）</li>
+            <li>获取 API Key</li>
+            <li>配置环境变量 OPENROUTER_API_KEY</li>
+            <li>安装 OpenAI SDK</li>
+            <li>发送第一个请求测试</li>
+            <li>设置月度用量限制</li>
+          </ul>
+          <div class="quote-block" style="margin-top: 2rem;">
+            <p><strong>记住：</strong>OpenRouter是OPC的"模型路由器"。一个接口，访问100+模型，按需切换，省去逐一对接的麻烦。</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <nav class="footer-nav">
+    <a href="/nodes/06-ai-dev-tools/claude-code/index.html" class="nav-link">
+      <span>←</span> 06：Claude Code教程
+    </a>
+    <a href="/nodes/06-ai-dev-tools/traefik/index.html" class="nav-link disabled">
+      07：腾讯云教程 <span>→</span>
+    </a>
+  </nav>
+
+<script>
+document.querySelectorAll('.toc-link').forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    const targetId = this.getAttribute('href').slice(1);
+    const target = document.getElementById(targetId);
+    if (target) {
+      const offsetTop = target.offsetTop - 80;
+      window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+    }
+  });
+});
+
+const sections = document.querySelectorAll('section[id]');
+const tocLinks = document.querySelectorAll('.toc-link');
+
+function updateActiveLink() {
+  const scrollPos = window.scrollY + 120;
+  sections.forEach(section => {
+    const top = section.offsetTop;
+    const height = section.offsetHeight;
+    const id = section.getAttribute('id');
+    if (scrollPos >= top && scrollPos < top + height) {
+      tocLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${id}`) {
+          link.classList.add('active');
+        }
+      });
+    }
+  });
+}
+
+window.addEventListener('scroll', updateActiveLink, { passive: true });
+updateActiveLink();
+</script>
+</body>
+</html>

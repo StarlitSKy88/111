@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="GitHub Copilot完整教程 - OPC节点百科配套教程。涵盖安装配置、核心功能、定价方案、快捷键、最佳实践、与Cursor/Claude Code对比等">
+  <meta name="theme-color" content="#111110">
+  <title>GitHub Copilot教程 - OPC节点百科</title>
+  <link rel="icon" data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #7A7670;
+  --text-tertiary: #4A4744;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3rem);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
+}
+
+.sidebar-toc {
+  position: sticky;
+  top: 5rem;
+  height: fit-content;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.sidebar-toc::-webkit-scrollbar { width: 4px; }
+.sidebar-toc::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+.toc-title {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.toc-list { list-style: none; }
+.toc-item { margin-bottom: 0.75rem; }
+
+.toc-link {
+  cursor: pointer;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: block;
+  padding: 0.75rem 0.5rem;
+  padding-left: 1rem;
+  border-left: 1px solid var(--line);
+  transition: all 0.3s;
+  line-height: 1.4;
+}
+
+.toc-link:hover { color: var(--text-primary); border-left-color: var(--accent); }
+.toc-link.active { color: var(--accent); border-left-color: var(--accent); font-weight: 400; }
+
+.fixed-top-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0; z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+.back-link {
+  cursor: pointer;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
+}
+
+.back-link:hover { color: var(--text-primary); }
+
+.node-id {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar-toc { display: none; }
+  .fixed-top-nav { padding: 0.75rem clamp(1rem, 4vw, 1.5rem); }
+}
+
+header {
+  padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(2rem, 5vh, 3rem);
+}
+
+main { padding-bottom: 5rem; }
+section { scroll-margin-top: 2rem; }
+
+.phase-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+h1 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xl);
+}
+
+.subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 44ch;
+  line-height: 1.8;
+}
+
+.node-meta {
+  margin-top: 2rem;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+}
+
+section { padding-bottom: clamp(3rem, 10vh, 5rem); border-bottom: 1px solid var(--line); margin-bottom: clamp(3rem, 10vh, 5rem); }
+section:last-of-type { border-bottom: none; }
+
+.section-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.375rem, 4vw, 1.875rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+h3 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.125rem, 3vw, 1.375rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+p { color: var(--text-secondary); line-height: 1.9; margin-bottom: 1.25rem; }
+
+.decision-box {
+  background: var(--surface);
+  border-left: 2px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.decision-box p { color: var(--text-primary); font-size: 0.9375rem; margin: 0; }
+
+.table-wrapper { overflow-x: auto; margin: 2rem 0; -webkit-overflow-scrolling: touch; }
+table { width: 100%; min-width: 560px; border-collapse: collapse; font-size: 0.875rem; }
+
+th {
+  text-align: left;
+  font-weight: 400;
+  font-size: 0.6875rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+td { padding: 1rem; border-bottom: 1px solid var(--line); color: var(--text-secondary); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+td:first-child { color: var(--text-primary); font-weight: 400; }
+
+.code-block {
+  background: var(--bg);
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+
+.quote-block {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+}
+
+.quote-block p { font-size: 1rem; color: var(--text-primary); line-height: 1.8; }
+
+.summary-box { background: var(--surface); padding: 2rem; margin-top: 3rem; border: 1px solid var(--line); }
+.summary-box h3 { margin-top: 0; margin-bottom: 1.25rem; }
+
+.step-list { list-style: none; counter-reset: steps; }
+.step-list li { counter-increment: steps; display: flex; gap: 1rem; margin-bottom: 1rem; font-size: 0.875rem; color: var(--text-secondary); }
+.step-list li::before { content: counter(steps); font-family: 'Noto Serif JP', serif; font-size: 0.75rem; color: var(--accent); flex-shrink: 0; width: 1.5rem; padding-top: 0.25rem; }
+
+.footer-nav {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.9);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
+}
+
+.nav-link {
+  cursor: pointer;
+  font-size: 0.75rem; color: var(--text-tertiary); text-decoration: none;
+  letter-spacing: 0.08em; display: flex; align-items: center;
+  gap: 0.5rem; transition: color 0.3s;
+}
+
+.nav-link:hover { color: var(--text-primary); }
+.nav-link.disabled { opacity: 0.3; pointer-events: none; }
+
+.price-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.25rem 0.75rem;
+  margin-top: 1rem;
+}
+
+.check-list { list-style: none; margin: 1rem 0; }
+.check-list li { font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative; }
+.check-list li::before { content: '✓'; position: absolute; left: 0; color: var(--accent); font-weight: 600; }
+
+.feature-grid {
+  display: grid;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.feature-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 1.75rem;
+}
+
+.feature-card h4 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.feature-card p {
+  font-size: 0.875rem;
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.feature-card .shortcut {
+  font-size: 0.75rem;
+  color: var(--accent);
+  margin-top: 1rem;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+
+.example-box {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.example-box h4 {
+  font-size: 0.8125rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.example-box p {
+  font-size: 0.875rem;
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.faq-item {
+  border-bottom: 1px solid var(--line);
+  padding: 1.5rem 0;
+}
+
+.faq-item:last-child { border-bottom: none; }
+
+.faq-question {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.faq-answer {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.kbd {
+  display: inline-block;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 0.125rem 0.5rem;
+  font-size: 0.75rem;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  color: var(--text-primary);
+  border-radius: 2px;
+}
+
+.pros-cons-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.pros-cons-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 1.5rem;
+}
+
+.pros-cons-card h4 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+
+.pros-cons-card ul {
+  list-style: none;
+}
+
+.pros-cons-card li {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  padding: 0.5rem 0;
+  padding-left: 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.pros-cons-card li:last-child { border-bottom: none; }
+.pros-cons-card li::before { content: '·'; color: var(--accent); margin-right: 0.5rem; }
+
+.ide-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.ide-item {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 1.25rem;
+  text-align: center;
+}
+
+.ide-item h4 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.9375rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.ide-item p {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  margin: 0;
+}
+  </style>
+</head>
+<body>
+  <nav class="fixed-top-nav">
+    <a href="/nodes/06-ai-dev-tools/index.html" class="back-link">← AI开发工具</a>
+    <span class="node-id">06 / Copilot教程</span>
+  </nav>
+
+  <div class="layout">
+    <aside class="sidebar-toc">
+      <div class="toc-title">目录导航</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#positioning" class="toc-link">核心定位</a></li>
+        <li class="toc-item"><a href="#getting-started" class="toc-link">快速上手</a></li>
+        <li class="toc-item"><a href="#features" class="toc-link">核心功能</a></li>
+        <li class="toc-item"><a href="#pricing" class="toc-link">定价方案</a></li>
+        <li class="toc-item"><a href="#ides" class="toc-link">支持的IDE</a></li>
+        <li class="toc-item"><a href="#best-practices" class="toc-link">最佳实践</a></li>
+        <li class="toc-item"><a href="#comparison" class="toc-link">工具对比</a></li>
+        <li class="toc-item"><a href="#faq" class="toc-link">常见问题</a></li>
+      </ul>
+    </aside>
+
+    <main>
+      <header>
+        <div class="phase-label">06 / 开发工具 · 教程</div>
+        <h1>GitHub Copilot</h1>
+        <p class="subtitle">微软与OpenAI联合打造的AI代码补全助手。无缝集成主流IDE，实时生成高质量代码片段，让OPC专注于创造而非重复。</p>
+        <div class="node-meta">难度：入门级 | 优先级：P1（必装工具） | 预计时间：1小时</div>
+      </header>
+
+      <section id="positioning">
+        <div class="section-label">01 · 核心定位</div>
+        <h2>什么是GitHub Copilot</h2>
+        <p>GitHub Copilot是由GitHub、OpenAI和Microsoft联合开发的AI代码补全工具。它使用OpenAI的GPT系列模型（基于Codex架构），能够根据上下文实时生成代码建议。</p>
+
+        <div class="decision-box">
+          <p><strong>Copilot的核心价值：</strong></p>
+          <p>不是取代程序员，而是成为"打字加速器"。它处理模式化的重复代码，让OPC将精力集中在架构设计和业务逻辑上。</p>
+        </div>
+
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h4>实时代码补全</h4>
+            <p>在编写代码时即时获得AI建议，覆盖整行甚至整个函数。根据当前文件内容和注释理解意图，生成符合项目风格的代码。</p>
+          </div>
+          <div class="feature-card">
+            <h4>IDE深度集成</h4>
+            <p>直接嵌入VS Code、JetBrains、Neovim等主流IDE，无需切换工具。Copilot作为编辑器的一部分，在编写时自然出现，不打断思维流。</p>
+          </div>
+          <div class="feature-card">
+            <h4>多语言支持</h4>
+            <p>支持Python、JavaScript、TypeScript、Go、Ruby、Java、C++等所有主流语言。对React、Vue、Express、Django、Spring等框架有专项优化。</p>
+          </div>
+          <div class="feature-card">
+            <h4>上下文感知</h4>
+            <p>理解当前文件的完整上下文，包括导入的模块、定义的函数、注释说明。生成的建议与现有代码风格一致，减少后续修改。</p>
+          </div>
+        </div>
+
+        <h3>Copilot的工作原理</h3>
+        <p>Copilot基于大规模的代码库预训练，当你在编辑器中编写代码时：</p>
+        <ol class="step-list">
+          <li>编辑器发送当前文件内容、附近代码、注释到Copilot服务</li>
+          <li>AI模型分析上下文，预测最可能的代码补全</li>
+          <li>生成多个候选建议，以淡灰色文本显示在光标位置</li>
+          <li>按Tab接受当前建议，或查看其他候选</li>
+          <li>接受后Copilot学习你的偏好，持续优化建议质量</li>
+        </ol>
+
+        <div class="quote-block">
+          <p><strong>注意：</strong>Copilot是云端服务，需要网络连接。代码会发送到Microsoft服务器处理，但官方承诺不会用于训练模型（企业版可配置）。</p>
+        </div>
+      </section>
+
+      <section id="getting-started">
+        <div class="section-label">02 · 快速上手</div>
+        <h2>安装与配置</h2>
+
+        <h3>前提条件</h3>
+        <ul class="check-list">
+          <li>GitHub账号（免费或付费均可）</li>
+          <li>支持的IDE之一（见支持的IDE章节）</li>
+          <li>稳定的网络连接</li>
+        </ul>
+
+        <h3>VS Code安装步骤</h3>
+        <ol class="step-list">
+          <li>打开VS Code，进入扩展市场（Cmd+Shift+X）</li>
+          <li>搜索"GitHub Copilot"</li>
+          <li>点击"安装"按钮</li>
+          <li>安装完成后，点击左下角GitHub图标登录</li>
+          <li>授权GitHub Copilot访问你的账号</li>
+          <li>开始编写代码，Copilot会自动激活</li>
+        </ol>
+
+        <div class="code-block">
+# 从命令行快速安装（macOS）
+code --install-extension GitHub.copilot
+
+# 验证安装
+code --list-extensions | grep copilot
+        </div>
+
+        <h3>JetBrains安装步骤</h3>
+        <ol class="step-list">
+          <li>打开Settings/Preferences → Plugins</li>
+          <li>搜索"GitHub Copilot"</li>
+          <li>点击"Install"</li>
+          <li>重启IDE后，点击Tools → GitHub Copilot → Login</li>
+          <li>完成GitHub授权</li>
+        </ol>
+
+        <div class="example-box">
+          <h4>首次使用建议</h4>
+          <p><strong>打开Copilot面板：</strong><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>（或<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>），输入"Copilot"</p>
+          <p><strong>查看建议：</strong><kbd>Alt</kbd>+<kbd>[</kbd>查看上一个建议，<kbd>Alt</kbd>+<kbd>]</kbd>查看下一个</p>
+          <p><strong>接受建议：</strong><kbd>Tab</kbd>接受当前建议，<kbd>Esc</kbd>拒绝</p>
+        </div>
+
+        <h3>IDE设置优化</h3>
+        <p>在IDE设置中可以调整Copilot的行为：</p>
+        <div class="code-block">
+# VS Code settings.json 示例
+{
+  "github.copilot.enable": {
+    "*": true,
+    "yaml": false,
+    "plaintext": false,
+    "markdown": false
+  },
+  "github.copilot.inlineSuggest.enable": true,
+  "editor.tabCompletion": "on"
+}
+        </div>
+      </section>
+
+      <section id="features">
+        <div class="section-label">03 · 核心功能</div>
+        <h2>四大核心能力</h2>
+
+        <h3>1. Inline Completion（内联补全）</h3>
+        <div class="feature-card">
+          <p>在编写代码时，AI直接在光标位置生成建议。灰色文本显示，按Tab接受。</p>
+          <div class="shortcut">快捷键：Tab（接受） · Esc（拒绝） · Alt+]（下一个） · Alt+[（上一个）</div>
+        </div>
+
+        <div class="example-box">
+          <h4>适用场景</h4>
+          <p>函数实现：根据函数名和参数自动生成实现代码</p>
+          <p>循环和迭代：自动生成forEach/map/filter等遍历代码</p>
+          <p>import语句：自动补全需要导入的模块</p>
+          <p>测试代码：根据函数签名生成测试用例</p>
+          <p>文档注释：根据代码内容生成JSDoc注释</p>
+        </div>
+
+        <h3>2. Copilot Chat（对话模式）</h3>
+        <p>通过IDE内嵌的聊天界面，用自然语言询问代码问题、请求解释、生成代码。</p>
+        <div class="code-block">
+# 打开聊天面板
+# VS Code: Cmd+Shift+I 或 Cmd+Shift+P → "Copilot Chat"
+
+# 示例对话
+"解释这段代码的作用"
+"如何优化这个函数的性能"
+"为这个组件编写单元测试"
+"修复这个类型错误"
+        </div>
+
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h4>代码解释</h4>
+            <p>选中代码后，询问"这段代码做什么"，Copilot会解释其功能和工作原理。</p>
+          </div>
+          <div class="feature-card">
+            <h4>Bug修复建议</h4>
+            <p>粘贴错误信息或选中报错代码，Copilot分析可能原因并提供修复建议。</p>
+          </div>
+          <div class="feature-card">
+            <h4>代码生成</h4>
+            <p>用自然语言描述需求，Copilot生成符合项目风格的代码并可直接插入。</p>
+          </div>
+          <div class="feature-card">
+            <h4>性能优化</h4>
+            <p>询问如何优化性能，Copilot分析代码并给出改进建议。</p>
+          </div>
+        </div>
+
+        <h3>3. PR Review（Pull Request审查）</h3>
+        <p>GitHub Enterprise版本支持PR自动审查，分析代码变更并提供审查意见。</p>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h4>变更分析</h4>
+            <p>理解PR中的代码变更，识别新增功能和修改点。</p>
+          </div>
+          <div class="feature-card">
+            <h4>问题识别</h4>
+            <p>发现潜在的Bug、安全问题、性能问题。</p>
+          </div>
+          <div class="feature-card">
+            <h4>审查建议</h4>
+            <p>生成具体的改进建议，标注需要关注的位置。</p>
+          </div>
+          <div class="feature-card">
+            <h4>总结概述</h4>
+            <p>为审查者生成变更摘要，快速理解PR的目的和影响范围。</p>
+          </div>
+        </div>
+
+        <h3>4. Copilot CLI（命令行工具）</h3>
+        <p>终端中可用的GitHub Copilot扩展，提供命令行AI辅助。</p>
+        <div class="code-block">
+# 安装 Copilot CLI
+npm install -g @githubnext/github-copilot-cli
+
+# 配置
+github-copilot-cli auth login
+
+# 使用示例
+# 解释命令
+gh cs "what does this command do?"
+ls -la | gh cs explain
+
+# 生成命令
+gh cs "create a new git branch"
+git checkout -b feature/new-feature
+
+# 命令翻译（自然语言转Shell）
+gh cs "show me the largest files in node_modules"
+du -sh node_modules/* | sort -hr | head -10
+        </div>
+      </section>
+
+      <section id="pricing">
+        <div class="section-label">04 · 定价方案</div>
+        <h2>版本选择</h2>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>版本</th>
+                <th>价格</th>
+                <th>功能</th>
+                <th>适用场景</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Free</td>
+                <td>免费</td>
+                <td>60次补全请求/天<br>2000次Chat请求/月（Beta）</td>
+                <td>尝鲜体验、简单项目</td>
+              </tr>
+              <tr>
+                <td>Individual Pro</td>
+                <td>$10/月</td>
+                <td>无限补全<br>无限Chat<br>需要GitHub账号</td>
+                <td>个人开发者 <span class="price-tag">推荐OPC</span></td>
+              </tr>
+              <tr>
+                <td>Business</td>
+                <td>$19/用户/月</td>
+                <td>无限使用<br>PR审查<br>策略管理<br>隐私控制</td>
+                <td>团队、企业</td>
+              </tr>
+              <tr>
+                <td>Enterprise</td>
+                <td>联系销售</td>
+                <td>全部Business功能<br>SSO/SAML<br>高级安全<br>专属支持</td>
+                <td>大型企业</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="decision-box">
+          <p><strong>OPC推荐：</strong>Individual Pro $10/月是最佳选择。Free版本限制较少，适合轻度使用。如果预算紧张，Free版本也能满足基本需求。</p>
+        </div>
+
+        <h3>学生与开源贡献者</h3>
+        <p>GitHub提供免费教育计划，符合以下条件可免费使用Copilot：</p>
+        <ul class="check-list">
+          <li>在校学生（高中、本科、研究生）</li>
+          <li>开源项目活跃贡献者（近12个月有 merged PR）</li>
+          <li>教师和教育工作者</li>
+        </ul>
+        <div class="code-block">
+# 申请学生免费版
+1. 访问 github.com/education
+2. 验证你的学生身份（.edu邮箱或手动审批）
+3. 申请GitHub Copilot免费访问
+4. 审批通过后自动激活
+        </div>
+      </section>
+
+      <section id="ides">
+        <div class="section-label">05 · 支持的IDE</div>
+        <h2>主流IDE支持</h2>
+        <p>GitHub Copilot支持主流开发环境和编辑器：</p>
+
+        <div class="ide-list">
+          <div class="ide-item">
+            <h4>VS Code</h4>
+            <p>最推荐，完整功能支持</p>
+          </div>
+          <div class="ide-item">
+            <h4>JetBrains</h4>
+            <p>IntelliJ, PyCharm, WebStorm等</p>
+          </div>
+          <div class="ide-item">
+            <h4>Neovim</h4>
+            <p>通过Copilot.vim插件</p>
+          </div>
+          <div class="ide-item">
+            <h4>Visual Studio</h4>
+            <p>Windows专属，完整集成</p>
+          </div>
+          <div class="ide-item">
+            <h4>Visual Studio Code for Web</h4>
+            <p>浏览器版有限支持</p>
+          </div>
+          <div class="ide-item">
+            <h4>JetBrains Fleet</h4>
+            <p>新版IDE支持</p>
+          </div>
+        </div>
+
+        <h3>VS Code详细配置</h3>
+        <div class="code-block">
+# 推荐VS Code设置
+{
+  // 启用内联补全
+  "github.copilot.inlineSuggest.enable": true,
+
+  // 启用聊天功能
+  "github.copilot.chat.enable": true,
+
+  // 语言过滤（某些文件类型关闭补全）
+  "github.copilot.enable": {
+    "*": true,
+    "yaml": false,
+    "markdown": false,
+    "plaintext": false
+  },
+
+  // Tab补全模式
+  "editor.tabCompletion": "on",
+
+  // 自动关闭建议
+  "editor.inlineSuggest.autoHide": false
+}
+        </div>
+
+        <h3>JetBrains配置</h3>
+        <div class="code-block">
+# 在 Settings → Tools → GitHub Copilot 中配置
+
+# 建议启用：
+# - Inline completion
+# - Chat assistance
+# - Code review suggestions
+
+# 快捷键（可在Keymap中自定义）
+# 接受建议: Tab
+# 拒绝建议: Esc
+# 查看下一个: Alt + ]
+# 查看上一个: Alt + [
+        </div>
+      </section>
+
+      <section id="best-practices">
+        <div class="section-label">06 · 最佳实践</div>
+        <h2>高效使用指南</h2>
+
+        <h3>编写优质提示</h3>
+        <p>Copilot的效果很大程度上取决于你的注释和上下文。以下是最佳实践：</p>
+
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h4>使用描述性命名</h4>
+            <p>函数名和变量名使用清晰的命名，Copilot能更好地理解意图。</p>
+            <div class="code-block" style="margin-top: 0.75rem;">
+// 差：fn(a, b)
+// 好：calculateUserScore(userId, bonusPoints)
+            </div>
+          </div>
+          <div class="feature-card">
+            <h4>添加中文注释</h4>
+            <p>用中文描述需求，Copilot能理解并生成对应代码。</p>
+            <div class="code-block" style="margin-top: 0.75rem;">
+// 计算用户积分：如果连续登录超过7天，奖励双倍积分
+            </div>
+          </div>
+          <div class="feature-card">
+            <h4>写明类型约束</h4>
+            <p>明确的参数类型和返回值类型能提高补全准确性。</p>
+            <div class="code-block" style="margin-top: 0.75rem;">
+function fetchUserOrders(userId: string): Promise&lt;Order[]&gt;
+            </div>
+          </div>
+          <div class="feature-card">
+            <h4>保持代码简洁</h4>
+            <p>过长的上下文会稀释关键信息。函数控制在50行以内。</p>
+          </div>
+        </div>
+
+        <h3>上下文管理</h3>
+        <p>Copilot的理解能力受限于输入的上下文。优化上下文可以提高建议质量：</p>
+
+        <div class="example-box">
+          <h4>有效上下文</h4>
+          <p>当前文件的函数签名和注释</p>
+          <p>同一文件中的相关代码</p>
+          <p>打开的标签页文件（IDE相关）</p>
+          <p>项目中的类型定义</p>
+        </div>
+
+        <div class="example-box">
+          <h4>无效上下文</h4>
+          <p>不相关的large文件</p>
+          <p>过时的注释或TODO</p>
+          <p>矛盾的命名或风格</p>
+        </div>
+
+        <h3>快捷键汇总</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>操作</th>
+                <th>VS Code</th>
+                <th>JetBrains</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>接受建议</td>
+                <td><kbd>Tab</kbd></td>
+                <td><kbd>Tab</kbd></td>
+              </tr>
+              <tr>
+                <td>拒绝建议</td>
+                <td><kbd>Esc</kbd></td>
+                <td><kbd>Esc</kbd></td>
+              </tr>
+              <tr>
+                <td>查看下一个</td>
+                <td><kbd>Alt</kbd>+<kbd>]</kbd></td>
+                <td><kbd>Alt</kbd>+<kbd>]</kbd></td>
+              </tr>
+              <tr>
+                <td>查看上一个</td>
+                <td><kbd>Alt</kbd>+<kbd>[</kbd></td>
+                <td><kbd>Alt</kbd>+<kbd>[</kbd></td>
+              </tr>
+              <tr>
+                <td>打开Copilot Chat</td>
+                <td><kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>I</kbd></td>
+                <td><kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>C</kbd></td>
+              </tr>
+              <tr>
+                <td>触发补全</td>
+                <td><kbd>Ctrl</kbd>+<kbd>Enter</kbd></td>
+                <td><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Space</kbd></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>常见使用场景</h3>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h4>快速实现函数</h4>
+            <p>写好函数签名和注释，让Copilot生成实现代码。检查无误后接受。</p>
+          </div>
+          <div class="feature-card">
+            <h4>模式化代码</h4>
+            <p>React组件、数据库CRUD、Express路由等模式化代码，Copilot能快速生成模板。</p>
+          </div>
+          <div class="feature-card">
+            <h4>测试用例生成</h4>
+            <p>描述测试场景，Copilot生成测试代码。确保覆盖边界条件。</p>
+          </div>
+          <div class="feature-card">
+            <h4>代码转换</h4>
+            <p>将JavaScript转换为TypeScript，将类组件转为函数组件。</p>
+          </div>
+        </div>
+
+        <div class="quote-block">
+          <p><strong>核心原则：</strong>Copilot是辅助工具，不是替代工具。始终审查生成的代码，理解其逻辑，确保符合你的需求后再接受。</p>
+        </div>
+      </section>
+
+      <section id="comparison">
+        <div class="section-label">07 · 工具对比</div>
+        <h2>Copilot vs Cursor vs Claude Code</h2>
+        <p>了解各工具的特点，选择最适合你工作流的组合。</p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>维度</th>
+                <th>GitHub Copilot</th>
+                <th>Cursor</th>
+                <th>Claude Code</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>定位</td>
+                <td>IDE内嵌代码补全</td>
+                <td>AI-First代码编辑器</td>
+                <td>CLI编程助手</td>
+              </tr>
+              <tr>
+                <td>交互方式</td>
+                <td>内联补全+聊天</td>
+                <td>图形化界面+Composer</td>
+                <td>终端对话</td>
+              </tr>
+              <tr>
+                <td>价格</td>
+                <td>$10/月（Pro）</td>
+                <td>$20/月（Pro）</td>
+                <td>$100/月（Max）</td>
+              </tr>
+              <tr>
+                <td>适用场景</td>
+                <td>日常补全、快速生成</td>
+                <td>多文件协同、重构</td>
+                <td>复杂任务、自动化</td>
+              </tr>
+              <tr>
+                <td>学习曲线</td>
+                <td>低，即装即用</td>
+                <td>中，需适应新编辑器</td>
+                <td>中，需熟悉CLI</td>
+              </tr>
+              <tr>
+                <td>代码编辑</td>
+                <td>单行/函数级补全</td>
+                <td>多文件批量编辑</td>
+                <td>文件修改+执行命令</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pros-cons-grid">
+          <div class="pros-cons-card">
+            <h4 style="color: var(--accent);">GitHub Copilot</h4>
+            <ul>
+              <li>与VS Code完美集成</li>
+              <li>实时补全不断流</li>
+              <li>支持语言最多</li>
+              <li>生态成熟，插件丰富</li>
+              <li>学生可免费使用</li>
+            </ul>
+          </div>
+          <div class="pros-cons-card">
+            <h4 style="color: var(--text-secondary);">局限性</h4>
+            <ul>
+              <li>多文件协同较弱</li>
+              <li>无法自主执行任务</li>
+              <li>上下文有限</li>
+              <li>复杂重构不如Cursor</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="decision-box">
+          <p><strong>OPC推荐组合：</strong></p>
+          <p>GitHub Copilot（日常补全）+ Cursor（复杂重构）+ Claude Code（自动化任务）。三者互补，覆盖所有开发场景。</p>
+        </div>
+
+        <h3>何时用哪个</h3>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h4>用Copilot的场景</h4>
+            <p>编写重复性代码（CRUD、循环、条件）</p>
+            <p>需要保持打字节奏的连续编码</p>
+            <p>快速生成简单函数和测试</p>
+            <p>已有项目中的增量开发</p>
+          </div>
+          <div class="feature-card">
+            <h4>用Cursor的场景</h4>
+            <p>多文件批量重构</p>
+            <p>理解新代码库结构</p>
+            <p>需要Agent自主探索时</p>
+            <p>中文Prompt开发复杂功能</p>
+          </div>
+          <div class="feature-card">
+            <h4>用Claude Code的场景</h4>
+            <p>自动化脚本编写</p>
+            <p>多步骤复杂任务</p>
+            <p>需要执行shell命令</p>
+            <p>需要调用外部API</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="faq">
+        <div class="section-label">08 · 常见问题</div>
+        <h2>FAQ</h2>
+
+        <div class="faq-item">
+          <div class="faq-question">Copilot生成的代码有版权吗？</div>
+          <div class="faq-answer">Copilot生成的代码问题复杂，涉及AI生成内容的版权归属尚未有定论。Microsoft表示如果仅使用Copilot建议无需特别注意，但建议对关键代码进行审查和测试。商业项目中对代码质量负责是基本原则。</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">我的代码会不会被用于训练？</div>
+          <div class="faq-answer">个人版和企业版的策略不同：个人版（Free/Pro）代码不会用于训练；企业版可以配置是否参与训练。建议查看官方隐私政策了解最新情况。</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">Copilot能完全替代搜索引擎吗？</div>
+          <div class="faq-answer">不能。Copilot擅长基于上下文的代码补全，但不适合：学习新技术概念（需要文档）、调试复杂错误（搜索引擎更好）、了解最新框架特性（搜索引擎信息更全面）。</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">为什么Copilot有时建议看起来正确但实际有Bug的代码？</div>
+          <div class="faq-answer">AI模型基于统计模式生成代码，不具备真正的代码理解能力。可能生成看似合理但实际有逻辑错误、边界条件处理不当、或与项目其他部分不兼容的代码。始终需要人工审查。</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">如何提高Copilot的建议质量？</div>
+          <div class="faq-answer">1. 保持代码文件整洁规范 2. 使用清晰的函数和变量命名 3. 添加描述性注释说明意图 4. 定期整理不用的代码（减少噪音） 5. 在项目根目录添加.editorconfig等规范文件</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">Copilot对哪种语言支持最好？</div>
+          <div class="faq-answer">根据官方数据和对齐程度，TypeScript/JavaScript、Python、Go、Ruby支持最好。这些语言的训练数据充足，建议质量高。小众语言或新框架的支持可能较弱。</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">可以离线使用Copilot吗？</div>
+          <div class="faq-answer">目前Copilot需要网络连接。云端处理是Copilot架构的核心，无法完全离线使用。如果网络不稳定，可以考虑使用本地模型（如Ollama）作为替代方案。</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">如何取消Copilot订阅？</div>
+          <div class="faq-answer">Settings → Billing → Plans → Cancel subscription。取消后当前付费周期内仍可使用，下个周期不再扣费。注意取消后Free版本有每日使用限制。</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">企业版有什么额外功能？</div>
+          <div class="faq-answer">企业版（Business/Enterprise）包含：PR自动审查、策略管理（可禁用某些功能）、隐私控制（可配置不使用数据训练）、团队管理功能、SSO/SAML支持、专属支持通道。</div>
+        </div>
+      </section>
+
+      <div class="summary-box">
+        <h3>GitHub Copilot学习路径</h3>
+        <ul class="step-list">
+          <li>第一天：安装Copilot，在日常项目中体验补全功能</li>
+          <li>第二天：尝试Copilot Chat，用自然语言询问代码问题</li>
+          <li>第三天：优化IDE设置，学习快捷键提高效率</li>
+          <li>第四天：结合Cursor使用，Copilot负责补全，Cursor负责复杂编辑</li>
+          <li>第五天：整合工作流，建立"Copilot+Cursor+Claude Code"工具链</li>
+        </ul>
+        <div class="quote-block" style="margin-top: 2rem;">
+          <p><strong>记住：</strong>AI工具是加速器，不是替代者。始终保持对代码的理解和控制，工具为效率服务，而非反过来。</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <nav class="footer-nav">
+    <a href="/nodes/06-ai-dev-tools/traefik/index.html" class="nav-link">
+      <span>←</span> Traefik
+    </a>
+    <a href="/nodes/06-ai-dev-tools/trae/index.html" class="nav-link">
+      Trae <span>→</span>
+    </a>
+  </nav>
+
+<script>
+document.querySelectorAll('.toc-link').forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    const targetId = this.getAttribute('href').slice(1);
+    const target = document.getElementById(targetId);
+    if (target) {
+      const offsetTop = target.offsetTop - 80;
+      window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+    }
+  });
+});
+</script>
+</body>
+</html>

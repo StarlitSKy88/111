@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Claude Code 完整教程 - 2026年AI CLI编码代理，Anthropic官方出品，适合复杂任务自主执行、测试生成、批量重构">
+  <meta name="theme-color" content="#111110">
+  <title>Claude Code 教程 - OPC节点百科</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #7A7670;
+  --text-tertiary: #4A4744;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3rem);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
+}
+
+.sidebar-toc {
+  position: sticky;
+  top: 5rem;
+  height: fit-content;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.sidebar-toc::-webkit-scrollbar { width: 4px; }
+.sidebar-toc::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+.toc-title {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.toc-list { list-style: none; }
+.toc-item { margin-bottom: 0.75rem; }
+
+.toc-link {
+  cursor: pointer;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: block;
+  padding: 0.75rem 0.5rem;
+  padding-left: 1rem;
+  border-left: 1px solid var(--line);
+  transition: all 0.3s;
+  line-height: 1.4;
+}
+
+.toc-link:hover { color: var(--text-primary); border-left-color: var(--accent); }
+.toc-link.active { color: var(--accent); border-left-color: var(--accent); font-weight: 400; }
+
+.fixed-top-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0; z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+.back-link {
+  cursor: pointer;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
+}
+
+.back-link:hover { color: var(--text-primary); }
+
+.node-id {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar-toc { display: none; }
+  .fixed-top-nav { padding: 0.75rem clamp(1rem, 4vw, 1.5rem); }
+}
+
+header {
+  padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(2rem, 5vh, 3rem);
+}
+
+main { padding-bottom: 5rem; }
+section { scroll-margin-top: 2rem; }
+
+.phase-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+h1 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xl);
+}
+
+.subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 44ch;
+  line-height: 1.8;
+}
+
+.node-meta {
+  margin-top: 2rem;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+}
+
+section { padding-bottom: clamp(3rem, 10vh, 5rem); border-bottom: 1px solid var(--line); margin-bottom: clamp(3rem, 10vh, 5rem); }
+section:last-of-type { border-bottom: none; }
+
+.section-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.375rem, 4vw, 1.875rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+h3 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.125rem, 3vw, 1.375rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+p { color: var(--text-secondary); line-height: 1.9; margin-bottom: 1.25rem; }
+
+.decision-box {
+  background: var(--surface);
+  border-left: 2px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.decision-box p { color: var(--text-primary); font-size: 0.9375rem; margin: 0; }
+
+.table-wrapper { overflow-x: auto; margin: 2rem 0; -webkit-overflow-scrolling: touch; }
+table { width: 100%; min-width: 560px; border-collapse: collapse; font-size: 0.875rem; }
+
+th {
+  text-align: left;
+  font-weight: 400;
+  font-size: 0.6875rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+td { padding: 1rem; border-bottom: 1px solid var(--line); color: var(--text-secondary); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+td:first-child { color: var(--text-primary); font-weight: 400; }
+
+.tool-grid { display: grid; gap: 1.5rem; margin: 2rem 0; }
+.tool-card { background: var(--surface); padding: 1.75rem; border: 1px solid var(--line); }
+
+.tool-card h4 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.tool-card .tagline { font-size: 0.8125rem; color: var(--text-tertiary); margin-bottom: 1.25rem; }
+.tool-card p { font-size: 0.875rem; line-height: 1.8; margin-bottom: 0.75rem; }
+
+.code-block {
+  background: var(--bg);
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+}
+
+.code-block code {
+  color: var(--text-primary);
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+
+.cmd { color: var(--accent); }
+.comment { color: var(--text-tertiary); }
+
+.quote-block {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+}
+
+.quote-block p { font-size: 1rem; color: var(--text-primary); line-height: 1.8; }
+
+.path-block { background: var(--surface); padding: 2rem; margin: 2rem 0; border: 1px solid var(--line); }
+.path-header { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1.25rem; }
+.path-number { font-family: 'Noto Serif JP', serif; font-size: 0.75rem; color: var(--accent); letter-spacing: 0.1em; }
+.path-title { font-family: 'Noto Serif JP', serif; font-size: 1.25rem; font-weight: 400; color: var(--text-primary); }
+.path-block p { font-size: 0.875rem; margin-bottom: 0.75rem; }
+
+.summary-box { background: var(--surface); padding: 2rem; margin-top: 3rem; border: 1px solid var(--line); }
+.summary-box h3 { margin-top: 0; margin-bottom: 1.25rem; }
+
+.step-list { list-style: none; counter-reset: steps; }
+.step-list li { counter-increment: steps; display: flex; gap: 1rem; margin-bottom: 1rem; font-size: 0.875rem; color: var(--text-secondary); }
+.step-list li::before { content: counter(steps); font-family: 'Noto Serif JP', serif; font-size: 0.75rem; color: var(--accent); flex-shrink: 0; width: 1.5rem; padding-top: 0.25rem; }
+
+.footer-nav {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.9);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
+}
+
+.nav-link {
+  cursor: pointer;
+  font-size: 0.75rem; color: var(--text-tertiary); text-decoration: none;
+  letter-spacing: 0.08em; display: flex; align-items: center;
+  gap: 0.5rem; transition: color 0.3s;
+}
+
+.nav-link:hover { color: var(--text-primary); }
+.nav-link.disabled { opacity: 0.3; pointer-events: none; }
+
+.pricing-table { margin: 2rem 0; }
+
+.price-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.25rem 0.75rem;
+  margin-top: 1rem;
+}
+
+.check-list { list-style: none; margin: 1rem 0; }
+.check-list li { font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative; }
+.check-list li::before { content: '✓'; position: absolute; left: 0; color: var(--accent); font-weight: 600; }
+
+.problem-box {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 1.5rem 2rem;
+  margin: 1.5rem 0;
+}
+
+.problem-box h4 { font-size: 0.875rem; font-weight: 400; color: var(--text-primary); margin-bottom: 0.75rem; }
+.problem-box p { font-size: 0.8125rem; margin: 0; }
+  </style>
+</head>
+<body>
+  <nav class="fixed-top-nav">
+    <a href="/nodes/06-tech-selection/index.html" class="back-link">← 技术选型</a>
+    <span class="node-id">06 / 工具教程</span>
+  </nav>
+
+  <div class="layout">
+    <aside class="sidebar-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#s1" class="toc-link">一、核心定位</a></li>
+        <li class="toc-item"><a href="#s2" class="toc-link">二、安装配置</a></li>
+        <li class="toc-item"><a href="#s3" class="toc-link">三、核心命令</a></li>
+        <li class="toc-item"><a href="#s4" class="toc-link">四、定价模型</a></li>
+        <li class="toc-item"><a href="#s5" class="toc-link">五、MCP配置</a></li>
+        <li class="toc-item"><a href="#s6" class="toc-link">六、Skills与Hooks</a></li>
+        <li class="toc-item"><a href="#s7" class="toc-link">七、实战案例</a></li>
+        <li class="toc-item"><a href="#s8" class="toc-link">八、常见问题</a></li>
+      </ul>
+    </aside>
+
+    <main>
+      <header>
+        <div class="phase-label">06 / AI开发工具</div>
+        <h1>Claude Code</h1>
+        <p class="subtitle">Anthropic官方出品的终端CLI编码代理。200K上下文、自主执行能力最强、适合自动化脚本、测试生成、复杂重构。OPC的"全天候远程工程师"。</p>
+        <div class="node-meta">最后修订：2026年5月13日 · 官方文档：claude.ai</div>
+      </header>
+
+      <section id="s1">
+        <div class="section-label">一、核心定位</div>
+        <h2>Claude Code是什么</h2>
+        <p>Claude Code是Anthropic发布的官方CLI工具，本质上是一个可以自主执行复杂编码任务的AI代理。与IDE插件不同，它运行在终端里，接收自然语言指令后自主规划、执行、测试、修复。</p>
+
+        <div class="tool-grid">
+          <div class="tool-card">
+            <h4>核心竞争力</h4>
+            <p><strong>超长上下文</strong>：200K token，能一次性理解整个中型项目的代码结构、数据库Schema、API路由之间的全部关系。</p>
+            <p><strong>自主执行</strong>：可以接收"把这个项目的支付模块从Stripe迁移到微信支付"这种级别的指令，自己规划步骤、执行、测试、修复，整个过程可能持续30分钟以上。</p>
+            <p><strong>终端原生</strong>：不绑定任何IDE，在任何编辑器都可以用。可以融入现有的CLI工作流。</p>
+          </div>
+        </div>
+
+        <h3>Claude Code vs 其他工具</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>对比维度</th><th>Claude Code</th><th>Cursor</th><th>GitHub Copilot</th><th>Codex</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>交互方式</td><td>终端CLI</td><td>IDE内嵌</td><td>IDE内嵌</td><td>终端CLI</td></tr>
+              <tr><td>上下文窗口</td><td>200K</td><td>100K</td><td>32K</td><td>128K</td></tr>
+              <tr><td>代理能力</td><td>最强</td><td>强</td><td>弱</td><td>强</td></tr>
+              <tr><td>执行时长</td><td>30分钟+</td><td>单次任务</td><td>单次补全</td><td>30分钟+</td></tr>
+              <tr><td>开源</td><td>×</td><td>×</td><td>×</td><td>✓</td></tr>
+              <tr><td>国内网络</td><td>× 需VPN</td><td>⚠ 需VPN</td><td>⚠ 需VPN</td><td>⚠ 需VPN</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-block">
+          <p><strong>什么时候用Claude Code：</strong>当你有一个明确的目标任务，但需要跨越多个文件、多种技术栈、执行多步骤的时候。日常单文件补全用Cursor，复杂自主任务用Claude Code。</p>
+        </div>
+      </section>
+
+      <section id="s2">
+        <div class="section-label">二、安装配置</div>
+        <h2>快速上手</h2>
+
+        <h3>前置要求</h3>
+        <ul class="check-list">
+          <li>Node.js 18+ (建议Node 20 LTS)</li>
+          <li>npm 或 yarn 或 pnpm</li>
+          <li>有效的 Anthropic API Key (支持Claude 3.5/3.7)</li>
+          <li>稳定的海外网络连接 (Clash或其他VPN)</li>
+        </ul>
+
+        <h3>安装步骤</h3>
+        <div class="code-block">
+<span class="comment"># 方式一：npm全局安装（推荐）</span>
+<span class="cmd">npm install</span> -g @anthropic-ai/claude-code
+
+<span class="comment"># 验证安装</span>
+claude --version
+
+<span class="comment"># 方式二：npx直接运行（不安装）</span>
+npx @anthropic-ai/claude-code
+        </div>
+
+        <h3>API Key配置</h3>
+        <div class="code-block">
+<span class="comment"># 设置环境变量（临时，当前终端有效）</span>
+<span class="cmd">export</span> ANTHROPIC_API_KEY=sk-ant-xxxxx
+
+<span class="comment"># 永久配置（macOS/Linux）</span>
+<span class="cmd">echo</span> 'export ANTHROPIC_API_KEY=sk-ant-xxxxx' >> ~/.zshrc
+<span class="cmd">source</span> ~/.zshrc
+
+<span class="comment"># Windows PowerShell</span>
+<span class="cmd">$env:ANTHROPIC_API_KEY</span> = "sk-ant-xxxxx"
+        </div>
+
+        <div class="problem-box">
+          <h4>网络问题</h4>
+          <p>如果直连超时，需要配置代理。Claude Code默认读取系统代理设置。确保你的VPN/代理工具开启了"全局模式"或为Claude Code单独配置了规则。</p>
+        </div>
+
+        <h3>首次启动</h3>
+        <div class="code-block">
+<span class="cmd">claude</span>
+
+<span class="comment"># 首次会提示选择配置：</span>
+<span class="comment"># ? Select a model to use: (Use arrow keys)</span>
+<span class="comment"># ❯ Claude 3.7 Sonnet (Recommended)</span>
+<span class="comment">#   Claude 3.5 Sonnet</span>
+<span class="comment">#   Claude Opus 3.5</span>
+
+<span class="comment"># ? Enable telemetry? Yes/No</span>
+<span class="comment"># 建议选 No，尤其在意隐私的情况下</span>
+        </div>
+      </section>
+
+      <section id="s3">
+        <div class="section-label">三、核心命令</div>
+        <h2>CLI命令参考</h2>
+
+        <h3>基本用法</h3>
+        <div class="code-block">
+<span class="comment"># 进入交互模式（推荐新手）</span>
+<span class="cmd">claude</span>
+
+<span class="comment"># 单次任务模式（适合自动化脚本）</span>
+<span class="cmd">claude</span> "帮我把这个项目的所有console.log删掉"
+
+<span class="comment"># 指定项目目录</span>
+<span class="cmd">claude</span> --directory /path/to/project "分析这个项目的架构"
+
+<span class="comment"># 安静模式（减少输出）</span>
+<span class="cmd">claude</span> --quiet "生成100个单元测试"
+
+<span class="comment"># 输出到文件</span>
+<span class="cmd">claude</span> "写一个README.md" > README.md
+        </div>
+
+        <h3>交互模式常用指令</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>命令</th><th>说明</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>q</code> 或 <code>exit</code></td><td>退出Claude Code</td></tr>
+              <tr><td><code>Ctrl+C</code></td><td>中断当前任务</td></tr>
+              <tr><td><code>Ctrl+Z</code></td><td>暂停任务，之后可恢复</td></tr>
+              <tr><td><code>help</code></td><td>显示帮助</td></tr>
+              <tr><td><code>clear</code></td><td>清屏</td></tr>
+              <tr><td><code>history</code></td><td>查看命令历史</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>任务控制</h3>
+        <div class="code-block">
+<span class="comment"># 在交互模式内：</span>
+<span class="comment"># 直接输入自然语言描述任务</span>
+<span class="comment"># 例如："帮我创建一个用户注册表单，包含邮箱、密码、确认密码三个字段"</span>
+
+<span class="comment"># 任务执行中可用的指令：</span>
+<span class="comment"># y - 确认执行（当Claude请求权限时）</span>
+<span class="comment"># n - 拒绝执行</span>
+<span class="comment"># a - 批准所有后续操作</span>
+<span class="comment"># diff - 查看将要执行的变更</span>
+<span class="comment"># l - 查看最近的操作列表</span>
+        </div>
+
+        <div class="path-block">
+          <div class="path-header">
+            <span class="path-number">重要</span>
+            <span class="path-title">权限模式</span>
+          </div>
+          <p>Claude Code默认在<strong>受限模式</strong>下运行，只读文件、搜索代码、执行测试。但涉及写文件、执行命令、删除文件时，会请求你的明确批准。这是为了保护你的代码安全。</p>
+          <p>当你确认Claude的操作是安全的，可以输入<code>a</code>（approve all）跳过后续所有确认。</p>
+        </div>
+
+        <h3>管道与脚本</h3>
+        <div class="code-block">
+<span class="comment"># 从文件读取指令</span>
+<span class="cmd">claude</span> < task.txt
+
+<span class="comment"># 多行指令</span>
+<span class="cmd">claude</span> "第一个任务：
+1. 创建users表
+2. 创建posts表
+3. 添加外键关系"
+
+<span class="comment"># 结合Git命令</span>
+<span class="cmd">git</span> diff | claude "审查这个diff，帮我写commit message"
+
+<span class="comment"># 在CI/CD中使用</span>
+<span class="cmd">claude</span> --non-interactive "运行所有测试并修复失败的"
+        </div>
+      </section>
+
+      <section id="s4">
+        <div class="section-label">四、定价模型</div>
+        <h2>费用说明</h2>
+        <p>Claude Code本身免费，但需要支付Anthropic API费用。费用取决于你使用的模型和token消耗量。</p>
+
+        <h3>模型定价 (2026年5月)</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>模型</th><th>输入$/1M</th><th>输出$/1M</th><th>适合场景</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Claude 3.7 Sonnet</td><td>$3</td><td>$15</td><td>日常开发首选</td></tr>
+              <tr><td>Claude 3.5 Sonnet</td><td>$3</td><td>$15</td><td>性价比最高</td></tr>
+              <tr><td>Claude 3.5 Haiku</td><td>$0.8</td><td>$4</td><td>简单任务</td></tr>
+              <tr><td>Claude 3 Opus</td><td>$15</td><td>$75</td><td>复杂推理（不推荐）</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="decision-box">
+          <p><strong>OPC建议：</strong>日常任务用Claude 3.5 Sonnet，复杂重构用Claude 3.7 Sonnet。避免使用Opus，除非3.7无法解决。</p>
+        </div>
+
+        <h3>用量估算</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>任务类型</th><th>输入token</th><th>输出token</th><th>估算费用</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>删除console.log（小型项目）</td><td>5K</td><td>2K</td><td>$0.00006</td></tr>
+              <tr><td>生成100个单元测试</td><td>50K</td><td>200K</td><td>$0.003</td></tr>
+              <tr><td>数据库迁移（跨5个文件）</td><td>150K</td><td>100K</td><td>$0.002</td></tr>
+              <tr><td>完整重构一个模块</td><td>300K</td><td>250K</td><td>$0.007</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>成本控制策略</h3>
+        <div class="tool-grid">
+          <div class="tool-card">
+            <h4>Max套餐 ($200/月)</h4>
+            <p>无限制使用Claude 3.7 Sonnet。对于高频使用者，月用量超过$100时，Max更划算。</p>
+            <span class="price-tag">$200/月 · 不限用量</span>
+          </div>
+          <div class="tool-card">
+            <h4>按量付费</h4>
+            <p>适合低频使用。按实际token消耗付费，无月度最低消费。</p>
+            <span class="price-tag">用多少付多少</span>
+          </div>
+        </div>
+
+        <div class="quote-block">
+          <p><strong>OPC铁律：</strong>Claude Code是按量付费的"外包工程师"。用完即关，不要一直开着让它空转。每任务结束后检查消耗量。</p>
+        </div>
+      </section>
+
+      <section id="s5">
+        <div class="section-label">五、MCP配置</div>
+        <h2>Model Context Protocol</h2>
+        <p>MCP是Anthropic推出的开放协议，允许Claude Code连接外部工具和数据源。配置MCP后，Claude Code可以直接访问你的文件系统、Git仓库、数据库等。</p>
+
+        <h3>配置文件位置</h3>
+        <div class="code-block">
+<span class="comment"># 全局配置</span>
+~/.claude/mcp.json
+
+<span class="comment"># 项目级配置</span>
+./.claude/mcp.json
+        </div>
+
+        <h3>常用MCP服务器</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>服务器</th><th>功能</th><th>安装</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>filesystem</td><td>读写本地文件</td><td>内置</td></tr>
+              <tr><td>git</td><td>Git操作</td><td>内置</td></tr>
+              <tr><td>memory</td><td>跨会话记忆</td><td>npm install</td></tr>
+              <tr><td>slack</td><td>发送Slack消息</td><td>npm install</td></tr>
+              <tr><td>github</td><td>GitHub API</td><td>npm install</td></tr>
+              <tr><td>postgres</td><td>PostgreSQL查询</td><td>npm install</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>配置示例</h3>
+        <div class="code-block">
+<span class="comment"># ~/.claude/mcp.json</span>
+{
+  "mcpServers": {
+    <span class="comment">// 内置文件系统（默认开启）</span>
+    "filesystem": {
+      "command": "node",
+      "args": ["/path/to/claude-code/dist/tools/mcp/index.js", "filesystem"]
+    },
+    <span class="comment">// Git集成</span>
+    "git": {
+      "command": "node",
+      "args": ["/path/to/claude-code/dist/tools/mcp/index.js", "git"]
+    },
+    <span class="comment">// GitHub API</span>
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/claude-mcp-server", "github"],
+      "env": {
+        "GITHUB_TOKEN": "ghp_xxxxx"
+      }
+    },
+    <span class="comment">// PostgreSQL数据库</span>
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/claude-mcp-server", "postgres"],
+      "env": {
+        "DATABASE_URL": "postgresql://user:pass@localhost:5432/dbname"
+      }
+    }
+  }
+}
+        </div>
+
+        <h3>验证MCP配置</h3>
+        <div class="code-block">
+<span class="comment"># 进入Claude Code后，查看已加载的工具</span>
+<span class="cmd">claude</span>
+<span class="comment">> /tools</span>
+
+<span class="comment"># 如果配置正确，会显示类似：</span>
+<span class="comment"># Available tools: read, edit, bash, git, github, postgres...</span>
+        </div>
+      </section>
+
+      <section id="s6">
+        <div class="section-label">六、Skills与Hooks</div>
+        <h2>扩展机制</h2>
+
+        <h3>Skills（技能）</h3>
+        <p>Skills是预定义的行为模板，让Claude Code在特定场景下执行最佳实践。</p>
+
+        <div class="code-block">
+<span class="comment"># 创建一个新的Skill</span>
+<span class="cmd">claude</span> --skill create my-skill
+
+<span class="comment"># 查看内置Skills</span>
+<span class="cmd">claude</span> --skills
+
+<span class="comment"># 可用内置Skills：</span>
+<span class="comment"># - tdd: 测试驱动开发流程</span>
+<span class="comment"># - refactor: 代码重构流程</span>
+<span class="comment"># - review: 代码审查流程</span>
+<span class="comment"># - docs: 文档生成流程</span>
+        </div>
+
+        <div class="problem-box">
+          <h4>自定义Skill示例</h4>
+          <p>创建一个确保代码符合OPC编码规范的Skill：</p>
+          <div class="code-block">
+<span class="comment"># ~/.claude/skills/opc-code.md</span>
+<span class="comment"># OPC编码规范检查</span>
+
+<span class="comment">## 执行步骤：</span>
+1. 检查是否有console.log/console.error
+2. 检查是否有TODO/FIXME注释
+3. 检查是否使用了中文注释
+4. 检查错误处理是否完整
+5. 检查是否使用了process.env读取环境变量
+
+<span class="comment">## 报告格式：</span>
+发现N个问题：
+1. [文件:行号] 问题描述
+...
+          </div>
+        </div>
+
+        <h3>Hooks（钩子）</h3>
+        <p>Hooks在特定事件发生时自动触发，用于自动化工作流。</p>
+
+        <div class="code-block">
+<span class="comment"># ~/.claude/hooks.json</span>
+{
+  "hooks": {
+    <span class="comment">// 每次执行命令前</span>
+    "pre-command": [
+      "echo 'Executing: $COMMAND'"
+    ],
+    <span class="comment">// 每次写文件后</span>
+    "post-write": [
+      "npx prettier --write $FILEPATH"
+    ],
+    <span class="comment">// 每次任务完成后</span>
+    "post-task": [
+      "echo 'Task completed at $(date)' >> ~/.claude/logs/tasks.log"
+    ]
+  }
+}
+        </div>
+
+        <div class="quote-block">
+          <p><strong>OPC实战组合：</strong>用pre-command钩子记录每次操作意图，post-write钩子自动格式化代码，post-task钩子生成操作日志。这套组合让你对Claude Code的所有行为都有据可查。</p>
+        </div>
+      </section>
+
+      <section id="s7">
+        <div class="section-label">七、实战案例</div>
+        <h2>OPC典型工作流</h2>
+
+        <div class="path-block">
+          <div class="path-header">
+            <span class="path-number">案例一</span>
+            <span class="path-title">数据库迁移</span>
+          </div>
+          <p><strong>场景：</strong>把用户表的phone字段拆成country_code和phone_number两个字段，同步更新所有相关API和前端组件。</p>
+          <div class="code-block">
+<span class="comment"># 启动Claude Code并执行迁移</span>
+<span class="cmd">claude</span>
+
+<span class="comment"># 输入：</span>
+请执行以下数据库迁移任务：
+
+1. 修改Supabase中的users表：
+   - 将phone字段拆分为country_code (varchar, 5) 和 phone_number (varchar, 20)
+   - 保留phone字段作为临时列，迁移完成后删除
+
+2. 更新后端API（位于/src/api/）：
+   - 更新用户注册端点
+   - 更新用户资料获取端点
+   - 更新短信验证码发送端点
+
+3. 更新前端组件（位于/src/components/）：
+   - 更新注册表单
+   - 更新用户资料页面
+   - 更新所有显示电话号码的地方
+
+4. 运行测试确保功能正常
+
+<span class="comment"># 然后输入 y 确认执行</span>
+          </div>
+        </div>
+
+        <div class="path-block">
+          <div class="path-header">
+            <span class="path-number">案例二</span>
+            <span class="path-title">生成测试套件</span>
+          </div>
+          <p><strong>场景：</strong>为一个支付模块生成完整的单元测试和集成测试。</p>
+          <div class="code-block">
+<span class="comment"># 单次执行模式</span>
+<span class="cmd">claude</span> --non-interactive "为/src/services/payment.js生成完整的测试套件，包含：
+- 单元测试：每个函数的正常路径和异常路径
+- 集成测试：模拟Stripe Webhook回调
+- 测试覆盖率目标：80%以上
+- 使用Jest框架
+- 测试文件命名：payment.test.js"
+
+<span class="comment"># 如果测试覆盖率不够，Claude会自动补充</span>
+          </div>
+        </div>
+
+        <div class="path-block">
+          <div class="path-header">
+            <span class="path-number">案例三</span>
+            <span class="path-title">代码审查与重构建议</span>
+          </div>
+          <p><strong>场景：</strong>用Git diff + Claude Code做代码审查。</p>
+          <div class="code-block">
+<span class="comment"># 查看当前分支的改动</span>
+<span class="cmd">git</span> diff main...HEAD | claude "请审查这个分支的所有改动，检查：
+1. 是否有潜在Bug
+2. 是否有安全漏洞
+3. 是否有性能问题
+4. 是否符合OPC编码规范
+5. 给出重构建议"
+
+<span class="comment"># Claude会输出详细的审查报告</span>
+          </div>
+        </div>
+
+        <div class="path-block">
+          <div class="path-header">
+            <span class="path-number">案例四</span>
+            <span class="path-title">自动化部署检查</span>
+          </div>
+          <p><strong>场景：</strong>部署前自动检查所有关键项。</p>
+          <div class="code-block">
+<span class="comment"># 创建一个部署前检查脚本</span>
+<span class="cmd">claude</span> "创建一个部署前检查脚本 deploy-check.sh，包含以下检查项：
+1. 运行测试（npm test）
+2. 运行lint（npm run lint）
+3. 检查环境变量是否完整
+4. 检查数据库连接
+5. 检查外部API可用性
+每个检查项失败时退出码为非0"
+          </div>
+        </div>
+      </section>
+
+      <section id="s8">
+        <div class="section-label">八、常见问题</div>
+        <h2>FAQ</h2>
+
+        <h3>Q: Claude Code和Cursor哪个更好？</h3>
+        <p><strong>A:</strong> 它们解决不同问题。Cursor是日常IDE伴侣，适合即时补全和小修改。Claude Code是终端代理，适合复杂的多步骤任务。对于OPC来说，建议两者都用：日常开发用Cursor，复杂任务用Claude Code。</p>
+
+        <h3>Q: Claude Code消耗多少API配额？</h3>
+        <p><strong>A:</strong> 取决于任务复杂度。一个简单的"删除console.log"任务可能只需几美分。一个复杂的重构任务可能消耗$1-5。建议设置API使用警报（可在Anthropic后台配置）。</p>
+
+        <h3>Q: 网络不稳定怎么办？</h3>
+        <p><strong>A:</strong> Claude Code需要稳定连接海外网络。建议使用 Clash Verge 或 Shadowsocks 等工具，并开启"全局模式"。如果频繁断连，检查代理规则是否包含了api.anthropic.com域名。</p>
+
+        <h3>Q: 如何避免Claude Code误删代码？</h3>
+        <p><strong>A:</strong> 默认情况下，Claude Code不会自动删除文件，会请求确认。对于高风险操作（如删除多个文件），建议先用<code>git commit</code>保存当前状态，这样即使操作失误也可以回滚。</p>
+
+        <h3>Q: 可以同时运行多个Claude Code实例吗？</h3>
+        <p><strong>A:</strong> 可以，但强烈不推荐。每个实例都会消耗API配额，同时运行多个实例容易造成代码冲突。建议串行使用：一个任务完成后再开始下一个。</p>
+
+        <h3>Q: Claude Code能完全替代程序员吗？</h3>
+        <p><strong>A:</strong> 不能。Claude Code是一个强大的工具，但它需要你提供清晰的任务描述和判断结果是否正确。OPC仍然需要理解基本的编程概念，至少能读懂代码、能描述问题、能验证结果。</p>
+
+        <h3>Q: 如何配置国内镜像加速？</h3>
+        <p><strong>A:</strong> Claude Code本身不提供镜像，但可以通过配置代理实现加速。在Clash中设置规则，让api.anthropic.com走代理。同时确保npm安装claude-code时使用国内镜像（设置npm config set registry https://registry.npmmirror.com）。</p>
+
+        <div class="summary-box">
+          <h3>快速开始 Checklist</h3>
+          <ul class="step-list">
+            <li>安装 Node.js 18+</li>
+            <li>获取 Anthropic API Key</li>
+            <li>配置稳定海外网络</li>
+            <li>运行 npm install -g @anthropic-ai/claude-code</li>
+            <li>配置 ANTHROPIC_API_KEY 环境变量</li>
+            <li>运行 claude --version 验证</li>
+            <li>输入第一个任务开始使用</li>
+          </ul>
+          <div class="quote-block" style="margin-top: 2rem;">
+            <p><strong>记住：</strong>Claude Code是你最强力的"外包工程师"。清晰的任务描述 + 及时的确认/拒绝 = 高效的AI协作。</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <nav class="footer-nav">
+    <a href="/nodes/06-tech-selection/index.html" class="nav-link">
+      <span>←</span> 06：技术选型
+    </a>
+    <a href="/nodes/06-ai-dev-tools/openrouter/index.html" class="nav-link">
+      07：OpenRouter教程 <span>→</span>
+    </a>
+  </nav>
+
+<script>
+document.querySelectorAll('.toc-link').forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    const targetId = this.getAttribute('href').slice(1);
+    const target = document.getElementById(targetId);
+    if (target) {
+      const offsetTop = target.offsetTop - 80;
+      window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+    }
+  });
+});
+
+const sections = document.querySelectorAll('section[id]');
+const tocLinks = document.querySelectorAll('.toc-link');
+
+function updateActiveLink() {
+  const scrollPos = window.scrollY + 120;
+  sections.forEach(section => {
+    const top = section.offsetTop;
+    const height = section.offsetHeight;
+    const id = section.getAttribute('id');
+    if (scrollPos >= top && scrollPos < top + height) {
+      tocLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${id}`) {
+          link.classList.add('active');
+        }
+      });
+    }
+  });
+}
+
+window.addEventListener('scroll', updateActiveLink, { passive: true });
+updateActiveLink();
+</script>
+</body>
+</html>
