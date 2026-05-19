@@ -1,0 +1,570 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "← 返回首页" [ref=e3] [cursor=pointer]:
+      - /url: /
+    - generic [ref=e4]: 节点 06 / 57
+  - main [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]: 产品验证与准备
+      - heading "技术选型 （零基础专属）" [level=1] [ref=e9]:
+        - text: 技术选型
+        - text: （零基础专属）
+      - paragraph [ref=e10]: 2026年AI编码工具选型完全指南。面向OPC一人公司，想用AI工具一个人完成从验证到上线的全流程。本文不要求任何编程基础。
+      - generic [ref=e11]: 节点 06 / 57 · 最后修订：2026年5月9日
+    - generic [ref=e12]:
+      - generic [ref=e13]: 一、先定方向
+      - heading "Web vs 小程序 vs App" [level=2] [ref=e14]
+      - paragraph [ref=e15]: 技术选型的第一步不是选工具，而是选平台。方向错了，后面全是沉没成本。
+      - table [ref=e17]:
+        - rowgroup [ref=e18]:
+          - row "维度 Web应用 微信小程序 移动App" [ref=e19]:
+            - columnheader "维度" [ref=e20]
+            - columnheader "Web应用" [ref=e21]
+            - columnheader "微信小程序" [ref=e22]
+            - columnheader "移动App" [ref=e23]
+        - rowgroup [ref=e24]:
+          - row "学习曲线 最低 中等 最高" [ref=e25]:
+            - cell "学习曲线" [ref=e26]
+            - cell "最低" [ref=e27]:
+              - strong [ref=e28]: 最低
+            - cell "中等" [ref=e29]:
+              - strong [ref=e30]: 中等
+            - cell "最高" [ref=e31]:
+              - strong [ref=e32]: 最高
+          - row "开发到上线 1-2周（Vercel部署） 2-4周（含审核） 4-8周（含商店审核）" [ref=e33]:
+            - cell "开发到上线" [ref=e34]
+            - cell "1-2周（Vercel部署）" [ref=e35]
+            - cell "2-4周（含审核）" [ref=e36]
+            - cell "4-8周（含商店审核）" [ref=e37]
+          - row "用户获取 SEO/社交分享/直接链接 微信生态自带流量 应用商店搜索+付费投放" [ref=e38]:
+            - cell "用户获取" [ref=e39]
+            - cell "SEO/社交分享/直接链接" [ref=e40]
+            - cell "微信生态自带流量" [ref=e41]
+            - cell "应用商店搜索+付费投放" [ref=e42]
+          - row "支付集成 Stripe（海外）/ 支付宝网页支付 微信支付（JSAPI） IAP（苹果）/ 各安卓市场" [ref=e43]:
+            - cell "支付集成" [ref=e44]
+            - cell "Stripe（海外）/ 支付宝网页支付" [ref=e45]
+            - cell "微信支付（JSAPI）" [ref=e46]
+            - cell "IAP（苹果）/ 各安卓市场" [ref=e47]
+          - row "更新迭代 秒级部署，即时生效 审核1-7天 审核1-3天" [ref=e48]:
+            - cell "更新迭代" [ref=e49]
+            - cell "秒级部署，即时生效" [ref=e50]
+            - cell "审核1-7天" [ref=e51]
+            - cell "审核1-3天" [ref=e52]
+          - row "月成本 $0-20 ¥300认证费/年 + 服务器 $99 Apple年费 + 服务器" [ref=e53]:
+            - cell "月成本" [ref=e54]
+            - cell "$0-20" [ref=e55]
+            - cell "¥300认证费/年 + 服务器" [ref=e56]
+            - cell "$99 Apple年费 + 服务器" [ref=e57]
+          - row "适合场景 SaaS工具、内容站、AI应用 微信生态内工具、电商、服务预约 高频使用、推送通知、拍照/定位等硬件能力" [ref=e58]:
+            - cell "适合场景" [ref=e59]
+            - cell "SaaS工具、内容站、AI应用" [ref=e60]
+            - cell "微信生态内工具、电商、服务预约" [ref=e61]
+            - cell "高频使用、推送通知、拍照/定位等硬件能力" [ref=e62]
+      - paragraph [ref=e64]:
+        - strong [ref=e65]: 决策口诀：你的用户在哪里，平台就在哪里。
+      - paragraph [ref=e66]:
+        - text: • 用户通过搜索引擎/社交媒体找到你 →
+        - strong [ref=e67]: Web
+        - text: • 用户就在微信里，你希望"扫一扫"就能用 →
+        - strong [ref=e68]: 小程序
+        - text: • 用户需要频繁打开、接收推送、调用摄像头等 →
+        - strong [ref=e69]: App
+      - paragraph [ref=e70]:
+        - strong [ref=e71]: OPC铁律：
+        - text: 除非你有明确的理由选择小程序或App，否则一律从Web开始。Web的开发速度最快、迭代成本最低、部署最简单。
+    - generic [ref=e72]:
+      - generic [ref=e73]: 二、后端正解
+      - heading "为什么OPC只需要Supabase" [level=2] [ref=e74]
+      - heading "\"后端\"不是服务器" [level=3] [ref=e75]
+      - paragraph [ref=e76]: 传统认知里，做产品需要：买服务器 → 装Linux → 配Nginx → 装数据库 → 写API。这条路OPC一个人走，至少浪费30天。
+      - paragraph [ref=e77]:
+        - strong [ref=e78]: Supabase是什么：
+        - text: 开源的Firebase替代品。一句话——它给了你一个现成的PostgreSQL数据库 + 自动生成的REST API + 用户认证系统 + 文件存储。
+      - table [ref=e80]:
+        - rowgroup [ref=e81]:
+          - row "传统自建 Supabase" [ref=e82]:
+            - columnheader "传统自建" [ref=e83]
+            - columnheader "Supabase" [ref=e84]
+        - rowgroup [ref=e85]:
+          - row "自己搭PostgreSQL（至少半天） 创建项目，30秒可用" [ref=e86]:
+            - cell "自己搭PostgreSQL（至少半天）" [ref=e87]
+            - cell "创建项目，30秒可用" [ref=e88]
+          - row "手写CRUD API（每个表至少2小时） 建表后API自动生成" [ref=e89]:
+            - cell "手写CRUD API（每个表至少2小时）" [ref=e90]
+            - cell "建表后API自动生成" [ref=e91]
+          - row "自己实现JWT鉴权（至少一天） 内置Auth，支持邮箱/手机/OAuth" [ref=e92]:
+            - cell "自己实现JWT鉴权（至少一天）" [ref=e93]
+            - cell "内置Auth，支持邮箱/手机/OAuth" [ref=e94]
+          - row "自己配置SSL/域名（半天） 自带HTTPS" [ref=e95]:
+            - cell "自己配置SSL/域名（半天）" [ref=e96]
+            - cell "自带HTTPS" [ref=e97]
+          - row "数据库备份靠自己写脚本 自动每日备份" [ref=e98]:
+            - cell "数据库备份靠自己写脚本" [ref=e99]
+            - cell "自动每日备份" [ref=e100]
+          - row "扩展靠手动升级服务器 按用量自动伸缩" [ref=e101]:
+            - cell "扩展靠手动升级服务器" [ref=e102]
+            - cell "按用量自动伸缩" [ref=e103]
+      - heading "2026年5月免费额度（足够用到第一个付费用户）" [level=3] [ref=e104]
+      - generic [ref=e105]:
+        - generic [ref=e106]:
+          - generic [ref=e107]: 500MB
+          - heading "数据库" [level=4] [ref=e108]
+          - paragraph [ref=e109]: 约10万行普通数据
+        - generic [ref=e110]:
+          - generic [ref=e111]: 200万
+          - heading "API请求/月" [level=4] [ref=e112]
+          - paragraph [ref=e113]: 月请求次数上限
+        - generic [ref=e114]:
+          - generic [ref=e115]: 5万
+          - heading "认证用户/月" [level=4] [ref=e116]
+          - paragraph [ref=e117]: 活跃用户数
+        - generic [ref=e118]:
+          - generic [ref=e119]: 1GB
+          - heading "文件存储" [level=4] [ref=e120]
+          - paragraph [ref=e121]: 文件存储空间
+      - paragraph [ref=e123]: 突破免费额度之前，你大概率已经有收入了。
+      - heading "Supabase的局限（诚实交代）" [level=3] [ref=e124]
+      - paragraph [ref=e125]:
+        - text: • 不支持存储过程（用Edge Functions替代）
+        - text: • 免费项目7天不活跃会休眠（有请求自动唤醒）
+        - text: • 数据库在云端，无法做本地离线
+        - text: • 复杂查询性能不如自建专用服务器
+      - paragraph [ref=e126]:
+        - strong [ref=e127]: 但这些局限对OPC的第一个产品来说，全部不是瓶颈。
+        - text: 当这些成为瓶颈的那天，你已经成功了。
+    - generic [ref=e128]:
+      - generic [ref=e129]: 三、AI编码工具矩阵
+      - heading "2026年5月工具全景" [level=2] [ref=e130]
+      - paragraph [ref=e131]: 选好方向和基础设施后，进入核心问题：用哪个AI工具写代码？
+      - table [ref=e133]:
+        - rowgroup [ref=e134]:
+          - row "工具 定位 最适合 月费用" [ref=e135]:
+            - columnheader "工具" [ref=e136]
+            - columnheader "定位" [ref=e137]
+            - columnheader "最适合" [ref=e138]
+            - columnheader "月费用" [ref=e139]
+        - rowgroup [ref=e140]:
+          - row "Trae 字节跳动出品，中文原生支持 国内开发者，小程序场景 免费/¥199 Pro" [ref=e141]:
+            - cell "Trae" [ref=e142]:
+              - strong [ref=e143]: Trae
+            - cell "字节跳动出品，中文原生支持" [ref=e144]
+            - cell "国内开发者，小程序场景" [ref=e145]
+            - cell "免费/¥199 Pro" [ref=e146]
+          - row "Cursor AI-first IDE，项目级上下文理解 深度理解代码库的日常开发 $20 Pro / $40 Business" [ref=e147]:
+            - cell "Cursor" [ref=e148]:
+              - strong [ref=e149]: Cursor
+            - cell "AI-first IDE，项目级上下文理解" [ref=e150]
+            - cell "深度理解代码库的日常开发" [ref=e151]
+            - cell "$20 Pro / $40 Business" [ref=e152]
+          - row "GitHub Copilot IDE自动补全鼻祖，生态最成熟 已有GitHub工作流 $10 Individual" [ref=e153]:
+            - cell "GitHub Copilot" [ref=e154]:
+              - strong [ref=e155]: GitHub Copilot
+            - cell "IDE自动补全鼻祖，生态最成熟" [ref=e156]
+            - cell "已有GitHub工作流" [ref=e157]
+            - cell "$10 Individual" [ref=e158]
+          - row "Claude Code 终端CLI代理，自主执行能力最强 自动化脚本、测试生成、复杂重构 按token用量" [ref=e159]:
+            - cell "Claude Code" [ref=e160]:
+              - strong [ref=e161]: Claude Code
+            - cell "终端CLI代理，自主执行能力最强" [ref=e162]
+            - cell "自动化脚本、测试生成、复杂重构" [ref=e163]
+            - cell "按token用量" [ref=e164]
+          - row "Codex OpenAI终端编码代理，开源 长任务自主执行、研究型编码 按token用量" [ref=e165]:
+            - cell "Codex" [ref=e166]:
+              - strong [ref=e167]: Codex
+            - cell "OpenAI终端编码代理，开源" [ref=e168]
+            - cell "长任务自主执行、研究型编码" [ref=e169]
+            - cell "按token用量" [ref=e170]
+      - generic [ref=e171]:
+        - generic [ref=e172]:
+          - heading "1. Trae — 国内OPC的首选IDE" [level=4] [ref=e173]
+          - generic [ref=e174]: 字节跳动2025年推出，中文原生支持碾压所有竞品
+          - paragraph [ref=e175]:
+            - strong [ref=e176]: 核心竞争力：
+            - text: 对中文技术文档、微信小程序开发、国内云服务（阿里云/腾讯云）的生态集成远超海外工具。
+          - paragraph [ref=e177]:
+            - strong [ref=e178]: 典型场景：
+            - text: 用中文描述"做一个微信小程序登录页"，Trae能直接生成符合微信规范的完整代码。
+          - paragraph [ref=e179]:
+            - strong [ref=e180]: 弱点：
+            - text: 海外服务（Vercel/Stripe/Supabase）的集成经验不如Cursor和GitHub Copilot丰富。
+          - generic [ref=e181]: 基础版免费 · Pro ¥199/月
+          - link "查看完整教程 →" [ref=e183] [cursor=pointer]:
+            - /url: /nodes/06-ai-dev-tools/trae/index.html
+        - generic [ref=e184]:
+          - heading "2. Cursor — 技术型OPC的日常主力" [level=4] [ref=e185]
+          - generic [ref=e186]: AI IDE品类综合体验最好，"AI搭档"而非补全工具
+          - paragraph [ref=e187]:
+            - strong [ref=e188]: 核心竞争力：
+            - text: Tab补全快如闪电（100ms级）+ Composer多文件编辑 + 项目级上下文（自动索引整个项目结构）。
+          - paragraph [ref=e189]:
+            - strong [ref=e190]: 代理模式：
+            - text: Cursor Agent可以接收自然语言指令，自主完成"找文件→理解逻辑→多文件修改→运行测试→修复错误"的完整链路。
+          - paragraph [ref=e191]:
+            - strong [ref=e192]: 最大特色：
+            - code [ref=e193]: .cursorrules
+            - text: 文件让你定义项目级AI行为准则，相当于给你的AI搭档写了一本"员工手册"。
+          - generic [ref=e194]: Pro $20/月 · Business $40/月
+          - link "查看完整教程 →" [ref=e196] [cursor=pointer]:
+            - /url: /nodes/06-ai-dev-tools/cursor/index.html
+        - generic [ref=e197]:
+          - heading "3. GitHub Copilot — 最安全的选择" [level=4] [ref=e198]
+          - generic [ref=e199]: Microsoft出品，嵌入VS Code生态，"绝对不会错"
+          - paragraph [ref=e200]:
+            - strong [ref=e201]: 核心竞争力：
+            - text: 代码补全准确率行业最高（尤其TypeScript/JavaScript/Python），企业级代码安全扫描内置。
+          - paragraph [ref=e202]:
+            - strong [ref=e203]: Copilot Chat：
+            - text: 在IDE内直接对话，可以选中代码问"这段为什么慢"。
+          - paragraph [ref=e204]:
+            - strong [ref=e205]: 弱点：
+            - text: 代理能力弱于Cursor和Claude Code，只能做单文件级别的修改，做不到跨文件的自主重构。
+          - generic [ref=e206]: Individual $10/月
+          - link "查看完整教程 →" [ref=e208] [cursor=pointer]:
+            - /url: /nodes/06-ai-dev-tools/github-copilot/index.html
+        - generic [ref=e209]:
+          - heading "4. Claude Code — 最聪明的\"外包工程师\"" [level=4] [ref=e210]
+          - generic [ref=e211]: Anthropic出品终端CLI工具，"雇的一个全天候远程工程师"
+          - paragraph [ref=e212]:
+            - strong [ref=e213]: 核心竞争力：
+            - text: 超长上下文（200K token），能一次性理解整个中型项目的代码结构、数据库Schema、API路由之间的全部关系。
+          - paragraph [ref=e214]:
+            - strong [ref=e215]: 自主执行：
+            - text: 可以接收"把这个项目的支付模块从Stripe迁移到微信支付"这种级别的指令，自己规划步骤、执行、测试、修复，整个过程可能持续30分钟以上。
+          - generic [ref=e216]: 按token用量计费 · Max $200/月
+          - link "查看完整教程 →" [ref=e218] [cursor=pointer]:
+            - /url: /nodes/06-ai-dev-tools/claude-code/index.html
+        - generic [ref=e219]:
+          - heading "5. Codex — 开源生态的终端代理" [level=4] [ref=e220]
+          - generic [ref=e221]: OpenAI维护开源项目，非商业用途完全免费
+          - paragraph [ref=e222]:
+            - strong [ref=e223]: 核心竞争力：
+            - text: 开源（代码完全可见，可以自己部署到私有环境），非商业用途完全免费，通过API调用各种模型（不绑单一模型供应商）。
+          - paragraph [ref=e224]:
+            - strong [ref=e225]: 典型场景：
+            - text: "\"帮我在Supabase上建一个用户表，包含邮箱、密码哈希、创建时间三个字段，然后生成React前端登录组件\"——Codex能自主执行完整链路。"
+          - generic [ref=e226]: 免费开源 · 只需支付模型API费用
+          - link "查看完整教程 →" [ref=e228] [cursor=pointer]:
+            - /url: /nodes/06-ai-dev-tools/openrouter/index.html
+    - generic [ref=e229]:
+      - generic [ref=e230]: 四、三条实战路径
+      - heading "按技术水平选择" [level=2] [ref=e231]
+      - generic [ref=e232]:
+        - generic [ref=e233]:
+          - generic [ref=e234]: 路径一
+          - generic [ref=e235]: 零基础 / 只懂产品
+        - generic [ref=e236]: 核心工具：Trae + Supabase
+        - paragraph [ref=e237]:
+          - strong [ref=e238]: 为什么：
+          - text: Trae对中文理解最好，可以用大白话描述需求；Supabase让你完全不用碰服务器。学习曲线：从注册Trae到看到第一个页面，约30分钟。
+        - generic [ref=e239]:
+          - strong [ref=e240]: OPC实战工作流：
+          - strong [ref=e241]: 周一上午：
+          - text: 在Trae中新建项目，用300字中文描述你的产品（它叫什么、核心功能是什么、用户从哪里来）
+          - strong [ref=e242]: 周一下午：
+          - text: Trae生成第一个页面。用自然语言调整："这个按钮不够大，改成首页居中，颜色换成#C0392B"
+          - strong [ref=e243]: 周二：
+          - text: 在Supabase建一个表（完全图形化操作，不需要写SQL），告诉Trae"帮我连接这个数据库，做一个可以读取数据并展示的页面"
+          - strong [ref=e244]: 周三：
+          - text: 部署到线上。把代码推到GitHub，连上Vercel，自动上线
+      - generic [ref=e245]:
+        - generic [ref=e246]:
+          - generic [ref=e247]: 路径二
+          - generic [ref=e248]: 会一点基础 / 理解变量和函数
+        - generic [ref=e249]: 核心工具：Cursor + GitHub Copilot
+        - paragraph [ref=e250]:
+          - strong [ref=e251]: 为什么：
+          - text: Cursor的项目理解能力能帮你维护2-3个页面的完整应用；GitHub Copilot的自动补全让你写代码像在填表。两者的价格加起来$30/月，这是你唯一的"人力成本"。
+        - generic [ref=e252]:
+          - strong [ref=e253]: 关键习惯：
+          - text: "1."
+          - strong [ref=e254]:
+            - text: 建一个
+            - code [ref=e255]: architecture.md
+          - text: ，放入项目根目录。用中文写清楚：这个项目有几个页面、数据库有哪些表、核心逻辑是什么。让Cursor每次都读这个文件作为上下文。
+          - text: "2."
+          - strong [ref=e256]: 每次改完代码让AI写commit message：
+          - text: "\"帮我总结这次的改动，写一条git commit message\""
+          - text: "3."
+          - strong [ref=e257]: 遇到bug先截图，
+          - text: 把截图+报错信息一起扔给Cursor："这个页面点击按钮后报了这个错，帮我修"
+      - generic [ref=e258]:
+        - generic [ref=e259]:
+          - generic [ref=e260]: 路径三
+          - generic [ref=e261]: 有经验的开发者
+        - generic [ref=e262]: 核心工具：Cursor + Claude Code + Codex
+        - paragraph [ref=e263]:
+          - strong [ref=e264]: 为什么三件套：
+          - text: Cursor做日常开发（写功能、改UI、调接口）；Claude Code做重型任务（数据库迁移、批量重构、生成测试）；Codex做补充和探索（新想法快速验证、开源工具链集成）。
+        - generic [ref=e265]:
+          - strong [ref=e266]: 周工作流示例：
+          - strong [ref=e267]: 周一：
+          - text: Cursor里用中文写本周的spec文档，让Cursor扫描全项目，给出一份"本周可执行任务清单"
+          - strong [ref=e268]: 周二上午：
+          - text: Cursor执行3-4个小任务（用户反馈的bug、UI微调）
+          - strong [ref=e269]: 周二下午：
+          - text: Claude Code执行数据库迁移任务（"把用户表的phone字段拆成country_code和phone_number两个字段，同步更新所有相关API和前端组件"）
+          - strong [ref=e270]: 周三：
+          - text: Codex探索一个新想法（"帮我在新分支上创建一个WebSocket实时通知的原型"），验证可行后合并
+          - strong [ref=e271]: 周五：
+          - text: Cursor扫描本周所有commit，自动生成周报
+    - generic [ref=e272]:
+      - generic [ref=e273]: 五、技术可行性验证
+      - heading "只验证\"唯一的那个东西\"" [level=2] [ref=e274]
+      - paragraph [ref=e275]: 工具选得再好，也得先验证——你的核心功能在技术上能不能实现。
+      - paragraph [ref=e276]: OPC在验证阶段最容易犯的错：先做登录系统、用户权限、后台管理、设置页面……然后累死在半路上。
+      - paragraph [ref=e277]:
+        - strong [ref=e278]: 验证阶段只需要验证一件事：
+        - text: 你的产品核心算法/逻辑，能不能把输入变成输出。
+      - table [ref=e280]:
+        - rowgroup [ref=e281]:
+          - row "该做的 不该做的" [ref=e282]:
+            - columnheader "该做的" [ref=e283]
+            - columnheader "不该做的" [ref=e284]
+        - rowgroup [ref=e285]:
+          - row "一个上传按钮 + 分析函数 + 结果展示 完整的用户登录系统" [ref=e286]:
+            - cell "一个上传按钮 + 分析函数 + 结果展示" [ref=e287]
+            - cell "完整的用户登录系统" [ref=e288]
+          - row "一段能把中文问题翻译成SQL的提示词 用户角色权限管理" [ref=e289]:
+            - cell "一段能把中文问题翻译成SQL的提示词" [ref=e290]
+            - cell "用户角色权限管理" [ref=e291]
+          - row "30行Python验证推荐算法准确率 后台CMS管理系统" [ref=e292]:
+            - cell "30行Python验证推荐算法准确率" [ref=e293]
+            - cell "后台CMS管理系统" [ref=e294]
+      - heading "\"人造现实\"验证法：用造假装一个真的" [level=3] [ref=e295]
+      - paragraph [ref=e296]: 不需要先构建完整后端。用这三个递进层次：
+      - generic [ref=e297]:
+        - generic [ref=e298]:
+          - heading "L1：录屏原型（半天）" [level=4] [ref=e299]
+          - paragraph [ref=e300]: 用任何录屏工具录一段操作演示。发给目标用户问："如果你有这个，你会用吗？"——零代码验证需求。
+        - generic [ref=e301]:
+          - heading "L2：硬编码响应（一天）" [level=4] [ref=e302]
+          - paragraph [ref=e303]: 前端做完整，但后端所有返回值都是写死的。用户点击"分析"，永远返回同一份模拟结果。验证的是交互流程。
+        - generic [ref=e304]:
+          - heading "L3：绿野仙踪模式（两天）" [level=4] [ref=e305]
+          - paragraph [ref=e306]: 前端完整 + 用户提交后你手动用AI处理 + 粘贴结果回去。在用户看来系统是"自动"的，实际你是幕后的法师。
+      - heading "72小时微型实验" [level=3] [ref=e307]
+      - paragraph [ref=e308]:
+        - text: •
+        - strong [ref=e309]: 招募：
+        - text: 5-10个正在经历你解决的问题的人（不是"对品类感兴趣的"，是"现在就在痛"的）
+        - text: •
+        - strong [ref=e310]: 观察：
+        - text: 不要问"你觉得怎么样"，而是看——他能不能不问你就理解第一步操作？有没有出现超过10秒的停滞？
+        - text: •
+        - strong [ref=e311]: 边界：
+        - text: 72小时，5-15人，一个核心行为完成率。这是OPC最残酷也最诚实的验证边界。
+      - heading "硬核停止指标" [level=3] [ref=e312]
+      - table [ref=e314]:
+        - rowgroup [ref=e315]:
+          - row "指标 红线 达标行动" [ref=e316]:
+            - columnheader "指标" [ref=e317]
+            - columnheader "红线" [ref=e318]
+            - columnheader "达标行动" [ref=e319]
+        - rowgroup [ref=e320]:
+          - row "无干预完成率 ≥80%（5人至少4人独立完成核心动作） 不达标 → 重新设计交互" [ref=e321]:
+            - cell "无干预完成率" [ref=e322]
+            - cell "≥80%（5人至少4人独立完成核心动作）" [ref=e323]
+            - cell "不达标 → 重新设计交互" [ref=e324]
+          - row "单位毛利 API调用成本 < 目标售价的30% 不达标 → 技术路线失败，换方案" [ref=e325]:
+            - cell "单位毛利" [ref=e326]
+            - cell "API调用成本 < 目标售价的30%" [ref=e327]
+            - cell "不达标 → 技术路线失败，换方案" [ref=e328]
+          - row "响应延迟 核心功能返回 < 3秒（非实时场景） 超时 → 优化或换技术方案" [ref=e329]:
+            - cell "响应延迟" [ref=e330]
+            - cell "核心功能返回 < 3秒（非实时场景）" [ref=e331]
+            - cell "超时 → 优化或换技术方案" [ref=e332]
+      - paragraph [ref=e334]:
+        - strong [ref=e335]: 如果三条标准全部通过
+        - text: → 验证通过，可以进入MVP开发
+        - strong [ref=e336]: 有任何一条不过
+        - text: → 果断终止。沉没成本不是继续的理由。
+    - generic [ref=e337]:
+      - generic [ref=e338]: 六、工具订阅成本控制
+      - heading "用\"将军思维\"管理工具成本" [level=2] [ref=e339]
+      - paragraph [ref=e340]: 2026年AI工具订阅很容易月支出超过$200。OPC需要用"将军思维"管理工具成本。
+      - table [ref=e342]:
+        - rowgroup [ref=e343]:
+          - row "工具层级 策略 示例" [ref=e344]:
+            - columnheader "工具层级" [ref=e345]
+            - columnheader "策略" [ref=e346]
+            - columnheader "示例" [ref=e347]
+        - rowgroup [ref=e348]:
+          - row "核心常驻 始终订阅，每月固定 Cursor Pro $20/月" [ref=e349]:
+            - cell "核心常驻" [ref=e350]
+            - cell "始终订阅，每月固定" [ref=e351]
+            - cell "Cursor Pro $20/月" [ref=e352]
+          - row "按需开启 只在特定阶段订阅一个月 需要快速原型时开一个月GitHub Copilot" [ref=e353]:
+            - cell "按需开启" [ref=e354]
+            - cell "只在特定阶段订阅一个月" [ref=e355]
+            - cell "需要快速原型时开一个月GitHub Copilot" [ref=e356]
+          - row "按量付费 用多少付多少 Claude Code按token、Supabase超出免费额度部分" [ref=e357]:
+            - cell "按量付费" [ref=e358]
+            - cell "用多少付多少" [ref=e359]
+            - cell "Claude Code按token、Supabase超出免费额度部分" [ref=e360]
+          - row "免费替代 能用免费版绝不付费 Trae基础版、Codex开源版" [ref=e361]:
+            - cell "免费替代" [ref=e362]
+            - cell "能用免费版绝不付费" [ref=e363]
+            - cell "Trae基础版、Codex开源版" [ref=e364]
+      - paragraph [ref=e366]:
+        - strong [ref=e367]: 成本红线：
+        - text: OPC的前六个月，总工具成本控制在
+        - strong [ref=e368]: ¥300/月
+        - text: 以内。超过这个数，说明你可能在为"感觉很厉害"的工具付费，而不是为"真正创造收入"的工具付费。
+      - heading "每季度审查" [level=3] [ref=e369]
+      - paragraph [ref=e370]:
+        - text: 每三个月问自己：
+        - text: • 这个工具我上月打开了几次？
+        - text: • 如果停用它，有什么是其他工具做不到的？
+        - text: • 它的免费版/替代品现在能做到什么程度？
+    - generic [ref=e371]:
+      - generic [ref=e372]: 七、工具绑定风险与迁移预案
+      - heading "最大的风险：你根本不知道你的应用怎么跑起来的" [level=2] [ref=e373]
+      - paragraph [ref=e374]: 2026年有大量"描述即生成"的工具。危险在于——它们在让你30分钟做出一个产品的同时，也让你对产品的技术细节完全失明。
+      - paragraph [ref=e375]:
+        - strong [ref=e376]: 真实案例：
+        - text: 2025年底，某OPC用AI工具生成了一整套SaaS后端。半年后想迁移到自建服务器，发现数据库结构全嵌在平台私有方案里，迁移成本几乎等于重写。
+      - heading "防锁死三原则" [level=3] [ref=e377]
+      - generic [ref=e378]:
+        - generic [ref=e379]:
+          - generic [ref=e380]: 原则一
+          - generic [ref=e381]: 第一天就下指令
+        - paragraph [ref=e382]: 在任何AI工具中，第一次让它生成代码时就加上这段话：
+        - generic [ref=e383]: "\"请用标准、通用的方案实现。数据库请用PostgreSQL标准SQL语法，鉴权请用JWT标准方案，避免任何平台专属函数或私有API。\""
+      - generic [ref=e384]:
+        - generic [ref=e385]:
+          - generic [ref=e386]: 原则二
+          - generic [ref=e387]: 理解核心流程
+        - paragraph [ref=e388]: 不用会写，但要会读。每周挑一段AI生成的业务逻辑代码，用Cursor的"解释这段代码"功能理解它。你不需要成为程序员，但需要能在出问题时，用一句话准确描述问题给AI。
+      - generic [ref=e389]:
+        - generic [ref=e390]:
+          - generic [ref=e391]: 原则三
+          - generic [ref=e392]: 保持数据主权
+        - paragraph [ref=e393]:
+          - text: • 数据库用Supabase（开源，随时可以导出标准SQL）
+          - text: • 代码托管在GitHub（你拥有完整的git历史）
+          - text: • 域名在你自己的注册商手里（不要用平台送的临时域名）
+          - text: • 不要在任何单一平台上同时绑定代码、数据库和域名
+    - generic [ref=e394]:
+      - generic [ref=e395]: 八、国内OPC网络现实
+      - heading "海外服务连接方案" [level=2] [ref=e396]
+      - generic [ref=e397]:
+        - heading "第一道门槛不是代码，是网络" [level=4] [ref=e398]
+        - paragraph [ref=e399]: 以下基于2026年5月中国大陆实际网络环境。
+      - heading "基础设施可达性" [level=3] [ref=e400]
+      - table [ref=e402]:
+        - rowgroup [ref=e403]:
+          - row "服务 直连可用？ 说明" [ref=e404]:
+            - columnheader "服务" [ref=e405]
+            - columnheader "直连可用？" [ref=e406]
+            - columnheader "说明" [ref=e407]
+        - rowgroup [ref=e408]:
+          - row "Supabase Cloud × 不稳定 托管于AWS海外节点，国内访问延迟高、不稳定" [ref=e409]:
+            - cell "Supabase Cloud" [ref=e410]
+            - cell "× 不稳定" [ref=e411]
+            - cell "托管于AWS海外节点，国内访问延迟高、不稳定" [ref=e412]
+          - row "Vercel ⚠ 偶尔可用 海外CDN，国内部分地区可访问" [ref=e413]:
+            - cell "Vercel" [ref=e414]
+            - cell "⚠ 偶尔可用" [ref=e415]
+            - cell "海外CDN，国内部分地区可访问" [ref=e416]
+          - row "GitHub ⚠ 间歇性波动 代码托管服务存在访问波动，推送/拉取可能中断" [ref=e417]:
+            - cell "GitHub" [ref=e418]
+            - cell "⚠ 间歇性波动" [ref=e419]
+            - cell "代码托管服务存在访问波动，推送/拉取可能中断" [ref=e420]
+          - row "npm / pip ⚠ 速度偏慢 建议配置国内镜像源" [ref=e421]:
+            - cell "npm / pip" [ref=e422]
+            - cell "⚠ 速度偏慢" [ref=e423]
+            - cell "建议配置国内镜像源" [ref=e424]
+      - heading "AI编码工具网络实测" [level=3] [ref=e425]
+      - table [ref=e427]:
+        - rowgroup [ref=e428]:
+          - row "工具 海外服务依赖 直连体验 建议" [ref=e429]:
+            - columnheader "工具" [ref=e430]
+            - columnheader "海外服务依赖" [ref=e431]
+            - columnheader "直连体验" [ref=e432]
+            - columnheader "建议" [ref=e433]
+        - rowgroup [ref=e434]:
+          - row "Trae × 不依赖 ✓ 流畅 国内服务器，无需额外配置，国内OPC首选" [ref=e435]:
+            - cell "Trae" [ref=e436]
+            - cell "× 不依赖" [ref=e437]
+            - cell "✓ 流畅" [ref=e438]
+            - cell "国内服务器，无需额外配置，国内OPC首选" [ref=e439]
+          - row "GitHub Copilot ⚠ 需要访问海外服务 ⚠ 不稳定 认证和API依赖海外节点" [ref=e440]:
+            - cell "GitHub Copilot" [ref=e441]
+            - cell "⚠ 需要访问海外服务" [ref=e442]
+            - cell "⚠ 不稳定" [ref=e443]
+            - cell "认证和API依赖海外节点" [ref=e444]
+          - row "Cursor ⚠ 模型API在海外 ⚠ 延迟高 补全请求走海外线路，建议搭配网络优化" [ref=e445]:
+            - cell "Cursor" [ref=e446]
+            - cell "⚠ 模型API在海外" [ref=e447]
+            - cell "⚠ 延迟高" [ref=e448]
+            - cell "补全请求走海外线路，建议搭配网络优化" [ref=e449]
+          - row "Claude Code ⚠ Anthropic API在海外 × 不可用 需要配合海外服务访问" [ref=e450]:
+            - cell "Claude Code" [ref=e451]
+            - cell "⚠ Anthropic API在海外" [ref=e452]
+            - cell "× 不可用" [ref=e453]
+            - cell "需要配合海外服务访问" [ref=e454]
+          - row "Codex ⚠ OpenAI API在海外 × 不可用 需要配合海外服务访问" [ref=e455]:
+            - cell "Codex" [ref=e456]
+            - cell "⚠ OpenAI API在海外" [ref=e457]
+            - cell "× 不可用" [ref=e458]
+            - cell "需要配合海外服务访问" [ref=e459]
+      - heading "OPC实战建议" [level=3] [ref=e460]
+      - generic [ref=e461]:
+        - generic [ref=e462]:
+          - generic [ref=e463]: 方案A
+          - generic [ref=e464]: 国内OPC首选
+        - paragraph [ref=e465]:
+          - text: 日常开发用
+          - strong [ref=e466]: Trae
+          - text: （免费+流畅），搭配
+          - strong [ref=e467]: Gitee
+          - text: （代码托管）+
+          - strong [ref=e468]: 阿里云/腾讯云部署
+          - text: +
+          - strong [ref=e469]: 自建Supabase
+          - text: ，完全走国内生态完成从开发到上线的全流程。
+      - generic [ref=e470]:
+        - generic [ref=e471]:
+          - generic [ref=e472]: 方案B
+          - generic [ref=e473]: 有能力优化海外网络
+        - paragraph [ref=e474]:
+          - strong [ref=e475]: Cursor + Claude Code + Supabase Cloud + GitHub + Vercel
+          - text: 是能力最强的技术栈组合，但前提是你能为开发环境提供稳定的海外网络连接。这类方案的技术细节不在本文讨论范围，建议自行了解。
+      - generic [ref=e476]:
+        - generic [ref=e477]:
+          - generic [ref=e478]: 折中方案
+          - generic [ref=e479]: 推荐
+        - paragraph [ref=e480]:
+          - text: 日常开发用
+          - strong [ref=e481]: Trae
+          - text: （免费+流畅），遇到跨文件重构、测试生成等复杂任务时切换到
+          - strong [ref=e482]: Claude Code
+          - text: 按量使用（用完即关），代码同时推送到
+          - strong [ref=e483]: GitHub
+          - text: 和
+          - strong [ref=e484]: Gitee
+          - text: 形成双备份。这种组合兼顾了日常效率和关键时刻的能力上限。
+      - paragraph [ref=e486]:
+        - strong [ref=e487]: 预算提醒：
+        - text: 如果你选择了依赖海外服务的工具链，请把
+        - strong [ref=e488]: 网络优化成本
+        - text: 纳入月度预算（市场行情约 ¥30–100/月）。这属于开发环境的基础设施支出，和订阅工具的费用一样是合理的经营成本。
+    - generic [ref=e489]:
+      - heading "选型四步法" [level=3] [ref=e490]
+      - list [ref=e491]:
+        - listitem [ref=e492]: 先定平台（Web优先）
+        - listitem [ref=e493]: 再定后端（Supabase）
+        - listitem [ref=e494]: 匹配工具（按技术水平选路径）
+        - listitem [ref=e495]: 验证可行性（72小时，5个人）
+      - paragraph [ref=e497]:
+        - strong [ref=e498]: 工具不再是辅助。工具就是你的团队。你唯一的任务是：发出正确的指令。
+  - navigation [ref=e499]:
+    - link "← 节点05：MVP功能清单" [ref=e500] [cursor=pointer]:
+      - /url: /nodes/05-mvp-scope/index.html
+      - generic [ref=e501]: ←
+      - text: 节点05：MVP功能清单
+    - link "节点07：开发环境安装 →" [ref=e502] [cursor=pointer]:
+      - /url: /nodes/07-dev-environment/index.html
+      - text: 节点07：开发环境安装
+      - generic [ref=e503]: →
