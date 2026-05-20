@@ -1,0 +1,548 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "返回首页" [ref=e3] [cursor=pointer]:
+      - /url: /
+      - img [ref=e4]
+      - text: 返回首页
+    - generic [ref=e6]: 45 / 税务全周期
+  - main [ref=e8]:
+    - heading "税务报到与筹划" [level=1] [ref=e9]
+    - paragraph [ref=e10]: 执照到手不是终点——30天内必须报到、数电票时代发票怎么开、每季度申报怎么做、年底如何合法省税。本文覆盖OPC从注册到年度筹划的完整税务周期。
+    - generic [ref=e11]:
+      - heading "一、注册后税务报到：30天倒计时" [level=2] [ref=e12]
+      - heading "法律时限" [level=3] [ref=e13]
+      - paragraph [ref=e14]:
+        - text: 根据《税收征收管理法》，领取营业执照后
+        - strong [ref=e15]: 30日内
+        - text: 必须完成税务报到。实务中，执照下发后电子税务局会自动生成"新办企业待办"任务，要求
+        - strong [ref=e16]: 15日内
+        - text: 登录确认。
+      - heading "报到操作（5分钟完成）" [level=3] [ref=e17]
+      - paragraph [ref=e18]: 2026年"新办智能开业"功能已全国铺开：
+      - list [ref=e19]:
+        - listitem [ref=e20]: 登录各省电子税务局（详见本章附录链接汇总）
+        - listitem [ref=e21]:
+          - text: 系统根据工商登记的经营范围
+          - strong [ref=e22]: 自动预判税种
+        - listitem [ref=e23]:
+          - text: 法定代表人
+          - strong [ref=e24]: 人脸识别确认
+        - listitem [ref=e25]: 一键完成税务登记信息补录
+      - heading "报到时必须确认的四项" [level=3] [ref=e26]
+      - table [ref=e27]:
+        - rowgroup [ref=e28]:
+          - row "事项 说明" [ref=e29]:
+            - columnheader "事项" [ref=e30]
+            - columnheader "说明" [ref=e31]
+        - rowgroup [ref=e32]:
+          - row "法人/财务负责人/办税员实名认证 通过手机APP做人脸识别" [ref=e33]:
+            - cell "法人/财务负责人/办税员实名认证" [ref=e34]
+            - cell "通过手机APP做人脸识别" [ref=e35]
+          - row "存款账户账号报告 绑定公司对公账户（用于退税/扣税）" [ref=e36]:
+            - cell "存款账户账号报告" [ref=e37]
+            - cell "绑定公司对公账户（用于退税/扣税）" [ref=e38]
+          - row "税（费）种认定 系统自动认定增值税、企业所得税等" [ref=e39]:
+            - cell "税（费）种认定" [ref=e40]
+            - cell "系统自动认定增值税、企业所得税等" [ref=e41]
+          - row "发票票种核定 申请数电票授信额度" [ref=e42]:
+            - cell "发票票种核定" [ref=e43]
+            - cell "申请数电票授信额度" [ref=e44]
+      - heading "逾期后果" [level=3] [ref=e45]
+      - list [ref=e46]:
+        - listitem [ref=e47]: 罚款：2000元以下
+        - listitem [ref=e49]: 纳税信用等级降级
+        - listitem [ref=e51]: 发票申领受限
+        - listitem [ref=e53]: 列入经营异常名录
+      - heading "纳税人类型选择" [level=3] [ref=e55]
+      - table [ref=e56]:
+        - rowgroup [ref=e57]:
+          - row "类型 默认 条件 税率" [ref=e58]:
+            - columnheader "类型" [ref=e59]
+            - columnheader "默认" [ref=e60]
+            - columnheader "条件" [ref=e61]
+            - columnheader "税率" [ref=e62]
+        - rowgroup [ref=e63]:
+          - row "小规模纳税人 ✓ 新办默认 — 月销售≤10万免增值税，超过按1%征收" [ref=e64]:
+            - cell "小规模纳税人" [ref=e65]
+            - cell "✓ 新办默认" [ref=e66]
+            - cell "—" [ref=e67]
+            - cell "月销售≤10万免增值税，超过按1%征收" [ref=e68]:
+              - text: 月销售≤10万免增值税，超过按
+              - strong [ref=e69]: 1%
+              - text: 征收
+          - row "一般纳税人 手动申请 年销售额>500万强制认定 6%/9%/13%，可抵扣进项" [ref=e70]:
+            - cell "一般纳税人" [ref=e71]
+            - cell "手动申请" [ref=e72]
+            - cell "年销售额>500万强制认定" [ref=e73]
+            - cell "6%/9%/13%，可抵扣进项" [ref=e74]
+      - paragraph [ref=e76]:
+        - strong [ref=e77]: OPC建议：
+        - text: 保持小规模纳税人，除非客户明确要求13%增值税专用发票。小规模免税额度对绝大多数OPC创业者已经够用。
+    - separator [ref=e78]
+    - generic [ref=e79]:
+      - heading "二、数电票时代：发票怎么开" [level=2] [ref=e80]
+      - heading "什么是数电票" [level=3] [ref=e81]
+      - paragraph [ref=e82]:
+        - strong [ref=e83]: 全面数字化的电子发票
+        - text: 。2026年已全覆盖全国新设企业。不再需要税控盘、不再每月清卡——直接在电子税务局开具，全票种电子化。
+      - heading "与旧版发票的区别" [level=3] [ref=e84]
+      - table [ref=e85]:
+        - rowgroup [ref=e86]:
+          - row "旧版 数电票（2026）" [ref=e87]:
+            - columnheader "旧版" [ref=e88]
+            - columnheader "数电票（2026）" [ref=e89]
+        - rowgroup [ref=e90]:
+          - row "需购买税控盘（¥200-400） 无需任何硬件" [ref=e91]:
+            - cell "需购买税控盘（¥200-400）" [ref=e92]
+            - cell "无需任何硬件" [ref=e93]
+          - row "每月需清卡 自动同步" [ref=e94]:
+            - cell "每月需清卡" [ref=e95]
+            - cell "自动同步" [ref=e96]
+          - row "纸质发票，快递给客户 PDF/XML发送，秒到" [ref=e97]:
+            - cell "纸质发票，快递给客户" [ref=e98]
+            - cell "PDF/XML发送，秒到" [ref=e99]
+          - row "额度固定，申请提额流程复杂 系统根据经营数据动态调整额度" [ref=e100]:
+            - cell "额度固定，申请提额流程复杂" [ref=e101]
+            - cell "系统根据经营数据动态调整额度" [ref=e102]
+      - heading "额度管理" [level=3] [ref=e103]
+      - paragraph [ref=e104]: 系统根据经营数据动态调整授信额度：
+      - list [ref=e105]:
+        - listitem [ref=e106]:
+          - strong [ref=e108]: 连续6个月稳定开票缴税
+          - text: → 自动提额
+        - listitem [ref=e109]:
+          - strong [ref=e111]: 零申报、社保为零但有大额开票
+          - text: → 降额或锁票
+        - listitem [ref=e112]:
+          - strong [ref=e114]: 每月开票金额稳定
+          - text: → 额度保持
+      - heading "开票红线（绝对不能碰）" [level=3] [ref=e115]
+      - paragraph [ref=e116]:
+        - text: 数电票开具后
+        - strong [ref=e117]: 实时同步至税务数字账户
+        - text: ，申报时自动预填开票金额。开票当月必须如实申报，不能递延确认收入。
+      - generic [ref=e118]:
+        - generic [ref=e119]: ⚠ 过票、环开、买票冲成本 = 虚开增值税专用发票罪
+        - paragraph [ref=e120]: 《刑法》第205条。一人公司法定代表人是直接责任人。
+    - separator [ref=e121]
+    - generic [ref=e122]:
+      - heading "三、日常申报：月/季/年做什么" [level=2] [ref=e123]
+      - heading "OPC税务日历" [level=3] [ref=e124]
+      - table [ref=e125]:
+        - rowgroup [ref=e126]:
+          - row "周期 事项 时间 说明" [ref=e127]:
+            - columnheader "周期" [ref=e128]
+            - columnheader "事项" [ref=e129]
+            - columnheader "时间" [ref=e130]
+            - columnheader "说明" [ref=e131]
+        - rowgroup [ref=e132]:
+          - row "每月 个人所得税 次月15日前 法人工资申报，零收入也做零申报" [ref=e133]:
+            - cell "每月" [ref=e134]
+            - cell "个人所得税" [ref=e135]
+            - cell "次月15日前" [ref=e136]
+            - cell "法人工资申报，零收入也做零申报" [ref=e137]
+          - row "每季 增值税 + 企业所得税预缴 1/4/7/10月的15日前 小规模按季度申报增值税" [ref=e138]:
+            - cell "每季" [ref=e139]
+            - cell "增值税 + 企业所得税预缴" [ref=e140]
+            - cell "1/4/7/10月的15日前" [ref=e141]
+            - cell "小规模按季度申报增值税" [ref=e142]
+          - row "每年1-5月 企业所得税汇算清缴 5月31日前 多退少补，无论盈亏都要申报" [ref=e143]:
+            - cell "每年1-5月" [ref=e144]
+            - cell "企业所得税汇算清缴" [ref=e145]
+            - cell "5月31日前" [ref=e146]
+            - cell "多退少补，无论盈亏都要申报" [ref=e147]
+          - row "每年3-6月 工商年报 6月30日前 公示出资、资产负债等（不属于税务但同期必做）" [ref=e148]:
+            - cell "每年3-6月" [ref=e149]
+            - cell "工商年报" [ref=e150]
+            - cell "6月30日前" [ref=e151]
+            - cell "公示出资、资产负债等（不属于税务但同期必做）" [ref=e152]
+          - row "每年5月 个税综合所得汇算 6月30日前 个人年度汇算（法人作为个人）" [ref=e153]:
+            - cell "每年5月" [ref=e154]
+            - cell "个税综合所得汇算" [ref=e155]
+            - cell "6月30日前" [ref=e156]
+            - cell "个人年度汇算（法人作为个人）" [ref=e157]
+      - heading "零申报注意事项" [level=3] [ref=e158]
+      - paragraph [ref=e159]: 没有收入也要做零申报。连续6个月零申报会触发系统预警，可能被认定为"非正常户"——建议即使没有业务，每季度至少有一次小额开票记录。
+      - heading "在线申报入口" [level=3] [ref=e160]
+      - table [ref=e161]:
+        - rowgroup [ref=e162]:
+          - row "地区 地址" [ref=e163]:
+            - columnheader "地区" [ref=e164]
+            - columnheader "地址" [ref=e165]
+        - rowgroup [ref=e166]:
+          - row "全国统一 国家税务总局12366纳税服务平台" [ref=e167]:
+            - cell "全国统一" [ref=e168]
+            - cell "国家税务总局12366纳税服务平台" [ref=e169]:
+              - link "国家税务总局12366纳税服务平台" [ref=e170] [cursor=pointer]:
+                - /url: https://12366.chinatax.gov.cn
+          - row "各省电子税务局 搜索\"XX省电子税务局\"（各省域名不同）" [ref=e171]:
+            - cell "各省电子税务局" [ref=e172]
+            - cell "搜索\"XX省电子税务局\"（各省域名不同）" [ref=e173]
+          - row "自然人电子税务局 etax.chinatax.gov.cn（个税申报）" [ref=e174]:
+            - cell "自然人电子税务局" [ref=e175]
+            - cell "etax.chinatax.gov.cn（个税申报）" [ref=e176]:
+              - link "etax.chinatax.gov.cn" [ref=e177] [cursor=pointer]:
+                - /url: https://etax.chinatax.gov.cn
+              - text: （个税申报）
+          - row "个人所得税APP 各应用商店搜索\"个人所得税\"" [ref=e178]:
+            - cell "个人所得税APP" [ref=e179]
+            - cell "各应用商店搜索\"个人所得税\"" [ref=e180]
+    - separator [ref=e181]
+    - generic [ref=e182]:
+      - heading "四、核心税收优惠：OPC能省多少税" [level=2] [ref=e183]
+      - heading "小微企业所得税优惠（执行至2027年12月31日）" [level=3] [ref=e184]
+      - blockquote [ref=e185]: 年应纳税所得额 ≤ 300万元部分，减按25%计入应纳税所得额，按20%税率缴纳。
+      - paragraph [ref=e186]:
+        - text: 翻译：
+        - strong [ref=e187]: 实际税负仅5%。
+      - table [ref=e188]:
+        - rowgroup [ref=e189]:
+          - row "年利润 企业所得税 税后利润" [ref=e190]:
+            - columnheader "年利润" [ref=e191]
+            - columnheader "企业所得税" [ref=e192]
+            - columnheader "税后利润" [ref=e193]
+        - rowgroup [ref=e194]:
+          - row "10万 ¥5,000 ¥95,000" [ref=e195]:
+            - cell "10万" [ref=e196]
+            - cell "¥5,000" [ref=e197]
+            - cell "¥95,000" [ref=e198]
+          - row "50万 ¥25,000 ¥475,000" [ref=e199]:
+            - cell "50万" [ref=e200]
+            - cell "¥25,000" [ref=e201]
+            - cell "¥475,000" [ref=e202]
+          - row "100万 ¥50,000 ¥950,000" [ref=e203]:
+            - cell "100万" [ref=e204]
+            - cell "¥50,000" [ref=e205]
+            - cell "¥950,000" [ref=e206]
+          - row "200万 ¥100,000 ¥1,900,000" [ref=e207]:
+            - cell "200万" [ref=e208]
+            - cell "¥100,000" [ref=e209]
+            - cell "¥1,900,000" [ref=e210]
+          - row "300万 ¥150,000 ¥2,850,000" [ref=e211]:
+            - cell "300万" [ref=e212]
+            - cell "¥150,000" [ref=e213]
+            - cell "¥2,850,000" [ref=e214]
+          - row "301万 ¥752,500 ¥2,257,500" [ref=e215]:
+            - cell "301万" [ref=e216]:
+              - strong [ref=e217]: 301万
+            - cell "¥752,500" [ref=e218]:
+              - strong [ref=e219]: ¥752,500
+            - cell "¥2,257,500" [ref=e220]:
+              - strong [ref=e221]: ¥2,257,500
+      - generic [ref=e222]:
+        - generic [ref=e223]: ⚠ 300万断崖式跳涨
+        - paragraph [ref=e224]:
+          - text: 注意最后一行：300万以下5%，超过300万
+          - strong [ref=e225]: 全额按25%
+          - text: 。299.9万 → 300.1万，税负从15万跳到75万。这是OPC年底最重要的筹划节点。
+      - heading "个体工商户减半征收（执行至2027年12月31日）" [level=3] [ref=e226]
+      - blockquote [ref=e227]: 年应纳税所得额 ≤ 200万元的部分，减半征收个人所得税。
+      - table [ref=e228]:
+        - rowgroup [ref=e229]:
+          - row "年利润 实际税率 税额" [ref=e230]:
+            - columnheader "年利润" [ref=e231]
+            - columnheader "实际税率" [ref=e232]
+            - columnheader "税额" [ref=e233]
+        - rowgroup [ref=e234]:
+          - row "10万 ~5% ~¥5,000" [ref=e235]:
+            - cell "10万" [ref=e236]
+            - cell "~5%" [ref=e237]
+            - cell "~¥5,000" [ref=e238]
+          - row "50万 ~12% ~¥60,000" [ref=e239]:
+            - cell "50万" [ref=e240]
+            - cell "~12%" [ref=e241]
+            - cell "~¥60,000" [ref=e242]
+          - row "100万 ~14.2% ~¥142,000" [ref=e243]:
+            - cell "100万" [ref=e244]
+            - cell "~14.2%" [ref=e245]
+            - cell "~¥142,000" [ref=e246]
+          - row "200万 ~15.86% ~¥317,000" [ref=e247]:
+            - cell "200万" [ref=e248]
+            - cell "~15.86%" [ref=e249]
+            - cell "~¥317,000" [ref=e250]
+      - heading "增值税小规模纳税人优惠" [level=3] [ref=e251]
+      - table [ref=e252]:
+        - rowgroup [ref=e253]:
+          - row "条件 优惠" [ref=e254]:
+            - columnheader "条件" [ref=e255]
+            - columnheader "优惠" [ref=e256]
+        - rowgroup [ref=e257]:
+          - row "月销售额 ≤ 10万（季 ≤ 30万） 免征增值税" [ref=e258]:
+            - cell "月销售额 ≤ 10万（季 ≤ 30万）" [ref=e259]
+            - cell "免征增值税" [ref=e260]:
+              - strong [ref=e261]: 免征增值税
+          - row "月销售额 > 10万 减按1%征收率" [ref=e262]:
+            - cell "月销售额 > 10万" [ref=e263]
+            - cell "减按1%征收率" [ref=e264]:
+              - text: 减按
+              - strong [ref=e265]: 1%
+              - text: 征收率
+          - row "适用期间 长期有效（政策持续延续）" [ref=e266]:
+            - cell "适用期间" [ref=e267]
+            - cell "长期有效（政策持续延续）" [ref=e268]
+      - heading "六税两费减半" [level=3] [ref=e269]
+      - paragraph [ref=e270]:
+        - text: 资源税、城市维护建设税、房产税、城镇土地使用税、印花税、耕地占用税及教育费附加、地方教育附加——
+        - strong [ref=e271]: 全部减半征收
+        - text: 。执行至2027年12月31日。
+    - separator [ref=e272]
+    - generic [ref=e273]:
+      - heading "五、年度税务筹划：合法省税实操" [level=2] [ref=e274]
+      - heading "筹划起点：主体形式对了吗？" [level=3] [ref=e275]
+      - paragraph [ref=e276]: 在考虑具体操作之前，先确认一件事：你当前的主体形式（个体户/有限公司）在未来12-18个月是否依然最优。
+      - paragraph [ref=e277]:
+        - strong [ref=e278]: 决策口诀：
+      - table [ref=e279]:
+        - rowgroup [ref=e280]:
+          - row "年净利润 最优主体 理由" [ref=e281]:
+            - columnheader "年净利润" [ref=e282]
+            - columnheader "最优主体" [ref=e283]
+            - columnheader "理由" [ref=e284]
+        - rowgroup [ref=e285]:
+          - row "≤ 30万 个体户 实际税率1%-3%，无需强制社保" [ref=e286]:
+            - cell "≤ 30万" [ref=e287]
+            - cell "个体户" [ref=e288]
+            - cell "实际税率1%-3%，无需强制社保" [ref=e289]
+          - row "50-300万（不分红） 有限公司 仅5%企业所得税，分红税可递延" [ref=e290]:
+            - cell "50-300万（不分红）" [ref=e291]
+            - cell "有限公司" [ref=e292]
+            - cell "仅5%企业所得税，分红税可递延" [ref=e293]
+          - row "50-300万（全分红） 个体户 综合税负更低" [ref=e294]:
+            - cell "50-300万（全分红）" [ref=e295]
+            - cell "个体户" [ref=e296]
+            - cell "综合税负更低" [ref=e297]
+          - row "> 300万 业务分拆或转个体户 避开有限公司25%全额税率" [ref=e298]:
+            - cell "> 300万" [ref=e299]
+            - cell "业务分拆或转个体户" [ref=e300]
+            - cell "避开有限公司25%全额税率" [ref=e301]
+      - heading "核心策略一：工资+分红的最优配比" [level=3] [ref=e302]
+      - paragraph [ref=e303]: 你从公司拿钱只有两条合规路径：工资，或者分红。
+      - table [ref=e304]:
+        - rowgroup [ref=e305]:
+          - row "路径 税负 优势" [ref=e306]:
+            - columnheader "路径" [ref=e307]
+            - columnheader "税负" [ref=e308]
+            - columnheader "优势" [ref=e309]
+        - rowgroup [ref=e310]:
+          - row "工资 个税3%-45%累进 可抵扣企业所得税，构建社保权益" [ref=e311]:
+            - cell "工资" [ref=e312]:
+              - strong [ref=e313]: 工资
+            - cell "个税3%-45%累进" [ref=e314]
+            - cell "可抵扣企业所得税，构建社保权益" [ref=e315]
+          - row "分红 5%企税 + 20%个税 = 综合24% 利润可留存公司滚动发展" [ref=e316]:
+            - cell "分红" [ref=e317]:
+              - strong [ref=e318]: 分红
+            - cell "5%企税 + 20%个税 = 综合24%" [ref=e319]
+            - cell "利润可留存公司滚动发展" [ref=e320]
+      - paragraph [ref=e321]:
+        - strong [ref=e322]: 2026年推荐方案：
+        - text: 月工资设
+        - strong [ref=e323]: ¥12,000
+        - text: 作为锚点（年14.4万），覆盖基本扣除和社保。年底根据实际利润开"一人股东会"，形成书面分红决议后再提取。
+      - heading "核心策略二：个人资源合规转化为企业成本" [level=3] [ref=e324]
+      - paragraph [ref=e325]: 这是OPC的独特优势——你既是老板又是员工，个人资产与公司天然高度关联。
+      - generic [ref=e326]:
+        - heading "① 私车公用" [level=4] [ref=e327]
+        - paragraph [ref=e328]: 签订《私车公用租赁协议》，约定租金（¥500-2000/月区间较合理）。公司支付租金后，油费、过路费、停车费可合规入账。月租金≤10万免增值税。
+      - generic [ref=e329]:
+        - heading "② 个人房产办公" [level=4] [ref=e330]
+        - paragraph [ref=e331]: 签订房屋租赁协议，按实际办公面积比例列支。假设月租金¥5000，30%用于办公——公司月付¥1500，年入账成本¥18000。住房出租按10%税率计税，远低于20%分红税率。
+      - generic [ref=e332]:
+        - heading "③ 无形资产授权" [level=4] [ref=e333]
+        - paragraph [ref=e334]: 如果你有软件著作权、商标、专利——授权给公司使用，收取使用费。公司支付使用费→减少应税所得→减少企业所得税。个人收到的使用费按特许权使用费计税（3%-8%），远低于20%分红税率。
+      - heading "核心策略三：年底利润压线方案" [level=3] [ref=e335]
+      - paragraph [ref=e336]: 12月前预估全年利润。如果接近300万阈值：
+      - table [ref=e337]:
+        - rowgroup [ref=e338]:
+          - row "方法 操作" [ref=e339]:
+            - columnheader "方法" [ref=e340]
+            - columnheader "操作" [ref=e341]
+        - rowgroup [ref=e342]:
+          - row "加速折旧 12月31日前采购设备（≤500万），一次性税前扣除" [ref=e343]:
+            - cell "加速折旧" [ref=e344]:
+              - strong [ref=e345]: 加速折旧
+            - cell "12月31日前采购设备（≤500万），一次性税前扣除" [ref=e346]
+          - row "公益捐赠 利润总额12%以内可税前扣除" [ref=e347]:
+            - cell "公益捐赠" [ref=e348]:
+              - strong [ref=e349]: 公益捐赠
+            - cell "利润总额12%以内可税前扣除" [ref=e350]
+          - row "预付费用 预付下年房租、物业费、软件年费" [ref=e351]:
+            - cell "预付费用" [ref=e352]:
+              - strong [ref=e353]: 预付费用
+            - cell "预付下年房租、物业费、软件年费" [ref=e354]
+          - row "工资奖金 12月给自己发年终奖（在次年汇算前发放即算当年成本）" [ref=e355]:
+            - cell "工资奖金" [ref=e356]:
+              - strong [ref=e357]: 工资奖金
+            - cell "12月给自己发年终奖（在次年汇算前发放即算当年成本）" [ref=e358]
+      - heading "两大致命陷阱" [level=3] [ref=e359]
+      - generic [ref=e360]:
+        - generic [ref=e361]: 陷阱①
+        - paragraph [ref=e362]: 12月31日"其他应收款-股东借款"科目如有余额 → 视同分红，补缴20%个税。每年12月31日前必须彻底清理。
+      - generic [ref=e363]:
+        - generic [ref=e364]: 陷阱②
+        - paragraph [ref=e365]: 公私账户混同。个人微信/支付宝长期收取公司款项 → 金税四期直接触发预警。
+    - separator [ref=e366]
+    - generic [ref=e367]:
+      - heading "六、代理记账：自己报还是找人报" [level=2] [ref=e368]
+      - heading "三种方案对比" [level=3] [ref=e369]
+      - table [ref=e370]:
+        - rowgroup [ref=e371]:
+          - row "方案 月成本 适合" [ref=e372]:
+            - columnheader "方案" [ref=e373]
+            - columnheader "月成本" [ref=e374]
+            - columnheader "适合" [ref=e375]
+        - rowgroup [ref=e376]:
+          - row "自己报 ¥0 + 大量时间 有时间、有兴趣、业务极简" [ref=e377]:
+            - cell "自己报" [ref=e378]:
+              - strong [ref=e379]: 自己报
+            - cell "¥0 + 大量时间" [ref=e380]
+            - cell "有时间、有兴趣、业务极简" [ref=e381]
+          - row "代理记账公司 ¥200-400/月 绝大多数OPC的推荐方案" [ref=e382]:
+            - cell "代理记账公司" [ref=e383]:
+              - strong [ref=e384]: 代理记账公司
+            - cell "¥200-400/月" [ref=e385]
+            - cell "绝大多数OPC的推荐方案" [ref=e386]
+          - row "兼职会计 ¥500-1000/月 业务较复杂，需要面对面沟通" [ref=e387]:
+            - cell "兼职会计" [ref=e388]:
+              - strong [ref=e389]: 兼职会计
+            - cell "¥500-1000/月" [ref=e390]
+            - cell "业务较复杂，需要面对面沟通" [ref=e391]
+      - heading "OPC推荐：代理记账" [level=3] [ref=e392]
+      - paragraph [ref=e393]: 理由：
+      - list [ref=e394]:
+        - listitem [ref=e395]: ¥200-400/月 = 每年¥2400-4800，是最低成本的合规保险
+        - listitem [ref=e397]: 申报错误的责任由代账公司承担（签合同约定）
+        - listitem [ref=e399]: 代账公司熟悉最新政策变化，不需要你自己追
+      - heading "选择代账公司的要点" [level=3] [ref=e401]
+      - list [ref=e402]:
+        - listitem [ref=e403]: 有《代理记账许可证》
+        - listitem [ref=e404]: 合同明确"因代账公司原因导致的税务罚款由其承担"
+        - listitem [ref=e405]: 每月主动汇报申报结果（不要那种只收钱不沟通的）
+        - listitem [ref=e406]: 年底能做一次税务健康检查
+    - separator [ref=e407]
+    - generic [ref=e408]:
+      - heading "七、成本票合规获取" [level=2] [ref=e409]
+      - heading "常见成本票类型" [level=3] [ref=e410]
+      - table [ref=e411]:
+        - rowgroup [ref=e412]:
+          - row "支出 如何获取合规凭证" [ref=e413]:
+            - columnheader "支出" [ref=e414]
+            - columnheader "如何获取合规凭证" [ref=e415]
+        - rowgroup [ref=e416]:
+          - row "房租 房东去税务局代开租金发票（月租金≤10万免增值税）" [ref=e417]:
+            - cell "房租" [ref=e418]:
+              - strong [ref=e419]: 房租
+            - cell "房东去税务局代开租金发票（月租金≤10万免增值税）" [ref=e420]
+          - row "外包/自由职业者 对方去税务局代开劳务发票" [ref=e421]:
+            - cell "外包/自由职业者" [ref=e422]:
+              - strong [ref=e423]: 外包/自由职业者
+            - cell "对方去税务局代开劳务发票" [ref=e424]
+          - row "小额采购 ≤¥500/次可用收据（载明姓名、身份证号、项目、金额）" [ref=e425]:
+            - cell "小额采购" [ref=e426]:
+              - strong [ref=e427]: 小额采购
+            - cell "≤¥500/次可用收据（载明姓名、身份证号、项目、金额）" [ref=e428]
+          - row "差旅 火车票/机票+住宿发票（2026年数电票自动归集）" [ref=e429]:
+            - cell "差旅" [ref=e430]:
+              - strong [ref=e431]: 差旅
+            - cell "火车票/机票+住宿发票（2026年数电票自动归集）" [ref=e432]
+          - row "软件/服务器 电子发票，自动同步至税务数字账户" [ref=e433]:
+            - cell "软件/服务器" [ref=e434]:
+              - strong [ref=e435]: 软件/服务器
+            - cell "电子发票，自动同步至税务数字账户" [ref=e436]
+          - row "办公用品/设备 京东/淘宝企业购，发票自动同步" [ref=e437]:
+            - cell "办公用品/设备" [ref=e438]:
+              - strong [ref=e439]: 办公用品/设备
+            - cell "京东/淘宝企业购，发票自动同步" [ref=e440]
+      - heading "红线" [level=3] [ref=e441]
+      - list [ref=e442]:
+        - listitem [ref=e443]: 买票冲成本 → 虚开增值税发票罪
+        - listitem [ref=e445]: 虚构员工工资 → 个税和企业所得税双重追缴
+        - listitem [ref=e447]: 个人消费开公司发票 → 金税四期自动比对
+    - separator [ref=e449]
+    - generic [ref=e450]:
+      - heading "总纲" [level=2] [ref=e451]
+      - paragraph [ref=e452]:
+        - strong [ref=e453]: OPC税务四层结构：
+      - table [ref=e454]:
+        - rowgroup [ref=e455]:
+          - row "层级 频率 核心" [ref=e456]:
+            - columnheader "层级" [ref=e457]
+            - columnheader "频率" [ref=e458]
+            - columnheader "核心" [ref=e459]
+        - rowgroup [ref=e460]:
+          - row "报到 一次（注册30天内） 税种认定、数电票开通" [ref=e461]:
+            - cell "报到" [ref=e462]:
+              - strong [ref=e463]: 报到
+            - cell "一次（注册30天内）" [ref=e464]
+            - cell "税种认定、数电票开通" [ref=e465]
+          - row "申报 月/季 增值税、个税、企税预缴，零收入也做零申报" [ref=e466]:
+            - cell "申报" [ref=e467]:
+              - strong [ref=e468]: 申报
+            - cell "月/季" [ref=e469]
+            - cell "增值税、个税、企税预缴，零收入也做零申报" [ref=e470]
+          - row "汇算 年 企业所得税年度汇算、个税综合所得汇算" [ref=e471]:
+            - cell "汇算" [ref=e472]:
+              - strong [ref=e473]: 汇算
+            - cell "年" [ref=e474]
+            - cell "企业所得税年度汇算、个税综合所得汇算" [ref=e475]
+          - row "筹划 年（12月前） 利润压线、工资分红配比、成本票查漏补缺" [ref=e476]:
+            - cell "筹划" [ref=e477]:
+              - strong [ref=e478]: 筹划
+            - cell "年（12月前）" [ref=e479]
+            - cell "利润压线、工资分红配比、成本票查漏补缺" [ref=e480]
+      - blockquote [ref=e481]:
+        - text: 税务合规是OPC最低成本的风险管理。金税四期下的原则很简单：
+        - strong [ref=e482]: 每一笔进出对公账户的钱，都有对应的合同、发票或银行回单。
+        - text: 做不到这一条，有限责任保护伞等于没有。
+    - separator [ref=e483]
+    - generic [ref=e484]:
+      - heading "附录：税务线上办理链接汇总" [level=2] [ref=e485]
+      - table [ref=e486]:
+        - rowgroup [ref=e487]:
+          - row "事项 官方地址" [ref=e488]:
+            - columnheader "事项" [ref=e489]
+            - columnheader "官方地址" [ref=e490]
+        - rowgroup [ref=e491]:
+          - row "国家税务总局12366平台 https://12366.chinatax.gov.cn" [ref=e492]:
+            - cell "国家税务总局12366平台" [ref=e493]
+            - cell "https://12366.chinatax.gov.cn" [ref=e494]:
+              - link "https://12366.chinatax.gov.cn" [ref=e495] [cursor=pointer]:
+                - /url: https://12366.chinatax.gov.cn
+          - row "自然人电子税务局（个税） https://etax.chinatax.gov.cn" [ref=e496]:
+            - cell "自然人电子税务局（个税）" [ref=e497]
+            - cell "https://etax.chinatax.gov.cn" [ref=e498]:
+              - link "https://etax.chinatax.gov.cn" [ref=e499] [cursor=pointer]:
+                - /url: https://etax.chinatax.gov.cn
+          - row "个人所得税APP 各应用商店搜索\"个人所得税\"" [ref=e500]:
+            - cell "个人所得税APP" [ref=e501]
+            - cell "各应用商店搜索\"个人所得税\"" [ref=e502]
+          - row "全国增值税发票查验平台 https://inv-veri.chinatax.gov.cn" [ref=e503]:
+            - cell "全国增值税发票查验平台" [ref=e504]
+            - cell "https://inv-veri.chinatax.gov.cn" [ref=e505]:
+              - link "https://inv-veri.chinatax.gov.cn" [ref=e506] [cursor=pointer]:
+                - /url: https://inv-veri.chinatax.gov.cn
+          - row "电子营业执照小程序 微信/支付宝搜索\"电子营业执照\"" [ref=e507]:
+            - cell "电子营业执照小程序" [ref=e508]
+            - cell "微信/支付宝搜索\"电子营业执照\"" [ref=e509]
+          - row "各省电子税务局 搜索\"XX省/市 电子税务局\"" [ref=e510]:
+            - cell "各省电子税务局" [ref=e511]
+            - cell "搜索\"XX省/市 电子税务局\"" [ref=e512]
+          - row "小微企业优惠查询 国家税务总局·政策法规库" [ref=e513]:
+            - cell "小微企业优惠查询" [ref=e514]
+            - cell "国家税务总局·政策法规库" [ref=e515]:
+              - link "国家税务总局·政策法规库" [ref=e516] [cursor=pointer]:
+                - /url: https://www.chinatax.gov.cn/chinatax/n810341/n810755/index.html
+          - row "纳税信用等级查询 各省电子税务局 → 纳税信用" [ref=e517]:
+            - cell "纳税信用等级查询" [ref=e518]
+            - cell "各省电子税务局 → 纳税信用" [ref=e519]
+    - paragraph [ref=e520]: 最后修订：2026年5月9日
+  - navigation [ref=e521]:
+    - link "银行开户" [ref=e522] [cursor=pointer]:
+      - /url: /nodes/44-bank-account/
+      - img [ref=e523]
+      - generic [ref=e525]: 银行开户
+    - generic [ref=e526]: 45 / 57
+    - link "现金流与财务" [ref=e527] [cursor=pointer]:
+      - /url: /nodes/46-cashflow/
+      - generic [ref=e528]: 现金流与财务
+      - img [ref=e529]

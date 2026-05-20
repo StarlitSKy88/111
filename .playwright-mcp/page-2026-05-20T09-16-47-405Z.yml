@@ -1,0 +1,473 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "← 返回首页" [ref=e3] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e4]: ←
+      - text: 返回首页
+    - generic [ref=e5]: 节点 47 / 57
+  - generic: "29"
+  - generic [ref=e7]:
+    - banner [ref=e8]:
+      - generic [ref=e9]:
+        - generic [ref=e10]: 节点 47 · 1-10阶段
+        - heading "企业邮箱搭建" [level=1] [ref=e11]
+        - paragraph [ref=e12]: 公司数字身份的第一步。2026年的企业邮箱不仅是收发工具，更是AI协同办公的入口。
+    - paragraph [ref=e15]: 「邮件系统正从传统的信息传递工具，演变为连接业务系统与数据流转的重要基础设施。」
+    - generic [ref=e16]:
+      - generic [ref=e17]:
+        - generic [ref=e18]: 壹
+        - generic [ref=e19]: 本质
+      - heading "企业邮箱：公司法人的数字身份证" [level=2] [ref=e20]
+      - generic [ref=e21]:
+        - generic [ref=e22]:
+          - generic [ref=e23]:
+            - generic [ref=e24]: 法律合规
+            - heading "银行开户、税务申报、电子合同签署的必要条件" [level=3] [ref=e25]
+            - paragraph [ref=e26]:
+              - text: 完成工商注册后，银行开户、税务报到、电子合同平台注册、入驻天猫/亚马逊企业购等场景，都要求提供
+              - strong [ref=e27]: 企业域名邮箱
+              - text: 。个人邮箱会被系统直接判定为"非企业实体申请"并驳回。
+          - generic [ref=e28]:
+            - generic [ref=e29]: 品牌信任
+            - heading "hi@你的公司.com 传递的信号" [level=3] [ref=e30]:
+              - code [ref=e31]: hi@你的公司.com
+              - text: 传递的信号
+            - paragraph [ref=e32]:
+              - text: "\"我不是随时消失的散兵游勇，而是一家受法律约束、立志长久经营的公司。\" 客户收到一封来自"
+              - code [ref=e33]: "@自有域名.com"
+              - text: 的邮件，信任度远超
+              - code [ref=e34]: "@qq.com"
+              - text: 的个人邮箱。
+          - generic [ref=e35]:
+            - generic [ref=e36]: 数据主权
+            - heading "\"公司文件柜\"而非\"个人抽屉\"" [level=3] [ref=e37]
+            - paragraph [ref=e38]: 将公司邮件与个人邮件物理隔离，意味着历史邮件、客户沟通、订单确认全部沉淀在"公司"而非"个人"账户下。引入合伙人时只需移交管理员权限，邮件无缝继承。
+          - generic [ref=e39]:
+            - generic [ref=e40]: 2026新趋势
+            - heading "AI协同办公的第一入口" [level=3] [ref=e41]
+            - paragraph [ref=e42]: 阿里企业邮箱已集成AI写邮件、AI回复、AI多语种翻译功能。腾讯企业邮箱与企业微信深度整合。邮箱不再孤立，是整个办公生态的入口。
+        - generic [ref=e43]:
+          - generic [ref=e44]:
+            - generic [ref=e45]: 2026企业邮箱核心需求变迁
+            - generic [ref=e46]:
+              - generic [ref=e47]: 2023年：基础收发+品牌形象
+              - generic [ref=e48]: 60%
+            - generic [ref=e49]:
+              - generic [ref=e50]: 2025年：安全管控+协同效率
+              - generic [ref=e51]: 82%
+          - generic [ref=e52]:
+            - generic [ref=e53]:
+              - generic [ref=e54]: 免费方案
+              - generic [ref=e55]: 腾讯/阿里企业邮免费版
+            - generic [ref=e56]:
+              - generic [ref=e57]: 年费成本（起步）
+              - generic [ref=e58]: ¥0
+            - generic [ref=e59]:
+              - generic [ref=e60]: 配置耗时
+              - generic [ref=e61]: 20分钟
+            - generic [ref=e62]:
+              - generic [ref=e63]: 最低付费用户数
+              - generic [ref=e64]: 5用户起
+          - generic [ref=e65]:
+            - generic [ref=e66]: 风险提示
+            - paragraph [ref=e67]:
+              - strong [ref=e68]: 因邮箱安全漏洞导致的企业平均损失达128万元。
+              - text: 选择邮箱方案时，安全性是2026年首要考量指标。
+    - separator [ref=e69]
+    - generic [ref=e70]:
+      - generic [ref=e71]:
+        - generic [ref=e72]: 贰
+        - generic [ref=e73]: 决策
+      - heading "2026年企业邮箱三条路径的选择" [level=2] [ref=e74]
+      - generic [ref=e75]:
+        - generic [ref=e76]:
+          - generic [ref=e77]:
+            - generic [ref=e78]: "01"
+            - generic [ref=e79]:
+              - generic [ref=e80]: 国内托管型（免费/低成本）
+              - generic [ref=e81]:
+                - text: 腾讯企业邮/阿里企业邮免费版。绑定自有域名、无限容量（付费版）、微信扫码登录。
+                - strong [ref=e82]: 国内客户为主的首选，零成本起步。
+          - generic [ref=e83]:
+            - generic [ref=e84]: "02"
+            - generic [ref=e85]:
+              - generic [ref=e86]: 国际SaaS型（付费）
+              - generic [ref=e87]: Google Workspace / Microsoft 365。全球送达率最高，附带云端协作工具。适合跨境电商、软件出海，年费约¥400-600/用户。
+          - generic [ref=e88]:
+            - generic [ref=e89]: "03"
+            - generic [ref=e90]:
+              - generic [ref=e91]: 轻量转发型（免费）
+              - generic [ref=e92]:
+                - text: Cloudflare Email Routing。所有发往
+                - code [ref=e93]: "@你的域名.com"
+                - text: 的邮件自动转发至私人Gmail，用Gmail别名发件。适合内测期或咨询顾问，极致轻量。
+          - generic [ref=e94]:
+            - generic [ref=e95]: "04"
+            - generic [ref=e96]:
+              - generic [ref=e97]: 外贸专型（付费）
+              - generic [ref=e98]: 凯方全球邮等全球51个高信誉转发节点，支持外发邮件追踪统计（阅读次数/时间/地点）。适合需要大量发送开发信的外贸企业。
+        - generic [ref=e99]:
+          - generic [ref=e100]:
+            - generic [ref=e101]: 2026年主流方案价格对比
+            - generic [ref=e102]:
+              - generic [ref=e103]: 腾讯企业邮箱（5用户/年）
+              - generic [ref=e104]: ¥950
+            - generic [ref=e105]:
+              - generic [ref=e106]: 阿里企业邮箱标准版（5用户/年）
+              - generic [ref=e107]: ¥600（买1年送1年）
+            - generic [ref=e108]:
+              - generic [ref=e109]: 阿里AI尊享版（5用户/年）
+              - generic [ref=e110]: ¥900
+            - generic [ref=e111]:
+              - generic [ref=e112]: Google Workspace（per user/月）
+              - generic [ref=e113]: ¥70+
+            - generic [ref=e114]:
+              - generic [ref=e115]: 凯方全球邮（5用户/3年）
+              - generic [ref=e116]: ¥895
+          - generic [ref=e117]:
+            - generic [ref=e118]: OPC推荐
+            - paragraph [ref=e119]:
+              - strong [ref=e120]: 国内业务为主
+              - text: → 腾讯企业邮免费版 + 企业微信生态
+              - strong [ref=e121]: 跨境业务为主
+              - text: → Google Workspace
+              - strong [ref=e122]: 极致轻量
+              - text: → Cloudflare转发 + Gmail别名
+              - strong [ref=e123]: 外贸开发信
+              - text: → 凯方全球邮
+    - separator [ref=e124]
+    - generic [ref=e125]:
+      - generic [ref=e126]:
+        - generic [ref=e127]: 叁
+        - generic [ref=e128]: 培育
+      - heading "腾讯企业邮箱：企业微信生态首选" [level=2] [ref=e129]
+      - generic [ref=e130]:
+        - generic [ref=e131]:
+          - generic [ref=e132]:
+            - generic [ref=e133]: 核心优势
+            - heading "与企业微信深度整合" [level=3] [ref=e134]
+            - paragraph [ref=e135]: 在企业微信内可直接收发邮件并转工作群讨论，实现"邮件-即时通讯"无缝切换。管理员在企业微信后台统一管理，邮件直接推送至员工微信。
+          - generic [ref=e136]:
+            - generic [ref=e137]: 免费版限制
+            - heading "每用户空间只有1G，超大附件仅2G" [level=3] [ref=e138]
+            - paragraph [ref=e139]: 免费版功能限制较大，付费版（950元/5用户/年）各方面功能有所提升。离职员工邮箱不能继承——没有微信扫码谁也进不去，这是一个需要注意的痛点。
+          - generic [ref=e140]:
+            - generic [ref=e141]: 安全功能
+            - heading "IP登录限制 + 邮件备份归档 + 微信动态密码" [level=3] [ref=e142]
+            - paragraph [ref=e143]: 智能反垃圾邮件拦截率高达99.97%，支持邮件撤回、分级权限管理、邮件审计追溯。IP登录限制可设置账号访问权限，防止非法登录。
+          - generic [ref=e144]:
+            - generic [ref=e145]: 配置要点
+            - heading "SPF/DKIM/DMARC三项必须全部配置" [level=3] [ref=e146]
+            - paragraph [ref=e147]: 2025年后Google与Microsoft同时收紧了邮件接收策略。未设置三种认证的邮件几乎会被直接归入垃圾箱或遭到硬拒绝。只配置SPF不够——三项全部到位才算合规。
+        - generic [ref=e148]:
+          - code [ref=e150]: // SPF记录（DNS添加TXT记录） v=spf1 include:spf.mail.qq.com ~all // DMARC记录（建议从宽松策略开始） v=DMARC1; p=none; rua=mailto:admin@你的域名.com // 运行1-2周无异常后，改为 v=DMARC1; p=quarantine; rua=mailto:admin@你的域名.com
+          - generic [ref=e151]:
+            - generic [ref=e152]:
+              - generic [ref=e153]: 免费版每用户空间
+              - generic [ref=e154]: 1GB
+            - generic [ref=e155]:
+              - generic [ref=e156]: 付费版（5用户/年）
+              - generic [ref=e157]: ¥950
+            - generic [ref=e158]:
+              - generic [ref=e159]: 超大附件限制
+              - generic [ref=e160]: 2GB（免费）/ 20GB（付费）
+    - separator [ref=e161]
+    - generic [ref=e162]:
+      - generic [ref=e163]:
+        - generic [ref=e164]: 肆
+        - generic [ref=e165]: 培育
+      - heading "阿里企业邮箱：AI赋能 + 钉钉协同" [level=2] [ref=e166]
+      - generic [ref=e167]:
+        - generic [ref=e168]:
+          - generic [ref=e169]:
+            - generic [ref=e170]: 2026年新动态
+            - heading "AI尊享版：AI写邮件、AI回信、AI翻译" [level=3] [ref=e171]
+            - paragraph [ref=e172]: 阿里企业邮箱推出AI尊享版（900元/5用户/年），集成基于阿里自有AI能力的智能功能：AI写信智能润色、AI多语种翻译、邮件网关智能识别。钉钉深度融合，实现企业内外沟通全面提效。
+          - generic [ref=e173]:
+            - generic [ref=e174]: 版本选择
+            - heading "标准版 / 集团版 / AI尊享版 / 信创版" [level=3] [ref=e175]
+            - paragraph [ref=e176]:
+              - strong [ref=e177]: 标准版
+              - text: （600元/5用户/年）：适合初创型及中小型企业。
+              - strong [ref=e178]: AI尊享版
+              - text: （900元/5用户/年）：AI写信+审批+差旅，200G企业网盘。
+              - strong [ref=e179]: 集团版
+              - text: （9500元/100用户/年）：多层级架构管理，适合集团型公司。
+          - generic [ref=e180]:
+            - generic [ref=e181]: 容量对比
+            - heading "与腾讯相比：邮箱容量偏低" [level=3] [ref=e182]
+            - paragraph [ref=e183]: AI尊享版个人邮箱容量32G/用户，云附件32G。标准版个人网盘仅5G/用户，远低于腾讯的无限容量和20G超大附件配置。这是阿里企业邮箱的明显短板。
+          - generic [ref=e184]:
+            - generic [ref=e185]: 全球畅邮
+            - heading "依托阿里云全球化数据中心" [level=3] [ref=e186]
+            - paragraph [ref=e187]: 在欧洲、亚洲、北美多地部署本地物理服务器，支持全球分布式部署。境外邮件送达率有保障。
+        - generic [ref=e188]:
+          - generic [ref=e189]:
+            - generic [ref=e190]: 阿里企业邮箱版本对比（2026年）
+            - generic [ref=e191]:
+              - generic [ref=e192]: 标准版（5用户/年）
+              - generic [ref=e193]: ¥600
+            - generic [ref=e194]:
+              - generic [ref=e195]: AI尊享版（5用户/年）
+              - generic [ref=e196]: ¥900
+            - generic [ref=e197]:
+              - generic [ref=e198]: 信创版（5用户/年）
+              - generic [ref=e199]: ¥900
+            - generic [ref=e200]:
+              - generic [ref=e201]: 集团版（100用户/年）
+              - generic [ref=e202]: ¥9500
+          - generic [ref=e203]:
+            - generic [ref=e204]: 注意
+            - paragraph [ref=e205]:
+              - strong [ref=e206]: 阿里邮箱和钉钉邮箱实际是同一个产品，但有两个价格。
+              - text: 钉钉内购买5用户600元，官网购买5用户600元（但功能略有差异）。购买前确认所需功能。
+    - separator [ref=e207]
+    - generic [ref=e208]:
+      - generic [ref=e209]:
+        - generic [ref=e210]: 伍
+        - generic [ref=e211]: 避坑
+      - heading "SPF / DKIM / DMARC：邮件送达率的生死线" [level=2] [ref=e212]
+      - generic [ref=e213]:
+        - generic [ref=e214]:
+          - generic [ref=e215]: SPF
+          - generic [ref=e216]: 发件授权
+          - generic [ref=e217]: 声明哪些服务器有权代表你的域名发送邮件
+        - generic [ref=e218]:
+          - generic [ref=e219]: DKIM
+          - generic [ref=e220]: 数字签名
+          - generic [ref=e221]: 给每封邮件加盖签名，防止内容被篡改
+        - generic [ref=e222]:
+          - generic [ref=e223]: DMARC
+          - generic [ref=e224]: 策略报告
+          - generic [ref=e225]: 接收方反馈报告，持续优化送达策略
+        - generic [ref=e226]:
+          - generic [ref=e227]: 验证
+          - generic [ref=e228]: MXToolbox
+          - generic [ref=e229]: 配置完成后在线验证解析是否生效
+      - generic [ref=e230]:
+        - generic [ref=e231]:
+          - generic [ref=e232]:
+            - generic [ref=e233]: 配置位置
+            - heading "在域名DNS解析中添加TXT记录" [level=3] [ref=e234]
+            - paragraph [ref=e235]: 登录域名服务商（阿里云/腾讯云/Cloudflare），找到DNS解析设置，添加TXT记录。生效时间5-30分钟。
+          - generic [ref=e236]:
+            - generic [ref=e237]: 腾讯企业邮SPF
+            - heading "include:spf.mail.qq.com" [level=3] [ref=e238]
+            - paragraph [ref=e239]:
+              - text: 主机记录通常留空或填@，值填写
+              - code [ref=e240]: v=spf1 include:spf.mail.qq.com ~all
+              - text: 。
+          - generic [ref=e241]:
+            - generic [ref=e242]: 阿里企业邮SPF
+            - heading "mx1._domainkey.alimail.com" [level=3] [ref=e243]
+            - paragraph [ref=e244]:
+              - text: 阿里邮箱的DKIM签名密钥托管在阿里云，DKIM记录主机为
+              - code [ref=e245]: mx1._domainkey
+              - text: ，在阿里邮箱管理后台获取完整记录值。
+        - generic [ref=e246]:
+          - code [ref=e248]: // 腾讯企业邮箱SPF记录（TXT） 名称：@ 或空 类型：TXT 值：v=spf1 include:spf.mail.qq.com ~all // DMARC记录（TXT） 名称：_dmarc 类型：TXT 值：v=DMARC1; p=none; rua=mailto:admin@你的域名.com // 宽松策略运行1-2周后改为 v=DMARC1; p=quarantine; rua=mailto:admin@你的域名.com
+          - generic [ref=e249]:
+            - generic [ref=e250]: 错误做法
+            - paragraph [ref=e251]:
+              - strong [ref=e252]: 只配置SPF，不配置DKIM和DMARC。
+              - text: 2026年Google和Microsoft已将三项全部列为硬性指标，仅SPF不足以保证送达率。
+          - generic [ref=e253]:
+            - generic [ref=e254]: 验证工具
+            - paragraph [ref=e255]: 使用 MXToolbox (mxtoolbox.com) 的免费工具，输入域名即可检查SPF/DKIM/DMARC配置是否正确。
+    - separator [ref=e256]
+    - generic [ref=e257]:
+      - generic [ref=e258]:
+        - generic [ref=e259]: 陆
+        - generic [ref=e260]: 培育
+      - heading "OPC账户架构：职能邮箱 + 个人工作邮箱" [level=2] [ref=e261]
+      - generic [ref=e262]:
+        - generic [ref=e263]:
+          - generic [ref=e264]:
+            - generic [ref=e265]: 超级管理员
+            - heading "admin@你的域名.com" [level=3] [ref=e266]:
+              - code [ref=e267]: admin@你的域名.com
+            - paragraph [ref=e268]: 仅登录管理后台，密码与个人邮箱完全不同。日常不收发邮件，只做权限管理。这是最容易被忽略但最关键的安全设计。
+          - generic [ref=e269]:
+            - generic [ref=e270]: 对外沟通主邮箱
+            - heading "你的名字@你的域名.com" [level=3] [ref=e271]:
+              - code [ref=e272]: 你的名字@你的域名.com
+            - paragraph [ref=e273]: 日常业务往来主邮箱。建议使用2FA（手机验证码或验证器App）保护。
+          - generic [ref=e274]:
+            - generic [ref=e275]: 职能邮箱
+            - heading "hello@ / contact@ / support@" [level=3] [ref=e276]:
+              - code [ref=e277]: hello@ / contact@ / support@
+            - paragraph [ref=e278]: 统一转发至主邮箱。客户联系入口、品牌展示、客服支持——多个入口收归一个出口，方便管理。
+          - generic [ref=e279]:
+            - generic [ref=e280]: 客户端专用密码
+            - heading "每个设备生成独立密码" [level=3] [ref=e281]
+            - paragraph [ref=e282]: 设备丢失时单独吊销该设备密码，不影响其他设备。腾讯/阿里企业邮箱后台均支持此功能。
+        - generic [ref=e283]:
+          - generic [ref=e284]:
+            - generic [ref=e285]: OPC企业邮箱架构图
+            - generic [ref=e286]:
+              - generic [ref=e287]: admin@ 超级管理员
+              - generic [ref=e288]: 仅管理后台登录
+            - generic [ref=e289]:
+              - generic [ref=e290]: myname@ 对外主邮箱
+              - generic [ref=e291]: 日常业务往来
+            - generic [ref=e292]:
+              - generic [ref=e293]: hello/contact/support@
+              - generic [ref=e294]: 统一转发至主邮箱
+            - generic [ref=e295]:
+              - generic [ref=e296]: finance@ 财务专用
+              - generic [ref=e297]: 账单/发票专用通道
+          - generic [ref=e298]:
+            - generic [ref=e299]: 安全配置清单
+            - generic [ref=e300]:
+              - generic [ref=e301]: "1"
+              - generic [ref=e302]: 强制开启两步验证（2FA）
+            - generic [ref=e303]:
+              - generic [ref=e304]: "2"
+              - generic [ref=e305]: 每个设备生成独立客户端专用密码
+            - generic [ref=e306]:
+              - generic [ref=e307]: "3"
+              - generic [ref=e308]: 管理员密码与个人密码完全不同
+            - generic [ref=e309]:
+              - generic [ref=e310]: "4"
+              - generic [ref=e311]: 定期审查登录日志
+          - generic [ref=e312]:
+            - generic [ref=e313]: 数据洞察
+            - paragraph [ref=e314]:
+              - strong [ref=e315]: S/MIME证书
+              - text: （可选，年费¥100-200）：向海外金融/法律客户提供邮件数字签名证明，适合需要跨境高信任度沟通的OPC。
+    - separator [ref=e316]
+    - generic [ref=e317]:
+      - generic [ref=e318]:
+        - generic [ref=e319]: 柒
+        - generic [ref=e320]: 避坑
+      - heading "IMAP vs POP3：选错毁数据" [level=2] [ref=e321]
+      - generic [ref=e322]:
+        - generic [ref=e323]:
+          - generic [ref=e324]:
+            - generic [ref=e325]: POP3 — 禁用
+            - heading "下载后从服务器删除，邮件只存本地" [level=3] [ref=e326]
+            - paragraph [ref=e327]:
+              - text: 硬盘损坏或电脑丢失 = 公司全部历史邮件归零。
+              - strong [ref=e328]: 一人公司绝对禁止使用POP3协议。
+          - generic [ref=e329]:
+            - generic [ref=e330]: IMAP — 首选
+            - heading "邮件始终保存在云端服务器" [level=3] [ref=e331]
+            - paragraph [ref=e332]: 手机、平板、电脑实时同步。数据天然备份在服务商专业服务器上，随时随地无缝切换设备处理工作。
+          - generic [ref=e333]:
+            - generic [ref=e334]: Exchange ActiveSync
+            - heading "微软专有同步协议" [level=3] [ref=e335]
+            - paragraph [ref=e336]: 同步邮件+日历+联系人，移动端推送速度和稳定性更优。使用Microsoft 365时优先选用。
+        - generic [ref=e337]:
+          - paragraph [ref=e339]:
+            - strong [ref=e340]: 最小可行方案：
+            - text: IMAP协议 + 至少两个客户端（手机原生邮件App + 电脑Thunderbird）。这是最低成本的实时同步与数据冗余方案。
+          - generic [ref=e341]:
+            - generic [ref=e342]: 备份策略
+            - paragraph [ref=e343]:
+              - strong [ref=e344]: 每月使用Thunderbird通过IMAP完整下载邮件至本地电脑，并同步备份至加密外部硬盘。
+              - text: 这是公司数据主权的最后防线——云端服务商也会故障，本地备份是终极保障。
+          - generic [ref=e345]:
+            - generic [ref=e346]: 错误示范
+            - paragraph [ref=e347]:
+              - strong [ref=e348]: 只用POP3，只存本地。
+              - text: 一旦电脑损坏，所有公司历史邮件无法恢复。正确的做法是IMAP实时同步+每月本地备份。
+    - separator [ref=e349]
+    - generic [ref=e350]:
+      - generic [ref=e351]:
+        - generic [ref=e352]: 捌
+        - generic [ref=e353]: 决策
+      - heading "企业邮箱决策框架：做与不做" [level=2] [ref=e354]
+      - generic [ref=e355]:
+        - strong [ref=e356]: 核心判断标准：
+        - text: 你的邮箱是否是公司域名结尾？你的邮件数据是否同时存在于云端和本地？你的登录是否启用了两步验证？三个问题都答"是"，你的企业邮箱才算合规。
+      - generic [ref=e357]:
+        - generic [ref=e358]:
+          - generic [ref=e359]: 应该做
+          - generic [ref=e360]: 使用自有域名的企业邮箱（不是@qq.com/@163.com）
+          - generic [ref=e361]: 部署SPF + DKIM + DMARC三项认证
+          - generic [ref=e362]: 使用IMAP协议实时同步
+          - generic [ref=e363]: 开启两步验证（2FA）
+          - generic [ref=e364]: 每个设备配置独立客户端密码
+          - generic [ref=e365]: 使用专业HTML邮件签名（含公司名、职位、联系方式）
+          - generic [ref=e366]: 每月本地备份邮件（Thunderbird + 加密硬盘）
+          - generic [ref=e367]: 管理员后台定期审查登录日志
+        - generic [ref=e368]:
+          - generic [ref=e369]: 不要做
+          - generic [ref=e370]: 使用个人免费邮箱（@qq.com/@163.com/@gmail.com）处理业务
+          - generic [ref=e371]: 使用POP3协议
+          - generic [ref=e372]: 所有设备使用同一密码
+          - generic [ref=e373]: 忽略SPF/DKIM/DMARC配置
+          - generic [ref=e374]: 只依赖云端，不做本地备份
+          - generic [ref=e375]: 邮件中暴露个人社交账号（微信/个人手机号）
+          - generic [ref=e376]: 离职员工邮箱不处理（及时注销或继承）
+    - paragraph [ref=e379]:
+      - strong [ref=e380]: 企业邮箱是OPC数字身份的基础构建。
+      - text: 2026年选择免费方案完全可以满足初期需求——腾讯企业邮免费版、阿里企业邮免费版都是正规军。关键不是花多少钱，而是
+      - strong [ref=e381]: 一定要用自有域名、一定要配置三项认证、一定要IMAP同步
+      - text: 。做到了这三点，你的公司邮箱已经比90%的初创企业都规范。
+    - generic [ref=e382]:
+      - generic [ref=e383]:
+        - generic [ref=e384]: 玖
+        - generic [ref=e385]: 决策
+      - heading "财务健康指标" [level=2] [ref=e386]
+      - generic [ref=e387]:
+        - generic [ref=e388]:
+          - generic [ref=e389]: ¥0
+          - generic [ref=e390]: 最低年费成本
+          - generic [ref=e391]: 腾讯/阿里企业邮免费版，零成本建立专业形象。付费版（5用户）最低600元/年。
+        - generic [ref=e392]:
+          - generic [ref=e393]: 20分钟
+          - generic [ref=e394]: 完成配置时间
+          - generic [ref=e395]: DNS解析 + 邮箱绑定 + 三项认证记录 = 20分钟上手。
+        - generic [ref=e396]:
+          - generic [ref=e397]: 3层
+          - generic [ref=e398]: 安全防护
+          - generic [ref=e399]: 2FA + 客户端专用密码 + 本地备份。128万元/次的平均损失风险，必须防范。
+    - generic [ref=e400]:
+      - generic [ref=e401]:
+        - generic [ref=e402]: 拾
+        - generic [ref=e403]: 行动
+      - heading "从零开始：20分钟搭建企业邮箱" [level=2] [ref=e404]
+      - generic [ref=e405]:
+        - generic [ref=e406]:
+          - generic [ref=e407]: "1"
+          - generic [ref=e408]: 注册域名
+          - generic [ref=e409]: 阿里云/腾讯云购买域名（.com约¥60/年）
+        - generic [ref=e410]:
+          - generic [ref=e411]: "2"
+          - generic [ref=e412]: 开通企业邮
+          - generic [ref=e413]: 腾讯企业邮/阿里企业邮免费版，绑定域名
+        - generic [ref=e414]:
+          - generic [ref=e415]: "3"
+          - generic [ref=e416]: 配置认证
+          - generic [ref=e417]: DNS添加SPF、DKIM、DMARC记录
+        - generic [ref=e418]:
+          - generic [ref=e419]: "4"
+          - generic [ref=e420]: 开启2FA
+          - generic [ref=e421]: 管理员后台启用两步验证
+      - generic [ref=e422]:
+        - generic [ref=e423]: 完成后检查清单
+        - generic [ref=e424]:
+          - generic [ref=e425]: □
+          - generic [ref=e426]: 访问 MXToolbox 验证三项认证配置正确
+        - generic [ref=e427]:
+          - generic [ref=e428]: □
+          - generic [ref=e429]: 在手机和电脑分别配置IMAP，测试收发信
+        - generic [ref=e430]:
+          - generic [ref=e431]: □
+          - generic [ref=e432]: 设置管理员2FA + 客户端专用密码
+        - generic [ref=e433]:
+          - generic [ref=e434]: □
+          - generic [ref=e435]: 配置邮件签名（姓名、职位、公司、手机[可选]、网站）
+        - generic [ref=e436]:
+          - generic [ref=e437]: □
+          - generic [ref=e438]: 安装Thunderbird并配置本地备份（每月执行）
+    - navigation [ref=e439]:
+      - link "← 节点46：现金流与财务基础" [ref=e440] [cursor=pointer]:
+        - /url: /nodes/46-cashflow/index.html
+        - generic [ref=e441]: ←
+        - text: 节点46：现金流与财务基础
+      - link "节点48：商标申请 →" [ref=e442] [cursor=pointer]:
+        - /url: /nodes/48-trademark/index.html
+        - text: 节点48：商标申请
+        - generic [ref=e443]: →
