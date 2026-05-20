@@ -1,0 +1,177 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "← 返回首页" [ref=e3] [cursor=pointer]:
+      - /url: /
+    - generic [ref=e4]: 节点 28 / 57
+  - main [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]: 正式上线
+      - heading "提交审核与等待" [level=1] [ref=e9]
+      - generic [ref=e10]: 节点 28 / 57 · 最后修订：2026年5月11日
+    - generic [ref=e11]:
+      - blockquote [ref=e12]:
+        - paragraph [ref=e13]: 审核材料准备好了，现在点下"提交审核"按钮。然后就是等待——但等待不是闲着。审核期间做错一件事，可能再等一周。
+      - paragraph
+    - paragraph
+    - generic [ref=e14]:
+      - paragraph
+      - generic [ref=e15]: 一、提交前的最终检查（5分钟）
+      - paragraph
+      - heading "逐项确认清单" [level=3] [ref=e16]
+      - paragraph [ref=e17]: □ 产品名称、图标、截图已上传
+      - paragraph [ref=e18]: □ 测试账号可正常登录
+      - paragraph [ref=e19]: □ 所有页面链接有效（没有404）
+      - paragraph [ref=e20]: □ 隐私政策页面可访问
+      - paragraph [ref=e21]: □ 用户协议页面可访问
+      - paragraph [ref=e22]: □ 支付功能已关闭测试模式（如果用微信支付）
+      - paragraph [ref=e23]: □ 服务器正常运行（访问域名验证）
+      - paragraph [ref=e24]: □ 没有"正在开发中"、"TODO"等开发痕迹
+      - paragraph [ref=e25]: □ 版本号已更新（不是0.0.1）
+      - paragraph
+    - paragraph
+    - generic [ref=e26]:
+      - paragraph
+      - generic [ref=e27]: 二、审核周期真相
+      - paragraph
+      - table [ref=e29]:
+        - rowgroup [ref=e30]:
+          - row "平台 官方说的 实际体验（2026年）" [ref=e31]:
+            - columnheader "平台" [ref=e32]
+            - columnheader "官方说的" [ref=e33]
+            - columnheader "实际体验（2026年）" [ref=e34]
+        - rowgroup [ref=e35]:
+          - row "微信小程序 1-7个工作日 首次审核通常3-5天，二次提交1-2天" [ref=e36]:
+            - cell "微信小程序" [ref=e37]
+            - cell "1-7个工作日" [ref=e38]
+            - cell "首次审核通常3-5天，二次提交1-2天" [ref=e39]
+          - row "App Store 1-3个工作日 通常24-48小时" [ref=e40]:
+            - cell "App Store" [ref=e41]
+            - cell "1-3个工作日" [ref=e42]
+            - cell "通常24-48小时" [ref=e43]
+          - row "华为应用市场 1-5个工作日 通常2-3天" [ref=e44]:
+            - cell "华为应用市场" [ref=e45]
+            - cell "1-5个工作日" [ref=e46]
+            - cell "通常2-3天" [ref=e47]
+          - row "小米应用商店 1-3个工作日 通常24小时" [ref=e48]:
+            - cell "小米应用商店" [ref=e49]
+            - cell "1-3个工作日" [ref=e50]
+            - cell "通常24小时" [ref=e51]
+          - row "微信支付商户 1-5个工作日 通常2-3天" [ref=e52]:
+            - cell "微信支付商户" [ref=e53]
+            - cell "1-5个工作日" [ref=e54]
+            - cell "通常2-3天" [ref=e55]
+      - strong [ref=e56]: 周末和节假日不计入工作日。
+      - text: 周五提交 = 最早下周一下午出结果。
+      - paragraph
+    - paragraph
+    - generic [ref=e57]:
+      - paragraph
+      - generic [ref=e58]: 三、等待期的三要三不要
+      - paragraph
+      - heading "✅ 要做的" [level=3] [ref=e59]
+      - list [ref=e60]:
+        - listitem [ref=e61]:
+          - strong [ref=e62]: 手机保持畅通
+          - text: ：审核员可能打电话核实（尤其是企业资质审核）
+        - listitem [ref=e63]:
+          - strong [ref=e64]: 每天查看一次审核状态
+          - text: ：有些平台不会主动通知
+        - listitem [ref=e65]:
+          - strong [ref=e66]: 准备一个"被打回后的修改文档"
+          - text: ：列出如果被打回，最可能的原因是什么，你的修改方案是什么
+      - heading "❌ 不要做的" [level=3] [ref=e67]
+      - list [ref=e68]:
+        - listitem [ref=e69]:
+          - strong [ref=e70]: 不要在此期间改代码
+          - text: ：审核员看的版本是你提交时的版本，你现在改了也没用
+        - listitem [ref=e71]:
+          - strong [ref=e72]: 不要在审核期间更新域名解析/服务器配置
+          - text: ：可能导致审核员访问不到你的产品
+        - listitem [ref=e73]:
+          - strong [ref=e74]: 不要频繁刷新审核状态
+          - text: ：一天看一次够了，看多了只会焦虑
+      - paragraph
+    - paragraph
+    - generic [ref=e75]:
+      - paragraph
+      - generic [ref=e76]: 四、审核被打回的第一反应
+      - paragraph
+      - heading "不要做的事" [level=3] [ref=e77]
+      - list [ref=e78]:
+        - listitem [ref=e79]: ❌ 不要生气骂审核员（没用）
+        - listitem [ref=e80]: ❌ 不要立刻重新提交（不分析原因就重交 = 可能再被打回）
+        - listitem [ref=e81]: ❌ 不要在社交平台抱怨（可能被截图，影响品牌）
+      - heading "应该立刻做的事" [level=3] [ref=e82]
+      - list [ref=e83]:
+        - listitem [ref=e84]:
+          - strong [ref=e85]: 逐字阅读审核反馈
+          - text: ：审核反馈一般很简短，但每一个字都有信息量
+        - listitem [ref=e86]:
+          - strong [ref=e87]: 对照审核规范自查
+          - text: ：打开平台的审核指南，逐条核对
+        - listitem [ref=e88]:
+          - strong [ref=e89]: 修改→验证→再提交
+          - text: ：参考节点29的详细流程
+      - paragraph
+    - paragraph
+    - generic [ref=e90]:
+      - paragraph
+      - generic [ref=e91]: 五、审核通过后的第一个操作
+      - paragraph
+      - heading "先别急着发朋友圈" [level=3] [ref=e92]
+      - paragraph [ref=e93]:
+        - text: "``"
+        - code
+      - code [ref=e94]:
+        - paragraph [ref=e95]: 审核通过后的操作顺序：
+        - list [ref=e96]:
+          - listitem [ref=e97]: 删除测试账号（如果不需要了）
+          - listitem [ref=e98]: 检查生产环境配置（API密钥、数据库连接等是否指向生产环境）
+          - listitem [ref=e99]: 跑一遍核心路径（无痕浏览器 + 手机微信）
+          - listitem [ref=e100]: 确认支付功能切换到正式环境
+          - listitem [ref=e101]: 现在可以发朋友圈了
+      - text: "``"
+      - paragraph
+    - paragraph
+    - generic [ref=e102]:
+      - paragraph
+      - generic [ref=e103]: 六、检查清单
+      - paragraph
+      - list [ref=e104]:
+        - listitem [ref=e105]:
+          - checkbox [disabled] [ref=e106]
+          - text: 提交前清单全部确认完毕
+        - listitem [ref=e107]:
+          - checkbox [disabled] [ref=e108]
+          - text: 手机保持畅通
+        - listitem [ref=e109]:
+          - checkbox [disabled] [ref=e110]
+          - text: 审核期间未修改代码和服务器
+        - listitem [ref=e111]:
+          - checkbox [disabled] [ref=e112]
+          - text: 审核结果已记录（无论通过还是打回）
+        - listitem [ref=e113]:
+          - checkbox [disabled] [ref=e114]
+          - text: 通过后已完成生产环境检查
+      - paragraph
+    - paragraph
+    - generic [ref=e115]:
+      - paragraph
+      - generic [ref=e116]: 节点资源链接
+      - paragraph
+      - list [ref=e117]:
+        - listitem [ref=e118]: 节点27：上线前检查清单
+        - listitem [ref=e119]: 节点29：审核问题处理
+        - listitem [ref=e120]: 节点30：正式发布
+    - generic [ref=e121]:
+      - heading "节点28检查清单" [level=3] [ref=e122]
+      - paragraph [ref=e123]: 完成本节点后，请确认所有检查项已通过。
+  - navigation [ref=e124]:
+    - link "← 节点27" [ref=e125] [cursor=pointer]:
+      - /url: /nodes/27-launch-checklist/index.html
+      - generic [ref=e126]: ←
+      - text: 节点27
+    - link "节点29 →" [ref=e127] [cursor=pointer]:
+      - /url: /nodes/29-audit-fix/index.html
+      - text: 节点29
+      - generic [ref=e128]: →
