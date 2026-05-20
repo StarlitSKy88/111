@@ -80,8 +80,11 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
   }
 
   .hero-title {
-    font-size: clamp(32px, 10vw, 64px) !important;
-    word-break: break-word !important;
+    font-size: clamp(28px, 9vw, 64px) !important;
+    word-break: break-all !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important;
+    max-width: 100% !important;
   }
 
   .step-card,
