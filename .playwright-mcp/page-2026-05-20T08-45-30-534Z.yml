@@ -1,0 +1,365 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "← 返回首页" [ref=e3] [cursor=pointer]:
+      - /url: /
+    - generic [ref=e4]: 节点 51 / 57
+  - generic: "51"
+  - generic [ref=e6]:
+    - banner [ref=e7]:
+      - generic [ref=e8]:
+        - generic [ref=e9]: 节点 51 · 1-10
+        - heading "数据备份与恢复" [level=1] [ref=e10]
+        - paragraph [ref=e11]: 自动备份、异地容灾、恢复测试，有100+用户数据后必须做
+    - generic [ref=e12]:
+      - generic [ref=e13]: 壹
+      - heading "为什么2026年备份是生死线？" [level=2] [ref=e14]
+      - generic [ref=e15]:
+        - generic [ref=e16]:
+          - paragraph [ref=e17]:
+            - text: OPC没有团队分摊风险，没有IT部门处理故障。
+            - strong [ref=e18]: 所有客户资料、设计源文件、财务凭证、AI生成内容、系统配置——都沉淀在你的设备里。
+            - text: 这本该是优势，因为数据都在你手中。但换个角度：崩溃点也只有一个。
+          - paragraph [ref=e19]:
+            - strong [ref=e20]: 攻击者已精准锁定个体创业者。
+            - text: 2024-2025年，勒索软件即服务（RaaS）模式让攻击成本降至极低。攻击者用AI扫描全网寻找开放端口、弱口令和未打补丁的Redis/SSH。OPC的存活窗口已从过去的"可能一周没事"缩短至"数小时"。
+          - paragraph [ref=e21]:
+            - strong [ref=e22]: AI生成内容的悖论。
+            - text: 每次用同样的提示词，不一定能生成同样的结果。随机种子、模型版本、温度值——都会影响输出。AI生成内容一旦丢失，没有"重新来一条"这个选项。这与传统文件不同，你的Word文档删了可以重写，AI内容删了就是永久损失。
+          - paragraph [ref=e23]:
+            - strong [ref=e24]: 国内法规的隐性压力。
+            - text: 《个人信息保护法》要求处理个人信息的自然人必须具备基本技术措施。OPC即便只收集手机号和邮箱，也必须考虑数据安全。服务器被加密后，用户数据无法访问——这本身就是合规风险。
+        - generic [ref=e25]:
+          - generic [ref=e26]:
+            - generic [ref=e27]:
+              - generic [ref=e28]: OPC攻击面
+              - generic [ref=e29]: 单点失效
+            - generic [ref=e30]:
+              - generic [ref=e31]: 平均存活时间
+              - generic [ref=e32]: 数小时
+            - generic [ref=e33]:
+              - generic [ref=e34]: 勒索赎金中位数
+              - generic [ref=e35]: ¥15万
+          - generic [ref=e36]:
+            - generic [ref=e37]: × 致命误解
+            - generic [ref=e38]: "\"我的文件都在云端，很安全\"——云同步（OneDrive/iCloud/Google Drive）是双向镜像。你删他也删，你被勒索他也同步加密。账号被盗等于备份入口沦陷。"
+    - generic [ref=e39]:
+      - generic [ref=e40]: 贰
+      - heading "3-2-1-0法则：适配OPC的备份公理" [level=2] [ref=e41]
+      - generic [ref=e42]:
+        - generic [ref=e43]:
+          - paragraph [ref=e44]:
+            - text: 这不是企业级方案，是
+            - strong [ref=e45]: 单人可执行到位的具体动作
+            - text: 。3-2-1-0法则已存在数十年，但在2026年需要新的解读。
+          - generic [ref=e46]:
+            - generic [ref=e47]: 叁
+            - generic [ref=e48]:
+              - generic [ref=e49]: 三份总数据副本
+              - generic [ref=e50]: 1份日常使用的主数据 + 2份独立备份。关键约束：这两份备份不能存入同一存储类型。如果你用两块外置硬盘做备份，一旦遇到电压故障或固件问题，两块可能同时报销。
+          - generic [ref=e51]:
+            - generic [ref=e52]: 贰
+            - generic [ref=e53]:
+              - generic [ref=e54]: 两种不同存储介质
+              - generic [ref=e55]: 推荐组合：本地外置固态硬盘（高速访问）+ 云端对象存储（异地保护）。或者：本地NAS（日常快照）+ 云端冷存储（长期归档）。避免单存储类型承担全部备份职责。
+          - generic [ref=e56]:
+            - generic [ref=e57]: 壹
+            - generic [ref=e58]:
+              - generic [ref=e59]: 一份异地离线隔离副本
+              - generic [ref=e60]: 这是对抗勒索软件的实战关键。选项一：外置硬盘备份后物理拔除，存放于别处。选项二：云存储启用对象锁定（Object Lock），设置不可删除期限（如7天），即使攻击者获得账号权限也无法立即删除你的备份。
+          - generic [ref=e61]:
+            - generic [ref=e62]: 零
+            - generic [ref=e63]:
+              - generic [ref=e64]: 零个未验证的静默错误
+              - generic [ref=e65]: 一份从未被验证可恢复的备份，等同于占用磁盘空间的未知文件。静默数据损坏（Bit Rot）是真实威胁——归档数年的照片可能悄然出现坏块。使用带哈希校验的备份工具，定期执行实际恢复验证。
+        - generic [ref=e66]:
+          - generic [ref=e67]:
+            - generic [ref=e68]: ✓ OPC最优路径
+            - generic [ref=e69]: 主设备工作 → 本地外置硬盘每日定时备份 → 云端冷存储自动加密增量上传。设置后自动化执行，每月花10分钟确认一次。备份的本质不是"存了"，而是"能取回来"。
+          - generic [ref=e70]:
+            - generic [ref=e71]: ◑ 2026年新技术
+            - generic [ref=e72]: Backblaze等工具已内嵌AI异常检测。当监测到大规模文件扩展名异常变更（如突然出现大量.locked文件）时，自动挂起备份任务并告警，阻断勒索加密扩散至云端。这是2024年前没有的防御层。
+    - generic [ref=e73]:
+      - generic [ref=e74]: 叁
+      - heading "工具选型：四层架构" [level=2] [ref=e75]
+      - generic [ref=e76]:
+        - generic [ref=e77]:
+          - paragraph [ref=e78]:
+            - text: 一人公司不需要复杂方案，要的是
+            - strong [ref=e79]: "\"设置后即忘\"的智能工具链"
+            - text: 。按职责分层选择：
+          - generic [ref=e80]:
+            - generic [ref=e81]: 壹
+            - generic [ref=e82]:
+              - generic [ref=e83]: Backblaze Personal（第一层：云端无限备份）
+              - generic [ref=e84]: 固定年费单机无限备份，安装后自动后台运行。AI异常检测在勒索大批量加密时自动暂停任务，防止被加密的文件同步到云端。年费约$99（当前约¥720）。支持Mac/Windows，自动加密客户端后再上传。
+          - generic [ref=e85]:
+            - generic [ref=e86]: 贰
+            - generic [ref=e87]:
+              - generic [ref=e88]: "macOS: Time Machine + Arq（本地快照+云端加密）"
+              - generic [ref=e89]: Time Machine做本地Hourly快照，Arq软件搭配Google Drive、Backblaze B2或Wasabi空间，自动加密增量上传。Arq支持本地+云端双层，加密密钥仅存储于本地，平台无法访问你的数据。适合需要合规敏感数据的OPC。
+          - generic [ref=e90]:
+            - generic [ref=e91]: 叁
+            - generic [ref=e92]:
+              - generic [ref=e93]: "Windows: Veeam Agent免费版"
+              - generic [ref=e94]: 系统级备份，支持完整镜像+增量。支持备份至本地NAS、外置硬盘或云端（Backblaze B2、Azure Blob）。免费版功能完整，无隐藏限制。适合Windows OPC的日常备份。
+          - generic [ref=e95]:
+            - generic [ref=e96]: 肆
+            - generic [ref=e97]:
+              - generic [ref=e98]: "技术型: Restic / Kopia（自托管开源）"
+              - generic [ref=e99]: 开源自托管，对接Wasabi、Cloudflare R2、Backblaze B2等S3兼容冷存储。增量备份、端到端加密、去重存储、哈希校验。命令行友好，有Web UI可选（Kopia）。适合有技术背景、想完全掌控数据流向的OPC。
+        - generic [ref=e100]:
+          - generic [ref=e101]:
+            - generic [ref=e102]:
+              - generic [ref=e103]: Backblaze
+              - generic [ref=e104]: $99/年
+            - generic [ref=e105]:
+              - generic [ref=e106]: Arq
+              - generic [ref=e107]: $49.99/台
+            - generic [ref=e108]:
+              - generic [ref=e109]: Veeam免费版
+              - generic [ref=e110]: 免费
+            - generic [ref=e111]:
+              - generic [ref=e112]: Restic/Kopia
+              - generic [ref=e113]: 免费开源
+          - paragraph [ref=e115]:
+            - strong [ref=e116]: 核心原则
+            - text: ：同步盘（OneDrive/Google Drive/iCloud）是便利工具，版本快照才是保全底线。云同步必须配合独立备份层使用，切忌把同步盘当作备份。
+    - generic [ref=e117]:
+      - generic [ref=e118]: 肆
+      - heading "四大致命误区" [level=2] [ref=e119]
+      - generic [ref=e120]:
+        - generic [ref=e121]:
+          - generic [ref=e122]:
+            - generic [ref=e123]: × 误区一：云端=安全
+            - generic [ref=e124]: 云同步是双向实时镜像。云端的数据与你本地数据完全同步——你删他也删，你被勒索加密他也同步加密。更危险的是：一旦账号被攻击者接管，他们可以立即删除你的备份副本，等于丧失了恢复的唯一途径。必须建立独立的备份层，与同步盘完全解耦。
+          - generic [ref=e125]:
+            - generic [ref=e126]: × 误区二：备份=完成
+            - generic [ref=e127]: "\"备份完成\"和\"能成功恢复\"之间存在巨大鸿沟。现实中的 Silent Data Corruption（静默数据损坏）每TB存储介质每年约有0.03%的概率发生。备份文件可能看似完整，但部分数据已悄然损坏。一份从未被验证可恢复的备份，是占用空间的未知风险。每月必须执行一次抽检恢复。"
+          - generic [ref=e128]:
+            - generic [ref=e129]: × 误区三：备份盘始终连接系统
+            - generic [ref=e130]: 如果备份盘始终挂载为Z盘或D盘，勒索软件在加密本地文件时会循路径感染备份盘。2024年的勒索软件已能扫描并加密所有可见存储设备，包括映射的网络驱动器和USB外置硬盘。隔离备份必须是物理断开（拔线）或不可变存储（Object Lock）。
+          - generic [ref=e131]:
+            - generic [ref=e132]: × 误区四：只依赖手机验证码
+            - generic [ref=e133]: SIM交换攻击（SIM Swap）已成熟化。攻击者致电运营商声称手机丢失，将号码转移至新SIM卡，随即接收你的短信验证码。2025年针对加密货币和金融账户的SIM交换攻击增长了约220%。备份账号必须使用硬件安全密钥（YubiKey）或通行密钥（Passkey），不接受短信验证码。
+        - generic [ref=e134]:
+          - generic [ref=e135]:
+            - generic [ref=e136]: ✓ 正确认知
+            - generic [ref=e137]:
+              - text: 备份的本质是建立一份
+              - strong [ref=e138]: 与当前操作环境隔离、不可被实时修改
+              - text: 的副本。这是在云端时代个人仍需掌控的最后防线。备份不是技术行为，是风险管理行为。
+          - generic [ref=e139]:
+            - generic [ref=e140]:
+              - generic [ref=e141]: 勒索软件目标
+              - generic [ref=e142]: 单人创业者
+            - generic [ref=e143]:
+              - generic [ref=e144]: 选择原因
+              - generic [ref=e145]: 支付意愿强
+            - generic [ref=e146]:
+              - generic [ref=e147]: 防御关键
+              - generic [ref=e148]: 离线隔离
+    - generic [ref=e149]:
+      - generic [ref=e150]: 伍
+      - heading "恢复即服务：验证才是终点" [level=2] [ref=e151]
+      - generic [ref=e152]:
+        - generic [ref=e153]:
+          - paragraph [ref=e154]:
+            - strong [ref=e155]: 备份不算完成，能恢复才算。
+            - text: OPC必须建立可验证的恢复能力，而非堆积"看起来有备份"的虚假安全感。
+          - paragraph [ref=e157]: 备份是成本，恢复才是资产。无法恢复的备份是负债。
+          - paragraph [ref=e158]:
+            - strong [ref=e159]: 月度文件抽检
+            - text: （每月10分钟）：
+          - list [ref=e160]:
+            - listitem [ref=e161]: □ 随机抽取一个3-7天前存档的文件或文件夹
+            - listitem [ref=e162]: □ 执行一次无提示的独立还原操作
+            - listitem [ref=e163]: □ 确认内容可读、结构完整、文件名正确
+            - listitem [ref=e164]: □ 如有条件，校验文件哈希值与存档时记录是否一致
+          - paragraph [ref=e165]:
+            - strong [ref=e166]: 季度整机演练
+            - text: （每季度15分钟）：
+          - list [ref=e167]:
+            - listitem [ref=e168]: □ 用备用设备或虚拟机模拟"主设备彻底损毁"
+            - listitem [ref=e169]: □ 从零开始，依据恢复导航图重建核心业务环境
+            - listitem [ref=e170]: □ 验证系统、代码、数据、配置是否能在2小时内完全恢复
+            - listitem [ref=e171]: □ 记录实际耗时，分析瓶颈，调整备份策略
+        - generic [ref=e172]:
+          - generic [ref=e173]:
+            - generic [ref=e174]: ✓ 恢复导航图必备内容
+            - list [ref=e176]:
+              - listitem [ref=e177]: ① 操作系统恢复途径与启动介质
+              - listitem [ref=e178]: ② BitLocker/FileVault恢复密钥存放位置
+              - listitem [ref=e179]: ③ 备份集解密口令（存储于密码管理器）
+              - listitem [ref=e180]: ④ 核心云端账户恢复码（离线备份）
+              - listitem [ref=e181]: ⑤ 密码管理器紧急访问凭证
+              - listitem [ref=e182]: ⑥ 常用软件许可证备份
+          - generic [ref=e183]:
+            - generic [ref=e184]: ◑ 存放位置
+            - generic [ref=e185]: 恢复导航图应存入云端密码管理器加密笔记区，或打印后锁入保险柜。绝不能与生产环境存放在同一设备或同一云账号下。
+    - generic [ref=e186]:
+      - generic [ref=e187]: 陆
+      - heading "成本与ROI分析" [level=2] [ref=e188]
+      - generic [ref=e189]:
+        - generic [ref=e190]:
+          - paragraph [ref=e191]:
+            - text: OPC的资源是时间与金钱。
+            - strong [ref=e192]: 备份的投入应与业务风险相匹配。
+            - text: 不是为了复杂而复杂，是为了在灾难发生时能用最小代价恢复。
+          - generic [ref=e193]:
+            - generic [ref=e194]: 壹
+            - generic [ref=e195]:
+              - generic [ref=e196]: 低成本方案（年费¥0-800）
+              - generic [ref=e197]: 使用系统原生工具（Time Machine / Windows Backup）+ 免费云存储（Backblaze B2首月免费，1GB约¥0.07/月）。总成本：主要是外置硬盘（约¥300-800一次性投入）+ 电费。适合初创期OPC。
+          - generic [ref=e198]:
+            - generic [ref=e199]: 贰
+            - generic [ref=e200]:
+              - generic [ref=e201]: 中等成本方案（年费¥800-2000）
+              - generic [ref=e202]: Backblaze Personal（¥720/年）+ 本地NAS或外置硬盘双备份。覆盖自动化云备份+本地快速恢复。适合月收入¥1万以上的OPC。
+          - generic [ref=e203]:
+            - generic [ref=e204]: 叁
+            - generic [ref=e205]:
+              - generic [ref=e206]: 高可靠方案（年费¥2000-5000）
+              - generic [ref=e207]: Restic/Kopia + 多个云存储目的地（Backblaze B2 + Cloudflare R2备份）+ 每年硬件更新检查。适合依赖数字资产（代码、设计稿、客户数据）作为核心产品的OPC。
+        - generic [ref=e208]:
+          - generic [ref=e209]:
+            - generic [ref=e210]:
+              - generic [ref=e211]: 一次勒索损失
+              - generic [ref=e212]: ¥5万+
+            - generic [ref=e213]:
+              - generic [ref=e214]: 备份年成本（低）
+              - generic [ref=e215]: ¥0-800
+            - generic [ref=e216]:
+              - generic [ref=e217]: ROI
+              - generic [ref=e218]: ">50倍"
+          - generic [ref=e219]:
+            - generic [ref=e220]: ✓ 风险管理视角
+            - generic [ref=e221]: 如果业务依赖数字资产（网站数据、客户数据库、设计文件），备份成本应小于年收入的1%。一次宕机导致的损失（客户流失、订单损失、合规罚款）远大于备份投入。
+    - generic [ref=e222]:
+      - generic [ref=e223]: 柒
+      - heading "AI时代的新挑战" [level=2] [ref=e224]
+      - generic [ref=e225]:
+        - generic [ref=e226]:
+          - paragraph [ref=e227]: 2025-2026年，AI已深度嵌入OPC的工作流。这带来了新型数据风险：
+          - generic [ref=e228]:
+            - generic [ref=e229]: 壹
+            - generic [ref=e230]:
+              - generic [ref=e231]: 提示词资产的脆弱性
+              - generic [ref=e232]: 你花了数十小时调优的提示词模板、工作流、角色设定——这些不是代码，是知识资产。一旦设备丢失或损坏，重新构建需要大量时间。建议将核心提示词存档于密码管理器加密笔记中，并备份到云端。
+          - generic [ref=e233]:
+            - generic [ref=e234]: 贰
+            - generic [ref=e235]:
+              - generic [ref=e236]: AI生成内容的版本控制
+              - generic [ref=e237]: AI生成的内容需要版本控制。你可能需要回溯到三个月前的生成结果进行比对或复用。传统文件版本控制工具（如Git）适用于代码，但不直接适用于AI生成的图片、文案、方案。建议建立标准化的AI输出归档命名规则。
+          - generic [ref=e238]:
+            - generic [ref=e239]: 叁
+            - generic [ref=e240]:
+              - generic [ref=e241]: 模型输出的一致性问题
+              - generic [ref=e242]: 2025年的模型版本更新导致部分历史输出无法复现。如果你的业务依赖AI生成内容的特定风格或格式，备份策略必须包含"模型输出快照"——不是备份代码，是备份特定时间点的输出样本，作为未来参照。
+        - generic [ref=e244]:
+          - generic [ref=e245]: ◑ 2026年新现实
+          - generic [ref=e246]: GitHub Copilot、ChatGPT Claude API已经深度嵌入代码和内容工作流。这些工具的状态（如订阅信息、API额度、自定义指令）也是需要备份的数字资产。当账号异常时，你的自定义GPTs和Copilot配置丢失等于生产力中断。
+    - generic [ref=e247]:
+      - generic [ref=e248]: 捌
+      - heading "做 / 不做" [level=2] [ref=e249]
+      - generic [ref=e250]:
+        - text: 数据备份与恢复是OPC业务连续性的基石。
+        - strong [ref=e251]: 做
+        - text: 则灾难可控、恢复有序，
+        - strong [ref=e252]: 不做
+        - text: 则一次攻击或硬件故障即宣告业务终结。
+      - generic [ref=e253]:
+        - generic [ref=e254]:
+          - generic [ref=e255]: ✓ 做
+          - generic [ref=e256]: 采用3-2-1-0备份规则
+          - generic [ref=e257]: 至少1份离线隔离备份（物理断开或Object Lock）
+          - generic [ref=e258]: 使用端到端加密的备份工具
+          - generic [ref=e259]: 备份账号启用硬件2FA（YubiKey或Passkey）
+          - generic [ref=e260]: 每月执行文件级恢复验证（抽检）
+          - generic [ref=e261]: 每季度执行整机演练（模拟恢复）
+          - generic [ref=e262]: 恢复导航图离线保存在密码管理器
+          - generic [ref=e263]: 归档核心AI提示词和自定义配置
+        - generic [ref=e264]:
+          - generic [ref=e265]: × 不做
+          - generic [ref=e266]: 仅依赖云同步（OneDrive/iCloud）
+          - generic [ref=e267]: 备份盘始终挂载系统不断开
+          - generic [ref=e268]: 只备份，从不验证
+          - generic [ref=e269]: 只用短信验证码保护备份账号
+          - generic [ref=e270]: 所有设备使用同一密码
+          - generic [ref=e271]: 恢复导航图存放在线文档
+          - generic [ref=e272]: 忽视AI生成内容的版本归档
+          - generic [ref=e273]: 不测试恢复流程就认为备份有效
+    - generic [ref=e274]:
+      - generic [ref=e275]: 玖
+      - heading "30天执行清单" [level=2] [ref=e276]
+      - generic [ref=e277]:
+        - generic [ref=e278]:
+          - paragraph [ref=e279]:
+            - strong [ref=e280]: 第一周：建立基础备份
+          - list [ref=e281]:
+            - listitem [ref=e282]: □ 购买一块外置固态硬盘（至少1TB）
+            - listitem [ref=e283]: □ 安装Backblaze并配置自动备份
+            - listitem [ref=e284]: □ 设置Time Machine（Mac）或Veeam（Windows）本地快照
+            - listitem [ref=e285]: □ 备份账号启用硬件2FA
+          - paragraph [ref=e286]:
+            - strong [ref=e287]: 第二周：配置云端隔离层
+          - list [ref=e288]:
+            - listitem [ref=e289]: □ 注册Backblaze B2或Cloudflare R2存储账户
+            - listitem [ref=e290]: □ 配置Arq或Restic对接云端，启用端到端加密
+            - listitem [ref=e291]: □ 设置每日自动增量备份
+            - listitem [ref=e292]: □ 验证云端备份可成功下载恢复
+          - paragraph [ref=e293]:
+            - strong [ref=e294]: 第三周：建立恢复验证机制
+          - list [ref=e295]:
+            - listitem [ref=e296]: □ 创建恢复导航图文档
+            - listitem [ref=e297]: □ 执行第一次文件级恢复抽检
+            - listitem [ref=e298]: □ 将恢复导航图存入密码管理器
+            - listitem [ref=e299]: □ 归档核心AI提示词和配置
+          - paragraph [ref=e300]:
+            - strong [ref=e301]: 第四周：优化与自动化
+          - list [ref=e302]:
+            - listitem [ref=e303]: □ 测试季度整机恢复流程（如有可能）
+            - listitem [ref=e304]: □ 确认备份日程设置正确（自动化执行）
+            - listitem [ref=e305]: □ 记录实际恢复耗时，与目标对比
+            - listitem [ref=e306]: □ 根据演练结果调整备份策略
+        - generic [ref=e307]:
+          - generic [ref=e308]:
+            - generic [ref=e309]:
+              - generic [ref=e310]: 启动成本
+              - generic [ref=e311]: ¥300-800
+            - generic [ref=e312]:
+              - generic [ref=e313]: 每日维护
+              - generic [ref=e314]: 5分钟
+            - generic [ref=e315]:
+              - generic [ref=e316]: 月度验证
+              - generic [ref=e317]: 10分钟
+            - generic [ref=e318]:
+              - generic [ref=e319]: 季度演练
+              - generic [ref=e320]: 15分钟
+          - generic [ref=e321]:
+            - generic [ref=e322]: ✓ 关键认知
+            - generic [ref=e323]: 备份不是项目，是习惯。技术设置一次完成，后续靠自动化和定期验证维持。OPX的备份系统应该是"设置后遗忘，发生问题时庆幸有它"。
+    - generic [ref=e324]:
+      - generic [ref=e325]: 拾
+      - generic [ref=e326]: 财务健康指标
+      - generic [ref=e327]:
+        - generic [ref=e328]:
+          - generic [ref=e329]: ¥720
+          - generic [ref=e330]: 年备份成本
+          - generic [ref=e331]: Backblaze云端无限备份，AI防护勒索同步感染
+        - generic [ref=e332]:
+          - generic [ref=e333]: 2小时
+          - generic [ref=e334]: 恢复时间目标
+          - generic [ref=e335]: 新设备上重建核心业务环境
+        - generic [ref=e336]:
+          - generic [ref=e337]: 3份
+          - generic [ref=e338]: 备份副本
+          - generic [ref=e339]: 本地快照+云端加密+离线隔离
+    - navigation [ref=e340]:
+      - link "← 节点50：广告合规" [ref=e341] [cursor=pointer]:
+        - /url: /nodes/50-ad-compliance/index.html
+        - generic [ref=e342]: ←
+        - text: 节点50：广告合规
+      - link "节点52：服务器安全防护 →" [ref=e343] [cursor=pointer]:
+        - /url: /nodes/52-server-security/index.html
+        - text: 节点52：服务器安全防护
+        - generic [ref=e344]: →

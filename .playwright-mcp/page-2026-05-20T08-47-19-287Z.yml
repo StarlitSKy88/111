@@ -1,0 +1,291 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "← 返回首页" [ref=e3] [cursor=pointer]:
+      - /url: /
+    - generic [ref=e4]: 节点 56 / 57
+  - generic: "56"
+  - generic [ref=e5]:
+    - navigation [ref=e6]:
+      - generic [ref=e7]: 目录
+      - list [ref=e8]:
+        - listitem [ref=e9]:
+          - link "六维结构" [ref=e10] [cursor=pointer]:
+            - /url: "#s1"
+        - listitem [ref=e11]:
+          - link "D1 精力本质" [ref=e12] [cursor=pointer]:
+            - /url: "#s2"
+        - listitem [ref=e13]:
+          - link "D2 时间块" [ref=e14] [cursor=pointer]:
+            - /url: "#s3"
+        - listitem [ref=e15]:
+          - link "D3 番茄工作法" [ref=e16] [cursor=pointer]:
+            - /url: "#s4"
+        - listitem [ref=e17]:
+          - link "D4 能量分配" [ref=e18] [cursor=pointer]:
+            - /url: "#s5"
+        - listitem [ref=e19]:
+          - link "D5 外部节奏" [ref=e20] [cursor=pointer]:
+            - /url: "#s6"
+        - listitem [ref=e21]:
+          - link "FIN" [ref=e22] [cursor=pointer]:
+            - /url: "#fin"
+    - main [ref=e23]:
+      - generic [ref=e25]:
+        - generic [ref=e26]: 节点 56 · 核心必做
+        - heading "个人精力管理" [level=1] [ref=e27]
+        - paragraph [ref=e28]: 时间块、番茄工作法、精力分配，OPC最宝贵资源，很多人3个月就burnout
+      - generic [ref=e29]:
+        - generic [ref=e30]: 六维结构
+        - generic [ref=e31]:
+          - generic [ref=e32]:
+            - generic [ref=e33]: D1
+            - generic [ref=e34]: 核心
+            - generic [ref=e35]: 认知能量资产化
+          - generic [ref=e36]:
+            - generic [ref=e37]: D2
+            - generic [ref=e38]: 模型
+            - generic [ref=e39]: 高认知窗口锁定
+          - generic [ref=e40]:
+            - generic [ref=e41]: D3
+            - generic [ref=e42]: 培育
+            - generic [ref=e43]: AI精力沙盒
+          - generic [ref=e44]:
+            - generic [ref=e45]: D4
+            - generic [ref=e46]: 避坑
+            - generic [ref=e47]: 五大崩溃信号
+          - generic [ref=e48]:
+            - generic [ref=e49]: D5
+            - generic [ref=e50]: 培育
+            - generic [ref=e51]: 工具栈与恢复SOP
+          - generic [ref=e52]:
+            - generic [ref=e53]: D6
+            - generic [ref=e54]: 决策
+            - generic [ref=e55]: 精力分配矩阵
+      - generic [ref=e57]:
+        - generic [ref=e58]:
+          - heading "为什么2026年精力管理是OPC的生死线" [level=2] [ref=e59]
+          - paragraph [ref=e60]:
+            - text: 在OPC语境下，
+            - strong [ref=e61]: 个人精力管理已被重新定义为"单人组织的核心生产资料维护"
+            - text: 。这不再是养生话题，而是直接关乎公司月度损益表的核心财务决策。
+          - paragraph [ref=e62]: 你同时是首席执行官、营销总监、产品经理和唯一执行者。没有团队缓冲，没有部门协作，没有他人分摊压力。你的个人状态，就是公司运转的唯一引擎。
+          - paragraph [ref=e63]:
+            - text: 传统时间管理方法论正在OPC领域全面失效。AI可以处理客服应答、数据整理等执行层工作，却无法替你承担战略决策和创造性构思。你的精力被重新定义为一套珍贵的
+            - strong [ref=e64]: "\"认知能量资产\""
+            - text: 。
+          - paragraph [ref=e66]: 一人公司的第一资产不是商业模式，是你本人的神经状态。精力管理到2026年，最高级的形态不是"多高效地运转"，而是"多早地觉察危险并停下来"。
+        - generic [ref=e68]:
+          - generic [ref=e69]:
+            - generic [ref=e70]: 数据
+            - generic [ref=e71]: 2026 OPC崩溃统计数据
+          - generic [ref=e72]:
+            - paragraph [ref=e73]: • 3000名独立创业者追踪：平均每天解锁手机147次
+            - paragraph [ref=e74]: • 仅4%的即时消息与当天核心收入直接相关
+            - paragraph [ref=e75]: • 每次被动切换后，大脑需要15-23分钟才能恢复深度工作状态
+            - paragraph [ref=e76]: • 正常人类每日决策疲劳阈值：150-200次
+            - paragraph [ref=e77]: • OPC创业者实际日均决策量常超过500次
+      - generic [ref=e79]:
+        - generic [ref=e80]:
+          - heading "高认知窗口锁定：像管理现金流一样管理精力" [level=2] [ref=e81]
+          - paragraph [ref=e82]:
+            - text: 放弃标准模板。通过为期两周的记录，精确锁定专属于你的
+            - strong [ref=e83]: "\"高认知窗口\""
+            - text: 。这类窗口通常在一天中出现两次，每次持续90至120分钟。
+          - paragraph [ref=e84]: 判断标准极其简单：这段时间内，你能否无需任何外部刺激物，就自动进入逻辑清晰、思维活跃的状态。
+          - paragraph [ref=e85]:
+            - text: 一旦确认，进入单向保护模式：将直接产生收入或构建核心资产的任务，
+            - strong [ref=e86]: 不可被任何事务侵占
+            - text: 。窗口外时段则进行能量降级处理。
+          - paragraph [ref=e88]: 任务价值 = (带来的收入或长期资产) ÷ (消耗的认知能量 + 情绪能量)。高能量回报任务必须亲自做到极致；AI可代理任务只做质检；能量吸血鬼任务直接砍掉或自动化。
+        - generic [ref=e89]:
+          - generic [ref=e90]:
+            - generic [ref=e91]:
+              - generic [ref=e92]: 错误
+              - generic [ref=e93]: 伪自律陷阱
+            - generic [ref=e94]:
+              - paragraph [ref=e95]: × 强制早起但上午昏沉，强行工作3小时产出接近零
+              - paragraph [ref=e96]: × 每天列10+待办事项，全部完成就等于"高效"？
+              - paragraph [ref=e97]: × 用咖啡因强行延长注意力，透支肾上腺储备
+              - paragraph [ref=e98]: × "等做完这个再休息"——结果等来精力系统性崩溃
+          - generic [ref=e99]:
+            - generic [ref=e100]:
+              - generic [ref=e101]: 正确
+              - generic [ref=e102]: 能量感知型工作
+            - generic [ref=e103]:
+              - paragraph [ref=e104]: ✓ 顺应昼夜节律，而非强行扭曲它
+              - paragraph [ref=e105]: ✓ 每天只做3件能量回报最高的事，其余全部放开
+              - paragraph [ref=e106]: ✓ 高认知窗口内只做战略决策和核心创作
+              - paragraph [ref=e107]: ✓ 借助Oura Ring等设备量化身体状态
+      - generic [ref=e109]:
+        - generic [ref=e110]:
+          - heading "AI精力沙盒：一人公司的注意力防护墙" [level=2] [ref=e111]
+          - paragraph [ref=e112]:
+            - text: 每次被动切换都会留下一段
+            - strong [ref=e113]: "\"注意力残留\""
+            - text: ——你以为只看了30秒消息，实际上大脑需要额外15分钟才能重新凝聚到深度任务的思考密度上。
+          - paragraph [ref=e114]: 解决方案是引入强制性的沙盒机制。当预设的高认知窗口开始时，启动由AI驱动的虚拟沙盒环境：所有外部消息、邮件、订阅通知全部由AI分身接管。
+          - paragraph [ref=e115]:
+            - text: 它不会简单地静音，而是依据预设的紧急程度，
+            - strong [ref=e116]: 仅将真正需要中止工作的极端例外事项
+            - text: ，以最简摘要形式推送到沙盒边缘。
+          - paragraph [ref=e118]: "\"不看不等于不处理，而是由AI判断何时需要你看\"。沙盒模式结束时，AI生成一份《离线期间事务简报》，你用一次性的小批量处理清空所有积压。"
+        - generic [ref=e119]:
+          - generic [ref=e120]:
+            - generic [ref=e121]:
+              - generic [ref=e122]: 错误
+              - generic [ref=e123]: 伪自动化陷阱
+            - generic [ref=e124]:
+              - paragraph [ref=e125]: × 花了3小时调试AI自动化流程，但这个流程每月只节省2小时
+              - paragraph [ref=e126]: × 为了使用某个AI工具花费大量时间调整格式、导入导出数据
+              - paragraph [ref=e127]: × 同时和ChatGPT、Claude、Midjourney对话，大脑在多语境间反复跳转
+              - paragraph [ref=e128]: × 用AI做决策却花了双倍时间反复修改prompt
+          - generic [ref=e129]:
+            - generic [ref=e130]:
+              - generic [ref=e131]: 正确
+              - generic [ref=e132]: 硬件级隔离
+            - generic [ref=e133]:
+              - paragraph [ref=e134]: ✓ Opal 2.0物理屏蔽器——物理开关切断路由器与社交媒体连接
+              - paragraph [ref=e135]: ✓ 静默时段开始前执行固定仪式：降噪耳塞→手机锁进定时盒→喝一口水
+              - paragraph [ref=e136]: ✓ AI分身用预设话术回应所有外联："当前正专注交付，将在[时间]集中回复"
+              - paragraph [ref=e137]: ✓ 门上挂"创作中，请勿敲门"标识
+      - generic [ref=e139]:
+        - generic [ref=e140]:
+          - heading "五大精力崩溃信号：你的自我预警系统" [level=2] [ref=e141]
+          - paragraph [ref=e142]: 精力红线的本质是自我预警系统——不是在倒下那一刻才响，而是在你还能自救的时候发出信号。等你反应过来，已经搁浅在沙滩上。
+          - paragraph [ref=e143]:
+            - text: 五个信号不是独立存在的，它们常常结伴出现。整个过程可能只有
+            - strong [ref=e144]: 10天
+            - text: 。一人公司的残酷之处在于：你没有合伙人能接过方向盘，你倒下的那一刻，公司就停了。
+          - generic [ref=e145]:
+            - generic [ref=e146]:
+              - generic [ref=e147]: 危险
+              - generic [ref=e148]: 五大崩溃信号清单
+            - generic [ref=e149]:
+              - paragraph [ref=e150]:
+                - text: ①
+                - strong [ref=e151]: 对所有工作消息产生生理性反感
+                - text: ——胃部收紧、呼吸变浅，这是神经系统已将"工作"标记为威胁
+              - paragraph [ref=e152]:
+                - text: ②
+                - strong [ref=e153]: 一天内多次忘记核心任务是什么
+                - text: ——工作记忆容量耗尽，海马体和前额叶同时过载
+              - paragraph [ref=e154]:
+                - text: ③
+                - strong [ref=e155]: 连续3天无法进入任何一次深度工作
+                - text: ——"注意力肌肉"已经过度训练并拉伤
+              - paragraph [ref=e156]:
+                - text: ④
+                - strong [ref=e157]: 用咖啡强行维持产出，但质量持续下降
+                - text: ——透支肾上腺储备，掩盖判断力衰退
+              - paragraph [ref=e158]:
+                - text: ⑤
+                - strong [ref=e159]: 对曾经热爱的事业产生"无所谓"的麻木感
+                - text: ——精神能量耗尽，意义感烧完
+        - generic [ref=e160]:
+          - generic [ref=e161]:
+            - generic [ref=e162]:
+              - generic [ref=e163]: 数据
+              - generic [ref=e164]: 崩溃进程时间线
+            - generic [ref=e165]:
+              - paragraph [ref=e166]: Day 1-2：轻微反感出现
+              - paragraph [ref=e167]: Day 3-4：记忆开始出问题
+              - paragraph [ref=e168]: Day 5-6：深度工作变得不可能
+              - paragraph [ref=e169]: Day 7-8：用咖啡/刺激物填补
+              - paragraph [ref=e170]: Day 9-10：在某个安静下午意识到什么都不在乎了
+              - paragraph [ref=e171]: ⚠ 整个崩溃过程可能只有10天
+          - generic [ref=e172]:
+            - generic [ref=e173]:
+              - generic [ref=e174]: 复元
+              - generic [ref=e175]: 停业调整SOP
+            - generic [ref=e176]:
+              - paragraph [ref=e177]:
+                - strong [ref=e178]: Day 1：
+                - text: 切断所有非紧急通信，睡觉、慢走、吃简单食物
+              - paragraph [ref=e179]:
+                - strong [ref=e180]: Day 2：
+                - text: 无目的输出，纸上随便写画，让大脑找回自发性思考
+              - paragraph [ref=e181]:
+                - strong [ref=e182]: Day 3：
+                - text: 评估哪条业务线、哪个客户或哪个AI工作流在持续吞噬能量，下决心砍掉
+      - generic [ref=e184]:
+        - generic [ref=e185]:
+          - heading "2026年专属工具栈：四位一体的精力保护生态系统" [level=2] [ref=e186]
+          - paragraph [ref=e187]: 每个工具都必须直接削减某一类精力消耗，或主动构建保护屏障。遵循这个刚性原则：凡是不直接服务精力的工具，都是认知负担。
+          - paragraph [ref=e188]:
+            - strong [ref=e189]: 身体能量层：
+            - text: 从被动恢复转向主动预测。Eight Sleep Pod 4这类智能床垫，根据深睡周期实时调节温度。晨间光照模拟眼镜在预定起床时间前30分钟逐步增强冷白光，强行校准昼夜节律。
+          - paragraph [ref=e190]:
+            - strong [ref=e191]: 认知调度层：
+            - text: Motion + Make + 自定义GPT代理。AI代理进行第一轮筛选，将能量吸血鬼任务标记为只做最终质检的类别。Motion根据已验证的高认知窗口，强制锁定2个90分钟的深度工作块。
+          - paragraph [ref=e192]:
+            - strong [ref=e193]: 情绪能量层：
+            - text: Sibyl AI持续监测声纹、键盘节奏、心率变异性。当负面情绪分值连续两天超标，AI助理自动执行熔断：冻结所有非紧急对外沟通，社交媒体由AI代管并发布"维护公告"。
+          - paragraph [ref=e194]:
+            - strong [ref=e195]: 精神能量层：
+            - text: AI使命朗读与高光回溯。每天早晨AI助理朗读公司使命文档，将琐碎工作重新链接到长远个人意义。每周末生成"精力资产周报"审视能量消耗与长期价值的重叠度。
+        - generic [ref=e197]:
+          - generic [ref=e198]:
+            - generic [ref=e199]: 恢复协议
+            - generic [ref=e200]: 三位一体恢复SOP
+          - generic [ref=e201]:
+            - paragraph [ref=e202]:
+              - strong [ref=e203]: 微恢复（每天）：
+              - text: 每完成一个深度工作块，强制离开屏幕10-15分钟。不刷信息，只看窗外、做拉伸——神经系统的一次重启
+            - paragraph [ref=e204]:
+              - strong [ref=e205]: 中恢复（每周）：
+              - text: 每周安排一个完整半天，去与工作完全无关的环境，做重复性体力活动，让大脑进入默认模式网络
+            - paragraph [ref=e206]:
+              - strong [ref=e207]: 深恢复（每季度）：
+              - text: 安排3-5天离线，关闭所有AI工作代理通知，验证系统是否可以在你完全不参与时依然运作
+      - generic [ref=e208]:
+        - generic [ref=e209]: 决策矩阵
+        - heading "做 / 不做" [level=2] [ref=e210]
+        - paragraph [ref=e211]:
+          - text: 精力是OPC最不可替代的生产资料。每项任务都要问：这件事与我的高价值任务有没有交叉点？如果没有，
+          - strong [ref=e212]: 立即拒绝
+          - text: 。
+        - generic [ref=e213]:
+          - generic [ref=e214]:
+            - generic [ref=e215]: ✓ 应该做
+            - generic [ref=e216]: 锁定高认知窗口，只做战略决策和核心创作
+            - generic [ref=e217]: 建立硬件级注意力防火墙（物理隔离）
+            - generic [ref=e218]: 每季度进行"精力审计"，猎杀能量吸血鬼
+            - generic [ref=e219]: 每天安排完全不产出的"存钱罐"时间
+            - generic [ref=e220]: 维护3-5位同为OPC的"能量朋友"
+            - generic [ref=e221]: 为AI设定清晰的"决策边界"
+            - generic [ref=e222]: 出现信号立即停业调整，不拖延
+            - generic [ref=e223]: 每周日晚用10分钟做情绪能量审计
+          - generic [ref=e224]:
+            - generic [ref=e225]: ✗ 不应该做
+            - generic [ref=e226]: 强行扭曲昼夜节律以适应"标准作息"
+            - generic [ref=e227]: 每天处理10+件事，每件60分而非3件95分
+            - generic [ref=e228]: 用咖啡因强行延长注意力透支肾上腺
+            - generic [ref=e229]: 同时运营多个AI对话窗口，反复切换语境
+            - generic [ref=e230]: 承接消耗大量情绪能量却贡献极低利润的客户
+            - generic [ref=e231]: 花3小时调试每月只节省2小时的"伪自动化"
+            - generic [ref=e232]: 连续高强度工作3周以上不安排恢复周期
+            - generic [ref=e233]: 在低电量状态下做重大业务决策
+      - generic [ref=e234]:
+        - generic [ref=e235]: FIN
+        - generic [ref=e236]:
+          - generic [ref=e237]:
+            - generic [ref=e238]: ¥0
+            - generic [ref=e239]: 工具年费
+            - generic [ref=e240]: Motion + Make免费版即可启动，硬件隔离选Opal则+$299
+          - generic [ref=e241]:
+            - generic [ref=e242]: 14天
+            - generic [ref=e243]: 建立高认知窗口
+            - generic [ref=e244]: 通过两周记录精确定位个人专属窗口，之后永久保护
+          - generic [ref=e245]:
+            - generic [ref=e246]: 30%
+            - generic [ref=e247]: 注意力碎片减少
+            - generic [ref=e248]: AI沙盒+硬件隔离组合拳将无效切换降低30%以上
+    - navigation [ref=e249]:
+      - link "← 节点55：外包策略与执行" [ref=e250] [cursor=pointer]:
+        - /url: /nodes/55-outsourcing/index.html
+        - generic [ref=e251]: ←
+        - text: 节点55：外包策略与执行
+      - link "节点57：政府政策与创业补贴 →" [ref=e252] [cursor=pointer]:
+        - /url: /nodes/57-government-policy/index.html
+        - text: 节点57：政府政策与创业补贴
+        - generic [ref=e253]: →

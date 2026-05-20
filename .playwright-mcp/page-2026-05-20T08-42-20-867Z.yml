@@ -1,0 +1,325 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "← 返回首页" [ref=e3] [cursor=pointer]:
+      - /url: /
+    - generic [ref=e4]: 节点 39 / 57
+  - generic: "22"
+  - generic [ref=e6]:
+    - banner [ref=e7]:
+      - generic [ref=e8]:
+        - generic [ref=e9]: 节点 39 · 增长扩展
+        - heading "广告投放入门" [level=1] [ref=e10]
+        - paragraph [ref=e11]: 广告是OPC的时间杠杆——你付出一次广告费，换取不在场时仍持续运转的获客动作。
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - generic [ref=e15]: "01"
+        - generic [ref=e16]: 认知框架
+      - heading "广告不是烧钱，是购买「市场反馈」的侦察兵" [level=2] [ref=e17]
+      - generic [ref=e18]:
+        - generic [ref=e19]:
+          - generic [ref=e20]:
+            - generic [ref=e21]: 核心逻辑
+            - generic [ref=e22]: 投入的每一块钱都要带着利润回来
+            - generic [ref=e23]: OPC的广告本质是一台精密的现金循环机。不是「花钱买曝光」，是「花钱买数据」。每一块钱的任务不是购买流量，而是验证你的价值主张与用户画像的匹配度。
+          - generic [ref=e24]:
+            - generic [ref=e25]: 独特优势
+            - generic [ref=e26]: 从广告到收款，全链路透明
+            - generic [ref=e27]: 大公司市场部花钱，销售部跟进，产品部交付——三者数据不通。作为OPC，从广告曝光到最终收款，整条链路完全透明。这是你独有的竞争壁垒。
+        - generic [ref=e28]:
+          - generic [ref=e29]: 核心指标
+          - generic [ref=e30]:
+            - generic [ref=e31]:
+              - generic [ref=e32]: 有效千次展现成本
+              - generic [ref=e33]: ¥80-100
+            - generic [ref=e34]:
+              - generic [ref=e35]: 单次行动成本红线
+              - generic [ref=e36]: ¥30-60
+            - generic [ref=e37]:
+              - generic [ref=e38]: 预算来源
+              - generic [ref=e39]: 昨日净利润的20-30%
+          - paragraph [ref=e41]: 广告费不是沉没成本，是带着明确使命的侦察兵。它买的是市场反馈，不是曝光。
+    - generic [ref=e43]:
+      - generic [ref=e44]:
+        - generic [ref=e45]: "02"
+        - generic [ref=e46]: 账户架构
+      - heading "单人极简广告账户——三个层级对应三个决策节奏" [level=2] [ref=e47]
+      - generic [ref=e48]:
+        - generic [ref=e49]:
+          - generic [ref=e50]:
+            - generic [ref=e51]: "01"
+            - generic [ref=e52]:
+              - generic [ref=e53]: 1个验证型广告系列
+              - generic [ref=e54]: 一次只有一个核心目标。例如「以不超过30元的成本，获取一个添加微信的精准线索」。算法才能集中资源找到最可能完成此事的人。
+          - generic [ref=e55]:
+            - generic [ref=e56]: "02"
+            - generic [ref=e57]:
+              - generic [ref=e58]: 2-3个侦察型广告组
+              - generic [ref=e59]: 每个广告组代表一个独立假设：场景人群定向、兴趣行为定向、或纯算法信任。不要同时跑三个目标。
+          - generic [ref=e60]:
+            - generic [ref=e61]: "03"
+            - generic [ref=e62]:
+              - generic [ref=e63]: 3-4条变量素材
+              - generic [ref=e64]: 测试的不是颜色或按钮，而是价值主张的表达方式：痛点直击、数据背书、低门槛引诱。
+        - generic [ref=e65]:
+          - generic [ref=e66]:
+            - generic [ref=e67]: 素材类型示例
+            - generic [ref=e68]: 三种沟通方式
+            - generic [ref=e69]:
+              - strong [ref=e70]: 痛点直击：
+              - text: 「一个人摸索三个月，不如一场45分钟的1v1诊断」
+              - strong [ref=e71]: 数据背书：
+              - text: 「我从0到月入3万的OPC创业复盘：只因为我做对了这一个动作」
+              - strong [ref=e72]: 低门槛引诱：
+              - text: 「免费领取《2026OPC获客困局破冰指南》」
+          - generic [ref=e73]:
+            - generic [ref=e74]: 最优结果
+            - generic [ref=e75]: 找到黄金组合
+            - generic [ref=e76]: 找到一组【最有效假设 + 最有效沟通方式】的黄金组合。最低产出是：用少量花费排除了多个错误选项。
+    - generic [ref=e78]:
+      - generic [ref=e79]:
+        - generic [ref=e80]: "03"
+        - generic [ref=e81]: 执行流程
+      - heading "三天优化循环——用最小成本快速验证" [level=2] [ref=e82]
+      - generic [ref=e83]:
+        - generic [ref=e84]:
+          - generic [ref=e85]:
+            - generic [ref=e86]: 第一天
+            - generic [ref=e87]:
+              - generic [ref=e88]: 播种与静默
+              - generic [ref=e89]: 下午或傍晚启动所有广告组，关闭通知。创业者的焦虑会让你产生「操作一下就会变好」的错觉，但这只会打断算法学习。把时间用于准备内容或打磨产品。
+          - generic [ref=e90]:
+            - generic [ref=e91]: 第二天傍晚
+            - generic [ref=e92]:
+              - generic [ref=e93]: 冷酷收割者
+              - generic [ref=e94]: 打开广告后台，执行「秒关」准则：消耗超过1.5倍目标成本且无暗号反馈的广告组→直接关停；有点击但添加率极低的素材→标记为「低效沟通」。你不是在关闭希望，是在修剪枯枝。
+          - generic [ref=e95]:
+            - generic [ref=e96]: 第三天
+            - generic [ref=e97]:
+              - generic [ref=e98]: 有纪律的放大器
+              - generic [ref=e99]: 找到有暗号反馈的广告组，复制该组（不要在原组加预算），将新组日预算提升30%-50%。分析优胜素材的钩子逻辑，用AI快速生成2个新版本放入新组测试。
+        - generic [ref=e100]:
+          - generic [ref=e101]: 单人仪表盘
+          - generic [ref=e102]:
+            - generic [ref=e103]: 核心指标 1
+            - generic [ref=e104]: ¥80-100
+            - generic [ref=e105]: 千次展现成本。持续高于此值需优化素材前3秒钩子
+          - generic [ref=e106]:
+            - generic [ref=e107]: 核心指标 2
+            - generic [ref=e108]: ¥30
+            - generic [ref=e109]: 单次行动成本 = 总花费 ÷ 核心目标完成数
+          - generic [ref=e110]:
+            - generic [ref=e111]: 核心指标 3
+            - generic [ref=e112]: 暗号归因
+            - generic [ref=e113]: 用「暗号」追踪哪个广告组带来了客户，比平台归因更精准
+          - paragraph [ref=e115]: 每天只在早10点和晚6点各看一次，每次不超过15分钟。其他时间专注做产品交付和客户沟通。
+    - generic [ref=e117]:
+      - generic [ref=e118]:
+        - generic [ref=e119]: "04"
+        - generic [ref=e120]: AI协作
+      - heading "AI素材工厂——一人具备小型工作室的产出能力" [level=2] [ref=e121]
+      - generic [ref=e122]:
+        - generic [ref=e123]:
+          - generic [ref=e124]:
+            - generic [ref=e125]: 去AI味技巧
+            - generic [ref=e126]: 人工打乱AI的「塑料感」
+            - generic [ref=e127]: AI生成长文案后仅截取口语化最自然的两句作为开头；用AI生成图片后在手机相册截屏一下，或叠加极低透明度的生活噪点。提示词要求「口误感」「呼吸感」「手机随手拍的晃动感」。
+          - generic [ref=e128]:
+            - generic [ref=e129]: 数字人配置
+            - generic [ref=e130]: 「打断式提问」文案结构
+            - generic [ref=e131]: 数字人开场抛出目标客户最痛的问题，停顿2秒，然后说「如果你刚才心里咯噔了一下，那么接下来的3分钟是专门为你录的。」这种强制性互动暗示能极大降低划走率。
+          - generic [ref=e132]:
+            - generic [ref=e133]: 一次制作多平台
+            - generic [ref=e134]: 同一素材多形态分发
+            - generic [ref=e135]: 同一段素材略作调整后可同步投放到抖音、小红书和视频号。每周集中2小时生产素材，其余时间交给系统自动轮替和择优。
+        - generic [ref=e136]:
+          - generic [ref=e137]:
+            - generic [ref=e138]: 效率提升
+            - generic [ref=e139]: AI素材点击率提升30%+
+            - generic [ref=e140]: 明确要求「口误感」「呼吸感」后，AI素材的点击率显著高于标准AI腔调。
+          - generic [ref=e141]:
+            - generic [ref=e142]: 实操流程
+            - generic [ref=e143]: 30分钟批量生产
+            - generic [ref=e144]:
+              - text: 1. 整理产品核心卖点和用户常见疑问（30分钟）
+              - text: 2. 喂给文案模型+图像视频模型批量生成30+变体
+              - text: 3. 选取最有真实感的片段，叠加真实语音证言
+              - text: 4. 同步投放多平台
+          - paragraph [ref=e146]: 决策留在人脑，执行丢给AI。你只需要判断哪条素材值得保留，哪条直接淘汰。
+    - generic [ref=e148]:
+      - generic [ref=e149]:
+        - generic [ref=e150]: "05"
+        - generic [ref=e151]: 风险规避
+      - heading "四个高危陷阱——OPC广告投放的生死线" [level=2] [ref=e152]
+      - generic [ref=e153]:
+        - generic [ref=e154]:
+          - generic [ref=e155]:
+            - generic [ref=e156]: "01"
+            - generic [ref=e157]:
+              - generic [ref=e158]: 现金流回正前禁碰品牌广告
+              - generic [ref=e159]: 在月利润稳定超过3万元之前，任何「提升品牌声量」「种草蓄水」的投放都是致命的现金流陷阱。必须死死咬住「购买」「加微信48小时内转账」等硬动作。
+          - generic [ref=e160]:
+            - generic [ref=e161]: "02"
+            - generic [ref=e162]:
+              - generic [ref=e163]: 警惕「一键托管」
+              - generic [ref=e164]: 月消耗低于5万元前，切勿开启完全黑盒的智能托管。给出明确的「目标每次转化费用」上限，让算法在你看得懂的范围内工作。
+          - generic [ref=e165]:
+            - generic [ref=e166]: "03"
+            - generic [ref=e167]:
+              - generic [ref=e168]: 拒绝长合同和年框
+              - generic [ref=e169]: 保持「广告账户余额不超过3天预算」的原则。这样当某个渠道效率骤降时，能在5分钟内完成预算转移。永远把切换平台的主动权攥在自己手里。
+          - generic [ref=e170]:
+            - generic [ref=e171]: "04"
+            - generic [ref=e172]:
+              - generic [ref=e173]: 破除「学习期」迷信
+              - generic [ref=e174]: 消耗到目标成本1.5倍仍无转化信号，立刻关停。小预算模型下，没有爆发迹象的广告组说明素材或人群匹配度极低，及时重置能保住下一轮测试的弹药。
+        - generic [ref=e175]:
+          - generic [ref=e176]:
+            - generic [ref=e177]: 陷阱案例
+            - generic [ref=e178]: 40元/条的留资线索
+            - generic [ref=e179]: 40元一个的留资线索，最终付费转化率不到0.3%——广告触达的是好奇但无支付能力的人群，不是你的目标客户。
+          - generic [ref=e180]:
+            - generic [ref=e181]: 正确做法
+            - generic [ref=e182]: 硬止损线
+            - generic [ref=e183]: 单次转化目标成本的1.5倍 = 关停线。例如预设线索成本20元，消耗达到30元仍无转化→立即关停，不等待系统判定学习结束。
+          - paragraph [ref=e185]: 账面ROI算下来不亏，但你没把自己的时间成本折进去。时薪33元的「虚假忙碌」是OPC最危险的幻觉。
+    - generic [ref=e187]:
+      - generic [ref=e188]:
+        - generic [ref=e189]: "06"
+        - generic [ref=e190]: 决策框架
+      - heading "广告投放决策表——什么时候做什么事" [level=2] [ref=e191]
+      - generic [ref=e192]:
+        - generic [ref=e194]:
+          - generic [ref=e195]:
+            - generic [ref=e196]: 日预算 ¥50-100
+            - generic [ref=e197]: 拆分为3-4个广告组
+            - generic [ref=e198]: 测试不同假设，快速排错
+          - generic [ref=e199]:
+            - generic [ref=e200]: 消耗达1.5倍红线
+            - generic [ref=e201]: 立即关停
+            - generic [ref=e202]: 不等系统学习，马上重置
+          - generic [ref=e203]:
+            - generic [ref=e204]: 有暗号反馈
+            - generic [ref=e205]: 复制该广告组
+            - generic [ref=e206]: 其他一致，预算+30-50%
+          - generic [ref=e207]:
+            - generic [ref=e208]: 素材表现好
+            - generic [ref=e209]: 去硬广化发布
+            - generic [ref=e210]: 广告素材变自然流量内容
+          - generic [ref=e211]:
+            - generic [ref=e212]: 月消耗稳定3-5万
+            - generic [ref=e213]: 优化转化容器
+            - generic [ref=e214]: 从卖产品转向卖人设
+        - generic [ref=e215]:
+          - generic [ref=e216]: 决策原则
+          - generic [ref=e217]:
+            - generic [ref=e218]:
+              - generic [ref=e219]: 做
+              - generic [ref=e220]: 用暗号归因追踪效果
+              - generic [ref=e221]: 设置硬止损线
+              - generic [ref=e222]: 素材是最好的定向工具
+              - generic [ref=e223]: 日预算=昨日净利润的20-30%
+              - generic [ref=e224]: 固定操作窗口，每天2次共30分钟
+            - generic [ref=e225]:
+              - generic [ref=e226]: 不做
+              - generic [ref=e227]: 开启完全黑盒的智能托管
+              - generic [ref=e228]: 签署年框/长合同
+              - generic [ref=e229]: 在现金流回正前投品牌广告
+              - generic [ref=e230]: 引导用户关注公众号/收藏/下载APP
+              - generic [ref=e231]: 每天刷新后台几十次
+          - paragraph [ref=e233]: 广告投放不仅为你获取客户，更在实时为你指明产品最正确的进化方向。这是只有同时手握产品和市场的你，才能捕捉到的闪电式机会。
+    - generic [ref=e234]:
+      - generic [ref=e235]: FIN · 财务健康指标
+      - generic [ref=e236]:
+        - heading "广告的财务意义" [level=2] [ref=e237]
+        - generic [ref=e238]:
+          - generic [ref=e239]:
+            - generic [ref=e240]: 及格线
+            - generic [ref=e241]: 时薪 > ¥100
+            - generic [ref=e242]: 广告ROI折算后必须高于你外包/咨询的单价
+          - generic [ref=e243]:
+            - generic [ref=e244]: 线索成本红线
+            - generic [ref=e245]: ¥30-60
+            - generic [ref=e246]: 客单价3000元×80%毛利÷3 = 60元红线
+          - generic [ref=e247]:
+            - generic [ref=e248]: 最小测试预算
+            - generic [ref=e249]: ¥150
+            - generic [ref=e250]: 足以测试3个广告组×1.5倍红线
+          - generic [ref=e251]:
+            - generic [ref=e252]: 自然流量激活
+            - generic [ref=e253]: 3x
+            - generic [ref=e254]: 好的付费广告能激活账号自然推荐量
+      - generic [ref=e255]:
+        - generic [ref=e256]: 2026 UPDATE
+        - generic [ref=e257]:
+          - blockquote [ref=e258]: "**面向OPC**：内容做了、社群建了、推荐也跑了——现在你考虑花钱买用户。但OPC的广告预算不是\"几万块试试水\"，而是\"几百块验证一个假设\"。本节点告诉你2026年怎么花最少的钱，买到最值的用户。"
+          - heading "一、投广告的前提条件（缺一不可）" [level=3] [ref=e259]
+          - heading "先问自己三个问题" [level=4] [ref=e260]
+          - table [ref=e261]:
+            - rowgroup [ref=e262]:
+              - row "问题 及格线 不及格别投" [ref=e263]:
+                - cell "问题" [ref=e264]
+                - cell "及格线" [ref=e265]
+                - cell "不及格别投" [ref=e266]
+              - row "你的免费获客渠道已经跑通了吗？ 每月自然新增≥50用户 回去做内容（节点33）" [ref=e267]:
+                - columnheader "你的免费获客渠道已经跑通了吗？" [ref=e268]
+                - columnheader "每月自然新增≥50用户" [ref=e269]
+                - columnheader "回去做内容（节点33）" [ref=e270]
+              - row "你知道一个用户值多少钱吗？ 能算出LTV（用户生命周期价值） 先跑3个月数据再投" [ref=e271]:
+                - cell "你知道一个用户值多少钱吗？" [ref=e272]
+                - cell "能算出LTV（用户生命周期价值）" [ref=e273]
+                - cell "先跑3个月数据再投" [ref=e274]
+              - row "你投广告的ROI能算清楚吗？ 花¥1广告费，至少赚回¥1 设好转化追踪再投" [ref=e275]:
+                - cell "你投广告的ROI能算清楚吗？" [ref=e276]
+                - cell "花¥1广告费，至少赚回¥1" [ref=e277]
+                - cell "设好转化追踪再投" [ref=e278]
+          - paragraph [ref=e279]:
+            - strong [ref=e280]: OPC铁律
+            - text: ：月利润<¥5000之前，不投广告。5000以下的增长靠内容和社群。
+          - heading "二、2026年OPC能投的四个平台" [level=3] [ref=e281]
+          - text: 平台最低日预算适合产品2026年特点 **微信朋友圈广告**¥50/天面向企业主/30岁以上用户精准但贵，CPM约¥30-50 **小红书聚光**¥100/天面向年轻女性/生活方式种草效果好，但需要好看的内容 **抖音巨量引擎**¥200/天面向大众用户流量大但转化率低 **知乎效果广告**¥50/天面向高知/决策型用户CPM低（¥5-10），适合SaaS/工具
+          - paragraph [ref=e282]:
+            - strong [ref=e283]: OPC首选
+            - text: ：知乎效果广告。原因：CPM最低、用户质量最高、投放门槛最低。
+          - heading "三、广告投放的三步法（以知乎为例）" [level=3] [ref=e284]
+          - heading "步骤1：创建一条\"不像广告\"的广告" [level=4] [ref=e285]
+          - code [ref=e287]: 标题：【真实经历】我一个人花了30天做了一款XX工具 内容：之前一直用Excel记账，每次月底都头疼。后来干脆自己做了个工具，现在用了3个月... 配图：产品截图（不要用精美设计的海报——真实图点击率更高） 落地页：产品的核心功能页面（不要专门做landing page）
+          - paragraph [ref=e288]:
+            - strong [ref=e289]: 关键
+            - text: ：知乎用户讨厌广告。你的广告必须看起来像一篇正常回答/文章。
+          - heading "步骤2：设预算和定向" [level=4] [ref=e290]
+          - code [ref=e292]: 日预算：¥50（最低启动） 定向：关注"创业""独立开发""效率工具"话题的用户 地域：一线城市（付费意愿最高） 出价：OCPM自动优化
+          - heading "步骤3：看数据、调、再投" [level=4] [ref=e293]
+          - text: 数据正常需要优化 CTR（点击率）>1%<0.5%→换标题/封面图 CPC（单次点击成本）<¥3>¥5→关闭该广告 CPM（千次曝光成本）<¥20>¥30→换定向 转化率>2%<1%→换落地页
+          - paragraph [ref=e294]:
+            - strong [ref=e295]: 前¥200是测试预算。
+            - text: 不要一次性充¥5000——先花¥200看数据，再决定加不加。
+          - heading "四、OPC广告 vs 大厂广告" [level=3] [ref=e296]
+          - text: 维度大厂OPC 月预算¥10万+¥500-2000 优化方式专业优化师天天调你每周看一次数据 素材专业设计团队出图Canva模板+产品截图 目标品牌曝光+转化只追转化
+          - paragraph [ref=e297]:
+            - strong [ref=e298]: 记住这个差距。
+            - text: 不要学大厂的打法——他们烧的是融资的钱，你烧的是自己的饭钱。
+          - heading "五、一次¥200的广告实验模板" [level=3] [ref=e299]
+          - code [ref=e301]: 广告平台：知乎 日预算：¥50，跑4天 标题A："我花了30天做了XX"（真实经历型） 标题B："2026年还在用Excel记账？试试这个"（痛点型） 每个标题¥100预算，看哪个CTR高 4天后：高CTR的留下，低的关掉 如果两个CTR都<0.5%→广告不适合你目前的产品，回去做内容
+          - heading "六、检查清单" [level=3] [ref=e302]
+          - list [ref=e303]:
+            - listitem [ref=e304]: "[ ] 免费获客渠道已跑通（月自然新增≥50）"
+            - listitem [ref=e305]: "[ ] LTV已估算（用户生命周期价值>获客成本）"
+            - listitem [ref=e306]: "[ ] 转化追踪已设置（能知道广告带来了几个注册/付费）"
+            - listitem [ref=e307]: "[ ] 首次投放预算≤¥200"
+            - listitem [ref=e308]: "[ ] 至少测试2个不同标题/封面"
+            - listitem [ref=e309]: "[ ] 4天后根据数据决定继续或停止"
+          - heading "节点资源链接" [level=3] [ref=e310]
+          - list [ref=e311]:
+            - listitem [ref=e312]: 节点38：定价策略
+            - listitem [ref=e313]: 节点40：裂变与推荐
+            - listitem [ref=e314]: 节点33：内容营销与SEO/ASO
+        - paragraph [ref=e315]: 以上内容基于2026年5月最新实践编写，工具版本和价格可能更新，请以官方文档为准。
+    - navigation [ref=e316]:
+      - link "← 节点38：定价策略" [ref=e317] [cursor=pointer]:
+        - /url: /nodes/38-pricing/index.html
+        - generic [ref=e318]: ←
+        - text: 节点38：定价策略
+      - link "节点40：用户转介绍机制 →" [ref=e319] [cursor=pointer]:
+        - /url: /nodes/40-referral/index.html
+        - text: 节点40：用户转介绍机制
+        - generic [ref=e320]: →

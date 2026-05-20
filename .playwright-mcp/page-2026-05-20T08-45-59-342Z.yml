@@ -1,0 +1,325 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "← 返回首页" [ref=e3] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e4]: ←
+      - text: 返回首页
+    - generic [ref=e5]: 节点 52 / 57
+  - generic: "52"
+  - main [ref=e7]:
+    - generic [ref=e9]:
+      - generic [ref=e10]: 节点 52 · 1-10
+      - heading "服务器安全防护" [level=1] [ref=e11]
+      - paragraph [ref=e12]: 防火墙配置、安全监控、漏洞修复，网站上线后就应该做
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - generic [ref=e15]: D1
+        - generic [ref=e16]: 核心
+        - generic [ref=e17]: 本质
+      - heading "OPC的安全现实" [level=2] [ref=e18]
+      - generic [ref=e19]:
+        - generic [ref=e20]:
+          - paragraph [ref=e21]:
+            - text: 一人公司 = 所有鸡蛋放一个篮子，且没有备份方案。
+            - strong [ref=e22]: 攻击面极窄，但一次被破 = 业务终结。
+          - paragraph [ref=e23]:
+            - strong [ref=e24]: AI驱动的自动化攻击
+            - text: ：当前生成式AI让扫描器可以7×24无差别遍历全网。弱口令、未打补丁的Redis/SSH，平均存活时间已降至数小时。
+          - paragraph [ref=e25]:
+            - strong [ref=e26]: 合规义务下沉
+            - text: ：《个人信息保护法》对处理个人信息的自然人同样适用。无论规模，只要收集手机号、邮箱或行为数据，就必须具备基本技术措施。
+        - generic [ref=e27]:
+          - generic [ref=e28]:
+            - generic [ref=e29]:
+              - generic [ref=e30]: 平均存活时间
+              - generic [ref=e31]: 数小时
+            - generic [ref=e32]:
+              - generic [ref=e33]: 攻击来源
+              - generic [ref=e34]: 自动化扫描
+            - generic [ref=e35]:
+              - generic [ref=e36]: 恢复目标
+              - generic [ref=e37]: ≤30分钟
+          - generic [ref=e38]:
+            - generic [ref=e39]: × 错误示范
+            - generic [ref=e40]: "\"我只个小站，没人会攻击我\"——攻击者用AI全天候扫描，不挑目标大小，只看有没有漏洞。"
+    - generic [ref=e41]:
+      - generic [ref=e42]:
+        - generic [ref=e43]: D2
+        - generic [ref=e44]: 模型
+      - heading "范式一：无服务器全托管" [level=2] [ref=e45]
+      - generic [ref=e46]:
+        - generic [ref=e47]:
+          - paragraph [ref=e48]:
+            - text: 2026年，
+            - strong [ref=e49]: 自己维护服务器 = 承担半全职安全运维工作量
+            - text: 。更务实的做法是迁移到"无服务器"或"后端即服务"架构。
+          - generic [ref=e50]:
+            - generic [ref=e51]: 前端
+            - generic [ref=e52]:
+              - generic [ref=e53]: Vercel / Netlify / Cloudflare Pages
+              - generic [ref=e54]: 全球边缘分发、自动HTTPS、WAF一体化，无需关心Nginx配置
+          - generic [ref=e55]:
+            - generic [ref=e56]: 后端
+            - generic [ref=e57]:
+              - generic [ref=e58]: Cloudflare Workers / Vercel Edge Functions
+              - generic [ref=e59]: 函数层级写代码，运行环境由平台隔离加固，攻击面锁定在沙箱内
+          - generic [ref=e60]:
+            - generic [ref=e61]: 数据
+            - generic [ref=e62]:
+              - generic [ref=e63]: PlanetScale / Supabase / Neon
+              - generic [ref=e64]: Serverless数据库，自带每日备份，连接管理、防火墙策略完全托管
+          - generic [ref=e65]:
+            - generic [ref=e66]: 存储
+            - generic [ref=e67]:
+              - generic [ref=e68]: 对象存储 + CDN签名URL
+              - generic [ref=e69]: 不再自建FTP或文件服务器，用云存储代替
+        - generic [ref=e70]:
+          - generic [ref=e71]:
+            - generic [ref=e72]: ✓ 正确示范
+            - generic [ref=e73]: 使用全托管架构后，服务器级安全事件概率下降约78%，处理时间从4.2小时降至15分钟以下。
+          - generic [ref=e74]:
+            - generic [ref=e75]:
+              - generic [ref=e76]: 安全责任转移
+              - generic [ref=e77]: 平台承担OS层
+            - generic [ref=e78]:
+              - generic [ref=e79]: 你仍需保护
+              - generic [ref=e80]: 平台账号本身
+    - generic [ref=e81]:
+      - generic [ref=e82]:
+        - generic [ref=e83]: D3
+        - generic [ref=e84]: 培育
+      - heading "范式二：韧性取代绝对安全" [level=2] [ref=e85]
+      - generic [ref=e86]:
+        - generic [ref=e87]:
+          - paragraph [ref=e88]:
+            - text: 一人公司没有24小时值守安全团队。理性目标不是"不被攻破"，而是
+            - strong [ref=e89]: "\"被攻破后能多快恢复\""
+            - text: 。
+          - paragraph [ref=e91]: 可以没有专职安全人员，但不能没有安全基线；可以接受攻击尝试每天都在发生，但不能接受被攻破后毫无恢复能力。
+          - paragraph [ref=e92]:
+            - strong [ref=e93]: 三大工程实践
+            - text: ：
+          - generic [ref=e94]:
+            - generic [ref=e95]: "1"
+            - generic [ref=e96]:
+              - generic [ref=e97]: 基础设施即代码(IaC)
+              - generic [ref=e98]: 用Terraform/Pulumi声明环境，Git仓库管理。服务器被篡改后，10分钟内从零重建完全相同的环境。
+          - generic [ref=e99]:
+            - generic [ref=e100]: "2"
+            - generic [ref=e101]:
+              - generic [ref=e102]: 不可变备份与恢复演练
+              - generic [ref=e103]: Object Lock/WORM存储，7天内备份无法被删除或篡改。每月执行一次完整恢复演练，目标是低于30分钟。
+          - generic [ref=e104]:
+            - generic [ref=e105]: "3"
+            - generic [ref=e106]:
+              - generic [ref=e107]: 无状态化设计
+              - generic [ref=e108]: 用户会话、缓存、上传文件全部外移到托管Redis/对象存储/数据库，服务实例可随时销毁替换而不丢失数据。
+        - generic [ref=e109]:
+          - generic [ref=e110]:
+            - generic [ref=e111]: ✓ 正确示范
+            - generic [ref=e112]:
+              - text: 你不再追逐零日漏洞防御，而是确保入侵发生后，服务能在
+              - strong [ref=e113]: 30分钟内重生
+              - text: 。这种能力远比WAF更能抵抗不确定性。
+          - generic [ref=e114]:
+            - generic [ref=e115]: ◑ 核心转变
+            - generic [ref=e116]: 从"建高墙"到"做好回滚"。防御重心从"加固服务器"转移到"加固代码和身份边界"。
+    - generic [ref=e117]:
+      - generic [ref=e118]:
+        - generic [ref=e119]: D4
+        - generic [ref=e120]: 避坑
+      - heading "10分钟安全加固" [level=2] [ref=e121]
+      - generic [ref=e122]:
+        - generic [ref=e123]:
+          - paragraph [ref=e124]:
+            - text: 不需要成为安全专家。
+            - strong [ref=e125]: 用免费工具构建非对称防御
+            - text: ，让自动化攻击绕道而行。
+          - generic [ref=e126]:
+            - generic [ref=e127]: "1"
+            - generic [ref=e128]:
+              - generic [ref=e129]: 接入Cloudflare（免费）
+              - generic [ref=e130]: 将域名DNS解析权交给Cloudflare，开启代理(橙色云朵)。自动隐藏源站IP，拦截SQL注入/XSS，DDoS无限量免费缓解。
+          - generic [ref=e131]:
+            - generic [ref=e132]: "2"
+            - generic [ref=e133]:
+              - generic [ref=e134]: 关闭所有入站管理端口
+              - generic [ref=e135]: SSH/RDP/数据库端口绝不暴露公网。使用Cloudflare Tunnel或云厂商堡垒机代替直接登录。
+          - generic [ref=e136]:
+            - generic [ref=e137]: "3"
+            - generic [ref=e138]:
+              - generic [ref=e139]: 强制密钥登录，禁止密码
+              - generic [ref=e140]: 服务器SSH禁用密码，使用Ed25519密钥对。私钥存1Password，每90天轮换。
+          - generic [ref=e141]:
+            - generic [ref=e142]: "4"
+            - generic [ref=e143]:
+              - generic [ref=e144]: GitHub密钥扫描
+              - generic [ref=e145]: 开启GitHub Advanced Security的密钥检测，每次推送前自动扫描，发现泄漏立即阻断并告警。
+        - generic [ref=e146]:
+          - generic [ref=e147]:
+            - generic [ref=e148]: × 致命操作
+            - generic [ref=e149]: 把SSH/RDP端口直接暴露公网 + 弱密码。这等于在暗网挂牌出售服务器权限。
+          - generic [ref=e150]:
+            - generic [ref=e151]: ✓ 域名安全
+            - generic [ref=e152]: 开启注册商锁定(Registry Lock)和转移锁定(Transfer Lock)，防止域名被静默转走。
+    - generic [ref=e153]:
+      - generic [ref=e154]:
+        - generic [ref=e155]: D5
+        - generic [ref=e156]: 培育
+      - heading "免费工具栈" [level=2] [ref=e157]
+      - generic [ref=e158]:
+        - generic [ref=e159]:
+          - generic [ref=e160]:
+            - generic [ref=e161]: 代码
+            - generic [ref=e162]:
+              - generic [ref=e163]: GitHub Advanced Security / Snyk Free
+              - generic [ref=e164]: 代码扫描、密钥检测、依赖项审查。每周一凌晨自动审计，Critical/High漏洞未修复前禁止部署。
+          - generic [ref=e165]:
+            - generic [ref=e166]: 容器
+            - generic [ref=e167]:
+              - generic [ref=e168]: Trivy (开源无限制)
+              - generic [ref=e169]: CI中调用，CRITICAL/HIGH漏洞让流水线失败，阻止镜像推送到生产环境。
+          - generic [ref=e170]:
+            - generic [ref=e171]: 端点
+            - generic [ref=e172]:
+              - generic [ref=e173]: 微软Defender for Individuals / Sophos
+              - generic [ref=e174]: 实时保护、勒索软件文件夹限制、网络钓鱼检测。管理笔记本被入侵 = 所有防御归零。
+          - generic [ref=e175]:
+            - generic [ref=e176]: 邮件
+            - generic [ref=e177]:
+              - generic [ref=e178]: SPF + DKIM + DMARC
+              - generic [ref=e179]:
+                - text: DNS中配置，DMARC设为
+                - code [ref=e180]: p=reject
+                - text: 拒绝所有未通过检验的邮件。
+        - generic [ref=e181]:
+          - generic [ref=e182]:
+            - generic [ref=e183]:
+              - generic [ref=e184]: WAF
+              - generic [ref=e185]: Cloudflare免费
+            - generic [ref=e186]:
+              - generic [ref=e187]: DDoS防护
+              - generic [ref=e188]: Cloudflare免费
+            - generic [ref=e189]:
+              - generic [ref=e190]: 代码扫描
+              - generic [ref=e191]: GitHub ADv.Security
+          - paragraph [ref=e193]:
+            - strong [ref=e194]: 关键红线
+            - text: ：任何Critical或High漏洞未修复前，绝不推进部署。代码扫描必须嵌入PR流程。
+    - generic [ref=e195]:
+      - generic [ref=e196]:
+        - generic [ref=e197]: D6
+        - generic [ref=e198]: 决策
+      - heading "做 / 不做" [level=2] [ref=e199]
+      - generic [ref=e200]:
+        - text: 服务器安全的核心是
+        - strong [ref=e201]: 缩小暴露面 + 零信任接入 + 一键恢复
+        - text: 。
+        - strong [ref=e202]: 做
+        - text: 则韧性十足，
+        - strong [ref=e203]: 不做
+        - text: 则一次攻击致命。
+      - generic [ref=e204]:
+        - generic [ref=e205]:
+          - generic [ref=e206]: ✓ 做
+          - generic [ref=e207]: 优先使用全托管Serverless架构
+          - generic [ref=e208]: 接入Cloudflare隐藏源站IP
+          - generic [ref=e209]: 关闭所有公网管理端口
+          - generic [ref=e210]: 强制SSH密钥登录，禁止密码
+          - generic [ref=e211]: 代码嵌入密钥扫描和CVE检测
+          - generic [ref=e212]: 每月执行恢复演练，目标≤30分钟
+          - generic [ref=e213]: 开启域名Registry Lock
+        - generic [ref=e214]:
+          - generic [ref=e215]: × 不做
+          - generic [ref=e216]: 自管服务器 + 弱密码SSH
+          - generic [ref=e217]: 管理端口直接暴露公网
+          - generic [ref=e218]: 代码中硬编码密钥/密码
+          - generic [ref=e219]: 不开启GitHub密钥扫描
+          - generic [ref=e220]: 从不执行恢复演练
+          - generic [ref=e221]: 忽略域名锁定
+          - generic [ref=e222]: 管理笔记本不装终端防护
+    - generic [ref=e223]:
+      - generic [ref=e224]: 财务健康指标
+      - generic [ref=e225]:
+        - generic [ref=e226]:
+          - generic [ref=e227]: $0
+          - generic [ref=e228]: 安全工具年费
+          - generic [ref=e229]: Cloudflare免费 + GitHub免费层
+        - generic [ref=e230]:
+          - generic [ref=e231]: 10分钟
+          - generic [ref=e232]: 基础加固时间
+          - generic [ref=e233]: Cloudflare接入 + 端口收敛 + 密钥登录
+        - generic [ref=e234]:
+          - generic [ref=e235]: 30分钟
+          - generic [ref=e236]: 恢复时间目标
+          - generic [ref=e237]: 从零重建全部服务
+      - generic [ref=e238]:
+        - generic [ref=e239]: 2026 UPDATE
+        - generic [ref=e240]:
+          - blockquote [ref=e241]: "**面向OPC**：你的产品在服务器上跑着，里面有用户的邮箱、密码、支付记录。一个漏洞=所有用户数据泄露=你的生意结束。本节点告诉你一个人怎么守住服务器。"
+          - heading "一、2026年OPC的最低安全基线" [level=3] [ref=e242]
+          - heading "五条不做就会死的安全规则" [level=4] [ref=e243]
+          - table [ref=e244]:
+            - rowgroup [ref=e245]:
+              - row "规则 不做会怎样" [ref=e246]:
+                - cell "规则" [ref=e247]
+                - cell "不做会怎样" [ref=e248]
+              - row "**SSH禁用密码登录，只用密钥** 被暴力破解→服务器变矿机" [ref=e249]:
+                - columnheader "**SSH禁用密码登录，只用密钥**" [ref=e250]
+                - columnheader "被暴力破解→服务器变矿机" [ref=e251]
+              - row "**所有对外服务只开必要端口** 多余的端口=多余的攻击面" [ref=e252]:
+                - cell "**所有对外服务只开必要端口**" [ref=e253]
+                - cell "多余的端口=多余的攻击面" [ref=e254]
+              - row "**数据库不暴露在公网** 被拖库→用户数据泄露" [ref=e255]:
+                - cell "**数据库不暴露在公网**" [ref=e256]
+                - cell "被拖库→用户数据泄露" [ref=e257]
+              - row "**HTTPS强制启用** 中间人攻击→用户密码被窃" [ref=e258]:
+                - cell "**HTTPS强制启用**" [ref=e259]
+                - cell "中间人攻击→用户密码被窃" [ref=e260]
+              - row "**定期更新系统和依赖** 已知漏洞被利用→入侵" [ref=e261]:
+                - cell "**定期更新系统和依赖**" [ref=e262]
+                - cell "已知漏洞被利用→入侵" [ref=e263]
+          - heading "二、30分钟完成基础加固" [level=3] [ref=e264]
+          - heading "第1步：SSH加固（5分钟）" [level=4] [ref=e265]
+          - code [ref=e267]: "# 1. 生成本地密钥对 ssh-keygen -t ed25519 -C \"你的邮箱\" # 2. 上传公钥到服务器 ssh-copy-id root@你的服务器IP # 3. 禁止密码登录 sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config sudo sed -i 's/#PermitRootLogin yes/PermitRootLogin prohibit-password/' /etc/ssh/sshd_config sudo systemctl restart sshd"
+          - heading "第2步：防火墙配置（5分钟）" [level=4] [ref=e268]
+          - code [ref=e270]: "sudo ufw default deny incoming sudo ufw default allow outgoing sudo ufw allow 22 # SSH sudo ufw allow 80 # HTTP sudo ufw allow 443 # HTTPS sudo ufw enable"
+          - heading "第3步：自动安全更新（2分钟）" [level=4] [ref=e271]
+          - code [ref=e273]: "sudo apt install -y unattended-upgrades sudo dpkg-reconfigure unattended-upgrades # 选\"Yes\""
+          - heading "第4步：数据库安全（10分钟）" [level=4] [ref=e274]
+          - code [ref=e276]: "-- Supabase 的 Row Level Security 必须开启 ALTER TABLE users ENABLE ROW LEVEL SECURITY; -- 每个表定义谁能读、谁能写 CREATE POLICY \"用户读自己的数据\" ON users FOR SELECT USING (auth.uid() = id); -- 敏感字段不要返回给前端 -- 查询时永远不要 select * 如果包含密码/密钥字段"
+          - heading "第5步：环境变量管理（3分钟）" [level=4] [ref=e277]
+          - code [ref=e279]: "# ❌ 绝不要在代码里写： const API_KEY = \"sk-xxxxx\"; # ✅ 用环境变量： const API_KEY = process.env.API_KEY; # .env 文件必须加入 .gitignore echo \".env\" >> .gitignore"
+          - heading "三、2026年免费安全工具" [level=3] [ref=e280]
+          - text: "工具做什么怎么用 **Lynis**安全审计（扫描服务器找漏洞）`sudo apt install lynis && sudo lynis audit system` **Cloudflare**DDoS防护+CDN+WAF免费计划，域名DNS切到Cloudflare **SSL Labs**HTTPS配置评分[ssllabs.com](https://www.ssllabs.com/ssltest/) 输入域名 **Have I Been Pwned**检查域名是否泄露[haveibeenpwned.com](https://haveibeenpwned.com/domain/你的域名)"
+          - heading "四、被入侵的三个信号（发现后立刻处理）" [level=3] [ref=e281]
+          - text: "信号可能发生了什么立刻做什么 CPU突然100%被装了挖矿程序`top` 查异常进程 → `kill` → 改密码 → 查SSH登录日志 数据库多了不认识的表数据库被注入/拖库立刻下线 → 从备份恢复 → 查API日志找注入点 用户反馈收到垃圾邮件邮件服务器被利用改邮箱密码 → 检查转发规则"
+          - heading "五、OPC不需要做的安全措施（省时间）" [level=3] [ref=e282]
+          - text: 你以为需要实际上不需要省下时间 买商业防火墙Cloudflare免费WAF够用省¥5000/年 请安全公司做渗透测试日活<1000不需要省¥20000/次 做SOC2/ISO27001认证没有企业客户要求就别做省半年 自建堡垒机SSH密钥+Fail2ban够用省1周
+          - heading "六、检查清单" [level=3] [ref=e283]
+          - list [ref=e284]:
+            - listitem [ref=e285]: "[ ] SSH只允许密钥登录"
+            - listitem [ref=e286]: "[ ] 防火墙仅开放22/80/443"
+            - listitem [ref=e287]: "[ ] 系统自动安全更新已配置"
+            - listitem [ref=e288]: "[ ] Supabase RLS已全部开启"
+            - listitem [ref=e289]: "[ ] .env在.gitignore中"
+            - listitem [ref=e290]: "[ ] SSL Labs评分≥A"
+            - listitem [ref=e291]: "[ ] 数据库有定期备份"
+            - listitem [ref=e292]:
+              - link "2026年更新" [ref=e293] [cursor=pointer]:
+                - /url: "#s2026"
+          - heading "节点资源链接" [level=3] [ref=e294]
+          - list [ref=e295]:
+            - listitem [ref=e296]: 节点51：数据备份
+            - listitem [ref=e297]: 节点25：网站部署与SSL
+            - listitem [ref=e298]: 节点50：广告法合规
+        - paragraph [ref=e299]: 以上内容基于2026年5月最新实践编写，工具版本和价格可能更新，请以官方文档为准。
+  - navigation [ref=e300]:
+    - link "← 节点51：数据备份与恢复" [ref=e301] [cursor=pointer]:
+      - /url: /nodes/51-data-backup/index.html
+      - generic [ref=e302]: ←
+      - text: 节点51：数据备份与恢复
+    - link "节点53：海外支付方案 →" [ref=e303] [cursor=pointer]:
+      - /url: /nodes/53-global-payment/index.html
+      - text: 节点53：海外支付方案
+      - generic [ref=e304]: →

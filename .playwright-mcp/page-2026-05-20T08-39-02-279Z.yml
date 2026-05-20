@@ -1,0 +1,256 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "← 返回首页" [ref=e3] [cursor=pointer]:
+      - /url: /
+    - generic [ref=e4]: 节点 32 / 57
+  - main [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]: 上线后迭代与运营
+      - heading "冷启动获客" [level=1] [ref=e9]
+      - generic [ref=e10]: 节点 32 / 57 · 最后修订：2026年5月11日
+    - generic [ref=e11]:
+      - blockquote [ref=e12]:
+        - paragraph [ref=e13]: 产品上线了，访问量是0。你没有广告预算、没有营销团队、没有品牌知名度。你怎么让第一个陌生人掏钱？本节点告诉你2026年OPC的冷启动四步法——从0到第一个付费用户。
+      - paragraph
+    - paragraph
+    - generic [ref=e14]:
+      - paragraph
+      - generic [ref=e15]: 一、2026年冷启动的底层逻辑变了
+      - paragraph
+      - heading "旧的逻辑（2023年以前）" [level=3] [ref=e16]
+      - paragraph [ref=e17]:
+        - text: "``"
+        - code
+      - code [ref=e18]:
+        - paragraph [ref=e19]: 做内容 → 攒粉丝 → 卖产品 → 希望有人买
+      - paragraph [ref=e20]:
+        - code
+        - text: "`"
+        - code
+      - code [ref=e21]:
+        - heading "2026年的新逻辑" [level=3] [ref=e22]
+      - paragraph [ref=e23]:
+        - code
+        - text: "`"
+        - code
+      - code [ref=e24]:
+        - paragraph [ref=e25]: 精准定位一个人群 → 解决一个具体问题 → 让第一个人付钱 → 复制放大
+      - paragraph [ref=e26]:
+        - code
+        - text: "`"
+        - code
+      - code [ref=e27]:
+        - strong [ref=e28]: 核心差异
+        - text: ：先找到一个愿意付钱的人，再去找更多这样的人。而不是先做大流量再转化。
+        - paragraph
+    - paragraph
+    - code
+    - generic [ref=e29]:
+      - code [ref=e30]:
+        - paragraph
+        - generic [ref=e31]: 二、2026年OPC最有效的四条冷启动路径
+        - paragraph
+        - heading "路径1：朋友圈 + 微信群（最可靠）" [level=3] [ref=e32]
+        - strong [ref=e33]: 为什么2026年仍然有效
+        - text: ：信任不需要建立——朋友圈里的人已经信任你了。
+        - strong [ref=e34]: 操作步骤
+        - text: ：
+        - list [ref=e35]:
+          - listitem [ref=e36]: 写一条朋友圈，用这个模板：
+      - text: "`"
+      - code [ref=e37]:
+        - paragraph [ref=e38]: "\"最近做了一个[产品一句话描述]。"
+        - paragraph [ref=e39]: 目前免费，只想找10个人先试试，帮我看看好不好用。
+        - paragraph [ref=e40]: 感兴趣的直接私我，我把链接发你。"
+      - paragraph [ref=e41]:
+        - code
+        - text: "`"
+        - code
+      - code [ref=e42]:
+        - list [ref=e43]:
+          - listitem [ref=e44]: 把链接也发到3-5个你活跃的行业微信群（注意群规，别发广告）
+          - listitem [ref=e45]: 对每一个私你的人，手动回复，问一句"你想用它解决什么问题？"
+        - strong [ref=e46]: 预期结果
+        - text: ：500人的朋友圈 → 5-15个试用者 → 1-3个付费用户。
+        - heading "路径2：小红书/即刻（2026年对个人最友好的公域平台）" [level=3] [ref=e47]
+        - strong [ref=e48]: 为什么
+        - text: ：小红书的算法会给新账号流量（不像抖音全是头部）。即刻的社区氛围适合独立开发者。
+        - strong [ref=e49]: 操作步骤
+        - text: ：
+        - list [ref=e50]:
+          - listitem [ref=e51]: 发3条内容（不要只发1条就等结果）：
+        - text: "- Day 1：\"我花了30天做了一个XX，今天刚上线\"（配产品截图）"
+        - paragraph [ref=e52]: "- Day 3：\"上线3天，有5个人用了，这是他们的反馈\"（配聊天记录截图）"
+        - paragraph [ref=e53]: "- Day 5：\"一个人做产品的5个坑，第3个差点让我放弃\"（干货帖）"
+        - list [ref=e54]:
+          - listitem [ref=e55]: 结尾加一句："需要链接的评论'11'我私你"
+        - strong [ref=e56]: 关键
+        - text: ：不要发硬广。发"做产品的过程"就是最好的广告。
+        - heading "路径3：Product Hunt / 少数派（2026年独立开发者必上）" [level=3] [ref=e57]
+        - strong [ref=e58]: Product Hunt
+        - text: （2026年依然是全球独立产品最重要的发布平台）：
+        - list [ref=e59]:
+          - listitem [ref=e60]: 北京时间周二下午3:00发布（对应美西时间周一晚11:00，猎人最活跃）
+          - listitem [ref=e61]: 准备好：3张产品截图、一句话介绍、Maker评论（用英文写一段真诚的"为什么做这个产品"）
+          - listitem [ref=e62]: 预期：TOP10能带来500-2000访问量
+        - strong [ref=e63]: 少数派
+        - text: （中文独立开发者社区）：投稿一篇"我用AI做了XX"的经验文章，带上产品链接。
+        - heading "路径4：微型免费工具引流（最聪明但最慢）" [level=3] [ref=e64]
+        - paragraph [ref=e65]:
+          - text: 做一个和你的付费产品相关的
+          - strong [ref=e66]: 极简免费工具
+          - text: ：
+        - table [ref=e68]:
+          - rowgroup [ref=e69]:
+            - row "你的付费产品 免费引流工具" [ref=e70]:
+              - columnheader "你的付费产品" [ref=e71]
+              - columnheader "免费引流工具" [ref=e72]
+          - rowgroup [ref=e73]:
+            - row "OPC节点百科 \"OPC适配度测试\"（10道题，AI评分）" [ref=e74]:
+              - cell "OPC节点百科" [ref=e75]
+              - cell "\"OPC适配度测试\"（10道题，AI评分）" [ref=e76]
+            - row "简历优化 \"简历打分器\"（上传自动评分）" [ref=e77]:
+              - cell "简历优化" [ref=e78]
+              - cell "\"简历打分器\"（上传自动评分）" [ref=e79]
+            - row "记账工具 \"年收入税负计算器\"" [ref=e80]:
+              - cell "记账工具" [ref=e81]
+              - cell "\"年收入税负计算器\"" [ref=e82]
+        - strong [ref=e83]: 免费工具三要素
+        - text: ：有用（真的解决问题）、轻量（打开就用，不需要注册）、带钩子（底部"想要更详细的报告？→付费产品"）。
+        - paragraph
+    - paragraph
+    - code [ref=e84]:
+      - generic [ref=e85]:
+        - paragraph
+        - generic [ref=e86]: 三、2026年OPC的获客技术栈
+        - paragraph
+        - table [ref=e88]:
+          - rowgroup [ref=e89]:
+            - row "环节 工具 费用" [ref=e90]:
+              - columnheader "环节" [ref=e91]
+              - columnheader "工具" [ref=e92]
+              - columnheader "费用" [ref=e93]
+          - rowgroup [ref=e94]:
+            - row "内容创作 Claude/ChatGPT辅助写文案 ¥0-200/月" [ref=e95]:
+              - cell "内容创作" [ref=e96]
+              - cell "Claude/ChatGPT辅助写文案" [ref=e97]
+              - cell "¥0-200/月" [ref=e98]
+            - row "图片设计 Canva（模板一键生成） 免费" [ref=e99]:
+              - cell "图片设计" [ref=e100]
+              - cell "Canva（模板一键生成）" [ref=e101]
+              - cell "免费" [ref=e102]
+            - row "落地页 Carrd（单页网站，10分钟上线） $19/年" [ref=e103]:
+              - cell "落地页" [ref=e104]
+              - cell "Carrd（单页网站，10分钟上线）" [ref=e105]
+              - cell "$19/年" [ref=e106]
+            - row "用户反馈 微信群 / 腾讯问卷 免费" [ref=e107]:
+              - cell "用户反馈" [ref=e108]
+              - cell "微信群 / 腾讯问卷" [ref=e109]
+              - cell "免费" [ref=e110]
+            - row "数据分析 Plausible（隐私友好的Google Analytics替代） 自部署免费" [ref=e111]:
+              - cell "数据分析" [ref=e112]
+              - cell "Plausible（隐私友好的Google Analytics替代）" [ref=e113]
+              - cell "自部署免费" [ref=e114]
+            - row "邮件触达 Resend API + 自建邮件模板 每天100封免费" [ref=e115]:
+              - cell "邮件触达" [ref=e116]
+              - cell "Resend API + 自建邮件模板" [ref=e117]
+              - cell "每天100封免费" [ref=e118]
+        - paragraph
+      - paragraph
+    - generic [ref=e119]:
+      - code [ref=e120]:
+        - paragraph
+        - generic [ref=e121]: 四、第一个付费用户怎么来的（真实路径还原）
+        - paragraph
+      - paragraph [ref=e122]:
+        - code
+        - text: "`"
+        - code
+      - code [ref=e123]:
+        - paragraph [ref=e124]: "Day 1: 发朋友圈 → 8个人私信你 → 给了链接"
+        - paragraph [ref=e125]: "Day 3: 其中3个人真的用了 → 1个人说\"挺好用\" → 你追问\"你觉得值多少钱？\""
+        - paragraph [ref=e126]: "Day 5: 他说\"¥99我愿意付\" → 你回\"那¥99你先用着，不满意退你\""
+        - paragraph [ref=e127]: "Day 6: 他付了 → 你有了第一个付费用户 → 你问他\"你是怎么知道我的？\""
+        - paragraph [ref=e128]: "Day 7: 他说\"XX在群里推荐的\" → 你找到XX → 感谢他 → 他帮你推荐给更多人"
+      - paragraph [ref=e129]:
+        - code
+        - text: "``"
+      - strong [ref=e130]: 关键点
+      - text: ：第一个付费用户不是"转化"出来的，是你
+      - strong [ref=e131]: 手动服务
+      - text: 出来的。
+      - paragraph
+    - paragraph
+    - generic [ref=e132]:
+      - paragraph
+      - generic [ref=e133]: 五、冷启动最常犯的三个错误
+      - paragraph
+      - table [ref=e135]:
+        - rowgroup [ref=e136]:
+          - row "错误 后果 正确做法" [ref=e137]:
+            - columnheader "错误" [ref=e138]
+            - columnheader "后果" [ref=e139]
+            - columnheader "正确做法" [ref=e140]
+        - rowgroup [ref=e141]:
+          - row "一开始就投广告 ¥5000花完，0个留存用户 先用手动方式找到10个付费用户，验证\"有人愿意付钱\"再投" [ref=e142]:
+            - cell "一开始就投广告" [ref=e143]:
+              - strong [ref=e144]: 一开始就投广告
+            - cell "¥5000花完，0个留存用户" [ref=e145]
+            - cell "先用手动方式找到10个付费用户，验证\"有人愿意付钱\"再投" [ref=e146]
+          - row "追求\"爆款\" 花一个月做了一条视频，300播放 发20条普通内容 > 磨1条\"精品\"。量的积累比单条质量重要" [ref=e147]:
+            - cell "追求\"爆款\"" [ref=e148]:
+              - strong [ref=e149]: 追求"爆款"
+            - cell "花一个月做了一条视频，300播放" [ref=e150]
+            - cell "发20条普通内容 > 磨1条\"精品\"。量的积累比单条质量重要" [ref=e151]
+          - row "上来就做SEO 等了3个月没流量，放弃了 SEO是第4-6个月的事，前3个月只做社交渠道" [ref=e152]:
+            - cell "上来就做SEO" [ref=e153]:
+              - strong [ref=e154]: 上来就做SEO
+            - cell "等了3个月没流量，放弃了" [ref=e155]
+            - cell "SEO是第4-6个月的事，前3个月只做社交渠道" [ref=e156]
+      - paragraph
+    - paragraph
+    - generic [ref=e157]:
+      - paragraph
+      - generic [ref=e158]: 六、检查清单
+      - paragraph
+      - list [ref=e159]:
+        - listitem [ref=e160]:
+          - checkbox [disabled] [ref=e161]
+          - text: 朋友圈已发（用的模板话术）
+        - listitem [ref=e162]:
+          - checkbox [disabled] [ref=e163]
+          - text: 3-5个微信群已发（非硬广）
+        - listitem [ref=e164]:
+          - checkbox [disabled] [ref=e165]
+          - text: 小红书/即刻至少有1条内容
+        - listitem [ref=e166]:
+          - checkbox [disabled] [ref=e167]
+          - text: 免费引流工具已规划（如适用）
+        - listitem [ref=e168]:
+          - checkbox [disabled] [ref=e169]
+          - text: 获客技术栈已搭建
+        - listitem [ref=e170]:
+          - checkbox [disabled] [ref=e171]
+          - text: 第一个付费用户的完整路径已复盘
+      - paragraph
+    - paragraph
+    - generic [ref=e172]:
+      - paragraph
+      - generic [ref=e173]: 节点资源链接
+      - paragraph
+      - list [ref=e174]:
+        - listitem [ref=e175]: 节点30：正式发布
+        - listitem [ref=e176]: 节点31：数据监控
+        - listitem [ref=e177]: 节点33：内容营销与SEO/ASO
+    - generic [ref=e178]:
+      - heading "节点32检查清单" [level=3] [ref=e179]
+      - paragraph [ref=e180]: 完成本节点后，请确认所有检查项已通过。
+  - navigation [ref=e181]:
+    - link "← 节点31" [ref=e182] [cursor=pointer]:
+      - /url: /nodes/31-analytics/index.html
+      - generic [ref=e183]: ←
+      - text: 节点31
+    - link "节点33 →" [ref=e184] [cursor=pointer]:
+      - /url: /nodes/33-content-marketing/index.html
+      - text: 节点33
+      - generic [ref=e185]: →

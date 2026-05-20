@@ -1,0 +1,412 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - heading "OPC" [level=1] [ref=e5]
+      - generic [ref=e6]: 客户异议应对手册
+      - generic [ref=e7]:
+        - text: 当甲方问起尖锐问题时，我们如何应答。
+        - text: 场景深度，决定信任高度。
+    - generic: "01"
+  - generic [ref=e8]:
+    - heading "目录" [level=2] [ref=e10]
+    - list [ref=e12]:
+      - listitem [ref=e13]:
+        - generic [ref=e14]: "01"
+        - generic [ref=e15]: 信任与稳定性
+      - listitem [ref=e16]:
+        - generic [ref=e17]: "02"
+        - generic [ref=e18]: 能力与专业性
+      - listitem [ref=e19]:
+        - generic [ref=e20]: "03"
+        - generic [ref=e21]: 数据安全与合规
+      - listitem [ref=e22]:
+        - generic [ref=e23]: "04"
+        - generic [ref=e24]: 服务持续性
+      - listitem [ref=e25]:
+        - generic [ref=e26]: "05"
+        - generic [ref=e27]: 价格与价值
+      - listitem [ref=e28]:
+        - generic [ref=e29]: "06"
+        - generic [ref=e30]: 交付与责任
+      - listitem [ref=e31]:
+        - generic [ref=e32]: "07"
+        - generic [ref=e33]: 技术可行性
+      - listitem [ref=e34]:
+        - generic [ref=e35]: "08"
+        - generic [ref=e36]: 替代与竞争
+      - listitem [ref=e37]:
+        - generic [ref=e38]: "09"
+        - generic [ref=e39]: 同质化类问题
+    - paragraph [ref=e41]: 最后一页：深层逻辑汇总表
+    - generic: "00"
+    - generic [ref=e42]: "02"
+  - generic [ref=e43]:
+    - generic [ref=e44]:
+      - generic [ref=e45]:
+        - generic [ref=e46]: 维度一
+        - heading "你们有多少人？万一跑路了怎么办？成立多久了？怎么证明不是皮包公司？" [level=3] [ref=e47]
+        - generic [ref=e49]:
+          - generic [ref=e50]: 核心问题
+          - generic [ref=e51]: 规模小=不稳定=随时跑路，这是甲方最本能的顾虑。
+        - generic [ref=e52]:
+          - generic [ref=e53]: 核心转化
+          - generic [ref=e54]: 规模≠稳定，小而美反而更专注。关键在于：透明展示能力边界 + 建立系统化保障 + 用案例说话。
+        - generic [ref=e55]:
+          - generic [ref=e56]: 三步应答
+          - generic [ref=e57]:
+            - text: 1. 承认规模："我们确实是小团队，但正因为小，每一个项目都是我的名片"
+            - text: 2. 展示保障："我们有标准化SOP和长期合作伙伴，单点故障不会影响交付"
+            - text: 3. 用案例证明："您可以联系我们的客户，他们比我们更能说明问题"
+        - generic [ref=e58]: → 小而美 = 专注 = 负责到底
+      - generic [ref=e59]:
+        - generic [ref=e60]:
+          - generic [ref=e61]: 错误示范
+          - generic [ref=e62]:
+            - text: "\"我们虽然人少，但很专业……\"（苍白辩解）"
+            - text: "\"您放心，我们不会跑路的……\"（赌咒发誓，无效）"
+            - text: "\"我们和很多大公司有合作……\"（模糊表述，不可信）"
+        - generic [ref=e63]:
+          - generic [ref=e64]: 正确回答
+          - generic [ref=e65]: "\"我理解您的顾虑。确实，我们是小团队——但正因为小，您的项目没有层层外包，直接到我，由我负责到底。我们公司是SOP社区形式，确保即使我生病或者跑路了，公司的其他OPC也可以和您进行非常顺利的对接——我们公司现在有48名OPC，分别负责不同的项目，每个人都是可以做决策+开发+售前售后的全栈工程师。\""
+        - generic [ref=e66]:
+          - generic [ref=e67]: 案例
+          - generic [ref=e68]: 南京棋盘石王磊：一演示客户就当场签单，因为"客户看到的是直接负责人，不是销售员转达给项目经理转达给开发人员"。
+    - generic: "01"
+    - generic [ref=e69]: "03"
+  - generic [ref=e70]:
+    - generic [ref=e71]:
+      - generic [ref=e72]:
+        - generic [ref=e73]: 维度二
+        - heading "你做过我们行业吗？AI真的能解决我的问题吗？一个人怎么保证质量？" [level=3] [ref=e74]
+        - generic [ref=e76]:
+          - generic [ref=e77]: 核心问题
+          - generic [ref=e78]: 跨行业=门外汉，单人=没有复核=质量无法保证。
+        - generic [ref=e79]:
+          - generic [ref=e80]: 核心转化
+          - generic [ref=e81]: 行业经验≠必须做过这个行业的公司，方法论可以迁移。关键在于：展示学习能力 + 强调定制调研 + 用"诊断先行"证明懂行。
+        - generic [ref=e82]:
+          - generic [ref=e83]: 三步应答
+          - generic [ref=e84]:
+            - text: 1. 承认差异："我没有做过您这个行业，但方法论是相通的"
+            - text: 2. 展示方法："在做您的方案之前，我会先做30分钟的深度调研，找到最适合您的切入点"
+            - text: 3. 用案例："您可以看看我们做过的类似场景，方法论是通用的"
+        - generic [ref=e85]: → 方法论迁移 > 行业复制
+      - generic [ref=e86]:
+        - generic [ref=e87]:
+          - generic [ref=e88]: 错误示范
+          - generic [ref=e89]:
+            - text: "\"我们做过很多行业，经验很丰富……\"（空洞）"
+            - text: "\"AI很智能，肯定能解决您的问题……\"（万能承诺）"
+            - text: "\"我一个人干过很多大项目……\"（炫技）"
+        - generic [ref=e90]:
+          - generic [ref=e91]: 正确回答
+          - generic [ref=e92]: "\"我确实没有做过您这个行业——但我做过类似的场景，解决的是同一个本质问题。您需要的不是模板复制，而是深度定制的方案。我的做法是：先和您聊30分钟，找到真正痛点，再出方案。当然如果我判断您的业务比较复杂或者独特，我们最好的解决方案就是入场一周左右。\""
+        - generic [ref=e93]:
+          - generic [ref=e94]: 案例
+          - generic [ref=e95]: 姚双做银发经济"生命之书"：专注"用技术帮助老人留存记忆"这个垂直场景，即使没有先例，深度理解换来了用户信任。
+    - generic: "02"
+    - generic [ref=e96]: "04"
+  - generic [ref=e97]:
+    - generic [ref=e98]:
+      - generic [ref=e99]:
+        - generic [ref=e100]: 维度三
+        - heading "我的数据安全怎么保障？AI会不会泄露商业机密？合规出问题谁负责？" [level=3] [ref=e101]
+        - generic [ref=e103]:
+          - generic [ref=e104]: 核心问题
+          - generic [ref=e105]: AI是黑箱，数据泄露=商业机密外泄，违规=企业担责。
+        - generic [ref=e106]:
+          - generic [ref=e107]: 核心转化
+          - generic [ref=e108]: 安全是底线，不是可选项。关键在于：合同写明 + 技术保障 + 合规前置，不是口头承诺，是体系保障。
+        - generic [ref=e109]:
+          - generic [ref=e110]: 三步应答
+          - generic [ref=e111]:
+            - text: 1. 承认风险："您说得对，数据安全是底线，忽视合规的成本是不可承受的"
+            - text: 2. 展示保障："我们支持本地部署，数据不出您的环境，合同写明保密条款"
+            - text: 3. 合规前置："我们会在方案开始前就做合规诊断，告知您哪些能做，哪些不能做"
+        - generic [ref=e112]: → 安全是底线，不是可选项
+      - generic [ref=e113]:
+        - generic [ref=e114]:
+          - generic [ref=e115]: 错误示范
+          - generic [ref=e116]:
+            - text: "\"您放心，我们很安全……\"（空洞承诺）"
+            - text: "\"AI不会泄露数据的……\"（万能保证）"
+            - text: "\"合规问题我们会帮您注意……\"（模糊表述）"
+        - generic [ref=e117]:
+          - generic [ref=e118]: 正确回答
+          - generic [ref=e119]: "\"您提到的这个问题非常重要。忽视合规的成本是不可承受的。我们的做法是：合同写明数据归属，技术上支持私有化部署，并在方案开始前做合规诊断——先告诉您哪些能做，哪些不能做。\""
+        - generic [ref=e120]:
+          - generic [ref=e121]: 案例
+          - generic [ref=e122]: 姚双"生命之书"：明确承诺"用户信任是OPC最珍贵的资产，我们帮助用户保护数据，让数据私有化"。数据安全不是口头承诺，是写入合同的条款。
+    - generic: "03"
+    - generic [ref=e123]: "05"
+  - generic [ref=e124]:
+    - generic [ref=e125]:
+      - generic [ref=e126]:
+        - generic [ref=e127]: 维度四
+        - heading "你走了项目怎么办？效果不好怎么办？后期想增加功能怎么办？" [level=3] [ref=e128]
+        - generic [ref=e130]:
+          - generic [ref=e131]: 核心问题
+          - generic [ref=e132]: 单人=单点故障，没有售后保障，项目中断=损失惨重。
+        - generic [ref=e133]:
+          - generic [ref=e134]: 核心转化
+          - generic [ref=e135]: 长期承诺≠保证不离开，而是建立系统和流程让项目不依赖个人。关键在于：SOP标准化 + 生态协作 + 长期陪跑协议。
+        - generic [ref=e136]:
+          - generic [ref=e137]: 三步应答
+          - generic [ref=e138]:
+            - text: 1. 承认风险："您的担心很正常，这也是为什么我们建立SOP和协作网络"
+            - text: 2. 展示系统："我们有标准化交付流程，文档完整，合作伙伴可以接手"
+            - text: 3. 长期承诺："您不是一次性客户，是长期合作伙伴——小改动1-2天，大改动另议"
+        - generic [ref=e139]: → 系统化交付 > 个人依赖
+      - generic [ref=e140]:
+        - generic [ref=e141]:
+          - generic [ref=e142]: 错误示范
+          - generic [ref=e143]:
+            - text: "\"您放心，我不会走的……\"（赌咒发誓）"
+            - text: "\"效果不好我们可以调整……\"（模糊承诺）"
+            - text: "\"后期加功能很简单……\"（轻视复杂度）"
+        - generic [ref=e144]:
+          - generic [ref=e145]: 正确回答
+          - generic [ref=e146]: "\"我理解您的顾虑。我们应对的方式是：1) SOP标准化，通过Harness的架构方案，并且项目过程中我们会建立我们整个公司的项目知识库，脱敏客户数据后，我们团队任何一个人都可以通过AI快速了解到项目进展和相关知识，确保项目不依赖个人；2) 建立协作网络，即使有突发情况可以调动资源；3) 年度维保包含免费调整次数，长期陪跑。您的项目不会因为我个人状态而中断。\""
+        - generic [ref=e147]:
+          - generic [ref=e148]: 数据支撑
+          - generic [ref=e149]: OPC建立标准SOP：内容生产SOP、客户服务SOP、交付流程SOP。即使创始人状态不佳，标准化流程保证项目继续运转。
+    - generic: "04"
+    - generic [ref=e150]: "06"
+  - generic [ref=e151]:
+    - generic [ref=e152]:
+      - generic [ref=e153]:
+        - generic [ref=e154]: 维度五
+        - heading "为什么这么便宜？便宜会不会质量不行？后续还有哪些费用？" [level=3] [ref=e155]
+        - generic [ref=e157]:
+          - generic [ref=e158]: 核心问题
+          - generic [ref=e159]: 价格背后是价值判断。大公司贵=有道理，OPC便宜=有猫腻？
+        - generic [ref=e160]:
+          - generic [ref=e161]: 核心转化
+          - generic [ref=e162]: 价格低≠质量低，成本结构差异才是原因。关键在于：解释成本结构 + 对比大厂价格 + ROI量化。
+        - generic [ref=e163]:
+          - generic [ref=e164]: 三步应答
+          - generic [ref=e165]:
+            - text: 1. 解释原因："我们价格低是因为没有办公室租金、没有管理层级、没有沟通损耗——省下的成本让给您"
+            - text: 2. 对比大厂："大厂起步10万+、3-6个月交付；我们1-8万、30分钟跑通"
+            - text: 3. 量化ROI："您花1万，可能带来50万+的节省，2-4个月回本"
+        - generic [ref=e166]: → 成本结构差异 > 质量差异
+      - generic [ref=e167]:
+        - generic [ref=e168]:
+          - generic [ref=e169]: 错误示范
+          - generic [ref=e170]:
+            - text: "\"我们性价比很高……\"（空洞）"
+            - text: "\"便宜不代表质量差……\"（辩解）"
+            - text: "\"大公司收的是品牌溢价……\"（攻击对手）"
+        - generic [ref=e171]:
+          - generic [ref=e172]: 正确回答
+          - generic [ref=e173]: "\"价格低不是因为质量低，是因为我们的成本结构不一样——没有办公室租金、没有管理层级、没有部门间沟通损耗。我们靠口碑和复购活着，做砸一个客户的代价远高于做砸一次促销。\""
+        - generic [ref=e174]:
+          - generic [ref=e175]: 对比数据
+          - generic [ref=e176]: 大厂 vs OPC：部署周期3-6月 vs 30分钟，起步价10万+ vs 1-8万。价格差5-10倍，效果却不打折——因为省的是管理成本，不是服务质量。
+    - generic: "05"
+    - generic [ref=e177]: "07"
+  - generic [ref=e178]:
+    - generic [ref=e179]:
+      - generic [ref=e180]:
+        - generic [ref=e181]: 维度六
+        - heading "AI出错造成损失怎么办？项目延期了怎么办？能不能开票对公转账？" [level=3] [ref=e182]
+        - generic [ref=e184]:
+          - generic [ref=e185]: 核心问题
+          - generic [ref=e186]: AI黑箱=责任模糊，项目中断=企业损失，正规性=信任基础。
+        - generic [ref=e187]:
+          - generic [ref=e188]: 核心转化
+          - generic [ref=e189]: 责任归属必须事前明确，不是事后推诿。关键在于：合同写明责任边界 + 分阶段验收 + 灵活调整机制。
+        - generic [ref=e190]:
+          - generic [ref=e191]: 三步应答
+          - generic [ref=e192]:
+            - text: 1. 承认风险："AI不是万能的，出错的可能性存在——关键是如何处理"
+            - text: 2. 明确责任："合同写明：因我方原因造成的损失，我方承担；因甲方原因或不可抗力，各自分担"
+            - text: 3. 保障机制："分阶段验收+POC先行，不满意不收费——让您先验证效果再决定"
+        - generic [ref=e193]: → 责任明确 > 责任模糊
+      - generic [ref=e194]:
+        - generic [ref=e195]:
+          - generic [ref=e196]: 错误示范
+          - generic [ref=e197]:
+            - text: "\"AI很准确，一般不会出错……\"（万能承诺）"
+            - text: "\"延期的话我们会尽快补救……\"（模糊处理）"
+            - text: "\"我们可以开票……\"（被动响应）"
+        - generic [ref=e198]:
+          - generic [ref=e199]: 正确回答
+          - generic [ref=e200]: "\"您问得很好。我们应对方式是：1) 合同明确责任边界——因我方原因造成的损失，我方承担；2) 分阶段验收+POC先行，先用最小成本验证效果，不满意不收费；3) 我们可以开票、对公转账、签正式合同——正规性不是问题。\""
+        - generic [ref=e201]:
+          - generic [ref=e202]: 支撑数据（含POC解释）
+          - generic [ref=e203]:
+            - text: OPC价值：能开票、签合同、将对公收款，这是进入企业采购系统的基础。没有这层外壳，商业风险无法隔离。
+            - strong [ref=e204]: POC（Proof of Concept）概念验证：
+            - text: 在正式投入开发前，用最小成本验证方案可行性。先跑通Demo，用数据证明效果，不满意不收费——让您先验证再决定。
+    - generic: "06"
+    - generic [ref=e205]: "08"
+  - generic [ref=e206]:
+    - generic [ref=e207]:
+      - generic [ref=e208]:
+        - generic [ref=e209]: 维度七
+        - heading "我们系统能对接吗？部署要多久？AI会不会突然失灵？用什么技术？" [level=3] [ref=e210]
+        - generic [ref=e212]:
+          - generic [ref=e213]: 核心问题
+          - generic [ref=e214]: 技术兼容性未知，部署周期不确定，AI稳定性存疑。
+        - generic [ref=e215]:
+          - generic [ref=e216]: 核心转化
+          - generic [ref=e217]: 技术问题用技术事实回答，不是用承诺。关键在于：展示技术能力 + 承认技术边界 + 用案例证明。
+        - generic [ref=e218]:
+          - generic [ref=e219]: 三步应答
+          - generic [ref=e220]:
+            - text: 1. 技术透明："我们用主流技术栈，API接口兼容主流系统——具体需要看您的系统"
+            - text: 2. 承认边界："AI有局限性，我们不会承诺100%替代人工，关键是找到最优的人机协作点"
+            - text: 3. 用案例："佛山某制造业30分钟完成对接，库存周转天数优化50%+"
+        - generic [ref=e221]: → 技术透明 > 技术模糊
+      - generic [ref=e222]:
+        - generic [ref=e223]:
+          - generic [ref=e224]: 错误示范
+          - generic [ref=e225]:
+            - text: "\"我们的技术很先进，什么都能对接……\"（万能技术）"
+            - text: "\"部署很简单，几分钟就好……\"（轻视复杂度）"
+            - text: "\"AI很稳定，不会出问题的……\"（万能稳定）"
+        - generic [ref=e226]:
+          - generic [ref=e227]: 正确回答
+          - generic [ref=e228]: "\"技术问题需要具体分析。我们支持的接口类型包括REST API、Webhook、数据库直连等。部署周期取决于系统复杂度——简单系统30分钟，复杂系统1-2天。AI确实有局限性，我们不做100%替代的承诺，而是找到最优的人机协作点。\""
+        - generic [ref=e229]:
+          - generic [ref=e230]: 案例
+          - generic [ref=e231]: 佛山某制造业：用AI助手30分钟完成部署，快速对接现有生产系统，实现库存周转天数优化50%+。技术可行性不是嘴上说的，是跑通Demo证明的。
+    - generic: "07"
+    - generic [ref=e232]: "09"
+  - generic [ref=e233]:
+    - generic [ref=e234]:
+      - generic [ref=e235]:
+        - generic [ref=e236]: 维度八
+        - heading "AI工具越来越便宜，我自己用不就行了？大公司有团队，凭什么选你？" [level=3] [ref=e237]
+        - generic [ref=e239]:
+          - generic [ref=e240]: 核心问题
+          - generic [ref=e241]: 工具平权时代，差异化=场景深度，不是工具本身。
+        - generic [ref=e242]:
+          - generic [ref=e243]: 核心转化
+          - generic [ref=e244]: AI工具越来越平，真正的护城河只有一个：对某个细分场景比任何人都更深的理解。关键在于：承认工具平权 + 强调场景深度 + 用案例证明。
+        - generic [ref=e245]:
+          - generic [ref=e246]: 三步应答
+          - generic [ref=e247]:
+            - text: 1. 承认工具平权："您说得对，AI工具确实越来越平，这也是为什么我们不卖工具，卖的是场景解决方案"
+            - text: 2. 强调场景深度："真正的护城河不是工具，是对您这个场景的理解——我们在这个场景深耕多年"
+            - text: 3. 用案例："我们自己用AI工具，但帮您设计最优的AI应用方案——这才是价值所在"
+        - generic [ref=e248]: → 场景深度 > 工具本身
+      - generic [ref=e249]:
+        - generic [ref=e250]:
+          - generic [ref=e251]: 错误示范
+          - generic [ref=e252]:
+            - text: "\"我们用的AI比您能买到的更高级……\"（工具军备竞赛）"
+            - text: "\"大公司人多，但效率低……\"（攻击对手）"
+            - text: "\"我们有独家技术……\"（技术神秘感）"
+        - generic [ref=e253]:
+          - generic [ref=e254]: 正确回答
+          - generic [ref=e255]: "\"您说得对，AI工具确实越来越平，这也是趋势。我们的价值不在于'卖工具'，而在于'卖场景解决方案'——我知道怎么用AI解决您在这个场景的问题。大公司有团队，但专注度低；我们专注这个场景，理解比谁都深。\""
+        - generic [ref=e256]:
+          - generic [ref=e257]: 支撑数据
+          - generic [ref=e258]: 斯坦福研究：85%营销内容趋同，因为AI工具训练数据相同。真正的差异化不是工具，是场景深度——"AI工具越来越平，工具带来的优势窗口期越来越短。真正的护城河只有一个：对某个细分场景比任何人都更深的理解。"
+    - generic: "08"
+    - generic [ref=e259]: "10"
+  - generic [ref=e260]:
+    - generic [ref=e261]:
+      - generic [ref=e262]:
+        - generic [ref=e263]: 专项
+        - heading "为什么选择你们而不选择其他公司？你们和其他OPC或者SaaS公司有什么不同？" [level=3] [ref=e264]
+        - generic [ref=e266]:
+          - generic [ref=e267]: 核心问题
+          - generic [ref=e268]: 为什么要选你不选别人？你的护城河在哪？
+        - generic [ref=e269]:
+          - generic [ref=e270]: 核心转化
+          - generic [ref=e271]: AI工具越来越平，真正的护城河只有一个：对某个细分场景比任何人都更深的理解。关键在于：承认工具平权 + 强调场景深度 + 用AI项目数据库证明。
+        - generic [ref=e272]:
+          - generic [ref=e273]: 三步应答
+          - generic [ref=e274]:
+            - text: 1. 承认工具平权："您说得对，AI工具确实越来越平，这也是为什么我们不卖工具，卖的是场景解决方案"
+            - text: 2. 强调场景深度："真正的护城河不是工具，是对您这个场景的理解——我们在这个场景深耕多年"
+            - text: 3. AI项目数据库："我们建立了AI项目数据库，里面会有我们所有做过项目的流程和解决方案信息，这是我们公司独特私有的数据库"
+        - generic [ref=e275]: → AI项目数据库 > 场景深度 > 工具本身
+      - generic [ref=e276]:
+        - generic [ref=e277]:
+          - generic [ref=e278]: 错误示范
+          - generic [ref=e279]:
+            - text: "\"我们用的AI比您能买到的更高级……\"（工具军备竞赛）"
+            - text: "\"大公司人多，但效率低……\"（攻击对手）"
+            - text: "\"我们有独家技术……\"（技术神秘感）"
+        - generic [ref=e280]:
+          - generic [ref=e281]: 正确回答
+          - generic [ref=e282]: "\"AI工具确实越来越平。真正的护城河只有一个：对某个细分场景比任何人都更深的理解。我们的价值不在于'用AI'，而在于'用AI解决您的具体问题'。为此我们才建立了AI项目数据库，里面会有我们所有做过项目的流程和解决方案信息，这是我们公司独特私有的数据库。请相信我们能通过数百个敏捷案例，来找到您企业相关的最优解决方案。\""
+        - generic [ref=e283]:
+          - generic [ref=e284]: 支撑数据
+          - generic [ref=e285]: OPC AI项目数据库：我们所有做过项目的流程和解决方案信息，这是公司独特私有的数据库，通过数百个敏捷案例找到最优解决方案。
+    - generic: "09"
+    - generic [ref=e286]: "11"
+  - generic [ref=e287]:
+    - heading "深层逻辑汇总表" [level=2] [ref=e288]
+    - table [ref=e290]:
+      - rowgroup [ref=e291]:
+        - row "维度 甲方担心 核心转化 关键词/话术" [ref=e292]:
+          - columnheader "维度" [ref=e293]
+          - columnheader "甲方担心" [ref=e294]
+          - columnheader "核心转化" [ref=e295]
+          - columnheader "关键词/话术" [ref=e296]
+      - rowgroup [ref=e297]:
+        - row "信任与稳定 小团队=不稳定=随时跑路 规模≠稳定，专注=负责到底 SOP社区 | 48名OPC全栈 | 直接责任人" [ref=e298]:
+          - cell "信任与稳定" [ref=e299]
+          - cell "小团队=不稳定=随时跑路" [ref=e300]
+          - cell "规模≠稳定，专注=负责到底" [ref=e301]
+          - cell "SOP社区 | 48名OPC全栈 | 直接责任人" [ref=e302]
+        - row "能力与专业 没做过行业=门外汉 方法论迁移>行业复制 诊断先行 | 深度调研 | 案例验证 | 入场一周" [ref=e303]:
+          - cell "能力与专业" [ref=e304]
+          - cell "没做过行业=门外汉" [ref=e305]
+          - cell "方法论迁移>行业复制" [ref=e306]
+          - cell "诊断先行 | 深度调研 | 案例验证 | 入场一周" [ref=e307]
+        - row "数据安全 AI黑箱=数据泄露 安全是底线，不是可选项 合同保障 | 本地部署 | 合规前置 | 数据私有化" [ref=e308]:
+          - cell "数据安全" [ref=e309]
+          - cell "AI黑箱=数据泄露" [ref=e310]
+          - cell "安全是底线，不是可选项" [ref=e311]
+          - cell "合同保障 | 本地部署 | 合规前置 | 数据私有化" [ref=e312]
+        - row "服务持续 单人=单点故障 系统化交付>个人依赖 Harness架构 | 项目知识库 | AI知识库 | 长期陪跑" [ref=e313]:
+          - cell "服务持续" [ref=e314]
+          - cell "单人=单点故障" [ref=e315]
+          - cell "系统化交付>个人依赖" [ref=e316]
+          - cell "Harness架构 | 项目知识库 | AI知识库 | 长期陪跑" [ref=e317]
+        - row "价格价值 便宜=质量差？ 成本结构差异>质量差异 成本透明 | ROI量化 | 大厂对比 | 口碑复购" [ref=e318]:
+          - cell "价格价值" [ref=e319]
+          - cell "便宜=质量差？" [ref=e320]
+          - cell "成本结构差异>质量差异" [ref=e321]
+          - cell "成本透明 | ROI量化 | 大厂对比 | 口碑复购" [ref=e322]
+        - row "交付责任 出问题找谁？ 责任明确>责任模糊 合同条款 | 分阶段验收 | POC先行 | 正规流程" [ref=e323]:
+          - cell "交付责任" [ref=e324]
+          - cell "出问题找谁？" [ref=e325]
+          - cell "责任明确>责任模糊" [ref=e326]
+          - cell "合同条款 | 分阶段验收 | POC先行 | 正规流程" [ref=e327]
+        - row "技术可行 能落地吗？ 技术透明>技术模糊 接口兼容 | 部署周期 | 人机边界 | 案例验证" [ref=e328]:
+          - cell "技术可行" [ref=e329]
+          - cell "能落地吗？" [ref=e330]
+          - cell "技术透明>技术模糊" [ref=e331]
+          - cell "接口兼容 | 部署周期 | 人机边界 | 案例验证" [ref=e332]
+        - row "替代竞争 为什么要选你？ 场景深度>工具本身 场景理解 | 方案定制 | 工具赋能 | 差异化定位" [ref=e333]:
+          - cell "替代竞争" [ref=e334]
+          - cell "为什么要选你？" [ref=e335]
+          - cell "场景深度>工具本身" [ref=e336]
+          - cell "场景理解 | 方案定制 | 工具赋能 | 差异化定位" [ref=e337]
+        - row "同质化专项 你们和其他公司有什么不同？ AI项目数据库>场景深度 数百个敏捷案例 | 私有数据库 | 最优解决方案" [ref=e338]:
+          - cell "同质化专项" [ref=e339]
+          - cell "你们和其他公司有什么不同？" [ref=e340]
+          - cell "AI项目数据库>场景深度" [ref=e341]
+          - cell "数百个敏捷案例 | 私有数据库 | 最优解决方案" [ref=e342]
+    - generic [ref=e343]:
+      - heading "总纲" [level=3] [ref=e345]
+      - paragraph [ref=e346]:
+        - strong [ref=e347]: AI放大的是已有能力，不能替代缺失能力。
+        - text: OPC的核心竞争力从来不是"便宜"或"快"，而是"懂"——懂行业、懂场景、懂客户的真实问题。当甲方质疑时，我们不辩解、不回避、不承诺万能，而是用
+        - strong [ref=e348]: 透明展示能力边界 + 系统化保障 + 案例说话
+        - text: 来建立信任。
+    - generic: "10"
+    - generic [ref=e349]: "12"
+  - generic [ref=e350]:
+    - generic [ref=e351]:
+      - heading "OPC" [level=1] [ref=e353]
+      - generic [ref=e354]: 客户异议应答深层逻辑手册
+      - generic [ref=e355]: 场景深度 > 工具平权 > 信任建立
+    - generic: FIN

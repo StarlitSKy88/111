@@ -1,0 +1,387 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "← 返回首页" [ref=e3] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e4]: ←
+      - text: 返回首页
+    - generic [ref=e5]: 节点 48 / 57
+  - generic: "48"
+  - generic [ref=e7]:
+    - banner [ref=e8]:
+      - generic [ref=e9]:
+        - generic [ref=e10]: 节点 48 · 1-10
+        - heading "商标申请" [level=1] [ref=e11]
+        - paragraph [ref=e12]: 用可控成本锁定核心类别，为你的OPC品牌建立第一道法律屏障
+    - generic [ref=e13]:
+      - generic [ref=e14]: 壹 · 2026年商标申请新现实
+      - generic [ref=e15]: 从碎片化认知到系统化布局
+      - generic [ref=e16]:
+        - generic [ref=e17]:
+          - paragraph [ref=e18]:
+            - text: 2026年，商标注册已进入
+            - strong [ref=e19]: 全面电子化时代
+            - text: 。从提交到核准全程约7-9个月，审查效率较三年前提升40%。全国商标注册申请量突破800万件，平均每个工作日处理超3万件。但与此同时，驳回率维持在30%-40%高位——主要败在"近似商标"和"缺乏显著性"两个坑上。
+          - generic [ref=e20]:
+            - generic [ref=e21]: 时与势
+            - heading "从\"等产品上线再申请\"到\"品牌名确定即申请\"" [level=3] [ref=e22]
+            - paragraph [ref=e23]: 商标注册遵循"申请在先"原则，而非"使用在先"。2026年审查标准进一步细化：单纯描述性词汇（如"便宜好鞋"）、仅为商品通用名称的词汇（如"电脑"）、缺乏显著性的图形，一律驳回。品牌名越早确定，越早锁定排他权。
+          - generic [ref=e24]:
+            - generic [ref=e25]: 危与机
+            - heading "撤三风险上升，空置商标成靶子" [level=3] [ref=e26]
+            - paragraph [ref=e27]: 当前商标法修订方向是强化使用义务。注册后"囤而不用"的商标被撤销可能性增大。这意味着：注册商标必须真实使用，且需留存完整的使用证据链。单纯防御性注册而缺乏实际使用计划的，风险正在累积。
+        - generic [ref=e28]:
+          - generic [ref=e29]:
+            - generic [ref=e30]: 2026年商标注册数据
+            - generic [ref=e31]:
+              - generic [ref=e32]: 全国年申请量
+              - generic [ref=e33]: 800万+件
+            - generic [ref=e34]:
+              - generic [ref=e35]: 平均工作日处理量
+              - generic [ref=e36]: 3万+件
+            - generic [ref=e37]:
+              - generic [ref=e38]: 驳回率
+              - generic [ref=e39]: 30-40%
+            - generic [ref=e40]:
+              - generic [ref=e41]: 审查周期
+              - generic [ref=e42]: 7-9月
+          - generic [ref=e43]:
+            - generic [ref=e44]: 政策红利
+            - paragraph [ref=e45]:
+              - strong [ref=e46]: 小微企业首件商标官费全免：
+              - text: 2026年多地推出补贴政策，个体工商户首次注册商标可享全额报销。建议在申请前查询当地市场监管局的具体政策。
+    - generic [ref=e47]:
+      - generic [ref=e48]: 贰 · 申请主体：个人 vs 公司
+      - generic [ref=e49]: 以什么名义申请，权利归属截然不同
+      - generic [ref=e50]:
+        - generic [ref=e51]:
+          - generic [ref=e52]:
+            - generic [ref=e53]: 自然人
+            - heading "必须具备经营资质" [level=3] [ref=e54]
+            - paragraph [ref=e55]:
+              - text: 自2007年起，纯自然人仅凭身份证无法注册商标。必须提供
+              - strong [ref=e56]: 个体工商户营业执照
+              - text: 或农村承包经营合同，且经营范围须与申请类别基本对应。没有经营实体的自由职业者，需先注册个体工商户。
+          - generic [ref=e57]:
+            - generic [ref=e58]: 一人公司
+            - heading "新公司法红利，取消数量限制" [level=3] [ref=e59]
+            - paragraph [ref=e60]:
+              - text: 现行《公司法》已取消"一个自然人只能设立一个一人有限责任公司"的限制。同一人可设立多家OPC，分别持有不同品牌商标，实现
+              - strong [ref=e61]: 一项目一公司一商标
+              - text: 的风险隔离。以公司名义申请的商标，是公司的独立法人财产，可量化、可流转、可抵押。
+          - generic [ref=e62]:
+            - generic [ref=e63]: 混合策略
+            - heading "商号与商标一致原则" [level=3] [ref=e64]
+            - paragraph [ref=e65]: 核准公司名称前，务必先在国家知识产权局官网查询商标。避免公司成立后才发现商标被抢注，导致公司名与品牌名永久割裂。最佳实践：先查商标，再定公司名，最后注册公司。
+        - generic [ref=e66]:
+          - generic [ref=e67]:
+            - generic [ref=e68]: 个人 vs 公司持有对比
+            - generic [ref=e69]:
+              - generic [ref=e70]: 产权归属
+              - generic [ref=e71]: 个人/公司
+            - generic [ref=e72]:
+              - generic [ref=e73]: 风险隔离
+              - generic [ref=e74]: 无/有
+            - generic [ref=e75]:
+              - generic [ref=e76]: 电商平台接纳度
+              - generic [ref=e77]: 低/高
+            - generic [ref=e78]:
+              - generic [ref=e79]: 可转让性
+              - generic [ref=e80]: 复杂/清晰
+            - generic [ref=e81]:
+              - generic [ref=e82]: 跨境布局
+              - generic [ref=e83]: 受限/便利
+          - generic [ref=e84]:
+            - generic [ref=e85]: OPC推荐
+            - paragraph [ref=e86]:
+              - text: 以一人公司名义申请商标，是OPC实现
+              - strong [ref=e87]: 品牌资产与个人责任隔离
+              - text: 的最优路径。公司注销前务必先办理商标转让，否则权利直接消失。
+    - generic [ref=e88]:
+      - generic [ref=e89]: 叁 · 费用结构：2026最新官方标准
+      - generic [ref=e90]:
+        - generic [ref=e91]:
+          - generic [ref=e92]: ¥270
+          - generic [ref=e93]: 电子申请/类（限10项）
+        - generic [ref=e94]:
+          - generic [ref=e95]: ¥300
+          - generic [ref=e96]: 纸质申请/类（限10项）
+        - generic [ref=e97]:
+          - generic [ref=e98]: ¥27
+          - generic [ref=e99]: 超项加收/项（电子）
+      - generic [ref=e100]:
+        - generic [ref=e101]:
+          - generic [ref=e102]:
+            - generic [ref=e103]: 官费构成
+            - heading "按类别收费，限定10个商品" [level=3] [ref=e104]
+            - paragraph [ref=e105]:
+              - strong [ref=e106]: 电子申请：
+              - text: 270元/类（限定10个商品/服务项），超出部分每项加收27元。
+              - strong [ref=e107]: 纸质申请：
+              - text: 300元/类（限定10个商品/服务项），超出部分每项加收30元。
+              - text: 电子申请比纸质申请优惠10%，且审查周期快1-2个月，2026年已成为主流申请方式。
+          - generic [ref=e108]:
+            - generic [ref=e109]: 附加费用
+            - heading "这些情况需要额外预算" [level=3] [ref=e110]
+            - paragraph [ref=e111]:
+              - strong [ref=e112]: 驳回复审：
+              - text: 750元/类，被驳回后15日内提交
+              - strong [ref=e113]: 异议答辩：
+              - text: 官费无，代理费约1000-3000元
+              - strong [ref=e114]: 续展（10年到期）：
+              - text: 500元/类（电子），宽展期加250元
+              - strong [ref=e115]: 变更/转让：
+              - text: 150-500元/类
+        - generic [ref=e116]:
+          - generic [ref=e117]:
+            - generic [ref=e118]: 地方补贴
+            - heading "2026年各地补贴政策一览" [level=3] [ref=e119]
+            - paragraph [ref=e120]:
+              - strong [ref=e121]: 上海：
+              - text: 小微企业首件商标全额补贴
+              - strong [ref=e122]: 北京：
+              - text: 专精特新企业最高500元/件补贴
+              - strong [ref=e123]: 杭州：
+              - text: 电商直播主体前3件官费全额报销
+              - strong [ref=e124]: 深圳：
+              - text: 科技/文化类博主补贴2000元/件
+              - strong [ref=e125]: 成都：
+              - text: 个人首次注册200元/件补贴
+          - generic [ref=e126]:
+            - generic [ref=e127]: 查询入口
+            - paragraph [ref=e128]:
+              - text: 各地补贴政策可通过
+              - strong [ref=e129]: 当地市场监管局官网
+              - text: 或
+              - strong [ref=e130]: 政务服务平台
+              - text: 查询。需在收到《受理通知书》后6个月内提交补贴申请，逾期视为放弃。
+    - generic [ref=e131]:
+      - generic [ref=e132]: 肆 · 核心类别：OPC必须锁定的战场
+      - generic [ref=e133]: 第35类：线上生意的通行证
+      - generic [ref=e134]:
+        - generic [ref=e135]:
+          - generic [ref=e136]: 第35类
+          - generic [ref=e137]: 广告销售 · 替他人推销
+          - generic [ref=e138]: 在抖音、淘宝开设店铺展示商品时，平台判定你正在进行"推销服务"行为。没有第35类，入驻、上架、投诉侵权都可能遇阻。
+        - generic [ref=e139]:
+          - generic [ref=e140]: 第41类
+          - generic [ref=e141]: 教育娱乐 · 在线服务
+          - generic [ref=e142]: 知识付费、在线课程、自媒体内容、教育娱乐服务。自媒体创作者、知识博主的核心类别。
+        - generic [ref=e143]:
+          - generic [ref=e144]: 第9类
+          - generic [ref=e145]: 科学仪器 · 软件APP
+          - generic [ref=e146]: 可下载的手机应用、 计算机软件、电子设备。SaaS工具、APP、小程序开发者的必备类别。
+        - generic [ref=e147]:
+          - generic [ref=e148]: 第42类
+          - generic [ref=e149]: 科技服务 · 软件开发
+          - generic [ref=e150]: 计算机编程、软件开发、技术研究。软件外包、技术服务的核心保护类别。
+      - generic [ref=e151]:
+        - generic [ref=e153]:
+          - generic [ref=e154]: 一主一防原则
+          - heading "核心类别 + 第35类黄金组合" [level=3] [ref=e155]
+          - paragraph [ref=e156]:
+            - text: 以最低成本覆盖最广泛保护范围：
+            - strong [ref=e157]: 知识付费OPC：
+            - text: 第41类（在线教育）+ 第35类（替他人推销）+ 第9类（软件）
+            - strong [ref=e158]: 电商带货OPC：
+            - text: 第35类（替他人推销）+ 第25类（服装）/ 第30类（食品）
+            - strong [ref=e159]: SaaS工具OPC：
+            - text: 第42类（软件开发）+ 第35类（广告宣传）+ 第9类（APP）
+        - generic [ref=e160]:
+          - generic [ref=e161]:
+            - generic [ref=e162]: 第35类三大必选项目
+            - generic [ref=e163]:
+              - generic [ref=e164]: 替他人推销 350071
+              - generic [ref=e165]: 核心
+            - generic [ref=e166]:
+              - generic [ref=e167]: 为零售目的在通信媒体上展示商品 350092
+              - generic [ref=e168]: 核心
+            - generic [ref=e169]:
+              - generic [ref=e170]: 广告宣传 350039
+              - generic [ref=e171]: 必备
+          - generic [ref=e172]:
+            - generic [ref=e173]: 致命错误
+            - paragraph [ref=e174]:
+              - strong [ref=e175]: 做线上业务但不注册第35类
+              - text: 相当于为他人做嫁衣，极易被抢注后遭投诉商品下架。连投诉他人冒用的资格都没有。
+    - generic [ref=e176]:
+      - generic [ref=e177]: 伍 · 操作流程：从检索到拿证
+      - generic [ref=e178]:
+        - generic [ref=e179]:
+          - generic [ref=e180]: 壹
+          - generic [ref=e181]:
+            - generic [ref=e182]: 商标近似检索
+            - generic [ref=e183]: 在国家知识产权局商标局官网（sbj.cnipa.gov.cn）进行检索。同时查文字、拼音、英文及图形要素。存在完全相同或高度近似商标且商品重叠的，申请被驳回概率极高。这一步是生死关头，90%的被驳回都源于检索不充分。
+        - generic [ref=e184]:
+          - generic [ref=e185]: 贰
+          - generic [ref=e186]:
+            - generic [ref=e187]: 准备申请材料
+            - generic [ref=e188]: 一人公司营业执照副本复印件加盖公章、商标图样JPG格式（建议300dpi以上）。同时准备黑白稿和彩色稿——黑白稿注册后可改变颜色使用，彩色稿在维权时辨识度更高。
+        - generic [ref=e189]:
+          - generic [ref=e190]: 叁
+          - generic [ref=e191]:
+            - generic [ref=e192]: 提交申请
+            - generic [ref=e193]: 登录中国商标网（sbj.cnipa.gov.cn）电子申请系统，以公司名义注册用户、绑定统一社会信用代码。填写申请书，上传材料，缴纳官费（电子申请约270元/类）。提交后1-5个工作日下发申请号。
+        - generic [ref=e194]:
+          - generic [ref=e195]: 肆
+          - generic [ref=e196]:
+            - generic [ref=e197]: 形式审查（约1个月）
+            - generic [ref=e198]: 官方检查申请文件格式、公章、主体资格是否符合要求。材料不全将触发补正通知，需在15日内补正，否则视为放弃申请。通过后下发《商标注册申请受理通知书》。
+        - generic [ref=e199]:
+          - generic [ref=e200]: 伍
+          - generic [ref=e201]:
+            - generic [ref=e202]: 实质审查（约4-5个月）
+            - generic [ref=e203]: 这是最核心的环节。审查员从合法性、显著性、与在先商标是否冲突三方面评估。2026年审查效率提升，平均4-5个月出结果。通过则进入公告期；若被驳回，15日内可申请复审（750元/类）。
+        - generic [ref=e204]:
+          - generic [ref=e205]: 陆
+          - generic [ref=e206]:
+            - generic [ref=e207]: 初审公告（3个月）
+            - generic [ref=e208]: 通过实审后，商标进入为期三个月的公告期。任何人都可以在这3个月内提出异议。常见的异议理由包括：在先权利人认为侵犯其商标权、认为该商标缺乏显著性等。
+        - generic [ref=e209]:
+          - generic [ref=e210]: 柒
+          - generic [ref=e211]:
+            - generic [ref=e212]: 核准注册
+            - generic [ref=e213]: 公告期满无异议，商标即告成功。电子版注册证第一时间推送至申请人账户。从提交到拿证，全程约7-9个月，若遇驳回、异议，时间可能延长至2-3年。
+    - generic [ref=e214]:
+      - generic [ref=e215]: 陆 · 避坑指南：十大致命失误
+      - generic [ref=e216]:
+        - generic [ref=e217]:
+          - generic [ref=e218]:
+            - generic [ref=e219]: 失误① · 申请主体不一致
+            - paragraph [ref=e220]: 营业执照与申请书上的申请人名称必须完全一致。"XX科技有限公司"与"XX科技公司"会被视为不同主体，导致申请被退回。
+          - generic [ref=e221]:
+            - generic [ref=e222]: 失误② · 图样与使用不一致
+            - paragraph [ref=e223]: 注册时提交的图样颜色、字体必须与实际使用一致。随意更改注册图样的颜色或字体，属于不规范使用，可能在维权时败诉。
+          - generic [ref=e224]:
+            - generic [ref=e225]: 失误③ · 类别选择失误
+            - paragraph [ref=e226]: 只看大类不选具体群组。选错群组导致保护范围过窄或与实际业务不符。建议对照《类似商品和服务区分表》逐项确认。
+          - generic [ref=e227]:
+            - generic [ref=e228]: 失误④ · 忽视第35类
+            - paragraph [ref=e229]: 做线上业务但不注册第35类，是最常见的致命失误。相当于放弃了对核心商业场景的法律保护。
+          - generic [ref=e230]:
+            - generic [ref=e231]: 失误⑤ · 未留存使用证据
+            - paragraph [ref=e232]: 注册后务必真实使用并留存证据：合同、发票、广告截图、包装照片、电商平台链接。撤三风险正在上升，空置商标是活靶子。
+        - generic [ref=e233]:
+          - generic [ref=e234]:
+            - generic [ref=e235]: 失误⑥ · 产品上线前不申请
+            - paragraph [ref=e236]: "\"等产品上线再申请\"是典型的本末倒置。审核存在不确定性，若被驳回、复审，窗口期已过。品牌将处于无保护裸奔状态。"
+          - generic [ref=e237]:
+            - generic [ref=e238]: 失误⑦ · 攀附知名品牌
+            - paragraph [ref=e239]: 故意模仿知名品牌Logo或名称，以为主观上"不是故意的"就能过关。实际上，审查员有专业数据库，一眼就能识别近似。
+          - generic [ref=e240]:
+            - generic [ref=e241]: 失误⑧ · 全类保护执念
+            - paragraph [ref=e242]: OPC资源有限，全类注册（45类全覆盖）成本高达数万元。除非是真正的多行业集团，否则只需聚焦核心2-3个类别。
+          - generic [ref=e243]:
+            - generic [ref=e244]: 失误⑨ · 公司注销时忽略商标
+            - paragraph [ref=e245]: 商标属于公司法人财产，注销后权利直接消失，无法自动归个人所有。必须在注销前办理转让手续。
+          - generic [ref=e246]:
+            - generic [ref=e247]: 失误⑩ · 轻信"包过"承诺
+            - paragraph [ref=e248]: 商标审查结果由审查员独立判断，代理机构无法"保证通过"。声称包过的机构，往往在合同里埋了退款的坑。
+    - generic [ref=e249]:
+      - generic [ref=e250]: 柒 · OPC时机判断：什么时候该申请
+      - generic [ref=e251]:
+        - generic [ref=e252]:
+          - generic [ref=e253]:
+            - generic [ref=e254]: 品牌确立期
+            - heading "品牌名确定后立即申请" [level=3] [ref=e255]
+            - paragraph [ref=e256]: 商标申请日决定"在先权利"。早一天申请，早一天锁定排他性。不要等产品上线、不要等收入稳定、不要等"想清楚再说"——想清楚的那天就是申请的那天。
+          - generic [ref=e257]:
+            - generic [ref=e258]: 月入门槛
+            - heading "月收入稳定1万+后开始品牌保护" [level=3] [ref=e259]
+            - paragraph [ref=e260]: 这是OPC的合理时机。此时业务模型已验证，品牌价值开始积累，商标保护投入回报率开始显现。早于这个阶段，商标更多是心理安慰而非实际资产。
+          - generic [ref=e261]:
+            - generic [ref=e262]: 动态调整
+            - heading "业务扩张时同步扩展保护范围" [level=3] [ref=e263]
+            - paragraph [ref=e264]: 进入新品类、开发新服务时，同步申请对应类别商标。不要等到被抢注后才后悔。
+        - generic [ref=e265]:
+          - generic [ref=e266]:
+            - generic [ref=e267]: 商标申请决策时间轴
+            - generic [ref=e268]:
+              - generic [ref=e269]: 品牌名确定
+              - generic [ref=e270]: 立即申请
+            - generic [ref=e271]:
+              - generic [ref=e272]: 月收入1万+
+              - generic [ref=e273]: 强化保护
+            - generic [ref=e274]:
+              - generic [ref=e275]: 业务扩张
+              - generic [ref=e276]: 扩展类别
+            - generic [ref=e277]:
+              - generic [ref=e278]: 公司注销前
+              - generic [ref=e279]: 先转商标
+          - generic [ref=e280]:
+            - generic [ref=e281]: 核心原则
+            - paragraph [ref=e282]:
+              - strong [ref=e283]: 不以使用为目的的恶意商标注册申请，将被驳回。
+              - text: 2026年审查标准进一步细化，非正常申请将进入黑名单。
+    - generic [ref=e284]:
+      - generic [ref=e285]: 捌 · 跨境布局：马德里国际商标
+      - generic [ref=e286]:
+        - generic [ref=e287]:
+          - paragraph [ref=e288]:
+            - text: 如果你的OPC业务涉及
+            - strong [ref=e289]: 跨境电商
+            - text: 或
+            - strong [ref=e290]: 海外市场拓展
+            - text: ，单一的中国商标保护就不够了。马德里体系（Madrid System）允许你通过一次申请，在多个国家获得商标保护。
+          - generic [ref=e291]:
+            - generic [ref=e292]: 马德里体系优势
+            - heading "一次申请，多国生效" [level=3] [ref=e293]
+            - paragraph [ref=e294]: 通过中国国家知识产权局提交马德里商标国际注册申请，可指定70多个马德里联盟成员国。一份申请、多国生效，比逐一国家申请节省60%以上成本。
+          - generic [ref=e295]:
+            - generic [ref=e296]: 费用构成
+            - heading "基础费 + 各国指定费" [level=3] [ref=e297]
+            - paragraph [ref=e298]:
+              - strong [ref=e299]: 基础费：
+              - text: 653瑞士法郎（单独规费）
+              - strong [ref=e300]: 指定费：
+              - text: 因国家而异，大多数100-300瑞士法郎
+              - strong [ref=e301]: 代理费：
+              - text: 国际申请需通过代理机构办理
+              - text: 注意：马德里注册基于国内申请，需先有中国商标基础。
+        - generic [ref=e302]:
+          - generic [ref=e303]:
+            - generic [ref=e304]: 马德里体系 vs 单一国家注册
+            - generic [ref=e305]:
+              - generic [ref=e306]: 申请方式
+              - generic [ref=e307]: 一次申请/多次申请
+            - generic [ref=e308]:
+              - generic [ref=e309]: 成本
+              - generic [ref=e310]: 低60%+/因国而异
+            - generic [ref=e311]:
+              - generic [ref=e312]: 覆盖国家
+              - generic [ref=e313]: 70+成员过
+            - generic [ref=e314]:
+              - generic [ref=e315]: 前提条件
+              - generic [ref=e316]: 需先有国内申请
+          - generic [ref=e317]:
+            - generic [ref=e318]: OPC建议
+            - paragraph [ref=e319]:
+              - text: 跨境布局是
+              - strong [ref=e320]: 收入稳定10万+后
+              - text: 才需要考虑的事。初创OPC应集中资源先把国内核心市场做好，再考虑海外扩张。
+    - paragraph [ref=e323]:
+      - strong [ref=e324]: 商标是OPC最重要的无形资产护城河。
+      - text: 在新公司法取消数量限制后，同一创业者可通过不同OPC分别持有不同品牌商标，实现风险隔离。核心策略是"精准防御"——聚焦核心2-3个类别，以最低成本覆盖最关键的线上商业场景。品牌名确定的那一刻，就是申请商标的最佳时机。
+    - generic [ref=e325]:
+      - generic [ref=e326]: 财务健康指标
+      - generic [ref=e327]:
+        - generic [ref=e328]:
+          - generic [ref=e329]: ≤1000
+          - generic [ref=e330]: 首期商标成本
+          - generic [ref=e331]: 单个OPC商标首期成本控制在千元以内（核心类别+35类），符合OPC轻资产原则
+        - generic [ref=e332]:
+          - generic [ref=e333]: ≤270
+          - generic [ref=e334]: 单类别官费
+          - generic [ref=e335]: 电子申请约270元/类（含10个商品），高性价比的无形资产投资
+        - generic [ref=e336]:
+          - generic [ref=e337]: 7-9月
+          - generic [ref=e338]: 审查周期
+          - generic [ref=e339]: 从申请到拿到电子注册证约7-9个月，建议品牌名确定即申请
+    - navigation [ref=e340]:
+      - link "← 节点47：企业邮箱搭建" [ref=e341] [cursor=pointer]:
+        - /url: /nodes/47-business-email/index.html
+        - generic [ref=e342]: ←
+        - text: 节点47：企业邮箱搭建
+      - link "节点49：软件著作权登记 →" [ref=e343] [cursor=pointer]:
+        - /url: /nodes/49-copyright/index.html
+        - text: 节点49：软件著作权登记
+        - generic [ref=e344]: →

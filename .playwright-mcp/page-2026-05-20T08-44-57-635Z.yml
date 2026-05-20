@@ -1,0 +1,473 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "← 返回首页" [ref=e3] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e4]: ←
+      - text: 返回首页
+    - generic [ref=e5]: 节点 50 / 57
+  - generic: "50"
+  - generic [ref=e7]:
+    - banner [ref=e8]:
+      - generic [ref=e9]:
+        - generic [ref=e10]: 节点 50 · 1-10阶段
+        - heading "广告合规" [level=1] [ref=e11]
+        - paragraph [ref=e12]: 2026年监管新规之下的生存法则。AI生成内容标识、直播带货新规、私域营销管制——旧地图已经找不到新大陆。
+    - generic [ref=e14]:
+      - paragraph [ref=e15]: 「你以为AI输出的是大模型给出的客观结果，实际上可能是从互联网上抓下来的一条广告——还没有"广告"标签。」
+      - paragraph [ref=e16]: —— 新华社，2026年2月
+    - generic [ref=e17]:
+      - generic [ref=e18]:
+        - generic [ref=e19]: 壹
+        - generic [ref=e20]: 本质
+      - heading "2026年监管新格局：三个文件同时生效" [level=2] [ref=e21]
+      - generic [ref=e22]:
+        - generic [ref=e23]:
+          - generic [ref=e24]:
+            - generic [ref=e25]: 核心文件一
+            - heading "《互联网广告管理办法》（2023年5月1日施行，持续强化）" [level=3] [ref=e26]
+            - paragraph [ref=e27]: 明确规定互联网广告应当具有可识别性，显著标明"广告"。付费搜索广告与自然搜索结果须明显区分。特殊商品（医疗、药品、保健食品等）广告须经审查方可发布。
+          - generic [ref=e28]:
+            - generic [ref=e29]: 核心文件二
+            - heading "《人工智能生成合成内容标识办法》（2025年9月1日起已施行）" [level=3] [ref=e30]
+            - paragraph [ref=e31]: 建立"显式标识+隐式标识"双重体系。显式标识需在生成内容中添加可明显感知的标识；隐式标识需嵌入文件元数据。服务提供者、传播平台、用户三方责任全覆盖。
+          - generic [ref=e32]:
+            - generic [ref=e33]: 核心文件三
+            - heading "《直播电商监督管理办法》（2026年2月1日施行）" [level=3] [ref=e34]
+            - paragraph [ref=e35]: 平台成为第一责任人，须核验主播资质、监测直播内容、保存交易记录不少于三年。主播按信用评价分级管理，重点直播间专人巡查。
+          - generic [ref=e36]:
+            - generic [ref=e37]: 监管重点
+            - heading "国家市场监管总局：AI生成广告是重点难点问题" [level=3] [ref=e38]
+            - paragraph [ref=e39]: 《2026年全国广告监管工作要点》明确指出：AI生成广告是监管重点难点，将开展集中整治。新华社报道直指GEO（生成式引擎优化）——你以为的客观搜索结果，可能是一条未标识的广告。
+        - generic [ref=e40]:
+          - generic [ref=e41]:
+            - generic [ref=e42]: 2026广告合规三大风险领域
+            - generic [ref=e43]:
+              - generic [ref=e44]: AI生成内容未标识
+              - generic [ref=e45]: 高危
+            - generic [ref=e46]:
+              - generic [ref=e47]: 直播虚假宣传
+              - generic [ref=e48]: 高危
+            - generic [ref=e49]:
+              - generic [ref=e50]: 私域营销违规
+              - generic [ref=e51]: 高危
+            - generic [ref=e52]:
+              - generic [ref=e53]: 绝对化用语
+              - generic [ref=e54]: 高频
+          - generic [ref=e55]:
+            - generic [ref=e56]: 数据洞察
+            - paragraph [ref=e57]:
+              - strong [ref=e58]: 2026年第一季度
+              - text: ，全国消协系统收到消费投诉12.6万件，同比上涨35%。直播电商虚假宣传成"重灾区中的重灾区"，监管力度持续加码。
+          - generic [ref=e59]:
+            - generic [ref=e60]: OPC警钟
+            - paragraph [ref=e61]:
+              - strong [ref=e62]: 一人公司没有"不懂"和"忘了"的避风港。
+              - text: 近年来监管查处OPC案件持续增长，两年内三次违法将直接吊销营业执照。
+    - separator [ref=e63]
+    - generic [ref=e64]:
+      - generic [ref=e65]:
+        - generic [ref=e66]: 贰
+        - generic [ref=e67]: 本质
+      - heading "广告标识：强制义务，不是可选项" [level=2] [ref=e68]
+      - generic [ref=e69]:
+        - generic [ref=e70]:
+          - generic [ref=e71]:
+            - generic [ref=e72]: 法律依据
+            - heading "《互联网广告管理办法》第七条" [level=3] [ref=e73]
+            - paragraph [ref=e74]: 互联网广告应当具有可识别性，显著标明"广告"，使消费者能够辨明其为广告。付费搜索广告应当与自然搜索结果明显区分。
+          - generic [ref=e75]:
+            - generic [ref=e76]: 2026新动态
+            - heading "知识介绍、体验分享、消费测评也需标注" [level=3] [ref=e77]
+            - paragraph [ref=e78]: 通过知识介绍、体验分享、消费测评等形式推销商品或服务，并附加购物链接等购买方式的，广告发布者应当显著标明"广告"。网红推荐、直播切片二次传播均被纳入商业广告认定范畴。
+          - generic [ref=e79]:
+            - generic [ref=e80]: 标识位置
+            - heading "必须在显著位置，字体大小与内容同等醒目" [level=3] [ref=e81]
+            - paragraph [ref=e82]: 直播带货须全程展示"广告"标识，不能仅在开头闪现。种草笔记须在内容前三分之一位置标注。不能被特效、动画遮挡，不能用模糊字样替代。
+          - generic [ref=e83]:
+            - generic [ref=e84]: 违规代价
+            - heading "20万元起步，上不封顶" [level=3] [ref=e85]
+            - paragraph [ref=e86]: 腾讯因发布虚假广告及使用绝对化用语被罚20万元。杭州某炒货店因"杭州最优秀的炒货店"被罚10万元。"不知道需要标注"不再作为抗辩理由。
+        - generic [ref=e87]:
+          - generic [ref=e88]:
+            - generic [ref=e89]: 必须标注"广告"的场景（2026版）
+            - generic [ref=e90]:
+              - generic [ref=e91]: 小红书种草笔记（附购买链接）
+              - generic [ref=e92]: 必须标注
+            - generic [ref=e93]:
+              - generic [ref=e94]: 抖音/快手短视频（商业推广）
+              - generic [ref=e95]: 必须标注
+            - generic [ref=e96]:
+              - generic [ref=e97]: 微信朋友圈（商业合作）
+              - generic [ref=e98]: 必须标注
+            - generic [ref=e99]:
+              - generic [ref=e100]: 私域社群（产品推广）
+              - generic [ref=e101]: 必须标注
+            - generic [ref=e102]:
+              - generic [ref=e103]: 直播间带货（全程）
+              - generic [ref=e104]: 必须标注
+            - generic [ref=e105]:
+              - generic [ref=e106]: B站/视频号（恰饭内容）
+              - generic [ref=e107]: 必须标注
+          - generic [ref=e108]:
+            - generic [ref=e109]: 错误示范
+            - paragraph [ref=e110]:
+              - strong [ref=e111]: "\"合作推广\"\"体验分享\"\"好物推荐\"\"粉丝专属福利\""
+              - text: 使用模糊词汇替代"广告"标识，不能免除违规责任，已有多人被罚。
+          - generic [ref=e112]:
+            - generic [ref=e113]: 正确示范
+            - paragraph [ref=e114]:
+              - strong [ref=e115]: 【广告】开头显著位置标注
+              - text: 字体颜色、大小与其他内容同等醒目，不能被特效遮挡。
+    - separator [ref=e116]
+    - generic [ref=e117]:
+      - generic [ref=e118]:
+        - generic [ref=e119]: 叁
+        - generic [ref=e120]: 避坑
+      - heading "绝对化用语：监管打击的重中之重" [level=2] [ref=e121]
+      - generic [ref=e122]:
+        - generic [ref=e123]:
+          - generic [ref=e124]:
+            - generic [ref=e125]: 禁用范围
+            - heading "语义绝对、无法客观验证的词汇" [level=3] [ref=e126]
+            - paragraph [ref=e127]: "\"最好\"\"第一\"\"全网最低\"\"顶级\"\"唯一\"\"100%有效\"\"绝对安全\"\"国家级\"\"最高级\"等。《广告法》第九条第三项明确禁止，执法无需证明表述是否属实——只要说了就是违法。"
+          - generic [ref=e128]:
+            - generic [ref=e129]: 变体词库
+            - heading "警惕隐性绝对化表达" [level=3] [ref=e130]
+            - paragraph [ref=e131]: "\"全网性价比天花板\"\"行业公认效果最强\"\"唯一有效方案\"\"秒杀一切\"\"史无前例\"\"治愈率最高\"等隐含排他性表述同样危险。只要无法提供权威证明，即构成违法。"
+          - generic [ref=e132]:
+            - generic [ref=e133]: 免责抗辩失败
+            - heading "加\"个人看法\"不能免责" [level=3] [ref=e134]
+            - paragraph [ref=e135]: 深圳某一人咨询公司网站使用"全国第一"，主张"仅为个人看法"，被罚20万元，申辩未获采纳。绝对化用语传递的是客观声称，"个人看法"不能消解其误导性。
+          - generic [ref=e136]:
+            - generic [ref=e137]: 酒类直播新规
+            - heading "\"亲测好喝\"\"家族推荐\"也需合规" [level=3] [ref=e138]
+            - paragraph [ref=e139]: 2026年新规将网红推荐、直播切片二次传播纳入商业广告认定，对酒类常用"亲测好喝""家族推荐"等营销话术提出明确合规要求。不能以"真实体验"为由发布绝对化表述。
+        - generic [ref=e140]:
+          - generic [ref=e141]:
+            - generic [ref=e142]: 安全替换策略（可用表述）
+            - generic [ref=e143]:
+              - generic [ref=e144]: "\"效果最好\" →"
+              - generic [ref=e145]: 用户反馈中90%表示改善
+            - generic [ref=e146]:
+              - generic [ref=e147]: "\"销量第一\" →"
+              - generic [ref=e148]: 累计服务3000+客户
+            - generic [ref=e149]:
+              - generic [ref=e150]: "\"全网最低\" →"
+              - generic [ref=e151]: 同品类中价格较低
+            - generic [ref=e152]:
+              - generic [ref=e153]: "\"最好效果\" →"
+              - generic [ref=e154]: 综合评价4.9/5.0
+            - generic [ref=e155]:
+              - generic [ref=e156]: "\"绝对安全\" →"
+              - generic [ref=e157]: 通过国家标准检测
+            - generic [ref=e158]:
+              - generic [ref=e159]: "\"国家级\" →"
+              - generic [ref=e160]: 符合行业标准要求
+          - generic [ref=e161]:
+            - generic [ref=e162]: 典型案例
+            - paragraph [ref=e163]:
+              - strong [ref=e164]: 化妆品"世界上唯一"
+              - text: 青海春天子公司因业务员进行引人误解的商业宣传，被罚款80万元。
+    - separator [ref=e165]
+    - generic [ref=e166]:
+      - generic [ref=e167]:
+        - generic [ref=e168]: 肆
+        - generic [ref=e169]: 本质
+      - heading "效果承诺：OPC创业最常见的违规陷阱" [level=2] [ref=e170]
+      - generic [ref=e171]:
+        - generic [ref=e172]:
+          - generic [ref=e173]:
+            - generic [ref=e174]: 高危领域
+            - heading "知识付费、个人服务、软件产品" [level=3] [ref=e175]
+            - paragraph [ref=e176]: "\"7天学会\"\"月入10万\"\"零基础保过\"\"无风险稳定收益\"\"学完推荐就业\"\"保证回本\"等向消费者传递确定性承诺，无法兑现即构成虚假宣传。OPC的知识付费课程尤须警惕。"
+          - generic [ref=e177]:
+            - generic [ref=e178]: 个人背书
+            - heading "创业者故事不能作为效果保证" [level=3] [ref=e179]
+            - paragraph [ref=e180]: "\"靠这个项目买了别墅\"\"从负债到年入百万\"等个人经历，若与所推广项目无直接因果联系，被定性为虚假广告，罚款30万元。展示收益案例必须附条件性表述。"
+          - generic [ref=e181]:
+            - generic [ref=e182]: 教育培训机构
+            - heading "\"保过\"\"包就业\"是红线" [level=3] [ref=e183]
+            - paragraph [ref=e184]: 教育培训广告禁止承诺"保过""包就业"等效果。多地市场监管部门将教育培训类广告作为监测重点，"最优秀的考研辅导学校""国家级英语培训班"等绝对化用语均已受处罚。
+          - generic [ref=e185]:
+            - generic [ref=e186]: 安全表述
+            - heading "只描述服务内容，不承诺用户成果" [level=3] [ref=e187]
+            - paragraph [ref=e188]: 使用"因人而异""取决于个人投入程度""效果因人而异"等免责辅助。更关键的是：绝不能将"可能实现的个案"包装为"普遍必然的结果"。
+        - generic [ref=e189]:
+          - generic [ref=e190]:
+            - generic [ref=e191]: 近年典型处罚案例
+            - generic [ref=e192]:
+              - generic [ref=e193]: 知识付费虚假承诺
+              - generic [ref=e194]: 50万元
+            - generic [ref=e195]:
+              - generic [ref=e196]: 直播虚假背书
+              - generic [ref=e197]: 30万元
+            - generic [ref=e198]:
+              - generic [ref=e199]: "\"保证上稿\"集体投诉"
+              - generic [ref=e200]: 每人3倍赔偿
+            - generic [ref=e201]:
+              - generic [ref=e202]: 个体户抖音虚假宣传
+              - generic [ref=e203]: 从轻处罚
+          - generic [ref=e204]:
+            - generic [ref=e205]: 数据洞察
+            - paragraph [ref=e206]:
+              - strong [ref=e207]: 收入展示必须标注：
+              - text: 时间周期、统计口径、覆盖人群比例，并保留可核验的原始数据。单独展示极端收益案例构成误导性广告。
+          - generic [ref=e208]:
+            - generic [ref=e209]: OPC警戒
+            - paragraph [ref=e210]:
+              - strong [ref=e211]: 你的创业故事可能是违规素材。
+              - text: 展示"从0到100万"时，必须同时说明：这是个案，且需要说明时间周期、具体操作路径、适用范围。
+    - separator [ref=e212]
+    - generic [ref=e213]:
+      - generic [ref=e214]:
+        - generic [ref=e215]: 伍
+        - generic [ref=e216]: 避坑
+      - heading "AI生成内容：2026年监管最严领域" [level=2] [ref=e217]
+      - generic [ref=e218]:
+        - generic [ref=e219]:
+          - generic [ref=e220]:
+            - generic [ref=e221]: 新规明确
+            - heading "《人工智能生成合成内容标识办法》（2025年9月1日起已施行）" [level=3] [ref=e222]
+            - paragraph [ref=e223]: 使用AIGC工具生成的广告文案、图像、视频，你作为广告主仍承担全部法律责任。不可主张"内容由AI生成故无责任"。2026年监管重点整治GEO——你以为的客观搜索结果，可能是一条未标识的AI广告。
+          - generic [ref=e224]:
+            - generic [ref=e225]: 标识要求
+            - heading "显式标识+隐式标识双重体系" [level=3] [ref=e226]
+            - paragraph [ref=e227]:
+              - strong [ref=e228]: 显式标识：
+              - text: 视频标识持续时间≥2秒，文字高度需满足可识别标准；
+              - strong [ref=e229]: 隐式标识：
+              - text: 嵌入文件元数据，包含服务提供者编码、内容属性等信息，防止被篡改。
+          - generic [ref=e230]:
+            - generic [ref=e231]: 平台责任
+            - heading "抖音已全面强制执行AIGC标识" [level=3] [ref=e232]
+            - paragraph [ref=e233]: 抖音自2025年9月1日起全面执行国家《人工智能生成合成内容标识办法》，强制要求所有AI生成内容必须显式标注"AI生成"并同步写入隐式元数据标识。未标识内容将被限流、下架或追加平台标识。
+          - generic [ref=e234]:
+            - generic [ref=e235]: 审查逻辑
+            - heading "将AI输出视为未经审核的初稿" [level=3] [ref=e236]
+            - paragraph [ref=e237]: AI常因语料问题生成包含绝对化用语、无来源数据、虚构案例的内容。你的人工终审是防止问题内容流向市场的唯一关卡。AI只是生产工具，决策权在你，发布内容责任在你。
+        - generic [ref=e238]:
+          - generic [ref=e239]:
+            - generic [ref=e240]: AI内容必检三项（发布前逐条确认）
+            - generic [ref=e241]:
+              - generic [ref=e242]: 绝对化用语排查
+              - generic [ref=e243]: 必须清除
+            - generic [ref=e244]:
+              - generic [ref=e245]: 功效承诺溯源
+              - generic [ref=e246]: 必须核实
+            - generic [ref=e247]:
+              - generic [ref=e248]: 数据引用查原始
+              - generic [ref=e249]: 必须验证
+            - generic [ref=e250]:
+              - generic [ref=e251]: AI标识合规
+              - generic [ref=e252]: 必须添加
+          - generic [ref=e253]:
+            - generic [ref=e254]: 典型案例
+            - paragraph [ref=e255]:
+              - strong [ref=e256]: 浙江某OPC用AI生成"100%见效"被罚18万
+              - text: 2025年浙江某OPC用AI生成护肤品广告文案，被罚后辩称"AI自动写的"，执法机关直接驳回。
+          - generic [ref=e257]:
+            - generic [ref=e258]: 合规做法
+            - paragraph [ref=e259]:
+              - strong [ref=e260]: 添加"AI辅助生成"标识
+              - text: 在内容起始位置添加显式标识，说明内容由AI辅助生成，并进行人工审核。
+    - separator [ref=e261]
+    - generic [ref=e262]:
+      - generic [ref=e263]:
+        - generic [ref=e264]: 陆
+        - generic [ref=e265]: 培育
+      - heading "直播带货：2026年新规的核心冲击" [level=2] [ref=e266]
+      - generic [ref=e267]:
+        - generic [ref=e268]:
+          - generic [ref=e269]:
+            - generic [ref=e270]: 平台责任
+            - heading "平台成为第一责任人" [level=3] [ref=e271]
+            - paragraph [ref=e272]: 《直播电商监督管理办法》要求平台核验主播商家资质，对夸大宣传、虚构销量、AI造假信息立即处置。建立消费争议解决机制，保存交易记录不少于三年。平台未履行责任最高可罚10万元。
+          - generic [ref=e273]:
+            - generic [ref=e274]: 私域直播
+            - heading "私域直播纳入监管范围" [level=3] [ref=e275]
+            - paragraph [ref=e276]: 2026年新规将私域直播纳入监管，要求平台保存直播回放、直播互动信息、订单详情、交易记录等，保存时间自交易完成之日起不少于三年。不得以"私域"为由规避监管。
+          - generic [ref=e277]:
+            - generic [ref=e278]: 主播管理
+            - heading "分级分类管理，重点直播间专人巡查" [level=3] [ref=e279]
+            - paragraph [ref=e280]: 根据直播间运营者账号信用评价、关注和点击数量、营销金额等指标建立分级管理制度。对重点直播间运营者采取安排专人实时巡查、延长直播内容保存时间等措施。
+          - generic [ref=e281]:
+            - generic [ref=e282]: 禁止行为
+            - heading "不得扮演\"假专家\"、虚构人设" [level=3] [ref=e283]
+            - paragraph [ref=e284]: 不得通过扮演医疗、教育、金融等领域"假专家"以及虚构专业、履历、阅历、人物关系、情感人设等"假人设"，或者通过杜撰帮扶社会弱势群体、制造虚假舆论热点等方式骗取受众信任。
+        - generic [ref=e285]:
+          - generic [ref=e286]:
+            - generic [ref=e287]: 直播电商合规要点（2026版）
+            - generic [ref=e288]:
+              - generic [ref=e289]: 广告标识
+              - generic [ref=e290]: 全程展示"广告"
+            - generic [ref=e291]:
+              - generic [ref=e292]: 商品资质
+              - generic [ref=e293]: 核验营业执照、许可证
+            - generic [ref=e294]:
+              - generic [ref=e295]: 真实宣传
+              - generic [ref=e296]: 不得虚构销量、夸大功效
+            - generic [ref=e297]:
+              - generic [ref=e298]: AI内容
+              - generic [ref=e299]: 须标注"AI生成"
+            - generic [ref=e300]:
+              - generic [ref=e301]: 记录保存
+              - generic [ref=e302]: 直播回放保存≥3年
+          - generic [ref=e303]:
+            - generic [ref=e304]: 浙江规定
+            - paragraph [ref=e305]:
+              - strong [ref=e306]: 酒类直播营销话术红线：
+              - text: "\"亲测好喝\"\"家族推荐\"\"口感一流\"等表述需附条件说明，不得使用绝对化用语。\"特供\"\"专供\"传播错误价值导向被明确禁止。"
+          - generic [ref=e307]:
+            - generic [ref=e308]: OPC提醒
+            - paragraph [ref=e309]:
+              - strong [ref=e310]: 如果你做直播带货：
+              - text: 选品时认真核对商家及商品资质，涉及商标、专利、认证需查验相关证明和授权材料。
+    - separator [ref=e311]
+    - generic [ref=e312]:
+      - generic [ref=e313]:
+        - generic [ref=e314]: 柒
+        - generic [ref=e315]: 培育
+      - heading "30秒自检流程：把合规焊进工作流" [level=2] [ref=e316]
+      - generic [ref=e317]:
+        - generic [ref=e318]:
+          - generic [ref=e319]: "1"
+          - generic [ref=e320]: 身份识别
+          - generic [ref=e321]: 广告标识是否在显著位置？
+        - generic [ref=e322]:
+          - generic [ref=e323]: "2"
+          - generic [ref=e324]: 用语检查
+          - generic [ref=e325]: 有无"最""第一""百分百""保证"？
+        - generic [ref=e326]:
+          - generic [ref=e327]: "3"
+          - generic [ref=e328]: 证据链
+          - generic [ref=e329]: 数据案例能否拿出原始材料？
+        - generic [ref=e330]:
+          - generic [ref=e331]: "4"
+          - generic [ref=e332]: AI合规
+          - generic [ref=e333]: AI内容是否添加显式标识？
+      - generic [ref=e334]:
+        - generic [ref=e335]: 发布前五问清单
+        - generic [ref=e336]:
+          - generic [ref=e337]: "1"
+          - generic [ref=e338]: 广告标识是否在显著位置清晰可见？（不是模糊的"合作推广"）
+        - generic [ref=e339]:
+          - generic [ref=e340]: "2"
+          - generic [ref=e341]: 文案中有无"最""第一""唯一""百分百""保证"及其变体？（逐条排查）
+        - generic [ref=e342]:
+          - generic [ref=e343]: "3"
+          - generic [ref=e344]: 所有数据、案例、效果展示是否有原始材料支撑？能否48小时内提供？
+        - generic [ref=e345]:
+          - generic [ref=e346]: "4"
+          - generic [ref=e347]: AI生成内容是否已添加"AI生成"显式标识？隐式标识是否嵌入文件？
+        - generic [ref=e348]:
+          - generic [ref=e349]: "5"
+          - generic [ref=e350]: 如果被投诉，我能48小时内拿出什么证据？证据链是否完整？
+      - generic [ref=e351]:
+        - generic [ref=e352]: 数据洞察
+        - paragraph [ref=e353]:
+          - strong [ref=e354]: 48小时证据窗口：
+          - text: 执法部门受理投诉后通常给广告主48小时提交证据材料。无法提供有效证明，违法行为将被直接认定。档案保存期限：3年。
+    - separator [ref=e355]
+    - generic [ref=e356]:
+      - generic [ref=e357]:
+        - generic [ref=e358]: 捌
+        - generic [ref=e359]: 决策
+      - heading "广告合规决策框架：做与不做" [level=2] [ref=e360]
+      - generic [ref=e361]:
+        - strong [ref=e362]: 核心判断标准：
+        - text: 每一次按下发布键前问自己三个问题——这条内容会被当作广告标识了吗？所有表述我能拿出证明吗？如果消费者因为这条内容付款，我最大可能损失什么？
+      - generic [ref=e363]:
+        - generic [ref=e364]:
+          - generic [ref=e365]: 应该做
+          - generic [ref=e366]: 商业推广内容显著位置标注"广告"（不能用"合作""种草"替代）
+          - generic [ref=e367]: 使用可验证的比较替代绝对化描述
+          - generic [ref=e368]: 所有数据标注统计时间、口径、出处
+          - generic [ref=e369]: 收入展示附条件性表述（因人而异，非保证）
+          - generic [ref=e370]: AI生成内容进行人工二道审+添加标识
+          - generic [ref=e371]: 建立广告档案（保留3年）
+          - generic [ref=e372]: 收款引导至公司对公账户
+          - generic [ref=e373]: 直播内容全程可回放追溯
+        - generic [ref=e374]:
+          - generic [ref=e375]: 不要做
+          - generic [ref=e376]: 用"合作""种草""体验分享"替代"广告"标识
+          - generic [ref=e377]: 使用"最好""第一""唯一""100%""绝对"等绝对化用语
+          - generic [ref=e378]: "\"月入10万\"\"保证回本\"\"无风险\"等效果承诺"
+          - generic [ref=e379]: 个人经历作为效果背书（无因果证明）
+          - generic [ref=e380]: 以"这是AI写的"为由免责
+          - generic [ref=e381]: 展示个人收款码
+          - generic [ref=e382]: 私域推广不标注"广告"
+          - generic [ref=e383]: 未经审查发布医疗、药品、金融类广告
+    - paragraph [ref=e386]:
+      - strong [ref=e387]: 一人公司没有"不懂"和"忘了"的避风港。
+      - text: 2026年监管环境：AI生成内容是重点整治对象，直播带货新规全面落地，私域营销纳入监管。核心原则只有一条——每一个字发出去之前，先想"我能拿出什么证据"。
+    - generic [ref=e388]:
+      - generic [ref=e389]:
+        - generic [ref=e390]: 玖
+        - generic [ref=e391]: 警示
+      - heading "2026年违规成本一览" [level=2] [ref=e392]
+      - generic [ref=e393]:
+        - generic [ref=e394]:
+          - generic [ref=e395]: 20万+
+          - generic [ref=e396]: 绝对化用语最低罚款
+          - generic [ref=e397]: 措辞不当的种草笔记或未经证实的销量承诺，可能触发最低20万元罚款。广告费用无法计算或明显偏低的，直接处20万元以上100万元以下罚款。
+        - generic [ref=e398]:
+          - generic [ref=e399]: 3年
+          - generic [ref=e400]: 档案保存期限
+          - generic [ref=e401]: 广告档案法定保存年限，直播回放、交易记录保存3年。发布一条存一条，执法检查时能全身而退。
+        - generic [ref=e402]:
+          - generic [ref=e403]: 3次
+          - generic [ref=e404]: 吊销执照红线
+          - generic [ref=e405]: 两年内三次以上违法行为或者有其他严重情节的，处广告费用5倍以上10倍以下罚款；可以吊销营业执照。
+    - generic [ref=e406]:
+      - generic [ref=e407]:
+        - generic [ref=e408]: 拾
+        - generic [ref=e409]: 行动
+      - heading "OPC专属广告合规行动清单" [level=2] [ref=e410]
+      - generic [ref=e411]:
+        - generic [ref=e412]:
+          - generic [ref=e413]:
+            - generic [ref=e414]: 第一步
+            - heading "建立内容发布检查清单" [level=3] [ref=e415]
+            - paragraph [ref=e416]: 在发布任何商业内容前，对照五问清单逐项检查。重点关注：广告标识、绝对化用语、效果承诺、AI内容标识、数据来源证明。
+          - generic [ref=e417]:
+            - generic [ref=e418]: 第二步
+            - heading "建立广告档案管理系统" [level=3] [ref=e419]
+            - paragraph [ref=e420]: 所有发布的广告内容（图文、视频、直播）保留原始文件和时间戳。保存与客户的沟通记录、效果数据原始材料。档案保存≥3年。
+          - generic [ref=e421]:
+            - generic [ref=e422]: 第三步
+            - heading "AI工具使用规范" [level=3] [ref=e423]
+            - paragraph [ref=e424]: 使用AI生成内容时，将AI输出视为"初稿"而非"终稿"。发布前必须：①检查绝对化用语②核实数据来源③添加"AI辅助生成"显式标识。
+          - generic [ref=e425]:
+            - generic [ref=e426]: 第四步
+            - heading "特殊行业先审批再发布" [level=3] [ref=e427]
+            - paragraph [ref=e428]: 涉及医疗、药品、保健食品、金融、教育培训等需前置审批的类别，先取得审查批准文件再发布广告。不得剪辑、拼接、修改已审查内容。
+        - generic [ref=e429]:
+          - generic [ref=e430]:
+            - generic [ref=e431]: 法规速查
+            - generic [ref=e432]:
+              - paragraph [ref=e433]:
+                - strong [ref=e434]: 《广告法》第九条第三项：
+                - text: 禁止使用"国家级""最高级""最佳"等用语。
+              - paragraph [ref=e435]:
+                - strong [ref=e436]: 《广告法》第五十五条：
+                - text: 虚假广告处广告费用3-5倍罚款；无法计算的处20万-100万罚款。
+              - paragraph [ref=e437]:
+                - strong [ref=e438]: 《互联网广告管理办法》第七条：
+                - text: 互联网广告应当显著标明"广告"。
+              - paragraph [ref=e439]:
+                - strong [ref=e440]: 《人工智能生成合成内容标识办法》（2025年9月1日起已施行）：
+                - text: AI生成内容须添加显式和隐式标识。
+          - generic [ref=e441]:
+            - generic [ref=e442]: 最终原则
+            - paragraph [ref=e443]:
+              - strong [ref=e444]: 宁可保守，不要冒险。
+              - text: 当你犹豫要不要加"广告"标识时——加。当你犹豫要不要说"效果最好"时——换。当你犹豫这条内容会不会有问题时——先存证，后发布。
+    - navigation [ref=e445]:
+      - link "← 节点49：软件著作权登记" [ref=e446] [cursor=pointer]:
+        - /url: /nodes/49-copyright/index.html
+        - generic [ref=e447]: ←
+        - text: 节点49：软件著作权登记
+      - link "节点51：数据备份与恢复 →" [ref=e448] [cursor=pointer]:
+        - /url: /nodes/51-data-backup/index.html
+        - text: 节点51：数据备份与恢复
+        - generic [ref=e449]: →
