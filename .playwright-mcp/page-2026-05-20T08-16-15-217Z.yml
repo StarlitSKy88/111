@@ -1,0 +1,197 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "← 返回首页" [ref=e3] [cursor=pointer]:
+      - /url: /
+    - generic [ref=e4]: 节点 08 / 57
+  - generic: "08"
+  - generic [ref=e5]:
+    - complementary [ref=e6]:
+      - generic [ref=e7]: 目录
+      - list [ref=e8]:
+        - listitem [ref=e9]:
+          - link "3条命令创建第一个项目" [ref=e10] [cursor=pointer]:
+            - /url: "#s1"
+        - listitem [ref=e11]:
+          - link "AI生成第一个HTML页面" [ref=e12] [cursor=pointer]:
+            - /url: "#s2"
+        - listitem [ref=e13]:
+          - link "本地预览" [ref=e14] [cursor=pointer]:
+            - /url: "#s3"
+        - listitem [ref=e15]:
+          - link "理解HTML/CSS/JS三件套" [ref=e16] [cursor=pointer]:
+            - /url: "#s4"
+        - listitem [ref=e17]:
+          - link "第一次用AI修改页面" [ref=e18] [cursor=pointer]:
+            - /url: "#s5"
+        - listitem [ref=e19]:
+          - link "你刚刚完成的事" [ref=e20] [cursor=pointer]:
+            - /url: "#s6"
+        - listitem [ref=e21]:
+          - link "总纲" [ref=e22] [cursor=pointer]:
+            - /url: "#s7"
+    - main [ref=e23]:
+      - generic [ref=e25]:
+        - generic [ref=e26]: 节点 08 · 环境搭建
+        - heading "Hello World 启动" [level=1] [ref=e27]
+        - paragraph [ref=e28]: 你的开发环境已经装好了。现在用3条命令创建第一个项目，然后在AI的帮助下写出第一个页面——从"零"到"看到东西在浏览器里运行"，只需要10分钟。
+      - generic:
+        - generic: 3条命令创建第一个项目
+        - paragraph: 打开 VS Code → 按 Ctrl/⌘ + ~ 打开内置终端 → 依次执行：
+        - generic [ref=e29]:
+          - generic: 在终端输入这3条命令
+          - generic: "# 第1条：创建项目文件夹并进入 mkdir my-first-app && cd my-first-app # 第2条：初始化npm项目（一路回车，全部默认） npm init -y # 第3条：在VS Code中打开这个文件夹 code ."
+        - paragraph:
+          - text: 3条命令后，你的VS Code左侧文件面板应该显示一个空文件夹，里面只有一个
+          - code [ref=e30]: package.json
+          - text: 文件。
+        - generic [ref=e31]:
+          - generic [ref=e32]: 发生了什么
+          - table [ref=e33]:
+            - rowgroup [ref=e34]:
+              - row "命令 干了什么" [ref=e35]:
+                - columnheader "命令" [ref=e36]
+                - columnheader "干了什么" [ref=e37]
+            - rowgroup [ref=e38]:
+              - row "mkdir my-first-app 在你的电脑上创建了一个文件夹叫 my-first-app" [ref=e39]:
+                - cell "mkdir my-first-app" [ref=e40]
+                - cell "在你的电脑上创建了一个文件夹叫 my-first-app" [ref=e41]
+              - row "cd my-first-app 进入这个文件夹" [ref=e42]:
+                - cell "cd my-first-app" [ref=e43]
+                - cell "进入这个文件夹" [ref=e44]
+              - row "npm init -y 创建了 package.json——这是你项目的\"身份证\"，记录项目名、版本号、依赖包" [ref=e45]:
+                - cell "npm init -y" [ref=e46]
+                - cell "创建了 package.json——这是你项目的\"身份证\"，记录项目名、版本号、依赖包" [ref=e47]
+              - row "code . 在VS Code中打开当前文件夹（. 代表\"当前目录\"）" [ref=e48]:
+                - cell "code ." [ref=e49]
+                - cell "在VS Code中打开当前文件夹（. 代表\"当前目录\"）" [ref=e50]
+      - generic [ref=e51]:
+        - generic [ref=e52]: AI生成第一个HTML页面
+        - paragraph [ref=e53]: 把下面这段话发给你的AI工具。用 v0.dev / Trae / Cursor / Claude Code 的对话窗口，粘贴以下Prompt：
+        - generic [ref=e54]:
+          - generic [ref=e55]: Prompt 模板
+          - generic [ref=e56]: 帮我创建一个单文件Web应用。 要求： 1. 文件名：index.html 2. 内容：一个简洁的欢迎页面 3. 页面中心显示："Hello，这是OPC的第一个产品" 4. 下面一个按钮，写着"点我试试" 5. 点击按钮后，弹出一个提示框，显示"按钮被点击了！你成功运行了第一个交互功能。" 6. 页面背景深色（#111110），文字白色，按钮红色（#C0392B） 7. 全部内容居中显示 8. 移动端适配（viewport）
+        - generic [ref=e57]:
+          - generic [ref=e58]:
+            - generic [ref=e59]: "1"
+            - heading "把代码保存到你的项目里" [level=3] [ref=e60]
+          - paragraph [ref=e62]:
+            - text: 在VS Code中：
+            - text: 1. 左侧文件面板右键 → "新建文件"
+            - text: 2. 命名为 index.html
+            - text: 3. 把AI生成的代码粘贴进去
+            - text: 4. 按 Ctrl/⌘ + S 保存
+      - generic:
+        - generic: 本地预览
+        - generic:
+          - generic [ref=e63]:
+            - generic [ref=e64]: 方法一
+            - generic [ref=e65]: 直接双击（最快）
+            - generic [ref=e66]: 在文件管理器里找到 my-first-app/index.html → 双击 → 自动用浏览器打开
+          - generic [ref=e67]:
+            - generic [ref=e68]: 方法二
+            - generic [ref=e69]: VS Code Live Preview
+            - generic [ref=e70]:
+              - text: 1. VS Code左侧扩展 → 搜索 Live Preview（微软官方出品）→ 安装
+              - text: 2. 右键 index.html → 选择 "Show Preview"
+              - text: 3. VS Code右侧会打开预览窗口，修改代码实时刷新
+          - generic [ref=e71]:
+            - generic [ref=e72]: 方法三
+            - generic [ref=e73]: 启动本地服务器（最规范）
+            - generic [ref=e74]:
+              - text: 在VS Code终端中输入：npx serve .
+              - text: 终端会显示一个地址，比如 http://localhost:3000。用浏览器打开它。
+        - generic [ref=e75]:
+          - generic: 为什么用本地服务器
+          - generic:
+            - text: 双击打开用的是
+            - code [ref=e76]: file://
+            - text: 协议，某些功能（比如调用API、使用JavaScript模块）会受限。
+            - code [ref=e77]: npx serve
+            - text: 启动的是真正的HTTP服务器，和线上环境一致。
+      - generic [ref=e78]:
+        - generic [ref=e79]: 理解HTML/CSS/JS三件套
+        - paragraph [ref=e80]: 你不需要成为前端工程师，但需要能看懂AI写的代码在干什么。以下是只需要30秒就够用的理解：
+        - generic [ref=e81]:
+          - generic [ref=e82]: 文件结构
+          - generic [ref=e83]: ┌────────────────────────────────────────────┐ │ index.html │ │ │ │ <style>...</style> ← CSS：管"长什么样" │ │ 颜色、大小、间距、居中... │ │ │ │ <body>...</body> ← HTML：管"有什么" │ │ 标题、按钮、图片、输入框... │ │ │ │ <script>...</script> ← JS：管"干什么" │ │ 点击后弹出提示、提交数据、跳转页面... │ │ │ └────────────────────────────────────────────┘
+        - generic [ref=e84]:
+          - generic [ref=e85]:
+            - generic [ref=e86]: HTML
+            - generic [ref=e87]:
+              - generic [ref=e88]: 页面上有什么
+              - generic [ref=e89]: 标题、按钮、图片、输入框...
+          - generic [ref=e90]:
+            - generic [ref=e91]: CSS
+            - generic [ref=e92]:
+              - generic [ref=e93]: 页面长什么样
+              - generic [ref=e94]: 深色背景、白色文字、红色按钮、居中对齐...
+          - generic [ref=e95]:
+            - generic [ref=e96]: JS
+            - generic [ref=e97]:
+              - generic [ref=e98]: 页面能干什么
+              - generic [ref=e99]: 点击后弹出提示框、提交数据、跳转页面...
+        - generic [ref=e100]:
+          - generic [ref=e101]: 你现在不需要记语法
+          - generic [ref=e102]: 你只需要能认出"这段是CSS"、"这段是HTML"、"这段是JS"。以后再遇到AI生成的代码，你能大致判断"这是改样式的还是改逻辑的"就够了。
+      - generic:
+        - generic: 第一次用AI修改页面
+        - generic [ref=e103]:
+          - generic: Prompt 模板
+          - generic: 修改 index.html 页面： 1. 在标题下面增加一行小字："2026年，一个人也可以做出产品。" 2. 小字颜色用灰色（#888），字号14px 3. 按钮文字改成"再来一次" 4. 点击按钮后，除了弹出提示，还要把页面标题改成"你做到了！" 只修改这个文件，不要动其他部分。
+        - generic [ref=e104]:
+          - paragraph: 改完了不满意？继续跟AI说："按钮颜色太暗了，换成亮红色（#FF3B30），字号加大到20px。"
+        - generic [ref=e105]:
+          - generic: 关键认知
+          - generic: 你不是在"写代码"，你是在"指挥AI改代码"。这就是OPC的核心工作方式。
+      - generic [ref=e106]:
+        - generic [ref=e107]: 你刚刚完成的事
+        - table [ref=e108]:
+          - rowgroup [ref=e109]:
+            - row "你做了什么 对应的开发者术语" [ref=e110]:
+              - columnheader "你做了什么" [ref=e111]
+              - columnheader "对应的开发者术语" [ref=e112]
+          - rowgroup [ref=e113]:
+            - row "创建了 index.html 创建了\"前端入口文件\"" [ref=e114]:
+              - cell "创建了 index.html" [ref=e115]
+              - cell "创建了\"前端入口文件\"" [ref=e116]
+            - row "写了HTML标签 \"结构化内容\"" [ref=e117]:
+              - cell "写了HTML标签" [ref=e118]
+              - cell "\"结构化内容\"" [ref=e119]
+            - row "写了CSS样式 \"样式定义\"" [ref=e120]:
+              - cell "写了CSS样式" [ref=e121]
+              - cell "\"样式定义\"" [ref=e122]
+            - row "写了JS交互 \"事件处理\"" [ref=e123]:
+              - cell "写了JS交互" [ref=e124]
+              - cell "\"事件处理\"" [ref=e125]
+            - row "在浏览器里看到页面 \"本地部署与预览\"" [ref=e126]:
+              - cell "在浏览器里看到页面" [ref=e127]
+              - cell "\"本地部署与预览\"" [ref=e128]
+            - row "用AI修改了页面 \"AI辅助迭代开发\"" [ref=e129]:
+              - cell "用AI修改了页面" [ref=e130]
+              - cell "\"AI辅助迭代开发\"" [ref=e131]
+        - paragraph [ref=e132]: 从技术层面，你已经完成了一个完整的前端开发循环。
+      - generic:
+        - generic: 总纲
+        - generic [ref=e133]:
+          - paragraph: Hello World 的意义不是做出来的页面有多好看——而是你第一次完成了"想 → 说 → 看"的闭环。
+        - generic [ref=e134]:
+          - generic: 三件套速记
+          - generic:
+            - strong [ref=e135]: HTML
+            - text: → 页面上有什么
+            - strong [ref=e136]: CSS
+            - text: → 页面长什么样
+            - strong [ref=e137]: JS
+            - text: → 页面能干什么
+        - paragraph:
+          - text: 下一步：学习Git，把你的第一个页面提交到代码仓库（见节点09）。
+          - text: （本文写于2026年5月。）
+      - navigation [ref=e138]:
+        - link "← 节点07：开发环境安装" [ref=e139] [cursor=pointer]:
+          - /url: /nodes/07-dev-environment/index.html
+          - generic [ref=e140]: ←
+          - text: 节点07：开发环境安装
+        - link "节点09：Git版本控制初始化 →" [ref=e141] [cursor=pointer]:
+          - /url: /nodes/09-git-version/index.html
+          - text: 节点09：Git版本控制初始化
+          - generic [ref=e142]: →

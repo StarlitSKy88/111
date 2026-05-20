@@ -46,12 +46,63 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
 }
 
 @media (max-width: 900px) {
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+
   .layout {
-    grid-template-columns: 1fr;
+    display: block !important;
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding: 4rem 16px 2rem !important;
   }
 
   .sidebar-toc {
-    display: none;
+    display: none !important;
+  }
+
+  section {
+    width: 100% !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+  }
+
+  section p,
+  section li,
+  section td,
+  section th {
+    width: 100% !important;
+    max-width: 100% !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .hero-title {
+    font-size: clamp(32px, 10vw, 64px) !important;
+    word-break: break-word !important;
+  }
+
+  .step-card,
+  .highlight-box,
+  .code-block,
+  .prompt-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  .setup-table,
+  .crud-table,
+  .err-table {
+    display: block !important;
+    overflow-x: auto !important;
+    font-size: 12px !important;
+  }
+
+  .two-col {
+    grid-template-columns: 1fr !important;
   }
 }
 
