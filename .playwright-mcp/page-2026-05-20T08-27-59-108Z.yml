@@ -1,0 +1,396 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "← 返回首页" [ref=e3] [cursor=pointer]:
+      - /url: /
+    - generic [ref=e4]: 节点 16 / 57
+  - main [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]: 核心功能开发
+      - heading "支付代码集成" [level=1] [ref=e9]
+      - generic [ref=e10]: 节点 16 / 57 · 最后修订：2026年5月11日
+    - generic [ref=e11]:
+      - blockquote [ref=e12]:
+        - paragraph [ref=e13]: 产品做好了，用户也来了，但钱进不来。微信支付是国内OPC绕不开的关卡。本节点用最直白的方式讲清楚：从零到收到第一笔钱，代码该怎么写。
+      - paragraph
+    - paragraph
+    - generic [ref=e14]:
+      - paragraph
+      - generic [ref=e15]: 一、先理解：微信支付的钱是怎么到你账户的
+      - paragraph
+      - paragraph [ref=e16]: 别一头扎进代码。先理解钱流动的过程：
+      - paragraph [ref=e17]:
+        - text: "``"
+        - code
+      - code [ref=e18]:
+        - paragraph [ref=e19]: 用户点击支付
+        - paragraph [ref=e20]: ↓
+        - paragraph [ref=e21]: 你的后端生成"预支付订单"（告诉微信：有人要付多少钱）
+        - paragraph [ref=e22]: ↓
+        - paragraph [ref=e23]: 微信返回一个"支付参数"（一串加密字符串）
+        - paragraph [ref=e24]: ↓
+        - paragraph [ref=e25]: 前端用这个参数唤起微信支付界面（密码/指纹）
+        - paragraph [ref=e26]: ↓
+        - paragraph [ref=e27]: 用户付完款，微信异步回调你的后端（告诉你：钱到了）
+        - paragraph [ref=e28]: ↓
+        - paragraph [ref=e29]: 你的后端验证签名，更新订单状态
+        - paragraph [ref=e30]: ↓
+        - paragraph [ref=e31]: 用户看到"支付成功"
+      - paragraph [ref=e32]:
+        - code
+        - text: "`"
+        - code
+      - code [ref=e33]:
+        - strong [ref=e34]: 关键认知
+        - text: ：整个流程中，你的后端从来不会"收到钱"。钱是微信代收，T+1结算到你的对公账户。你的后端只负责两件事：
+        - strong [ref=e35]: 发起支付请求
+        - text: 和
+        - strong [ref=e36]: 确认支付结果
+        - text: 。
+        - paragraph
+    - paragraph
+    - code [ref=e37]:
+      - generic [ref=e38]:
+        - paragraph
+        - generic [ref=e39]: 二、2026年微信支付的三条路径
+        - paragraph
+        - table [ref=e41]:
+          - rowgroup [ref=e42]:
+            - row "路径 适用场景 开发复杂度 费率" [ref=e43]:
+              - columnheader "路径" [ref=e44]
+              - columnheader "适用场景" [ref=e45]
+              - columnheader "开发复杂度" [ref=e46]
+              - columnheader "费率" [ref=e47]
+          - rowgroup [ref=e48]:
+            - row "JSAPI支付 微信内网页、公众号 ⭐⭐ 中 0.6%" [ref=e49]:
+              - cell "JSAPI支付" [ref=e50]:
+                - strong [ref=e51]: JSAPI支付
+              - cell "微信内网页、公众号" [ref=e52]
+              - cell "⭐⭐ 中" [ref=e53]
+              - cell "0.6%" [ref=e54]
+            - row "小程序支付 微信小程序内 ⭐⭐ 中 0.6%" [ref=e55]:
+              - cell "小程序支付" [ref=e56]:
+                - strong [ref=e57]: 小程序支付
+              - cell "微信小程序内" [ref=e58]
+              - cell "⭐⭐ 中" [ref=e59]
+              - cell "0.6%" [ref=e60]
+            - row "Native支付 PC网页（扫码付） ⭐ 最低 0.6%" [ref=e61]:
+              - cell "Native支付" [ref=e62]:
+                - strong [ref=e63]: Native支付
+              - cell "PC网页（扫码付）" [ref=e64]
+              - cell "⭐ 最低" [ref=e65]
+              - cell "0.6%" [ref=e66]
+            - row "H5支付 手机浏览器网页 ⭐⭐⭐ 最高 0.6%" [ref=e67]:
+              - cell "H5支付" [ref=e68]:
+                - strong [ref=e69]: H5支付
+              - cell "手机浏览器网页" [ref=e70]
+              - cell "⭐⭐⭐ 最高" [ref=e71]
+              - cell "0.6%" [ref=e72]
+        - strong [ref=e73]: OPC首推：JSAPI支付（微信内网页）或Native支付（PC网页扫码）。
+        - list [ref=e74]:
+          - listitem [ref=e75]: 如果你做了微信小程序 → 小程序支付
+          - listitem [ref=e76]: 如果你只做了Web → JSAPI（微信内打开）/ Native（电脑打开扫码）
+          - listitem [ref=e77]: 别做H5支付，申请难度大，需要额外资质
+        - paragraph
+      - paragraph
+    - generic [ref=e78]:
+      - code [ref=e79]:
+        - paragraph
+        - generic [ref=e80]: 三、微信支付API V3 核心代码（2026年现行版本）
+        - paragraph
+        - paragraph [ref=e81]:
+          - text: 微信支付API V3是2020年推出的，2026年已经是唯一在用的版本。
+          - strong [ref=e82]: V2已经完全停用，不要看任何V2教程。
+        - heading "前置条件" [level=3] [ref=e83]
+      - list [ref=e84]:
+        - code
+        - listitem [ref=e85]:
+          - code [ref=e86]: 微信商户号（在
+          - text: pay.weixin.qq.com
+          - code [ref=e87]: 申请）
+        - listitem [ref=e88]:
+          - code [ref=e89]: 商户API证书（在商户平台 → 账户中心 → API安全 下载）
+        - listitem [ref=e90]:
+          - code [ref=e91]: 商户APIv3密钥（自己设置的32位字符串）
+      - code [ref=e92]:
+        - strong [ref=e93]: 官方文档入口
+        - text: ：
+        - link "pay.weixin.qq.com/wiki/doc/apiv3" [ref=e94] [cursor=pointer]:
+          - /url: https://pay.weixin.qq.com/wiki/doc/apiv3
+        - heading "步骤1：后端生成预支付订单（Node.js）" [level=3] [ref=e95]
+      - paragraph [ref=e96]:
+        - code
+        - text: "`"
+        - code [ref=e97]: javascript
+      - code [ref=e98]:
+        - text: // 2026年微信支付API V3 JSAPI下单
+        - paragraph [ref=e99]: const axios = require('axios');
+        - paragraph [ref=e100]: const crypto = require('crypto');
+        - paragraph [ref=e101]: "async function createOrder(amount, description, openid) {"
+        - paragraph [ref=e102]: // 1. 构造请求体（必填字段就这些）
+        - paragraph [ref=e103]: "const body = {"
+        - paragraph [ref=e104]: "appid: process.env.WECHAT_APPID, // 公众号/小程序AppID"
+        - paragraph [ref=e105]: "mchid: process.env.WECHAT_MCHID, // 商户号"
+        - paragraph [ref=e106]: "description: description, // 商品描述（如\"OPC节点百科会员\"）"
+        - paragraph [ref=e107]: "out_trade_no: generateOrderNo(), // 你的订单号（唯一）"
+        - paragraph [ref=e108]: "notify_url: 'https://你的域名.com/api/pay/notify', // 回调地址"
+        - paragraph [ref=e109]: "amount: {"
+        - paragraph [ref=e110]: "total: amount, // 金额（单位：分）"
+        - paragraph [ref=e111]: "currency: 'CNY'"
+        - paragraph [ref=e112]: "},"
+        - paragraph [ref=e113]: "payer: {"
+        - paragraph [ref=e114]: "openid: openid // 用户的微信openid"
+        - paragraph [ref=e115]: "}"
+        - paragraph [ref=e116]: "};"
+        - paragraph [ref=e117]: // 2. 生成签名（微信支付V3的签名算法）
+        - paragraph [ref=e118]: const nonceStr = crypto.randomBytes(16).toString('hex');
+        - paragraph [ref=e119]: const timestamp = Math.floor(Date.now() / 1000);
+        - paragraph [ref=e120]: const signature = signRequest('POST', '/v3/pay/transactions/jsapi', timestamp, nonceStr, body);
+        - paragraph [ref=e121]: // 3. 发送请求
+        - paragraph [ref=e122]: const response = await axios.post(
+        - paragraph [ref=e123]: "'https://api.mch.weixin.qq.com/v3/pay/transactions/jsapi',"
+        - paragraph [ref=e124]: body,
+        - paragraph [ref=e125]: "{"
+        - paragraph [ref=e126]: "headers: {"
+      - paragraph [ref=e127]:
+        - code [ref=e128]: "'Authorization':"
+        - text: "WECHATPAY2-SHA256-RSA2048 mchid=\"${process.env.WECHAT_MCHID}\",nonce_str=\"${nonceStr}\",timestamp=\"${timestamp}\",signature=\"${signature}\",serial_no=\"${process.env.WECHAT_SERIAL_NO}\""
+        - code [ref=e129]: ","
+      - code [ref=e130]:
+        - paragraph [ref=e131]: "'Content-Type': 'application/json'"
+        - paragraph [ref=e132]: "}"
+        - paragraph [ref=e133]: "}"
+        - paragraph [ref=e134]: );
+        - paragraph [ref=e135]: // 4. 返回 prepay_id（前端用这个唤起支付）
+        - paragraph [ref=e136]: return response.data.prepay_id;
+        - paragraph [ref=e137]: "}"
+      - paragraph [ref=e138]:
+        - code
+        - text: "`"
+        - code
+      - code [ref=e139]:
+        - heading "步骤2：前端唤起微信支付" [level=3] [ref=e140]
+      - paragraph [ref=e141]:
+        - code
+        - text: "`"
+        - code [ref=e142]: javascript
+      - code [ref=e143]:
+        - text: // 微信JSAPI支付前端代码（在微信内置浏览器中运行）
+        - paragraph [ref=e144]: "async function invokeWechatPay(prepay_id) {"
+        - paragraph [ref=e145]: // 后端返回的支付参数（需要后端再次签名）
+        - paragraph [ref=e146]: "const payParams = await fetch('/api/pay/jsapi-params', {"
+        - paragraph [ref=e147]: "method: 'POST',"
+        - paragraph [ref=e148]: "body: JSON.stringify({ prepay_id })"
+        - paragraph [ref=e149]: "}).then(r => r.json());"
+        - paragraph [ref=e150]: // 调起微信支付
+        - paragraph [ref=e151]: "WeixinJSBridge.invoke('getBrandWCPayRequest', {"
+        - paragraph [ref=e152]: "appId: payParams.appId,"
+        - paragraph [ref=e153]: "timeStamp: payParams.timeStamp,"
+        - paragraph [ref=e154]: "nonceStr: payParams.nonceStr,"
+        - paragraph [ref=e155]: "package: payParams.package,"
+        - paragraph [ref=e156]: "signType: 'RSA',"
+        - paragraph [ref=e157]: "paySign: payParams.paySign"
+        - paragraph [ref=e158]: "}, function(res) {"
+        - paragraph [ref=e159]: "if (res.err_msg === 'get_brand_wcpay_request:ok') {"
+        - paragraph [ref=e160]: // 支付成功 → 跳转到成功页
+        - paragraph [ref=e161]: window.location.href = '/pay-success';
+        - paragraph [ref=e162]: "} else {"
+        - paragraph [ref=e163]: // 用户取消或失败
+        - paragraph [ref=e164]: alert('支付未完成');
+        - paragraph [ref=e165]: "}"
+        - paragraph [ref=e166]: "});"
+        - paragraph [ref=e167]: "}"
+      - paragraph [ref=e168]:
+        - code
+        - text: "`"
+        - code
+      - code [ref=e169]:
+        - heading "步骤3：后端接收支付回调（最关键的一步）" [level=3] [ref=e170]
+      - paragraph [ref=e171]:
+        - code
+        - text: "`"
+        - code [ref=e172]: javascript
+      - code [ref=e173]:
+        - text: // Express路由：接收微信支付的异步通知
+        - paragraph [ref=e174]: "app.post('/api/pay/notify', async (req, res) => {"
+        - paragraph [ref=e175]: // 1. 验证签名（防止伪造回调）
+        - paragraph [ref=e176]: const isValid = verifyWechatSignature(req.headers, req.body);
+        - paragraph [ref=e177]: "if (!isValid) {"
+        - paragraph [ref=e178]: "return res.status(400).json({ code: 'FAIL', message: '签名验证失败' });"
+        - paragraph [ref=e179]: "}"
+        - paragraph [ref=e180]: // 2. 解密回调数据
+        - paragraph [ref=e181]: const decrypted = decryptWechatNotify(req.body.resource);
+        - paragraph [ref=e182]: "const { out_trade_no, transaction_id, trade_state } = decrypted;"
+        - paragraph [ref=e183]: // 3. 更新订单状态（幂等处理：同一订单号只处理一次）
+        - paragraph [ref=e184]: const existing = await db.getPayment(out_trade_no);
+        - paragraph [ref=e185]: "if (existing && existing.status !== 'pending') {"
+        - paragraph [ref=e186]: "return res.json({ code: 'SUCCESS' }); // 已处理过，直接返回成功"
+        - paragraph [ref=e187]: "}"
+        - paragraph [ref=e188]: "await db.updatePayment(out_trade_no, {"
+        - paragraph [ref=e189]: "status: 'paid',"
+        - paragraph [ref=e190]: "transaction_id: transaction_id,"
+        - paragraph [ref=e191]: "paid_at: new Date()"
+        - paragraph [ref=e192]: "});"
+        - paragraph [ref=e193]: // 4. 业务处理：开通会员/发放权益
+        - paragraph [ref=e194]: await activateUserService(out_trade_no);
+        - paragraph [ref=e195]: // 5. 必须返回成功，否则微信会重复回调
+        - paragraph [ref=e196]: "res.json({ code: 'SUCCESS' });"
+        - paragraph [ref=e197]: "});"
+      - paragraph [ref=e198]:
+        - code
+        - text: "`"
+        - code
+      - code [ref=e199]:
+        - heading "步骤4：订单查询（主动查询支付状态）" [level=3] [ref=e200]
+      - paragraph [ref=e201]:
+        - code
+        - text: "`"
+        - code [ref=e202]: javascript
+      - code [ref=e203]:
+        - text: // 用户关闭支付页面后回来，你需要主动查一下付没付
+        - paragraph [ref=e204]: "async function checkOrderStatus(out_trade_no) {"
+        - paragraph [ref=e205]: const response = await axios.get(
+      - paragraph [ref=e206]:
+        - code
+        - text: "https://api.mch.weixin.qq.com/v3/pay/transactions/out-trade-no/${out_trade_no}?mchid=${process.env.WECHAT_MCHID}"
+        - code [ref=e207]: ","
+      - code
+      - paragraph [ref=e208]:
+        - code [ref=e209]: "{ headers: { 'Authorization': generateAuthHeader('GET',"
+        - text: "/v3/pay/transactions/out-trade-no/${out_trade_no}"
+        - code [ref=e210]: ") } }"
+      - code [ref=e211]:
+        - paragraph [ref=e212]: );
+        - paragraph [ref=e213]: return response.data.trade_state; // SUCCESS / NOTPAY / CLOSED
+        - paragraph [ref=e214]: "}"
+      - paragraph [ref=e215]:
+        - code
+        - text: "`"
+        - code
+      - code:
+        - paragraph
+    - paragraph
+    - code
+    - generic [ref=e216]:
+      - code [ref=e217]:
+        - paragraph
+        - generic [ref=e218]: 四、OPC支付系统的安全铁律
+        - paragraph
+        - heading "必须遵守的5条" [level=3] [ref=e219]
+        - list [ref=e220]:
+          - listitem [ref=e221]:
+            - strong [ref=e222]: 金额在后端计算，前端只传productId
+            - text: 。永远不要让前端传金额，用户可以改。
+          - listitem [ref=e223]:
+            - strong [ref=e224]: 所有签名在服务端生成
+            - text: 。APIv3密钥绝对不能出现在前端代码中。
+          - listitem [ref=e225]:
+            - strong [ref=e226]: 回调接口必须验证签名
+            - text: 。不验证 = 任何人可以伪造"支付成功"。
+          - listitem [ref=e227]:
+            - strong [ref=e228]: 订单状态变更必须幂等
+            - text: 。同一个订单的同一个回调可能被微信重复发送。
+          - listitem [ref=e229]:
+            - strong [ref=e230]: 用HTTPS
+            - text: 。支付相关的所有请求必须走HTTPS。
+        - heading "测试环境" [level=3] [ref=e231]
+      - paragraph [ref=e232]:
+        - code [ref=e233]: 微信支付提供了沙箱环境（
+        - text: "https://api.mch.weixin.qq.com/sandboxnew/`），但2026年沙箱已经逐步废弃。"
+        - strong [ref=e234]: 建议直接在正式环境做1分钱测试。
+      - paragraph
+    - paragraph
+    - generic [ref=e235]:
+      - paragraph
+      - generic [ref=e236]: 五、常见翻车与解决
+      - paragraph
+      - table [ref=e238]:
+        - rowgroup [ref=e239]:
+          - row "翻车 现象 根因 解决" [ref=e240]:
+            - columnheader "翻车" [ref=e241]
+            - columnheader "现象" [ref=e242]
+            - columnheader "根因" [ref=e243]
+            - columnheader "解决" [ref=e244]
+        - rowgroup [ref=e245]:
+          - row "signature error 预支付订单创建失败 签名算法有误或证书路径不对 用微信官方调试工具验证签名" [ref=e246]:
+            - cell "signature error" [ref=e247]:
+              - strong [ref=e248]: signature error
+            - cell "预支付订单创建失败" [ref=e249]
+            - cell "签名算法有误或证书路径不对" [ref=e250]
+            - cell "用微信官方调试工具验证签名" [ref=e251]
+          - row "回调收不到 用户付了钱订单状态不变 notify_url不可达或没有公网IP 本地开发用ngrok穿透；生产环境检查防火墙" [ref=e252]:
+            - cell "回调收不到" [ref=e253]:
+              - strong [ref=e254]: 回调收不到
+            - cell "用户付了钱订单状态不变" [ref=e255]
+            - cell "notify_url不可达或没有公网IP" [ref=e256]
+            - cell "本地开发用ngrok穿透；生产环境检查防火墙" [ref=e257]
+          - row "重复支付 同一个订单用户付了两次 未做幂等处理 回调入口第一行就查订单状态" [ref=e258]:
+            - cell "重复支付" [ref=e259]:
+              - strong [ref=e260]: 重复支付
+            - cell "同一个订单用户付了两次" [ref=e261]
+            - cell "未做幂等处理" [ref=e262]
+            - cell "回调入口第一行就查订单状态" [ref=e263]
+          - row "金额不对 用户付了1分钱获得999元的会员 前端传了amount参数 从前端只接收productId，后端查数据库获取价格" [ref=e264]:
+            - cell "金额不对" [ref=e265]:
+              - strong [ref=e266]: 金额不对
+            - cell "用户付了1分钱获得999元的会员" [ref=e267]
+            - cell "前端传了amount参数" [ref=e268]
+            - cell "从前端只接收productId，后端查数据库获取价格" [ref=e269]
+          - row "openid获取失败 JSAPI支付无法发起 未在微信内打开或未授权 确保页面在微信内打开，已完成网页授权" [ref=e270]:
+            - cell "openid获取失败" [ref=e271]:
+              - strong [ref=e272]: openid获取失败
+            - cell "JSAPI支付无法发起" [ref=e273]
+            - cell "未在微信内打开或未授权" [ref=e274]
+            - cell "确保页面在微信内打开，已完成网页授权" [ref=e275]
+      - paragraph
+    - paragraph
+    - generic [ref=e276]:
+      - paragraph
+      - generic [ref=e277]: 六、检查清单
+      - paragraph
+      - list [ref=e278]:
+        - listitem [ref=e279]:
+          - checkbox [disabled] [ref=e280]
+          - text: 微信商户号已申请
+        - listitem [ref=e281]:
+          - checkbox [disabled] [ref=e282]
+          - text: APIv3证书已下载并配置到服务器环境变量
+        - listitem [ref=e283]:
+          - checkbox [disabled] [ref=e284]
+          - text: 金额完全在后端计算
+        - listitem [ref=e285]:
+          - checkbox [disabled] [ref=e286]
+          - text: 回调接口已验证能正常接收+验签
+        - listitem [ref=e287]:
+          - checkbox [disabled] [ref=e288]
+          - text: 订单状态变更有幂等保护
+        - listitem [ref=e289]:
+          - checkbox [disabled] [ref=e290]
+          - text: 做过1分钱真实支付测试
+        - listitem [ref=e291]:
+          - checkbox [disabled] [ref=e292]
+          - text: HTTPS已配置
+        - listitem [ref=e293]:
+          - checkbox [disabled] [ref=e294]
+          - text: 前端从未出现API密钥
+      - paragraph
+    - paragraph
+    - generic [ref=e295]:
+      - paragraph
+      - generic [ref=e296]: 节点资源链接
+      - paragraph
+      - list [ref=e297]:
+        - listitem [ref=e298]: 节点15：核心功能3开发
+        - listitem [ref=e299]: 节点17：国内支付接入
+        - listitem [ref=e300]: 节点18：开发者自测流程
+    - generic [ref=e301]:
+      - heading "节点16检查清单" [level=3] [ref=e302]
+      - paragraph [ref=e303]: 完成本节点后，请确认所有检查项已通过。
+  - navigation [ref=e304]:
+    - link "← 节点15" [ref=e305] [cursor=pointer]:
+      - /url: /nodes/15-core-feature-3/index.html
+      - generic [ref=e306]: ←
+      - text: 节点15
+    - link "节点17 →" [ref=e307] [cursor=pointer]:
+      - /url: /nodes/17-payment-access/index.html
+      - text: 节点17
+      - generic [ref=e308]: →
