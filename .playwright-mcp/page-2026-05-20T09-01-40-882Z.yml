@@ -1,0 +1,198 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "← 返回首页" [ref=e3] [cursor=pointer]:
+      - /url: /
+    - generic [ref=e4]: 节点 22 / 57
+  - main [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]: 上线准备
+      - heading "上线内容填充" [level=1] [ref=e9]
+      - generic [ref=e10]: 节点 22 / 57 · 最后修订：2026年5月11日
+    - generic [ref=e11]:
+      - blockquote [ref=e12]:
+        - paragraph [ref=e13]: 产品做好了，但打开一看——首页只有功能没有说明，注册页没有用户协议，帮助中心是空的。用户来了不知道这是什么、怎么用、安不安全。本节点告诉你：最少的文字量，让产品"看着像真的"。
+      - paragraph
+    - paragraph
+    - generic [ref=e14]:
+      - paragraph
+      - generic [ref=e15]: 一、内容填充的最小必要集
+      - paragraph
+      - heading "用户第一次打开你的产品，会在3秒内判断三件事" [level=3] [ref=e16]
+      - table [ref=e18]:
+        - rowgroup [ref=e19]:
+          - row "用户潜意识问题 你需要的页面 最少内容量" [ref=e20]:
+            - columnheader "用户潜意识问题" [ref=e21]
+            - columnheader "你需要的页面" [ref=e22]
+            - columnheader "最少内容量" [ref=e23]
+        - rowgroup [ref=e24]:
+          - row "\"这是什么？\" 首页/落地页 一句话介绍 + 3个功能亮点" [ref=e25]:
+            - cell "\"这是什么？\"" [ref=e26]
+            - cell "首页/落地页" [ref=e27]
+            - cell "一句话介绍 + 3个功能亮点" [ref=e28]
+          - row "\"怎么用？\" 使用引导 3-5步核心操作说明" [ref=e29]:
+            - cell "\"怎么用？\"" [ref=e30]
+            - cell "使用引导" [ref=e31]
+            - cell "3-5步核心操作说明" [ref=e32]
+          - row "\"安全吗？\" 用户协议 + 隐私政策 标准模板即可" [ref=e33]:
+            - cell "\"安全吗？\"" [ref=e34]
+            - cell "用户协议 + 隐私政策" [ref=e35]
+            - cell "标准模板即可" [ref=e36]
+      - strong [ref=e37]: 三条及格线
+      - text: ：缺任意一条，用户信任度归零。
+      - paragraph
+    - paragraph
+    - generic [ref=e38]:
+      - paragraph
+      - generic [ref=e39]: 二、首页文案：一句话公式
+      - paragraph
+      - heading "把\"我们提供XX解决方案\"扔进垃圾桶" [level=3] [ref=e40]
+      - paragraph [ref=e41]: 用户不关心"解决方案"，用户只关心"我能得到什么"。
+      - heading "一句话介绍公式" [level=3] [ref=e42]
+      - paragraph [ref=e43]:
+        - text: ">"
+        - strong [ref=e44]: "[动词] + [对象] + [结果]"
+      - table [ref=e46]:
+        - rowgroup [ref=e47]:
+          - row "❌ 错误 ✅ 正确" [ref=e48]:
+            - columnheader "❌ 错误" [ref=e49]
+            - columnheader "✅ 正确" [ref=e50]
+        - rowgroup [ref=e51]:
+          - row "\"OPC节点百科是为一人公司创业者提供创业节点导航的SaaS平台\" \"一个人，57个节点，从零到赚钱。\"" [ref=e52]:
+            - cell "\"OPC节点百科是为一人公司创业者提供创业节点导航的SaaS平台\"" [ref=e53]
+            - cell "\"一个人，57个节点，从零到赚钱。\"" [ref=e54]
+          - row "\"我们利用AI技术为您提供智能化的简历优化解决方案\" \"上传简历，3分钟拿到优化建议。\"" [ref=e55]:
+            - cell "\"我们利用AI技术为您提供智能化的简历优化解决方案\"" [ref=e56]
+            - cell "\"上传简历，3分钟拿到优化建议。\"" [ref=e57]
+      - heading "三个功能亮点公式" [level=3] [ref=e58]
+      - paragraph [ref=e59]:
+        - text: ">"
+        - strong [ref=e60]: "[功能名]：用一句话说清楚用户得到的好处"
+      - paragraph [ref=e61]:
+        - text: "``"
+        - code
+      - code [ref=e62]:
+        - paragraph [ref=e63]: 例：
+        - paragraph [ref=e64]: □ AI分析：上传简历，立即看到评分和改进建议
+        - paragraph [ref=e65]: □ 节点导航：57个创业步骤，告诉你下一步做什么
+        - paragraph [ref=e66]: □ 微信群答疑：卡住了直接问，24小时内回复
+      - paragraph [ref=e67]:
+        - code
+        - text: "``"
+      - paragraph
+    - paragraph
+    - generic [ref=e68]:
+      - paragraph
+      - generic [ref=e69]: 三、使用引导：零文字 > 多文字
+      - paragraph
+      - heading "不要写说明书" [level=3] [ref=e70]
+      - paragraph [ref=e71]: 用户不会读。用这三种方式替代：
+      - list [ref=e72]:
+        - listitem [ref=e73]:
+          - strong [ref=e74]: 空状态引导
+          - text: ：用户第一次打开功能时，页面中间显示"点击这里开始你的第一次分析"，而不是空白页
+        - listitem [ref=e75]:
+          - strong [ref=e76]: 示例数据
+          - text: ：没有真实数据时，放一条示例（标注"示例"），让用户一眼看懂这页是干嘛的
+        - listitem [ref=e77]:
+          - strong [ref=e78]: Tooltip气泡
+          - text: ：复杂按钮旁边，hover显示一行解释。不是弹窗，不是教程页。
+      - paragraph
+    - paragraph
+    - generic [ref=e79]:
+      - paragraph
+      - generic [ref=e80]: 四、法律文本：别自己写，用模板
+      - paragraph
+      - heading "两个必须有的页面" [level=3] [ref=e81]
+      - table [ref=e83]:
+        - rowgroup [ref=e84]:
+          - row "页面 来源 注意事项" [ref=e85]:
+            - columnheader "页面" [ref=e86]
+            - columnheader "来源" [ref=e87]
+            - columnheader "注意事项" [ref=e88]
+        - rowgroup [ref=e89]:
+          - row "用户协议 找同类产品的协议，用AI改写（保留核心条款） 必须包含：服务范围、免责声明、管辖地" [ref=e90]:
+            - cell "用户协议" [ref=e91]:
+              - strong [ref=e92]: 用户协议
+            - cell "找同类产品的协议，用AI改写（保留核心条款）" [ref=e93]
+            - cell "必须包含：服务范围、免责声明、管辖地" [ref=e94]
+          - row "隐私政策 腾讯隐私保护平台 有模板 必须包含：收集哪些数据、怎么用、怎么保护、用户怎么删除" [ref=e95]:
+            - cell "隐私政策" [ref=e96]:
+              - strong [ref=e97]: 隐私政策
+            - cell "腾讯隐私保护平台 有模板" [ref=e98]:
+              - link "腾讯隐私保护平台" [ref=e99] [cursor=pointer]:
+                - /url: https://privacy.qq.com
+              - text: 有模板
+            - cell "必须包含：收集哪些数据、怎么用、怎么保护、用户怎么删除" [ref=e100]
+      - strong [ref=e101]: OPC铁律
+      - text: ：注册流程必须有"我已阅读并同意用户协议和隐私政策"的勾选框。没这个 = 平台审核直接驳回。
+      - paragraph
+    - paragraph
+    - generic [ref=e102]:
+      - paragraph
+      - generic [ref=e103]: 五、FAQ怎么写：用真实用户的提问
+      - paragraph
+      - paragraph [ref=e104]: 不要自己想"用户可能问什么"——翻节点19的亲友测试记录。
+      - table [ref=e106]:
+        - rowgroup [ref=e107]:
+          - row "真实用户提问 FAQ改写" [ref=e108]:
+            - columnheader "真实用户提问" [ref=e109]
+            - columnheader "FAQ改写" [ref=e110]
+        - rowgroup [ref=e111]:
+          - row "\"这个和XX有什么区别？\" \"OPC节点百科和XX的区别是什么？\"" [ref=e112]:
+            - cell "\"这个和XX有什么区别？\"" [ref=e113]
+            - cell "\"OPC节点百科和XX的区别是什么？\"" [ref=e114]
+          - row "\"免费吗？以后会不会收费？\" \"目前有哪些免费功能？未来的收费计划是什么？\"" [ref=e115]:
+            - cell "\"免费吗？以后会不会收费？\"" [ref=e116]
+            - cell "\"目前有哪些免费功能？未来的收费计划是什么？\"" [ref=e117]
+          - row "\"数据安全吗？会不会泄露？\" \"我的数据如何被保护？\"" [ref=e118]:
+            - cell "\"数据安全吗？会不会泄露？\"" [ref=e119]
+            - cell "\"我的数据如何被保护？\"" [ref=e120]
+      - strong [ref=e121]: 3-5个FAQ就够了。
+      - text: 超过10个 = 说明你的产品设计有问题。
+      - paragraph
+    - paragraph
+    - generic [ref=e122]:
+      - paragraph
+      - generic [ref=e123]: 六、检查清单
+      - paragraph
+      - list [ref=e124]:
+        - listitem [ref=e125]:
+          - checkbox [disabled] [ref=e126]
+          - text: 首页有一句话介绍（动词+对象+结果）
+        - listitem [ref=e127]:
+          - checkbox [disabled] [ref=e128]
+          - text: 首页有3个功能亮点
+        - listitem [ref=e129]:
+          - checkbox [disabled] [ref=e130]
+          - text: 每个核心功能有空状态引导文案
+        - listitem [ref=e131]:
+          - checkbox [disabled] [ref=e132]
+          - text: 用户协议和隐私政策页面已上线
+        - listitem [ref=e133]:
+          - checkbox [disabled] [ref=e134]
+          - text: 注册流程有"同意协议"勾选框
+        - listitem [ref=e135]:
+          - checkbox [disabled] [ref=e136]
+          - text: FAQ有3-5条（来源：真实用户提问）
+      - paragraph
+    - paragraph
+    - generic [ref=e137]:
+      - paragraph
+      - generic [ref=e138]: 节点资源链接
+      - paragraph
+      - list [ref=e139]:
+        - listitem [ref=e140]: 节点21：性能基础优化
+        - listitem [ref=e141]: 节点23：公司注册与主体选择
+        - listitem [ref=e142]: 节点24：域名购买与ICP备案
+    - generic [ref=e143]:
+      - heading "节点22检查清单" [level=3] [ref=e144]
+      - paragraph [ref=e145]: 完成本节点后，请确认所有检查项已通过。
+  - navigation [ref=e146]:
+    - link "← 节点21" [ref=e147] [cursor=pointer]:
+      - /url: /nodes/21-performance/index.html
+      - generic [ref=e148]: ←
+      - text: 节点21
+    - link "节点23 →" [ref=e149] [cursor=pointer]:
+      - /url: /nodes/23-company-registration/index.html
+      - text: 节点23
+      - generic [ref=e150]: →
