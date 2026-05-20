@@ -1,0 +1,269 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "← 返回首页" [ref=e3] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e4]: ←
+      - text: 返回首页
+    - generic [ref=e5]: 节点 41 / 57
+  - generic: "36"
+  - generic [ref=e6]:
+    - main [ref=e7]:
+      - generic [ref=e9]:
+        - generic [ref=e10]: 节点 41 · 1-10
+        - heading "产品迭代与复盘" [level=1] [ref=e11]
+        - paragraph [ref=e12]: 用户反馈收集、每周复盘、功能迭代，每周花2小时持续优化
+      - generic [ref=e13]:
+        - generic [ref=e14]: 六维结构
+        - generic [ref=e15]:
+          - generic [ref=e16]:
+            - generic [ref=e17]: D1
+            - generic [ref=e18]: 核心
+            - generic [ref=e19]: 触发式迭代
+          - generic [ref=e20]:
+            - generic [ref=e21]: D2
+            - generic [ref=e22]: 模型
+            - generic [ref=e23]: 双循环归因
+          - generic [ref=e24]:
+            - generic [ref=e25]: D3
+            - generic [ref=e26]: 培育
+            - generic [ref=e27]: KISS-KIM法
+          - generic [ref=e28]:
+            - generic [ref=e29]: D4
+            - generic [ref=e30]: 避坑
+            - generic [ref=e31]: 复盘成瘾与伪工作
+          - generic [ref=e32]:
+            - generic [ref=e33]: D5
+            - generic [ref=e34]: 培育
+            - generic [ref=e35]: 微型退出与墓园
+          - generic [ref=e36]:
+            - generic [ref=e37]: D6
+            - generic [ref=e38]: 决策
+            - generic [ref=e39]: 公开复盘转化
+      - generic [ref=e41]:
+        - generic [ref=e42]:
+          - heading "从\"周期复盘\"到\"触发式迭代\"：2026 OPC迭代范式转移" [level=2] [ref=e43]
+          - paragraph [ref=e44]:
+            - text: 传统迭代模型（Scrum回顾会议）在OPC场景下
+            - strong [ref=e45]: 彻底失灵
+            - text: 。它假设存在可以相互校验、分担认知负荷的团队，但一人公司中你既是飞行员又是地勤还是空管。
+          - paragraph [ref=e46]:
+            - strong [ref=e47]: 触发式迭代
+            - text: ：不是被计划出来的，而是被三个硬核信号"逼"出来的。
+          - paragraph [ref=e48]:
+            - text: ①
+            - strong [ref=e49]: 用户行为异常信号
+            - text: ：当本应完成核心路径的用户在某环节表现出犹豫、折返或愤怒点击时，触发"微复盘事件"，15分钟回放录屏后立即部署修复。
+          - paragraph [ref=e50]:
+            - text: ②
+            - strong [ref=e51]: 创始人HRV衰减信号
+            - text: ：智能手表检测到心率变异性（HRV）连续下降，或AI日记发现消极语言模式，触发"红色复盘"——复盘问题不是"增长为何停滞"而是"我是否在用战术勤奋掩盖战略倦怠"。
+          - paragraph [ref=e52]:
+            - text: ③
+            - strong [ref=e53]: 财务边界压力信号
+            - text: ：当维护某旧功能投入的时间折算时薪跌破"生存底线时薪"，立即触发"杀留决策点"。
+          - paragraph [ref=e55]: OPC的有效迭代不取决于复盘文档写得多好，取决于你对这些信号的触发器有多灵敏，以及你是否在这些时刻拥有按下暂停键的决断力。
+        - generic [ref=e57]:
+          - generic [ref=e58]:
+            - generic [ref=e59]: 信号清单
+            - generic [ref=e60]: 三大触发信号
+          - generic [ref=e61]:
+            - paragraph [ref=e62]:
+              - strong [ref=e63]: 异常会话
+              - text: ：用户完成核心路径前突然静止/折返
+            - paragraph [ref=e64]:
+              - strong [ref=e65]: HRV连续下降
+              - text: ：智能手表连续3天检测到压力指标上升
+            - paragraph [ref=e66]:
+              - strong [ref=e67]: HEP告负
+              - text: ：(收入-成本)/实际工时跌破底线
+            - paragraph [ref=e68]:
+              - strong [ref=e69]: 30天无变化
+              - text: ：某功能上线30天核心指标未动
+      - generic [ref=e71]:
+        - generic [ref=e72]:
+          - heading "双循环归因：用户数据与创始人状态的深度耦合" [level=2] [ref=e73]
+          - paragraph [ref=e74]:
+            - strong [ref=e75]: 外循环（用户反馈驱动）
+            - text: ：只关注"口头反馈与实际行为发生矛盾"的时刻。用户嘴上说"需要这个功能"，但点击率持续为零，这就是行为冲突，是复盘的黄金原点。
+          - paragraph [ref=e76]:
+            - strong [ref=e77]: 内循环（自我认知驱动）
+            - text: ：将"分心指数"和"能量值恢复率"纳入复盘。如果连续两周"停止"栏都有"深夜优化CSS动画导致次日判断力下降"，下周唯一关键行动是"晚上10点后禁止打开代码编辑器"。
+          - paragraph [ref=e78]:
+            - strong [ref=e79]: 双轨归因原则
+            - text: ：产品表现不佳往往不是代码逻辑出错，而是决策疲劳或情绪透支。复盘结论必须同时包含"硬数据"和"软指标"。
+          - paragraph [ref=e81]: 北极星指标（激活率/首日留存/支付转化率）是外循环的唯一目的。如果复盘结论无法对应北极星指标的微动，该迭代点就是"无效劳动"。
+        - generic [ref=e82]:
+          - generic [ref=e83]:
+            - generic [ref=e84]:
+              - generic [ref=e85]: 错误
+              - generic [ref=e86]: 无效复盘模式
+            - generic [ref=e87]:
+              - paragraph [ref=e88]: × 写流水账"今天做了什么"（无提炼）
+              - paragraph [ref=e89]: × 只看最终转化率，不追踪"微流失"节点
+              - paragraph [ref=e90]: × 复盘结论无法对应北极星指标
+              - paragraph [ref=e91]: × 情绪透支后继续强撑"战术勤奋"
+          - generic [ref=e92]:
+            - generic [ref=e93]:
+              - generic [ref=e94]: 正确
+              - generic [ref=e95]: 双轨归因执行
+            - generic [ref=e96]:
+              - paragraph [ref=e97]: ✓ 会话回放定位"微流失"：超过3秒无操作视为异常
+              - paragraph [ref=e98]: ✓ HEP复核：时薪=（收入-成本）/实际工时
+              - paragraph [ref=e99]: ✓ 分心指数自评：1-5分追踪"伪工作"时长
+              - paragraph [ref=e100]: ✓ 每次复盘产出可执行的次日改动
+      - generic [ref=e102]:
+        - generic [ref=e103]:
+          - heading "KISS-KIM法：让复盘从流水账变成决策资产" [level=2] [ref=e104]
+          - paragraph [ref=e105]:
+            - strong [ref=e106]: KISS原则
+            - text: （四象限）：保持/提升/停止/开始。关键在"停止"栏——必须列出消耗时间却无产出的活动，如"过度优化服务器响应时间"、"讨好非目标用户的定制需求"。
+          - paragraph [ref=e107]:
+            - strong [ref=e108]: KIM关键洞察备忘录
+            - text: ：强制输出格式——"我之前以为______，现在发现______，所以下周我决定______。" 必须包含认知转弯。
+          - paragraph [ref=e109]:
+            - strong [ref=e110]: 示例
+            - text: ：
+          - paragraph [ref=e111]: × 错误：流量跌了，下周要发小红书。
+          - paragraph [ref=e112]:
+            - text: ✓ KIM：我之前以为产品功能强大流量就会自然增长，
+            - strong [ref=e113]: 现在发现
+            - text: 在不进行内容分发的情况下新访客获取归零，
+            - strong [ref=e114]: 所以下周我决定
+            - text: 砍掉深色模式适配，把精力全投入撰写一篇硬核解决痛点的长文。
+          - paragraph [ref=e116]: KIM自动沉淀为知识资产。3个月后当你头脑发热想加"排行榜"时，AI助手会自动弹出："根据2026年3月的实验墓园记录，用户对公开排名功能表现出强烈排斥。"
+        - generic [ref=e117]:
+          - generic [ref=e118]:
+            - generic [ref=e119]:
+              - generic [ref=e120]: 格式
+              - generic [ref=e121]: KIM标准模板
+            - generic [ref=e122]:
+              - paragraph [ref=e123]: 我之前以为：______
+              - paragraph [ref=e124]: 现在发现：______（行为数据揭示）
+              - paragraph [ref=e125]: 所以下周我决定：______（唯一实验）
+          - generic [ref=e126]:
+            - generic [ref=e127]:
+              - generic [ref=e128]: 实验墓园
+              - generic [ref=e129]: 被毙功能的存档格式
+            - generic [ref=e130]:
+              - paragraph [ref=e131]:
+                - strong [ref=e132]: 假设
+                - text: ：当时以为加入社交推荐能带来病毒传播
+              - paragraph [ref=e133]:
+                - strong [ref=e134]: 实际
+                - text: ：0.3%用户点击，服务器成本暴增
+              - paragraph [ref=e135]:
+                - strong [ref=e136]: 沉没
+                - text: ：23小时
+              - paragraph [ref=e137]:
+                - strong [ref=e138]: 萃取
+                - text: ：我的用户是极度注重隐私的内向型人群
+      - generic [ref=e140]:
+        - generic [ref=e141]:
+          - heading "两大致命陷阱：复盘成瘾与伪工作" [level=2] [ref=e142]
+          - paragraph [ref=e143]:
+            - strong [ref=e144]: 陷阱一：复盘成瘾
+            - text: ——把复盘文档写得像博士论文，本质是在逃避写代码或做销售这一真正痛苦的事情。
+            - strong [ref=e145]: 止损线
+            - text: ：单人每周复盘总时长上限2小时，触及红线立即终止并强制产出。
+          - paragraph [ref=e146]:
+            - strong [ref=e147]: 陷阱二：伪工作（Tactical勤奋）
+            - text: ——用战术上的客服答疑、日工作业来掩盖对产品核心价值已不再笃定的战略倦怠。深夜优化Logo、反复刷后台数据都是典型症状。
+          - paragraph [ref=e148]:
+            - strong [ref=e149]: 精准定义"停止"
+            - text: ：低价值自动化洁癖（如花3小时调试每月节省10分钟的Zapier工作流）、免费用户过度服务（80%沟通时长消耗在仅贡献5%收入的免费用户身上）。
+          - generic [ref=e150]:
+            - generic [ref=e151]:
+              - generic [ref=e152]: 错误
+              - generic [ref=e153]: 伪工作清单
+            - generic [ref=e154]:
+              - paragraph [ref=e155]: × 反复刷后台数据而非联系用户
+              - paragraph [ref=e156]: × 花3小时调试每月省10分钟的自动化
+              - paragraph [ref=e157]: × 为非目标用户定制复杂功能
+              - paragraph [ref=e158]: × 深夜优化CSS动画导致次日判断力下降
+        - generic [ref=e160]:
+          - generic [ref=e161]:
+            - generic [ref=e162]: 正确
+            - generic [ref=e163]: 破除伪工作
+          - generic [ref=e164]:
+            - paragraph [ref=e165]: ✓ 每次复盘只问：这个改动能让北极星指标挪动多少？
+            - paragraph [ref=e166]: ✓ 低于5%的优化一律暂缓
+            - paragraph [ref=e167]: ✓ 联系3名用户比刷后台数据更有价值
+            - paragraph [ref=e168]: ✓ 晚上10点后禁止打开代码编辑器
+      - generic [ref=e170]:
+        - generic [ref=e171]:
+          - heading "微型退出与30天死亡线：一人公司的功能断舍离" [level=2] [ref=e172]
+          - paragraph [ref=e173]:
+            - text: 一人公司最大的债务不是代码债，而是
+            - strong [ref=e174]: 功能债
+            - text: 。每一个多余的功能都在持续征收维护精力和服务器成本。
+          - paragraph [ref=e175]:
+            - strong [ref=e176]: 30天死亡线原则
+            - text: ：对于A/B测试未达显著性的小功能，或凭直觉新增的"锦上添花"功能，直接问自己："如果现在毙掉它，用户会痛骂我吗？"如果答案是模糊的，
+            - strong [ref=e177]: 立刻砍掉
+            - text: 。
+          - paragraph [ref=e178]:
+            - strong [ref=e179]: 实验墓园
+            - text: ：每次被毙的功能不能直接删除，必须记录：假设→实际衰减→沉没时间→认知萃取。这份"墓碑"会在AI辅助下自动沉淀，3个月后当你头脑发热想加同类功能时，AI会弹出警告。
+          - paragraph [ref=e180]:
+            - strong [ref=e181]: 杀留决心态
+            - text: ：从"做功能"转向"解决用户问题"。保留低效功能的技术债会挤占开发下一个更有钱景功能的精力。
+          - paragraph [ref=e183]: 复盘时如果发现连续两周的KIM都在说"没时间做营销"，那要反思的不是时间管理，而是你的产品本质上可能缺乏让用户自发传播的基因。
+        - generic [ref=e185]:
+          - generic [ref=e186]:
+            - generic [ref=e187]: 成本公式
+            - generic [ref=e188]: HEP单位时间利润
+          - generic [ref=e189]:
+            - paragraph [ref=e190]: HEP =（本周收入 - 本周工具成本）/ 本周实际工时
+            - paragraph [ref=e191]: 如果某功能导致运维咨询量暴增使投入时间翻倍，即使收入涨10%，HEP下降 = 失败迭代，需回滚
+      - generic [ref=e192]:
+        - generic [ref=e193]: 决策矩阵
+        - heading "做 / 不做" [level=2] [ref=e194]
+        - paragraph [ref=e195]:
+          - text: 对于OPC而言，
+          - strong [ref=e196]: 行动永远是最高级别的复盘
+          - text: 。把复盘文档写得像博士论文，本质上是在逃避真正痛苦的事情。
+        - generic [ref=e197]:
+          - generic [ref=e198]:
+            - generic [ref=e199]: ✓ 应该做
+            - generic [ref=e200]: 每周≤2小时复盘，到点立即转向执行
+            - generic [ref=e201]: 用KIM格式输出，强制包含认知转弯
+            - generic [ref=e202]: 微复盘事件：15分钟录屏回放+即时部署修复
+            - generic [ref=e203]: 建立"实验墓园"，每个被毙功能存档
+            - generic [ref=e204]: 追踪分心指数和能量值，纳入周复盘
+            - generic [ref=e205]: KISS"停止"栏列伪工作，"开始"栏只填唯一实验
+            - generic [ref=e206]: 将结构化复盘转化为社交媒体获客内容
+            - generic [ref=e207]: 30天死亡线：无显著变化的功能立即砍掉
+          - generic [ref=e208]:
+            - generic [ref=e209]: ✗ 不应该做
+            - generic [ref=e210]: 把复盘写成流水账或博士论文
+            - generic [ref=e211]: 复盘超时（单人每周>2小时）
+            - generic [ref=e212]: 凭感情保留"亲儿子"功能（用数据说话）
+            - generic [ref=e213]: 同时做5个功能迭代（带宽分散）
+            - generic [ref=e214]: 为非目标用户定制复杂功能
+            - generic [ref=e215]: 深夜优化CSS动画导致次日判断力下降
+            - generic [ref=e216]: 闭门造车开发伪需求而不联系用户验证
+            - generic [ref=e217]: 把复盘变情绪宣泄而非诊断工具
+      - generic [ref=e218]:
+        - generic [ref=e219]: FIN
+        - generic [ref=e220]:
+          - generic [ref=e221]:
+            - generic [ref=e222]: 2小时
+            - generic [ref=e223]: 周复盘上限
+            - generic [ref=e224]: 单人每周复盘不超过2小时，到点强制转向执行
+          - generic [ref=e225]:
+            - generic [ref=e226]: 30天
+            - generic [ref=e227]: 功能死亡线
+            - generic [ref=e228]: 未达北极星指标显著变化的功能，30天内必须决策
+          - generic [ref=e229]:
+            - generic [ref=e230]: 1个
+            - generic [ref=e231]: 每周唯一关键行动
+            - generic [ref=e232]: 复盘得出的核心实验，一个周期只押注一个
+    - navigation [ref=e233]:
+      - link "← 节点40：用户转介绍机制" [ref=e234] [cursor=pointer]:
+        - /url: /nodes/40-referral/index.html
+        - generic [ref=e235]: ←
+        - text: 节点40：用户转介绍机制
+      - link "节点42：收入多元化 →" [ref=e236] [cursor=pointer]:
+        - /url: /nodes/42-income-diversification/index.html
+        - text: 节点42：收入多元化
+        - generic [ref=e237]: →
