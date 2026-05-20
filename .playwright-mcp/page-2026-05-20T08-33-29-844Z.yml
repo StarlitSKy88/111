@@ -1,0 +1,261 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "← 返回首页" [ref=e3] [cursor=pointer]:
+      - /url: /
+    - generic [ref=e4]: 节点 24 / 57
+  - main [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]: 上线准备
+      - heading "域名购买与ICP备案" [level=1] [ref=e9]
+      - generic [ref=e10]: 节点 24 / 57 · 最后修订：2026年5月11日
+    - generic [ref=e11]:
+      - blockquote [ref=e12]:
+        - paragraph [ref=e13]:
+          - text: 产品做好了，但你的网址还是
+          - code [ref=e14]: localhost:3000
+          - text: 。现在你需要一个正式的域名，并且让你的网站合法地在中国大陆被访问。两步走：买域名 → 备案。全程一个人可以搞定。
+      - paragraph
+    - paragraph
+    - generic [ref=e15]:
+      - paragraph
+      - generic [ref=e16]: 一、域名购买（10分钟）
+      - paragraph
+      - heading "2026年推荐注册商" [level=3] [ref=e17]
+      - table [ref=e19]:
+        - rowgroup [ref=e20]:
+          - row "平台 优势 .com价格/年" [ref=e21]:
+            - columnheader "平台" [ref=e22]
+            - columnheader "优势" [ref=e23]
+            - columnheader ".com价格/年" [ref=e24]
+        - rowgroup [ref=e25]:
+          - row "阿里云（万网） 国内最大，备案流程最顺滑 ¥75" [ref=e26]:
+            - cell "阿里云（万网）" [ref=e27]:
+              - strong [ref=e28]: 阿里云（万网）
+            - cell "国内最大，备案流程最顺滑" [ref=e29]
+            - cell "¥75" [ref=e30]
+          - row "腾讯云 如果你用腾讯云服务器，备案方便 ¥75" [ref=e31]:
+            - cell "腾讯云" [ref=e32]:
+              - strong [ref=e33]: 腾讯云
+            - cell "如果你用腾讯云服务器，备案方便" [ref=e34]
+            - cell "¥75" [ref=e35]
+          - row "Cloudflare 隐私保护免费（隐藏注册人信息） $10.44" [ref=e36]:
+            - cell "Cloudflare" [ref=e37]:
+              - strong [ref=e38]: Cloudflare
+            - cell "隐私保护免费（隐藏注册人信息）" [ref=e39]
+            - cell "$10.44" [ref=e40]
+          - row "Namecheap 海外老牌，UI简单 $14" [ref=e41]:
+            - cell "Namecheap" [ref=e42]:
+              - strong [ref=e43]: Namecheap
+            - cell "海外老牌，UI简单" [ref=e44]
+            - cell "$14" [ref=e45]
+      - strong [ref=e46]: OPC建议
+      - text: ：如果服务器在国内（阿里云/腾讯云）→ 域名也在同一平台买，备案一站式。如果服务器在海外（Vercel）→ 域名在哪买都行。
+      - heading "域名选择三原则" [level=3] [ref=e47]
+      - list [ref=e48]:
+        - listitem [ref=e49]:
+          - strong [ref=e50]: 短
+          - text: ：≤10个字符（不含后缀），好记好打
+        - listitem [ref=e51]:
+          - strong [ref=e52]: 拼音/英文
+          - text: ：不要中英文混（如"wo的网站.com"）
+        - listitem [ref=e53]:
+          - strong [ref=e54]: .com优先
+          - text: ：.com是用户默认输入的认知。如果.com被注册了，选.cn或.cc，但别选.xyz/.top（给人不正规感）
+      - heading "一个省心操作" [level=3] [ref=e55]
+      - strong [ref=e56]: 注册10年
+      - text: （或者最长年限）。域名到期忘记续费 = 网站挂掉 + 被别人抢注。一年的域名费还不够一顿火锅，别省这个。
+      - paragraph
+    - paragraph
+    - generic [ref=e57]:
+      - paragraph
+      - generic [ref=e58]: 二、ICP备案：最让OPC头疼但必须做的事
+      - paragraph
+      - heading "先搞清楚：你需要备案吗？" [level=3] [ref=e59]
+      - paragraph [ref=e60]:
+        - text: "``"
+        - code
+      - code [ref=e61]:
+        - paragraph [ref=e62]: 你的服务器在国内（阿里云/腾讯云等）？
+        - paragraph [ref=e63]: ├─ 是 → 必须备案。不备案 = 服务商会阻断访问
+        - paragraph [ref=e64]: └─ 否（Vercel/Netlify/海外VPS）
+        - paragraph [ref=e65]: ├─ 用户全在国内 → 建议备案（速度快），但技术上不强制
+        - paragraph [ref=e66]: └─ 用户有海外 → 不需要
+      - paragraph [ref=e67]:
+        - code
+        - text: "`"
+        - code
+      - code [ref=e68]:
+        - heading "备案全流程（2026年现状）" [level=3] [ref=e69]
+        - table [ref=e71]:
+          - rowgroup [ref=e72]:
+            - row "步骤 做什么 耗时 在哪做" [ref=e73]:
+              - columnheader "步骤" [ref=e74]
+              - columnheader "做什么" [ref=e75]
+              - columnheader "耗时" [ref=e76]
+              - columnheader "在哪做" [ref=e77]
+          - rowgroup [ref=e78]:
+            - row "1. 买服务器 买一台轻量应用服务器（最便宜的就行） 5分钟 阿里云/腾讯云控制台" [ref=e79]:
+              - cell "1. 买服务器" [ref=e80]
+              - cell "买一台轻量应用服务器（最便宜的就行）" [ref=e81]
+              - cell "5分钟" [ref=e82]
+              - cell "阿里云/腾讯云控制台" [ref=e83]
+            - row "2. 提交备案 填写主体信息+网站信息 30分钟 服务器商的备案系统" [ref=e84]:
+              - cell "2. 提交备案" [ref=e85]
+              - cell "填写主体信息+网站信息" [ref=e86]
+              - cell "30分钟" [ref=e87]
+              - cell "服务器商的备案系统" [ref=e88]
+            - row "3. 人脸核验 用手机扫码做人脸识别 2分钟 阿里云/腾讯云App" [ref=e89]:
+              - cell "3. 人脸核验" [ref=e90]
+              - cell "用手机扫码做人脸识别" [ref=e91]
+              - cell "2分钟" [ref=e92]
+              - cell "阿里云/腾讯云App" [ref=e93]
+            - row "4. 等待初审 服务商先审核你的材料 1-2个工作日 -" [ref=e94]:
+              - cell "4. 等待初审" [ref=e95]
+              - cell "服务商先审核你的材料" [ref=e96]
+              - cell "1-2个工作日" [ref=e97]
+              - cell "-" [ref=e98]
+            - row "5. 短信核验 收到工信部短信，点链接确认 1分钟 手机短信" [ref=e99]:
+              - cell "5. 短信核验" [ref=e100]
+              - cell "收到工信部短信，点链接确认" [ref=e101]
+              - cell "1分钟" [ref=e102]
+              - cell "手机短信" [ref=e103]
+            - row "6. 等待管局审批 各省通信管理局最终审核 3-20个工作日 -" [ref=e104]:
+              - cell "6. 等待管局审批" [ref=e105]
+              - cell "各省通信管理局最终审核" [ref=e106]
+              - cell "3-20个工作日" [ref=e107]
+              - cell "-" [ref=e108]
+            - row "7. 备案完成 获得备案号（如\"京ICP备XXXXXXXX号\"） - -" [ref=e109]:
+              - cell "7. 备案完成" [ref=e110]
+              - cell "获得备案号（如\"京ICP备XXXXXXXX号\"）" [ref=e111]
+              - cell "-" [ref=e112]
+              - cell "-" [ref=e113]
+        - heading "备案材料清单（个人备案）" [level=3] [ref=e114]
+        - table [ref=e116]:
+          - rowgroup [ref=e117]:
+            - row "材料 要求" [ref=e118]:
+              - columnheader "材料" [ref=e119]
+              - columnheader "要求" [ref=e120]
+          - rowgroup [ref=e121]:
+            - row "身份证 正反面彩色扫描/拍照" [ref=e122]:
+              - cell "身份证" [ref=e123]
+              - cell "正反面彩色扫描/拍照" [ref=e124]
+            - row "本人现场照片 备案App人脸识别" [ref=e125]:
+              - cell "本人现场照片" [ref=e126]
+              - cell "备案App人脸识别" [ref=e127]
+            - row "域名证书 域名注册商后台下载" [ref=e128]:
+              - cell "域名证书" [ref=e129]
+              - cell "域名注册商后台下载" [ref=e130]
+            - row "网站名称 不能带\"中国\"\"中华\"\"国家\"等字样，不能和备案主体无关" [ref=e131]:
+              - cell "网站名称" [ref=e132]
+              - cell "不能带\"中国\"\"中华\"\"国家\"等字样，不能和备案主体无关" [ref=e133]
+        - strong [ref=e134]: OPC注意
+        - text: ：个人备案的网站不能涉及企业/商业/电商/论坛/社交。如果你做的是商业产品 → 先用个体户或公司备案（参考节点23）。
+        - paragraph
+    - paragraph
+    - code
+    - generic [ref=e135]:
+      - code [ref=e136]:
+        - paragraph
+        - generic [ref=e137]: 三、备案通过后的必做操作
+        - paragraph
+        - heading "1. 网站底部加备案号" [level=3] [ref=e138]
+      - paragraph [ref=e139]:
+        - code
+        - text: "`"
+        - code [ref=e140]: html
+      - code [ref=e141]:
+        - generic [ref=e142]:
+          - paragraph [ref=e143]:
+            - link "京ICP备XXXXXXXX号" [ref=e144] [cursor=pointer]:
+              - /url: https://beian.miit.gov.cn
+          - paragraph
+        - paragraph
+      - paragraph [ref=e145]:
+        - code
+        - text: "``"
+      - strong [ref=e146]: 不加 = 违规。
+      - text: 管局会抽查。
+      - heading "2. 公安联网备案（部分地区要求）" [level=3] [ref=e147]
+      - paragraph [ref=e148]:
+        - text: 备案通过后30天内，在
+        - link "www.beian.gov.cn" [ref=e149] [cursor=pointer]:
+          - /url: https://www.beian.gov.cn
+        - text: 做公安备案。会得到一个"京公网安备XXXXXXXX号"，同样需要挂在网站底部。
+      - heading "3. 配置HTTPS" [level=3] [ref=e150]
+      - paragraph [ref=e151]: 备案通过 → 域名解析生效 → 立刻申请SSL证书（节点25会讲）。
+      - paragraph
+    - paragraph
+    - generic [ref=e152]:
+      - paragraph
+      - generic [ref=e153]: 四、常见翻车
+      - paragraph
+      - table [ref=e155]:
+        - rowgroup [ref=e156]:
+          - row "翻车 原因 避免" [ref=e157]:
+            - columnheader "翻车" [ref=e158]
+            - columnheader "原因" [ref=e159]
+            - columnheader "避免" [ref=e160]
+        - rowgroup [ref=e161]:
+          - row "备案被拒 网站名称带\"中国\"或与实际内容不符 用你产品的真实名字，不加修饰词" [ref=e162]:
+            - cell "备案被拒" [ref=e163]
+            - cell "网站名称带\"中国\"或与实际内容不符" [ref=e164]
+            - cell "用你产品的真实名字，不加修饰词" [ref=e165]
+          - row "备案被拒 个人备案但网站内容明显是商业经营 注册个体户用企业备案" [ref=e166]:
+            - cell "备案被拒" [ref=e167]
+            - cell "个人备案但网站内容明显是商业经营" [ref=e168]
+            - cell "注册个体户用企业备案" [ref=e169]
+          - row "备案周期拉长 材料有问题被打回重审 提交前让服务商客服先看一遍" [ref=e170]:
+            - cell "备案周期拉长" [ref=e171]
+            - cell "材料有问题被打回重审" [ref=e172]
+            - cell "提交前让服务商客服先看一遍" [ref=e173]
+          - row "域名过期导致备案注销 备案后域名过期未续费 域名续费10年，设闹钟提前30天" [ref=e174]:
+            - cell "域名过期导致备案注销" [ref=e175]
+            - cell "备案后域名过期未续费" [ref=e176]
+            - cell "域名续费10年，设闹钟提前30天" [ref=e177]
+      - paragraph
+    - paragraph
+    - generic [ref=e178]:
+      - paragraph
+      - generic [ref=e179]: 五、检查清单
+      - paragraph
+      - list [ref=e180]:
+        - listitem [ref=e181]:
+          - checkbox [disabled] [ref=e182]
+          - text: 域名已购买（建议10年）
+        - listitem [ref=e183]:
+          - checkbox [disabled] [ref=e184]
+          - text: 服务器已购买（最便宜配置即可）
+        - listitem [ref=e185]:
+          - checkbox [disabled] [ref=e186]
+          - text: 备案材料已准备（身份证、域名证书）
+        - listitem [ref=e187]:
+          - checkbox [disabled] [ref=e188]
+          - text: 备案已提交
+        - listitem [ref=e189]:
+          - checkbox [disabled] [ref=e190]
+          - text: 备案号已挂网站底部
+        - listitem [ref=e191]:
+          - checkbox [disabled] [ref=e192]
+          - text: 公安备案已完成（如当地要求）
+      - paragraph
+    - paragraph
+    - generic [ref=e193]:
+      - paragraph
+      - generic [ref=e194]: 节点资源链接
+      - paragraph
+      - list [ref=e195]:
+        - listitem [ref=e196]: 节点22：上线内容填充
+        - listitem [ref=e197]: 节点23：公司注册与主体选择
+        - listitem [ref=e198]: 节点25：网站部署与SSL
+    - generic [ref=e199]:
+      - heading "节点24检查清单" [level=3] [ref=e200]
+      - paragraph [ref=e201]: 完成本节点后，请确认所有检查项已通过。
+  - navigation [ref=e202]:
+    - link "← 节点23" [ref=e203] [cursor=pointer]:
+      - /url: /nodes/23-company-registration/index.html
+      - generic [ref=e204]: ←
+      - text: 节点23
+    - link "节点25 →" [ref=e205] [cursor=pointer]:
+      - /url: /nodes/25-website-deployment/index.html
+      - text: 节点25
+      - generic [ref=e206]: →
