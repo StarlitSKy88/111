@@ -1,0 +1,201 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "← 返回首页" [ref=e3] [cursor=pointer]:
+      - /url: /
+    - generic [ref=e4]: 节点 34 / 57
+  - main [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]: 上线后迭代与运营
+      - heading "用户反馈收集" [level=1] [ref=e9]
+      - generic [ref=e10]: 节点 34 / 57 · 最后修订：2026年5月11日
+    - blockquote [ref=e12]:
+      - paragraph [ref=e13]: 产品上线了，用户来了，也走了。你不知道他们为什么走，因为没人告诉你。用户反馈不是"锦上添花"——它是OPC唯一的市场调研部门。
+    - generic [ref=e14]:
+      - paragraph
+      - generic [ref=e15]: 一、反馈渠道：在哪里等着用户
+      - paragraph
+      - heading "OPC最低成本的四个渠道" [level=3] [ref=e16]
+      - table [ref=e18]:
+        - rowgroup [ref=e19]:
+          - row "渠道 搭建成本 适合场景" [ref=e20]:
+            - columnheader "渠道" [ref=e21]
+            - columnheader "搭建成本" [ref=e22]
+            - columnheader "适合场景" [ref=e23]
+        - rowgroup [ref=e24]:
+          - row "产品内反馈入口 写一个表单，30分钟 所有产品必须有" [ref=e25]:
+            - cell "产品内反馈入口" [ref=e26]:
+              - strong [ref=e27]: 产品内反馈入口
+            - cell "写一个表单，30分钟" [ref=e28]
+            - cell "所有产品必须有" [ref=e29]
+          - row "微信群 0元，5分钟建群 早期用户、付费用户" [ref=e30]:
+            - cell "微信群" [ref=e31]:
+              - strong [ref=e32]: 微信群
+            - cell "0元，5分钟建群" [ref=e33]
+            - cell "早期用户、付费用户" [ref=e34]
+          - row "应用商店评论 0元，上线就有 小程序/App必看" [ref=e35]:
+            - cell "应用商店评论" [ref=e36]:
+              - strong [ref=e37]: 应用商店评论
+            - cell "0元，上线就有" [ref=e38]
+            - cell "小程序/App必看" [ref=e39]
+          - row "客服邮箱 域名邮箱免费 企业客户/正式反馈" [ref=e40]:
+            - cell "客服邮箱" [ref=e41]:
+              - strong [ref=e42]: 客服邮箱
+            - cell "域名邮箱免费" [ref=e43]
+            - cell "企业客户/正式反馈" [ref=e44]
+      - heading "产品内反馈入口的最简实现" [level=3] [ref=e45]
+      - code [ref=e47]: <!-- 页面右下角固定一个反馈按钮 --> <button onclick="showFeedback()" style="position:fixed;bottom:20px;right:20px;z-index:9999; background:#C0392B;color:#fff;border:none; padding:12px 20px;border-radius:8px;cursor:pointer;"> 💬 反馈 </button> <!-- 最简单的反馈表单 --> <div id="feedback-form" style="display:none;..."> <textarea id="feedback-text" placeholder="告诉我们你的想法..."></textarea> <input id="feedback-contact" placeholder="微信/邮箱（选填）"> <button onclick="submitFeedback()">提交</button> </div>
+      - strong [ref=e48]: 关键
+      - text: ：反馈入口必须只需要写文字+点提交。不要要求用户填"反馈类型""优先级""截图"——每多一个字段，提交率降低40%。
+    - generic [ref=e49]:
+      - paragraph
+      - generic [ref=e50]: 二、微信群运营：OPC最有效的反馈渠道
+      - paragraph
+      - heading "为什么是微信群" [level=3] [ref=e51]
+      - list [ref=e52]:
+        - listitem [ref=e53]: 用户的吐槽是即时的、有语境的
+        - listitem [ref=e54]: 一个人的问题可能是十个人的问题
+        - listitem [ref=e55]: 群里的互动会产生你意想不到的洞察
+      - heading "群运营三原则" [level=3] [ref=e56]
+      - list [ref=e57]:
+        - listitem [ref=e58]:
+          - strong [ref=e59]: 你必须在群里
+          - text: ：作为创始人，亲自回复。别让AI替你。
+        - listitem [ref=e60]:
+          - strong [ref=e61]: 感谢每一个反馈
+          - text: ：即使是吐槽。回复"谢谢你告诉我，我来看看"——下次他还会说
+        - listitem [ref=e62]:
+          - strong [ref=e63]: 公开问题公开修
+          - text: ：在群里说"刚才张三提到的问题我已经修复了"，让所有人看到你在行动
+      - heading "一个高效模板" [level=3] [ref=e64]
+    - generic [ref=e65]:
+      - paragraph
+      - generic [ref=e66]: 三、反馈的日常处理SOP
+      - paragraph
+      - heading "每天花15分钟" [level=3] [ref=e67]
+      - table [ref=e69]:
+        - rowgroup [ref=e70]:
+          - row "时间段 做什么" [ref=e71]:
+            - columnheader "时间段" [ref=e72]
+            - columnheader "做什么" [ref=e73]
+        - rowgroup [ref=e74]:
+          - row "早9:00 查看所有渠道的新反馈（5分钟）" [ref=e75]:
+            - cell "早9:00" [ref=e76]
+            - cell "查看所有渠道的新反馈（5分钟）" [ref=e77]
+          - row "分类 Bug → P0/P1/P2/P3；建议 → 记录到需求池（5分钟）" [ref=e78]:
+            - cell "分类" [ref=e79]
+            - cell "Bug → P0/P1/P2/P3；建议 → 记录到需求池（5分钟）" [ref=e80]
+          - row "回复 每条反馈回复一句（5分钟）" [ref=e81]:
+            - cell "回复" [ref=e82]
+            - cell "每条反馈回复一句（5分钟）" [ref=e83]
+      - heading "反馈分类表（继续沿用）" [level=3] [ref=e84]
+      - table [ref=e86]:
+        - rowgroup [ref=e87]:
+          - row "发现者 渠道 反馈内容 类型 处理状态" [ref=e88]:
+            - columnheader "发现者" [ref=e89]
+            - columnheader "渠道" [ref=e90]
+            - columnheader "反馈内容" [ref=e91]
+            - columnheader "类型" [ref=e92]
+            - columnheader "处理状态" [ref=e93]
+        - rowgroup [ref=e94]:
+          - row "张三 微信群 支付完没反应 P0 Bug ✅ 已修复" [ref=e95]:
+            - cell "张三" [ref=e96]
+            - cell "微信群" [ref=e97]
+            - cell "支付完没反应" [ref=e98]
+            - cell "P0 Bug" [ref=e99]
+            - cell "✅ 已修复" [ref=e100]
+          - row "李四 反馈表单 想要暗色模式 建议 📋 需求池" [ref=e101]:
+            - cell "李四" [ref=e102]
+            - cell "反馈表单" [ref=e103]
+            - cell "想要暗色模式" [ref=e104]
+            - cell "建议" [ref=e105]
+            - cell "📋 需求池" [ref=e106]
+          - row "王五 App Store \"太好用了\" 好评 ✅ 已感谢" [ref=e107]:
+            - cell "王五" [ref=e108]
+            - cell "App Store" [ref=e109]
+            - cell "\"太好用了\"" [ref=e110]
+            - cell "好评" [ref=e111]
+            - cell "✅ 已感谢" [ref=e112]
+    - generic [ref=e113]:
+      - paragraph
+      - generic [ref=e114]: 四、如何从反馈中发现产品方向
+      - paragraph
+      - heading "反馈信号强度" [level=3] [ref=e115]
+      - table [ref=e117]:
+        - rowgroup [ref=e118]:
+          - row "信号 含义 行动" [ref=e119]:
+            - columnheader "信号" [ref=e120]
+            - columnheader "含义" [ref=e121]
+            - columnheader "行动" [ref=e122]
+        - rowgroup [ref=e123]:
+          - row "1个人提1次 噪音 记录，观察" [ref=e124]:
+            - cell "1个人提1次" [ref=e125]
+            - cell "噪音" [ref=e126]
+            - cell "记录，观察" [ref=e127]
+          - row "不同人提同1个问题（≥3次） 真实痛点 排入下周计划" [ref=e128]:
+            - cell "不同人提同1个问题（≥3次）" [ref=e129]
+            - cell "真实痛点" [ref=e130]
+            - cell "排入下周计划" [ref=e131]
+          - row "同1个问题持续被提 核心体验问题 本周解决" [ref=e132]:
+            - cell "同1个问题持续被提" [ref=e133]
+            - cell "核心体验问题" [ref=e134]
+            - cell "本周解决" [ref=e135]
+          - row "用户说你\"少了某功能\" 竞品有而你没有 评估是否与你的核心定位冲突" [ref=e136]:
+            - cell "用户说你\"少了某功能\"" [ref=e137]
+            - cell "竞品有而你没有" [ref=e138]
+            - cell "评估是否与你的核心定位冲突" [ref=e139]
+    - generic [ref=e140]:
+      - paragraph
+      - generic [ref=e141]: 五、一个OPC的反馈闭环案例
+      - paragraph
+      - paragraph [ref=e142]: 用户A在群里说："为什么不能导出数据？"
+      - paragraph [ref=e143]: 你的处理：
+      - list [ref=e144]:
+        - listitem [ref=e145]: 回复："收到，我评估一下"（即时）
+        - listitem [ref=e146]: 查看是否有其他人提过（3人提过）
+        - listitem [ref=e147]: 评估开发成本（1天）
+        - listitem [ref=e148]: 在群里说："导出功能已排入下周计划"（透明）
+        - listitem [ref=e149]: 上线后在群里@A："导出功能上线了，你试试"（闭环）
+      - paragraph [ref=e150]: 结果：用户A成了你的自来水推广——他告诉同事"这个产品的开发者会听用户的话"
+    - generic [ref=e151]:
+      - paragraph
+      - generic [ref=e152]: 六、检查清单
+      - paragraph
+      - list [ref=e153]:
+        - listitem [ref=e154]:
+          - checkbox [disabled] [ref=e155]
+          - text: 产品内反馈入口已上线（只需文字+提交）
+        - listitem [ref=e156]:
+          - checkbox [disabled] [ref=e157]
+          - text: 反馈处理群已建立（你在群里）
+        - listitem [ref=e158]:
+          - checkbox [disabled] [ref=e159]
+          - text: 每天花15分钟处理反馈（有固定时间）
+        - listitem [ref=e160]:
+          - checkbox [disabled] [ref=e161]
+          - text: 反馈有分类记录（Bug/建议/好评）
+        - listitem [ref=e162]:
+          - checkbox [disabled] [ref=e163]
+          - text: 每条反馈有回复
+        - listitem [ref=e164]:
+          - checkbox [disabled] [ref=e165]
+          - text: 同问题≥3人反馈 → 已排入计划
+    - generic [ref=e166]:
+      - paragraph
+      - generic [ref=e167]: 节点资源链接
+      - paragraph
+      - list [ref=e168]:
+        - listitem [ref=e169]: 节点33：内容营销与SEO/ASO
+        - listitem [ref=e170]: 节点35：社群与私域运营
+        - listitem [ref=e171]: 节点36：AI客户服务
+    - generic [ref=e172]:
+      - heading "节点34检查清单" [level=3] [ref=e173]
+      - paragraph [ref=e174]: 完成本节点后，请确认所有检查项已通过。
+  - navigation [ref=e175]:
+    - link "← 节点33" [ref=e176] [cursor=pointer]:
+      - /url: /nodes/33-content-marketing/index.html
+      - generic [ref=e177]: ←
+      - text: 节点33
+    - link "节点35 →" [ref=e178] [cursor=pointer]:
+      - /url: /nodes/35-private-traffic/index.html
+      - text: 节点35
+      - generic [ref=e179]: →
