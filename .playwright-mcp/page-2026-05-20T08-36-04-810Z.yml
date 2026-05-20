@@ -1,0 +1,257 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "← 返回首页" [ref=e3] [cursor=pointer]:
+      - /url: /
+    - generic [ref=e4]: 节点 30 / 57
+  - main [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]: 正式上线
+      - heading "正式发布" [level=1] [ref=e9]
+      - generic [ref=e10]: 节点 30 / 57 · 最后修订：2026年5月11日
+    - generic [ref=e11]:
+      - blockquote [ref=e12]:
+        - paragraph [ref=e13]: 审核通过了。现在你的产品正式面向全世界。这一刻很重要——不是因为"仪式感"，而是因为发布后的48小时，决定了你的产品能不能活下去。
+      - paragraph
+    - paragraph
+    - generic [ref=e14]:
+      - paragraph
+      - generic [ref=e15]: 一、发布策略：别一次全放
+      - paragraph
+      - heading "OPC唯一推荐的策略：灰度发布" [level=3] [ref=e16]
+      - paragraph [ref=e17]:
+        - text: "``"
+        - code
+      - code [ref=e18]:
+        - paragraph [ref=e19]: 不要一次性让所有人看到 → 先放给20%的用户 → 观察24小时 → 没问题再全量
+      - paragraph [ref=e20]:
+        - code
+        - text: "`"
+        - code
+      - code [ref=e21]:
+        - heading "怎么灰度（三种方式，按难度排序）" [level=3] [ref=e22]
+        - table [ref=e24]:
+          - rowgroup [ref=e25]:
+            - row "方式 难度 操作" [ref=e26]:
+              - columnheader "方式" [ref=e27]
+              - columnheader "难度" [ref=e28]
+              - columnheader "操作" [ref=e29]
+          - rowgroup [ref=e30]:
+            - row "先发给节点19的测试群 ⭐ 把链接发到亲友测试群，让他们先用24小时" [ref=e31]:
+              - cell "先发给节点19的测试群" [ref=e32]:
+                - strong [ref=e33]: 先发给节点19的测试群
+              - cell "⭐" [ref=e34]
+              - cell "把链接发到亲友测试群，让他们先用24小时" [ref=e35]
+            - row "微信小程序分阶段发布 ⭐ 小程序后台 → 版本管理 → 发布比例设20%" [ref=e36]:
+              - cell "微信小程序分阶段发布" [ref=e37]:
+                - strong [ref=e38]: 微信小程序分阶段发布
+              - cell "⭐" [ref=e39]
+              - cell "小程序后台 → 版本管理 → 发布比例设20%" [ref=e40]
+            - row "Nginx分流 ⭐⭐ 让20%的用户访问新版本，80%继续用旧版" [ref=e41]:
+              - cell "Nginx分流" [ref=e42]:
+                - strong [ref=e43]: Nginx分流
+              - cell "⭐⭐" [ref=e44]
+              - cell "让20%的用户访问新版本，80%继续用旧版" [ref=e45]
+        - strong [ref=e46]: OPC现实
+        - text: ：大部分OPC产品第一次发布没有"旧版本"。那就用第一种——先小范围扩散，观察有没有崩溃级Bug。
+        - paragraph
+    - paragraph
+    - code [ref=e47]:
+      - generic [ref=e48]:
+        - paragraph
+        - generic [ref=e49]: 二、发布后48小时监控清单
+        - paragraph
+        - heading "每小时看一次（前4小时）" [level=3] [ref=e50]
+        - table [ref=e52]:
+          - rowgroup [ref=e53]:
+            - row "指标 正常 异常（立即处理）" [ref=e54]:
+              - columnheader "指标" [ref=e55]
+              - columnheader "正常" [ref=e56]
+              - columnheader "异常（立即处理）" [ref=e57]
+          - rowgroup [ref=e58]:
+            - row "页面能打开吗 能 打不开/白屏" [ref=e59]:
+              - cell "页面能打开吗" [ref=e60]
+              - cell "能" [ref=e61]
+              - cell "打不开/白屏" [ref=e62]
+            - row "注册能用吗 能 注册失败率>10%" [ref=e63]:
+              - cell "注册能用吗" [ref=e64]
+              - cell "能" [ref=e65]
+              - cell "注册失败率>10%" [ref=e66]
+            - row "核心功能能用吗 能 P0功能报错" [ref=e67]:
+              - cell "核心功能能用吗" [ref=e68]
+              - cell "能" [ref=e69]
+              - cell "P0功能报错" [ref=e70]
+            - row "服务器CPU <70% >90%持续5分钟" [ref=e71]:
+              - cell "服务器CPU" [ref=e72]
+              - cell "<70%" [ref=e73]
+              - cell ">90%持续5分钟" [ref=e74]
+            - row "服务器内存 <80% >95%" [ref=e75]:
+              - cell "服务器内存" [ref=e76]
+              - cell "<80%" [ref=e77]
+              - cell ">95%" [ref=e78]
+        - heading "每天看一次（前7天）" [level=3] [ref=e79]
+        - table [ref=e81]:
+          - rowgroup [ref=e82]:
+            - row "指标 关注点" [ref=e83]:
+              - columnheader "指标" [ref=e84]
+              - columnheader "关注点" [ref=e85]
+          - rowgroup [ref=e86]:
+            - row "新增用户数 有没有增长？增长来源是哪里？" [ref=e87]:
+              - cell "新增用户数" [ref=e88]
+              - cell "有没有增长？增长来源是哪里？" [ref=e89]
+            - row "核心功能使用率 注册的用户有多少用了核心功能？<30% = 引导有问题" [ref=e90]:
+              - cell "核心功能使用率" [ref=e91]
+              - cell "注册的用户有多少用了核心功能？<30% = 引导有问题" [ref=e92]
+            - row "用户反馈 有没有集中的负面反馈？（多个用户说同一个问题）" [ref=e93]:
+              - cell "用户反馈" [ref=e94]
+              - cell "有没有集中的负面反馈？（多个用户说同一个问题）" [ref=e95]
+            - row "崩溃率 >1% = 立刻修" [ref=e96]:
+              - cell "崩溃率" [ref=e97]
+              - cell ">1% = 立刻修" [ref=e98]
+        - paragraph
+      - paragraph
+    - generic [ref=e99]:
+      - code [ref=e100]:
+        - paragraph
+        - generic [ref=e101]: 三、最可能发生的三种紧急状况
+        - paragraph
+        - heading "状况1：服务器崩了" [level=3] [ref=e102]
+      - paragraph [ref=e103]:
+        - code
+        - text: "`"
+        - code
+      - code [ref=e104]:
+        - paragraph [ref=e105]: 现象：页面打不开，CPU 100%
+        - paragraph [ref=e106]: 原因：用户涌入超过预期
+        - paragraph [ref=e107]: 处理：
+        - paragraph [ref=e108]: 1. 云服务器控制台 → 升级配置（临时升一档，¥50/月）
+        - paragraph [ref=e109]: 2. PM2重启：pm2 restart all
+        - paragraph [ref=e110]: 3. 如果还不行 → 开Cloudflare CDN缓存静态资源
+      - paragraph [ref=e111]:
+        - code
+        - text: "`"
+        - code
+      - code [ref=e112]:
+        - heading "状况2：数据库被刷爆" [level=3] [ref=e113]
+      - paragraph [ref=e114]:
+        - code
+        - text: "`"
+        - code
+      - code [ref=e115]:
+        - paragraph [ref=e116]: 现象：注册/支付等功能卡住
+        - paragraph [ref=e117]: 原因：某条SQL查询全表扫描，或者有恶意注册
+        - paragraph [ref=e118]: 处理：
+        - paragraph [ref=e119]: 1. Supabase Dashboard → 暂停可疑用户
+        - paragraph [ref=e120]: 2. 加索引：CREATE INDEX ...
+        - paragraph [ref=e121]: 3. 加rate limit：同一个IP 1分钟只能注册1次
+      - paragraph [ref=e122]:
+        - code
+        - text: "`"
+        - code
+      - code [ref=e123]:
+        - heading "状况3：用户集中反馈同一个问题" [level=3] [ref=e124]
+      - paragraph [ref=e125]:
+        - code
+        - text: "`"
+        - code
+      - code [ref=e126]:
+        - paragraph [ref=e127]: 现象：3个以上用户在24小时内反馈同一个Bug
+        - paragraph [ref=e128]: 处理：
+        - paragraph [ref=e129]: 1. 立刻复现（节点20的方法）
+        - paragraph [ref=e130]: 2. 如果是P0 → 立刻修，不用等
+        - paragraph [ref=e131]: 3. 修复后发一条通知："XX问题已修复"
+      - paragraph [ref=e132]:
+        - code
+        - text: "`"
+        - code
+      - code:
+        - paragraph
+    - paragraph
+    - code [ref=e133]:
+      - generic [ref=e134]:
+        - paragraph
+        - generic [ref=e135]: 四、发布后的第一周：不要做这些事
+        - paragraph
+        - table [ref=e137]:
+          - rowgroup [ref=e138]:
+            - row "❌ 不要做 原因" [ref=e139]:
+              - columnheader "❌ 不要做" [ref=e140]
+              - columnheader "原因" [ref=e141]
+          - rowgroup [ref=e142]:
+            - row "不要加新功能 先把现有功能稳住" [ref=e143]:
+              - cell "不要加新功能" [ref=e144]
+              - cell "先把现有功能稳住" [ref=e145]
+            - row "不要大改UI 刚来的用户需要时间适应" [ref=e146]:
+              - cell "不要大改UI" [ref=e147]
+              - cell "刚来的用户需要时间适应" [ref=e148]
+            - row "不要调整价格 除非发现定价明显错误（如少了一个0）" [ref=e149]:
+              - cell "不要调整价格" [ref=e150]
+              - cell "除非发现定价明显错误（如少了一个0）" [ref=e151]
+            - row "不要在半夜发布修复 半夜发的修复没人看到，出了问题没人响应" [ref=e152]:
+              - cell "不要在半夜发布修复" [ref=e153]
+              - cell "半夜发的修复没人看到，出了问题没人响应" [ref=e154]
+        - paragraph
+      - paragraph
+    - generic [ref=e155]:
+      - code [ref=e156]:
+        - paragraph
+        - generic [ref=e157]: 五、发布后必做的一件事
+        - paragraph
+        - heading "给最早的用户写一封感谢信" [level=3] [ref=e158]
+      - paragraph [ref=e159]:
+        - code
+        - text: "`"
+        - code
+      - code [ref=e160]:
+        - paragraph [ref=e161]: "\"你好，我是OPC节点百科的开发者[你的名字]。"
+        - paragraph [ref=e162]: 谢谢你成为我们最早的用户之一。
+        - paragraph [ref=e163]: 如果你在使用中遇到任何问题，直接回复我就行——我一个人开发，你的每条反馈我都会亲自看。
+        - paragraph [ref=e164]: "[你的微信/邮箱]\""
+      - paragraph [ref=e165]:
+        - code
+        - text: "``"
+      - strong [ref=e166]: 为什么做
+      - text: ：早期用户的流失率极高。一封个人化的感谢信，能把流失率降低30%以上（来源：SaaS行业基准数据）。
+      - paragraph
+    - paragraph
+    - generic [ref=e167]:
+      - paragraph
+      - generic [ref=e168]: 六、检查清单
+      - paragraph
+      - list [ref=e169]:
+        - listitem [ref=e170]:
+          - checkbox [disabled] [ref=e171]
+          - text: 灰度策略已执行（先小范围，后全量）
+        - listitem [ref=e172]:
+          - checkbox [disabled] [ref=e173]
+          - text: 监控告警已就绪（至少CPU>90%要知道）
+        - listitem [ref=e174]:
+          - checkbox [disabled] [ref=e175]
+          - text: 发布后48小时核心指标正常
+        - listitem [ref=e176]:
+          - checkbox [disabled] [ref=e177]
+          - text: 服务器有应急升级方案（知道怎么升配置）
+        - listitem [ref=e178]:
+          - checkbox [disabled] [ref=e179]
+          - text: 给早期用户发了感谢信
+      - paragraph
+    - paragraph
+    - generic [ref=e180]:
+      - paragraph
+      - generic [ref=e181]: 节点资源链接
+      - paragraph
+      - list [ref=e182]:
+        - listitem [ref=e183]: 节点29：审核问题处理
+        - listitem [ref=e184]: 节点31：数据监控
+        - listitem [ref=e185]: 节点32：冷启动获客
+    - generic [ref=e186]:
+      - heading "节点30检查清单" [level=3] [ref=e187]
+      - paragraph [ref=e188]: 完成本节点后，请确认所有检查项已通过。
+  - navigation [ref=e189]:
+    - link "← 节点29" [ref=e190] [cursor=pointer]:
+      - /url: /nodes/29-audit-fix/index.html
+      - generic [ref=e191]: ←
+      - text: 节点29
+    - link "节点31 →" [ref=e192] [cursor=pointer]:
+      - /url: /nodes/31-analytics/index.html
+      - text: 节点31
+      - generic [ref=e193]: →
