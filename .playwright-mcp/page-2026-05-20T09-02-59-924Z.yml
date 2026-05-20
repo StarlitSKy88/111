@@ -1,0 +1,296 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "← 返回首页" [ref=e3] [cursor=pointer]:
+      - /url: /
+    - generic [ref=e4]: 节点 25 / 57
+  - main [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]: 上线准备
+      - heading "网站部署与SSL" [level=1] [ref=e9]
+      - generic [ref=e10]: 节点 25 / 57 · 最后修订：2026年5月11日
+    - generic [ref=e11]:
+      - blockquote [ref=e12]:
+        - paragraph [ref=e13]: 代码在本地跑得好好的，现在要让全世界都能访问。2026年OPC部署只有两条路——选Vercel（零运维）或选云服务器（完全控制）。本节点给你两条路的完整走法。
+      - paragraph
+    - paragraph
+    - generic [ref=e14]:
+      - paragraph
+      - generic [ref=e15]: 一、Vercel vs 云服务器：OPC的终极选择
+      - paragraph
+      - table [ref=e17]:
+        - rowgroup [ref=e18]:
+          - row "维度 Vercel 阿里云/腾讯云轻量服务器" [ref=e19]:
+            - columnheader "维度" [ref=e20]
+            - columnheader "Vercel" [ref=e21]
+            - columnheader "阿里云/腾讯云轻量服务器" [ref=e22]
+        - rowgroup [ref=e23]:
+          - row "部署方式 git push 自动部署 SSH手动上传 / Git CI/CD" [ref=e24]:
+            - cell "部署方式" [ref=e25]:
+              - strong [ref=e26]: 部署方式
+            - cell "git push 自动部署" [ref=e27]:
+              - code [ref=e28]: git push
+              - text: 自动部署
+            - cell "SSH手动上传 / Git CI/CD" [ref=e29]
+          - row "月费 免费（个人版） ¥24起（2核2G）" [ref=e30]:
+            - cell "月费" [ref=e31]:
+              - strong [ref=e32]: 月费
+            - cell "免费（个人版）" [ref=e33]
+            - cell "¥24起（2核2G）" [ref=e34]
+          - row "SSL证书 自动配置+续期 手动申请（免费Let's Encrypt）" [ref=e35]:
+            - cell "SSL证书" [ref=e36]:
+              - strong [ref=e37]: SSL证书
+            - cell "自动配置+续期" [ref=e38]
+            - cell "手动申请（免费Let's Encrypt）" [ref=e39]
+          - row "ICP备案 不需要（服务器在海外） 必须备案" [ref=e40]:
+            - cell "ICP备案" [ref=e41]:
+              - strong [ref=e42]: ICP备案
+            - cell "不需要（服务器在海外）" [ref=e43]
+            - cell "必须备案" [ref=e44]
+          - row "国内访问速度 中等（CDN节点在日韩） 快（国内节点）" [ref=e45]:
+            - cell "国内访问速度" [ref=e46]:
+              - strong [ref=e47]: 国内访问速度
+            - cell "中等（CDN节点在日韩）" [ref=e48]
+            - cell "快（国内节点）" [ref=e49]
+          - row "数据库 需外挂Supabase/PlanetScale 可自建" [ref=e50]:
+            - cell "数据库" [ref=e51]:
+              - strong [ref=e52]: 数据库
+            - cell "需外挂Supabase/PlanetScale" [ref=e53]
+            - cell "可自建" [ref=e54]
+          - row "运维工作 零 需要配Nginx、防火墙、日志" [ref=e55]:
+            - cell "运维工作" [ref=e56]:
+              - strong [ref=e57]: 运维工作
+            - cell "零" [ref=e58]
+            - cell "需要配Nginx、防火墙、日志" [ref=e59]
+      - strong [ref=e60]: 决策口诀
+      - text: ：
+      - list [ref=e61]:
+        - listitem [ref=e62]: 你的用户全在国内，对速度要求高 → 云服务器
+        - listitem [ref=e63]: 你的用户有海外，你不想碰运维 → Vercel
+        - listitem [ref=e64]: 你需要微信小程序 → 云服务器（小程序要求国内服务器+备案）
+      - paragraph
+    - paragraph
+    - generic [ref=e65]:
+      - paragraph
+      - generic [ref=e66]: 二、路径A：Vercel部署（5分钟上线）
+      - paragraph
+      - heading "一步部署" [level=3] [ref=e67]
+      - paragraph [ref=e68]:
+        - text: "``"
+        - code [ref=e69]: bash
+      - code [ref=e70]:
+        - text: "# 1. 安装Vercel CLI"
+        - paragraph [ref=e71]: npm i -g vercel
+        - text: "# 2. 在项目目录执行"
+        - paragraph [ref=e72]: vercel
+        - text: "# 3. 按提示操作： # - 登录（用GitHub账号） # - 确认项目目录 # - 确认构建命令（纯静态选\"无\"） # - 确认输出目录 # 4. 得到 https://你的项目名.vercel.app"
+      - paragraph [ref=e73]:
+        - code
+        - text: "`"
+        - code
+      - code [ref=e74]:
+        - heading "绑定自定义域名" [level=3] [ref=e75]
+      - paragraph [ref=e76]:
+        - code
+        - text: "`"
+        - code [ref=e77]: bash
+      - code [ref=e78]: "# Vercel Dashboard → Settings → Domains → 添加你的域名 # 然后去域名DNS添加一条CNAME记录指向 cname.vercel-dns.com"
+      - paragraph [ref=e79]:
+        - code
+        - text: "`"
+        - code
+      - code [ref=e80]:
+        - strong [ref=e81]: SSL证书自动生成，5分钟内生效。
+        - text: 完全免费。
+        - paragraph
+    - paragraph
+    - code
+    - generic [ref=e82]:
+      - code [ref=e83]:
+        - paragraph
+        - generic [ref=e84]: 三、路径B：云服务器部署（完整控制）
+        - paragraph
+        - heading "步骤1：买服务器+登录（10分钟）" [level=3] [ref=e85]
+        - paragraph [ref=e86]: 阿里云/腾讯云 → 轻量应用服务器 → 选最低配（2核2G，¥24/月）→ 镜像选 Ubuntu 22.04。
+      - paragraph [ref=e87]:
+        - code
+        - text: "`"
+        - code [ref=e88]: bash
+      - code [ref=e89]:
+        - paragraph [ref=e90]: ssh root@你的服务器IP
+      - paragraph [ref=e91]:
+        - code
+        - text: "`"
+        - code
+      - code [ref=e92]:
+        - heading "步骤2：安装环境（15分钟）" [level=3] [ref=e93]
+      - paragraph [ref=e94]:
+        - code
+        - text: "`"
+        - code [ref=e95]: bash
+      - code [ref=e96]:
+        - text: "# 更新系统"
+        - paragraph [ref=e97]: apt update && apt upgrade -y
+        - text: "# 安装Node.js 20（2026年LTS版本）"
+        - paragraph [ref=e98]: curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+        - paragraph [ref=e99]: apt install -y nodejs
+        - text: "# 安装Nginx"
+        - paragraph [ref=e100]: apt install -y nginx
+        - text: "# 安装PM2（让Node.js进程在后台持续运行）"
+        - paragraph [ref=e101]: npm i -g pm2
+        - text: "# 安装Git"
+        - paragraph [ref=e102]: apt install -y git
+      - paragraph [ref=e103]:
+        - code
+        - text: "`"
+        - code
+      - code [ref=e104]:
+        - heading "步骤3：部署代码（5分钟）" [level=3] [ref=e105]
+      - paragraph [ref=e106]:
+        - code
+        - text: "`"
+        - code [ref=e107]: bash
+      - code [ref=e108]:
+        - text: "# 克隆代码到服务器"
+        - paragraph [ref=e109]: cd /var/www
+        - paragraph [ref=e110]: git clone 你的仓库地址 opcone
+        - paragraph [ref=e111]: cd opcone
+        - paragraph [ref=e112]: npm install
+        - text: "# 用PM2启动"
+        - paragraph [ref=e113]: pm2 start api/analyze.js --name opcone-api
+        - paragraph [ref=e114]: pm2 save
+        - paragraph [ref=e115]: "pm2 startup # 设置开机自启"
+      - paragraph [ref=e116]:
+        - code
+        - text: "`"
+        - code
+      - code [ref=e117]:
+        - heading "步骤4：配置Nginx（10分钟）" [level=3] [ref=e118]
+      - paragraph [ref=e119]:
+        - code
+        - text: "`"
+        - code [ref=e120]: nginx
+      - code [ref=e121]:
+        - text: "# /etc/nginx/sites-available/opcone"
+        - paragraph [ref=e122]: "server {"
+        - paragraph [ref=e123]: listen 80;
+        - paragraph [ref=e124]: server_name 你的域名.com www.你的域名.com;
+        - paragraph [ref=e125]: root /var/www/opcone;
+        - paragraph [ref=e126]: index index.html;
+        - paragraph [ref=e127]: "# 静态文件直接返回"
+        - paragraph [ref=e128]: "location / {"
+        - paragraph [ref=e129]: try_files $uri $uri/ /index.html;
+        - paragraph [ref=e130]: "}"
+        - paragraph [ref=e131]: "# API代理"
+        - paragraph [ref=e132]: "location /api/ {"
+        - paragraph [ref=e133]: proxy_pass http://localhost:3001;
+        - paragraph [ref=e134]: proxy_set_header Host $host;
+        - paragraph [ref=e135]: proxy_set_header X-Real-IP $remote_addr;
+        - paragraph [ref=e136]: "}"
+        - paragraph [ref=e137]: "# Gzip压缩"
+        - paragraph [ref=e138]: gzip on;
+        - paragraph [ref=e139]: gzip_types text/plain text/css application/json application/javascript text/xml;
+        - paragraph [ref=e140]: "}"
+      - paragraph [ref=e141]:
+        - code
+        - text: "`"
+        - code
+      - code
+      - paragraph [ref=e142]:
+        - code
+        - text: "`"
+        - code [ref=e143]: bash
+      - code [ref=e144]:
+        - text: "# 启用配置"
+        - paragraph [ref=e145]: ln -s /etc/nginx/sites-available/opcone /etc/nginx/sites-enabled/
+        - paragraph [ref=e146]: nginx -t && systemctl reload nginx
+      - paragraph [ref=e147]:
+        - code
+        - text: "`"
+        - code
+      - code [ref=e148]:
+        - heading "步骤5：配置SSL证书（5分钟）" [level=3] [ref=e149]
+      - paragraph [ref=e150]:
+        - code
+        - text: "`"
+        - code [ref=e151]: bash
+      - code [ref=e152]:
+        - text: "# 使用Certbot自动获取Let's Encrypt免费证书"
+        - paragraph [ref=e153]: apt install -y certbot python3-certbot-nginx
+        - paragraph [ref=e154]: certbot --nginx -d 你的域名.com -d www.你的域名.com
+        - text: "# 证书会在到期前自动续期"
+      - paragraph [ref=e155]:
+        - code
+        - text: "`"
+        - code
+      - code:
+        - paragraph
+    - paragraph
+    - code
+    - generic [ref=e156]:
+      - code [ref=e157]:
+        - paragraph
+        - generic [ref=e158]: 四、部署后的安全必做项
+        - paragraph
+      - paragraph [ref=e159]:
+        - code
+        - text: "`"
+        - code [ref=e160]: bash
+      - code [ref=e161]:
+        - text: "# 1. 配置防火墙"
+        - paragraph [ref=e162]: "ufw allow 22 # SSH"
+        - paragraph [ref=e163]: "ufw allow 80 # HTTP"
+        - paragraph [ref=e164]: "ufw allow 443 # HTTPS"
+        - paragraph [ref=e165]: ufw enable
+        - text: "# 2. 禁止root SSH密码登录（改用密钥） # 编辑 /etc/ssh/sshd_config # PasswordAuthentication no # systemctl restart sshd # 3. 设置自动安全更新"
+        - paragraph [ref=e166]: apt install -y unattended-upgrades
+        - paragraph [ref=e167]: dpkg-reconfigure unattended-upgrades
+      - paragraph [ref=e168]:
+        - code
+        - text: "``"
+      - paragraph
+    - paragraph
+    - generic [ref=e169]:
+      - paragraph
+      - generic [ref=e170]: 五、检查清单
+      - paragraph
+      - list [ref=e171]:
+        - listitem [ref=e172]:
+          - checkbox [disabled] [ref=e173]
+          - text: 网站通过域名可正常访问
+        - listitem [ref=e174]:
+          - checkbox [disabled] [ref=e175]
+          - text: HTTPS正常（浏览器地址栏有图标）
+        - listitem [ref=e176]:
+          - checkbox [disabled] [ref=e177]
+          - text: 强制HTTP跳转HTTPS
+        - listitem [ref=e178]:
+          - checkbox [disabled] [ref=e179]
+          - text: 防火墙已开启（仅开放22/80/443端口）
+        - listitem [ref=e180]:
+          - checkbox [disabled] [ref=e181]
+          - text: PM2已设置开机自启
+        - listitem [ref=e182]:
+          - checkbox [disabled] [ref=e183]
+          - text: SSL证书自动续期已配置
+      - paragraph
+    - paragraph
+    - generic [ref=e184]:
+      - paragraph
+      - generic [ref=e185]: 节点资源链接
+      - paragraph
+      - list [ref=e186]:
+        - listitem [ref=e187]: 节点24：域名购买与ICP备案
+        - listitem [ref=e188]: 节点26：审核材料准备
+        - listitem [ref=e189]: 节点27：上线前检查清单
+    - generic [ref=e190]:
+      - heading "节点25检查清单" [level=3] [ref=e191]
+      - paragraph [ref=e192]: 完成本节点后，请确认所有检查项已通过。
+  - navigation [ref=e193]:
+    - link "← 节点24" [ref=e194] [cursor=pointer]:
+      - /url: /nodes/24-domain-icp/index.html
+      - generic [ref=e195]: ←
+      - text: 节点24
+    - link "节点26 →" [ref=e196] [cursor=pointer]:
+      - /url: /nodes/26-audit-material/index.html
+      - text: 节点26
+      - generic [ref=e197]: →

@@ -1,0 +1,234 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "← 返回首页" [ref=e3] [cursor=pointer]:
+      - /url: /
+    - generic [ref=e4]: 节点 26 / 57
+  - main [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]: 上线准备
+      - heading "审核材料准备" [level=1] [ref=e9]
+      - generic [ref=e10]: 节点 26 / 57 · 最后修订：2026年5月11日
+    - generic [ref=e11]:
+      - blockquote [ref=e12]:
+        - paragraph [ref=e13]: 产品要在平台上发布（App Store、微信小程序、应用市场），审核是第一道关卡。审核不通过 = 你的产品见不到用户。本节点告诉你：不同平台审什么、怎么准备材料一次过。
+      - paragraph
+    - paragraph
+    - generic [ref=e14]:
+      - paragraph
+      - generic [ref=e15]: 一、你需要通过哪些审核？
+      - paragraph
+      - table [ref=e17]:
+        - rowgroup [ref=e18]:
+          - row "你的产品形态 需要过的审核 审核周期 难度" [ref=e19]:
+            - columnheader "你的产品形态" [ref=e20]
+            - columnheader "需要过的审核" [ref=e21]
+            - columnheader "审核周期" [ref=e22]
+            - columnheader "难度" [ref=e23]
+        - rowgroup [ref=e24]:
+          - row "Web网站 无需审核（直接上线） 0天 ⭐" [ref=e25]:
+            - cell "Web网站" [ref=e26]:
+              - strong [ref=e27]: Web网站
+            - cell "无需审核（直接上线）" [ref=e28]
+            - cell "0天" [ref=e29]
+            - cell "⭐" [ref=e30]
+          - row "微信小程序 微信小程序审核 1-7个工作日 ⭐⭐" [ref=e31]:
+            - cell "微信小程序" [ref=e32]:
+              - strong [ref=e33]: 微信小程序
+            - cell "微信小程序审核" [ref=e34]
+            - cell "1-7个工作日" [ref=e35]
+            - cell "⭐⭐" [ref=e36]
+          - row "iOS App App Store审核 1-3个工作日 ⭐⭐⭐" [ref=e37]:
+            - cell "iOS App" [ref=e38]:
+              - strong [ref=e39]: iOS App
+            - cell "App Store审核" [ref=e40]
+            - cell "1-3个工作日" [ref=e41]
+            - cell "⭐⭐⭐" [ref=e42]
+          - row "安卓App 各应用市场审核 1-5个工作日 ⭐⭐" [ref=e43]:
+            - cell "安卓App" [ref=e44]:
+              - strong [ref=e45]: 安卓App
+            - cell "各应用市场审核" [ref=e46]
+            - cell "1-5个工作日" [ref=e47]
+            - cell "⭐⭐" [ref=e48]
+          - row "支付功能 微信/支付宝商户审核 1-5个工作日 ⭐⭐" [ref=e49]:
+            - cell "支付功能" [ref=e50]:
+              - strong [ref=e51]: 支付功能
+            - cell "微信/支付宝商户审核" [ref=e52]
+            - cell "1-5个工作日" [ref=e53]
+            - cell "⭐⭐" [ref=e54]
+      - paragraph
+    - paragraph
+    - generic [ref=e55]:
+      - paragraph
+      - generic [ref=e56]: 二、微信小程序审核（国内OPC最常遇到的）
+      - paragraph
+      - heading "审核看什么（2026年微信审核规则）" [level=3] [ref=e57]
+      - paragraph [ref=e58]: 2026年微信小程序审核变化：引入AI辅助初审，审核时长从原来的3-7天缩短至1-3天（部分类目）。但AI对违规内容的识别率提升明显，以下是最新审核要点：
+      - list [ref=e59]:
+        - listitem [ref=e60]:
+          - strong [ref=e61]: 类目匹配
+          - text: ：你的小程序选的类目必须和实际功能匹配。工具类不能选社交类，选了会被拒。
+        - listitem [ref=e62]:
+          - strong [ref=e63]: 资质齐全
+          - text: ：涉及商业/支付/社交等类目，需要上传对应的许可证或资质证明。
+        - listitem [ref=e64]:
+          - strong [ref=e65]: 功能完整
+          - text: ：提交审核时小程序不能是"空壳"。必须有可交互的功能。
+        - listitem [ref=e66]:
+          - strong [ref=e67]: 无诱导分享
+          - text: ：不能有"分享到群才能用""转发得红包"等诱导行为。
+        - listitem [ref=e68]:
+          - strong [ref=e69]: 用户协议+隐私政策
+          - text: ：必须有，且必须在用户使用前弹窗展示。
+      - heading "准备材料清单" [level=3] [ref=e70]
+      - table [ref=e72]:
+        - rowgroup [ref=e73]:
+          - row "材料 在哪获取" [ref=e74]:
+            - columnheader "材料" [ref=e75]
+            - columnheader "在哪获取" [ref=e76]
+        - rowgroup [ref=e77]:
+          - row "小程序名称+简介+图标 你自己准备（图标1024×1024px）" [ref=e78]:
+            - cell "小程序名称+简介+图标" [ref=e79]
+            - cell "你自己准备（图标1024×1024px）" [ref=e80]
+          - row "小程序截图（至少3张） 小程序内操作截图" [ref=e81]:
+            - cell "小程序截图（至少3张）" [ref=e82]
+            - cell "小程序内操作截图" [ref=e83]
+          - row "测试账号（如需登录） 提供一个测试用的微信号/手机号" [ref=e84]:
+            - cell "测试账号（如需登录）" [ref=e85]
+            - cell "提供一个测试用的微信号/手机号" [ref=e86]
+          - row "营业执照（企业小程序） 工商局/电子营业执照" [ref=e87]:
+            - cell "营业执照（企业小程序）" [ref=e88]
+            - cell "工商局/电子营业执照" [ref=e89]
+          - row "特殊行业资质（如需要） 对应主管部门" [ref=e90]:
+            - cell "特殊行业资质（如需要）" [ref=e91]
+            - cell "对应主管部门" [ref=e92]
+      - heading "一次过的技巧" [level=3] [ref=e93]
+      - paragraph [ref=e94]:
+        - text: ">"
+        - strong [ref=e95]: 提交审核前，用微信官方的"小程序开发助手"自查。
+        - text: 它能检测出大部分格式问题。
+      - paragraph
+    - paragraph
+    - generic [ref=e96]:
+      - paragraph
+      - generic [ref=e97]: 三、App Store审核（如果做iOS）
+      - paragraph
+      - heading "最容易被打回的5条" [level=3] [ref=e98]
+      - table [ref=e100]:
+        - rowgroup [ref=e101]:
+          - row "打回原因 预防" [ref=e102]:
+            - columnheader "打回原因" [ref=e103]
+            - columnheader "预防" [ref=e104]
+        - rowgroup [ref=e105]:
+          - row "功能不完整 App不能只是一个网页壳（WebView套壳）" [ref=e106]:
+            - cell "功能不完整" [ref=e107]:
+              - strong [ref=e108]: 功能不完整
+            - cell "App不能只是一个网页壳（WebView套壳）" [ref=e109]
+          - row "缺少隐私政策 必须在App内有隐私政策入口" [ref=e110]:
+            - cell "缺少隐私政策" [ref=e111]:
+              - strong [ref=e112]: 缺少隐私政策
+            - cell "必须在App内有隐私政策入口" [ref=e113]
+          - row "要求不必要的权限 不要一上来就要通讯录/相册权限" [ref=e114]:
+            - cell "要求不必要的权限" [ref=e115]:
+              - strong [ref=e116]: 要求不必要的权限
+            - cell "不要一上来就要通讯录/相册权限" [ref=e117]
+          - row "UI太差 苹果对设计有最低美学要求" [ref=e118]:
+            - cell "UI太差" [ref=e119]:
+              - strong [ref=e120]: UI太差
+            - cell "苹果对设计有最低美学要求" [ref=e121]
+          - row "隐藏功能 不能有审核时看不到的功能（如隐藏支付）" [ref=e122]:
+            - cell "隐藏功能" [ref=e123]:
+              - strong [ref=e124]: 隐藏功能
+            - cell "不能有审核时看不到的功能（如隐藏支付）" [ref=e125]
+      - heading "必备材料" [level=3] [ref=e126]
+      - list [ref=e127]:
+        - listitem [ref=e128]: 开发者账号（$99/年）
+        - listitem [ref=e129]: App图标（1024×1024px）
+        - listitem [ref=e130]: App截图（iPhone 5.5寸和6.5寸各一组，至少3张）
+        - listitem [ref=e131]: 隐私政策URL
+        - listitem [ref=e132]: 测试账号
+      - paragraph
+    - paragraph
+    - generic [ref=e133]:
+      - paragraph
+      - generic [ref=e134]: 四、审核材料模板（通用）
+      - paragraph
+      - heading "产品介绍文案（每个平台都需要）" [level=3] [ref=e135]
+      - paragraph [ref=e136]:
+        - text: "``"
+        - code
+      - code [ref=e137]:
+        - paragraph [ref=e138]: 产品名称：OPC节点百科
+        - paragraph [ref=e139]: 一句话介绍：一个人，57个节点，从零到赚钱。
+        - paragraph [ref=e140]: 目标用户：想一个人创业的独立开发者/自由职业者
+        - paragraph [ref=e141]: 核心功能：
+        - paragraph [ref=e142]: 1. 57个创业节点导航 — 从想法到赚钱的完整路径
+        - paragraph [ref=e143]: 2. OPC适配度测试 — AI分析你是否适合一人创业
+        - paragraph [ref=e144]: 3. AI内容生成 — 每个节点自动生成详细指南
+      - paragraph [ref=e145]:
+        - code
+        - text: "`"
+        - code
+      - code [ref=e146]:
+        - heading "测试账号信息（每次审核都需要）" [level=3] [ref=e147]
+      - paragraph [ref=e148]:
+        - code
+        - text: "`"
+        - code
+      - code [ref=e149]:
+        - paragraph [ref=e150]: 测试账号：test@opcone.com
+        - paragraph [ref=e151]: 密码：Test123456
+        - paragraph [ref=e152]: 测试环境：https://你的域名.com
+        - paragraph [ref=e153]: 注意事项：如果登录态过期，重新登录即可。
+      - paragraph [ref=e154]:
+        - code
+        - text: "``"
+      - paragraph
+    - paragraph
+    - generic [ref=e155]:
+      - paragraph
+      - generic [ref=e156]: 五、检查清单
+      - paragraph
+      - list [ref=e157]:
+        - listitem [ref=e158]:
+          - checkbox [disabled] [ref=e159]
+          - text: 审核平台已确定（小程序/App Store/应用市场）
+        - listitem [ref=e160]:
+          - checkbox [disabled] [ref=e161]
+          - text: 类目已正确选择
+        - listitem [ref=e162]:
+          - checkbox [disabled] [ref=e163]
+          - text: 产品截图已准备（≥3张）
+        - listitem [ref=e164]:
+          - checkbox [disabled] [ref=e165]
+          - text: 测试账号已创建+已测试可用
+        - listitem [ref=e166]:
+          - checkbox [disabled] [ref=e167]
+          - text: 隐私政策页面已上线+链接有效
+        - listitem [ref=e168]:
+          - checkbox [disabled] [ref=e169]
+          - text: 产品介绍文案已准备
+        - listitem [ref=e170]:
+          - checkbox [disabled] [ref=e171]
+          - text: 营业执照/资质文件已扫描
+      - paragraph
+    - paragraph
+    - generic [ref=e172]:
+      - paragraph
+      - generic [ref=e173]: 节点资源链接
+      - paragraph
+      - list [ref=e174]:
+        - listitem [ref=e175]: 节点25：网站部署与SSL
+        - listitem [ref=e176]: 节点27：上线前检查清单
+        - listitem [ref=e177]: 节点28：提交审核与等待
+    - generic [ref=e178]:
+      - heading "节点26检查清单" [level=3] [ref=e179]
+      - paragraph [ref=e180]: 完成本节点后，请确认所有检查项已通过。
+  - navigation [ref=e181]:
+    - link "← 节点25" [ref=e182] [cursor=pointer]:
+      - /url: /nodes/25-website-deployment/index.html
+      - generic [ref=e183]: ←
+      - text: 节点25
+    - link "节点27 →" [ref=e184] [cursor=pointer]:
+      - /url: /nodes/27-launch-checklist/index.html
+      - text: 节点27
+      - generic [ref=e185]: →
