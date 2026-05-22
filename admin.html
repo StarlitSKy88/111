@@ -2,6 +2,12 @@
 <html lang="zh-CN">
 <head>
   <script src="/admin-guard.js"></script>
+  <script>
+    // API Base URL — 开发环境用 localhost:3001，生产环境用同源
+    var API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:3001'
+      : window.location.origin;
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="OPC数据管理后台">
@@ -283,6 +289,67 @@
     .level-dot.medium { background: #f97316; }
     .level-dot.low { background: var(--danger); }
 
+    /* Tab buttons */
+    .tab-btn {
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--text-tertiary);
+      padding: 0.5rem 1rem;
+      font-size: 0.6875rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .tab-btn:hover {
+      border-color: var(--text-secondary);
+      color: var(--text-primary);
+    }
+
+    .tab-btn.active {
+      background: var(--surface);
+      border-color: var(--text-secondary);
+      color: var(--text-primary);
+    }
+
+    /* Role badge */
+    .role-badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.5625rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .role-badge.admin { background: var(--accent); color: #fff; }
+    .role-badge.paid { background: var(--success); color: #000; }
+    .role-badge.free { background: var(--text-tertiary); color: #fff; }
+
+    /* Action buttons */
+    .action-btn {
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--text-secondary);
+      padding: 0.25rem 0.5rem;
+      font-size: 0.5625rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-right: 0.25rem;
+    }
+
+    .action-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .action-btn.danger:hover {
+      border-color: #dc2626;
+      color: #dc2626;
+    }
+
     /* Loading */
     .loading {
       text-align: center;
@@ -380,7 +447,14 @@
       <div style="margin-top: 2rem;">
         <div class="text-label" style="margin-bottom: 1rem;">测试记录</div>
 
-        <div id="loading" class="loading">
+        <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+        <button class="tab-btn active" data-tab="stats" onclick="switchTab('stats')">数据概览</button>
+        <button class="tab-btn" data-tab="users" onclick="switchTab('users')">用户管理</button>
+      </div>
+
+      <!-- Stats Section -->
+      <div id="tab-stats" class="tab-content">
+        <div id="stats-loading" class="loading">
           <div class="spinner"></div>
           <div style="font-size: 0.6875rem; letter-spacing: 0.1em; text-transform: uppercase;">加载中</div>
         </div>
@@ -390,7 +464,7 @@
           <div style="font-size: 0.75rem;">暂无测试数据</div>
         </div>
 
-        <div id="table-container" style="overflow-x: auto;" style="display: none;">
+        <div id="table-container" style="overflow-x: auto; display: none;">
           <table class="results-table" id="results-table">
             <thead>
               <tr>
@@ -408,21 +482,71 @@
         </div>
       </div>
 
+      <!-- Users Section -->
+      <div id="tab-users" class="tab-content" style="display: none;">
+        <div id="users-loading" class="loading">
+          <div class="spinner"></div>
+          <div style="font-size: 0.6875rem; letter-spacing: 0.1em; text-transform: uppercase;">加载用户中</div>
+        </div>
+        <div id="users-empty" class="empty" style="display: none;">
+          <div class="empty-icon">—</div>
+          <div style="font-size: 0.75rem;">暂无用户数据</div>
+        </div>
+        <div id="users-container" style="overflow-x: auto; display: none;">
+          <table class="results-table" id="users-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>用户名</th>
+                <th>角色</th>
+                <th>注册时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="users-body">
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+              </tr>
+            </thead>
+            <tbody id="results-body">
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </div>
   </div>
 
   <script>
     let allResults = [];
 
+    // Tab switching
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === tab);
+      });
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.style.display = content.id === 'tab-' + tab ? 'block' : 'none';
+      });
+      if (tab === 'users') {
+        loadUsers();
+      }
+    }
+
+    // Load stats data
     async function loadData() {
-      document.getElementById('loading').style.display = 'block';
+      document.getElementById('stats-loading').style.display = 'block';
       document.getElementById('empty').style.display = 'none';
       document.getElementById('table-container').style.display = 'none';
 
       try {
         const [statsRes, resultsRes] = await Promise.all([
-          fetch('/api/stats'),
-          fetch('/api/admin/results')
+          fetch(API_BASE + '/api/stats'),
+          fetch(API_BASE + '/api/admin/results')
         ]);
 
         const stats = await statsRes.json();
@@ -463,7 +587,102 @@
         document.querySelector('#empty div:last-child').textContent = '数据加载失败';
       }
 
-      document.getElementById('loading').style.display = 'none';
+      document.getElementById('stats-loading').style.display = 'none';
+    }
+
+    // Load users data
+    async function loadUsers() {
+      document.getElementById('users-loading').style.display = 'block';
+      document.getElementById('users-empty').style.display = 'none';
+      document.getElementById('users-container').style.display = 'none';
+
+      try {
+        const token = localStorage.getItem('opc_token');
+        const response = await fetch(API_BASE + '/api/admin/users', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || '获取用户列表失败');
+        }
+
+        const users = data.data || [];
+        renderUsersTable(users);
+
+      } catch (error) {
+        console.error('Load users error:', error);
+        document.getElementById('users-empty').style.display = 'block';
+        document.querySelector('#users-empty div:last-child').textContent = '加载失败: ' + error.message;
+      }
+
+      document.getElementById('users-loading').style.display = 'none';
+    }
+
+    function renderUsersTable(users) {
+      if (!users || users.length === 0) {
+        document.getElementById('users-empty').style.display = 'block';
+        document.getElementById('users-container').style.display = 'none';
+        return;
+      }
+
+      document.getElementById('users-empty').style.display = 'none';
+      document.getElementById('users-container').style.display = 'block';
+
+      const tbody = document.getElementById('users-body');
+      tbody.innerHTML = users.map(u => {
+        const date = new Date(u.created_at);
+        const timeStr = date.toLocaleString('zh-CN', {
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+
+        const roleClass = u.role === 'admin' ? 'admin' : u.role === 'paid' ? 'paid' : 'free';
+
+        return `
+          <tr>
+            <td style="color: var(--text-tertiary);">${u.id}</td>
+            <td>${u.username || '—'}</td>
+            <td><span class="role-badge ${roleClass}">${u.role || 'free'}</span></td>
+            <td class="time">${timeStr}</td>
+            <td>
+              ${u.role !== 'admin' ? `
+                <button class="action-btn" onclick="setUserRole('${u.id}', 'paid')">设为付费</button>
+                <button class="action-btn danger" onclick="setUserRole('${u.id}', 'free')">设为免费</button>
+              ` : '<span style="color: var(--text-tertiary);">—</span>'}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    async function setUserRole(userId, role) {
+      if (!confirm('确定要修改用户角色为 ' + role + ' 吗？')) return;
+
+      try {
+        const token = localStorage.getItem('opc_token');
+        const response = await fetch(API_BASE + '/api/admin/set-role', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({ userId, role })
+        });
+
+        const data = await response.json();
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || '修改失败');
+        }
+
+        alert('角色修改成功');
+        loadUsers();
+
+      } catch (error) {
+        alert('修改失败: ' + error.message);
+      }
     }
 
     function renderTable(results) {
