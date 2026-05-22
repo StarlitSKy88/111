@@ -1389,9 +1389,14 @@ function closeAllModals() {
 function renderAuthForm() {
   const isLogin = state.authMode === 'login';
   const isEmailVerify = state.authMode === 'email_verify';
+  const isAdminLogin = state.authMode === 'admin_login';
 
   if (isEmailVerify) {
     return renderEmailVerifyForm();
+  }
+
+  if (isAdminLogin) {
+    return renderAdminLoginForm();
   }
 
   return `
@@ -1462,6 +1467,19 @@ function renderAuthForm() {
         立即注册
       </button>
     </div>
+    <div style="text-align: center; padding-top: 0.75rem;">
+      <button onclick="showAdminLogin()" style="
+        background: none;
+        border: none;
+        color: var(--text-tertiary);
+        font-size: 0.625rem;
+        letter-spacing: 0.1em;
+        cursor: pointer;
+        text-decoration: underline;
+      ">
+        管理员入口
+      </button>
+    </div>
     ` : `
     <div style="text-align: center; padding-top: 1rem; border-top: 1px solid var(--line);">
       <span class="text-label" style="color: var(--text-tertiary); margin-right: 0.5rem;">已有账号？</span>
@@ -1478,6 +1496,114 @@ function renderAuthForm() {
     </div>
     `}
   `;
+}
+
+// 管理员登录表单
+function renderAdminLoginForm() {
+  return `
+    <div style="margin-bottom: 1.5rem;">
+      <h3 style="font-size: 1.125rem; font-weight: 400; color: var(--text-primary); margin-bottom: 0.25rem;">
+        管理员登录
+      </h3>
+      <p class="text-label" style="color: var(--text-tertiary);">
+        输入管理员账号凭据
+      </p>
+    </div>
+
+    <form onsubmit="handleAdminLoginSubmit(event)">
+      <input
+        type="text"
+        id="admin-username"
+        class="auth-input"
+        placeholder="管理员用户名"
+        required
+        style="margin-bottom: 0.75rem;"
+        value="admin"
+      >
+      <input
+        type="password"
+        id="admin-password"
+        class="auth-input"
+        placeholder="密码"
+        required
+        style="margin-bottom: 0.75rem;"
+      >
+      <div id="admin-login-error" class="error-message" style="margin-bottom: 1rem; display: none;"></div>
+      <button type="submit" class="btn-pdf" style="width: 100%; margin-bottom: 1rem;">
+        进入后台
+      </button>
+    </form>
+
+    <div style="text-align: center; padding-top: 1rem; border-top: 1px solid var(--line);">
+      <button onclick="backToLogin()" style="
+        background: none;
+        border: none;
+        color: var(--text-tertiary);
+        font-size: 0.75rem;
+        cursor: pointer;
+        text-decoration: underline;
+      ">
+        返回普通登录
+      </button>
+    </div>
+  `;
+}
+
+function showAdminLogin() {
+  state.authMode = 'admin_login';
+  const content = document.getElementById('auth-modal-content');
+  content.innerHTML = renderAdminLoginForm();
+}
+
+function backToLogin() {
+  state.authMode = 'login';
+  const content = document.getElementById('auth-modal-content');
+  content.innerHTML = renderAuthForm();
+}
+
+async function handleAdminLoginSubmit(event) {
+  event.preventDefault();
+
+  const username = document.getElementById('admin-username').value.trim();
+  const password = document.getElementById('admin-password').value;
+  const errorEl = document.getElementById('admin-login-error');
+
+  errorEl.style.display = 'none';
+
+  try {
+    const response = await fetch(API_BASE + '/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.error || '登录失败');
+    }
+
+    // 检查是否是admin角色
+    if (data.user?.role !== 'admin') {
+      throw new Error('不是管理员账号');
+    }
+
+    // 管理员登录成功
+    state.user = { username: username, token: data.token, role: 'admin' };
+    localStorage.setItem('opc_token', data.token);
+    localStorage.setItem('opc_username', username);
+    localStorage.setItem('opc_role', 'admin');
+
+    closeAllModals();
+    renderAuthSection();
+
+    // 跳转到管理后台
+    window.location.href = '/admin.html';
+
+  } catch (error) {
+    errorEl.textContent = error.message;
+    errorEl.style.display = 'block';
+  }
 }
 
 // 邮箱验证表单
