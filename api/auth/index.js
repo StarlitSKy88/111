@@ -30,6 +30,10 @@ function ensureDataDir() {
 const USERS_FILE      = path.join(DATA_DIR, 'users.json');
 const SUBS_FILE       = path.join(DATA_DIR, 'subscriptions.json');
 const PURCHASES_FILE  = path.join(DATA_DIR, 'purchases.json');
+const VERIFY_CODES_FILE = path.join(DATA_DIR, 'verify-codes.json');
+
+// 验证码存储
+const VERIFY_CODE_EXPIRY = 15 * 60 * 1000; // 15分钟
 
 function readUsers() {
   ensureDataDir();
@@ -60,6 +64,67 @@ function readPurchases() {
 function writePurchases(purchases) {
   ensureDataDir();
   fs.writeFileSync(PURCHASES_FILE, JSON.stringify(purchases, null, 2));
+}
+
+// 验证码管理
+function readVerifyCodes() {
+  ensureDataDir();
+  if (!fs.existsSync(VERIFY_CODES_FILE)) return {};
+  try { return JSON.parse(fs.readFileSync(VERIFY_CODES_FILE, 'utf-8')); } catch { return {}; }
+}
+function writeVerifyCodes(codes) {
+  ensureDataDir();
+  fs.writeFileSync(VERIFY_CODES_FILE, JSON.stringify(codes, null, 2));
+}
+
+// 生成验证码并存储
+function createVerifyCode(email) {
+  const codes = readVerifyCodes();
+  const code = crypto.randomInt(100000, 999999).toString();
+  codes[email] = {
+    code,
+    expires_at: Date.now() + VERIFY_CODE_EXPIRY,
+    created_at: new Date().toISOString()
+  };
+  writeVerifyCodes(codes);
+  return code;
+}
+
+// 验证验证码
+function verifyCode(email, code) {
+  const codes = readVerifyCodes();
+  const record = codes[email];
+  if (!record) return { success: false, error: '验证码已失效，请重新获取' };
+  if (Date.now() > record.expires_at) {
+    delete codes[email];
+    writeVerifyCodes(codes);
+    return { success: false, error: '验证码已过期，请重新获取' };
+  }
+  if (record.code !== code) {
+    return { success: false, error: '验证码错误' };
+  }
+  // 验证成功，删除验证码
+  delete codes[email];
+  writeVerifyCodes(codes);
+  return { success: true };
+}
+
+// 标记用户邮箱已验证
+function markEmailVerified(userId) {
+  const users = readUsers();
+  const user = users.find(u => u.id === userId);
+  if (user) {
+    user.email_verified = true;
+    user.updated_at = new Date().toISOString();
+    writeUsers(users);
+  }
+}
+
+// 获取用户待验证邮箱
+function getPendingEmail(userId) {
+  const users = readUsers();
+  const user = users.find(u => u.id === userId);
+  return user ? user.pending_email : null;
 }
 
 // ============ 管理员种子 ============
@@ -333,5 +398,9 @@ module.exports = {
   createSubscription,
   addNodePurchase,
   canAccessContent,
-  generateToken
+  generateToken,
+  createVerifyCode,
+  verifyCode,
+  markEmailVerified,
+  getPendingEmail
 };

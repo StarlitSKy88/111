@@ -89,6 +89,36 @@ app.post('/api/admin/set-role', auth.requireRole('admin'), (req, res) => {
   res.json({ success: true });
 });
 
+// ========== 邮箱验证 API ==========
+const email = require('./utils/email');
+
+// 发送邮箱验证码
+app.post('/api/auth/email/send-code', async (req, res) => {
+  const { email: emailAddr } = req.body;
+  if (!emailAddr || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailAddr)) {
+    return res.status(400).json({ success: false, error: '请输入有效的邮箱地址' });
+  }
+  const code = auth.createVerifyCode(emailAddr);
+  const result = await email.sendVerifyCodeEmail(emailAddr, code);
+  if (!result.success) {
+    return res.status(500).json({ success: false, error: '发送失败：' + result.error });
+  }
+  res.json({ success: true, message: '验证码已发送' });
+});
+
+// 验证邮箱验证码
+app.post('/api/auth/email/verify-code', (req, res) => {
+  const { email: emailAddr, code } = req.body;
+  if (!emailAddr || !code) {
+    return res.status(400).json({ success: false, error: '请提供邮箱和验证码' });
+  }
+  const result = auth.verifyCode(emailAddr, code);
+  if (!result.success) {
+    return res.status(400).json(result);
+  }
+  res.json({ success: true, message: '验证成功' });
+});
+
 // 兼容旧API（已废弃）
 app.post('/api/auth/send-code', (req, res) => {
   res.status(410).json({ success: false, error: '已改用用户名+密码，请使用 /api/auth/register' });

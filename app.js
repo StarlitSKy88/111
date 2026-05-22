@@ -20,7 +20,11 @@ const state = {
   // 订阅弹窗选择
   selectedPlan: null,
   // 认证流程状态
-  authMode: 'login' // 'login' | 'register'
+  authMode: 'login', // 'login' | 'register' | 'email_verify'
+  // 邮箱验证相关
+  pendingEmail: null,
+  emailCodeSent: false,
+  emailCodeCountdown: 0
 };
 
 async function loadQuestions() {
@@ -1384,6 +1388,11 @@ function closeAllModals() {
 
 function renderAuthForm() {
   const isLogin = state.authMode === 'login';
+  const isEmailVerify = state.authMode === 'email_verify';
+
+  if (isEmailVerify) {
+    return renderEmailVerifyForm();
+  }
 
   return `
     <div style="margin-bottom: 1.5rem;">
@@ -1424,6 +1433,14 @@ function renderAuthForm() {
         required
         minlength="6"
         style="margin-bottom: 0.75rem;"
+      >
+      <input
+        type="email"
+        id="auth-email"
+        class="auth-input"
+        placeholder="邮箱地址（用于验证）"
+        required
+        style="margin-bottom: 0.75rem;"
       >` : ''}
       <div id="auth-error" class="error-message" style="margin-bottom: 1rem; display: none;"></div>
       <button type="submit" class="btn-pdf" style="width: 100%; margin-bottom: 1rem;">
@@ -1463,10 +1480,78 @@ function renderAuthForm() {
   `;
 }
 
-function toggleAuthMode() {
-  state.authMode = state.authMode === 'login' ? 'register' : 'login';
-  const content = document.getElementById('auth-modal-content');
-  content.innerHTML = renderAuthForm();
+// 邮箱验证表单
+function renderEmailVerifyForm() {
+  const countdown = state.emailCodeCountdown;
+
+  return `
+    <div style="margin-bottom: 1.5rem;">
+      <h3 style="font-size: 1.125rem; font-weight: 400; color: var(--text-primary); margin-bottom: 0.25rem;">
+        验证邮箱
+      </h3>
+      <p class="text-label" style="color: var(--text-tertiary);">
+        请验证您的邮箱 ${state.pendingEmail || ''}
+      </p>
+    </div>
+
+    <form onsubmit="handleEmailVerifySubmit(event)">
+      <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem;">
+        <input
+          type="text"
+          id="email-verify-code"
+          class="auth-input"
+          placeholder="6位验证码"
+          required
+          maxlength="6"
+          pattern="[0-9]{6}"
+          style="flex: 1; text-align: center; letter-spacing: 0.2em; font-size: 1.25rem;"
+        >
+      </div>
+
+      <div id="email-verify-error" class="error-message" style="margin-bottom: 1rem; display: none;"></div>
+
+      <button
+        type="submit"
+        class="btn-pdf"
+        style="width: 100%; margin-bottom: 0.75rem;"
+        ${countdown > 0 ? 'disabled style="opacity: 0.5;"' : ''}
+      >
+        ${countdown > 0 ? `${countdown}秒后可重新发送` : '验证'}
+      </button>
+
+      <div style="text-align: center; margin-bottom: 1rem;">
+        <button
+          type="button"
+          onclick="resendEmailCode()"
+          class="text-label"
+          style="
+            background: none;
+            border: none;
+            color: var(--text-tertiary);
+            font-size: 0.75rem;
+            cursor: pointer;
+            text-decoration: underline;
+          "
+          ${countdown > 0 ? 'disabled style="opacity: 0.5;"' : ''}
+        >
+          重新发送验证码
+        </button>
+      </div>
+    </form>
+
+    <div style="text-align: center; padding-top: 1rem; border-top: 1px solid var(--line);">
+      <button onclick="backToRegister()" style="
+        background: none;
+        border: none;
+        color: var(--text-tertiary);
+        font-size: 0.75rem;
+        cursor: pointer;
+        text-decoration: underline;
+      ">
+        返回注册
+      </button>
+    </div>
+  `;
 }
 
 async function handleAuthSubmit(event) {
@@ -1488,6 +1573,35 @@ async function handleAuthSubmit(event) {
     }
   }
 
+  // 注册模式：需要邮箱验证
+  if (!isLogin) {
+    const emailInput = document.getElementById('auth-email');
+    const email = emailInput?.value?.trim();
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errorEl.textContent = '请输入有效的邮箱地址';
+      errorEl.style.display = 'block';
+      return;
+    }
+
+    // 存储注册信息，等待邮箱验证
+    localStorage.setItem('opc_pending_username', username);
+    localStorage.setItem('opc_pending_password', password);
+
+    // 进入邮箱验证流程
+    state.pendingEmail = email;
+    state.authMode = 'email_verify';
+    state.emailCodeCountdown = 0;
+
+    const content = document.getElementById('auth-modal-content');
+    content.innerHTML = renderEmailVerifyForm();
+
+    // 自动发送验证码
+    await sendEmailCode();
+    return;
+  }
+
+  // 登录模式
   try {
     const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
     const response = await fetch(API_BASE + endpoint, {
@@ -1523,6 +1637,145 @@ async function handleAuthSubmit(event) {
     errorEl.textContent = error.message;
     errorEl.style.display = 'block';
   }
+}
+
+// 邮箱验证相关函数
+async function handleEmailVerifySubmit(event) {
+  event.preventDefault();
+
+  const codeInput = document.getElementById('email-verify-code');
+  const errorEl = document.getElementById('email-verify-error');
+  const code = codeInput?.value?.trim();
+
+  if (!code || code.length !== 6) {
+    errorEl.textContent = '请输入6位验证码';
+    errorEl.style.display = 'block';
+    return;
+  }
+
+  try {
+    const response = await fetch(API_BASE + '/api/auth/email/verify-code', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: state.pendingEmail, code })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.error || '验证码验证失败');
+    }
+
+    // 验证成功，重新注册
+    const username = localStorage.getItem('opc_pending_username');
+    const password = localStorage.getItem('opc_pending_password');
+
+    if (!username || !password) {
+      errorEl.textContent = '注册信息已过期，请重新注册';
+      errorEl.style.display = 'block';
+      return;
+    }
+
+    // 完成注册
+    const registerResponse = await fetch(API_BASE + '/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+
+    const registerData = await registerResponse.json();
+
+    if (!registerResponse.ok || !registerData.success) {
+      throw new Error(registerData.error || '注册失败');
+    }
+
+    // 清理临时数据
+    localStorage.removeItem('opc_pending_username');
+    localStorage.removeItem('opc_pending_password');
+
+    // 登录成功
+    const role = registerData.user?.role || 'free';
+    state.user = { username: username, token: registerData.token, role: role };
+    state.authMode = 'login';
+    state.pendingEmail = null;
+    state.emailCodeSent = false;
+    state.emailCodeCountdown = 0;
+
+    localStorage.setItem('opc_token', registerData.token);
+    localStorage.setItem('opc_username', username);
+    localStorage.setItem('opc_role', role);
+
+    closeAllModals();
+    renderAuthSection();
+
+  } catch (error) {
+    errorEl.textContent = error.message;
+    errorEl.style.display = 'block';
+  }
+}
+
+async function sendEmailCode() {
+  const email = state.pendingEmail;
+  if (!email) return;
+
+  try {
+    const response = await fetch(API_BASE + '/api/auth/email/send-code', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.error || '发送失败');
+    }
+
+    state.emailCodeSent = true;
+    state.emailCodeCountdown = 60;
+
+    // 开始倒计时
+    const countdownInterval = setInterval(() => {
+      state.emailCodeCountdown--;
+      if (state.emailCodeCountdown <= 0) {
+        clearInterval(countdownInterval);
+      }
+      // 重新渲染验证码表单
+      const content = document.getElementById('auth-modal-content');
+      if (content && state.authMode === 'email_verify') {
+        content.innerHTML = renderEmailVerifyForm();
+      }
+    }, 1000);
+
+  } catch (error) {
+    const errorEl = document.getElementById('email-verify-error');
+    if (errorEl) {
+      errorEl.textContent = error.message;
+      errorEl.style.display = 'block';
+    }
+  }
+}
+
+async function resendEmailCode() {
+  await sendEmailCode();
+}
+
+function backToRegister() {
+  state.authMode = 'register';
+  state.pendingEmail = null;
+  state.emailCodeSent = false;
+  state.emailCodeCountdown = 0;
+  localStorage.removeItem('opc_pending_username');
+  localStorage.removeItem('opc_pending_password');
+  const content = document.getElementById('auth-modal-content');
+  content.innerHTML = renderAuthForm();
+}
+
+// 更新注册流程，在注册前先验证邮箱
+function toggleAuthMode() {
+  state.authMode = state.authMode === 'login' ? 'register' : 'login';
+  const content = document.getElementById('auth-modal-content');
+  content.innerHTML = renderAuthForm();
 }
 
 function logout() {
