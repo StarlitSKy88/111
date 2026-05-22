@@ -1,0 +1,245 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "← 返回首页" [ref=e3] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e4]: ←
+      - text: 返回首页
+    - generic [ref=e5]: 节点 54 / 57
+  - generic: "54"
+  - generic [ref=e6]:
+    - navigation [ref=e7]:
+      - generic [ref=e8]: 目录
+      - list [ref=e9]:
+        - listitem [ref=e10]:
+          - link "D1 · 判断时机" [ref=e11] [cursor=pointer]:
+            - /url: "#d1"
+        - listitem [ref=e12]:
+          - link "D2 · 注册认证" [ref=e13] [cursor=pointer]:
+            - /url: "#d2"
+        - listitem [ref=e14]:
+          - link "D3 · 开发发布" [ref=e15] [cursor=pointer]:
+            - /url: "#d3"
+        - listitem [ref=e16]:
+          - link "D4 · 支付接入" [ref=e17] [cursor=pointer]:
+            - /url: "#d4"
+        - listitem [ref=e18]:
+          - link "FIN" [ref=e19] [cursor=pointer]:
+            - /url: "#fin"
+    - main [ref=e20]:
+      - generic [ref=e22]:
+        - generic [ref=e23]: 节点 54 · 并行支撑层
+        - heading "微信小程序部署" [level=1] [ref=e24]
+        - paragraph [ref=e25]: 网站流量稳定后需要更轻量的用户入口，用户体验比H5更好、留存率更高、支付更方便
+      - generic [ref=e26]:
+        - generic [ref=e27]:
+          - generic [ref=e28]: D1
+          - generic [ref=e29]: 核心
+          - generic [ref=e30]: 本质
+        - heading "先判断：你的网站流量到\"小程序时刻\"了吗" [level=2] [ref=e31]
+        - generic [ref=e32]:
+          - generic [ref=e33]:
+            - paragraph [ref=e34]:
+              - text: 小程序用户体验比H5更好、留存率更高、支付更方便。但
+              - strong [ref=e35]: 不是所有OPC都需要小程序
+              - text: 。
+            - paragraph [ref=e36]:
+              - strong [ref=e37]: 核心指标
+              - text: ：用户在你的网站完成一次关键行为（比如付费、提交表单）超过20次/天，就可以考虑小程序。
+          - generic [ref=e38]:
+            - generic [ref=e39]:
+              - generic [ref=e40]:
+                - generic [ref=e41]: UV > 500/天
+                - generic [ref=e42]: 立即做小程序
+              - generic [ref=e43]:
+                - generic [ref=e44]: UV > 200/天
+                - generic [ref=e45]: 可以考虑
+              - generic [ref=e46]:
+                - generic [ref=e47]: UV < 100/天
+                - generic [ref=e48]: 先优化网站
+            - generic [ref=e49]:
+              - generic [ref=e50]: × 致命错误
+              - generic [ref=e51]: 网站还没跑通，就分散精力做小程序。H5是增长工具，小程序是放大工具——先用H5验证商业模式。
+      - generic [ref=e52]:
+        - generic [ref=e53]:
+          - generic [ref=e54]: D2
+          - generic [ref=e55]: 模型
+        - heading "小程序 vs H5 vs App" [level=2] [ref=e56]
+        - generic [ref=e57]:
+          - generic [ref=e58]:
+            - generic [ref=e59]:
+              - generic [ref=e60]: "01"
+              - generic [ref=e61]:
+                - generic [ref=e62]: H5网站
+                - generic [ref=e63]: 开发成本低，用户扫二维码就能用，分发效率最高。适合早期验证。
+            - generic [ref=e64]:
+              - generic [ref=e65]: "02"
+              - generic [ref=e66]:
+                - generic [ref=e67]: 微信小程序
+                - generic [ref=e68]: 用户体验高、留存率高、微信支付方便。需要安装，分发效率中等。
+            - generic [ref=e69]:
+              - generic [ref=e70]: "03"
+              - generic [ref=e71]:
+                - generic [ref=e72]: 原生App
+                - generic [ref=e73]: 用户体验最高，但开发成本高、应用市场分发效率低。适合成熟期。
+          - generic [ref=e75]:
+            - generic [ref=e76]: ✓ OPC首选
+            - generic [ref=e77]: 先用H5验证商业模式，小程序是增长工具而非救命稻草。第一年用H5，第二年有流量后再小程序。
+      - generic [ref=e78]:
+        - generic [ref=e79]:
+          - generic [ref=e80]: D3
+          - generic [ref=e81]: 培育
+        - heading "2026年微信小程序注册与账号体系" [level=2] [ref=e82]
+        - generic [ref=e83]:
+          - generic [ref=e84]:
+            - paragraph [ref=e85]:
+              - strong [ref=e86]: 个人开发者账号
+              - text: （OPC首选）
+            - paragraph [ref=e87]: 注册地址：mp.weixin.qq.com
+            - paragraph [ref=e88]: 准备材料：微信个人开发者账号（已实名认证）、邮箱、手机号。
+            - paragraph [ref=e89]:
+              - strong [ref=e90]: 费用
+              - text: ：个人开发者每年认证费 ¥300（需要营业执照才能免认证费）
+            - paragraph [ref=e92]:
+              - strong [ref=e93]: 企业主体账号
+              - text: ：如果公司已经注册完成（节点23），建议使用企业主体账号——无需每年 ¥300 认证费，可以开通微信支付商户号。
+          - generic [ref=e95]:
+            - generic [ref=e96]: ✓ 建议路径
+            - generic [ref=e97]: OPC第一年用个人账号验证，第二年有收入后升级企业账号。
+      - generic [ref=e98]:
+        - generic [ref=e99]:
+          - generic [ref=e100]: D4
+          - generic [ref=e101]: 工具
+        - heading "开发工具与框架选择（2026年）" [level=2] [ref=e102]
+        - generic [ref=e103]:
+          - generic [ref=e104]:
+            - generic [ref=e105]:
+              - generic [ref=e106]: "01"
+              - generic [ref=e107]:
+                - generic [ref=e108]: 微信开发者工具 + 原生开发
+                - generic [ref=e109]: 官方支持，文档最全，调试方便。适合完全零基础、第一次接触小程序开发。
+            - generic [ref=e110]:
+              - generic [ref=e111]: "02"
+              - generic [ref=e112]:
+                - generic [ref=e113]: Taro + React（推荐有前端经验）
+                - generic [ref=e114]: 可以用React语法，支持Vue；代码复用率高。节点06学过React的可以直接用。
+            - generic [ref=e115]:
+              - generic [ref=e116]: "03"
+              - generic [ref=e117]:
+                - generic [ref=e118]: UniApp + Vue
+                - generic [ref=e119]: 生态好，国内文档丰富；一次开发多端上线（微信/支付宝/抖音）。包体积比原生大约200KB。
+          - generic [ref=e121]:
+            - generic [ref=e122]:
+              - generic [ref=e123]: 零基础OPC
+              - generic [ref=e124]: 原生开发
+            - generic [ref=e125]:
+              - generic [ref=e126]: 有前端经验
+              - generic [ref=e127]: Taro + React
+            - generic [ref=e128]:
+              - generic [ref=e129]: 想快速多端
+              - generic [ref=e130]: UniApp
+      - generic [ref=e131]:
+        - generic [ref=e132]:
+          - generic [ref=e133]: D5
+          - generic [ref=e134]: 流程
+        - heading "开发流程（OPC精简版）" [level=2] [ref=e135]
+        - generic [ref=e136]:
+          - generic [ref=e137]:
+            - generic [ref=e138]:
+              - generic [ref=e139]: "1"
+              - generic [ref=e140]:
+                - generic [ref=e141]: 创建项目（30分钟）
+                - generic [ref=e142]: 打开微信开发者工具 → 新建项目 → 选择「小程序」→ 填写 AppID → 填写项目名称。
+            - generic [ref=e143]:
+              - generic [ref=e144]: "2"
+              - generic [ref=e145]:
+                - generic [ref=e146]: 理解项目结构（1小时）
+                - generic [ref=e147]: app.js（入口）、app.json（配置）、pages/（页面）。最小小程序只需要：app.js + app.json + pages/index/。
+            - generic [ref=e148]:
+              - generic [ref=e149]: "3"
+              - generic [ref=e150]:
+                - generic [ref=e151]: 实现核心页面（1-3天）
+                - generic [ref=e152]:
+                  - strong [ref=e153]: 不要做完整版小程序
+                  - text: 。OPC小程序只需要：核心功能展示（1-2个页面）+ 用户登录 + 一个关键操作。
+          - generic [ref=e154]:
+            - generic [ref=e155]:
+              - generic [ref=e156]: × 致命操作
+              - generic [ref=e157]: 做完整版小程序。第一版功能要少，只放核心功能，不要做完整版——审核员看到功能完整但有Bug会直接拒绝。
+            - generic [ref=e158]:
+              - generic [ref=e159]: ✓ 正确示范
+              - generic [ref=e160]: 第一个版本只做1个核心页面，审核通过后再迭代。这样可以快速上线、快速验证。
+      - generic [ref=e161]:
+        - generic [ref=e162]:
+          - generic [ref=e163]: D6
+          - generic [ref=e164]: 审核
+        - heading "提交审核与发布" [level=2] [ref=e165]
+        - generic [ref=e166]:
+          - generic [ref=e167]:
+            - paragraph [ref=e168]:
+              - strong [ref=e169]: 审核时间（2026年）
+            - paragraph [ref=e170]: 首次提交：3-7个工作日 | 迭代更新：1-3个工作日 | 紧急修复：24小时内
+            - paragraph [ref=e171]:
+              - strong [ref=e172]: ❌ 常见被拒原因
+            - paragraph [ref=e173]: 页面有Bug打不开、诱导分享、虚拟支付、缺少隐私政策页面、内容涉及需要资质行业（医疗、金融等）。
+            - paragraph [ref=e174]:
+              - strong [ref=e175]: ✓ 快速过审技巧
+            - paragraph [ref=e176]: 第一版功能要少、隐私政策必须有、测试账号要真实、联系方式要正确（审核员会打电话核实）。
+          - generic [ref=e178]:
+            - generic [ref=e179]:
+              - generic [ref=e180]: 首次提交
+              - generic [ref=e181]: 3-7个工作日
+            - generic [ref=e182]:
+              - generic [ref=e183]: 迭代更新
+              - generic [ref=e184]: 1-3个工作日
+            - generic [ref=e185]:
+              - generic [ref=e186]: 紧急修复
+              - generic [ref=e187]: 24小时内
+      - generic [ref=e188]:
+        - generic [ref=e189]:
+          - generic [ref=e190]: D7
+          - generic [ref=e191]: 成本
+        - heading "成本估算（2026年）" [level=2] [ref=e192]
+        - generic [ref=e193]:
+          - generic [ref=e194]:
+            - generic [ref=e195]:
+              - generic [ref=e196]: ¥300
+              - generic [ref=e197]:
+                - generic [ref=e198]: 微信认证费/年
+                - generic [ref=e199]: 个人账号需要；企业账号免认证费
+            - generic [ref=e200]:
+              - generic [ref=e201]: ¥0
+              - generic [ref=e202]:
+                - generic [ref=e203]: 开发工具
+                - generic [ref=e204]: 微信开发者工具免费使用
+            - generic [ref=e205]:
+              - generic [ref=e206]: ¥0-200
+              - generic [ref=e207]:
+                - generic [ref=e208]: 服务器/月
+                - generic [ref=e209]: 初期用云开发自带免费额度
+          - paragraph [ref=e212]:
+            - strong [ref=e213]: 总计
+            - text: ：¥300-2700/年，主要成本是认证费。小程序是低成本高回报的放大工具。
+      - generic [ref=e215]:
+        - generic [ref=e216]: 财务健康指标
+        - generic [ref=e217]:
+          - generic [ref=e218]:
+            - generic [ref=e219]: ¥300
+            - generic [ref=e220]: 最低年成本
+            - generic [ref=e221]: 个人账号认证费
+          - generic [ref=e222]:
+            - generic [ref=e223]: 3天
+            - generic [ref=e224]: 最快上线
+            - generic [ref=e225]: 第一版精简小程序
+          - generic [ref=e226]:
+            - generic [ref=e227]: 20次
+            - generic [ref=e228]: 关键行为/天
+            - generic [ref=e229]: 小程序时刻判断标准
+  - navigation [ref=e230]:
+    - link "← 节点53：海外支付方案" [ref=e231] [cursor=pointer]:
+      - /url: /nodes/53-global-payment/index.html
+      - generic [ref=e232]: ←
+      - text: 节点53：海外支付方案
+    - link "节点55：外包策略与执行 →" [ref=e233] [cursor=pointer]:
+      - /url: /nodes/55-outsourcing/index.html
+      - text: 节点55：外包策略与执行
+      - generic [ref=e234]: →

@@ -6,5 +6,13 @@
     "role": "admin",
     "created_at": "2026-05-08T20:15:39.890Z",
     "updated_at": "2026-05-08T20:15:39.895Z"
+  },
+  {
+    "id": "1779393554455",
+    "username": "testuser",
+    "password_hash": "30595ea77398e2b21213d1af2752cf16:a4c861712a13759aca9420776445783ed732adea31e2ef6d7b9e6f99e401c3c8",
+    "role": "free",
+    "created_at": "2026-05-21T19:59:14.457Z",
+    "updated_at": "2026-05-21T19:59:14.457Z"
   }
 ]
