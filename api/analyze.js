@@ -160,6 +160,186 @@ app.post('/api/admin/delete-user', auth.requireRole('admin'), (req, res) => {
   res.json({ success: true, message: '用户已删除' });
 });
 
+// ========== 付费码/兑换码 API ==========
+const PROMO_CODES_FILE = path.join(DATA_DIR, 'promo-codes.json');
+const CODE_REDEMPTIONS_FILE = path.join(DATA_DIR, 'code-redemptions.json');
+
+function ensureFile(filepath, defaultContent) {
+  if (!fs.existsSync(filepath)) {
+    fs.writeFileSync(filepath, defaultContent, 'utf-8');
+  }
+}
+
+function readPromoCodes() {
+  ensureFile(PROMO_CODES_FILE, '{"codes": []}');
+  try { return JSON.parse(fs.readFileSync(PROMO_CODES_FILE, 'utf-8')); } catch { return { codes: [] }; }
+}
+
+function writePromoCodes(data) {
+  fs.writeFileSync(PROMO_CODES_FILE, JSON.stringify(data, null, 2));
+}
+
+function readRedemptions() {
+  ensureFile(CODE_REDEMPTIONS_FILE, '{"redemptions": []}');
+  try { return JSON.parse(fs.readFileSync(CODE_REDEMPTIONS_FILE, 'utf-8')); } catch { return { redemptions: [] }; }
+}
+
+function writeRedemptions(data) {
+  fs.writeFileSync(CODE_REDEMPTIONS_FILE, JSON.stringify(data, null, 2));
+}
+
+// 生成付费码（管理员）
+app.post('/api/admin/promo-codes', auth.requireRole('admin'), (req, res) => {
+  try {
+    const { count = 1, expiresInDays = 30, maxUses = 1, type = 'gift' } = req.body;
+
+    const data = readPromoCodes();
+    const newCodes = [];
+
+    for (let i = 0; i < count; i++) {
+      const code = {
+        id: 'pc_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+        code: generatePromoCode(),
+        type, // 'gift'=礼物码(一次性), 'multi'=可多次使用
+        maxUses,
+        uses: 0,
+        expiresAt: new Date(Date.now() + expiresInDays * 24 * 60 * 60 * 1000).toISOString(),
+        createdAt: new Date().toISOString(),
+        createdBy: req.user?.username || 'admin',
+        active: true
+      };
+      data.codes.push(code);
+      newCodes.push(code);
+    }
+
+    writePromoCodes(data);
+    res.json({ success: true, data: newCodes });
+  } catch (error) {
+    console.error('Create promo code error:', error);
+    res.status(500).json({ success: false, error: '生成失败' });
+  }
+});
+
+function generatePromoCode() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = '';
+  for (let i = 0; i < 8; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return code;
+}
+
+// 获取付费码列表
+app.get('/api/admin/promo-codes', auth.requireRole('admin'), (req, res) => {
+  try {
+    const data = readPromoCodes();
+    const { active, type } = req.query;
+    let codes = data.codes;
+
+    if (active !== undefined) {
+      codes = codes.filter(c => c.active === (active === 'true'));
+    }
+    if (type) {
+      codes = codes.filter(c => c.type === type);
+    }
+
+    codes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    res.json({ success: true, data: codes, total: codes.length });
+  } catch (error) {
+    res.status(500).json({ success: false, error: '获取失败' });
+  }
+});
+
+// 兑换付费码（用户）
+app.post('/api/redeem-code', (req, res) => {
+  try {
+    const { code, userId } = req.body;
+    if (!code) {
+      return res.status(400).json({ success: false, error: '请输入兑换码' });
+    }
+
+    const users = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'users.json'), 'utf-8'));
+    const user = userId ? users.find(u => u.id === userId) : null;
+
+    const data = readPromoCodes();
+    const promoCode = data.codes.find(c => c.code === code.toUpperCase() && c.active);
+
+    if (!promoCode) {
+      return res.status(404).json({ success: false, error: '兑换码不存在' });
+    }
+
+    if (!promoCode.active) {
+      return res.status(400).json({ success: false, error: '兑换码已禁用' });
+    }
+
+    if (new Date(promoCode.expiresAt) < new Date()) {
+      return res.status(400).json({ success: false, error: '兑换码已过期' });
+    }
+
+    if (promoCode.maxUses > 0 && promoCode.uses >= promoCode.maxUses) {
+      return res.status(400).json({ success: false, error: '兑换码已用完' });
+    }
+
+    // 更新使用次数
+    promoCode.uses++;
+    if (promoCode.type === 'gift' && promoCode.uses >= promoCode.maxUses) {
+      promoCode.active = false;
+    }
+    writePromoCodes(data);
+
+    // 记录兑换
+    const redemptions = readRedemptions();
+    redemptions.redemptions.push({
+      id: 'cr_' + Date.now(),
+      codeId: promoCode.id,
+      code: promoCode.code,
+      userId: user?.id || null,
+      username: user?.username || null,
+      redeemedAt: new Date().toISOString()
+    });
+    writeRedemptions(redemptions);
+
+    // 给用户升级为付费用户
+    if (user) {
+      user.role = 'paid';
+      user.updated_at = new Date().toISOString();
+      fs.writeFileSync(path.join(DATA_DIR, 'users.json'), JSON.stringify(users, null, 2));
+    }
+
+    res.json({ success: true, message: '兑换成功', role: user ? 'paid' : null });
+  } catch (error) {
+    console.error('Redeem code error:', error);
+    res.status(500).json({ success: false, error: '兑换失败' });
+  }
+});
+
+// 获取兑换记录
+app.get('/api/admin/code-redemptions', auth.requireRole('admin'), (req, res) => {
+  try {
+    const data = readRedemptions();
+    data.redemptions.sort((a, b) => new Date(b.redeemedAt) - new Date(a.redeemedAt));
+    res.json({ success: true, data: data.redemptions, total: data.redemptions.length });
+  } catch (error) {
+    res.status(500).json({ success: false, error: '获取失败' });
+  }
+});
+
+// 删除/禁用付费码
+app.delete('/api/admin/promo-codes/:id', auth.requireRole('admin'), (req, res) => {
+  try {
+    const data = readPromoCodes();
+    const index = data.codes.findIndex(c => c.id === req.params.id);
+    if (index === -1) {
+      return res.status(404).json({ success: false, error: '码不存在' });
+    }
+    data.codes[index].active = false;
+    writePromoCodes(data);
+    res.json({ success: true, message: '已禁用' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: '操作失败' });
+  }
+});
+
 // ========== 邮箱验证 API ==========
 const email = require('./utils/email');
 
