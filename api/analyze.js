@@ -67,7 +67,15 @@ app.get('/api/admin/users', auth.requireRole('admin'), (req, res) => {
   const path = require('path');
   const usersPath = path.join(__dirname, '..', 'data', 'users.json');
   const users = JSON.parse(fs.readFileSync(usersPath, 'utf-8'));
-  const safe = users.map(u => ({ id: u.id, username: u.username, email: u.email, email_verified: u.email_verified, role: u.role, created_at: u.created_at }));
+  const safe = users.map(u => ({
+    id: u.id,
+    username: u.username,
+    email: u.email,
+    email_verified: u.email_verified,
+    role: u.role,
+    blacklisted: u.blacklisted || false,
+    created_at: u.created_at
+  }));
   res.json({ success: true, data: safe });
 });
 
@@ -87,6 +95,47 @@ app.post('/api/admin/set-role', auth.requireRole('admin'), (req, res) => {
   user.updated_at = new Date().toISOString();
   fs.writeFileSync(usersPath, JSON.stringify(users, null, 2));
   res.json({ success: true });
+});
+
+// 封禁/解封用户（仅管理员）
+app.post('/api/admin/set-blacklist', auth.requireRole('admin'), (req, res) => {
+  const { userId, blacklisted } = req.body;
+  if (!userId || typeof blacklisted !== 'boolean') {
+    return res.status(400).json({ success: false, error: '缺少必要参数' });
+  }
+  const fs = require('fs');
+  const path = require('path');
+  const usersPath = path.join(__dirname, '..', 'data', 'users.json');
+  const users = JSON.parse(fs.readFileSync(usersPath, 'utf-8'));
+  const user = users.find(u => u.id === userId);
+  if (!user) return res.status(404).json({ success: false, error: '用户不存在' });
+  if (user.role === 'admin') {
+    return res.status(400).json({ success: false, error: '不能封禁管理员账号' });
+  }
+  user.blacklisted = blacklisted;
+  user.updated_at = new Date().toISOString();
+  fs.writeFileSync(usersPath, JSON.stringify(users, null, 2));
+  res.json({ success: true, message: blacklisted ? '已封禁' : '已解封' });
+});
+
+// 获取用户测试记录（仅管理员）
+app.get('/api/admin/users/:userId/results', auth.requireRole('admin'), (req, res) => {
+  const { userId } = req.params;
+  const fs = require('fs');
+  const path = require('path');
+  const resultsPath = path.join(DATA_DIR, 'results.json');
+
+  let results = [];
+  try {
+    results = JSON.parse(fs.readFileSync(resultsPath, 'utf-8')) || [];
+  } catch (e) {
+    results = [];
+  }
+
+  // 如果有userId字段则过滤，否则返回所有
+  const filteredResults = userId ? results.filter(r => r.userId === userId) : results;
+
+  res.json({ success: true, data: filteredResults, total: filteredResults.length });
 });
 
 // 删除用户（仅管理员）
@@ -1683,10 +1732,20 @@ function startPublishScheduler() {
   }
   // 先立即执行一次
   checkScheduledUpdates();
-  // 然后每分钟执行
-  publishInterval = setInterval(checkScheduledUpdates, 60000);
-  console.log('[Content Publish] Scheduler started (every 60s)');
+  // 然后每12小时执行一次
+  publishInterval = setInterval(checkScheduledUpdates, 12 * 60 * 60 * 1000);
+  console.log('[Content Publish] Scheduler started (every 12 hours)');
 }
+
+// 手动触发检查更新任务
+app.post('/api/admin/content-updates/check', auth.requireRole('admin'), (req, res) => {
+  try {
+    checkScheduledUpdates();
+    res.json({ success: true, message: '检查完成' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: '检查失败' });
+  }
+});
 
 // 启动时激活
 startPublishScheduler();

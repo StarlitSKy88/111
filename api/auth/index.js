@@ -248,6 +248,9 @@ function handleLogin(username, password) {
   if (!verifyPassword(password, user.password_hash)) {
     return { success: false, error: '用户名或密码错误' };
   }
+  if (user.blacklisted) {
+    return { success: false, error: '账号已被封禁，请联系管理员' };
+  }
 
   const role = getUserRole(user.id);
   const token = generateToken(user);
