@@ -1161,6 +1161,7 @@ app.post('/api/generate-node-content', async (req, res) => {
 const fs = require('fs');
 
 const NODES_BASE = path.join(__dirname, '..', 'nodes');
+const DATA_DIR = path.join(__dirname, '..', 'data');
 
 // 查找节点目录 (匹配 *-{slug})
 function findNodeDir(slug) {
@@ -1293,6 +1294,402 @@ app.put('/api/nodes/:slug/index-md', (req, res) => {
     res.status(500).json({ error: '更新失败' });
   }
 });
+
+// ========== 内容管理 API ==========
+
+const CONTENT_UPDATES_FILE = path.join(DATA_DIR, 'content-updates.json');
+
+// 确保文件存在
+function ensureContentUpdatesFile() {
+  if (!fs.existsSync(CONTENT_UPDATES_FILE)) {
+    fs.writeFileSync(CONTENT_UPDATES_FILE, '[]', 'utf-8');
+  }
+}
+
+// 读取更新任务
+function readContentUpdates() {
+  ensureContentUpdatesFile();
+  try {
+    return JSON.parse(fs.readFileSync(CONTENT_UPDATES_FILE, 'utf-8'));
+  } catch (e) {
+    return [];
+  }
+}
+
+// 写入更新任务
+function writeContentUpdates(updates) {
+  ensureContentUpdatesFile();
+  fs.writeFileSync(CONTENT_UPDATES_FILE, JSON.stringify(updates, null, 2));
+}
+
+// 获取所有节点列表（带状态）
+app.get('/api/admin/content-nodes', auth.requireRole('admin'), (req, res) => {
+  try {
+    const nodesData = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'nodes.json'), 'utf-8'));
+    const updates = readContentUpdates();
+
+    const nodes = nodesData.nodes.map(node => {
+      const dirName = `${String(node.id).padStart(2, '0')}-${node.slug}`;
+      const htmlPath = path.join(NODES_BASE, dirName, 'index.html');
+      const htmlExists = fs.existsSync(htmlPath);
+
+      // 查找该节点的最新更新任务
+      const nodeUpdates = updates
+        .filter(u => u.nodeId === node.id)
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+      const pendingUpdate = nodeUpdates.find(u => ['pending', 'approved'].includes(u.status));
+      const latestPublished = nodeUpdates.find(u => u.status === 'published');
+
+      return {
+        id: node.id,
+        title: node.title,
+        slug: node.slug,
+        summary: node.summary,
+        difficulty: node.difficulty,
+        category: node.category,
+        htmlExists,
+        hasPendingUpdate: !!pendingUpdate,
+        hasPublishedUpdate: !!latestPublished,
+        lastUpdate: latestPublished?.publishedAt || null
+      };
+    });
+
+    res.json({ success: true, data: nodes, total: nodes.length });
+  } catch (error) {
+    console.error('Get content nodes error:', error);
+    res.status(500).json({ success: false, error: '获取节点列表失败' });
+  }
+});
+
+// 获取单个节点HTML内容
+app.get('/api/admin/content-nodes/:id/html', auth.requireRole('admin'), (req, res) => {
+  try {
+    const nodeId = parseInt(req.params.id);
+    const nodesData = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'nodes.json'), 'utf-8'));
+    const node = nodesData.nodes.find(n => n.id === nodeId);
+
+    if (!node) {
+      return res.status(404).json({ success: false, error: '节点不存在' });
+    }
+
+    const dirName = `${String(node.id).padStart(2, '0')}-${node.slug}`;
+    const htmlPath = path.join(NODES_BASE, dirName, 'index.html');
+
+    if (!fs.existsSync(htmlPath)) {
+      return res.status(404).json({ success: false, error: 'HTML文件不存在' });
+    }
+
+    const content = fs.readFileSync(htmlPath, 'utf-8');
+    res.json({ success: true, data: { nodeId, slug: node.slug, title: node.title, content } });
+  } catch (error) {
+    console.error('Get node HTML error:', error);
+    res.status(500).json({ success: false, error: '获取HTML失败' });
+  }
+});
+
+// 获取更新任务列表
+app.get('/api/admin/content-updates', auth.requireRole('admin'), (req, res) => {
+  try {
+    const updates = readContentUpdates();
+    const { status, nodeId } = req.query;
+
+    let filtered = updates;
+    if (status) {
+      filtered = filtered.filter(u => u.status === status);
+    }
+    if (nodeId) {
+      filtered = filtered.filter(u => u.nodeId === parseInt(nodeId));
+    }
+
+    // 按创建时间倒序
+    filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    res.json({ success: true, data: filtered, total: filtered.length });
+  } catch (error) {
+    console.error('Get content updates error:', error);
+    res.status(500).json({ success: false, error: '获取更新任务失败' });
+  }
+});
+
+// 创建更新任务
+app.post('/api/admin/content-updates', auth.requireRole('admin'), (req, res) => {
+  try {
+    const { nodeId, content, diff, scheduledAt } = req.body;
+
+    if (!nodeId || !content) {
+      return res.status(400).json({ success: false, error: '缺少必要参数' });
+    }
+
+    // 获取节点信息
+    const nodesData = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'nodes.json'), 'utf-8'));
+    const node = nodesData.nodes.find(n => n.id === nodeId);
+
+    if (!node) {
+      return res.status(404).json({ success: false, error: '节点不存在' });
+    }
+
+    // 检查是否有待发布任务
+    const updates = readContentUpdates();
+    const pending = updates.find(u => u.nodeId === nodeId && ['pending', 'approved'].includes(u.status));
+    if (pending) {
+      return res.status(400).json({ success: false, error: '该节点有待发布的任务，请先处理' });
+    }
+
+    const update = {
+      id: 'cu_' + Date.now(),
+      nodeId,
+      nodeSlug: node.slug,
+      nodeTitle: node.title,
+      content,
+      source: 'manual',
+      status: 'pending',
+      scheduledAt: scheduledAt || null,
+      createdAt: new Date().toISOString(),
+      createdBy: req.user?.username || 'admin',
+      approvedAt: null,
+      approvedBy: null,
+      publishedAt: null,
+      error: null,
+      diff: diff || ''
+    };
+
+    updates.push(update);
+    writeContentUpdates(updates);
+
+    res.json({ success: true, data: update });
+  } catch (error) {
+    console.error('Create content update error:', error);
+    res.status(500).json({ success: false, error: '创建更新任务失败' });
+  }
+});
+
+// 获取单个更新任务
+app.get('/api/admin/content-updates/:id', auth.requireRole('admin'), (req, res) => {
+  try {
+    const updates = readContentUpdates();
+    const update = updates.find(u => u.id === req.params.id);
+
+    if (!update) {
+      return res.status(404).json({ success: false, error: '任务不存在' });
+    }
+
+    res.json({ success: true, data: update });
+  } catch (error) {
+    console.error('Get content update error:', error);
+    res.status(500).json({ success: false, error: '获取任务详情失败' });
+  }
+});
+
+// 审批更新任务
+app.post('/api/admin/content-updates/:id/approve', auth.requireRole('admin'), (req, res) => {
+  try {
+    const { scheduledAt } = req.body;
+    const updates = readContentUpdates();
+    const index = updates.findIndex(u => u.id === req.params.id);
+
+    if (index === -1) {
+      return res.status(404).json({ success: false, error: '任务不存在' });
+    }
+
+    if (updates[index].status !== 'pending') {
+      return res.status(400).json({ success: false, error: '只能审批待审批状态的任务' });
+    }
+
+    updates[index].status = 'approved';
+    updates[index].approvedAt = new Date().toISOString();
+    updates[index].approvedBy = req.user?.username || 'admin';
+    if (scheduledAt !== undefined) {
+      updates[index].scheduledAt = scheduledAt;
+    }
+
+    writeContentUpdates(updates);
+
+    res.json({ success: true, data: updates[index] });
+  } catch (error) {
+    console.error('Approve content update error:', error);
+    res.status(500).json({ success: false, error: '审批失败' });
+  }
+});
+
+// 拒绝更新任务
+app.post('/api/admin/content-updates/:id/reject', auth.requireRole('admin'), (req, res) => {
+  try {
+    const updates = readContentUpdates();
+    const index = updates.findIndex(u => u.id === req.params.id);
+
+    if (index === -1) {
+      return res.status(404).json({ success: false, error: '任务不存在' });
+    }
+
+    if (!['pending', 'approved'].includes(updates[index].status)) {
+      return res.status(400).json({ success: false, error: '当前状态不能拒绝' });
+    }
+
+    updates[index].status = 'rejected';
+    updates[index].approvedAt = new Date().toISOString();
+    updates[index].approvedBy = req.user?.username || 'admin';
+
+    writeContentUpdates(updates);
+
+    res.json({ success: true, data: updates[index] });
+  } catch (error) {
+    console.error('Reject content update error:', error);
+    res.status(500).json({ success: false, error: '拒绝失败' });
+  }
+});
+
+// 删除更新任务
+app.delete('/api/admin/content-updates/:id', auth.requireRole('admin'), (req, res) => {
+  try {
+    const updates = readContentUpdates();
+    const index = updates.findIndex(u => u.id === req.params.id);
+
+    if (index === -1) {
+      return res.status(404).json({ success: false, error: '任务不存在' });
+    }
+
+    if (!['pending', 'rejected', 'failed'].includes(updates[index].status)) {
+      return res.status(400).json({ success: false, error: '只能删除草稿/已拒绝/失败状态的任务' });
+    }
+
+    updates.splice(index, 1);
+    writeContentUpdates(updates);
+
+    res.json({ success: true, message: '删除成功' });
+  } catch (error) {
+    console.error('Delete content update error:', error);
+    res.status(500).json({ success: false, error: '删除失败' });
+  }
+});
+
+// 手动发布更新任务
+app.post('/api/admin/content-updates/:id/publish', auth.requireRole('admin'), (req, res) => {
+  try {
+    const updates = readContentUpdates();
+    const index = updates.findIndex(u => u.id === req.params.id);
+
+    if (index === -1) {
+      return res.status(404).json({ success: false, error: '任务不存在' });
+    }
+
+    const update = updates[index];
+
+    if (!['pending', 'approved'].includes(update.status)) {
+      return res.status(400).json({ success: false, error: '只能发布待审批/已批准状态的任务' });
+    }
+
+    // 获取节点信息
+    const nodesData = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'nodes.json'), 'utf-8'));
+    const node = nodesData.nodes.find(n => n.id === update.nodeId);
+
+    if (!node) {
+      return res.status(404).json({ success: false, error: '节点不存在' });
+    }
+
+    const dirName = `${String(node.id).padStart(2, '0')}-${node.slug}`;
+    const htmlPath = path.join(NODES_BASE, dirName, 'index.html');
+    const backupDir = path.join(NODES_BASE, dirName, 'backup');
+
+    // 创建备份目录
+    if (!fs.existsSync(backupDir)) {
+      fs.mkdirSync(backupDir, { recursive: true });
+    }
+
+    // 备份现有内容
+    if (fs.existsSync(htmlPath)) {
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+      const backupPath = path.join(backupDir, `index-${timestamp}.html`);
+      fs.copyFileSync(htmlPath, backupPath);
+    }
+
+    // 写入新内容
+    fs.writeFileSync(htmlPath, update.content, 'utf-8');
+
+    // 更新任务状态
+    updates[index].status = 'published';
+    updates[index].publishedAt = new Date().toISOString();
+    if (updates[index].scheduledAt) {
+      updates[index].scheduledAt = null;
+    }
+    writeContentUpdates(updates);
+
+    res.json({ success: true, message: '发布成功' });
+  } catch (error) {
+    console.error('Publish content update error:', error);
+    res.status(500).json({ success: false, error: '发布失败: ' + error.message });
+  }
+});
+
+// ========== 定时发布轮询 ==========
+let publishInterval = null;
+
+function checkScheduledUpdates() {
+  const updates = readContentUpdates();
+  const now = new Date();
+  let changed = false;
+
+  updates.forEach((update, index) => {
+    if (update.status === 'approved' && update.scheduledAt) {
+      const scheduledTime = new Date(update.scheduledAt);
+      if (scheduledTime <= now) {
+        console.log(`[Content Publish] Auto-publishing update ${update.id} for node ${update.nodeId}`);
+
+        try {
+          const nodesData = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'nodes.json'), 'utf-8'));
+          const node = nodesData.nodes.find(n => n.id === update.nodeId);
+
+          if (node) {
+            const dirName = `${String(node.id).padStart(2, '0')}-${node.slug}`;
+            const htmlPath = path.join(NODES_BASE, dirName, 'index.html');
+            const backupDir = path.join(NODES_BASE, dirName, 'backup');
+
+            if (!fs.existsSync(backupDir)) {
+              fs.mkdirSync(backupDir, { recursive: true });
+            }
+
+            if (fs.existsSync(htmlPath)) {
+              const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+              const backupPath = path.join(backupDir, `index-${timestamp}.html`);
+              fs.copyFileSync(htmlPath, backupPath);
+            }
+
+            fs.writeFileSync(htmlPath, update.content, 'utf-8');
+
+            updates[index].status = 'published';
+            updates[index].publishedAt = new Date().toISOString();
+            updates[index].scheduledAt = null;
+            console.log(`[Content Publish] Successfully published ${update.id}`);
+          }
+        } catch (err) {
+          console.error(`[Content Publish] Failed to publish ${update.id}:`, err);
+          updates[index].status = 'failed';
+          updates[index].error = err.message;
+        }
+        changed = true;
+      }
+    }
+  });
+
+  if (changed) {
+    writeContentUpdates(updates);
+  }
+}
+
+// 启动定时检查（每分钟一次）
+function startPublishScheduler() {
+  if (publishInterval) {
+    clearInterval(publishInterval);
+  }
+  // 先立即执行一次
+  checkScheduledUpdates();
+  // 然后每分钟执行
+  publishInterval = setInterval(checkScheduledUpdates, 60000);
+  console.log('[Content Publish] Scheduler started (every 60s)');
+}
+
+// 启动时激活
+startPublishScheduler();
 
 app.listen(PORT, () => {
   console.log(`OPC API running on http://localhost:${PORT}`);
