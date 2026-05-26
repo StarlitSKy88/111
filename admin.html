@@ -3,7 +3,6 @@
 <head>
   <script src="/admin-guard.js"></script>
   <script>
-    // API Base URL — 开发环境用 localhost:3001，生产环境用同源
     var API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
       ? 'http://localhost:3001'
       : window.location.origin;
@@ -49,33 +48,11 @@
       color: var(--text-secondary);
     }
 
-    .text-display {
-      font-size: clamp(2.5rem, 10vw, 6rem);
-      font-weight: 200;
-      letter-spacing: -0.04em;
-      line-height: 1.1;
-    }
-
-    .stat-number {
-      font-size: clamp(2rem, 8vw, 4rem);
-      font-weight: 100;
-      letter-spacing: -0.03em;
-      color: var(--text-primary);
-    }
-
     /* Layout */
-    .admin-layout {
-      display: grid;
-      grid-template-columns: 1fr;
-      padding: 0 1.25rem;
-      gap: 0;
-      min-height: 100vh;
-    }
-
-    @media (min-width: 768px) {
-      .admin-layout {
-        padding: 0 clamp(2rem, 5vw, 4rem);
-      }
+    .admin-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 clamp(1rem, 3vw, 2rem);
     }
 
     /* Header */
@@ -85,6 +62,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
     }
 
     .admin-title {
@@ -94,7 +73,13 @@
       color: var(--text-tertiary);
     }
 
-    .refresh-btn {
+    .header-actions {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .btn {
       background: transparent;
       border: 1px solid var(--line);
       color: var(--text-secondary);
@@ -106,9 +91,20 @@
       transition: all 0.3s ease;
     }
 
-    .refresh-btn:hover {
+    .btn:hover {
       border-color: var(--text-secondary);
       color: var(--text-primary);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #a93226;
+      border-color: #a93226;
     }
 
     /* Stats Grid */
@@ -117,42 +113,71 @@
       grid-template-columns: repeat(2, 1fr);
       gap: 1px;
       background: var(--line);
-      margin: 2rem 0;
+      margin: 1.5rem 0;
     }
 
     @media (min-width: 640px) {
-      .stats-grid {
-        grid-template-columns: repeat(4, 1fr);
-      }
+      .stats-grid { grid-template-columns: repeat(4, 1fr); }
     }
 
     .stat-cell {
       background: var(--bg);
-      padding: 1.5rem;
+      padding: 1.25rem;
       text-align: center;
     }
 
     .stat-cell .value {
-      font-size: clamp(1.5rem, 6vw, 3rem);
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
       font-weight: 100;
       letter-spacing: -0.02em;
       color: var(--text-primary);
     }
 
-    .stat-cell.accent .value {
-      color: var(--accent);
-    }
-
-    .stat-cell.success .value {
-      color: var(--success);
-    }
+    .stat-cell.accent .value { color: var(--accent); }
+    .stat-cell.success .value { color: var(--success); }
 
     .stat-cell .label {
       font-size: 0.5625rem;
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--text-tertiary);
-      margin-top: 0.5rem;
+      margin-top: 0.25rem;
+    }
+
+    /* Two Column Layout */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    @media (min-width: 1024px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr 380px;
+      }
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      padding: 1.25rem;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .panel-title {
+      font-size: 0.625rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
     }
 
     /* Score Distribution */
@@ -161,19 +186,18 @@
       grid-template-columns: repeat(4, 1fr);
       gap: 1px;
       background: var(--line);
-      margin: 1.5rem 0 2rem;
     }
 
     .score-bar {
       background: var(--bg);
-      padding: 1rem 0.75rem;
+      padding: 0.75rem 0.5rem;
       text-align: center;
     }
 
     .score-bar .bar {
-      height: 4px;
+      height: 3px;
       background: var(--text-tertiary);
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.5rem;
       position: relative;
     }
 
@@ -186,28 +210,28 @@
     }
 
     .score-bar .count {
-      font-size: 1.25rem;
+      font-size: 1rem;
       font-weight: 300;
       color: var(--text-primary);
     }
 
     .score-bar .range {
-      font-size: 0.5625rem;
+      font-size: 0.5rem;
       letter-spacing: 0.1em;
       color: var(--text-tertiary);
       margin-top: 0.25rem;
     }
 
     /* Table */
-    .results-table {
+    .data-table {
       width: 100%;
       border-collapse: collapse;
       font-size: 0.8125rem;
     }
 
-    .results-table th {
+    .data-table th {
       text-align: left;
-      padding: 1rem 0.75rem;
+      padding: 0.75rem 0.5rem;
       border-bottom: 1px solid var(--line);
       font-size: 0.5625rem;
       letter-spacing: 0.15em;
@@ -216,80 +240,92 @@
       font-weight: 400;
     }
 
-    .results-table td {
-      padding: 1rem 0.75rem;
+    .data-table td {
+      padding: 0.75rem 0.5rem;
       border-bottom: 1px solid var(--line);
       color: var(--text-secondary);
     }
 
-    .results-table tr:hover td {
+    .data-table tr:hover td {
       background: rgba(255,255,255,0.02);
     }
 
-    .results-table .score {
-      font-size: 1.25rem;
+    .data-table .score {
+      font-size: 1.125rem;
       font-weight: 300;
       color: var(--accent);
     }
 
-    .results-table .paid-badge {
+    .data-table .time {
+      font-size: 0.6875rem;
+      color: var(--text-tertiary);
+    }
+
+    /* Role badge */
+    .role-badge {
       display: inline-block;
-      padding: 0.25rem 0.5rem;
-      font-size: 0.5625rem;
+      padding: 0.125rem 0.375rem;
+      font-size: 0.5rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .role-badge.admin { background: var(--accent); color: #fff; }
+    .role-badge.paid { background: var(--success); color: #000; }
+    .role-badge.free { background: var(--text-tertiary); color: #fff; }
+
+    .paid-badge {
+      display: inline-block;
+      padding: 0.125rem 0.375rem;
+      font-size: 0.5rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       background: var(--success);
       color: #000;
     }
 
-    .results-table .unpaid-badge {
+    .unpaid-badge {
       display: inline-block;
-      padding: 0.25rem 0.5rem;
-      font-size: 0.5625rem;
+      padding: 0.125rem 0.375rem;
+      font-size: 0.5rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       background: var(--text-tertiary);
       color: var(--bg);
     }
 
-    .results-table .wechat-id {
-      font-family: 'Geist Mono', monospace;
+    /* Action buttons */
+    .action-btn {
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--text-secondary);
+      padding: 0.25rem 0.5rem;
+      font-size: 0.5rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-right: 0.25rem;
+    }
+
+    .action-btn:hover {
+      border-color: var(--accent);
       color: var(--accent);
     }
 
-    .results-table .time {
-      font-size: 0.6875rem;
-      color: var(--text-tertiary);
+    .action-btn.danger:hover {
+      border-color: #dc2626;
+      color: #dc2626;
     }
-
-    .level-tag {
-      font-size: 0.5625rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.125rem 0.375rem;
-      border: 1px solid var(--line);
-    }
-
-    /* Level indicator dots */
-    .level-indicator {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .level-dot {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-    }
-
-    .level-dot.high { background: var(--success); }
-    .level-dot.medium-high { background: #eab308; }
-    .level-dot.medium { background: #f97316; }
-    .level-dot.low { background: var(--danger); }
 
     /* Tab buttons */
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
     .tab-btn {
       background: transparent;
       border: 1px solid var(--line);
@@ -313,58 +349,230 @@
       color: var(--text-primary);
     }
 
-    /* Role badge */
-    .role-badge {
-      display: inline-block;
-      padding: 0.25rem 0.5rem;
-      font-size: 0.5625rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+    /* Search */
+    .search-box {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
     }
 
-    .role-badge.admin { background: var(--accent); color: #fff; }
-    .role-badge.paid { background: var(--success); color: #000; }
-    .role-badge.free { background: var(--text-tertiary); color: #fff; }
+    .search-input {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      color: var(--text-primary);
+      padding: 0.5rem 0.75rem;
+      font-size: 0.75rem;
+      flex: 1;
+      min-width: 200px;
+    }
 
-    /* Action buttons */
-    .action-btn {
+    .search-input:focus {
+      outline: none;
+      border-color: var(--text-secondary);
+    }
+
+    .filter-select {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      color: var(--text-primary);
+      padding: 0.5rem 0.75rem;
+      font-size: 0.75rem;
+    }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .pagination-info {
+      font-size: 0.6875rem;
+      color: var(--text-tertiary);
+    }
+
+    .pagination-buttons {
+      display: flex;
+      gap: 0.25rem;
+    }
+
+    .page-btn {
       background: transparent;
       border: 1px solid var(--line);
       color: var(--text-secondary);
       padding: 0.25rem 0.5rem;
+      font-size: 0.625rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .page-btn:hover:not(:disabled) {
+      border-color: var(--text-secondary);
+      color: var(--text-primary);
+    }
+
+    .page-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    /* Activity List */
+    .activity-list {
+      list-style: none;
+    }
+
+    .activity-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 0.75rem;
+    }
+
+    .activity-item:last-child {
+      border-bottom: none;
+    }
+
+    .activity-time {
+      color: var(--text-tertiary);
+      font-size: 0.6875rem;
+    }
+
+    /* Quick Actions */
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+    }
+
+    .quick-action {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      padding: 0.75rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .quick-action:hover {
+      border-color: var(--accent);
+    }
+
+    .quick-action-icon {
+      font-size: 1.25rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .quick-action-label {
       font-size: 0.5625rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 1rem;
+    }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      max-width: 500px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      padding: 1rem;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text-tertiary);
       cursor: pointer;
-      transition: all 0.3s ease;
-      margin-right: 0.25rem;
+      font-size: 1.25rem;
     }
 
-    .action-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent);
+    .modal-body {
+      padding: 1rem;
     }
 
-    .action-btn.danger:hover {
-      border-color: #dc2626;
-      color: #dc2626;
+    .modal-footer {
+      padding: 1rem;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+    }
+
+    /* Form */
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.5625rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-input {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--line);
+      color: var(--text-primary);
+      padding: 0.5rem 0.75rem;
+      font-size: 0.8125rem;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--text-secondary);
     }
 
     /* Loading */
     .loading {
       text-align: center;
-      padding: 3rem;
+      padding: 2rem;
       color: var(--text-tertiary);
     }
 
     .spinner {
-      width: 20px;
-      height: 20px;
+      width: 16px;
+      height: 16px;
       border: 1px solid var(--line);
       border-top-color: var(--accent);
       border-radius: 50%;
       animation: rotate 1s linear infinite;
-      margin: 0 auto 1rem;
+      margin: 0 auto 0.5rem;
     }
 
     @keyframes rotate { to { transform: rotate(360deg); } }
@@ -372,176 +580,290 @@
     /* Empty */
     .empty {
       text-align: center;
-      padding: 4rem 2rem;
+      padding: 2rem;
       color: var(--text-tertiary);
+      font-size: 0.75rem;
     }
 
-    .empty-icon {
-      font-size: 3rem;
+    /* User Detail */
+    .user-detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
       margin-bottom: 1rem;
-      opacity: 0.3;
+    }
+
+    .user-detail-item {
+      background: var(--bg);
+      padding: 0.75rem;
+    }
+
+    .user-detail-label {
+      font-size: 0.5rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 0.25rem;
+    }
+
+    .user-detail-value {
+      font-size: 0.875rem;
+      color: var(--text-primary);
+    }
+
+    /* Tab content */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Responsive table wrapper */
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    @media (max-width: 640px) {
+      .data-table { font-size: 0.75rem; }
+      .data-table th, .data-table td { padding: 0.5rem 0.25rem; }
     }
   </style>
 </head>
 <body>
-  <div class="admin-layout">
-    <div style="max-width: 1200px; margin: 0 auto;">
-
-      <!-- Header -->
-      <div class="admin-header">
-        <div>
-          <div class="admin-title">OPC适配自测</div>
-          <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">数据管理后台</div>
-        </div>
-        <button class="refresh-btn" onclick="loadData()">刷新数据</button>
+  <div class="admin-container">
+    <!-- Header -->
+    <div class="admin-header">
+      <div>
+        <div class="admin-title">OPC适配自测</div>
+        <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">数据管理后台</div>
       </div>
-
-      <!-- Stats -->
-      <div class="stats-grid" id="stats-grid">
-        <div class="stat-cell">
-          <div class="value" id="stat-total">-</div>
-          <div class="label">总测试数</div>
-        </div>
-        <div class="stat-cell success">
-          <div class="value" id="stat-paid">-</div>
-          <div class="label">已付款</div>
-        </div>
-        <div class="stat-cell">
-          <div class="value" id="stat-unpaid">-</div>
-          <div class="label">未付款</div>
-        </div>
-        <div class="stat-cell accent">
-          <div class="value" id="stat-rate">-%</div>
-          <div class="label">转化率</div>
-        </div>
+      <div class="header-actions">
+        <button class="btn" onclick="exportData()">导出数据</button>
+        <button class="btn" onclick="loadData()">刷新数据</button>
       </div>
-
-      <!-- Score Distribution -->
-      <div style="margin-bottom: 1rem;">
-        <div class="text-label" style="margin-bottom: 0.75rem;">分数分布</div>
-        <div class="score-dist" id="score-dist">
-          <div class="score-bar">
-            <div class="bar"><div class="bar-fill" id="bar-80" style="width: 0%"></div></div>
-            <div class="count" id="count-80">0</div>
-            <div class="range">80-100</div>
-          </div>
-          <div class="score-bar">
-            <div class="bar"><div class="bar-fill" id="bar-60" style="width: 0%"></div></div>
-            <div class="count" id="count-60">0</div>
-            <div class="range">60-79</div>
-          </div>
-          <div class="score-bar">
-            <div class="bar"><div class="bar-fill" id="bar-40" style="width: 0%"></div></div>
-            <div class="count" id="count-40">0</div>
-            <div class="range">40-59</div>
-          </div>
-          <div class="score-bar">
-            <div class="bar"><div class="bar-fill" id="bar-0" style="width: 0%"></div></div>
-            <div class="count" id="count-0">0</div>
-            <div class="range">0-39</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Results Table -->
-      <div style="margin-top: 2rem;">
-        <div class="text-label" style="margin-bottom: 1rem;">测试记录</div>
-
-        <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
-        <button class="tab-btn active" data-tab="stats" onclick="switchTab('stats')">数据概览</button>
-        <button class="tab-btn" data-tab="users" onclick="switchTab('users')">用户管理</button>
-      </div>
-
-      <!-- Stats Section -->
-      <div id="tab-stats" class="tab-content">
-        <div id="stats-loading" class="loading">
-          <div class="spinner"></div>
-          <div style="font-size: 0.6875rem; letter-spacing: 0.1em; text-transform: uppercase;">加载中</div>
-        </div>
-
-        <div id="empty" class="empty" style="display: none;">
-          <div class="empty-icon">—</div>
-          <div style="font-size: 0.75rem;">暂无测试数据</div>
-        </div>
-
-        <div id="table-container" style="overflow-x: auto; display: none;">
-          <table class="results-table" id="results-table">
-            <thead>
-              <tr>
-                <th>分数</th>
-                <th>等级</th>
-                <th>优势</th>
-                <th>付款</th>
-                <th>微信</th>
-                <th>时间</th>
-              </tr>
-            </thead>
-            <tbody id="results-body">
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Users Section -->
-      <div id="tab-users" class="tab-content" style="display: none;">
-        <div id="users-loading" class="loading">
-          <div class="spinner"></div>
-          <div style="font-size: 0.6875rem; letter-spacing: 0.1em; text-transform: uppercase;">加载用户中</div>
-        </div>
-        <div id="users-empty" class="empty" style="display: none;">
-          <div class="empty-icon">—</div>
-          <div style="font-size: 0.75rem;">暂无用户数据</div>
-        </div>
-        <div id="users-container" style="overflow-x: auto; display: none;">
-          <table class="results-table" id="users-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>用户名</th>
-                <th>角色</th>
-                <th>注册时间</th>
-                <th>操作</th>
-              </tr>
-            </thead>
-            <tbody id="users-body">
-            </tbody>
-          </table>
-        </div>
-      </div>
-
     </div>
-              </tr>
-            </thead>
-            <tbody id="results-body">
-            </tbody>
-          </table>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid" id="stats-grid">
+      <div class="stat-cell">
+        <div class="value" id="stat-total">-</div>
+        <div class="label">总测试数</div>
+      </div>
+      <div class="stat-cell success">
+        <div class="value" id="stat-paid">-</div>
+        <div class="label">已付款</div>
+      </div>
+      <div class="stat-cell">
+        <div class="value" id="stat-unpaid">-</div>
+        <div class="label">未付款</div>
+      </div>
+      <div class="stat-cell accent">
+        <div class="value" id="stat-rate">-%</div>
+        <div class="label">转化率</div>
+      </div>
+    </div>
+
+    <!-- Dashboard Grid -->
+    <div class="dashboard-grid">
+      <!-- Main Content -->
+      <div>
+        <!-- Score Distribution Panel -->
+        <div class="panel" style="margin-bottom: 1.5rem;">
+          <div class="panel-header">
+            <div class="panel-title">分数分布</div>
+          </div>
+          <div class="score-dist" id="score-dist">
+            <div class="score-bar">
+              <div class="bar"><div class="bar-fill" id="bar-80" style="width: 0%"></div></div>
+              <div class="count" id="count-80">0</div>
+              <div class="range">80-100</div>
+            </div>
+            <div class="score-bar">
+              <div class="bar"><div class="bar-fill" id="bar-60" style="width: 0%"></div></div>
+              <div class="count" id="count-60">0</div>
+              <div class="range">60-79</div>
+            </div>
+            <div class="score-bar">
+              <div class="bar"><div class="bar-fill" id="bar-40" style="width: 0%"></div></div>
+              <div class="count" id="count-40">0</div>
+              <div class="range">40-59</div>
+            </div>
+            <div class="score-bar">
+              <div class="bar"><div class="bar-fill" id="bar-0" style="width: 0%"></div></div>
+              <div class="count" id="count-0">0</div>
+              <div class="range">0-39</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="results" onclick="switchTab('results')">测试记录</button>
+          <button class="tab-btn" data-tab="users" onclick="switchTab('users')">用户管理</button>
+        </div>
+
+        <!-- Results Tab -->
+        <div id="tab-results" class="tab-content active">
+          <div id="results-loading" class="loading">
+            <div class="spinner"></div>
+            <div>加载中</div>
+          </div>
+          <div id="results-empty" class="empty" style="display: none;">
+            暂无测试数据
+          </div>
+          <div id="results-container" style="display: none;">
+            <div class="table-wrapper">
+              <table class="data-table" id="results-table">
+                <thead>
+                  <tr>
+                    <th>分数</th>
+                    <th>等级</th>
+                    <th>优势</th>
+                    <th>付款</th>
+                    <th>微信</th>
+                    <th>时间</th>
+                  </tr>
+                </thead>
+                <tbody id="results-body"></tbody>
+              </table>
+            </div>
+            <div class="pagination">
+              <div class="pagination-info" id="results-info">显示 0-0 / 共 0 条</div>
+              <div class="pagination-buttons">
+                <button class="page-btn" id="results-prev" onclick="prevResultsPage()" disabled>上一页</button>
+                <button class="page-btn" id="results-next" onclick="nextResultsPage()" disabled>下一页</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Users Tab -->
+        <div id="tab-users" class="tab-content">
+          <div class="search-box">
+            <input type="text" class="search-input" id="user-search" placeholder="搜索用户名..." oninput="filterUsers()">
+            <select class="filter-select" id="role-filter" onchange="filterUsers()">
+              <option value="">全部角色</option>
+              <option value="admin">管理员</option>
+              <option value="paid">付费用户</option>
+              <option value="free">免费用户</option>
+            </select>
+          </div>
+          <div id="users-loading" class="loading">
+            <div class="spinner"></div>
+            <div>加载用户中</div>
+          </div>
+          <div id="users-empty" class="empty" style="display: none;">
+            暂无用户数据
+          </div>
+          <div id="users-container" style="display: none;">
+            <div class="table-wrapper">
+              <table class="data-table" id="users-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>用户名</th>
+                    <th>邮箱</th>
+                    <th>角色</th>
+                    <th>注册时间</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody id="users-body"></tbody>
+              </table>
+            </div>
+            <div class="pagination">
+              <div class="pagination-info" id="users-info">显示 0-0 / 共 0 条</div>
+              <div class="pagination-buttons">
+                <button class="page-btn" id="users-prev" onclick="prevUsersPage()" disabled>上一页</button>
+                <button class="page-btn" id="users-next" onclick="nextUsersPage()" disabled>下一页</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
+      <!-- Sidebar -->
+      <div>
+        <!-- Quick Actions -->
+        <div class="panel" style="margin-bottom: 1.5rem;">
+          <div class="panel-header">
+            <div class="panel-title">快捷操作</div>
+          </div>
+          <div class="quick-actions">
+            <div class="quick-action" onclick="switchTab('users'); document.getElementById('user-search').focus();">
+              <div class="quick-action-icon">◈</div>
+              <div class="quick-action-label">搜索用户</div>
+            </div>
+            <div class="quick-action" onclick="exportData('json')">
+              <div class="quick-action-icon">↓</div>
+              <div class="quick-action-label">导出JSON</div>
+            </div>
+            <div class="quick-action" onclick="exportData('csv')">
+              <div class="quick-action-icon">↓</div>
+              <div class="quick-action-label">导出CSV</div>
+            </div>
+            <div class="quick-action" onclick="refreshAll()">
+              <div class="quick-action-icon">↻</div>
+              <div class="quick-action-label">刷新全部</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">最近活动</div>
+          </div>
+          <ul class="activity-list" id="activity-list">
+            <li class="empty">暂无活动记录</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Detail Modal -->
+  <div id="user-modal" class="modal-overlay" style="display: none;">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">用户详情</div>
+        <button class="modal-close" onclick="closeModal()">×</button>
+      </div>
+      <div class="modal-body" id="user-modal-body"></div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal()">关闭</button>
+        <button class="btn btn-danger" id="delete-user-btn" onclick="deleteUser()">删除用户</button>
+      </div>
     </div>
   </div>
 
   <script>
     let allResults = [];
+    let allUsers = [];
+    let filteredUsers = [];
+    let resultsPage = 1;
+    let usersPage = 1;
+    const pageSize = 10;
+    let currentUserId = null;
 
-    // Tab switching
     function switchTab(tab) {
       document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.tab === tab);
       });
       document.querySelectorAll('.tab-content').forEach(content => {
-        content.style.display = content.id === 'tab-' + tab ? 'block' : 'none';
+        content.classList.toggle('active', content.id === 'tab-' + tab);
       });
-      if (tab === 'users') {
+      if (tab === 'users' && allUsers.length === 0) {
         loadUsers();
       }
     }
 
-    // Load stats data
     async function loadData() {
-      document.getElementById('stats-loading').style.display = 'block';
-      document.getElementById('empty').style.display = 'none';
-      document.getElementById('table-container').style.display = 'none';
+      document.getElementById('results-loading').style.display = 'block';
+      document.getElementById('results-empty').style.display = 'none';
+      document.getElementById('results-container').style.display = 'none';
 
       try {
         const [statsRes, resultsRes] = await Promise.all([
@@ -562,13 +884,7 @@
 
         // 更新分数分布
         const dist = stats.scoreDistribution || {};
-        const maxCount = Math.max(
-          dist['80-100'] || 0,
-          dist['60-79'] || 0,
-          dist['40-59'] || 0,
-          dist['0-39'] || 0,
-          1
-        );
+        const maxCount = Math.max(dist['80-100'] || 0, dist['60-79'] || 0, dist['40-59'] || 0, dist['0-39'] || 0, 1);
 
         ['80-100', '60-79', '40-59', '0-39'].forEach(range => {
           const count = dist[range] || 0;
@@ -579,18 +895,18 @@
         });
 
         // 渲染表格
-        renderTable(allResults);
+        renderResultsTable();
+        addActivity('加载了测试数据');
 
       } catch (error) {
         console.error('Load error:', error);
-        document.getElementById('empty').style.display = 'block';
-        document.querySelector('#empty div:last-child').textContent = '数据加载失败';
+        document.getElementById('results-empty').style.display = 'block';
+        document.getElementById('results-empty').textContent = '数据加载失败';
       }
 
-      document.getElementById('stats-loading').style.display = 'none';
+      document.getElementById('results-loading').style.display = 'none';
     }
 
-    // Load users data
     async function loadUsers() {
       document.getElementById('users-loading').style.display = 'block';
       document.getElementById('users-empty').style.display = 'none';
@@ -607,20 +923,77 @@
           throw new Error(data.error || '获取用户列表失败');
         }
 
-        const users = data.data || [];
-        renderUsersTable(users);
+        allUsers = data.data || [];
+        filteredUsers = [...allUsers];
+        renderUsersTable();
+        addActivity('加载了用户列表 (' + allUsers.length + ' 人)');
 
       } catch (error) {
         console.error('Load users error:', error);
         document.getElementById('users-empty').style.display = 'block';
-        document.querySelector('#users-empty div:last-child').textContent = '加载失败: ' + error.message;
+        document.getElementById('users-empty').textContent = '加载失败: ' + error.message;
       }
 
       document.getElementById('users-loading').style.display = 'none';
     }
 
-    function renderUsersTable(users) {
-      if (!users || users.length === 0) {
+    function filterUsers() {
+      const search = document.getElementById('user-search').value.toLowerCase();
+      const role = document.getElementById('role-filter').value;
+
+      filteredUsers = allUsers.filter(u => {
+        const matchSearch = !search || (u.username && u.username.toLowerCase().includes(search)) || (u.email && u.email.toLowerCase().includes(search));
+        const matchRole = !role || u.role === role;
+        return matchSearch && matchRole;
+      });
+
+      usersPage = 1;
+      renderUsersTable();
+    }
+
+    function renderResultsTable() {
+      if (allResults.length === 0) {
+        document.getElementById('results-empty').style.display = 'block';
+        document.getElementById('results-container').style.display = 'none';
+        return;
+      }
+
+      document.getElementById('results-empty').style.display = 'none';
+      document.getElementById('results-container').style.display = 'block';
+
+      const start = (resultsPage - 1) * pageSize;
+      const end = start + pageSize;
+      const pageData = allResults.slice(start, end);
+
+      const tbody = document.getElementById('results-body');
+      tbody.innerHTML = pageData.map(r => {
+        const date = new Date(r.timestamp);
+        const timeStr = date.toLocaleString('zh-CN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+        const levelMap = {
+          '高度适合': 'high',
+          '适合': 'medium-high',
+          '中等': 'medium',
+          '不太适合': 'low'
+        };
+
+        return `
+          <tr>
+            <td><span class="score">${r.fit_score}</span></td>
+            <td><span class="level-badge" style="font-size: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.125rem 0.375rem; border: 1px solid var(--line);">${r.fit_level || '-'}</span></td>
+            <td style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${(r.strengths || []).slice(0, 2).join(', ') || '-'}</td>
+            <td>${r.paid ? '<span class="paid-badge">已付</span>' : '<span class="unpaid-badge">未付</span>'}</td>
+            <td style="color: var(--accent);">${r.wechat_id || '-'}</td>
+            <td class="time">${timeStr}</td>
+          </tr>
+        `;
+      }).join('');
+
+      updateResultsPagination();
+    }
+
+    function renderUsersTable() {
+      if (filteredUsers.length === 0) {
         document.getElementById('users-empty').style.display = 'block';
         document.getElementById('users-container').style.display = 'none';
         return;
@@ -629,38 +1002,175 @@
       document.getElementById('users-empty').style.display = 'none';
       document.getElementById('users-container').style.display = 'block';
 
+      const start = (usersPage - 1) * pageSize;
+      const end = start + pageSize;
+      const pageData = filteredUsers.slice(start, end);
+
       const tbody = document.getElementById('users-body');
-      tbody.innerHTML = users.map(u => {
+      tbody.innerHTML = pageData.map(u => {
         const date = new Date(u.created_at);
-        const timeStr = date.toLocaleString('zh-CN', {
-          month: 'short',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit'
-        });
+        const timeStr = date.toLocaleString('zh-CN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 
         const roleClass = u.role === 'admin' ? 'admin' : u.role === 'paid' ? 'paid' : 'free';
 
         return `
           <tr>
-            <td style="color: var(--text-tertiary);">${u.id}</td>
-            <td>${u.username || '—'}</td>
+            <td style="color: var(--text-tertiary); font-size: 0.75rem;">${u.id}</td>
+            <td>${u.username || '-'}</td>
+            <td style="color: var(--text-secondary);">${u.email || '-'}</td>
             <td><span class="role-badge ${roleClass}">${u.role || 'free'}</span></td>
             <td class="time">${timeStr}</td>
             <td>
+              <button class="action-btn" onclick="viewUser('${u.id}')">查看</button>
               ${u.role !== 'admin' ? `
-                <button class="action-btn" onclick="setUserRole('${u.id}', 'paid')">设为付费</button>
-                <button class="action-btn danger" onclick="setUserRole('${u.id}', 'free')">设为免费</button>
-              ` : '<span style="color: var(--text-tertiary);">—</span>'}
+                <button class="action-btn" onclick="setUserRole('${u.id}', 'paid')">付费</button>
+                <button class="action-btn" onclick="setUserRole('${u.id}', 'free')">免费</button>
+                <button class="action-btn danger" onclick="confirmDeleteUser('${u.id}')">删除</button>
+              ` : ''}
             </td>
           </tr>
         `;
       }).join('');
+
+      updateUsersPagination();
+    }
+
+    function updateResultsPagination() {
+      const total = allResults.length;
+      const start = (resultsPage - 1) * pageSize + 1;
+      const end = Math.min(resultsPage * pageSize, total);
+
+      document.getElementById('results-info').textContent = total > 0 ? `显示 ${start}-${end} / 共 ${total} 条` : '无数据';
+      document.getElementById('results-prev').disabled = resultsPage <= 1;
+      document.getElementById('results-next').disabled = end >= total;
+    }
+
+    function updateUsersPagination() {
+      const total = filteredUsers.length;
+      const start = (usersPage - 1) * pageSize + 1;
+      const end = Math.min(usersPage * pageSize, total);
+
+      document.getElementById('users-info').textContent = total > 0 ? `显示 ${start}-${end} / 共 ${total} 条` : '无数据';
+      document.getElementById('users-prev').disabled = usersPage <= 1;
+      document.getElementById('users-next').disabled = end >= total;
+    }
+
+    function prevResultsPage() {
+      if (resultsPage > 1) {
+        resultsPage--;
+        renderResultsTable();
+      }
+    }
+
+    function nextResultsPage() {
+      if (resultsPage * pageSize < allResults.length) {
+        resultsPage++;
+        renderResultsTable();
+      }
+    }
+
+    function prevUsersPage() {
+      if (usersPage > 1) {
+        usersPage--;
+        renderUsersTable();
+      }
+    }
+
+    function nextUsersPage() {
+      if (usersPage * pageSize < filteredUsers.length) {
+        usersPage++;
+        renderUsersTable();
+      }
+    }
+
+    function viewUser(userId) {
+      const user = allUsers.find(u => u.id == userId);
+      if (!user) return;
+
+      currentUserId = userId;
+
+      const date = new Date(user.created_at);
+
+      document.getElementById('user-modal-body').innerHTML = `
+        <div class="user-detail-grid">
+          <div class="user-detail-item">
+            <div class="user-detail-label">用户ID</div>
+            <div class="user-detail-value">${user.id}</div>
+          </div>
+          <div class="user-detail-item">
+            <div class="user-detail-label">用户名</div>
+            <div class="user-detail-value">${user.username || '-'}</div>
+          </div>
+          <div class="user-detail-item">
+            <div class="user-detail-label">邮箱</div>
+            <div class="user-detail-value">${user.email || '-'}</div>
+          </div>
+          <div class="user-detail-item">
+            <div class="user-detail-label">角色</div>
+            <div class="user-detail-value"><span class="role-badge ${user.role === 'admin' ? 'admin' : user.role === 'paid' ? 'paid' : 'free'}">${user.role || 'free'}</span></div>
+          </div>
+          <div class="user-detail-item">
+            <div class="user-detail-label">注册时间</div>
+            <div class="user-detail-value">${date.toLocaleString('zh-CN')}</div>
+          </div>
+          <div class="user-detail-item">
+            <div class="user-detail-label">邮箱验证</div>
+            <div class="user-detail-value">${user.email_verified ? '✓ 已验证' : '× 未验证'}</div>
+          </div>
+        </div>
+        ${user.role !== 'admin' ? `
+          <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+            <button class="btn" onclick="setUserRole('${userId}', 'paid'); closeModal();">设为付费</button>
+            <button class="btn" onclick="setUserRole('${userId}', 'free'); closeModal();">设为免费</button>
+          </div>
+        ` : ''}
+      `;
+
+      document.getElementById('user-modal').style.display = 'flex';
+      addActivity('查看了用户 ' + (user.username || userId));
+    }
+
+    function closeModal() {
+      document.getElementById('user-modal').style.display = 'none';
+      currentUserId = null;
+    }
+
+    function confirmDeleteUser(userId) {
+      if (!confirm('确定要删除用户 ' + userId + ' 吗？此操作不可恢复。')) return;
+      deleteUser(userId);
+    }
+
+    async function deleteUser(userId) {
+      const userIdToDelete = userId || currentUserId;
+      if (!userIdToDelete) return;
+
+      try {
+        const token = localStorage.getItem('opc_token');
+        const response = await fetch(API_BASE + '/api/admin/delete-user', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({ userId: userIdToDelete })
+        });
+
+        const data = await response.json();
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || '删除失败');
+        }
+
+        alert('用户已删除');
+        closeModal();
+        addActivity('删除了用户 ' + userIdToDelete);
+        loadUsers();
+
+      } catch (error) {
+        alert('删除失败: ' + error.message);
+      }
     }
 
     async function setUserRole(userId, role) {
-      if (!confirm('确定要修改用户角色为 ' + role + ' 吗？')) return;
-
       try {
         const token = localStorage.getItem('opc_token');
         const response = await fetch(API_BASE + '/api/admin/set-role', {
@@ -677,72 +1187,85 @@
           throw new Error(data.error || '修改失败');
         }
 
-        alert('角色修改成功');
-        loadUsers();
+        addActivity('将用户 ' + userId + ' 设为 ' + role);
+        if (document.getElementById('tab-users').classList.contains('active')) {
+          loadUsers();
+        }
 
       } catch (error) {
         alert('修改失败: ' + error.message);
       }
     }
 
-    function renderTable(results) {
-      if (!results || results.length === 0) {
-        document.getElementById('empty').style.display = 'block';
-        document.getElementById('table-container').style.display = 'none';
-        return;
-      }
-
-      document.getElementById('empty').style.display = 'none';
-      document.getElementById('table-container').style.display = 'block';
-
-      const tbody = document.getElementById('results-body');
-      tbody.innerHTML = results.map(r => {
-        const date = new Date(r.timestamp);
-        const timeStr = date.toLocaleString('zh-CN', {
-          month: 'short',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit'
-        });
-
-        const levelMap = {
-          '高度适合': { class: 'high', label: '高度适合' },
-          '适合': { class: 'medium-high', label: '适合' },
-          '中等': { class: 'medium', label: '中等' },
-          '不太适合': { class: 'low', label: '不太适合' }
+    function exportData(format = 'json') {
+      if (format === 'json') {
+        const data = {
+          stats: {
+            total: document.getElementById('stat-total').textContent,
+            paid: document.getElementById('stat-paid').textContent,
+            unpaid: document.getElementById('stat-unpaid').textContent,
+            rate: document.getElementById('stat-rate').textContent
+          },
+          results: allResults,
+          users: allUsers,
+          exportTime: new Date().toISOString()
         };
-
-        const levelInfo = levelMap[r.fit_level] || { class: 'low', label: r.fit_level };
-
-        return `
-          <tr>
-            <td><span class="score">${r.fit_score}</span></td>
-            <td>
-              <span class="level-indicator">
-                <span class="level-dot ${levelInfo.class}"></span>
-                <span class="level-tag">${levelInfo.label}</span>
-              </span>
-            </td>
-            <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-              ${(r.strengths || []).slice(0, 2).join(', ')}
-            </td>
-            <td>
-              ${r.paid
-                ? '<span class="paid-badge">已付</span>'
-                : '<span class="unpaid-badge">未付</span>'}
-            </td>
-            <td class="wechat-id">${r.wechat_id || '—'}</td>
-            <td class="time">${timeStr}</td>
-          </tr>
-        `;
-      }).join('');
+        downloadFile(JSON.stringify(data, null, 2), 'opc-export.json', 'application/json');
+      } else if (format === 'csv') {
+        let csv = 'ID,用户名,邮箱,角色,注册时间,邮箱验证\n';
+        allUsers.forEach(u => {
+          csv += `${u.id},"${u.username || ''}","${u.email || ''}","${u.role || 'free'}","${new Date(u.created_at).toLocaleString('zh-CN')}",${u.email_verified || false}\n`;
+        });
+        downloadFile(csv, 'opc-users.csv', 'text/csv');
+      }
+      addActivity('导出了 ' + format.toUpperCase() + ' 数据');
     }
 
-    // 初始加载
-    loadData();
+    function downloadFile(content, filename, type) {
+      const blob = new Blob([content], { type });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
 
-    // 每30秒自动刷新
-    setInterval(loadData, 30000);
+    function refreshAll() {
+      loadData();
+      if (document.getElementById('tab-users').classList.contains('active')) {
+        loadUsers();
+      }
+      addActivity('刷新了全部数据');
+    }
+
+    function addActivity(text) {
+      const list = document.getElementById('activity-list');
+      const time = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+
+      // Remove empty message if present
+      if (list.querySelector('.empty')) {
+        list.innerHTML = '';
+      }
+
+      const item = document.createElement('li');
+      item.className = 'activity-item';
+      item.innerHTML = `<span>${text}</span><span class="activity-time">${time}</span>`;
+      list.insertBefore(item, list.firstChild);
+
+      // Keep only last 10
+      while (list.children.length > 10) {
+        list.removeChild(list.lastChild);
+      }
+    }
+
+    // Close modal on escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // Initial load
+    loadData();
   </script>
 </body>
 </html>

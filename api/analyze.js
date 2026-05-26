@@ -67,7 +67,7 @@ app.get('/api/admin/users', auth.requireRole('admin'), (req, res) => {
   const path = require('path');
   const usersPath = path.join(__dirname, '..', 'data', 'users.json');
   const users = JSON.parse(fs.readFileSync(usersPath, 'utf-8'));
-  const safe = users.map(u => ({ id: u.id, username: u.username, role: u.role, created_at: u.created_at }));
+  const safe = users.map(u => ({ id: u.id, username: u.username, email: u.email, email_verified: u.email_verified, role: u.role, created_at: u.created_at }));
   res.json({ success: true, data: safe });
 });
 
@@ -87,6 +87,28 @@ app.post('/api/admin/set-role', auth.requireRole('admin'), (req, res) => {
   user.updated_at = new Date().toISOString();
   fs.writeFileSync(usersPath, JSON.stringify(users, null, 2));
   res.json({ success: true });
+});
+
+// 删除用户（仅管理员）
+app.post('/api/admin/delete-user', auth.requireRole('admin'), (req, res) => {
+  const { userId } = req.body;
+  if (!userId) {
+    return res.status(400).json({ success: false, error: '缺少用户ID' });
+  }
+  const fs = require('fs');
+  const path = require('path');
+  const usersPath = path.join(__dirname, '..', 'data', 'users.json');
+  const users = JSON.parse(fs.readFileSync(usersPath, 'utf-8'));
+  const userIndex = users.findIndex(u => u.id == userId);
+  if (userIndex === -1) {
+    return res.status(404).json({ success: false, error: '用户不存在' });
+  }
+  if (users[userIndex].role === 'admin') {
+    return res.status(400).json({ success: false, error: '不能删除管理员账号' });
+  }
+  users.splice(userIndex, 1);
+  fs.writeFileSync(usersPath, JSON.stringify(users, null, 2));
+  res.json({ success: true, message: '用户已删除' });
 });
 
 // ========== 邮箱验证 API ==========
