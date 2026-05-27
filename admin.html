@@ -764,6 +764,10 @@
           <button class="tab-btn active" data-tab="results" onclick="switchTab('results')">测试记录</button>
           <button class="tab-btn" data-tab="users" onclick="switchTab('users')">用户管理</button>
           <button class="tab-btn" data-tab="content" onclick="switchTab('content')">内容管理</button>
+          <button class="tab-btn" data-tab="codes" onclick="switchTab('codes')">付费码</button>
+          <button class="tab-btn" data-tab="referral" onclick="switchTab('referral')">分销</button>
+          <button class="tab-btn" data-tab="system" onclick="switchTab('system')">系统配置</button>
+          <button class="tab-btn" data-tab="analytics" onclick="switchTab('analytics')">运营数据</button>
         </div>
 
         <!-- Results Tab -->
@@ -855,7 +859,7 @@
               <option value="has-update">有待发布</option>
               <option value="up-to-date">已是最新</option>
             </select>
-            <button class="btn btn-primary" onclick="showCreateUpdateModal()">+ 创建更新</button>
+            <button class="btn btn-primary" onclick="alert('请先在下方列表选择要更新的节点，点击该节点的「更新」按钮')">+ 创建更新</button>
           </div>
 
           <div id="content-loading" class="loading">
@@ -909,6 +913,325 @@
                     </tr>
                   </thead>
                   <tbody id="pending-updates-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Codes Tab -->
+        <div id="tab-codes" class="tab-content">
+          <!-- Generate Codes Section -->
+          <div class="panel" style="margin-bottom: 1.5rem;">
+            <div class="panel-header">
+              <div class="panel-title">生成付费码</div>
+            </div>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: flex-end;">
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">数量</label>
+                <input type="number" id="code-count" class="form-input" value="1" min="1" max="100" style="width: 80px;">
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">有效期(天)</label>
+                <input type="number" id="code-expires" class="form-input" value="30" min="1" style="width: 80px;">
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">类型</label>
+                <select id="code-type" class="filter-select">
+                  <option value="gift">礼物码(一次性)</option>
+                  <option value="multi">多次使用</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">最大使用次数</label>
+                <input type="number" id="code-max-uses" class="form-input" value="1" min="1" style="width: 80px;">
+              </div>
+              <button class="btn btn-primary" onclick="generatePromoCodes()">生成</button>
+            </div>
+            <div id="generated-codes" style="margin-top: 1rem; display: none;">
+              <div class="text-label" style="margin-bottom: 0.5rem;">生成的兑换码</div>
+              <div id="codes-list" style="background: var(--bg); padding: 0.75rem; font-family: monospace; font-size: 0.875rem; letter-spacing: 0.1em; word-break: break-all;"></div>
+            </div>
+          </div>
+
+          <!-- Promo Codes List -->
+          <div class="panel" style="margin-bottom: 1.5rem;">
+            <div class="panel-header">
+              <div class="panel-title">付费码列表</div>
+              <select class="filter-select" id="codes-filter" onchange="loadPromoCodes()" style="font-size: 0.625rem;">
+                <option value="">全部</option>
+                <option value="active">仅启用</option>
+                <option value="gift">礼物码</option>
+                <option value="multi">多次使用</option>
+              </select>
+            </div>
+            <div id="codes-loading" class="loading">
+              <div class="spinner"></div>
+              <div>加载中</div>
+            </div>
+            <div id="codes-empty" class="empty" style="display: none;">暂无付费码</div>
+            <div id="codes-container" style="display: none;">
+              <div class="table-wrapper">
+                <table class="data-table" id="codes-table">
+                  <thead>
+                    <tr>
+                      <th>兑换码</th>
+                      <th>类型</th>
+                      <th>使用/上限</th>
+                      <th>过期时间</th>
+                      <th>状态</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody id="codes-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Redemption Records -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">兑换记录</div>
+            </div>
+            <div id="redemptions-loading" class="loading">
+              <div class="spinner"></div>
+              <div>加载中</div>
+            </div>
+            <div id="redemptions-empty" class="empty" style="display: none;">暂无兑换记录</div>
+            <div id="redemptions-container" style="display: none;">
+              <div class="table-wrapper">
+                <table class="data-table" id="redemptions-table">
+                  <thead>
+                    <tr>
+                      <th>兑换码</th>
+                      <th>用户</th>
+                      <th>兑换时间</th>
+                    </tr>
+                  </thead>
+                  <tbody id="redemptions-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Referral Tab -->
+        <div id="tab-referral" class="tab-content">
+          <!-- Referral Stats -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">分销统计</div>
+            </div>
+            <div id="referral-stats-loading" class="loading">
+              <div class="spinner"></div>
+              <div>加载中</div>
+            </div>
+            <div id="referral-stats-container" style="display: none;">
+              <div class="stats-grid" id="referral-stats-grid"></div>
+            </div>
+          </div>
+
+          <!-- Referral Records -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">分销记录</div>
+              <button class="btn" onclick="loadReferrals()">刷新</button>
+            </div>
+            <div id="referrals-loading" class="loading">
+              <div class="spinner"></div>
+              <div>加载中</div>
+            </div>
+            <div id="referrals-empty" class="empty" style="display: none;">暂无分销记录</div>
+            <div id="referrals-container" style="display: none;">
+              <div class="table-wrapper">
+                <table class="data-table" id="referrals-table">
+                  <thead>
+                    <tr>
+                      <th>推荐人</th>
+                      <th>被推荐人</th>
+                      <th>推荐码</th>
+                      <th>状态</th>
+                      <th>推荐时间</th>
+                    </tr>
+                  </thead>
+                  <tbody id="referrals-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Referral Rewards -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">奖励发放记录</div>
+              <button class="btn" onclick="loadReferralRewards()">刷新</button>
+            </div>
+            <div id="rewards-loading" class="loading">
+              <div class="spinner"></div>
+              <div>加载中</div>
+            </div>
+            <div id="rewards-empty" class="empty" style="display: none;">暂无奖励记录</div>
+            <div id="rewards-container" style="display: none;">
+              <div class="table-wrapper">
+                <table class="data-table" id="rewards-table">
+                  <thead>
+                    <tr>
+                      <th>推荐人</th>
+                      <th>被推荐人</th>
+                      <th>奖励类型</th>
+                      <th>发放时间</th>
+                    </tr>
+                  </thead>
+                  <tbody id="rewards-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- System Config Tab -->
+        <div id="tab-system" class="tab-content">
+          <!-- System Logs -->
+          <div class="panel" style="margin-bottom: 1.5rem;">
+            <div class="panel-header">
+              <div class="panel-title">系统日志</div>
+              <button class="btn" onclick="loadSystemLogs()">刷新</button>
+            </div>
+            <div id="system-logs-loading" class="loading">
+              <div class="spinner"></div>
+              <div>加载中</div>
+            </div>
+            <div id="system-logs-empty" class="empty" style="display: none;">暂无日志记录</div>
+            <div id="system-logs-container" style="display: none;">
+              <div class="table-wrapper">
+                <table class="data-table" id="logs-table">
+                  <thead>
+                    <tr>
+                      <th>时间</th>
+                      <th>操作</th>
+                      <th>详情</th>
+                      <th>用户</th>
+                    </tr>
+                  </thead>
+                  <tbody id="logs-body"></tbody>
+                </table>
+              </div>
+              <div class="pagination">
+                <div class="pagination-info" id="logs-info">显示 0-0 / 共 0 条</div>
+                <div class="pagination-buttons">
+                  <button class="page-btn" id="logs-prev" onclick="prevLogsPage()">上一页</button>
+                  <button class="page-btn" id="logs-next" onclick="nextLogsPage()">下一页</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Questions Management -->
+          <div class="panel" style="margin-bottom: 1.5rem;">
+            <div class="panel-header">
+              <div class="panel-title">题目管理</div>
+              <button class="btn" onclick="editQuestions()">编辑题目</button>
+            </div>
+            <div id="questions-preview" class="form-group">
+              <div style="font-size: 0.75rem; color: var(--text-tertiary);">点击"编辑题目"修改测试题目配置</div>
+            </div>
+          </div>
+
+          <!-- Nodes Management -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">节点配置</div>
+              <button class="btn" onclick="editNodes()">编辑节点</button>
+            </div>
+            <div id="nodes-preview" class="form-group">
+              <div style="font-size: 0.75rem; color: var(--text-tertiary);">点击"编辑节点"修改节点元数据</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Analytics Tab -->
+        <div id="tab-analytics" class="tab-content">
+          <!-- Conversion Funnel -->
+          <div class="panel" style="margin-bottom: 1.5rem;">
+            <div class="panel-header">
+              <div class="panel-title">转化漏斗</div>
+              <button class="btn" onclick="loadFunnelData()">刷新</button>
+            </div>
+            <div id="funnel-loading" class="loading">
+              <div class="spinner"></div>
+              <div>加载中</div>
+            </div>
+            <div id="funnel-container" style="display: none;">
+              <div class="stats-grid" id="funnel-stats-grid"></div>
+              <div style="margin-top: 1.5rem;">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+                  <div style="flex: 1; height: 32px; background: var(--accent); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.75rem; font-weight: 500;" id="funnel-bar-1">访问</div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+                  <div style="flex: 1; height: 32px; background: #f97316; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.75rem; font-weight: 500;" id="funnel-bar-2">注册</div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+                  <div style="flex: 1; height: 32px; background: #eab308; display: flex; align-items: center; justify-content: center; color: #000; font-size: 0.75rem; font-weight: 500;" id="funnel-bar-3">测试</div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                  <div style="flex: 1; height: 32px; background: var(--success); display: flex; align-items: center; justify-content: center; color: #000; font-size: 0.75rem; font-weight: 500;" id="funnel-bar-4">付费</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Trend Report -->
+          <div class="panel" style="margin-bottom: 1.5rem;">
+            <div class="panel-header">
+              <div class="panel-title">趋势报表</div>
+              <div style="display: flex; gap: 0.5rem;">
+                <select class="filter-select" id="trend-period" onchange="loadTrendData()" style="font-size: 0.625rem;">
+                  <option value="7d">近7天</option>
+                  <option value="30d">近30天</option>
+                  <option value="90d">近90天</option>
+                </select>
+                <button class="btn" onclick="loadTrendData()">刷新</button>
+              </div>
+            </div>
+            <div id="trend-loading" class="loading">
+              <div class="spinner"></div>
+              <div>加载中</div>
+            </div>
+            <div id="trend-container" style="display: none;">
+              <div id="trend-summary" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1rem;"></div>
+              <div style="overflow-x: auto;">
+                <div id="trend-chart" style="min-width: 600px; height: 200px; display: flex; align-items: flex-end; gap: 4px; padding: 1rem 0;"></div>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.625rem; color: var(--text-tertiary); overflow-x: auto;">
+                <span id="trend-date-start"></span>
+                <span id="trend-date-end"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Node Completion Stats -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">节点热度 TOP10</div>
+              <button class="btn" onclick="loadNodeCompletion()">刷新</button>
+            </div>
+            <div id="node-completion-loading" class="loading">
+              <div class="spinner"></div>
+              <div>加载中</div>
+            </div>
+            <div id="node-completion-container" style="display: none;">
+              <div class="table-wrapper">
+                <table class="data-table" id="node-completion-table">
+                  <thead>
+                    <tr>
+                      <th>排名</th>
+                      <th>节点</th>
+                      <th>阶段</th>
+                      <th>完成次数</th>
+                    </tr>
+                  </thead>
+                  <tbody id="node-completion-body"></tbody>
                 </table>
               </div>
             </div>
@@ -993,6 +1316,23 @@
       if (tab === 'content' && allContentNodes.length === 0) {
         loadContentNodes();
         loadPendingUpdates();
+      }
+      if (tab === 'codes') {
+        loadPromoCodes();
+        loadRedemptions();
+      }
+      if (tab === 'referral') {
+        loadReferralStats();
+        loadReferrals();
+        loadReferralRewards();
+      }
+      if (tab === 'system') {
+        loadSystemLogs();
+      }
+      if (tab === 'analytics') {
+        loadFunnelData();
+        loadTrendData();
+        loadNodeCompletion();
       }
     }
 
@@ -1558,6 +1898,665 @@
       }).join('');
     }
 
+    // ========== 付费码管理 ==========
+    let allPromoCodes = [];
+
+    async function generatePromoCodes() {
+      const count = parseInt(document.getElementById('code-count').value) || 1;
+      const expiresInDays = parseInt(document.getElementById('code-expires').value) || 30;
+      const type = document.getElementById('code-type').value;
+      const maxUses = parseInt(document.getElementById('code-max-uses').value) || 1;
+
+      try {
+        const token = localStorage.getItem('opc_token');
+        const response = await fetch(API_BASE + '/api/admin/promo-codes', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({ count, expiresInDays, type, maxUses })
+        });
+
+        const data = await response.json();
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || '生成失败');
+        }
+
+        // 显示生成的码
+        const container = document.getElementById('generated-codes');
+        const list = document.getElementById('codes-list');
+        list.innerHTML = data.data.map(c => `<div style="margin-bottom: 0.25rem;">${c.code}</div>`).join('');
+        container.style.display = 'block';
+
+        addActivity('生成了 ' + count + ' 个付费码');
+        loadPromoCodes();
+
+      } catch (error) {
+        alert('生成失败: ' + error.message);
+      }
+    }
+
+    async function loadPromoCodes() {
+      document.getElementById('codes-loading').style.display = 'block';
+      document.getElementById('codes-empty').style.display = 'none';
+      document.getElementById('codes-container').style.display = 'none';
+
+      try {
+        const token = localStorage.getItem('opc_token');
+        const filter = document.getElementById('codes-filter').value;
+        let url = API_BASE + '/api/admin/promo-codes';
+        if (filter) url += '?type=' + filter;
+
+        const response = await fetch(url, {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || '获取失败');
+        }
+
+        allPromoCodes = data.data || [];
+        renderPromoCodesTable();
+
+      } catch (error) {
+        console.error('Load promo codes error:', error);
+        document.getElementById('codes-empty').style.display = 'block';
+        document.getElementById('codes-empty').textContent = '加载失败';
+      }
+
+      document.getElementById('codes-loading').style.display = 'none';
+    }
+
+    function renderPromoCodesTable() {
+      if (allPromoCodes.length === 0) {
+        document.getElementById('codes-empty').style.display = 'block';
+        document.getElementById('codes-container').style.display = 'none';
+        return;
+      }
+
+      document.getElementById('codes-empty').style.display = 'none';
+      document.getElementById('codes-container').style.display = 'block';
+
+      const tbody = document.getElementById('codes-body');
+      tbody.innerHTML = allPromoCodes.map(c => {
+        const typeText = c.type === 'gift' ? '礼物码' : '多次使用';
+        const typeClass = c.type === 'gift' ? 'draft-badge' : 'approved-badge';
+        const statusClass = c.active ? 'normal-badge' : 'blacklist-badge';
+        const statusText = c.active ? '启用' : '禁用';
+        const expires = new Date(c.expiresAt).toLocaleString('zh-CN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+        const isExpired = new Date(c.expiresAt) < new Date();
+
+        return `
+          <tr>
+            <td style="font-family: monospace; letter-spacing: 0.1em; color: var(--accent);">${c.code}</td>
+            <td><span class="${typeClass}">${typeText}</span></td>
+            <td>${c.uses} / ${c.maxUses || '∞'}</td>
+            <td class="time" style="color: ${isExpired ? '#dc2626' : 'inherit'};">${expires}</td>
+            <td><span class="${statusClass}">${statusText}</span></td>
+            <td>
+              ${c.active ? `<button class="action-btn danger" onclick="disablePromoCode('${c.id}')">禁用</button>` : ''}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    async function disablePromoCode(codeId) {
+      if (!confirm('确定要禁用这个付费码吗？')) return;
+
+      try {
+        const token = localStorage.getItem('opc_token');
+        const response = await fetch(API_BASE + '/api/admin/promo-codes/' + codeId, {
+          method: 'DELETE',
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+
+        const data = await response.json();
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || '操作失败');
+        }
+
+        alert('已禁用');
+        addActivity('禁用了付费码: ' + codeId);
+        loadPromoCodes();
+
+      } catch (error) {
+        alert('操作失败: ' + error.message);
+      }
+    }
+
+    async function loadRedemptions() {
+      document.getElementById('redemptions-loading').style.display = 'block';
+      document.getElementById('redemptions-empty').style.display = 'none';
+      document.getElementById('redemptions-container').style.display = 'none';
+
+      try {
+        const token = localStorage.getItem('opc_token');
+        const response = await fetch(API_BASE + '/api/admin/code-redemptions', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || '获取失败');
+        }
+
+        const redemptions = data.data || [];
+        if (redemptions.length === 0) {
+          document.getElementById('redemptions-empty').style.display = 'block';
+        } else {
+          document.getElementById('redemptions-empty').style.display = 'none';
+          document.getElementById('redemptions-container').style.display = 'block';
+          document.getElementById('redemptions-body').innerHTML = redemptions.map(r => {
+            const date = new Date(r.redeemedAt).toLocaleString('zh-CN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+            return `
+              <tr>
+                <td style="font-family: monospace; color: var(--accent);">${r.code}</td>
+                <td>${r.username || r.userId || '-'}</td>
+                <td class="time">${date}</td>
+              </tr>
+            `;
+          }).join('');
+        }
+
+      } catch (error) {
+        console.error('Load redemptions error:', error);
+      }
+
+      document.getElementById('redemptions-loading').style.display = 'none';
+    }
+
+    async function loadReferralStats() {
+      document.getElementById('referral-stats-loading').style.display = 'block';
+      document.getElementById('referral-stats-container').style.display = 'none';
+
+      try {
+        const token = localStorage.getItem('opc_token');
+        const response = await fetch(API_BASE + '/api/admin/referral-stats', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || '获取失败');
+        }
+
+        const stats = data.data || {};
+        document.getElementById('referral-stats-loading').style.display = 'none';
+        document.getElementById('referral-stats-container').style.display = 'block';
+
+        document.getElementById('referral-stats-grid').innerHTML = `
+          <div class="stat-card">
+            <div class="stat-value">${stats.totalReferrals || 0}</div>
+            <div class="stat-label">总推荐数</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">${stats.activeReferrals || 0}</div>
+            <div class="stat-label">已转化</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">${stats.pendingRewards || 0}</div>
+            <div class="stat-label">待发放奖励</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">${stats.totalRewards || 0}</div>
+            <div class="stat-label">已发放奖励</div>
+          </div>
+        `;
+
+      } catch (error) {
+        console.error('Load referral stats error:', error);
+        document.getElementById('referral-stats-loading').style.display = 'none';
+      }
+    }
+
+    async function loadReferrals() {
+      document.getElementById('referrals-loading').style.display = 'block';
+      document.getElementById('referrals-empty').style.display = 'none';
+      document.getElementById('referrals-container').style.display = 'none';
+
+      try {
+        const token = localStorage.getItem('opc_token');
+        const response = await fetch(API_BASE + '/api/admin/referrals', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || '获取失败');
+        }
+
+        const referrals = data.data || [];
+        if (referrals.length === 0) {
+          document.getElementById('referrals-empty').style.display = 'block';
+        } else {
+          document.getElementById('referrals-empty').style.display = 'none';
+          document.getElementById('referrals-container').style.display = 'block';
+          document.getElementById('referrals-body').innerHTML = referrals.map(r => `
+            <tr>
+              <td>${r.referrerUsername || r.referrerId}</td>
+              <td>${r.referredUsername || r.referredId}</td>
+              <td style="font-family: monospace; letter-spacing: 0.05em;">${r.code}</td>
+              <td><span class="${r.status === 'converted' ? 'normal-badge' : 'pending-badge'}">${r.status === 'converted' ? '已转化' : '待转化'}</span></td>
+              <td class="time">${new Date(r.createdAt).toLocaleString('zh-CN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
+            </tr>
+          `).join('');
+        }
+
+      } catch (error) {
+        console.error('Load referrals error:', error);
+        document.getElementById('referrals-empty').style.display = 'block';
+        document.getElementById('referrals-empty').textContent = '加载失败';
+      }
+
+      document.getElementById('referrals-loading').style.display = 'none';
+    }
+
+    async function loadReferralRewards() {
+      document.getElementById('rewards-loading').style.display = 'block';
+      document.getElementById('rewards-empty').style.display = 'none';
+      document.getElementById('rewards-container').style.display = 'none';
+
+      try {
+        const token = localStorage.getItem('opc_token');
+        const response = await fetch(API_BASE + '/api/admin/referral-rewards', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || '获取失败');
+        }
+
+        const rewards = data.data || [];
+        if (rewards.length === 0) {
+          document.getElementById('rewards-empty').style.display = 'block';
+        } else {
+          document.getElementById('rewards-empty').style.display = 'none';
+          document.getElementById('rewards-container').style.display = 'block';
+          document.getElementById('rewards-body').innerHTML = rewards.map(r => `
+            <tr>
+              <td>${r.referrerUsername || r.referrerId}</td>
+              <td>${r.referredUsername || r.referredId}</td>
+              <td><span class="paid-badge">${r.rewardType || '订阅奖励'}</span></td>
+              <td class="time">${new Date(r.grantedAt).toLocaleString('zh-CN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
+            </tr>
+          `).join('');
+        }
+
+      } catch (error) {
+        console.error('Load referral rewards error:', error);
+        document.getElementById('rewards-empty').style.display = 'block';
+        document.getElementById('rewards-empty').textContent = '加载失败';
+      }
+
+      document.getElementById('rewards-loading').style.display = 'none';
+    }
+
+    // ========== 系统配置 ==========
+    let logsPage = 1;
+    let logsTotal = 0;
+
+    async function loadSystemLogs() {
+      document.getElementById('system-logs-loading').style.display = 'block';
+      document.getElementById('system-logs-empty').style.display = 'none';
+      document.getElementById('system-logs-container').style.display = 'none';
+
+      try {
+        const token = localStorage.getItem('opc_token');
+        const response = await fetch(API_BASE + '/api/admin/logs?page=' + logsPage + '&limit=20', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || '获取日志失败');
+        }
+
+        logsTotal = data.total;
+        const logs = data.data || [];
+
+        if (logs.length === 0) {
+          document.getElementById('system-logs-empty').style.display = 'block';
+        } else {
+          document.getElementById('system-logs-empty').style.display = 'none';
+          document.getElementById('system-logs-container').style.display = 'block';
+          document.getElementById('logs-body').innerHTML = logs.map(log => `
+            <tr>
+              <td class="time">${new Date(log.timestamp).toLocaleString('zh-CN')}</td>
+              <td style="color: var(--accent);">${formatLogAction(log.action)}</td>
+              <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${log.details || '-'}</td>
+              <td class="time">${log.userId || 'system'}</td>
+            </tr>
+          `).join('');
+          const start = (logsPage - 1) * 20 + 1;
+          const end = Math.min(logsPage * 20, logsTotal);
+          document.getElementById('logs-info').textContent = `显示 ${start}-${end} / 共 ${logsTotal} 条`;
+          document.getElementById('logs-prev').disabled = logsPage <= 1;
+          document.getElementById('logs-next').disabled = end >= logsTotal;
+        }
+
+      } catch (error) {
+        console.error('Load logs error:', error);
+        document.getElementById('system-logs-empty').style.display = 'block';
+        document.getElementById('system-logs-empty').textContent = '加载失败';
+      }
+
+      document.getElementById('system-logs-loading').style.display = 'none';
+    }
+
+    function formatLogAction(action) {
+      const map = {
+        'update_questions': '更新题目',
+        'update_node': '更新节点',
+        'add_node': '添加节点',
+        'delete_node': '删除节点',
+        'publish_content': '发布内容',
+        'approve_update': '审批通过',
+        'reject_update': '拒绝更新',
+        'create_update': '创建更新',
+        'set_blacklist': '设置黑名单',
+        'set_role': '设置角色',
+        'generate_codes': '生成付费码',
+        'disable_code': '禁用付费码',
+        'login': '管理员登录',
+        'default': action
+      };
+      return map[action] || map['default'];
+    }
+
+    function prevLogsPage() {
+      if (logsPage > 1) {
+        logsPage--;
+        loadSystemLogs();
+      }
+    }
+
+    function nextLogsPage() {
+      if (logsPage * 20 < logsTotal) {
+        logsPage++;
+        loadSystemLogs();
+      }
+    }
+
+    function editQuestions() {
+      const modal = document.getElementById('user-modal');
+      document.getElementById('user-modal-title').textContent = '编辑题目配置';
+      document.getElementById('user-modal-footer').innerHTML = `
+        <button class="btn" onclick="closeModal()">取消</button>
+        <button class="btn btn-primary" onclick="saveQuestions()">保存</button>
+      `;
+
+      fetch(API_BASE + '/api/admin/questions', {
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('opc_token') }
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            document.getElementById('user-modal-body').innerHTML = `
+              <div style="font-size: 0.75rem; color: var(--text-tertiary); margin-bottom: 1rem;">
+                提示：直接编辑JSON格式的题目配置
+              </div>
+              <textarea id="questions-editor" style="width: 100%; height: 400px; background: var(--bg); color: var(--text-primary); border: 1px solid var(--line); padding: 1rem; font-family: monospace; font-size: 0.75rem; resize: vertical;">${JSON.stringify(data.data, null, 2)}</textarea>
+            `;
+          }
+        })
+        .catch(err => {
+          document.getElementById('user-modal-body').innerHTML = '<div style="color: #dc2626;">加载失败</div>';
+        });
+
+      modal.style.display = 'flex';
+    }
+
+    async function saveQuestions() {
+      try {
+        const editor = document.getElementById('questions-editor');
+        const questionsData = JSON.parse(editor.value);
+        const token = localStorage.getItem('opc_token');
+        const response = await fetch(API_BASE + '/api/admin/questions', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify(questionsData)
+        });
+        const data = await response.json();
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || '保存失败');
+        }
+        alert('题目已保存');
+        addActivity('更新了测试题目配置');
+        closeModal();
+      } catch (error) {
+        alert('保存失败: ' + error.message);
+      }
+    }
+
+    function editNodes() {
+      const modal = document.getElementById('user-modal');
+      document.getElementById('user-modal-title').textContent = '编辑节点配置';
+      document.getElementById('user-modal-footer').innerHTML = `
+        <button class="btn" onclick="closeModal()">取消</button>
+        <button class="btn btn-primary" onclick="saveNodes()">保存</button>
+      `;
+
+      fetch(API_BASE + '/api/admin/nodes', {
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('opc_token') }
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            document.getElementById('user-modal-body').innerHTML = `
+              <div style="font-size: 0.75rem; color: var(--text-tertiary); margin-bottom: 1rem;">
+                提示：直接编辑JSON格式的节点配置（共 ${data.data.nodes.length} 个节点）
+              </div>
+              <textarea id="nodes-editor" style="width: 100%; height: 400px; background: var(--bg); color: var(--text-primary); border: 1px solid var(--line); padding: 1rem; font-family: monospace; font-size: 0.75rem; resize: vertical;">${JSON.stringify(data.data, null, 2)}</textarea>
+            `;
+          }
+        })
+        .catch(err => {
+          document.getElementById('user-modal-body').innerHTML = '<div style="color: #dc2626;">加载失败</div>';
+        });
+
+      modal.style.display = 'flex';
+    }
+
+    async function saveNodes() {
+      try {
+        const editor = document.getElementById('nodes-editor');
+        const nodesData = JSON.parse(editor.value);
+        const token = localStorage.getItem('opc_token');
+        const response = await fetch(API_BASE + '/api/admin/nodes', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify(nodesData)
+        });
+        const data = await response.json();
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || '保存失败');
+        }
+        alert('节点配置已保存');
+        addActivity('更新了节点配置');
+        closeModal();
+      } catch (error) {
+        alert('保存失败: ' + error.message);
+      }
+    }
+
+    // ========== 运营数据 ==========
+    async function loadFunnelData() {
+      document.getElementById('funnel-loading').style.display = 'block';
+      document.getElementById('funnel-container').style.display = 'none';
+
+      try {
+        const token = localStorage.getItem('opc_token');
+        const response = await fetch(API_BASE + '/api/admin/analytics/funnel', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || '获取失败');
+        }
+
+        const funnel = data.data;
+        document.getElementById('funnel-loading').style.display = 'none';
+        document.getElementById('funnel-container').style.display = 'block';
+
+        // 更新漏斗条形图
+        const maxValue = funnel.total.visits || 1;
+        document.getElementById('funnel-bar-1').style.width = (funnel.stages[0].value / maxValue * 100) + '%';
+        document.getElementById('funnel-bar-1').textContent = `访问 ${funnel.stages[0].value} (${funnel.stages[0].rate}%)`;
+        document.getElementById('funnel-bar-2').style.width = (funnel.stages[1].value / maxValue * 100) + '%';
+        document.getElementById('funnel-bar-2').textContent = `注册 ${funnel.stages[1].value} (${funnel.stages[1].rate}%)`;
+        document.getElementById('funnel-bar-3').style.width = (funnel.stages[2].value / maxValue * 100) + '%';
+        document.getElementById('funnel-bar-3').textContent = `测试 ${funnel.stages[2].value} (${funnel.stages[2].rate}%)`;
+        document.getElementById('funnel-bar-4').style.width = (funnel.stages[3].value / maxValue * 100) + '%';
+        document.getElementById('funnel-bar-4').textContent = `付费 ${funnel.stages[3].value} (${funnel.stages[3].rate}%)`;
+
+        // 更新统计卡片
+        document.getElementById('funnel-stats-grid').innerHTML = `
+          <div class="stat-card">
+            <div class="stat-value">${funnel.total.visits}</div>
+            <div class="stat-label">访问量</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">${funnel.total.registered}</div>
+            <div class="stat-label">注册用户</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">${funnel.total.tested}</div>
+            <div class="stat-label">完成测试</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">${funnel.total.paid}</div>
+            <div class="stat-label">付费用户</div>
+          </div>
+        `;
+
+      } catch (error) {
+        console.error('Load funnel error:', error);
+        document.getElementById('funnel-loading').style.display = 'none';
+      }
+    }
+
+    async function loadTrendData() {
+      document.getElementById('trend-loading').style.display = 'block';
+      document.getElementById('trend-container').style.display = 'none';
+
+      try {
+        const period = document.getElementById('trend-period').value;
+        const token = localStorage.getItem('opc_token');
+        const response = await fetch(API_BASE + '/api/admin/analytics/trend?period=' + period, {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || '获取失败');
+        }
+
+        const trend = data.data;
+        document.getElementById('trend-loading').style.display = 'none';
+        document.getElementById('trend-container').style.display = 'block';
+
+        // 更新摘要
+        document.getElementById('trend-summary').innerHTML = `
+          <div class="stat-card">
+            <div class="stat-value">${trend.totals.tests}</div>
+            <div class="stat-label">总测试</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">${trend.totals.paid}</div>
+            <div class="stat-label">总付费</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">${trend.totals.tests > 0 ? Math.round(trend.totals.paid / trend.totals.tests * 100) : 0}%</div>
+            <div class="stat-label">付费率</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">${trend.days}</div>
+            <div class="stat-label">天数</div>
+          </div>
+        `;
+
+        // 绘制趋势图
+        const maxTests = Math.max(...trend.trend.map(d => d.tests), 1);
+        const chartHeight = 180;
+        document.getElementById('trend-chart').innerHTML = trend.trend.map(d => {
+          const barHeight = Math.max(4, (d.tests / maxTests) * chartHeight);
+          const paidHeight = Math.max(2, (d.paid / maxTests) * chartHeight);
+          const date = new Date(d.date);
+          const monthDay = (date.getMonth() + 1) + '/' + date.getDate();
+          return `
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; min-width: 0;">
+              <div style="display: flex; gap: 2px; align-items: flex-end;">
+                <div style="width: 12px; height: ${barHeight}px; background: var(--accent); border-radius: 2px 2px 0 0;" title="测试: ${d.tests}"></div>
+                <div style="width: 12px; height: ${paidHeight}px; background: var(--success); border-radius: 2px 2px 0 0;" title="付费: ${d.paid}"></div>
+              </div>
+              <div style="font-size: 0.5rem; color: var(--text-tertiary); margin-top: 4px; white-space: nowrap;">${monthDay}</div>
+            </div>
+          `;
+        }).join('');
+
+        // 更新日期范围
+        if (trend.trend.length > 0) {
+          document.getElementById('trend-date-start').textContent = trend.trend[0].date;
+          document.getElementById('trend-date-end').textContent = trend.trend[trend.trend.length - 1].date;
+        }
+
+      } catch (error) {
+        console.error('Load trend error:', error);
+        document.getElementById('trend-loading').style.display = 'none';
+      }
+    }
+
+    async function loadNodeCompletion() {
+      document.getElementById('node-completion-loading').style.display = 'block';
+      document.getElementById('node-completion-container').style.display = 'none';
+
+      try {
+        const token = localStorage.getItem('opc_token');
+        const response = await fetch(API_BASE + '/api/admin/analytics/node-completion', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || '获取失败');
+        }
+
+        const nodes = (data.data || []).slice(0, 10); // TOP 10
+        if (nodes.length === 0) {
+          document.getElementById('node-completion-loading').style.display = 'none';
+          document.getElementById('node-completion-container').style.display = 'block';
+          document.getElementById('node-completion-body').innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--text-tertiary);">暂无数据</td></tr>';
+          return;
+        }
+
+        document.getElementById('node-completion-loading').style.display = 'none';
+        document.getElementById('node-completion-container').style.display = 'block';
+        document.getElementById('node-completion-body').innerHTML = nodes.map((n, i) => `
+          <tr>
+            <td><span class="${i < 3 ? 'role-badge ' + (i === 0 ? 'admin' : i === 1 ? 'paid' : 'approved') : ''}">${i + 1}</span></td>
+            <td><a href="/nodes/${n.slug}" target="_blank" style="color: var(--text-primary);">${n.title}</a></td>
+            <td class="time">${n.category || '-'}</td>
+            <td style="color: var(--accent);">${n.completions}</td>
+          </tr>
+        `).join('');
+
+      } catch (error) {
+        console.error('Load node completion error:', error);
+        document.getElementById('node-completion-loading').style.display = 'none';
+      }
+    }
+
     async function loadPendingUpdates() {
       document.getElementById('pending-updates-loading').style.display = 'block';
       document.getElementById('pending-updates-empty').style.display = 'none';
@@ -1638,6 +2637,26 @@
         }
 
         showContentPreviewModal(data.data);
+
+      } catch (error) {
+        alert('获取内容失败: ' + error.message);
+      }
+    }
+
+    async function showCreateUpdateModal(nodeId) {
+      try {
+        const token = localStorage.getItem('opc_token');
+        const response = await fetch(API_BASE + '/api/admin/content-nodes/' + nodeId + '/html', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || '获取内容失败');
+        }
+
+        currentPreviewNode = data.data;
+        showCreateUpdateForm();
 
       } catch (error) {
         alert('获取内容失败: ' + error.message);
@@ -1726,27 +2745,41 @@
         </div>
         <div class="form-group">
           <label class="form-label" style="display: flex; justify-content: space-between;">
-            <span>内容对比</span>
-            <span style="font-weight: normal; text-transform: none; letter-spacing: 0;">左边=原内容 | 右边=新内容</span>
+            <span>内容预览</span>
+            <span style="font-weight: normal; text-transform: none; letter-spacing: 0;">编辑框内修改内容，右侧实时预览</span>
           </label>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; height: 400px;">
-            <div style="background: var(--bg); padding: 0.75rem; overflow-y: auto; font-size: 0.7rem; line-height: 1.5; white-space: pre-wrap; word-break: break-all; border: 1px solid var(--line);">
-              <div style="color: var(--text-tertiary); margin-bottom: 0.5rem; font-size: 0.5625rem; letter-spacing: 0.1em; text-transform: uppercase;">原始内容</div>
-              <div id="original-content">${escapeHtml(currentOriginalContent.substring(0, 3000))}${currentOriginalContent.length > 3000 ? '\n...(过长已截断)' : ''}</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; height: 500px;">
+            <div style="background: #fff; color: #111; padding: 1rem; overflow-y: auto; font-size: 0.875rem; line-height: 1.8; border: 1px solid var(--line);">
+              <div style="color: #666; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid #eee; font-size: 0.5625rem; letter-spacing: 0.1em; text-transform: uppercase;">当前内容（渲染后）</div>
+              <div id="original-rendered" style="max-width: 100%; overflow-x: hidden;"></div>
             </div>
-            <div style="background: var(--bg); padding: 0.75rem; overflow-y: auto; font-size: 0.7rem; line-height: 1.5; white-space: pre-wrap; word-break: break-all; border: 1px solid var(--accent);">
-              <div style="color: var(--accent); margin-bottom: 0.5rem; font-size: 0.5625rem; letter-spacing: 0.1em; text-transform: uppercase;">新内容</div>
-              <textarea id="update-content" class="form-input" style="height: calc(100% - 1.5rem); font-family: monospace; font-size: 0.7rem; line-height: 1.5; resize: none;" placeholder="在此编辑新内容..." oninput="updateDiffPreview()">${escapeHtml(currentOriginalContent)}</textarea>
+            <div style="display: flex; flex-direction: column; border: 1px solid var(--accent);">
+              <div style="background: var(--bg); padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--line);">
+                <div style="color: var(--accent); font-size: 0.5625rem; letter-spacing: 0.1em; text-transform: uppercase;">编辑新内容（HTML）</div>
+              </div>
+              <textarea id="update-content" class="form-input" style="flex: 1; font-family: monospace; font-size: 0.75rem; line-height: 1.5; resize: none; border: none; background: var(--surface);" placeholder="在此编辑新内容..." oninput="updateNewPreview()">${escapeHtml(currentOriginalContent)}</textarea>
+              <div style="background: #fff; color: #111; padding: 1rem; overflow-y: auto; font-size: 0.875rem; line-height: 1.8; border-top: 1px solid var(--line); max-height: 200px;">
+                <div style="color: #666; margin-bottom: 0.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid #eee; font-size: 0.5625rem; letter-spacing: 0.1em; text-transform: uppercase;">新内容预览</div>
+                <div id="new-rendered"></div>
+              </div>
             </div>
           </div>
         </div>
       `;
 
+      // 渲染原始内容和初始预览
+      document.getElementById('original-rendered').innerHTML = currentOriginalContent;
+      document.getElementById('new-rendered').innerHTML = currentOriginalContent;
+
       modal.style.display = 'flex';
     }
 
-    function updateDiffPreview() {
-      // 实时更新对比功能（可选）
+    function updateNewPreview() {
+      const content = document.getElementById('update-content').value;
+      const preview = document.getElementById('new-rendered');
+      if (preview) {
+        preview.innerHTML = content;
+      }
     }
 
     async function submitCreateUpdate() {
@@ -1854,8 +2887,8 @@
           <div style="font-size: 0.8125rem; color: var(--text-secondary);">${update.diff || '无'}</div>
         </div>
         <div class="form-group">
-          <div class="form-label">内容预览</div>
-          <div style="background: var(--bg); padding: 1rem; max-height: 300px; overflow-y: auto; font-size: 0.75rem; line-height: 1.6; white-space: pre-wrap; word-break: break-all;">${escapeHtml(update.content.substring(0, 3000))}${update.content.length > 3000 ? '\n...(内容过长已截断)' : ''}</div>
+          <div class="form-label">内容预览（渲染后）</div>
+          <div style="background: #fff; color: #111; padding: 1rem; max-height: 400px; overflow-y: auto; font-size: 0.875rem; line-height: 1.8;">${update.content}</div>
         </div>
       `;
 

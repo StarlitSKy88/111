@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OPC节点百科 - 知识图谱</title>
+  <meta name="description" content="OPC节点百科 - 纯OPC创业从0到1的完整节点导航系统">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='10' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='4' fill='%23C0392B'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --surface: #141414;
+      --surface2: #1a1a1a;
+      --text-primary: #ffffff;
+      --text-secondary: #888888;
+      --text-tertiary: #555555;
+      --accent: #C0392B;
+      --accent-light: rgba(192, 57, 43, 0.15);
+      --line: #222222;
+      --line-light: #333333;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans SC', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      min-height: 100dvh;
+      overflow: hidden;
+    }
+
+    /* ========== PARTICLE BACKGROUND ========== */
+    #particles {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 50%;
+      opacity: 0;
+      animation: particleFloat 20s infinite ease-in-out;
+    }
+
+    @keyframes particleFloat {
+      0%, 100% { opacity: 0; transform: translateY(0) translateX(0); }
+      10% { opacity: 0.3; }
+      50% { opacity: 0.6; }
+      90% { opacity: 0.1; }
+      100% { opacity: 0; transform: translateY(-200px) translateX(50px); }
+    }
+
+    /* ========== HERO SECTION ========== */
+    .hero {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: var(--bg);
+      transition: opacity 800ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .hero.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.6875rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: heroFadeIn 800ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+      animation-delay: 200ms;
+    }
+
+    .hero-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(3rem, 10vw, 7rem);
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: heroFadeIn 1000ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+      animation-delay: 400ms;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.375rem);
+      color: var(--text-secondary);
+      font-weight: 300;
+      max-width: 480px;
+      line-height: 1.6;
+      letter-spacing: 0.02em;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: heroFadeIn 800ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+      animation-delay: 700ms;
+    }
+
+    @keyframes heroFadeIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--line);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: heroFadeIn 800ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+      animation-delay: 1000ms;
+    }
+
+    .hero-stat { text-align: center; }
+
+    .hero-stat-value {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .hero-stat-label {
+      font-size: 0.6875rem;
+      color: var(--text-tertiary);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-top: 0.5rem;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 2.5rem;
+      padding: 1rem 2rem;
+      background: var(--text-primary);
+      color: var(--bg);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 300ms;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: heroFadeIn 800ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+      animation-delay: 1200ms;
+    }
+
+    .hero-cta:hover {
+      background: var(--accent);
+      color: var(--text-primary);
+      transform: scale(1.02);
+    }
+
+    .hero-cta svg { width: 16px; height: 16px; transition: transform 300ms; }
+    .hero-cta:hover svg { transform: translateX(4px); }
+
+    /* ========== GRAPH CONTAINER ========== */
+    #graph-container {
+      position: fixed;
+      inset: 0;
+      z-index: 5;
+      opacity: 0;
+      transition: opacity 800ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    #graph-container.visible { opacity: 1; }
+    #graph { width: 100%; height: 100%; }
+
+    /* ========== HEADER ========== */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: transparent;
+      pointer-events: none;
+    }
+
+    .header > * { pointer-events: auto; }
+
+    .logo {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 0.875rem;
+      letter-spacing: 0.05em;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      opacity: 0;
+      animation: fadeInSlide 500ms ease forwards;
+      animation-delay: 1400ms;
+    }
+
+    @keyframes fadeInSlide {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 3s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(192, 57, 43, 0.4); }
+      50% { box-shadow: 0 0 0 8px rgba(192, 57, 43, 0); }
+    }
+
+    .mode-switch {
+      display: flex;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      opacity: 0;
+      animation: fadeInSlide 500ms ease forwards;
+      animation-delay: 1500ms;
+    }
+
+    .mode-btn {
+      padding: 0.5rem 1rem;
+      font-size: 0.625rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      background: transparent;
+      border: none;
+      color: var(--text-tertiary);
+      cursor: pointer;
+      transition: all 300ms;
+    }
+
+    .mode-btn:hover { color: var(--text-secondary); }
+    .mode-btn.active { background: var(--text-primary); color: var(--bg); }
+
+    /* ========== SEARCH ========== */
+    .search-container {
+      position: fixed;
+      top: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 90;
+      width: 90%;
+      max-width: 320px;
+      opacity: 0;
+      transition: opacity 300ms, transform 300ms;
+      pointer-events: none;
+    }
+
+    .search-container.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      padding: 0.625rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      gap: 0.75rem;
+    }
+
+    .search-box:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 20px rgba(192, 57, 43, 0.15);
+    }
+
+    .search-icon { color: var(--text-tertiary); font-size: 0.875rem; }
+
+    .search-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-size: 0.8125rem;
+      outline: none;
+      letter-spacing: 0.04em;
+    }
+
+    .search-input::placeholder {
+      color: var(--text-tertiary);
+      font-size: 0.6875rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ========== NODES ========== */
+    .node-group { cursor: pointer; }
+
+    .node-circle {
+      fill: #ffffff;
+      stroke: #e0e0e0;
+      stroke-width: 1;
+      transition: r 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  stroke-width 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  stroke 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  filter 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .node-id {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 12px;
+      fill: #ffffff;
+      text-anchor: middle;
+      font-weight: 700;
+      pointer-events: none;
+      transition: font-size 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .node-label {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      fill: #ffffff;
+      text-anchor: middle;
+      pointer-events: none;
+      letter-spacing: 0;
+      transition: transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .node-group.hover .node-label {
+      transform: translateY(10px) scale(1.3);
+      font-size: 14px;
+      fill: #ffffff;
+    }
+
+    .node-group.hover .node-circle {
+      stroke: #C0392B;
+      stroke-width: 3;
+      filter: drop-shadow(0 0 12px rgba(192, 57, 43, 0.4));
+    }
+
+    /* ========== LINKS ========== */
+    .link {
+      stroke: var(--text-tertiary);
+      stroke-opacity: 0.3;
+      stroke-width: 1.5;
+      fill: none;
+    }
+
+    .link.in-stage {
+      stroke-opacity: 0.5;
+    }
+
+    .link.cross-stage {
+      stroke: var(--accent);
+      stroke-opacity: 0.4;
+      stroke-width: 2;
+      stroke-dasharray: 6,4;
+    }
+
+    /* ========== LEGEND ========== */
+    .legend {
+      position: fixed;
+      bottom: 2rem;
+      left: 2rem;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      padding: 1.25rem 1.5rem;
+      z-index: 80;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 300ms, transform 300ms;
+    }
+
+    .legend.visible { opacity: 1; transform: translateY(0); }
+
+    .legend-title {
+      color: var(--text-tertiary);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      font-size: 0.5625rem;
+      font-weight: 500;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      margin-bottom: 0.375rem;
+      color: var(--text-secondary);
+      font-size: 0.6875rem;
+      letter-spacing: 0.03em;
+    }
+
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    /* ========== STATS ========== */
+    .stats {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      padding: 1.25rem 1.5rem;
+      z-index: 80;
+      min-width: 120px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 300ms, transform 300ms;
+    }
+
+    .stats.visible { opacity: 1; transform: translateY(0); }
+
+    .stats-title {
+      color: var(--text-tertiary);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      font-size: 0.5625rem;
+      font-weight: 500;
+    }
+
+    .stats-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.375rem;
+      color: var(--text-secondary);
+      font-size: 0.6875rem;
+      gap: 1.5rem;
+    }
+
+    .stats-value {
+      color: var(--text-primary);
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.125rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ========== TOOLTIP ========== */
+    .tooltip {
+      position: fixed;
+      z-index: 200;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      padding: 1rem 1.25rem;
+      max-width: 280px;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(5px);
+      transition: opacity 200ms, transform 200ms;
+    }
+
+    .tooltip.visible { opacity: 1; transform: translateY(0); }
+
+    .tooltip-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 0.9375rem;
+      color: var(--text-primary);
+      margin-bottom: 0.375rem;
+    }
+
+    .tooltip-meta { display: flex; gap: 0.375rem; margin-bottom: 0.5rem; }
+
+    .tooltip-tag {
+      font-size: 0.5625rem;
+      padding: 0.1875rem 0.5rem;
+      background: var(--surface2);
+      color: var(--text-secondary);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .tooltip-tag.accent { background: var(--accent-light); color: var(--accent); }
+
+    .tooltip-summary {
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      letter-spacing: 0.01em;
+    }
+
+    .tooltip-cta {
+      margin-top: 0.625rem;
+      padding-top: 0.625rem;
+      border-top: 1px solid var(--line);
+      font-size: 0.625rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+    }
+
+    /* ========== MODAL ========== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 10, 10, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 300;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 400ms;
+    }
+
+    .modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      max-width: 400px;
+      width: 90%;
+      transform: scale(0.95) translateY(20px);
+      transition: transform 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .modal-overlay.active .modal { transform: scale(1) translateY(0); }
+
+    .modal-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1rem;
+      color: var(--text-primary);
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text-tertiary);
+      font-size: 1.25rem;
+      cursor: pointer;
+      padding: 0.25rem;
+      transition: color 300ms;
+    }
+
+    .modal-close:hover { color: var(--text-primary); }
+    .modal-body { padding: 1.5rem; }
+
+    .modal-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.6875rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--accent);
+      padding-bottom: 0.25rem;
+      text-decoration: none;
+      margin-top: 1.25rem;
+      transition: opacity 300ms;
+    }
+
+    .modal-btn:hover { opacity: 0.7; }
+  </style>
+</head>
+<body>
+  <div id="particles"></div>
+
+  <section class="hero" id="hero">
+    <div class="hero-eyebrow">OPC 创业路径</div>
+    <h1 class="hero-title">57 个节点</h1>
+    <p class="hero-subtitle">从想法到上线，一个人公司的完整创业导航系统</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-value" id="stat-nodes-hero">57</div>
+        <div class="hero-stat-label">节点</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-value" id="stat-links-hero">61</div>
+        <div class="hero-stat-label">关系</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-value">8</div>
+        <div class="hero-stat-label">阶段</div>
+      </div>
+    </div>
+    <a href="#" class="hero-cta" id="hero-cta">
+      探索图谱
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    </a>
+  </section>
+
+  <div id="graph-container">
+    <svg id="graph"></svg>
+  </div>
+
+  <header class="header">
+    <div class="logo">
+      <div class="logo-dot"></div>
+      <span>OPC</span>
+    </div>
+    <div class="mode-switch">
+      <button class="mode-btn active" id="btn-graph">图谱</button>
+      <button class="mode-btn" id="btn-classic" onclick="window.location.href='index.html'">列表</button>
+    </div>
+  </header>
+
+  <div class="search-container" id="search-container">
+    <div class="search-box">
+      <span class="search-icon">⌕</span>
+      <input type="text" class="search-input" id="search" placeholder="搜索节点" autocomplete="off">
+    </div>
+  </div>
+
+  <div class="legend" id="legend">
+    <div class="legend-title">阶段</div>
+    <div class="legend-item"><div class="legend-dot" style="color: #F0EDE6;"></div>产品验证(1-6)</div>
+    <div class="legend-item"><div class="legend-dot" style="color: #B8B4AE;"></div>环境搭建(7-10)</div>
+    <div class="legend-item"><div class="legend-dot" style="color: #7A7670;"></div>核心开发(11-17)</div>
+    <div class="legend-item"><div class="legend-dot" style="color: #4A4744;"></div>测试修复(18-21)</div>
+    <div class="legend-item"><div class="legend-dot" style="color: #2A2A28;"></div>上线准备(22-30)</div>
+    <div class="legend-item"><div class="legend-dot" style="color: #C0392B;"></div>运营迭代(31-43)</div>
+    <div class="legend-item"><div class="legend-dot" style="color: #5A5754;"></div>支撑层(44-57)</div>
+  </div>
+
+  <div class="stats" id="stats">
+    <div class="stats-title">图谱概览</div>
+    <div class="stats-item"><span>节点</span><span class="stats-value" id="stat-nodes">57</span></div>
+    <div class="stats-item"><span>关系</span><span class="stats-value" id="stat-links">61</span></div>
+    <div class="stats-item"><span>阶段</span><span class="stats-value">8</span></div>
+  </div>
+
+  <div class="tooltip" id="tooltip">
+    <div class="tooltip-title" id="tooltip-title"></div>
+    <div class="tooltip-meta" id="tooltip-meta"></div>
+    <div class="tooltip-summary" id="tooltip-summary"></div>
+    <div class="tooltip-cta">→ 查看详情</div>
+  </div>
+
+  <div class="modal-overlay" id="modal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title" id="modal-title">节点预览</div>
+        <button class="modal-close" onclick="closeModal()">×</button>
+      </div>
+      <div class="modal-body" id="modal-body"></div>
+    </div>
+  </div>
+
+  <script>
+    // ========== PARTICLE SYSTEM ==========
+    function createParticles() {
+      const container = document.getElementById('particles');
+      for (let i = 0; i < 30; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.top = Math.random() * 100 + '%';
+        particle.style.animationDuration = (15 + Math.random() * 15) + 's';
+        particle.style.animationDelay = Math.random() * 10 + 's';
+        particle.style.opacity = 0.1 + Math.random() * 0.3;
+        container.appendChild(particle);
+      }
+    }
+
+    // ========== STAGE CONFIG ==========
+    const STAGES = [
+      { id: 'product', name: '产品验证', range: [1, 6], color: '#F0EDE6' },
+      { id: 'env', name: '环境搭建', range: [7, 10], color: '#B8B4AE' },
+      { id: 'core', name: '核心开发', range: [11, 17], color: '#7A7670' },
+      { id: 'test', name: '测试修复', range: [18, 21], color: '#4A4744' },
+      { id: 'launch', name: '上线准备', range: [22, 30], color: '#2A2A28' },
+      { id: 'ops', name: '运营迭代', range: [31, 43], color: '#C0392B' },
+      { id: 'support', name: '支撑层', range: [44, 57], color: '#5A5754' }
+    ];
+
+    function getStage(nodeId) {
+      for (const stage of STAGES) {
+        if (nodeId >= stage.range[0] && nodeId <= stage.range[1]) return stage;
+      }
+      return STAGES[0];
+    }
+
+    const API_BASE = 'http://localhost:3001';
+
+    let nodesData = [];
+    let graphNodes = [];
+    let graphLinks = [];
+    let svg, g, simulation, nodeElements, linkElements;
+    let width, height;
+    let isGraphVisible = false;
+    let isPausedByUser = false;
+    let autoScrollDirection = 1;
+
+    function startAutoScroll() {
+      if (!isGraphVisible) return;
+      isPausedByUser = false;
+      autoScrollLoop();
+    }
+
+    function autoScrollLoop() {
+      if (isPausedByUser) {
+        requestAnimationFrame(autoScrollLoop);
+        return;
+      }
+
+      const svg = d3.select('#graph');
+      const currentTransform = d3.zoomTransform(svg.node());
+
+      // Calculate boundaries based on graph content width
+      const graphWidth = width * 3;
+      const halfWidth = graphWidth / 2;
+      const currentX = currentTransform.x;
+      const viewLeft = -currentX / currentTransform.k;
+      const viewRight = (width - currentX) / currentTransform.k;
+
+      // Reverse direction at boundaries
+      if (currentX > width * 0.3) {
+        autoScrollDirection = -1;
+      } else if (currentX < -width * 0.3) {
+        autoScrollDirection = 1;
+      }
+
+      const newX = currentTransform.x + autoScrollDirection * 0.5;
+
+      svg.call(zoom.transform, d3.zoomIdentity.translate(newX, currentTransform.y).scale(currentTransform.k));
+
+      requestAnimationFrame(autoScrollLoop);
+    }
+
+    function startAutoScrollPause() {
+      isPausedByUser = true;
+    }
+
+    function resumeAutoScroll() {
+      isPausedByUser = false;
+    }
+    async function loadNodes() {
+      try {
+        const response = await fetch(`${API_BASE}/api/nodes`);
+        const data = await response.json();
+        if (data.success && data.data && data.data.length > 0) {
+          nodesData = data.data;
+        } else {
+          nodesData = getFallbackNodes();
+        }
+      } catch (e) {
+        nodesData = getFallbackNodes();
+      }
+      buildGraphStructure();
+    }
+
+    function getFallbackNodes() {
+      const names = [
+        'OPC适配测试', '个人能力与资源盘点', '问题定义与用户调研', '产品原型设计',
+        'MVP功能清单', '技术选型', '开发环境安装', 'Hello World启动',
+        'Git版本控制', '后端CRUD连接', '用户认证系统', '核心功能1开发',
+        '核心功能2开发', '数据展示交互', '核心功能3开发', '支付代码集成',
+        '国内支付接入', '开发者自测', '亲友灰度测试', 'Bug集中修复',
+        '性能基础优化', '上线内容填充', '公司注册', '域名ICP备案',
+        '网站部署SSL', '审核材料准备', '上线前检查', '提交审核等待',
+        '审核问题处理', '正式发布', '数据监控', '冷启动获客',
+        '内容营销SEO', '用户反馈收集', '社群私域运营', 'AI客户服务',
+        '客户异议应对', '定价策略', '广告投放', '用户转介绍',
+        '每周迭代复盘', '收入多元化', '产品规模化', '银行开户商户号',
+        '税务报到筹划', '现金流财务', '企业邮箱搭建', '商标申请',
+        '软著登记', '广告合规', '数据备份恢复', '服务器安全防护',
+        '海外支付方案', '微信小程序', '外包策略执行', '精力能量管理', '政府政策补贴'
+      ];
+      return names.map((title, i) => ({
+        id: i + 1,
+        title,
+        slug: 'node-' + (i + 1),
+        summary: '节点' + (i + 1),
+        difficulty: '入门'
+      }));
+    }
+
+    function buildGraphStructure() {
+      // Build nodes with stage info
+      graphNodes = nodesData.map(n => {
+        const stage = getStage(n.id);
+        return {
+          id: n.id,
+          title: n.title || `节点${n.id}`,
+          slug: n.slug || 'node-' + n.id,
+          summary: n.summary || '',
+          difficulty: n.difficulty || '',
+          stage: stage.id,
+          stageName: stage.name,
+          color: stage.color
+        };
+      });
+
+      // Build sequential links within each stage + cross-stage links
+      graphLinks = [];
+
+      // Sequential links within each stage
+      for (const stage of STAGES) {
+        const [start, end] = stage.range;
+        for (let i = start; i < end; i++) {
+          graphLinks.push({
+            source: i,
+            target: i + 1,
+            type: 'sequential'
+          });
+        }
+      }
+
+      // Cross-stage links (key transitions)
+      const crossLinks = [
+        [6, 11],   // 产品验证 → 核心开发
+        [10, 11],   // 环境搭建 → 核心开发
+        [17, 18],   // 核心开发 → 测试修复
+        [21, 22],   // 测试修复 → 上线准备
+        [30, 31],   // 上线准备 → 运营迭代
+        [43, 44],   // 运营迭代 → 支撑层
+        [17, 22],   // 核心开发 → 上线准备 (跳过测试)
+        [43, 57],   // 运营迭代 → 支撑层终点
+      ];
+
+      crossLinks.forEach(([from, to]) => {
+        if (graphNodes.find(n => n.id === from) && graphNodes.find(n => n.id === to)) {
+          graphLinks.push({ source: from, target: to, type: 'cross-stage' });
+        }
+      });
+
+      document.getElementById('stat-nodes').textContent = graphNodes.length;
+      document.getElementById('stat-links').textContent = graphLinks.length;
+      document.getElementById('stat-nodes-hero').textContent = graphNodes.length;
+      document.getElementById('stat-links-hero').textContent = graphLinks.length;
+    }
+
+    // ========== GRAPH BUILD ==========
+    function buildGraph() {
+      svg = d3.select('#graph');
+      width = window.innerWidth;
+      height = window.innerHeight;
+      svg.attr('viewBox', [0, 0, width, height]);
+      g = svg.append('g');
+
+      const zoom = d3.zoom()
+        .scaleExtent([0.15, 2.5])
+        .on('zoom', (event) => {
+          g.attr('transform', event.transform);
+        });
+      svg.call(zoom);
+      // Initial view: center and fit
+      svg.call(zoom.transform, d3.zoomIdentity.translate(width / 2, height / 2).scale(0.8));
+    }
+
+    function setupSimulation() {
+      // Custom layout: arrange by stage in a flowing line
+      const stageCount = STAGES.length;
+      const stageWidth = width * 0.85 / stageCount;
+
+      graphNodes.forEach(node => {
+        const stage = getStage(node.id);
+        const stageIndex = STAGES.findIndex(s => s.id === stage.id);
+        const nodesInStage = graphNodes.filter(n => getStage(n.id).id === stage.id);
+        const nodeIndexInStage = nodesInStage.findIndex(n => n.id === node.id);
+        const nodesCount = nodesInStage.length;
+
+        // X: by stage position
+        node.x = -width / 2 + (stageIndex + 0.5) * stageWidth;
+
+        // Y: distribute vertically within stage
+        const stageHeight = height * 0.7;
+        const spacing = stageHeight / (nodesCount + 1);
+        node.y = -stageHeight / 2 + (nodeIndexInStage + 1) * spacing;
+
+        // Initial positions for animation
+        node.x0 = node.x;
+        node.y0 = node.y;
+        node.scale = 1;
+      });
+
+      simulation = d3.forceSimulation(graphNodes)
+        .force('link', d3.forceLink(graphLinks).id(d => d.id).distance(120).strength(0.3))
+        .force('charge', d3.forceManyBody().strength(-150))
+        .force('center', d3.forceCenter(0, 0))
+        .force('collision', d3.forceCollide().radius(35))
+        .alpha(0.3);
+
+      // Links
+      linkElements = g.append('g')
+        .attr('class', 'links')
+        .selectAll('line')
+        .data(graphLinks)
+        .enter()
+        .append('line')
+        .attr('class', d => d.type === 'cross-stage' ? 'link cross-stage' : 'link in-stage');
+
+      // Nodes
+      nodeElements = g.append('g')
+        .attr('class', 'nodes')
+        .selectAll('g')
+        .data(graphNodes)
+        .enter()
+        .append('g')
+        .attr('class', 'node-group')
+        .on('mouseenter', function(event, d) {
+        startAutoScrollPause();
+        d3.select(this).classed('hover', true);
+        d3.select(this).select('.node-circle').attr('r', 45);
+        d.scale = 1.5;
+      })
+      .on('mouseleave', function(event, d) {
+        resumeAutoScroll();
+        d3.select(this).classed('hover', false);
+        d3.select(this).select('.node-circle').attr('r', 15);
+        d.scale = 1;
+      })
+        .call(d3.drag()
+          .on('start', dragstarted)
+          .on('drag', dragged)
+          .on('end', dragended))
+        .on('mouseover', showTooltip)
+        .on('mouseout', hideTooltip)
+        .on('click', showNodeModal);
+
+      // Node circle
+      nodeElements.append('circle')
+        .attr('class', 'node-circle')
+        .attr('r', 15);
+
+      // Node ID text
+      nodeElements.append('text')
+        .attr('class', 'node-id')
+        .attr('dy', 5)
+        .text(d => String(d.id).padStart(2, '0'));
+
+      // Node Chinese name label
+      nodeElements.append('text')
+        .attr('class', 'node-label')
+        .attr('dy', 30)
+        .text(d => d.title.length > 5 ? d.title.substring(0, 5) + '..' : d.title);
+
+      simulation.on('tick', () => {
+        linkElements
+          .attr('x1', d => d.source.x)
+          .attr('y1', d => d.source.y)
+          .attr('x2', d => d.target.x)
+          .attr('y2', d => d.target.y);
+        nodeElements.attr('transform', d => `translate(${d.x},${d.y}) scale(${d.scale || 1})`);
+      });
+    }
+
+    function dragstarted(event, d) {
+      if (!event.active) simulation.alphaTarget(0.3).restart();
+      d.fx = d.x;
+      d.fy = d.y;
+    }
+
+    function dragged(event, d) {
+      d.fx = event.x;
+      d.fy = event.y;
+    }
+
+    function dragended(event, d) {
+      if (!event.active) simulation.alphaTarget(0);
+      d.fx = null;
+      d.fy = null;
+    }
+
+    // ========== TOOLTIP ==========
+    function showTooltip(event, d) {
+      const tooltip = document.getElementById('tooltip');
+      document.getElementById('tooltip-title').textContent = d.title;
+      document.getElementById('tooltip-meta').innerHTML = `
+        <span class="tooltip-tag">${String(d.id).padStart(2, '0')}</span>
+        <span class="tooltip-tag">${d.difficulty}</span>
+        <span class="tooltip-tag accent">${d.stageName}</span>
+      `;
+      document.getElementById('tooltip-summary').textContent = d.summary;
+
+      tooltip.style.left = (event.pageX + 20) + 'px';
+      tooltip.style.top = (event.pageY - 10) + 'px';
+      tooltip.classList.add('visible');
+
+      linkElements.classed('highlighted', l =>
+        l.source.id === d.id || l.target.id === d.id
+      );
+    }
+
+    function hideTooltip() {
+      document.getElementById('tooltip').classList.remove('visible');
+      linkElements.classed('highlighted', false);
+    }
+
+    // ========== MODAL ==========
+    function showNodeModal(event, d) {
+      event.stopPropagation();
+      const modal = document.getElementById('modal');
+      document.getElementById('modal-title').textContent = `${String(d.id).padStart(2, '0')} · ${d.title}`;
+      document.getElementById('modal-body').innerHTML = `
+        <div style="margin-bottom: 1rem;">
+          <span class="tooltip-tag" style="margin-right: 0.5rem;">${d.difficulty}</span>
+          <span class="tooltip-tag accent">${d.stageName}</span>
+        </div>
+        <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 1.25rem;">
+          ${d.summary || '暂无描述'}
+        </p>
+        <a href="http://localhost:3002/nodes/${d.slug}/index.html" class="modal-btn">
+          进入节点 →
+        </a>
+      `;
+      modal.classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('modal').classList.remove('active');
+    }
+
+    // ========== GRAPH ENTRANCE ANIMATION ==========
+    function animateGraphEntrance() {
+      // Start all nodes from center
+      nodeElements
+        .attr('transform', 'translate(0,0)')
+        .style('opacity', 0);
+
+      // Animate nodes to final positions
+      nodeElements.transition()
+        .duration(800)
+        .delay((d, i) => i * 30)
+        .style('opacity', 1)
+        .attr('transform', d => `translate(${d.x},${d.y})`);
+
+      // Animate links
+      linkElements
+        .style('opacity', 0)
+        .transition()
+        .duration(600)
+        .delay((d, i) => i * 20 + 500)
+        .style('opacity', 1);
+    }
+
+    // ========== SHOW GRAPH ==========
+    function showGraph() {
+      isGraphVisible = true;
+      document.getElementById('hero').classList.add('hidden');
+      document.getElementById('graph-container').classList.add('visible');
+      document.getElementById('search-container').classList.add('visible');
+      document.getElementById('legend').classList.add('visible');
+      document.getElementById('stats').classList.add('visible');
+      setTimeout(() => {
+        animateGraphEntrance();
+        startAutoScroll();
+      }, 400);
+    }
+
+    // ========== EVENT LISTENERS ==========
+    function setupEventListeners() {
+      document.getElementById('hero-cta').addEventListener('click', (e) => {
+        e.preventDefault();
+        showGraph();
+      });
+
+      const searchInput = document.getElementById('search');
+      searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        nodeElements.style('opacity', d => {
+          if (!query) return 1;
+          return d.title.toLowerCase().includes(query) ||
+                 String(d.id).includes(query) ? 1 : 0.2;
+        });
+        linkElements.style('opacity', d => {
+          if (!query) return 1;
+          const src = graphNodes.find(n => n.id === d.source.id);
+          const tgt = graphNodes.find(n => n.id === d.target.id);
+          return (src && src.title.toLowerCase().includes(query)) ||
+                 (tgt && tgt.title.toLowerCase().includes(query)) ? 0.6 : 0.1;
+        });
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+        if (e.key === 'Enter' && !isGraphVisible) showGraph();
+      });
+
+      document.getElementById('modal').addEventListener('click', (e) => {
+        if (e.target.classList.contains('modal-overlay')) closeModal();
+      });
+    }
+
+    // ========== INIT ==========
+    async function init() {
+      createParticles();
+      await loadNodes();
+      buildGraph();
+      setupSimulation();
+      setupEventListeners();
+    }
+
+    init();
+  </script>
+</body>
+</html>

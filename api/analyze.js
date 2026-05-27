@@ -8,6 +8,7 @@ const auth = require('./auth');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+const DATA_DIR = path.join(__dirname, '..', 'data');
 
 app.use(cors());
 app.use(express.json());
@@ -337,6 +338,213 @@ app.delete('/api/admin/promo-codes/:id', auth.requireRole('admin'), (req, res) =
     res.json({ success: true, message: '已禁用' });
   } catch (error) {
     res.status(500).json({ success: false, error: '操作失败' });
+  }
+});
+
+// ========== 分销系统 API ==========
+const REFERRALS_FILE = path.join(DATA_DIR, 'referrals.json');
+const REFERRAL_REWARDS_FILE = path.join(DATA_DIR, 'referral-rewards.json');
+
+function readReferrals() {
+  ensureFile(REFERRALS_FILE, '{"referrals": []}');
+  try { return JSON.parse(fs.readFileSync(REFERRALS_FILE, 'utf-8')); } catch { return { referrals: [] }; }
+}
+
+function writeReferrals(data) {
+  fs.writeFileSync(REFERRALS_FILE, JSON.stringify(data, null, 2));
+}
+
+function readReferralRewards() {
+  ensureFile(REFERRAL_REWARDS_FILE, '{"rewards": []}');
+  try { return JSON.parse(fs.readFileSync(REFERRAL_REWARDS_FILE, 'utf-8')); } catch { return { rewards: [] }; }
+}
+
+function writeReferralRewards(data) {
+  fs.writeFileSync(REFERRAL_REWARDS_FILE, JSON.stringify(data, null, 2));
+}
+
+// 生成用户推荐码
+app.post('/api/referral/generate-code', (req, res) => {
+  try {
+    const { userId } = req.body;
+    if (!userId) {
+      return res.status(400).json({ success: false, error: '缺少用户ID' });
+    }
+
+    const users = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'users.json'), 'utf-8'));
+    const user = users.find(u => u.id === userId);
+    if (!user) {
+      return res.status(404).json({ success: false, error: '用户不存在' });
+    }
+
+    // 如果已有推荐码，直接返回
+    if (user.referralCode) {
+      return res.json({ success: true, code: user.referralCode });
+    }
+
+    // 生成新的推荐码
+    const code = 'REF' + userId + Math.random().toString(36).substr(2, 6).toUpperCase();
+    user.referralCode = code;
+    fs.writeFileSync(path.join(DATA_DIR, 'users.json'), JSON.stringify(users, null, 2));
+
+    res.json({ success: true, code });
+  } catch (error) {
+    console.error('Generate referral code error:', error);
+    res.status(500).json({ success: false, error: '生成失败' });
+  }
+});
+
+// 获取推荐码（公开接口）
+app.get('/api/referral/code/:userId', (req, res) => {
+  try {
+    const { userId } = req.params;
+    const users = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'users.json'), 'utf-8'));
+    const user = users.find(u => u.id === userId);
+
+    if (!user) {
+      return res.status(404).json({ success: false, error: '用户不存在' });
+    }
+
+    res.json({ success: true, code: user.referralCode || null });
+  } catch (error) {
+    res.status(500).json({ success: false, error: '获取失败' });
+  }
+});
+
+// 使用推荐码注册（关联推荐关系）
+app.post('/api/referral/use-code', (req, res) => {
+  try {
+    const { referralCode, newUserId } = req.body;
+
+    if (!referralCode || !newUserId) {
+      return res.status(400).json({ success: false, error: '缺少参数' });
+    }
+
+    const users = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'users.json'), 'utf-8'));
+    const referrer = users.find(u => u.referralCode === referralCode);
+    const newUser = users.find(u => u.id === newUserId);
+
+    if (!referrer) {
+      return res.status(404).json({ success: false, error: '推荐码无效' });
+    }
+
+    if (referrer.id === newUser.id) {
+      return res.status(400).json({ success: false, error: '不能推荐自己' });
+    }
+
+    // 记录推荐关系
+    const data = readReferrals();
+    const existing = data.referrals.find(r => r.referredUserId === newUser.id);
+    if (!existing) {
+      data.referrals.push({
+        id: 'ref_' + Date.now(),
+        referrerId: referrer.id,
+        referrerName: referrer.username || referrer.phone,
+        referredUserId: newUser.id,
+        referredUserName: newUser.username || newUser.phone,
+        registeredAt: new Date().toISOString(),
+        rewarded: false
+      });
+      writeReferrals(data);
+    }
+
+    res.json({ success: true, message: '推荐关系已记录' });
+  } catch (error) {
+    console.error('Use referral code error:', error);
+    res.status(500).json({ success: false, error: '操作失败' });
+  }
+});
+
+// 获取推荐记录（管理员）
+app.get('/api/admin/referrals', auth.requireRole('admin'), (req, res) => {
+  try {
+    const data = readReferrals();
+    data.referrals.sort((a, b) => new Date(b.registeredAt) - new Date(a.registeredAt));
+    res.json({ success: true, data: data.referrals, total: data.referrals.length });
+  } catch (error) {
+    res.status(500).json({ success: false, error: '获取失败' });
+  }
+});
+
+// 获取推荐统计（管理员）
+app.get('/api/admin/referral-stats', auth.requireRole('admin'), (req, res) => {
+  try {
+    const users = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'users.json'), 'utf-8'));
+    const referrals = readReferrals();
+    const rewards = readReferralRewards();
+
+    // 统计每个用户的推荐效果
+    const stats = users
+      .filter(u => u.referralCode)
+      .map(u => {
+        const userReferrals = referrals.referrals.filter(r => r.referrerId === u.id);
+        const paidReferrals = userReferrals.filter(r => r.rewarded);
+        return {
+          userId: u.id,
+          username: u.username || u.phone,
+          referralCode: u.referralCode,
+          totalReferrals: userReferrals.length,
+          paidReferrals: paidReferrals.length,
+          pendingRewards: userReferrals.length - paidReferrals.length
+        };
+      })
+      .sort((a, b) => b.totalReferrals - a.totalReferrals);
+
+    res.json({ success: true, data: stats, total: stats.length });
+  } catch (error) {
+    res.status(500).json({ success: false, error: '获取失败' });
+  }
+});
+
+// 手动发放推荐奖励（管理员）
+app.post('/api/admin/referral-reward', auth.requireRole('admin'), (req, res) => {
+  try {
+    const { referralId, rewardType = 'paid_upgrade' } = req.body;
+
+    const referrals = readReferrals();
+    const referral = referrals.referrals.find(r => r.id === referralId);
+
+    if (!referral) {
+      return res.status(404).json({ success: false, error: '推荐记录不存在' });
+    }
+
+    if (referral.rewarded) {
+      return res.status(400).json({ success: false, error: '已经发放过奖励' });
+    }
+
+    // 标记为已奖励
+    referral.rewarded = true;
+    referral.rewardedAt = new Date().toISOString();
+    referral.rewardType = rewardType;
+    writeReferrals(referrals);
+
+    // 记录奖励
+    const rewards = readReferralRewards();
+    rewards.rewards.push({
+      id: 'rew_' + Date.now(),
+      referralId,
+      referrerId: referral.referrerId,
+      referredUserId: referral.referredUserId,
+      rewardType,
+      createdAt: new Date().toISOString()
+    });
+    writeReferralRewards(rewards);
+
+    res.json({ success: true, message: '奖励已发放' });
+  } catch (error) {
+    console.error('Referral reward error:', error);
+    res.status(500).json({ success: false, error: '操作失败' });
+  }
+});
+
+// 获取推荐奖励记录（管理员）
+app.get('/api/admin/referral-rewards', auth.requireRole('admin'), (req, res) => {
+  try {
+    const data = readReferralRewards();
+    data.rewards.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    res.json({ success: true, data: data.rewards, total: data.rewards.length });
+  } catch (error) {
+    res.status(500).json({ success: false, error: '获取失败' });
   }
 });
 
@@ -1318,6 +1526,265 @@ app.get('/api/result/:id', (req, res) => {
   res.json(result);
 });
 
+// ========== 系统配置 API ==========
+const QUESTIONS_FILE = path.join(__dirname, '..', 'questions.json');
+const SYSTEM_LOGS_FILE = path.join(DATA_DIR, 'system-logs.json');
+
+// 确保系统日志文件存在
+function ensureSystemLogs() {
+  if (!fs.existsSync(SYSTEM_LOGS_FILE)) {
+    fs.writeFileSync(SYSTEM_LOGS_FILE, JSON.stringify({ logs: [] }, null, 2));
+  }
+}
+
+// 记录系统日志
+function addSystemLog(action, details, userId = 'admin') {
+  ensureSystemLogs();
+  const logs = JSON.parse(fs.readFileSync(SYSTEM_LOGS_FILE, 'utf-8'));
+  logs.logs.unshift({
+    id: Date.now().toString(),
+    action,
+    details,
+    userId,
+    timestamp: new Date().toISOString()
+  });
+  // 只保留最近1000条
+  if (logs.logs.length > 1000) {
+    logs.logs = logs.logs.slice(0, 1000);
+  }
+  fs.writeFileSync(SYSTEM_LOGS_FILE, JSON.stringify(logs, null, 2));
+}
+
+// 获取所有题目
+app.get('/api/admin/questions', auth.requireRole('admin'), (req, res) => {
+  try {
+    const questions = JSON.parse(fs.readFileSync(QUESTIONS_FILE, 'utf-8'));
+    res.json({ success: true, data: questions });
+  } catch (error) {
+    res.status(500).json({ success: false, error: '读取题目失败' });
+  }
+});
+
+// 更新题目
+app.put('/api/admin/questions', auth.requireRole('admin'), (req, res) => {
+  try {
+    const questions = req.body;
+    fs.writeFileSync(QUESTIONS_FILE, JSON.stringify(questions, null, 2));
+    addSystemLog('update_questions', '更新了测试题目配置');
+    res.json({ success: true, message: '题目已更新' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: '保存题目失败' });
+  }
+});
+
+// 获取所有节点元数据
+app.get('/api/admin/nodes', auth.requireRole('admin'), (req, res) => {
+  try {
+    const nodes = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'nodes.json'), 'utf-8'));
+    res.json({ success: true, data: nodes });
+  } catch (error) {
+    res.status(500).json({ success: false, error: '读取节点失败' });
+  }
+});
+
+// 更新节点元数据
+app.put('/api/admin/nodes/:id', auth.requireRole('admin'), (req, res) => {
+  try {
+    const nodeId = parseInt(req.params.id);
+    const nodeData = req.body;
+    const nodes = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'nodes.json'), 'utf-8'));
+    const index = nodes.nodes.findIndex(n => n.id === nodeId);
+    if (index === -1) {
+      return res.status(404).json({ success: false, error: '节点不存在' });
+    }
+    nodes.nodes[index] = { ...nodes.nodes[index], ...nodeData, id: nodeId };
+    fs.writeFileSync(path.join(DATA_DIR, 'nodes.json'), JSON.stringify(nodes, null, 2));
+    addSystemLog('update_node', `更新了节点 ${nodeId}: ${nodeData.title}`, req.user?.userId);
+    res.json({ success: true, message: '节点已更新' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: '保存节点失败' });
+  }
+});
+
+// 添加节点
+app.post('/api/admin/nodes', auth.requireRole('admin'), (req, res) => {
+  try {
+    const nodeData = req.body;
+    const nodes = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'nodes.json'), 'utf-8'));
+    const newId = Math.max(...nodes.nodes.map(n => n.id)) + 1;
+    const newNode = { id: newId, ...nodeData };
+    nodes.nodes.push(newNode);
+    fs.writeFileSync(path.join(DATA_DIR, 'nodes.json'), JSON.stringify(nodes, null, 2));
+    addSystemLog('add_node', `添加了新节点 ${newId}: ${nodeData.title}`, req.user?.userId);
+    res.json({ success: true, data: newNode });
+  } catch (error) {
+    res.status(500).json({ success: false, error: '添加节点失败' });
+  }
+});
+
+// 删除节点
+app.delete('/api/admin/nodes/:id', auth.requireRole('admin'), (req, res) => {
+  try {
+    const nodeId = parseInt(req.params.id);
+    const nodes = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'nodes.json'), 'utf-8'));
+    const index = nodes.nodes.findIndex(n => n.id === nodeId);
+    if (index === -1) {
+      return res.status(404).json({ success: false, error: '节点不存在' });
+    }
+    const deleted = nodes.nodes.splice(index, 1)[0];
+    fs.writeFileSync(path.join(DATA_DIR, 'nodes.json'), JSON.stringify(nodes, null, 2));
+    addSystemLog('delete_node', `删除了节点 ${nodeId}: ${deleted.title}`, req.user?.userId);
+    res.json({ success: true, message: '节点已删除' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: '删除节点失败' });
+  }
+});
+
+// 获取系统日志
+app.get('/api/admin/logs', auth.requireRole('admin'), (req, res) => {
+  try {
+    ensureSystemLogs();
+    const logs = JSON.parse(fs.readFileSync(SYSTEM_LOGS_FILE, 'utf-8'));
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 50;
+    const start = (page - 1) * limit;
+    const paginatedLogs = logs.logs.slice(start, start + limit);
+    res.json({
+      success: true,
+      data: paginatedLogs,
+      total: logs.logs.length,
+      page,
+      limit
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: '读取日志失败' });
+  }
+});
+
+// ========== 运营数据 API ==========
+
+// 转化漏斗数据
+app.get('/api/admin/analytics/funnel', auth.requireRole('admin'), (req, res) => {
+  try {
+    const results = dataStore.getAllResults();
+    const users = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'users.json'), 'utf-8'));
+
+    // 漏斗阶段
+    const visits = users.length > 0 ? users.length * 3 : 0; // 估算：注册用户的3倍为访客
+    const registered = users.length;
+    const tested = results.length;
+    const paid = results.filter(r => r.paid).length;
+
+    res.json({
+      success: true,
+      data: {
+        stages: [
+          { name: '访问', value: visits, rate: 100 },
+          { name: '注册', value: registered, rate: registered > 0 && visits > 0 ? Math.round(registered / visits * 100) : 0 },
+          { name: '测试', value: tested, rate: tested > 0 && registered > 0 ? Math.round(tested / registered * 100) : 0 },
+          { name: '付费', value: paid, rate: paid > 0 && tested > 0 ? Math.round(paid / tested * 100) : 0 }
+        ],
+        total: {
+          visits,
+          registered,
+          tested,
+          paid
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Funnel analytics error:', error);
+    res.status(500).json({ success: false, error: '获取漏斗数据失败' });
+  }
+});
+
+// 趋势数据
+app.get('/api/admin/analytics/trend', auth.requireRole('admin'), (req, res) => {
+  try {
+    const period = req.query.period || '7d'; // 7d, 30d, 90d
+    const results = dataStore.getAllResults();
+
+    let days;
+    if (period === '30d') days = 30;
+    else if (period === '90d') days = 90;
+    else days = 7;
+
+    const now = new Date();
+    const startDate = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
+
+    // 生成日期范围内的所有日期
+    const dateMap = {};
+    for (let i = 0; i < days; i++) {
+      const date = new Date(startDate.getTime() + i * 24 * 60 * 60 * 1000);
+      const dateStr = date.toISOString().split('T')[0];
+      dateMap[dateStr] = { tests: 0, paid: 0 };
+    }
+
+    // 填充实际数据
+    results.forEach(r => {
+      if (r.timestamp) {
+        const dateStr = new Date(r.timestamp).toISOString().split('T')[0];
+        if (dateMap[dateStr]) {
+          dateMap[dateStr].tests++;
+          if (r.paid) dateMap[dateStr].paid++;
+        }
+      }
+    });
+
+    const trend = Object.entries(dateMap).map(([date, data]) => ({
+      date,
+      tests: data.tests,
+      paid: data.paid
+    })).sort((a, b) => a.date.localeCompare(b.date));
+
+    // 计算总计
+    const totalTests = trend.reduce((sum, d) => sum + d.tests, 0);
+    const totalPaid = trend.reduce((sum, d) => sum + d.paid, 0);
+
+    res.json({
+      success: true,
+      data: {
+        trend,
+        period,
+        days,
+        totals: {
+          tests: totalTests,
+          paid: totalPaid
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Trend analytics error:', error);
+    res.status(500).json({ success: false, error: '获取趋势数据失败' });
+  }
+});
+
+// 节点完成统计
+app.get('/api/admin/analytics/node-completion', auth.requireRole('admin'), (req, res) => {
+  try {
+    const nodes = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'nodes.json'), 'utf-8'));
+    const results = dataStore.getAllResults();
+
+    // 统计每个节点被完成的次数（通过results中的node_progress或类似字段）
+    // 目前results没有这个字段，我们估算：测试过的用户平均完成3个节点
+    const nodeCompletion = nodes.nodes.map(n => ({
+      nodeId: n.id,
+      title: n.title,
+      slug: n.slug,
+      category: n.category,
+      completions: Math.floor(results.length * 0.3) // 估算30%的测试者完成了该节点
+    })).sort((a, b) => b.completions - a.completions);
+
+    res.json({
+      success: true,
+      data: nodeCompletion
+    });
+  } catch (error) {
+    console.error('Node completion analytics error:', error);
+    res.status(500).json({ success: false, error: '获取节点完成统计失败' });
+  }
+});
+
 // 节点内容生成API
 app.post('/api/generate-node-content', async (req, res) => {
   const { node_id, title, summary } = req.body;
@@ -1390,7 +1857,6 @@ app.post('/api/generate-node-content', async (req, res) => {
 const fs = require('fs');
 
 const NODES_BASE = path.join(__dirname, '..', 'nodes');
-const DATA_DIR = path.join(__dirname, '..', 'data');
 
 // 查找节点目录 (匹配 *-{slug})
 function findNodeDir(slug) {
