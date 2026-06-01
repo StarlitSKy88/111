@@ -421,10 +421,11 @@
       display: none !important;
     }
 
-    /* === Phase Grid - Responsive Ma Layout === */
+    /* === Phase Grid - Responsive Ma Card Layout === */
     @media (min-width: 640px) {
       .phase-grid {
-        grid-template-columns: repeat(3, 1fr) !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1.5rem !important;
       }
       .phase-header {
         grid-template-columns: 2fr 1fr !important;
@@ -434,7 +435,8 @@
 
     @media (min-width: 1024px) {
       .phase-grid {
-        grid-template-columns: repeat(4, 1fr) !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 1.75rem !important;
       }
     }
 
@@ -696,103 +698,106 @@
     </div>
   </nav>
 
-  <!-- Hero 首屏 — Ma 不对称左对齐布局 -->
+  <!-- Hero 首屏 — Ma 不对称布局 + SVG 知识图谱 -->
   <section id="hero-section" style="
     position: relative;
-    min-height: 65vh;
-    display: grid;
-    grid-template-columns: 1fr;
-    align-items: center;
+    min-height: 75vh;
     background: var(--bg);
-    padding: 0 clamp(1.5rem, 5vw, 6rem);
+    padding: 7rem clamp(1.5rem, 5vw, 6rem) 5rem;
     overflow: hidden;
   ">
-    <div style="max-width: 600px; padding: 5rem 0 4rem;">
-      <!-- 标签 -->
-      <div style="margin-bottom: 2rem;">
-        <span class="text-label" style="color: var(--accent); letter-spacing: 0.25em;">OPC节点百科</span>
+    <!-- 超大数字锚点 01 -->
+    <span style="position: absolute; top: 1rem; right: 0.5rem; font-size: 22vw; font-weight: 200; color: var(--text-primary); opacity: 0.03; line-height: 0.85; letter-spacing: -0.05em; user-select: none; pointer-events: none; font-family: 'Noto Serif JP', serif;">01</span>
+
+    <div class="hero-grid" style="
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      align-items: center;
+    ">
+      <!-- 左侧：排版区 -->
+      <div style="position: relative; z-index: 2;">
+        <div style="margin-bottom: 1.75rem;">
+          <span class="text-label" style="color: var(--text-tertiary); letter-spacing: 0.3em;">OPC 创业路径 · 一人公司</span>
+        </div>
+
+        <h1 style="
+          font-size: clamp(3.5rem, 11vw, 8.5rem);
+          font-weight: 200;
+          letter-spacing: -0.04em;
+          line-height: 0.95;
+          margin-bottom: 2rem;
+          color: var(--text-primary);
+          font-family: 'Noto Serif JP', serif;
+        ">
+          57 个<br>创业节点
+        </h1>
+
+        <p style="
+          font-size: 1rem;
+          color: var(--text-secondary);
+          line-height: 2.0;
+          margin-bottom: 3rem;
+          max-width: 44ch;
+          letter-spacing: 0.03em;
+        ">
+          从想法到赚钱的完整路径。<br>
+          每一个里程碑，精确导航。
+        </p>
+
+        <a href="graph.html" class="ma-link" style="
+          display: inline-flex;
+          align-items: center;
+          gap: 0.625rem;
+          font-size: 0.75rem;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          color: var(--text-primary);
+          text-decoration: none;
+          border-bottom: 1px solid var(--text-primary);
+          padding-bottom: 0.375rem;
+          font-weight: 500;
+          transition: opacity 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        ">
+          探索知识图谱
+          <span style="font-size: 0.625rem;">→</span>
+        </a>
       </div>
 
-      <!-- 主标题 — 超大typography -->
-      <h1 style="
-        font-size: clamp(3.5rem, 12vw, 8rem);
-        font-weight: 200;
-        letter-spacing: -0.04em;
-        line-height: 0.95;
-        margin-bottom: 3rem;
-        color: var(--text-primary);
-      ">
-        57个<br>创业节点
-      </h1>
-
-      <!-- 副标题 -->
-      <p style="
-        font-size: 1rem;
-        color: var(--text-secondary);
-        line-height: 2.0;
-        margin-bottom: 4rem;
-        max-width: 44ch;
-        letter-spacing: 0.03em;
-      ">
-        从想法到赚钱的完整路径。<br>
-        每一个里程碑，精确导航。
-      </p>
-
-      <!-- CTA — 红框按钮 -->
-      <button onclick="startTest()" id="hero-cta" style="
-        background: transparent;
-        color: var(--text-primary);
-        border: 1px solid var(--accent);
-        font-size: 0.8125rem;
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-        cursor: pointer;
-        padding: 1rem 2rem;
-        display: inline-flex;
-        align-items: center;
-        gap: 1rem;
-        transition: all 0.4s ease;
-      "
-      onmouseenter="this.style.background='var(--accent)'; this.style.color='#FFFFFF';"
-      onmouseleave="this.style.background='transparent'; this.style.color='var(--text-primary)';">
-        开始适配测试
-        <span style="font-size: 0.625rem;">→</span>
-      </button>
-
-      <!-- 服务承诺 — 更醒目的位置和样式 -->
-      <div class="service-promises" style="margin-top: 4rem; padding: 1.5rem 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); display: flex; gap: 3rem; flex-wrap: wrap;">
-        <div style="display: flex; align-items: center; gap: 0.75rem;">
-          <span style="width: 8px; height: 8px; background: var(--accent); flex-shrink: 0;"></span>
-          <span style="font-size: 0.875rem; color: var(--text-secondary); letter-spacing: 0.03em;">7×24小时不间断更新</span>
-        </div>
-        <div style="display: flex; align-items: center; gap: 0.75rem;">
-          <span style="width: 8px; height: 8px; background: var(--accent); flex-shrink: 0;"></span>
-          <span style="font-size: 0.875rem; color: var(--text-secondary); letter-spacing: 0.03em;">支持付费1对1服务</span>
-        </div>
-      </div>
-
-      <!-- 滚动引导 -->
-      <div class="scroll-indicator">
-        <span class="scroll-indicator-text">向下滚动</span>
-        <div class="scroll-indicator-line"></div>
+      <!-- 右侧：SVG 知识图谱 -->
+      <div style="position: relative; min-height: 380px;">
+        <div id="hero-graph" style="width: 100%; height: 100%;"></div>
       </div>
     </div>
   </section>
+
+  <style>
+    @media (min-width: 900px) {
+      .hero-grid {
+        grid-template-columns: 1.1fr 1fr !important;
+        gap: 4rem !important;
+      }
+    }
+  </style>
 
   <!-- 节点百科区块 — Japanese Ma 不对称布局 -->
 <section id="nodes-section" style="padding: 8rem 0; background: var(--surface);">
   <div style="max-width: 1400px; margin: 0 auto; padding: 0 clamp(1.5rem, 5vw, 6rem);">
 
     <!-- 标题组 — 左对齐偏心 -->
-    <div style="margin-bottom: 6rem; max-width: 38rem;">
-      <div class="text-label" style="margin-bottom: 1.5rem; color: var(--accent); letter-spacing: 0.2em;">导航地图</div>
+    <div style="margin-bottom: 6rem; max-width: 38rem; position: relative;">
+      <span style="position: absolute; top: -3rem; left: -0.5rem; font-size: 18vw; font-weight: 200; color: var(--text-primary); opacity: 0.03; line-height: 0.85; letter-spacing: -0.05em; user-select: none; pointer-events: none; font-family: 'Noto Serif JP', serif;">02</span>
+      <div class="text-label" style="margin-bottom: 1.5rem; color: var(--text-tertiary); letter-spacing: 0.3em;">导航地图</div>
       <h2 style="
         font-size: clamp(1.75rem, 4vw, 2.5rem);
-        font-weight: 300;
+        font-weight: 200;
         letter-spacing: -0.03em;
         line-height: 1.2;
         margin-bottom: 1.5rem;
         color: var(--text-primary);
+        font-family: 'Noto Serif JP', serif;
       ">完整节点导航</h2>
       <p style="
         font-size: 0.9375rem;
@@ -800,23 +805,25 @@
         line-height: 1.9;
         max-width: 44ch;
         letter-spacing: 0.02em;
+        margin-bottom: 2rem;
       ">
         按阶段分组，点击任意节点获取攻略。
       </p>
-      <a href="/graph.html" style="
+      <a href="graph.html" style="
         display: inline-flex;
         align-items: center;
-        gap: 0.5rem;
-        margin-top: 1rem;
-        padding: 0.75rem 1.5rem;
-        background: var(--accent);
-        color: #fff;
+        gap: 0.625rem;
         font-size: 0.75rem;
-        letter-spacing: 0.1em;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--text-primary);
         text-decoration: none;
-        transition: all 0.3s;
-      " onmouseover="this.style.opacity='0.8';" onmouseout="this.style.opacity='1';">
-        知识图谱
+        border-bottom: 1px solid var(--text-primary);
+        padding-bottom: 0.375rem;
+        font-weight: 500;
+        transition: opacity 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      " onmouseover="this.style.opacity='0.6';" onmouseout="this.style.opacity='1';">
+        进入知识图谱
         <span style="font-size: 0.625rem;">→</span>
       </a>
     </div>
@@ -1085,6 +1092,121 @@
     </div>
   </div>
 </div>
+
+  <script>
+    // ========== HERO 知识图谱 SVG 渲染 (Ma 风格) ==========
+    (function renderHeroGraph() {
+      const container = document.getElementById('hero-graph');
+      if (!container) return;
+
+      const STAGES = [
+        { name: '产品验证', range: [1, 6] },
+        { name: '环境搭建', range: [7, 10] },
+        { name: '核心开发', range: [11, 17] },
+        { name: '测试修复', range: [18, 21] },
+        { name: '上线准备', range: [22, 30] },
+        { name: '运营迭代', range: [31, 43] },
+        { name: '支撑层', range: [44, 57] }
+      ];
+
+      // SVG 画布
+      const W = 700, H = 400;
+      const colW = W / 7;
+
+      // 计算每个节点坐标
+      const nodes = [];
+      STAGES.forEach((stage, sIdx) => {
+        const [start, end] = stage.range;
+        const count = end - start + 1;
+        const colX = colW * sIdx + colW / 2;
+        const colH = H - 60;
+        const startY = 30;
+
+        for (let i = 0; i < count; i++) {
+          const nodeId = start + i;
+          const y = startY + (colH * i / (count - 1 || 1));
+          nodes.push({
+            id: nodeId,
+            stage: sIdx,
+            x: colX,
+            y: y
+          });
+        }
+      });
+
+      // 节点索引
+      const byId = {};
+      nodes.forEach(n => byId[n.id] = n);
+
+      // 顺序连接（阶段内）
+      const seqLinks = [];
+      STAGES.forEach(stage => {
+        for (let i = stage.range[0]; i < stage.range[1]; i++) {
+          seqLinks.push([i, i + 1]);
+        }
+      });
+
+      // 跨阶段连接（关键转折点）
+      const crossLinks = [
+        [6, 11], [10, 11], [17, 18], [21, 22], [30, 31], [43, 44],
+        [17, 22], [43, 57]
+      ];
+
+      // 生成 SVG
+      const svg = [];
+      svg.push(`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; display:block;">`);
+
+      // 阶段标签（顶部小字）
+      STAGES.forEach((stage, sIdx) => {
+        const x = colW * sIdx + colW / 2;
+        svg.push(`<text x="${x}" y="16" text-anchor="middle" font-family="'Noto Sans SC', sans-serif" font-size="10" letter-spacing="0.15em" fill="#7A7670" style="text-transform: uppercase;">${String(sIdx + 1).padStart(2, '0')}</text>`);
+      });
+
+      // 顺序连线（暗灰 1px）
+      seqLinks.forEach(([a, b]) => {
+        const n1 = byId[a], n2 = byId[b];
+        if (!n1 || !n2) return;
+        svg.push(`<line x1="${n1.x}" y1="${n1.y}" x2="${n2.x}" y2="${n2.y}" stroke="#2A2A28" stroke-width="1" />`);
+      });
+
+      // 跨阶段连线（朱红 1px）
+      crossLinks.forEach(([a, b]) => {
+        const n1 = byId[a], n2 = byId[b];
+        if (!n1 || !n2) return;
+        // 用平滑的贝塞尔曲线
+        const cx1 = n1.x + (n2.x - n1.x) * 0.5;
+        const cy1 = n1.y;
+        const cx2 = n2.x - (n2.x - n1.x) * 0.5;
+        const cy2 = n2.y;
+        svg.push(`<path d="M ${n1.x} ${n1.y} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${n2.x} ${n2.y}" fill="none" stroke="#C0392B" stroke-width="1" opacity="0.6" />`);
+      });
+
+      // 节点圆圈
+      nodes.forEach(n => {
+        const isKey = (n.id === 1 || n.id === 11 || n.id === 22 || n.id === 30 || n.id === 43 || n.id === 57);
+        const r = isKey ? 3.5 : 2.5;
+        const stroke = isKey ? '#C0392B' : '#7A7670';
+        svg.push(`<circle cx="${n.x}" cy="${n.y}" r="${r}" fill="${isKey ? '#C0392B' : '#F0EDE6'}" stroke="${stroke}" stroke-width="${isKey ? 1.5 : 1}" />`);
+      });
+
+      // 关键节点编号（仅在关键节点上显示小数字）
+      const keyNodes = [1, 11, 22, 30, 43, 57];
+      keyNodes.forEach(id => {
+        const n = byId[id];
+        if (!n) return;
+        svg.push(`<text x="${n.x + 8}" y="${n.y + 3}" font-family="'Noto Sans SC', sans-serif" font-size="9" fill="#C0392B" letter-spacing="0.05em">${String(id).padStart(2, '0')}</text>`);
+      });
+
+      // 底部阶段名（极小标签）
+      STAGES.forEach((stage, sIdx) => {
+        const x = colW * sIdx + colW / 2;
+        svg.push(`<text x="${x}" y="${H - 6}" text-anchor="middle" font-family="'Noto Serif JP', serif" font-size="10" fill="#A09A94" letter-spacing="0.08em">${stage.name}</text>`);
+      });
+
+      svg.push(`</svg>`);
+      container.innerHTML = svg.join('');
+    })();
+  </script>
 
   <script src="app.js?v=20260509"></script>
 </body>

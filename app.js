@@ -1118,37 +1118,51 @@ const PHASES = [
 
 function renderNodeCard(node) {
   return `
-    <div style="
-      background: rgba(26, 26, 24, 0.7);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 1.5rem;
+    <article style="
+      background: var(--surface);
+      border: 1px solid var(--line);
+      padding: 1.75rem 1.75rem 1.5rem;
       cursor: pointer;
-      border: 1px solid rgba(42, 42, 40, 0.8);
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
+      gap: 0.875rem;
       height: 100%;
-      transition: all 0.4s ease;
+      transition: border-color 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  transform 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      position: relative;
     "
          onclick="${node.id === 1 ? 'window.location.href=&quot;/nodes/01-opc-fit-test/index.html&quot;' : 'openNodeModalWithAccess(' + node.id + ')'}"
-         onmouseenter="this.style.borderColor='var(--accent)'; this.style.background='rgba(26, 26, 24, 0.9)';"
-         onmouseleave="this.style.borderColor='rgba(42, 42, 40, 0.8)'; this.style.background='rgba(26, 26, 24, 0.7)';">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <span class="text-label" style="color: var(--accent); letter-spacing: 0.15em;">
+         onmouseenter="this.style.borderColor='var(--accent)'; this.querySelector('.card-arrow').style.opacity='1'; this.querySelector('.card-arrow').style.transform='translateX(0)';"
+         onmouseleave="this.style.borderColor='var(--line)'; this.querySelector('.card-arrow').style.opacity='0'; this.querySelector('.card-arrow').style.transform='translateX(-4px)';">
+      <header style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.875rem; border-bottom: 1px solid var(--line);">
+        <span style="font-family: 'Noto Serif JP', serif; font-size: 1.25rem; color: var(--accent); font-weight: 300; letter-spacing: 0.04em; line-height: 1;">
           ${String(node.id).padStart(2, '0')}
         </span>
-        <span style="font-size: 0.5625rem; color: var(--text-tertiary); letter-spacing: 0.1em; text-transform: uppercase;">
+        <span style="font-size: 0.5625rem; color: var(--text-tertiary); letter-spacing: 0.2em; text-transform: uppercase; font-weight: 400;">
           ${node.difficulty}
         </span>
-      </div>
-      <h3 style="font-size: 0.9375rem; font-weight: 400; color: var(--text-primary); letter-spacing: -0.01em; line-height: 1.5;">
+      </header>
+      <h3 style="font-family: 'Noto Serif JP', serif; font-size: 1.0625rem; font-weight: 400; color: var(--text-primary); letter-spacing: -0.01em; line-height: 1.4;">
         ${node.title}
       </h3>
-      <p style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.7; flex: 1;">
+      <p style="font-family: 'Noto Sans SC', sans-serif; font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.8; flex: 1; letter-spacing: 0.02em; font-weight: 300;">
         ${node.summary}
       </p>
-    </div>
+      <footer style="display: flex; justify-content: space-between; align-items: center; padding-top: 0.5rem;">
+        <span style="font-size: 0.5625rem; color: var(--text-tertiary); letter-spacing: 0.2em; text-transform: uppercase; font-weight: 400;">
+          查看详情
+        </span>
+        <span class="card-arrow" style="
+          font-size: 0.875rem;
+          color: var(--accent);
+          opacity: 0;
+          transform: translateX(-4px);
+          transition: opacity 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                      transform 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          font-weight: 300;
+        ">→</span>
+      </footer>
+    </article>
   `;
 }
 
@@ -1207,8 +1221,7 @@ function renderPhaseSection(phase, nodes) {
       <div style="
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 1px;
-        background: var(--surface);
+        gap: 1.25rem;
       " class="phase-grid">
         ${phaseNodes.map(n => renderNodeCard(n)).join('')}
       </div>
@@ -1224,7 +1237,7 @@ function renderNodesGrid(nodes, filter) {
   if (filter && filter !== 'all') {
     const filtered = nodes.filter(n => n.difficulty === filter);
     grid.innerHTML = `
-      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;" class="phase-grid">
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem;" class="phase-grid">
         ${filtered.map(node => renderNodeCard(node)).join('')}
       </div>
     `;

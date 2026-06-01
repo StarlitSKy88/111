@@ -27,3 +27,8 @@ npm-debug.log*
 tmp/
 temp/
 .gstack/
+.playwright-mcp/
+
+# Test artifacts
+/graph-*.png
+/node*.png

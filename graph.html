@@ -3,198 +3,63 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OPC节点百科 - 知识图谱</title>
-  <meta name="description" content="OPC节点百科 - 纯OPC创业从0到1的完整节点导航系统">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='10' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='4' fill='%23C0392B'/></svg>">
+  <title>OPC节点百科 — 知识图谱</title>
+  <meta name="description" content="OPC节点百科 — 57 节点 / 7 阶段，一张图看清 OPC 创业完整路径">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='9' stroke='%23C0392B' stroke-width='1' fill='none'/><circle cx='16' cy='16' r='2.5' fill='%23C0392B'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@200;300;400;500;700&family=Noto+Serif+JP:wght@200;300;400;600&display=swap" rel="stylesheet">
   <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <style>
+    /* ========== MA TOKENS ========== */
     :root {
-      --bg: #0a0a0a;
-      --surface: #141414;
-      --surface2: #1a1a1a;
-      --text-primary: #ffffff;
-      --text-secondary: #888888;
-      --text-tertiary: #555555;
+      --bg: #111110;
+      --surface: #1A1A18;
+      --text-primary: #F0EDE6;
+      --text-secondary: #B8B4AE;
+      --text-tertiary: #7A7670;
+      --text-quaternary: #4A4744;
+      --line: #2A2A28;
+      --line-soft: #1F1F1D;
+      --line-strong: #4A4744;
       --accent: #C0392B;
-      --accent-light: rgba(192, 57, 43, 0.15);
-      --line: #222222;
-      --line-light: #333333;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    /* ========== MOTION ========== */
+    .node-group, .link {
+      will-change: transform, opacity;
+    }
+
+    /* Respect prefers-reduced-motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .node-group, .link, .col-headers {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
 
     body {
       font-family: 'Noto Sans SC', -apple-system, sans-serif;
       background: var(--bg);
       color: var(--text-primary);
       min-height: 100dvh;
-      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
     }
-
-    /* ========== PARTICLE BACKGROUND ========== */
-    #particles {
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
-      overflow: hidden;
-    }
-
-    .particle {
-      position: absolute;
-      width: 2px;
-      height: 2px;
-      background: var(--accent);
-      border-radius: 50%;
-      opacity: 0;
-      animation: particleFloat 20s infinite ease-in-out;
-    }
-
-    @keyframes particleFloat {
-      0%, 100% { opacity: 0; transform: translateY(0) translateX(0); }
-      10% { opacity: 0.3; }
-      50% { opacity: 0.6; }
-      90% { opacity: 0.1; }
-      100% { opacity: 0; transform: translateY(-200px) translateX(50px); }
-    }
-
-    /* ========== HERO SECTION ========== */
-    .hero {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      background: var(--bg);
-      transition: opacity 800ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-
-    .hero.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .hero-eyebrow {
-      font-size: 0.6875rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 1.5rem;
-      font-weight: 500;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: heroFadeIn 800ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-      animation-delay: 200ms;
-    }
-
-    .hero-title {
-      font-family: 'Noto Serif JP', serif;
-      font-size: clamp(3rem, 10vw, 7rem);
-      font-weight: 600;
-      line-height: 1;
-      letter-spacing: -0.02em;
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      transform: translateY(30px);
-      animation: heroFadeIn 1000ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-      animation-delay: 400ms;
-    }
-
-    .hero-subtitle {
-      font-size: clamp(1rem, 2.5vw, 1.375rem);
-      color: var(--text-secondary);
-      font-weight: 300;
-      max-width: 480px;
-      line-height: 1.6;
-      letter-spacing: 0.02em;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: heroFadeIn 800ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-      animation-delay: 700ms;
-    }
-
-    @keyframes heroFadeIn {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .hero-stats {
-      display: flex;
-      gap: 3rem;
-      margin-top: 3rem;
-      padding-top: 2rem;
-      border-top: 1px solid var(--line);
-      opacity: 0;
-      transform: translateY(20px);
-      animation: heroFadeIn 800ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-      animation-delay: 1000ms;
-    }
-
-    .hero-stat { text-align: center; }
-
-    .hero-stat-value {
-      font-family: 'Noto Serif JP', serif;
-      font-size: 2rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      font-variant-numeric: tabular-nums;
-    }
-
-    .hero-stat-label {
-      font-size: 0.6875rem;
-      color: var(--text-tertiary);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-top: 0.5rem;
-    }
-
-    .hero-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin-top: 2.5rem;
-      padding: 1rem 2rem;
-      background: var(--text-primary);
-      color: var(--bg);
-      font-size: 0.75rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      text-decoration: none;
-      transition: all 300ms;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: heroFadeIn 800ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-      animation-delay: 1200ms;
-    }
-
-    .hero-cta:hover {
-      background: var(--accent);
-      color: var(--text-primary);
-      transform: scale(1.02);
-    }
-
-    .hero-cta svg { width: 16px; height: 16px; transition: transform 300ms; }
-    .hero-cta:hover svg { transform: translateX(4px); }
-
-    /* ========== GRAPH CONTAINER ========== */
-    #graph-container {
-      position: fixed;
-      inset: 0;
-      z-index: 5;
-      opacity: 0;
-      transition: opacity 800ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-
-    #graph-container.visible { opacity: 1; }
-    #graph { width: 100%; height: 100%; }
 
     /* ========== HEADER ========== */
     .header {
@@ -206,111 +71,373 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 2rem;
-      background: transparent;
-      pointer-events: none;
+      padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+      background: var(--bg);
+      border-bottom: 1px solid var(--line);
     }
-
-    .header > * { pointer-events: auto; }
 
     .logo {
       font-family: 'Noto Serif JP', serif;
       font-size: 0.875rem;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.15em;
       color: var(--text-primary);
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      opacity: 0;
-      animation: fadeInSlide 500ms ease forwards;
-      animation-delay: 1400ms;
+      gap: 0.625rem;
+      font-weight: 400;
+      text-decoration: none;
     }
 
-    @keyframes fadeInSlide {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
+    .logo-mark {
+      width: 8px;
+      height: 8px;
+      border: 1px solid var(--text-tertiary);
+      display: inline-block;
     }
 
-    .logo-dot {
-      width: 6px;
-      height: 6px;
-      background: var(--accent);
-      border-radius: 50%;
-      animation: pulse 3s infinite ease-in-out;
-    }
-
-    @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(192, 57, 43, 0.4); }
-      50% { box-shadow: 0 0 0 8px rgba(192, 57, 43, 0); }
-    }
-
-    .mode-switch {
+    .nav-right {
       display: flex;
-      border: 1px solid var(--line);
-      background: var(--surface);
-      opacity: 0;
-      animation: fadeInSlide 500ms ease forwards;
-      animation-delay: 1500ms;
+      gap: 2rem;
+      align-items: center;
     }
 
-    .mode-btn {
-      padding: 0.5rem 1rem;
-      font-size: 0.625rem;
-      letter-spacing: 0.15em;
+    .nav-link {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 0.6875rem;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      background: transparent;
-      border: none;
       color: var(--text-tertiary);
-      cursor: pointer;
-      transition: all 300ms;
+      text-decoration: none;
+      transition: color 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
-    .mode-btn:hover { color: var(--text-secondary); }
-    .mode-btn.active { background: var(--text-primary); color: var(--bg); }
+    .nav-link:hover { color: var(--text-primary); }
+    .nav-link.active { color: var(--text-primary); }
 
-    /* ========== SEARCH ========== */
-    .search-container {
+    /* ========== STAGE FILTER (left rail) ========== */
+    .stage-rail {
       position: fixed;
-      top: 1rem;
-      left: 50%;
-      transform: translateX(-50%);
+      top: 4.5rem;
+      left: clamp(1.25rem, 4vw, 2.5rem);
       z-index: 90;
-      width: 90%;
-      max-width: 320px;
-      opacity: 0;
-      transition: opacity 300ms, transform 300ms;
-      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      max-width: 220px;
     }
 
-    .search-container.visible {
-      opacity: 1;
-      pointer-events: auto;
+    .stage-rail-title {
+      font-family: 'Noto Sans SC', sans-serif;
+      color: var(--text-tertiary);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      font-size: 0.5rem;
+      font-weight: 400;
     }
 
-    .search-box {
+    .stage-chip {
       display: flex;
       align-items: center;
-      padding: 0.625rem 1rem;
-      background: var(--surface);
+      gap: 0.875rem;
+      padding: 0.625rem 0;
+      border-top: 1px solid var(--line-soft);
+      cursor: pointer;
+      background: transparent;
+      border-left: none;
+      border-right: none;
+      border-bottom: none;
+      text-align: left;
+      width: 100%;
+      font-family: inherit;
+      transition: opacity 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .stage-chip:last-child { border-bottom: 1px solid var(--line-soft); }
+
+    .stage-chip:hover { opacity: 0.7; }
+
+    .stage-chip.active .stage-chip-num { color: var(--text-primary); }
+    .stage-chip.active .stage-chip-name { color: var(--text-primary); }
+
+    .stage-chip-num {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 0.875rem;
+      color: var(--text-tertiary);
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      min-width: 1.5rem;
+      transition: color 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .stage-chip-name {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      font-weight: 300;
+      letter-spacing: 0.02em;
+      flex: 1;
+    }
+
+    .stage-chip-count {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 0.5625rem;
+      color: var(--text-quaternary);
+      letter-spacing: 0.1em;
+      font-weight: 300;
+    }
+
+    .stage-reset {
+      margin-top: 0.875rem;
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 0.5625rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      text-align: left;
+      font-weight: 400;
+      transition: color 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .stage-reset:hover { color: var(--text-primary); }
+
+    /* ========== GRAPH CANVAS ========== */
+    #graph-container {
+      position: fixed;
+      inset: 0;
+      z-index: 5;
+    }
+
+    #graph { width: 100%; height: 100%; display: block; }
+
+    /* ========== HUGE BACKGROUND NUMBER (Ma anchor) ========== */
+    .bg-number {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(280px, 32vw, 520px);
+      font-weight: 200;
+      fill: var(--text-primary);
+      opacity: 0.025;
+      text-anchor: middle;
+      pointer-events: none;
+      user-select: none;
+      letter-spacing: -0.05em;
+      line-height: 1;
+    }
+
+    /* ========== STAGE HEADERS (positioned at stage centers) ========== */
+    .stage-headers {
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .stage-label-num {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      fill: var(--text-quaternary);
+    }
+
+    .stage-label-name {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      fill: var(--text-secondary);
+    }
+
+    .stage-label-count {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 8px;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      fill: var(--text-quaternary);
+    }
+
+    /* ========== LINKS (paths, allow curves) ========== */
+    .link {
+      fill: none;
+      transition: stroke 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  stroke-width 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  opacity 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .link.sequential {
+      stroke: var(--line-strong);
+      stroke-width: 0.8;
+      opacity: 0.45;
+    }
+
+    .link.reference {
+      stroke: var(--line);
+      stroke-width: 0.6;
+      opacity: 0.32;
+    }
+
+    .link.key {
+      stroke: var(--accent);
+      stroke-width: 0.9;
+      opacity: 0.5;
+    }
+
+    .link.highlighted {
+      stroke: var(--text-primary) !important;
+      stroke-width: 1.5 !important;
+      opacity: 1 !important;
+    }
+
+    .link.dimmed { opacity: 0.04 !important; }
+
+    /* ========== NODES (small 6-9px, knowledge-graph feel) ========== */
+    .node-group { cursor: pointer; }
+
+    .node-circle {
+      fill: var(--bg);
+      stroke: var(--text-tertiary);
+      stroke-width: 1;
+      transition: stroke 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  stroke-width 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .node-group:hover .node-circle {
+      stroke: var(--text-primary);
+      stroke-width: 1.5;
+    }
+
+    .node-circle.key {
+      fill: var(--accent);
+      stroke: var(--accent);
+      stroke-width: 1;
+    }
+
+    .node-id {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 9px;
+      font-weight: 400;
+      text-anchor: middle;
+      pointer-events: none;
+      letter-spacing: 0.04em;
+      fill: var(--text-primary);
+      transition: fill 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .node-circle.key + .node-id { fill: var(--bg); }
+
+    .node-group:hover .node-id { fill: var(--text-primary); }
+    .node-group:hover .node-circle.key + .node-id { fill: var(--bg); }
+
+    .node-label {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 8px;
+      font-weight: 300;
+      text-anchor: middle;
+      pointer-events: none;
+      letter-spacing: 0.04em;
+      fill: var(--text-quaternary);
+      transition: fill 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .node-group:hover .node-label { fill: var(--text-secondary); }
+
+    .node-group.dimmed { opacity: 0.12; }
+    .node-group.focused .node-circle { stroke: var(--text-primary); stroke-width: 1.5; }
+    .node-group.focused .node-label { fill: var(--text-secondary); }
+
+    /* ========== TITLE / STATS (top right) ========== */
+    .meta-panel {
+      position: fixed;
+      top: 4.5rem;
+      right: clamp(1.25rem, 4vw, 2.5rem);
+      z-index: 90;
+      max-width: 280px;
+      text-align: right;
+    }
+
+    .meta-eyebrow {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 0.6875rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 0.5rem;
+    }
+
+    .meta-heading {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.125rem;
+      font-weight: 300;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+      margin-bottom: 0.875rem;
+    }
+
+    .meta-stats {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: flex-end;
+      border-top: 1px solid var(--line);
+      padding-top: 0.625rem;
+    }
+
+    .meta-stat-value {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.25rem;
+      font-weight: 300;
+      color: var(--text-primary);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.02em;
+    }
+
+    .meta-stat-label {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 0.5rem;
+      color: var(--text-tertiary);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-top: 0.25rem;
+      font-weight: 400;
+    }
+
+    /* ========== SEARCH ========== */
+    .search-panel {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 80;
+      background: var(--bg);
       border: 1px solid var(--line);
-      gap: 0.75rem;
+      padding: 0.625rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+      min-width: 320px;
+      transition: border-color 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
-    .search-box:focus-within {
-      border-color: var(--accent);
-      box-shadow: 0 0 20px rgba(192, 57, 43, 0.15);
-    }
+    .search-panel:focus-within { border-color: var(--accent); }
 
-    .search-icon { color: var(--text-tertiary); font-size: 0.875rem; }
+    .search-icon {
+      color: var(--text-tertiary);
+      font-size: 0.875rem;
+      font-weight: 300;
+    }
 
     .search-input {
-      flex: 1;
       background: transparent;
       border: none;
       color: var(--text-primary);
       font-size: 0.8125rem;
       outline: none;
       letter-spacing: 0.04em;
+      width: 280px;
+      font-family: inherit;
     }
 
     .search-input::placeholder {
@@ -318,393 +445,319 @@
       font-size: 0.6875rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
+      font-weight: 300;
     }
 
-    /* ========== NODES ========== */
-    .node-group { cursor: pointer; }
-
-    .node-circle {
-      fill: #ffffff;
-      stroke: #e0e0e0;
-      stroke-width: 1;
-      transition: r 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                  stroke-width 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                  stroke 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                  filter 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-
-    .node-id {
-      font-family: 'Noto Sans SC', sans-serif;
-      font-size: 12px;
-      fill: #ffffff;
-      text-anchor: middle;
-      font-weight: 700;
-      pointer-events: none;
-      transition: font-size 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-
-    .node-label {
-      font-family: 'Noto Sans SC', sans-serif;
-      font-size: 11px;
-      font-weight: 600;
-      fill: #ffffff;
-      text-anchor: middle;
-      pointer-events: none;
-      letter-spacing: 0;
-      transition: transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-
-    .node-group.hover .node-label {
-      transform: translateY(10px) scale(1.3);
-      font-size: 14px;
-      fill: #ffffff;
-    }
-
-    .node-group.hover .node-circle {
-      stroke: #C0392B;
-      stroke-width: 3;
-      filter: drop-shadow(0 0 12px rgba(192, 57, 43, 0.4));
-    }
-
-    /* ========== LINKS ========== */
-    .link {
-      stroke: var(--text-tertiary);
-      stroke-opacity: 0.3;
-      stroke-width: 1.5;
-      fill: none;
-    }
-
-    .link.in-stage {
-      stroke-opacity: 0.5;
-    }
-
-    .link.cross-stage {
-      stroke: var(--accent);
-      stroke-opacity: 0.4;
-      stroke-width: 2;
-      stroke-dasharray: 6,4;
-    }
-
-    /* ========== LEGEND ========== */
-    .legend {
+    /* ========== ZOOM CONTROLS ========== */
+    .zoom-controls {
       position: fixed;
       bottom: 2rem;
-      left: 2rem;
-      background: var(--surface);
-      border: 1px solid var(--line);
-      padding: 1.25rem 1.5rem;
+      right: clamp(1.25rem, 4vw, 2.5rem);
       z-index: 80;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 300ms, transform 300ms;
-    }
-
-    .legend.visible { opacity: 1; transform: translateY(0); }
-
-    .legend-title {
-      color: var(--text-tertiary);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-      font-size: 0.5625rem;
-      font-weight: 500;
-    }
-
-    .legend-item {
       display: flex;
-      align-items: center;
-      gap: 0.625rem;
-      margin-bottom: 0.375rem;
-      color: var(--text-secondary);
-      font-size: 0.6875rem;
-      letter-spacing: 0.03em;
+      flex-direction: column;
+      gap: 0;
     }
 
-    .legend-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: currentColor;
-    }
-
-    /* ========== STATS ========== */
-    .stats {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      background: var(--surface);
+    .zoom-btn {
+      width: 36px;
+      height: 36px;
+      background: var(--bg);
       border: 1px solid var(--line);
-      padding: 1.25rem 1.5rem;
-      z-index: 80;
-      min-width: 120px;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 300ms, transform 300ms;
-    }
-
-    .stats.visible { opacity: 1; transform: translateY(0); }
-
-    .stats-title {
-      color: var(--text-tertiary);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-      font-size: 0.5625rem;
-      font-weight: 500;
-    }
-
-    .stats-item {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 0.375rem;
       color: var(--text-secondary);
-      font-size: 0.6875rem;
-      gap: 1.5rem;
-    }
-
-    .stats-value {
-      color: var(--text-primary);
+      font-size: 0.875rem;
+      cursor: pointer;
       font-family: 'Noto Serif JP', serif;
-      font-size: 1.125rem;
-      font-variant-numeric: tabular-nums;
+      font-weight: 300;
+      transition: color 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  border-color 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
+
+    .zoom-btn:hover { color: var(--text-primary); border-color: var(--text-primary); }
+    .zoom-btn:first-child { border-bottom: none; }
+    .zoom-btn .material { font-size: 14px; }
 
     /* ========== TOOLTIP ========== */
     .tooltip {
       position: fixed;
       z-index: 200;
-      background: var(--surface);
-      border: 1px solid var(--line);
+      background: var(--bg);
+      border: 1px solid var(--line-strong);
       padding: 1rem 1.25rem;
       max-width: 280px;
       pointer-events: none;
       opacity: 0;
-      transform: translateY(5px);
-      transition: opacity 200ms, transform 200ms;
+      transform: translateY(4px);
+      transition: opacity 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  transform 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
     .tooltip.visible { opacity: 1; transform: translateY(0); }
+
+    .tooltip-id {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 0.6875rem;
+      color: var(--text-tertiary);
+      letter-spacing: 0.2em;
+      margin-bottom: 0.5rem;
+    }
 
     .tooltip-title {
       font-family: 'Noto Serif JP', serif;
       font-size: 0.9375rem;
       color: var(--text-primary);
-      margin-bottom: 0.375rem;
+      margin-bottom: 0.625rem;
+      font-weight: 400;
+      line-height: 1.3;
     }
 
-    .tooltip-meta { display: flex; gap: 0.375rem; margin-bottom: 0.5rem; }
-
-    .tooltip-tag {
+    .tooltip-meta {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.625rem;
       font-size: 0.5625rem;
-      padding: 0.1875rem 0.5rem;
-      background: var(--surface2);
-      color: var(--text-secondary);
-      letter-spacing: 0.08em;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
+      color: var(--text-tertiary);
+      font-weight: 300;
     }
-
-    .tooltip-tag.accent { background: var(--accent-light); color: var(--accent); }
 
     .tooltip-summary {
-      font-size: 0.8125rem;
+      font-size: 0.75rem;
       color: var(--text-secondary);
-      line-height: 1.6;
-      letter-spacing: 0.01em;
-    }
-
-    .tooltip-cta {
-      margin-top: 0.625rem;
-      padding-top: 0.625rem;
-      border-top: 1px solid var(--line);
-      font-size: 0.625rem;
-      color: var(--accent);
-      letter-spacing: 0.1em;
+      line-height: 1.7;
+      letter-spacing: 0.02em;
+      font-weight: 300;
     }
 
     /* ========== MODAL ========== */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(10, 10, 10, 0.95);
+      background: rgba(17, 17, 16, 0.94);
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 300;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 400ms;
+      transition: opacity 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
 
     .modal {
-      background: var(--surface);
+      background: var(--bg);
       border: 1px solid var(--line);
-      max-width: 400px;
+      max-width: 520px;
       width: 90%;
-      transform: scale(0.95) translateY(20px);
-      transition: transform 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      padding: 2.5rem 3rem;
+      transform: translateY(16px);
+      transition: transform 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
-    .modal-overlay.active .modal { transform: scale(1) translateY(0); }
+    .modal-overlay.active .modal { transform: translateY(0); }
 
-    .modal-header {
-      padding: 1.25rem 1.5rem;
-      border-bottom: 1px solid var(--line);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .modal-id {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 0.75rem;
+      color: var(--text-tertiary);
+      letter-spacing: 0.3em;
+      margin-bottom: 0.75rem;
     }
 
     .modal-title {
       font-family: 'Noto Serif JP', serif;
-      font-size: 1rem;
+      font-size: 1.5rem;
       color: var(--text-primary);
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 1.25rem;
+      letter-spacing: -0.01em;
     }
+
+    .modal-meta {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 0.6875rem;
+      color: var(--text-tertiary);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--line);
+      font-weight: 300;
+    }
+
+    .modal-summary {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.9;
+      margin-bottom: 1.75rem;
+      letter-spacing: 0.02em;
+      font-weight: 300;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .modal-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 0.6875rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      text-decoration: none;
+      border-bottom: 1px solid var(--text-primary);
+      padding-bottom: 0.375rem;
+      font-weight: 400;
+      transition: opacity 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .modal-link:hover { opacity: 0.6; }
+    .modal-link.accent { color: var(--accent); border-color: var(--accent); }
 
     .modal-close {
       background: none;
       border: none;
       color: var(--text-tertiary);
-      font-size: 1.25rem;
+      font-size: 0.6875rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
       cursor: pointer;
-      padding: 0.25rem;
-      transition: color 300ms;
+      padding: 0.375rem 0;
+      font-family: inherit;
+      transition: color 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
     .modal-close:hover { color: var(--text-primary); }
-    .modal-body { padding: 1.5rem; }
 
-    .modal-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.6875rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-primary);
-      border-bottom: 1px solid var(--accent);
-      padding-bottom: 0.25rem;
-      text-decoration: none;
-      margin-top: 1.25rem;
-      transition: opacity 300ms;
+    /* ========== MOBILE ========== */
+    @media (max-width: 900px) {
+      .stage-rail {
+        top: 4rem;
+        left: 1rem;
+        right: 1rem;
+        max-width: none;
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 1.25rem;
+        padding-bottom: 0.5rem;
+      }
+      .stage-rail-title, .stage-reset { display: none; }
+      .stage-chip {
+        flex-shrink: 0;
+        border-top: none;
+        border-bottom: 1px solid var(--line-soft);
+        padding: 0.5rem 0;
+      }
+      .stage-chip:last-child { border-bottom: 1px solid var(--line-soft); }
+      .meta-panel { display: none; }
+      .search-panel { min-width: auto; width: calc(100% - 2rem); left: 1rem; right: 1rem; transform: none; }
+      .search-input { width: 100%; }
+      .zoom-controls { bottom: 6rem; }
     }
-
-    .modal-btn:hover { opacity: 0.7; }
   </style>
 </head>
 <body>
-  <div id="particles"></div>
 
-  <section class="hero" id="hero">
-    <div class="hero-eyebrow">OPC 创业路径</div>
-    <h1 class="hero-title">57 个节点</h1>
-    <p class="hero-subtitle">从想法到上线，一个人公司的完整创业导航系统</p>
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <div class="hero-stat-value" id="stat-nodes-hero">57</div>
-        <div class="hero-stat-label">节点</div>
+  <!-- HEADER -->
+  <header class="header">
+    <a href="index.html" class="logo">
+      <span class="logo-mark"></span>
+      <span>OPC 节点百科</span>
+    </a>
+    <nav class="nav-right">
+      <a href="index.html" class="nav-link">首页</a>
+      <a href="graph.html" class="nav-link active">图谱</a>
+    </nav>
+  </header>
+
+  <!-- META PANEL (top right) -->
+  <div class="meta-panel">
+    <div class="meta-eyebrow">知识图谱</div>
+    <div class="meta-heading">57 节点的<br>完整路径</div>
+    <div class="meta-stats">
+      <div>
+        <div class="meta-stat-value" id="stat-nodes">57</div>
+        <div class="meta-stat-label">节点</div>
       </div>
-      <div class="hero-stat">
-        <div class="hero-stat-value" id="stat-links-hero">61</div>
-        <div class="hero-stat-label">关系</div>
+      <div>
+        <div class="meta-stat-value" id="stat-links">61</div>
+        <div class="meta-stat-label">关系</div>
       </div>
-      <div class="hero-stat">
-        <div class="hero-stat-value">8</div>
-        <div class="hero-stat-label">阶段</div>
+      <div>
+        <div class="meta-stat-value">7</div>
+        <div class="meta-stat-label">阶段</div>
       </div>
     </div>
-    <a href="#" class="hero-cta" id="hero-cta">
-      探索图谱
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M5 12h14M12 5l7 7-7 7"/>
-      </svg>
-    </a>
-  </section>
+  </div>
 
+  <!-- STAGE RAIL (left) -->
+  <div class="stage-rail" id="stage-rail">
+    <div class="stage-rail-title">阶段</div>
+    <!-- Filled by JS -->
+  </div>
+
+  <!-- GRAPH -->
   <div id="graph-container">
     <svg id="graph"></svg>
   </div>
 
-  <header class="header">
-    <div class="logo">
-      <div class="logo-dot"></div>
-      <span>OPC</span>
-    </div>
-    <div class="mode-switch">
-      <button class="mode-btn active" id="btn-graph">图谱</button>
-      <button class="mode-btn" id="btn-classic" onclick="window.location.href='index.html'">列表</button>
-    </div>
-  </header>
-
-  <div class="search-container" id="search-container">
-    <div class="search-box">
-      <span class="search-icon">⌕</span>
-      <input type="text" class="search-input" id="search" placeholder="搜索节点" autocomplete="off">
-    </div>
+  <!-- SEARCH (bottom center) -->
+  <div class="search-panel">
+    <span class="search-icon">⌕</span>
+    <input type="text" class="search-input" id="search" placeholder="搜索节点" autocomplete="off">
   </div>
 
-  <div class="legend" id="legend">
-    <div class="legend-title">阶段</div>
-    <div class="legend-item"><div class="legend-dot" style="color: #F0EDE6;"></div>产品验证(1-6)</div>
-    <div class="legend-item"><div class="legend-dot" style="color: #B8B4AE;"></div>环境搭建(7-10)</div>
-    <div class="legend-item"><div class="legend-dot" style="color: #7A7670;"></div>核心开发(11-17)</div>
-    <div class="legend-item"><div class="legend-dot" style="color: #4A4744;"></div>测试修复(18-21)</div>
-    <div class="legend-item"><div class="legend-dot" style="color: #2A2A28;"></div>上线准备(22-30)</div>
-    <div class="legend-item"><div class="legend-dot" style="color: #C0392B;"></div>运营迭代(31-43)</div>
-    <div class="legend-item"><div class="legend-dot" style="color: #5A5754;"></div>支撑层(44-57)</div>
+  <!-- ZOOM CONTROLS (bottom right) -->
+  <div class="zoom-controls">
+    <button class="zoom-btn" id="zoom-in" title="放大"><span class="material">+</span></button>
+    <button class="zoom-btn" id="zoom-out" title="缩小"><span class="material">−</span></button>
+    <button class="zoom-btn" id="zoom-fit" title="重置视图" style="font-size:11px; letter-spacing:0;">RESET</button>
   </div>
 
-  <div class="stats" id="stats">
-    <div class="stats-title">图谱概览</div>
-    <div class="stats-item"><span>节点</span><span class="stats-value" id="stat-nodes">57</span></div>
-    <div class="stats-item"><span>关系</span><span class="stats-value" id="stat-links">61</span></div>
-    <div class="stats-item"><span>阶段</span><span class="stats-value">8</span></div>
-  </div>
-
+  <!-- TOOLTIP -->
   <div class="tooltip" id="tooltip">
+    <div class="tooltip-id" id="tooltip-id"></div>
     <div class="tooltip-title" id="tooltip-title"></div>
     <div class="tooltip-meta" id="tooltip-meta"></div>
     <div class="tooltip-summary" id="tooltip-summary"></div>
-    <div class="tooltip-cta">→ 查看详情</div>
   </div>
 
+  <!-- MODAL -->
   <div class="modal-overlay" id="modal">
     <div class="modal">
-      <div class="modal-header">
-        <div class="modal-title" id="modal-title">节点预览</div>
-        <button class="modal-close" onclick="closeModal()">×</button>
+      <div class="modal-id" id="modal-id"></div>
+      <h2 class="modal-title" id="modal-title"></h2>
+      <div class="modal-meta" id="modal-meta"></div>
+      <p class="modal-summary" id="modal-summary"></p>
+      <div class="modal-actions">
+        <a href="#" class="modal-link accent" id="modal-cta">进入节点 →</a>
+        <button class="modal-close" onclick="closeModal()">关闭</button>
       </div>
-      <div class="modal-body" id="modal-body"></div>
     </div>
   </div>
 
   <script>
-    // ========== PARTICLE SYSTEM ==========
-    function createParticles() {
-      const container = document.getElementById('particles');
-      for (let i = 0; i < 30; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.top = Math.random() * 100 + '%';
-        particle.style.animationDuration = (15 + Math.random() * 15) + 's';
-        particle.style.animationDelay = Math.random() * 10 + 's';
-        particle.style.opacity = 0.1 + Math.random() * 0.3;
-        container.appendChild(particle);
-      }
-    }
-
-    // ========== STAGE CONFIG ==========
+    /* ========== STAGES ========== */
     const STAGES = [
-      { id: 'product', name: '产品验证', range: [1, 6], color: '#F0EDE6' },
-      { id: 'env', name: '环境搭建', range: [7, 10], color: '#B8B4AE' },
-      { id: 'core', name: '核心开发', range: [11, 17], color: '#7A7670' },
-      { id: 'test', name: '测试修复', range: [18, 21], color: '#4A4744' },
-      { id: 'launch', name: '上线准备', range: [22, 30], color: '#2A2A28' },
-      { id: 'ops', name: '运营迭代', range: [31, 43], color: '#C0392B' },
-      { id: 'support', name: '支撑层', range: [44, 57], color: '#5A5754' }
+      { id: 'product',  name: '产品验证', range: [1, 6] },
+      { id: 'env',      name: '环境搭建', range: [7, 10] },
+      { id: 'core',     name: '核心开发', range: [11, 17] },
+      { id: 'test',     name: '测试修复', range: [18, 21] },
+      { id: 'launch',   name: '上线准备', range: [22, 30] },
+      { id: 'ops',      name: '运营迭代', range: [31, 43] },
+      { id: 'support',  name: '并行支撑', range: [44, 57] }
     ];
+
+    const KEY_NODES = new Set([1, 11, 22, 30, 43, 57]);
 
     function getStage(nodeId) {
       for (const stage of STAGES) {
@@ -713,62 +766,30 @@
       return STAGES[0];
     }
 
-    const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    /* ========== STAGE CENTERS (asymmetric Ma layout) ========== */
+    const STAGE_CENTERS = {
+      product: { x: 260,  y: 280 },
+      env:     { x: 580,  y: 220 },
+      core:    { x: 900,  y: 290 },
+      test:    { x: 1180, y: 220 },
+      launch:  { x: 1430, y: 380 },
+      ops:     { x: 1130, y: 600 },
+      support: { x: 420,  y: 700 }
+    };
+
+    const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
       ? 'http://localhost:3001'
       : window.location.origin;
 
     let nodesData = [];
     let graphNodes = [];
     let graphLinks = [];
-    let svg, g, simulation, nodeElements, linkElements;
-    let width, height;
-    let isGraphVisible = false;
-    let isPausedByUser = false;
-    let autoScrollDirection = 1;
+    let svg, g, rootG, zoomBehavior;
+    let nodeElements, linkElements, labelElements;
+    let focusedStage = null;
+    let simulation = null;
 
-    function startAutoScroll() {
-      if (!isGraphVisible) return;
-      isPausedByUser = false;
-      autoScrollLoop();
-    }
-
-    function autoScrollLoop() {
-      if (isPausedByUser) {
-        requestAnimationFrame(autoScrollLoop);
-        return;
-      }
-
-      const svg = d3.select('#graph');
-      const currentTransform = d3.zoomTransform(svg.node());
-
-      // Calculate boundaries based on graph content width
-      const graphWidth = width * 3;
-      const halfWidth = graphWidth / 2;
-      const currentX = currentTransform.x;
-      const viewLeft = -currentX / currentTransform.k;
-      const viewRight = (width - currentX) / currentTransform.k;
-
-      // Reverse direction at boundaries
-      if (currentX > width * 0.3) {
-        autoScrollDirection = -1;
-      } else if (currentX < -width * 0.3) {
-        autoScrollDirection = 1;
-      }
-
-      const newX = currentTransform.x + autoScrollDirection * 0.5;
-
-      svg.call(zoom.transform, d3.zoomIdentity.translate(newX, currentTransform.y).scale(currentTransform.k));
-
-      requestAnimationFrame(autoScrollLoop);
-    }
-
-    function startAutoScrollPause() {
-      isPausedByUser = true;
-    }
-
-    function resumeAutoScroll() {
-      isPausedByUser = false;
-    }
+    /* ========== DATA ========== */
     async function loadNodes() {
       try {
         const response = await fetch(`${API_BASE}/api/nodes`);
@@ -802,8 +823,7 @@
         '海外支付方案', '微信小程序', '外包策略执行', '精力能量管理', '政府政策补贴'
       ];
       return names.map((title, i) => ({
-        id: i + 1,
-        title,
+        id: i + 1, title,
         slug: 'node-' + (i + 1),
         summary: '节点' + (i + 1),
         difficulty: '入门'
@@ -811,7 +831,6 @@
     }
 
     function buildGraphStructure() {
-      // Build nodes with stage info
       graphNodes = nodesData.map(n => {
         const stage = getStage(n.id);
         return {
@@ -820,168 +839,259 @@
           slug: n.slug || 'node-' + n.id,
           summary: n.summary || '',
           difficulty: n.difficulty || '',
-          stage: stage.id,
+          stageId: stage.id,
           stageName: stage.name,
-          color: stage.color
+          isKey: KEY_NODES.has(n.id)
         };
       });
 
-      // Build sequential links within each stage + cross-stage links
       graphLinks = [];
 
-      // Sequential links within each stage
-      for (const stage of STAGES) {
-        const [start, end] = stage.range;
-        for (let i = start; i < end; i++) {
-          graphLinks.push({
-            source: i,
-            target: i + 1,
-            type: 'sequential'
-          });
+      // PHASE 2 SCHEME 5: ScrambleText for stat numbers
+      scrambleCount('stat-nodes', graphNodes.length);
+      scrambleCount('stat-links', 0); // will be updated by fetchNodeLinks
+    }
+
+    // 异步从 /api/node-links 拉取基于内容提取的关联
+    async function fetchNodeLinks() {
+      try {
+        const resp = await fetch(`${API_BASE}/api/node-links`);
+        const json = await resp.json();
+        if (!json.success || !json.data) return;
+        const data = json.data;
+        const validIds = new Set(graphNodes.map(n => n.id));
+        graphLinks = data.links
+          .filter(l => validIds.has(l.source) && validIds.has(l.target))
+          .map(l => ({ source: l.source, target: l.target, type: l.type }));
+        scrambleCount('stat-links', graphLinks.length);
+      } catch (e) {
+        console.warn('fetchNodeLinks failed:', e);
+      }
+    }
+
+    /* ========== PHASE 2 SCHEME 5: Number ScrambleText ========== */
+    function scrambleCount(elId, finalValue) {
+      const el = document.getElementById(elId);
+      if (!el) return;
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced || typeof gsap === 'undefined') {
+        el.textContent = finalValue;
+        return;
+      }
+      const obj = { val: 0 };
+      gsap.to(obj, {
+        val: finalValue,
+        duration: 1.4,
+        ease: 'power2.out',
+        onUpdate: () => {
+          el.textContent = Math.round(obj.val);
+        }
+      });
+    }
+
+    /* ========== LAYOUT ENGINE (force / tree) ========== */
+    // Resolve endpoint id from a link (D3 force replaces id strings with node refs)
+    function linkEndId(endpoint) {
+      return (endpoint && typeof endpoint === 'object') ? endpoint.id : endpoint;
+    }
+
+    function forceStage() {
+      let nodes;
+      function force(alpha) {
+        for (const node of nodes) {
+          const center = STAGE_CENTERS[node.stageId];
+          if (!center) continue;
+          node.vx += (center.x - node.x) * alpha * 0.35;
+          node.vy += (center.y - node.y) * alpha * 0.35;
         }
       }
-
-      // Cross-stage links (key transitions)
-      const crossLinks = [
-        [6, 11],   // 产品验证 → 核心开发
-        [10, 11],   // 环境搭建 → 核心开发
-        [17, 18],   // 核心开发 → 测试修复
-        [21, 22],   // 测试修复 → 上线准备
-        [30, 31],   // 上线准备 → 运营迭代
-        [43, 44],   // 运营迭代 → 支撑层
-        [17, 22],   // 核心开发 → 上线准备 (跳过测试)
-        [43, 57],   // 运营迭代 → 支撑层终点
-      ];
-
-      crossLinks.forEach(([from, to]) => {
-        if (graphNodes.find(n => n.id === from) && graphNodes.find(n => n.id === to)) {
-          graphLinks.push({ source: from, target: to, type: 'cross-stage' });
-        }
-      });
-
-      document.getElementById('stat-nodes').textContent = graphNodes.length;
-      document.getElementById('stat-links').textContent = graphLinks.length;
-      document.getElementById('stat-nodes-hero').textContent = graphNodes.length;
-      document.getElementById('stat-links-hero').textContent = graphLinks.length;
+      force.initialize = function(n) { nodes = n; };
+      return force;
     }
 
-    // ========== GRAPH BUILD ==========
-    function buildGraph() {
-      svg = d3.select('#graph');
-      width = window.innerWidth;
-      height = window.innerHeight;
-      svg.attr('viewBox', [0, 0, width, height]);
-      g = svg.append('g');
+    function applyForceLayout() {
+      // Reset fixed positions
+      graphNodes.forEach(n => { n.fx = null; n.fy = null; });
 
-      const zoom = d3.zoom()
-        .scaleExtent([0.15, 2.5])
-        .on('zoom', (event) => {
-          g.attr('transform', event.transform);
-        });
-      svg.call(zoom);
-      // Initial view: center and fit
-      svg.call(zoom.transform, d3.zoomIdentity.translate(width / 2, height / 2).scale(0.8));
-    }
-
-    function setupSimulation() {
-      // Custom layout: arrange by stage in a flowing line
-      const stageCount = STAGES.length;
-      const stageWidth = width * 0.85 / stageCount;
-
-      graphNodes.forEach(node => {
-        const stage = getStage(node.id);
-        const stageIndex = STAGES.findIndex(s => s.id === stage.id);
-        const nodesInStage = graphNodes.filter(n => getStage(n.id).id === stage.id);
-        const nodeIndexInStage = nodesInStage.findIndex(n => n.id === node.id);
-        const nodesCount = nodesInStage.length;
-
-        // X: by stage position
-        node.x = -width / 2 + (stageIndex + 0.5) * stageWidth;
-
-        // Y: distribute vertically within stage
-        const stageHeight = height * 0.7;
-        const spacing = stageHeight / (nodesCount + 1);
-        node.y = -stageHeight / 2 + (nodeIndexInStage + 1) * spacing;
-
-        // Initial positions for animation
-        node.x0 = node.x;
-        node.y0 = node.y;
-        node.scale = 1;
-      });
+      if (simulation) simulation.stop();
+      const width = window.innerWidth;
+      const height = window.innerHeight;
 
       simulation = d3.forceSimulation(graphNodes)
-        .force('link', d3.forceLink(graphLinks).id(d => d.id).distance(120).strength(0.3))
-        .force('charge', d3.forceManyBody().strength(-150))
-        .force('center', d3.forceCenter(0, 0))
-        .force('collision', d3.forceCollide().radius(35))
-        .alpha(0.3);
+        .force("link", d3.forceLink(graphLinks)
+          .id(d => d.id)
+          .distance(d => d.type === 'key' ? 220 : (d.type === 'reference' ? 160 : 70))
+          .strength(d => d.type === 'key' ? 0.2 : (d.type === 'reference' ? 0.3 : 0.7)))
+        .force("charge", d3.forceManyBody().strength(-220))
+        .force("collide", d3.forceCollide().radius(28))
+        .force("stage", forceStage())
+        .force("center", d3.forceCenter(width / 2, height / 2))
+        .alpha(1)
+        .alphaDecay(0.022)
+        .on("tick", ticked);
 
-      // Links
+      ticked();
+    }
+
+    function applyLayout() {
+      // 仅 FORCE 布局 — 节点关联由内容驱动
+      applyForceLayout();
+      // Update stage header positions (anchored)
+      updateStageHeaders();
+      // Refit after a tick
+      setTimeout(fitToScreen, 1500);
+    }
+
+    /* ========== GRAPH BUILD ========== */
+    function buildGraph() {
+      svg = d3.select('#graph');
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      svg.attr('viewBox', [0, 0, width, height])
+         .attr('preserveAspectRatio', 'xMidYMid meet');
+
+      rootG = svg.append('g').attr('class', 'root');
+      g = rootG.append('g').attr('class', 'zoom-target');
+
+      // HUGE BACKGROUND NUMBER (Ma anchor, fixed in zoom-target)
+      g.append('text')
+        .attr('class', 'bg-number')
+        .attr('x', width * 0.5)
+        .attr('y', height * 0.72)
+        .text('57');
+
+      // STAGE HEADERS (positioned at stage centers)
+      buildStageHeaders();
+
+      // LINKS (paths; key/reference use Bezier curves, sequential is straight)
       linkElements = g.append('g')
         .attr('class', 'links')
-        .selectAll('line')
+        .selectAll('path')
         .data(graphLinks)
         .enter()
-        .append('line')
-        .attr('class', d => d.type === 'cross-stage' ? 'link cross-stage' : 'link in-stage');
+        .append('path')
+        .attr('class', d => 'link ' + (d.type || 'sequential'));
 
-      // Nodes
-      nodeElements = g.append('g')
-        .attr('class', 'nodes')
-        .selectAll('g')
+      // NODES (groups, positioned via transform)
+      const nodeG = g.append('g').attr('class', 'nodes');
+      nodeElements = nodeG.selectAll('g')
         .data(graphNodes)
         .enter()
         .append('g')
-        .attr('class', 'node-group')
-        .on('mouseenter', function(event, d) {
-        startAutoScrollPause();
-        d3.select(this).classed('hover', true);
-        d3.select(this).select('.node-circle').attr('r', 45);
-        d.scale = 1.5;
-      })
-      .on('mouseleave', function(event, d) {
-        resumeAutoScroll();
-        d3.select(this).classed('hover', false);
-        d3.select(this).select('.node-circle').attr('r', 15);
-        d.scale = 1;
-      })
+        .attr('class', d => 'node-group' + (d.isKey ? ' key' : ''))
+        .attr('data-id', d => d.id)
+        .attr('data-stage', d => d.stageId)
+        .on('mouseover', showTooltip)
+        .on('mouseout', hideTooltip)
+        .on('click', showNodeModal)
         .call(d3.drag()
           .on('start', dragstarted)
           .on('drag', dragged)
-          .on('end', dragended))
-        .on('mouseover', showTooltip)
-        .on('mouseout', hideTooltip)
-        .on('click', showNodeModal);
+          .on('end', dragended));
 
-      // Node circle
       nodeElements.append('circle')
-        .attr('class', 'node-circle')
-        .attr('r', 15);
+        .attr('class', d => 'node-circle' + (d.isKey ? ' key' : ''))
+        .attr('r', d => d.isKey ? 9 : 6);
 
-      // Node ID text
       nodeElements.append('text')
         .attr('class', 'node-id')
-        .attr('dy', 5)
+        .attr('dy', '0.32em')
         .text(d => String(d.id).padStart(2, '0'));
 
-      // Node Chinese name label
-      nodeElements.append('text')
+      labelElements = nodeElements.append('text')
         .attr('class', 'node-label')
-        .attr('dy', 30)
-        .text(d => d.title.length > 5 ? d.title.substring(0, 5) + '..' : d.title);
+        .attr('dy', '2.3em')
+        .text(d => d.title.length > 7 ? d.title.substring(0, 7) + '··' : d.title);
 
-      simulation.on('tick', () => {
-        linkElements
-          .attr('x1', d => d.source.x)
-          .attr('y1', d => d.source.y)
-          .attr('x2', d => d.target.x)
-          .attr('y2', d => d.target.y);
-        nodeElements.attr('transform', d => `translate(${d.x},${d.y}) scale(${d.scale || 1})`);
+      // Zoom behavior
+      zoomBehavior = d3.zoom()
+        .scaleExtent([0.3, 3])
+        .on('zoom', (event) => g.attr('transform', event.transform));
+      svg.call(zoomBehavior);
+
+      // Apply initial layout (FORCE only)
+      applyLayout();
+    }
+
+    function buildStageHeaders() {
+      // Remove existing
+      g.selectAll('.stage-headers').remove();
+      const headerG = g.append('g').attr('class', 'stage-headers');
+      STAGES.forEach((stage, sIdx) => {
+        const c = STAGE_CENTERS[stage.id];
+        const count = stage.range[1] - stage.range[0] + 1;
+        headerG.append('text')
+          .attr('class', 'stage-label-num')
+          .attr('x', c.x).attr('y', c.y - 90)
+          .attr('text-anchor', 'middle')
+          .text('STAGE ' + String(sIdx + 1).padStart(2, '0'));
+        headerG.append('text')
+          .attr('class', 'stage-label-name')
+          .attr('x', c.x).attr('y', c.y - 70)
+          .attr('text-anchor', 'middle')
+          .text(stage.name);
+        headerG.append('text')
+          .attr('class', 'stage-label-count')
+          .attr('x', c.x).attr('y', c.y - 52)
+          .attr('text-anchor', 'middle')
+          .text(count + ' NODES');
       });
     }
 
+    function updateStageHeaders() {
+      // Just re-position if needed (kept static for stability)
+      // Could be updated to follow stage centroids in force layout
+    }
+
+    /* ========== TICKED (rendering) ========== */
+    function ticked() {
+      if (!linkElements) return;
+      linkElements.attr('d', d => {
+        // Resolve endpoints (D3 force uses object refs, tree uses ID strings)
+        const srcNode = (typeof d.source === 'object') ? d.source : graphNodes.find(n => n.id === d.source);
+        const tgtNode = (typeof d.target === 'object') ? d.target : graphNodes.find(n => n.id === d.target);
+        if (!srcNode || !tgtNode || srcNode.x == null || tgtNode.x == null) return '';
+        const sx = srcNode.x, sy = srcNode.y, tx = tgtNode.x, ty = tgtNode.y;
+        if (d.type === 'key' || d.type === 'reference') {
+          // Curve for key/reference (Bezier)
+          const dx = tx - sx;
+          const dy = ty - sy;
+          const dr = Math.sqrt(dx * dx + dy * dy) * (d.type === 'key' ? 0.7 : 0.55);
+          return `M${sx},${sy} Q${(sx + tx) / 2 + dx * 0.15},${(sy + ty) / 2 - dr * 0.3} ${tx},${ty}`;
+        }
+        return `M${sx},${sy} L${tx},${ty}`;
+      });
+      if (nodeElements) {
+        nodeElements.attr('transform', d => `translate(${d.x || 0}, ${d.y || 0})`);
+      }
+    }
+
+    /* ========== FIT TO SCREEN (using bbox) ========== */
+    function fitToScreen() {
+      if (graphNodes.length === 0 || !zoomBehavior) return;
+      const xs = graphNodes.map(n => n.x);
+      const ys = graphNodes.map(n => n.y);
+      const padding = 80;
+      const minX = Math.min(...xs) - padding;
+      const maxX = Math.max(...xs) + padding;
+      const minY = Math.min(...ys) - padding;
+      const maxY = Math.max(...ys) + padding;
+      const bboxW = Math.max(maxX - minX, 200);
+      const bboxH = Math.max(maxY - minY, 200);
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      const scale = Math.min(width / bboxW, height / bboxH) * 0.92;
+      const tx = (width - bboxW * scale) / 2 - minX * scale;
+      const ty = (height - bboxH * scale) / 2 - minY * scale;
+      svg.transition().duration(800).call(
+        zoomBehavior.transform,
+        d3.zoomIdentity.translate(tx, ty).scale(scale)
+      );
+    }
+
+    /* ========== DRAG ========== */
     function dragstarted(event, d) {
-      if (!event.active) simulation.alphaTarget(0.3).restart();
+      if (!event.active && simulation) simulation.alphaTarget(0.3).restart();
       d.fx = d.x;
       d.fy = d.y;
     }
@@ -989,31 +1099,157 @@
     function dragged(event, d) {
       d.fx = event.x;
       d.fy = event.y;
+      d.x = event.x;
+      d.y = event.y;
+      // Immediate visual update
+      d3.select(this).attr('transform', `translate(${d.x}, ${d.y})`);
+      // Update connected links (handle both force [object] and tree [id] references)
+      d3.selectAll('.link').each(function(l) {
+        const srcId = linkEndId(l.source);
+        const tgtId = linkEndId(l.target);
+        if (srcId === d.id || tgtId === d.id) {
+          const sx = srcId === d.id ? d.x : (typeof l.source === 'object' ? l.source.x : (graphNodes.find(n => n.id === srcId) || {}).x);
+          const sy = srcId === d.id ? d.y : (typeof l.source === 'object' ? l.source.y : (graphNodes.find(n => n.id === srcId) || {}).y);
+          const tx = tgtId === d.id ? d.x : (typeof l.target === 'object' ? l.target.x : (graphNodes.find(n => n.id === tgtId) || {}).x);
+          const ty = tgtId === d.id ? d.y : (typeof l.target === 'object' ? l.target.y : (graphNodes.find(n => n.id === tgtId) || {}).y);
+          if (sx == null || sy == null || tx == null || ty == null) return;
+          let path;
+          if (l.type === 'key' || l.type === 'reference') {
+            const dx = tx - sx;
+            const dy = ty - sy;
+            const dr = Math.sqrt(dx * dx + dy * dy) * (l.type === 'key' ? 0.7 : 0.55);
+            path = `M${sx},${sy} Q${(sx + tx) / 2 + dx * 0.15},${(sy + ty) / 2 - dr * 0.3} ${tx},${ty}`;
+          } else {
+            path = `M${sx},${sy} L${tx},${ty}`;
+          }
+          d3.select(this).attr('d', path);
+        }
+      });
     }
 
     function dragended(event, d) {
-      if (!event.active) simulation.alphaTarget(0);
+      if (!event.active && simulation) simulation.alphaTarget(0);
+      // Release fixed position so node returns to natural position
       d.fx = null;
       d.fy = null;
     }
 
-    // ========== TOOLTIP ==========
+    /* ========== STAGE RAIL ========== */
+    function buildStageRail() {
+      const rail = document.getElementById('stage-rail');
+      const title = rail.querySelector('.stage-rail-title');
+      rail.innerHTML = '';
+      rail.appendChild(title);
+
+      STAGES.forEach((stage, sIdx) => {
+        const count = stage.range[1] - stage.range[0] + 1;
+        const btn = document.createElement('button');
+        btn.className = 'stage-chip';
+        btn.dataset.stage = stage.id;
+        btn.innerHTML = `
+          <span class="stage-chip-num">${String(sIdx + 1).padStart(2, '0')}</span>
+          <span class="stage-chip-name">${stage.name}</span>
+          <span class="stage-chip-count">${count}</span>
+        `;
+        btn.addEventListener('click', () => focusStage(stage.id));
+        rail.appendChild(btn);
+      });
+
+      const reset = document.createElement('button');
+      reset.className = 'stage-reset';
+      reset.textContent = '重置视图';
+      reset.addEventListener('click', () => { focusedStage = null; updateStageRail(); clearFocus(); fitToScreen(); });
+      rail.appendChild(reset);
+    }
+
+    function focusStage(stageId) {
+      focusedStage = stageId;
+      updateStageRail();
+      applyFocus();
+      // PHASE 2 SCHEME 3: Cinematic camera fly-to
+      flyToStage(stageId);
+    }
+
+    /* ========== PHASE 2 SCHEME 3: Camera fly-to ========== */
+    function flyToStage(stageId) {
+      const stageNodes = graphNodes.filter(n => n.stageId === stageId);
+      if (stageNodes.length === 0) return;
+
+      // Compute stage centroid from current node positions (works for force/tree)
+      const xs = stageNodes.map(n => n.x);
+      const ys = stageNodes.map(n => n.y);
+      const minX = Math.min(...xs);
+      const maxX = Math.max(...xs);
+      const minY = Math.min(...ys);
+      const maxY = Math.max(...ys);
+      const targetX = (minX + maxX) / 2;
+      const targetY = (minY + maxY) / 2;
+
+      // Bounding box of this stage
+      const padding = 100;
+      const bboxW = Math.max(maxX - minX + padding * 2, 360);
+      const bboxH = Math.max(maxY - minY + padding * 2, 360);
+
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      // Scale to fit the stage cluster while leaving comfortable margin
+      const scale = Math.min(width / bboxW, height / bboxH) * 0.88;
+      const safeScale = Math.max(0.6, Math.min(scale, 1.8));
+      const tx = width / 2 - targetX * safeScale;
+      const ty = height / 2 - targetY * safeScale;
+
+      const newTransform = d3.zoomIdentity.translate(tx, ty).scale(safeScale);
+
+      if (typeof gsap === 'undefined' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        svg.call(zoomBehavior.transform, newTransform);
+      } else {
+        svg.transition().duration(1200).ease(d3.easeCubicInOut)
+          .call(zoomBehavior.transform, newTransform);
+      }
+    }
+
+    function clearFocus() {
+      nodeElements.classed('dimmed', false).classed('focused', false);
+      linkElements.classed('dimmed', false);
+    }
+
+    function applyFocus() {
+      if (!focusedStage) return clearFocus();
+      // dim all non-stage nodes/links
+      nodeElements
+        .classed('dimmed', d => d.stageId !== focusedStage)
+        .classed('focused', d => d.stageId === focusedStage);
+      linkElements.classed('dimmed', d => {
+        const sid1 = getStage(linkEndId(d.source)).id;
+        const sid2 = getStage(linkEndId(d.target)).id;
+        return !(sid1 === focusedStage && sid2 === focusedStage);
+      });
+    }
+
+    function updateStageRail() {
+      document.querySelectorAll('.stage-chip').forEach(chip => {
+        chip.classList.toggle('active', chip.dataset.stage === focusedStage);
+      });
+    }
+
+    /* ========== INTERACTIONS ========== */
     function showTooltip(event, d) {
       const tooltip = document.getElementById('tooltip');
+      document.getElementById('tooltip-id').textContent = '节点 ' + String(d.id).padStart(2, '0');
       document.getElementById('tooltip-title').textContent = d.title;
-      document.getElementById('tooltip-meta').innerHTML = `
-        <span class="tooltip-tag">${String(d.id).padStart(2, '0')}</span>
-        <span class="tooltip-tag">${d.difficulty}</span>
-        <span class="tooltip-tag accent">${d.stageName}</span>
-      `;
-      document.getElementById('tooltip-summary').textContent = d.summary;
+      document.getElementById('tooltip-meta').innerHTML =
+        `<span>${d.stageName}</span><span>·</span><span>${d.difficulty || '通用'}</span>`;
+      document.getElementById('tooltip-summary').textContent = d.summary || '暂无描述。';
 
-      tooltip.style.left = (event.pageX + 20) + 'px';
-      tooltip.style.top = (event.pageY - 10) + 'px';
+      // position near cursor but keep on screen
+      const tx = Math.min(event.pageX + 20, window.innerWidth - 300);
+      const ty = Math.min(event.pageY - 10, window.innerHeight - 200);
+      tooltip.style.left = tx + 'px';
+      tooltip.style.top = ty + 'px';
       tooltip.classList.add('visible');
 
       linkElements.classed('highlighted', l =>
-        l.source.id === d.id || l.target.id === d.id
+        linkEndId(l.source) === d.id || linkEndId(l.target) === d.id
       );
     }
 
@@ -1022,23 +1258,17 @@
       linkElements.classed('highlighted', false);
     }
 
-    // ========== MODAL ==========
     function showNodeModal(event, d) {
       event.stopPropagation();
       const modal = document.getElementById('modal');
-      document.getElementById('modal-title').textContent = `${String(d.id).padStart(2, '0')} · ${d.title}`;
-      document.getElementById('modal-body').innerHTML = `
-        <div style="margin-bottom: 1rem;">
-          <span class="tooltip-tag" style="margin-right: 0.5rem;">${d.difficulty}</span>
-          <span class="tooltip-tag accent">${d.stageName}</span>
-        </div>
-        <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 1.25rem;">
-          ${d.summary || '暂无描述'}
-        </p>
-        <a href="http://localhost:3002/nodes/${d.slug}/index.html" class="modal-btn">
-          进入节点 →
-        </a>
-      `;
+      document.getElementById('modal-id').textContent = '节点 ' + String(d.id).padStart(2, '0');
+      document.getElementById('modal-title').textContent = d.title;
+      document.getElementById('modal-meta').innerHTML =
+        `<span>${d.stageName}</span><span>·</span><span>${d.difficulty || '通用'}</span>`;
+      document.getElementById('modal-summary').textContent = d.summary || '暂无描述。';
+
+      const baseUrl = API_BASE.includes('localhost') ? 'http://localhost:3002' : '';
+      document.getElementById('modal-cta').href = `${baseUrl}/nodes/${d.slug}/index.html`;
       modal.classList.add('active');
     }
 
@@ -1046,87 +1276,165 @@
       document.getElementById('modal').classList.remove('active');
     }
 
-    // ========== GRAPH ENTRANCE ANIMATION ==========
-    function animateGraphEntrance() {
-      // Start all nodes from center
-      nodeElements
-        .attr('transform', 'translate(0,0)')
-        .style('opacity', 0);
-
-      // Animate nodes to final positions
-      nodeElements.transition()
-        .duration(800)
-        .delay((d, i) => i * 30)
-        .style('opacity', 1)
-        .attr('transform', d => `translate(${d.x},${d.y})`);
-
-      // Animate links
-      linkElements
-        .style('opacity', 0)
-        .transition()
-        .duration(600)
-        .delay((d, i) => i * 20 + 500)
-        .style('opacity', 1);
-    }
-
-    // ========== SHOW GRAPH ==========
-    function showGraph() {
-      isGraphVisible = true;
-      document.getElementById('hero').classList.add('hidden');
-      document.getElementById('graph-container').classList.add('visible');
-      document.getElementById('search-container').classList.add('visible');
-      document.getElementById('legend').classList.add('visible');
-      document.getElementById('stats').classList.add('visible');
-      setTimeout(() => {
-        animateGraphEntrance();
-        startAutoScroll();
-      }, 400);
-    }
-
-    // ========== EVENT LISTENERS ==========
     function setupEventListeners() {
-      document.getElementById('hero-cta').addEventListener('click', (e) => {
-        e.preventDefault();
-        showGraph();
-      });
-
       const searchInput = document.getElementById('search');
       searchInput.addEventListener('input', (e) => {
-        const query = e.target.value.toLowerCase();
-        nodeElements.style('opacity', d => {
-          if (!query) return 1;
-          return d.title.toLowerCase().includes(query) ||
-                 String(d.id).includes(query) ? 1 : 0.2;
+        const query = e.target.value.toLowerCase().trim();
+        if (!query) {
+          nodeElements.classed('dimmed', false);
+          linkElements.classed('dimmed', false);
+          return;
+        }
+        nodeElements.classed('dimmed', d =>
+          !(d.title.toLowerCase().includes(query) || String(d.id).includes(query))
+        );
+        linkElements.classed('dimmed', d => {
+          const src = graphNodes.find(n => n.id === linkEndId(d.source));
+          const tgt = graphNodes.find(n => n.id === linkEndId(d.target));
+          const match = (n) => n && (n.title.toLowerCase().includes(query) || String(n.id).includes(query));
+          return !(match(src) || match(tgt));
         });
-        linkElements.style('opacity', d => {
-          if (!query) return 1;
-          const src = graphNodes.find(n => n.id === d.source.id);
-          const tgt = graphNodes.find(n => n.id === d.target.id);
-          return (src && src.title.toLowerCase().includes(query)) ||
-                 (tgt && tgt.title.toLowerCase().includes(query)) ? 0.6 : 0.1;
-        });
+      });
+
+      document.getElementById('zoom-in').addEventListener('click', () => {
+        svg.transition().duration(600).call(zoomBehavior.scaleBy, 1.3);
+      });
+      document.getElementById('zoom-out').addEventListener('click', () => {
+        svg.transition().duration(600).call(zoomBehavior.scaleBy, 1 / 1.3);
+      });
+      document.getElementById('zoom-fit').addEventListener('click', () => {
+        fitToScreen();
       });
 
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closeModal();
-        if (e.key === 'Enter' && !isGraphVisible) showGraph();
       });
 
       document.getElementById('modal').addEventListener('click', (e) => {
         if (e.target.classList.contains('modal-overlay')) closeModal();
       });
+
+      window.addEventListener('resize', () => fitToScreen());
     }
 
-    // ========== INIT ==========
+    /* ========== ENTRANCE (GSAP) ========== */
+    function animateEntrance() {
+      if (typeof gsap === 'undefined') {
+        return animateEntranceD3();
+      }
+
+      const nodeArr = nodeElements.nodes();
+      const linkArr = linkElements.nodes();
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (reduced) {
+        gsap.set(nodeArr, { opacity: 1, y: 0 });
+        gsap.set(linkArr, { opacity: (i, el) => {
+          const d = d3.select(el).datum();
+          return d.type === 'key' ? 0.5 : (d.type === 'reference' ? 0.32 : 0.45);
+        }});
+        return;
+      }
+
+      // Initial state: all invisible
+      gsap.set(nodeArr, { opacity: 0, y: 12 });
+      gsap.set(linkArr, { opacity: 0 });
+
+      const tl = gsap.timeline();
+
+      // Stage-by-stage reveal — let the knowledge graph emerge organically
+      STAGES.forEach((stage, sIdx) => {
+        const stageNodeEls = nodeArr.filter(el => {
+          const d = d3.select(el).datum();
+          return d && d.stageId === stage.id;
+        });
+        const stageLinkEls = linkArr.filter(el => {
+          const l = d3.select(el).datum();
+          if (!l) return false;
+          const sid1 = getStage(linkEndId(l.source)).id;
+          const sid2 = getStage(linkEndId(l.target)).id;
+          return sid1 === stage.id && sid2 === stage.id;
+        });
+
+        const at = sIdx * 0.18;
+        tl.to(stageNodeEls, {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          stagger: 0.025,
+          ease: 'sine.out'
+        }, at);
+
+        if (stageLinkEls.length) {
+          tl.to(stageLinkEls, {
+            opacity: 0.6,
+            duration: 0.55,
+            stagger: 0.012,
+            ease: 'sine.inOut'
+          }, at + 0.2);
+        }
+      });
+
+      // Key + reference links fade in last (these carry the cross-stage "knowledge")
+      const extraLinkEls = linkArr.filter(el => {
+        const l = d3.select(el).datum();
+        return l && (l.type === 'key' || l.type === 'reference');
+      });
+      if (extraLinkEls.length) {
+        tl.to(extraLinkEls, {
+          opacity: (i, el) => {
+            const d = d3.select(el).datum();
+            return d.type === 'key' ? 0.5 : 0.32;
+          },
+          duration: 0.8,
+          stagger: 0.025,
+          ease: 'sine.out'
+        }, STAGES.length * 0.18 + 0.1);
+      }
+    }
+
+    // D3 fallback (used when GSAP not yet loaded)
+    function animateEntranceD3() {
+      nodeElements.style('opacity', 0);
+      linkElements.style('opacity', 0);
+
+      STAGES.forEach((stage, sIdx) => {
+        const stageNodes = nodeElements.filter(d => d.stageId === stage.id);
+        const stageLinks = linkElements.filter(l => {
+          const sid1 = getStage(linkEndId(l.source)).id;
+          const sid2 = getStage(linkEndId(l.target)).id;
+          return sid1 === stage.id || sid2 === stage.id;
+        });
+
+        stageNodes.transition()
+          .duration(700)
+          .delay(sIdx * 200)
+          .style('opacity', 1);
+
+        stageLinks.transition()
+          .duration(600)
+          .delay(sIdx * 200 + 200)
+          .style('opacity', d => d.type === 'key' ? 0.5 : (d.type === 'reference' ? 0.32 : 0.6));
+      });
+    }
+
+    /* ========== INIT ========== */
     async function init() {
-      createParticles();
+      buildStageRail();
       await loadNodes();
       buildGraph();
-      setupSimulation();
       setupEventListeners();
+      // 拉取基于内容提取的节点关联
+      await fetchNodeLinks();
+      animateEntrance();
     }
 
-    init();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => init());
+    } else {
+      // Wait one tick for deferred GSAP scripts to attach to window
+      setTimeout(init, 0);
+    }
   </script>
 </body>
 </html>

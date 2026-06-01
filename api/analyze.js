@@ -2393,6 +2393,127 @@ app.post('/api/admin/content-updates/check', auth.requireRole('admin'), (req, re
   }
 });
 
+// ========== 节点关联图谱 API（基于内容提取） ==========
+// 关键节点（重大阶段跃迁点）
+const KEY_NODE_IDS = new Set([1, 11, 22, 30, 43, 57]);
+
+// 阶段定义（id 范围）
+const STAGE_RANGES = [
+  { id: 1, name: '产品验证', range: [1, 6] },
+  { id: 2, name: '环境搭建', range: [7, 10] },
+  { id: 3, name: '核心开发', range: [11, 17] },
+  { id: 4, name: '测试修复', range: [18, 21] },
+  { id: 5, name: '上线准备', range: [22, 30] },
+  { id: 6, name: '运营迭代', range: [31, 43] },
+  { id: 7, name: '并行支撑', range: [44, 57] }
+];
+
+function getStageForId(id) {
+  return STAGE_RANGES.find(s => id >= s.range[0] && id <= s.range[1]) || null;
+}
+
+// 从节点 HTML 提取所有引用的其他节点 id
+function extractNodeReferences(htmlContent) {
+  const refs = new Set();
+  // 形式 1: nodes/06-tech-selection (相对路径)
+  const pathRe = /nodes\/(\d{1,2})-[a-z-]+/g;
+  let m;
+  while ((m = pathRe.exec(htmlContent)) !== null) {
+    refs.add(parseInt(m[1], 10));
+  }
+  // 形式 2: 节点 06 / 节点06 / 节点 2 (中文引用)
+  const textRe = /节点\s*(\d{1,2})/g;
+  while ((m = textRe.exec(htmlContent)) !== null) {
+    refs.add(parseInt(m[1], 10));
+  }
+  return Array.from(refs);
+}
+
+app.get('/api/node-links', (req, res) => {
+  try {
+    const entries = fs.readdirSync(NODES_BASE).filter(d => {
+      try { return fs.statSync(path.join(NODES_BASE, d)).isDirectory(); }
+      catch { return false; }
+    });
+
+    // 收集所有节点的元数据
+    const nodeMeta = {};
+    entries.forEach(dir => {
+      const dataPath = path.join(NODES_BASE, dir, 'data.json');
+      try {
+        const data = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
+        nodeMeta[data.id] = {
+          id: data.id,
+          slug: data.slug,
+          title: data.title,
+          phase: data.phase,
+          difficulty: data.difficulty
+        };
+      } catch { /* skip */ }
+    });
+
+    // 对每个节点扫描其内容，提取对其他节点的引用
+    const linkSet = new Set();
+    const refCount = {}; // 节点被引用次数（用于统计）
+    const allIds = Object.keys(nodeMeta).map(Number);
+
+    entries.forEach(dir => {
+      const htmlPath = path.join(NODES_BASE, dir, 'index.html');
+      try {
+        const html = fs.readFileSync(htmlPath, 'utf-8');
+        const data = JSON.parse(fs.readFileSync(path.join(NODES_BASE, dir, 'data.json'), 'utf-8'));
+        const sourceId = data.id;
+        const refs = extractNodeReferences(html);
+        refs.forEach(targetId => {
+          if (targetId === sourceId) return; // 跳过自引用
+          if (!nodeMeta[targetId]) return;    // 跳过不存在节点
+          // 无向链接：规范化方向（id 小的在前）
+          const [a, b] = sourceId < targetId ? [sourceId, targetId] : [targetId, sourceId];
+          linkSet.add(`${a}-${b}`);
+          refCount[targetId] = (refCount[targetId] || 0) + 1;
+        });
+      } catch { /* skip */ }
+    });
+
+    // 转换为 link 列表
+    const links = Array.from(linkSet).map(key => {
+      const [a, b] = key.split('-').map(Number);
+      const stageA = getStageForId(a);
+      const stageB = getStageForId(b);
+      const isSequential = Math.abs(a - b) === 1;
+      const isKeyEdge = KEY_NODE_IDS.has(a) && KEY_NODE_IDS.has(b);
+      return {
+        source: a,
+        target: b,
+        type: isKeyEdge ? 'key' : (isSequential ? 'sequential' : 'reference')
+      };
+    });
+
+    // 统计
+    const stats = {
+      totalNodes: allIds.length,
+      totalLinks: links.length,
+      sequentialLinks: links.filter(l => l.type === 'sequential').length,
+      referenceLinks: links.filter(l => l.type === 'reference').length,
+      keyLinks: links.filter(l => l.type === 'key').length
+    };
+
+    res.json({
+      success: true,
+      data: {
+        links,
+        keyNodes: Array.from(KEY_NODE_IDS),
+        stages: STAGE_RANGES,
+        refCount,
+        stats
+      }
+    });
+  } catch (error) {
+    console.error('Get node-links error:', error);
+    res.status(500).json({ error: '获取节点关联失败' });
+  }
+});
+
 // 启动时激活
 startPublishScheduler();
 
