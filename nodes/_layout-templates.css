@@ -1,0 +1,385 @@
+/* ============================================================
+   OPC 节点百科 — 5 套内容驱动布局模板
+   ============================================================
+   在 _design-tokens.css 基础上扩展。所有节点按内容性质选其一：
+
+   1. layout-classic  — 概念解释型 (sidebar TOC + 长文)
+   2. layout-steps    — 流程步骤型 (时间线 + 步骤卡片)
+   3. layout-policy   — 政策规则型 (侧栏规则卡片 + 对比表)
+   4. layout-tools    — 工具面板型 (双栏对照 + API 块)
+   5. layout-calc     — 交互计算型 (计算器 hero + 公式)
+   ============================================================ */
+
+/* ============================================================
+   1. layout-classic — 经典概念/方法论节点
+   节点: 01-06, 09, 11-15, 18-21, 31-43, 56
+   适用: 解释性长文，需要导航辅助
+   注：使用 .layout.layout-classic 提升 specificity 覆盖节点原 .layout 定义
+   ============================================================ */
+.layout.layout-classic {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: var(--space-2xl);
+  padding-top: 5rem;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding-left: var(--container-pad);
+  padding-right: var(--container-pad);
+}
+
+/* ============================================================
+   2. layout-steps — 流程步骤型节点
+   节点: 07, 08, 10, 22, 25, 27, 30, 32, 34, 35, 41
+   适用: "第 1 步...第 2 步..."清晰序列
+   特征: 左侧时间线 + 右侧步骤详情
+   ============================================================ */
+.layout.layout-steps {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 5rem var(--container-pad) 0;
+  position: relative;
+  display: block;
+}
+.step-rail {
+  position: relative;
+  padding-left: 56px;
+}
+.step-rail::before {
+  content: '';
+  position: absolute;
+  left: 18px; top: 0; bottom: 0;
+  width: 1px;
+  background: var(--line-strong);
+}
+.step {
+  position: relative;
+  padding-bottom: var(--space-3xl);
+}
+.step:last-child { padding-bottom: var(--space-lg); }
+.step-num {
+  position: absolute;
+  left: -56px; top: 0;
+  width: 38px; height: 38px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--line-strong);
+  background: var(--bg);
+  font-family: var(--font-serif);
+  font-size: 14px;
+  color: var(--text-secondary);
+  letter-spacing: 0;
+}
+.step.is-key .step-num {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.step.is-done .step-num::after {
+  content: '✓';
+  position: absolute;
+  bottom: -4px; right: -4px;
+  width: 14px; height: 14px;
+  background: var(--bg);
+  color: var(--ok);
+  font-size: 10px;
+  display: flex; align-items: center; justify-content: center;
+}
+.step-title {
+  font-family: var(--font-serif);
+  font-size: clamp(22px, 2.6vw, 28px);
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+}
+.step-sub {
+  font-size: 13px;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-md);
+}
+.step-body { color: var(--text-secondary); line-height: 1.8; }
+.step-body p { margin-bottom: var(--space-sm); }
+.step-callout {
+  border-left: 2px solid var(--accent);
+  padding: var(--space-sm) var(--space-md);
+  margin: var(--space-md) 0;
+  background: var(--accent-soft);
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+/* ============================================================
+   3. layout-policy — 政策规则型节点
+   节点: 23, 24, 26, 28, 29, 45, 48, 49, 50, 57
+   适用: 法规、政策、补贴、注册
+   特征: 顶部规则卡片 + 主区域对比表
+   ============================================================ */
+.layout.layout-policy {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: var(--space-2xl);
+  padding-top: 5rem;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding-left: var(--container-pad);
+  padding-right: var(--container-pad);
+}
+.policy-sidebar {
+  position: sticky; top: 5rem;
+  align-self: start;
+}
+.policy-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+  font-size: 13px;
+  line-height: 1.65;
+}
+.policy-card .pc-label {
+  font-size: 11px;
+  letter-spacing: var(--tracking-label);
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.policy-card .pc-value { color: var(--text-primary); }
+.policy-card.is-warn { border-left: 2px solid var(--accent); }
+.policy-card.is-ok { border-left: 2px solid var(--ok); }
+.policy-meta {
+  margin-top: var(--space-lg);
+  font-size: 11px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.05em;
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--line);
+}
+.policy-meta .meta-row { display: flex; justify-content: space-between; padding: 4px 0; }
+.policy-meta .meta-key { color: var(--text-tertiary); }
+.policy-meta .meta-value { color: var(--text-primary); }
+
+/* 对比表 */
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--space-md) 0;
+  font-size: 14px;
+}
+.compare-table th, .compare-table td {
+  text-align: left;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+.compare-table th {
+  font-size: 11px;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  font-weight: 500;
+  border-bottom: 1px solid var(--line-strong);
+}
+.compare-table .row-head {
+  font-family: var(--font-serif);
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+.compare-table .col-recommend { background: var(--accent-soft); }
+.compare-table .recommend-tag {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 2px 8px;
+  margin-left: var(--space-sm);
+}
+
+/* ============================================================
+   4. layout-tools — 工具面板型节点
+   节点: 16, 17, 36, 44, 47, 51-55
+   适用: API/工具/服务/平台
+   特征: 不对称两栏 + 代码/API 块 + 工具对比
+   ============================================================ */
+.layout.layout-tools {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 5rem var(--container-pad) 0;
+  display: block;
+}
+.tools-split {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: var(--space-2xl);
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .tools-split { grid-template-columns: 1fr; }
+}
+.tools-prose { min-width: 0; }
+.tools-rail {
+  position: sticky; top: 5rem;
+  border-left: 1px solid var(--line);
+  padding-left: var(--space-lg);
+}
+.tool-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+.tool-card .tc-name {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+.tool-card .tc-tag {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: var(--tracking-label);
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  border: 1px solid var(--line-strong);
+  padding: 2px 8px;
+  margin-right: 6px;
+  margin-bottom: 6px;
+}
+.tool-card .tc-price {
+  font-size: 13px;
+  color: var(--accent);
+  margin-top: 6px;
+}
+.api-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--accent);
+  padding: var(--space-md);
+  margin: var(--space-md) 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-x: auto;
+  color: var(--text-primary);
+  white-space: pre;
+}
+.api-endpoint {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  border: 1px solid var(--line-strong);
+  padding: 3px 10px;
+  margin-bottom: var(--space-sm);
+  margin-right: 6px;
+}
+.api-method-get { color: var(--ok); border-color: var(--ok); }
+.api-method-post { color: var(--accent); border-color: var(--accent); }
+
+/* ============================================================
+   5. layout-calc — 交互计算型节点
+   节点: 38, 46
+   适用: 计算器/财务模型/价格试算
+   特征: 计算器 hero 占屏，公式区在下方
+   ============================================================ */
+.layout.layout-calc {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 5rem var(--container-pad) 0;
+  display: block;
+}
+.calc-hero {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: var(--space-2xl);
+  align-items: start;
+  margin-bottom: var(--space-3xl);
+}
+@media (max-width: 900px) {
+  .calc-hero { grid-template-columns: 1fr; }
+}
+.calc-form {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-lg);
+  position: sticky; top: 5rem;
+}
+.calc-form label {
+  display: block;
+  font-size: 12px;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 6px;
+  margin-top: var(--space-md);
+}
+.calc-form label:first-of-type { margin-top: 0; }
+.calc-form input, .calc-form select {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  padding: 10px 12px;
+  font-variant-numeric: tabular-nums;
+}
+.calc-form input:focus, .calc-form select:focus {
+  outline: none;
+  border-color: var(--line-strong);
+}
+.calc-form .calc-result {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--line);
+}
+.calc-form .calc-result-row {
+  display: flex; justify-content: space-between;
+  padding: 6px 0;
+  font-size: 14px;
+}
+.calc-form .calc-result-key { color: var(--text-tertiary); }
+.calc-form .calc-result-val {
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+.calc-form .calc-result-val.is-highlight {
+  color: var(--accent);
+  font-size: 22px;
+  font-weight: 500;
+}
+.formula {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-md);
+  margin: var(--space-md) 0;
+  text-align: center;
+  color: var(--text-primary);
+}
+.warning-band {
+  background: var(--accent-soft);
+  border-left: 2px solid var(--accent);
+  padding: var(--space-md) var(--space-lg);
+  margin: var(--space-md) 0;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+/* ============================================================
+   响应式统一处理
+   ============================================================ */
+@media (max-width: 900px) {
+  .layout-classic,
+  .layout-policy {
+    grid-template-columns: 1fr;
+  }
+  .policy-sidebar { position: static; }
+  .tools-rail { position: static; border-left: 0; border-top: 1px solid var(--line); padding-left: 0; padding-top: var(--space-lg); }
+  .step-rail { padding-left: 44px; }
+  .step-num { left: -44px; width: 32px; height: 32px; font-size: 12px; }
+}

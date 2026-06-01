@@ -10,6 +10,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../_design-tokens.css">
+  <link rel="stylesheet" href="../_layout-templates.css">
   <style>
     :root {
       --bg: #111110;
@@ -533,7 +535,7 @@
 
     function renderLanding() {
       return `
-        <div class="container landing">
+        <div class="container landing layout-classic">
           <div class="landing-header">
             <a href="/" class="back-link"><span class="icon">←</span> 返回首页</a>
             <div class="text-label">OPC适配自测</div>
