@@ -50,6 +50,10 @@ LAYOUT_MAP = {
     "25-website-deployment": "steps",
     "27-launch-checklist": "steps",
     "30-official-launch": "steps",
+    "32-cold-start": "steps",
+    "34-feedback": "steps",
+    "35-private-traffic": "steps",
+    "41-product-iteration": "steps",
     # L3 policy — 政策规则
     "23-company-registration": "policy",
     "24-domain-icp": "policy",
