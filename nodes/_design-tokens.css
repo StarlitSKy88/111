@@ -405,6 +405,57 @@ tr:hover td { background: rgba(255,255,255,0.015); }
 .node-pager .next::after { content: '  →'; color: var(--text-tertiary); }
 
 /* ============================================================
+   TL;DR 速读区（章节级摘要，置于 hero 之后、第一个内容段之前）
+   用途：给初学者一个 30 秒速览，明确「本章要做什么 / 不需要会什么 / 学完能产出什么」
+   ============================================================ */
+.tldr {
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  border-left-width: 2px;
+  padding: var(--space-lg) var(--space-xl);
+  margin: 0 0 var(--space-2xl) 0;
+}
+.tldr-label {
+  font-size: 11px;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-md);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+.tldr-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+}
+.tldr-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.tldr-list li {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--line);
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: var(--space-md);
+}
+.tldr-list li:last-child { border-bottom: 0; }
+.tldr-list li strong {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+@media (max-width: 600px) {
+  .tldr-list li { grid-template-columns: 1fr; gap: 4px; }
+}
+
+/* ============================================================
    响应式
    ============================================================ */
 @media (max-width: 900px) {

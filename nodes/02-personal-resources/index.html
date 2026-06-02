@@ -446,11 +446,14 @@ body {
 
 .process-step {
   display: grid;
-  grid-template-columns: 48px 1fr;
+  grid-template-columns: 48px minmax(0, 1fr);
   gap: var(--space-lg);
   padding: var(--space-lg) 0;
   border-bottom: 1px solid var(--line-light);
 }
+.process-step > div { min-width: 0; }
+.process-step > div,
+.process-step > div * { width: auto; max-width: 100%; }
 .process-step:last-child { border-bottom: none; }
 
 .step-num {
@@ -459,6 +462,16 @@ body {
   font-weight: 300;
   color: var(--text-tertiary);
   opacity: 0.5;
+  position: static;
+  left: auto;
+  width: auto;
+  height: auto;
+  display: block;
+  border: none;
+  background: transparent;
+  letter-spacing: normal;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
 .step-title {
@@ -607,16 +620,16 @@ body {
 .nav-link:hover { color: var(--text-primary); }
 .nav-link.disabled { opacity: 0.3; pointer-events: none; }
 
-/* 动画 */
+/* 动画 — 渐进增强：默认可见，JS 增强淡入 */
 .fade-in {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-              transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  opacity: 1;
+  transform: translateY(0);
 }
 .fade-in.visible {
   opacity: 1;
   transform: translateY(0);
+  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 /* 响应式 */
@@ -648,7 +661,7 @@ body {
       </ul>
     </aside>
 
-    <main class="layout">
+    <main>
     <!-- Hero -->
     <header class="hero fade-in">
       <div class="hero-label">节点 02 · 核心必做</div>
@@ -659,6 +672,16 @@ body {
         </p>
       </aside>
     </header>
+
+    <section class="tldr fade-in" aria-label="本章速读">
+      <div class="tldr-label">本章速读</div>
+      <ul class="tldr-list">
+        <li><strong>目标：</strong>看清你"现在能做什么、缺什么、必须补什么"，再决定是否下场做 OPC。</li>
+        <li><strong>你要做的事：</strong>6 步盘点（能力矩阵 → 最小闭环 → 付费验证 → 法律形式 → 能量管理 → 资产化）。</li>
+        <li><strong>不需要会：</strong>融资、找合伙人、组团队。本章只关心"你一个人能不能跑通"。</li>
+        <li><strong>本章产出：</strong>一份「能力 × 资源 × 风险」清单，告诉你现在能不能开干、缺什么就先补什么。</li>
+      </ul>
+    </section>
 
     <!-- 核心观点 -->
     <section id="s1" class="keystone fade-in">
