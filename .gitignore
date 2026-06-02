@@ -32,3 +32,11 @@ temp/
 # Test artifacts
 /graph-*.png
 /node*.png
+/func-*.png
+/review-*.png
+/node53-*.png
+/node54-*.png
+
+# Internal caches
+.atomic/
+.ralph/
