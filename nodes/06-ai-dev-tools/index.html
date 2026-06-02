@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../_design-tokens.css">
   <style>
 :root {
   --bg: #111110;
@@ -380,6 +381,16 @@ td:first-child { color: var(--text-primary); font-weight: 400; }
         <p class="subtitle">OPC节点百科配套教程。覆盖AI编码工具、模型平台、云服务、网络工具等开发全流程所需的工具配置与使用指南。</p>
         <div class="node-meta">优先级说明：P0 = 立即配置，P1 = 近期配置，P2/P3 = 按需配置</div>
       </header>
+
+      <section class="tldr" aria-label="本章速读">
+        <div class="tldr-label">本章速读</div>
+        <ul class="tldr-list">
+          <li><strong>目标：</strong>在动笔写第一行代码前，就把 OPC 开发的"兵器谱"配齐：1 个 AI 编码代理 + 1 个模型路由 + 1 套云基础设施。</li>
+          <li><strong>你要做的事：</strong>3 步：① 装 Claude Code / Cursor 作为主代理 → ② 接 OpenRouter 做模型路由 → ③ 部署 Vercel + Supabase 跑通 Hello World。</li>
+          <li><strong>不需要会：</strong>不需要全栈 20 个工具都装（先 P0 三件套），不需要买付费云（个人免费档够用 1 年），不需要懂 Docker（云厂商已封装）。</li>
+          <li><strong>本章产出：</strong>1 张《P0/P1/P2 工具优先级表》+ 1 份《个人环境配置 Checklist》+ 1 份《工具替代方案对照表》（如无海外卡）。</li>
+        </ul>
+      </section>
 
       <section id="p0">
         <div class="section-label">P0 · 核心工具</div>

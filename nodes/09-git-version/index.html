@@ -217,8 +217,8 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
 .nav-link:hover { opacity: 0.6; }
 .nav-arrow { font-size: 0.75rem; }
 
-.fade-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-.fade-section.visible { opacity: 1; transform: translateY(0); }
+.fade-section { opacity: 1; transform: translateY(0); }
+.fade-section.visible { opacity: 1; transform: translateY(0); transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
   </style>
 </head>
 <body>
@@ -244,7 +244,7 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
       </ul>
     </aside>
 
-    <main class="layout">
+    <main>
     <header class="hero fade-section">
       <div class="hero-content">
         <div class="hero-label">节点 09 · 环境搭建</div>
@@ -252,6 +252,16 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
         <p class="hero-desc">你把第一个页面做出来了——如果明天电脑崩了、改了一个地方之后整个页面坏了、想把3天前的版本找回来——你需要Git。本章只需要会3条命令，从此再也不怕代码丢失。</p>
       </div>
     </header>
+
+    <section class="tldr fade-section" aria-label="本章速读">
+      <div class="tldr-label">本章速读</div>
+      <ul class="tldr-list">
+        <li><strong>目标：</strong>让你的代码"可回退"——任何时候改坏了都能 1 分钟恢复到任意历史版本。</li>
+        <li><strong>你要做的事：</strong>装 Git → 3 条命令让 AI 自动提交 → 出错了 1 条命令回退。</li>
+        <li><strong>不需要会：</strong>分支管理、合并冲突、命令行语法。本章只给你"每天用 1 次"的最少动作。</li>
+        <li><strong>本章产出：</strong>一个本地代码仓库 + 自动提交脚本，从此再也不怕改坏代码。</li>
+      </ul>
+    </section>
 
     <section id="s1" class="content-section fade-section">
       <div class="section-label">用AI理解Git：一句话就够了</div>

@@ -206,8 +206,8 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
 .nav-link:hover { color: var(--text-primary); }
 .nav-arrow { font-size: 0.75rem; }
 
-.fade-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
-.fade-section.visible { opacity: 1; transform: translateY(0); }
+.fade-section { opacity: 1; transform: translateY(0); }
+.fade-section.visible { opacity: 1; transform: translateY(0); transition: opacity 0.6s ease, transform 0.6s ease; }
 * { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
   </style>
 </head>
@@ -230,7 +230,7 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
       </ul>
     </aside>
 
-    <main class="layout">
+    <main>
     <header class="hero fade-section">
       <div class="hero-content">
         <div class="hero-label">节点 05 · 核心必做</div>
@@ -238,6 +238,16 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
         <p class="hero-desc">砍到只剩一个核心功能，先上线再迭代。OPC的核心优势是快</p>
       </div>
     </header>
+
+    <section class="tldr fade-section" aria-label="本章速读">
+      <div class="tldr-label">本章速读</div>
+      <ul class="tldr-list">
+        <li><strong>目标：</strong>把"想做的功能清单"砍到只剩 1 个核心闭环，先上线再迭代。</li>
+        <li><strong>你要做的事：</strong>6 步砍功能（核心命题 → 用户路径 → 砍到 1 个 → 5 天交付 → 上线）。</li>
+        <li><strong>不需要会：</strong>架构设计、技术选型、长期规划。本章只关心"第一个版本做什么"。</li>
+        <li><strong>本章产出：</strong>一份 5-Day 执行清单 + 1 个核心闭环功能，可以马上让 AI 开始写代码。</li>
+      </ul>
+    </section>
 
     <section id="s1" class="content-section fade-section">
       <div class="section-label">核心认知</div>

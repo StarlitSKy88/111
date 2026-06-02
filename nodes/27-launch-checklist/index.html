@@ -481,8 +481,12 @@ body {
 .nav-link.disabled { opacity: 0.3; pointer-events: none; }
 
 .fade-section {
-  opacity: 0;
-  transform: translateY(20px);
+  opacity: 1;
+  transform: translateY(0);
+}
+.fade-section.visible {
+  opacity: 1;
+  transform: translateY(0);
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
@@ -1169,6 +1173,16 @@ body {
         <p class="hero-desc">你作为一人公司创始人的上线安全网与长期续航的保险单。系统性地清点每一个关键模块，防止你成为最薄弱的单点故障源。</p>
       </div>
     </header>
+
+    <section class="tldr fade-section" aria-label="本章速读">
+      <div class="tldr-label">本章速读</div>
+      <ul class="tldr-list">
+        <li><strong>目标：</strong>系统化清点上线前每一个关键模块——防止你成为最薄弱的那个单点故障源。</li>
+        <li><strong>你要做的事：</strong>逐项过 5 大模块清单（产品/技术/运营/客户/法律），所有项打勾才能点"上线"。</li>
+        <li><strong>不需要会：</strong>不漏过任何一项的"超能力"。本章用强制清单兜底——漏一项就上不了。</li>
+        <li><strong>本章产出：</strong>1 份"已通过 X / 共 Y 项"的上线检查清单 + 1 份遗留风险登记表。</li>
+      </ul>
+    </section>
 
     <section id="s1" class="content-section fade-section">
       <div class="section-label">节点内容</div>

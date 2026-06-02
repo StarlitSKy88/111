@@ -208,8 +208,8 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
 .nav-link:hover { color: var(--text-primary); }
 .nav-arrow { font-size: 0.75rem; }
 
-.fade-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
-.fade-section.visible { opacity: 1; transform: translateY(0); }
+.fade-section { opacity: 1; transform: translateY(0); }
+.fade-section.visible { opacity: 1; transform: translateY(0); transition: opacity 0.6s ease, transform 0.6s ease; }
 * { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
   </style>
 </head>
@@ -240,6 +240,16 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
         <p class="hero-desc">公司注销、数据处理、用户通知，项目结束时体面地离开</p>
       </div>
     </header>
+
+    <section class="tldr fade-section" aria-label="本章速读">
+      <div class="tldr-label">本章速读</div>
+      <ul class="tldr-list">
+        <li><strong>目标：</strong>让项目能"体面结束"——不做了，干净退出；用户有交代，财务无风险。</li>
+        <li><strong>你要做的事：</strong>4 步：用户通知 → 数据归档/迁移 → 财务结算 → 公司注销。</li>
+        <li><strong>不需要会：</strong>法律全流程、税务清算专家。本章只给你"OPC 最小可走通的退出路径"。</li>
+        <li><strong>本章产出：</strong>1 套退出清单 + 用户通知模板，30 天内可以走完完整流程。</li>
+      </ul>
+    </section>
 
     <section id="s1" class="dimensions-section fade-section">
       <div class="section-label">核心维度</div>

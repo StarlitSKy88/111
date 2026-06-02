@@ -221,8 +221,8 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
 .nav-link:hover { opacity: 0.6; }
 .nav-arrow { font-size: 0.75rem; }
 
-.fade-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-.fade-section.visible { opacity: 1; transform: translateY(0); }
+.fade-section { opacity: 1; transform: translateY(0); }
+.fade-section.visible { opacity: 1; transform: translateY(0); transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
   </style>
 </head>
 <body>
@@ -246,7 +246,7 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
       </ul>
     </aside>
 
-    <main class="layout">
+    <main>
     <header class="hero fade-section">
       <div class="hero-content">
         <div class="hero-label">节点 11 · 核心功能开发</div>
@@ -254,6 +254,16 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
         <p class="hero-desc">你的产品现在能读写数据了——但所有数据是公开的，任何人都能看到。你需要一道门：让每个用户只能看到自己的数据、改自己的数据。本章用Supabase Auth，5分钟加入邮箱登录。</p>
       </div>
     </header>
+
+    <section class="tldr fade-section" aria-label="本章速读">
+      <div class="tldr-label">本章速读</div>
+      <ul class="tldr-list">
+        <li><strong>目标：</strong>给产品加一道"门"——让每个用户只能看到和改自己的数据。</li>
+        <li><strong>你要做的事：</strong>Supabase 开启 Auth → 接入登录注册组件 → 用 RLS 规则保护数据。</li>
+        <li><strong>不需要会：</strong>JWT、密码加密、Session 管理、OAuth 协议。Supabase Auth 全包了。</li>
+        <li><strong>本章产出：</strong>一个完整的邮箱+验证码登录注册流，每个用户的数据互不可见。</li>
+      </ul>
+    </section>
 
     <section id="s1" class="content-section fade-section">
       <div class="section-label">为什么OPC需要登录</div>

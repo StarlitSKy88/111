@@ -504,12 +504,14 @@ body {
 
 /* Fade Animation */
 .fade-section {
-  opacity: 0;
-  transform: translateY(20px);
+  opacity: 1;
+  transform: translateY(0);
+}
+.fade-section.visible {
+  opacity: 1;
+  transform: translateY(0);
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
-
-.fade-section.visible { opacity: 1; transform: translateY(0); }
 
 * { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
   </style>
@@ -591,6 +593,16 @@ body {
         <p class="hero-desc">用户反馈收集、每周复盘、功能迭代，每周花2小时持续优化</p>
       </div>
     </header>
+
+    <section class="tldr fade-section" aria-label="本章速读">
+      <div class="tldr-label">本章速读</div>
+      <ul class="tldr-list">
+        <li><strong>目标：</strong>建立"每周花 2 小时、持续让产品变好"的迭代节奏——不靠灵感，靠系统。</li>
+        <li><strong>你要做的事：</strong>5 步：收集反馈 → 排优先级 → 改最小版本 → 灰度发布 → 周复盘。</li>
+        <li><strong>不需要会：</strong>项目管理工具、AB 测试、OKR。本章给你"一人即团队"的轻量级流程。</li>
+        <li><strong>本章产出：</strong>1 张周复盘模板 + 1 个"反馈-迭代"看板，每月稳定交付 2-4 个改进。</li>
+      </ul>
+    </section>
 
     <!-- D1-D6 Dimensions -->
     <section id="s1" class="content-section fade-section">

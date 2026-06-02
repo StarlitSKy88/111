@@ -391,8 +391,8 @@ body {
 .nav-link:hover { color: var(--text-primary); }
 .nav-arrow { font-size: 0.75rem; }
 .fade-section {
-  opacity: 0;
-  transform: translateY(20px);
+  opacity: 1;
+  transform: translateY(0);
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
 .fade-section.visible { opacity: 1; transform: translateY(0); }
@@ -577,6 +577,16 @@ body {
         <p class="hero-desc">Stripe、PayPal、Wise，想做海外市场时接入</p>
       </div>
     </header>
+
+    <section class="tldr" aria-label="本章速读">
+      <div class="tldr-label">本章速读</div>
+      <ul class="tldr-list">
+        <li><strong>目标：</strong>在产品有海外用户的当天，就打通一条低费率、低封号、可提现到国内的收款通道，让海外现金流不断。</li>
+        <li><strong>你要做的事：</strong>3 步：① 选定主通道（Stripe / PayPal / Paddle）→ ② 用个体工商户 + 香港账户完成 KYC → ③ 接入并跑通 1 美元真实订单测试。</li>
+        <li><strong>不需要会：</strong>不需要先注册海外公司（部分通道支持个人/个体户），不需要懂外汇结算（支付商自动结汇），不需要做 PCI 合规（用 Checkout 即可）。</li>
+        <li><strong>本章产出：</strong>1 份《通道选型决策表》+ 1 个《KYC 资料清单》+ 1 份《提现到境内的 SOP》。</li>
+      </ul>
+    </section>
 
     <!-- D1: 认知跃迁 -->
     <section id="d1" class="content-section fade-section">

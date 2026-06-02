@@ -434,8 +434,8 @@ body {
 .nav-link:hover { color: var(--text-primary); }
 .nav-arrow { font-size: 0.75rem; }
 .fade-section {
-  opacity: 0;
-  transform: translateY(20px);
+  opacity: 1;
+  transform: translateY(0);
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
 .fade-section.visible { opacity: 1; transform: translateY(0); }
@@ -531,6 +531,16 @@ body {
         <p class="hero-desc">防火墙配置、安全监控、漏洞修复，网站上线后就应该做</p>
       </div>
     </header>
+
+    <section class="tldr" aria-label="本章速读">
+      <div class="tldr-label">本章速读</div>
+      <ul class="tldr-list">
+        <li><strong>目标：</strong>在网站正式上线当天，就把服务器防护从"裸奔"升级到"基础免疫"，挡住 80% 自动化攻击。</li>
+        <li><strong>你要做的事：</strong>3 步：① 启用云厂商 WAF + 免费证书 → ② 关闭所有非必要端口 → ③ 接入日志告警（异常登录/异常流量）。</li>
+        <li><strong>不需要会：</strong>不需要专业安全工程师，不需要买昂贵硬件防火墙，不需要自建 SOC 平台，云厂商控制台已够用。</li>
+        <li><strong>本章产出：</strong>1 张《端口暴露清单》+ 1 份《WAF 规则集》+ 1 份《告警联系人与升级 SOP》。</li>
+      </ul>
+    </section>
 
     <!-- D1: 认知跃迁 -->
     <section id="d1" class="content-section fade-section">

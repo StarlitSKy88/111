@@ -840,8 +840,8 @@ body {
 
 /* 动画 */
 .fade-section {
-  opacity: 0;
-  transform: translateY(20px);
+  opacity: 1;
+  transform: translateY(0);
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
@@ -891,6 +891,16 @@ body {
         </div>
       </div>
     </header>
+
+    <section class="tldr" aria-label="本章速读">
+      <div class="tldr-label">本章速读</div>
+      <ul class="tldr-list">
+        <li><strong>目标：</strong>用 AI 自动解决 80% 客服问题——一个月 $50 成本，1 个人维护。</li>
+        <li><strong>你要做的事：</strong>3 步：整理 50 条常见 Q&A → 接入 RAG + AI Agent → 跑一周人工兜底。</li>
+        <li><strong>不需要会：</strong>深度学习、向量数据库调优。本章只教你"OPC 最小 AI 客服"。</li>
+        <li><strong>本章产出：</strong>1 个能回答 80% 问题的 AI 客服 + 1 份周度兜底记录。</li>
+      </ul>
+    </section>
 
     <!-- 维度一：架构设计 -->
     <section id="s1" class="dim-section fade-section">

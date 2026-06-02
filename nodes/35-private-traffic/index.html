@@ -489,12 +489,14 @@ body {
 .nav-arrow { font-size: 0.75rem; }
 
 .fade-section {
-  opacity: 0;
-  transform: translateY(20px);
+  opacity: 1;
+  transform: translateY(0);
+}
+.fade-section.visible {
+  opacity: 1;
+  transform: translateY(0);
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
-
-.fade-section.visible { opacity: 1; transform: translateY(0); }
 
 * { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
   </style>
@@ -527,6 +529,16 @@ body {
         <p class="hero-desc">微信好友、社群、朋友圈，有100+付费用户后深耕私域</p>
       </div>
     </header>
+
+    <section class="tldr fade-section" aria-label="本章速读">
+      <div class="tldr-label">本章速读</div>
+      <ul class="tldr-list">
+        <li><strong>目标：</strong>100+ 付费用户后开始深耕私域——把"一次成交"变成"持续复购 + 转介绍"。</li>
+        <li><strong>你要做的事：</strong>4 件事：个人号 IP 化 → 微信群分层运营 → 朋友圈节奏 → 客户标签化。</li>
+        <li><strong>不需要会：</strong>企业微信 SCRM、社群裂变工具、自动化营销。本章只给你"一个人能管 500 人"的方法。</li>
+        <li><strong>本章产出：</strong>1 套个人号 IP 内容日历 + 1 套群运营 SOP + 1 张客户标签表。</li>
+      </ul>
+    </section>
 
     <!-- Dimension 1: 信任资产 -->
     <section id="s1" class="content-section fade-section">

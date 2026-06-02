@@ -177,8 +177,8 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
 .nav-link:hover { opacity: 0.6; }
 .nav-arrow { font-size: 0.75rem; }
 
-.fade-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-.fade-section.visible { opacity: 1; transform: translateY(0); }
+.fade-section { opacity: 1; transform: translateY(0); }
+.fade-section.visible { opacity: 1; transform: translateY(0); transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
   </style>
 </head>
 <body>
@@ -210,6 +210,16 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
         <p class="hero-desc">你不会用Figma、不会画UI、不知道什么叫"设计规范"。没关系——原型不是设计稿，原型是"让你的脑袋里的想法变成别人能看懂的东西"。本章零设计基础，30分钟出第一版原型。</p>
       </div>
     </header>
+
+    <section class="tldr fade-section" aria-label="本章速读">
+      <div class="tldr-label">本章速读</div>
+      <ul class="tldr-list">
+        <li><strong>目标：</strong>把你脑子里的想法，变成"别人能看懂、能挑刺"的草图，30 分钟出第一版原型。</li>
+        <li><strong>你要做的事：</strong>选工具（AI/纸笔）→ 画 5 屏流程图 → 让 AI 生成可点击的 HTML 原型。</li>
+        <li><strong>不需要会：</strong>Figma、Sketch、设计规范、原型软件。零设计基础也能完成。</li>
+        <li><strong>本章产出：</strong>一份可点击的 HTML 原型 + 1 段产品定位说明，足够去找 5 个真实用户测试。</li>
+      </ul>
+    </section>
 
     <section id="s1" class="content-section fade-section">
       <div class="section-label">为什么OPC必须做原型</div>

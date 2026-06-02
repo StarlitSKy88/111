@@ -312,8 +312,11 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
 .nav-link:hover { color: var(--text-primary); }
 .nav-link.disabled { opacity: 0.3; pointer-events: none; }
 
-.fade-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-.fade-section.visible { opacity: 1; transform: translateY(0); }
+/* 默认可见：渐进增强（JS 关闭或观察器未触发时也能看到完整内容） */
+.fade-section { opacity: 1; transform: translateY(0); }
+/* JS 启动后，会在 IntersectionObserver 内为未进入视口的元素加上 .pre-animate */
+.fade-section.pre-animate { opacity: 0; transform: translateY(20px); transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.fade-section.visible { opacity: 1; transform: translateY(0); transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
   </style>
 </head>
 <body>
@@ -346,6 +349,16 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
         <p class="hero-desc">你已经有了一个前端页面。现在要让它"变聪明"——用户输入的东西能被保存下来、下一页还能再看到。本章用Supabase（云端数据库），不需要你会SQL，3分钟从零到第一个数据读写。</p>
       </div>
     </header>
+
+    <section class="tldr fade-section" aria-label="本章速读">
+      <div class="tldr-label">本章速读</div>
+      <ul class="tldr-list">
+        <li><strong>目标：</strong>用 Supabase 让你的页面"记住"用户输入，30 分钟内完成数据读写的最小闭环。</li>
+        <li><strong>你要做的事：</strong>建项目 → 建表 → 拿 API 密钥 → 让 AI 写前端读写代码。</li>
+        <li><strong>不需要会：</strong>SQL、Node.js 后端、服务器部署。Supabase 全包了。</li>
+        <li><strong>本章产出：</strong>一个能在浏览器里输入文字并保存到云端数据库的页面。</li>
+      </ul>
+    </section>
 
     <section id="s1" class="content-section fade-section">
       <div class="section-label">创建Supabase项目（3分钟）</div>
@@ -961,12 +974,17 @@ await supabase.auth.signInWithOAuth({ provider: 'google' });
   </main>
 
   <script>
-    const observer = new IntersectionObserver((entries) => {
+    // 渐进增强：默认全部可见。仅在视口内进入时加 .visible 用于触发微动画。
+    // 不再使用 .pre-animate 把元素隐藏——保证 JS 加载慢或视口判断异常时内容仍可见。
+    const fadeObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          fadeObserver.unobserve(entry.target);
+        }
       });
     }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
+    document.querySelectorAll('.fade-section').forEach(el => fadeObserver.observe(el));
 
     // Smooth scroll for TOC links
     document.querySelectorAll('.toc-link').forEach(link => {

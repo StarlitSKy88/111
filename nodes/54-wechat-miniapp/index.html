@@ -391,8 +391,8 @@ body {
 .nav-link:hover { color: var(--text-primary); }
 .nav-arrow { font-size: 0.75rem; }
 .fade-section {
-  opacity: 0;
-  transform: translateY(20px);
+  opacity: 1;
+  transform: translateY(0);
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
 .fade-section.visible { opacity: 1; transform: translateY(0); }
@@ -485,6 +485,16 @@ body {
         <p class="hero-desc">网站流量稳定后需要更轻量的用户入口，用户体验比H5更好、留存率更高、支付更方便</p>
       </div>
     </header>
+
+    <section class="tldr" aria-label="本章速读">
+      <div class="tldr-label">本章速读</div>
+      <ul class="tldr-list">
+        <li><strong>目标：</strong>在 H5 产品日活稳定后，把核心用户路径 1:1 复刻到微信小程序，享受微信生态的留存与支付便利。</li>
+        <li><strong>你要做的事：</strong>3 步：① 注册小程序 AppID（个人/企业均可）→ ② 用 uni-app / Taro 跨端复用代码 → ③ 提交审核并发布体验版。</li>
+        <li><strong>不需要会：</strong>不需要从零学 WXML/WXSS（用 Vue 语法即可），不需要企业资质才能上线（个人主体可上线非社交类），不需要独立后端。</li>
+        <li><strong>本章产出：</strong>1 个可运行的小程序 Demo + 1 份《类目与资质清单》+ 1 份《审核避坑 Checklist》。</li>
+      </ul>
+    </section>
 
     <!-- D1: 判断时机 -->
     <section id="d1" class="content-section fade-section">

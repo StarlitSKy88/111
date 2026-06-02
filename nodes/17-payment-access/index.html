@@ -206,8 +206,8 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
 .nav-link:hover { color: var(--text-primary); }
 .nav-arrow { font-size: 0.75rem; }
 
-.fade-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
-.fade-section.visible { opacity: 1; transform: translateY(0); }
+.fade-section { opacity: 1; transform: translateY(0); }
+.fade-section.visible { opacity: 1; transform: translateY(0); transition: opacity 0.6s ease, transform 0.6s ease; }
 * { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
   </style>
 </head>
@@ -226,6 +226,16 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
         <p class="hero-desc">微信支付、支付宝、数字人民币——2026年一人公司收款闭环完整指南</p>
       </div>
     </header>
+
+    <section class="tldr fade-section" aria-label="本章速读">
+      <div class="tldr-label">本章速读</div>
+      <ul class="tldr-list">
+        <li><strong>目标：</strong>让客户能在 5 分钟内完成付款——微信、支付宝、数字人民币三个通道全跑通。</li>
+        <li><strong>你要做的事：</strong>选通道 → 申请商户号 → 接入代码 → 对账（3 步，1-3 天完成）。</li>
+        <li><strong>不需要会：</strong>金融协议、证书管理、对账系统。服务商已包好。</li>
+        <li><strong>本章产出：</strong>一个能收钱的页面，2026 年最新费率（数字人民币 0 费率）。</li>
+      </ul>
+    </section>
 
     <!-- 费率对比 -->
     <section class="rate-section fade-section">
