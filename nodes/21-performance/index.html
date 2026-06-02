@@ -296,6 +296,7 @@ td, th {
 }
 
 /* Main content */
+.phase-label {
   font-size: 0.6875rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -305,7 +306,7 @@ td, th {
 
 h1 {
   font-family: 'Noto Serif JP', serif;
-  font-size: clamp(48px, 10vw, 96px);
+  font-size: clamp(48px, 10vw, 96px) !important;
   font-weight: 300;
   letter-spacing: -0.03em;
   line-height: 0.95;
@@ -729,6 +730,16 @@ td:first-child {
       <h1>性能基础优化</h1>
       <div class="node-meta">节点 21 / 57 · 最后修订：2026年5月11日</div>
     </header>
+
+    <section class="tldr" aria-label="本章速读">
+      <div class="tldr-label">本章速读</div>
+      <ul class="tldr-list">
+        <li><strong>目标：</strong>把"有点慢"变成"挺快"——用最低成本做出性能体感优化。</li>
+        <li><strong>你要做的事：</strong>3 步：跑 Lighthouse 找瓶颈 → 改前 3 名（图片/字体/请求）→ 复测验证。</li>
+        <li><strong>不需要会：</strong>CDN 调优、数据库索引、负载均衡。本章只教你"OPC 零成本性能优化"。</li>
+        <li><strong>本章产出：</strong>1 个 Lighthouse 性能分 ≥85 的版本。</li>
+      </ul>
+    </section>
 
     <section id="s1">
     

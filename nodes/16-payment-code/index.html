@@ -296,6 +296,7 @@ td, th {
 }
 
 /* Main content */
+.phase-label {
   font-size: 0.6875rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -731,6 +732,16 @@ td:first-child {
       <div class="node-meta">节点 16 / 57 · 最后修订：2026年5月11日</div>
     </header>
 
+    <section class="tldr" aria-label="本章速读">
+      <div class="tldr-label">本章速读</div>
+      <ul class="tldr-list">
+        <li><strong>目标：</strong>让钱能进得来——把支付 SDK 接进产品，收到第一笔钱。</li>
+        <li><strong>你要做的事：</strong>3 步：选支付渠道（微信/支付宝/Stripe）→ 装 SDK 并配密钥 → 写统一下单 + 回调验签。</li>
+        <li><strong>不需要会：</strong>金融级加密、复杂对账系统。本章只教你"OPC 最小可收钱代码"。</li>
+        <li><strong>本章产出：</strong>1 套跑通的下单→支付→回调→发货闭环代码。</li>
+      </ul>
+    </section>
+
     <section id="s1">
     
 
@@ -815,7 +826,7 @@ td:first-child {
 <p>    body,</p>
 <p>    {</p>
 <p>      headers: {</p>
-<p>        'Authorization': </code>WECHATPAY2-SHA256-RSA2048 mchid="${process.env.WECHAT_MCHID}",nonce_str="${nonceStr}",timestamp="${timestamp}",signature="${signature}",serial_no="${process.env.WECHAT_SERIAL_NO}"<code>,</p>
+<p style="word-break: break-all; overflow-wrap: break-word;">        'Authorization': </code>WECHATPAY2-SHA256-RSA2048 mchid="${process.env.WECHAT_MCHID}",nonce_str="${nonceStr}",timestamp="${timestamp}",signature="${signature}",serial_no="${process.env.WECHAT_SERIAL_NO}"<code>,</p>
 <p>        'Content-Type': 'application/json'</p>
 <p>      }</p>
 <p>    }</p>

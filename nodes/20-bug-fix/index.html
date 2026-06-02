@@ -296,6 +296,7 @@ td, th {
 }
 
 /* Main content */
+.phase-label {
   font-size: 0.6875rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -729,6 +730,16 @@ td:first-child {
       <h1>Bug集中修复</h1>
       <div class="node-meta">节点 20 / 57 · 最后修订：2026年5月11日</div>
     </header>
+
+    <section class="tldr" aria-label="本章速读">
+      <div class="tldr-label">本章速读</div>
+      <ul class="tldr-list">
+        <li><strong>目标：</strong>从一堆 Bug 里杀出一条路——按优先级修掉所有 P0/P1。</li>
+        <li><strong>你要做的事：</strong>3 步：分 P0/P1/P2 优先级 → 一次性修一批同类 Bug → 修复后回归一遍。</li>
+        <li><strong>不需要会：</strong>Bug 管理工具、Jira 流程、Sentry 高级用法。本章只教你"OPC 最小修复闭环"。</li>
+        <li><strong>本章产出：</strong>1 个 0 P0/P1、<3 P2 的可上线版本。</li>
+      </ul>
+    </section>
 
     <section id="s1">
     
