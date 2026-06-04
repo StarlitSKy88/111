@@ -410,3 +410,36 @@ Section标题: clamp(1.125rem, 2.5vw, 1.375rem)
 | ✓ ✅ | `✓` | 正确、肯定 |
 | ⚠️ | `⚠` | 警告、注意（少用） |
 | 🚧 | `◈` | 建设中 |
+
+---
+
+## Skill routing
+
+When the user's request matches an available skill, invoke it via the Skill tool. When in doubt, invoke the skill.
+
+Key routing rules:
+- Product ideas/brainstorming → invoke /office-hours
+- Strategy/scope → invoke /plan-ceo-review
+- Architecture → invoke /plan-eng-review
+- Design system/plan review → invoke /design-consultation or /plan-design-review
+- Full review pipeline → invoke /autoplan
+- Bugs/errors → invoke /investigate
+- QA/testing site behavior → invoke /qa or /qa-only
+- Code review/diff check → invoke /review
+- Visual polish → invoke /design-review
+- Ship/deploy/PR → invoke /ship or /land-and-deploy
+- Save progress → invoke /context-save
+- Resume context → invoke /context-restore
+- Author a backlog-ready spec/issue → invoke /spec
+
+---
+
+## OPC 专属 skill 路由（项目级）
+
+- 修改 `graph.html` 图谱首页视觉 → invoke /design-shotgun 或 /frontend-design
+- 节点页面 Ma 間 设计评审 → invoke /japanese-skill
+- 写 PRD / SOP / Harness 文档 → invoke /spec
+- 检查部署/容器/Cron 是否健康 → invoke /browse（MCP camofox-browser）
+- 验证 CTA 归因 / 管理后台 → invoke /qa
+- 大规模重构/合并 → invoke /plan-eng-review
+- ONE-MCN Agent / 飞书多维表 → invoke /autoplan
