@@ -5,6 +5,10 @@ const crypto = require('crypto');
 const path = require('path');
 const dataStore = require('./data-store');
 const auth = require('./auth');
+const { createProvider, listProviders } = require('./utils/ai-provider');
+
+// AI Provider 抽象层（tokenhub / minimax / openai 通过 .env 切换）
+const aiProvider = createProvider();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -742,9 +746,8 @@ app.post('/api/nodes/:slug/purchase', (req, res) => {
 
 // ========== 原有 OPC 测试 API ==========
 
-// API Key 从环境变量读取
-const API_KEY = process.env.API_KEY || '';
-const API_URL = 'https://tokenhub.tencentmaas.com/v1/chat/completions';
+// API Key 从 AI Provider 抽象层读取（默认 tokenhub，可通过 AI_PROVIDER=minimax 切换）
+const API_KEY = aiProvider.apiKey; // 兼容旧代码（直接 fetch 失败时降级判断用）
 
 // 系统提示词
 const SYSTEM_PROMPT = `你是OPC创始人教练，根据用户测试答案给出分析报告。
@@ -819,33 +822,12 @@ function extractRecommendations(text) {
   return ['选择轻资产项目起步', '利用AI工具提效', '建立个人品牌'];
 }
 
-// 调用AI
+// 调用AI（通过 Provider 抽象层）
 async function callAI(messages, maxTokens = 1500) {
-  if (!API_KEY) {
+  if (!aiProvider.apiKey) {
     throw new Error('No API key configured');
   }
-
-  const response = await fetch(API_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${API_KEY}`
-    },
-    body: JSON.stringify({
-      model: 'deepseek-v4-flash',
-      messages,
-      temperature: 0.8,
-      max_tokens: maxTokens,
-      stream: false
-    })
-  });
-
-  if (!response.ok) {
-    throw new Error('API call failed');
-  }
-
-  const data = await response.json();
-  return data.choices[0].message.content;
+  return aiProvider.chat(messages, { maxTokens, temperature: 0.8 });
 }
 
 // Mock结果生成
@@ -1838,7 +1820,7 @@ app.post('/api/generate-node-content', async (req, res) => {
 格式要求：使用Markdown格式，层次清晰`;
 
     // 检查 API Key
-    if (!API_KEY) {
+    if (!aiProvider.apiKey) {
       // 降级：返回原始摘要
       return res.json({
         content: `# ${title}\n\n${summary}\n\n---\n*AI内容生成暂时不可用，请稍后重试*`,
@@ -1847,29 +1829,14 @@ app.post('/api/generate-node-content', async (req, res) => {
       });
     }
 
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${API_KEY}`
-      },
-      body: JSON.stringify({
-        model: 'deepseek-v4-flash',
-        messages: [
-          { role: 'system', content: '你是一个专业的OPC创业顾问，擅长用简洁清晰的语言解释复杂的创业知识。' },
-          { role: 'user', content: prompt }
-        ],
-        temperature: 0.7,
-        max_tokens: 1000
-      })
-    });
-
-    if (!response.ok) {
-      throw new Error('AI API调用失败');
-    }
-
-    const data = await response.json();
-    const content = data.choices?.[0]?.message?.content || summary;
+    // 通过 AI Provider 抽象层调用
+    const content = await aiProvider.chat(
+      [
+        { role: 'system', content: '你是一个专业的OPC创业顾问，擅长用简洁清晰的语言解释复杂的创业知识。' },
+        { role: 'user', content: prompt }
+      ],
+      { temperature: 0.7, maxTokens: 1000 }
+    ).catch(() => summary); // 失败兜底返回原始摘要
 
     res.json({
       content,
@@ -2547,7 +2514,17 @@ app.get('/api/node-links', (req, res) => {
 // 启动时激活
 startPublishScheduler();
 
+// AI Provider 状态端点（管理后台/监控用）
+app.get('/api/ai/providers', (_req, res) => {
+  res.json({ success: true, data: listProviders() });
+});
+
+app.get('/api/ai/health', async (_req, res) => {
+  const result = await aiProvider.health();
+  res.json({ success: true, provider: aiProvider.name, ...result });
+});
+
 app.listen(PORT, () => {
   console.log(`OPC API running on http://localhost:${PORT}`);
-  console.log(`Model: deepseek-v4-flash (腾讯TokenHub)`);
+  console.log(`AI Provider: ${aiProvider.name} (${aiProvider.defaultModel}) ${aiProvider.apiKey ? '✓ key' : '✗ no key'}`);
 });
