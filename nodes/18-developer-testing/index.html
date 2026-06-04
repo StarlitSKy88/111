@@ -3,15 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="开发者自测流程 - OPC节点百科">
+  <meta name="description" content="节点18：开发者自测流程 - OPC节点百科">
   <meta name="theme-color" content="#111110">
   <title>节点18：开发者自测流程 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../_design-tokens.css">
-  <link rel="stylesheet" href="../_layout-templates.css">
   <style>
 
 :root {
@@ -35,6 +33,10 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   background: var(--bg);
   color: var(--text-primary);
@@ -43,6 +45,72 @@ body {
   line-height: 1.9;
   letter-spacing: 0.04em;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* 移动端整体适配 - 使用 900px breakpoint 与现有代码一致 */
+@media (max-width: 900px) {
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+
+  body {
+    font-size: 14px;
+  }
+
+  .layout {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding: 4rem 16px 2rem !important;
+    margin: 0 !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .sidebar-toc {
+    display: none !important;
+  }
+
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  section {
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  section > * {
+    max-width: 100% !important;
+    overflow-x: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  section p {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+
+  h1 {
+    font-size: clamp(36px, 10vw, 48px) !important;
+    line-height: 1.05 !important;
+  }
 }
 
 /* Layout with Sidebar */
@@ -159,68 +227,6 @@ body {
   letter-spacing: 0.08em;
 }
 
-@media (max-width: 900px) {
-  html, body {
-    overflow-x: hidden !important;
-    max-width: 100vw !important;
-  }
-
-  .layout {
-    display: block !important;
-    grid-template-columns: 1fr !important;
-    width: 100% !important;
-    max-width: 100vw !important;
-    padding: 4rem 16px 2rem !important;
-  }
-
-  .sidebar-toc {
-    display: none !important;
-  }
-
-  .fixed-top-nav {
-    padding: 0.75rem clamp(1rem, 4vw, 1.5rem);
-  }
-
-  section {
-    width: 100% !important;
-    max-width: 100vw !important;
-    overflow-x: hidden !important;
-  }
-
-  section p,
-  section li,
-  section td,
-  section th {
-    width: 100% !important;
-    max-width: 100% !important;
-    word-break: break-word !important;
-    overflow-wrap: break-word !important;
-  }
-
-  .hero-title {
-    font-size: clamp(24px, 8vw, 48px) !important;
-    word-break: break-all !important;
-    overflow-wrap: break-word !important;
-    white-space: normal !important;
-    max-width: 100% !important;
-    line-height: 1.1 !important;
-  }
-
-  .highlight-box,
-  .step-card,
-  .code-block {
-    width: 100% !important;
-    max-width: 100% !important;
-    overflow-x: hidden !important;
-  }
-
-  table {
-    display: block !important;
-    overflow-x: auto !important;
-    font-size: 12px !important;
-  }
-}
-
 /* Header */
 header {
   padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
@@ -231,6 +237,52 @@ header {
 /* Main content */
 main {
   padding-bottom: 5rem;
+}
+
+/* 移动端底部导航适配 - 合并到 900px breakpoint */
+@media (max-width: 900px) {
+  main {
+    padding-bottom: 6rem; /* 为固定底部导航预留空间 */
+  }
+
+  .footer-nav {
+    overflow-x: auto;
+    justify-content: space-between;
+  }
+
+  .nav-link {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .table-wrapper {
+    position: relative;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 1.5rem 0;
+    border: 1px solid var(--line);
+  }
+
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
 }
 
 /* Section anchors offset for sticky header */
@@ -251,14 +303,49 @@ section p, section li {
 .table-wrapper {
   margin: 1.5rem 0;
   border: 1px solid var(--line);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-wrapper::after {
+  content: "";
+  display: block;
+}
+
+/* 移动端滑动提示 */
+@media (max-width: 900px) {
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  .table-wrapper {
+    position: relative;
+    padding-bottom: 24px;
+  }
 }
 
 table {
   font-size: 0.875rem;
+  min-width: 560px;
 }
 
-td, th {
-  padding: 0.875rem 1rem;
+@media (max-width: 900px) {
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
 }
 
 /* Tool Cards */
@@ -295,6 +382,15 @@ td, th {
   padding: 1.25rem 1.5rem;
 }
 
+/* Main content */
+.phase-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
 h1 {
   font-family: 'Noto Serif JP', serif;
   font-size: clamp(48px, 10vw, 96px);
@@ -303,6 +399,14 @@ h1 {
   line-height: 0.95;
   color: var(--text-primary);
   margin-bottom: var(--space-xl);
+}
+
+/* 移动端H1适配 */
+@media (max-width: 900px) {
+  h1 {
+    font-size: clamp(36px, 10vw, 48px);
+    line-height: 1.05;
+  }
 }
 
 .phase-label {
@@ -322,6 +426,16 @@ h1 {
   color: var(--text-secondary);
   max-width: 44ch;
   line-height: 1.8;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* 移动端副标题适配 */
+@media (max-width: 900px) {
+  .subtitle {
+    font-size: 14px;
+    max-width: 100%;
+  }
 }
 
 .node-meta {
@@ -374,6 +488,21 @@ p {
   color: var(--text-secondary);
   line-height: 1.9;
   margin-bottom: 1.25rem;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* 移动端段落适配 */
+@media (max-width: 900px) {
+  p {
+    padding-right: 0.5rem;
+    word-break: break-all;
+    white-space: normal;
+  }
+
+  section p {
+    padding-right: 0;
+  }
 }
 
 .decision-box {
@@ -699,48 +828,29 @@ td:first-child {
 </head>
 <body>
   <nav class="fixed-top-nav">
-    <a href="/" class="back-link">← 返回首页</a>
+    <a href="/index.html" class="back-link">← 返回首页</a>
     <span class="node-id">节点 18 / 57</span>
   </nav>
 
-  <div class="layout layout-classic">
-    <aside class="sidebar-toc">
-      <div class="toc-title">目录</div>
-      <ul class="toc-list">
-        <li class="toc-item"><a href="#s1" class="toc-link">自测是 OPC 的生死线</a></li>
-        <li class="toc-item"><a href="#s2" class="toc-link">一、OPC自测的第一原理</a></li>
-        <li class="toc-item"><a href="#s3" class="toc-link">二、OPC自测五步法</a></li>
-        <li class="toc-item"><a href="#s4" class="toc-link">三、自动化测试工具</a></li>
-        <li class="toc-item"><a href="#s5" class="toc-link">四、自测时间分配公式</a></li>
-        <li class="toc-item"><a href="#s6" class="toc-link">五、自测防翻车清单</a></li>
-        <li class="toc-item"><a href="#s7" class="toc-link">六、自测通过标准</a></li>
-        <li class="toc-item"><a href="#s8" class="toc-link">节点资源链接</a></li>
-      </ul>
-    </aside>
-    <main>
+  <div class="layout">
+    <main class="container">
       <header>
-      <div class="phase-label">测试与修复</div>
-      <h1>开发者自测流程</h1>
-      <div class="node-meta">节点 18 / 57 · 最后修订：2026年5月11日</div>
+      <div class="phase-label">0-1</div>
+      <h1>节点18：开发者自测流程</h1>
+      <div class="node-meta">节点 18 / 57 · 最后修订：2026年6月4日</div>
     </header>
-
-    <section class="tldr" aria-label="本章速读">
-      <div class="tldr-label">本章速读</div>
-      <ul class="tldr-list">
-        <li><strong>目标：</strong>用最低成本建立"自己能信的测试"——把自测流程跑顺。</li>
-        <li><strong>你要做的事：</strong>3 步：写一份自测清单（核心路径 + 边界）→ 跑一遍并记录 → 修复所有 P0/P1 Bug。</li>
-        <li><strong>不需要会：</strong>自动化测试框架、CI/CD、覆盖率指标。本章只教你"OPC 一个人能跑的自测"。</li>
-        <li><strong>本章产出：</strong>1 张自测清单 + 1 个修复后的稳定版本。</li>
-      </ul>
-    </section>
 
     <section id="s1">
     
+<p>node_id: 18</p>
+<p>persona: neutral</p>
+<p>cta_type: wechat</p>
+<p>keywords: [分钟, 步骤, 核心功能, 核心路径, 注册]</p>
 
 <blockquote class="decision-box"><p>你没有人帮你测。没有QA、没有测试工程师、没有同事帮你点两下。你是写代码的人，你也是唯一负责质量的人。本节点告诉你：一个人怎么测出一个团队的信心。</p></blockquote>
 
-</section>
-<section id="s2">
+<p></section></p>
+<section id="s一">
 <p>      <div class="section-label">一、OPC自测的第一原理</div></p>
 
 <h3>残酷真相</h3>
@@ -754,8 +864,8 @@ td:first-child {
 <div class="table-wrapper"><table><thead><tr><th>优先级</th><th>定义</th><th>举例</th></tr></thead><tbody><tr><td>🔴 P0</td><td>用户的核心流程断了</td><td>支付后订单没创建、登录后白屏、注册收不到验证码</td></tr><tr><td>🟠 P1</td><td>核心流程能用但数据错了</td><td>金额显示少了一个0、统计数据对不上</td></tr><tr><td>🟡 P2</td><td>功能正常但体验糟糕</td><td>按钮点了没反应（但刷新后好了）、图片加载慢</td></tr><tr><td>🟢 P3</td><td>不影响使用的瑕疵</td><td>文案有个错别字、对齐有点歪</td></tr></tbody></table></div>
 <strong>OPC铁律：上线前P0/P1必须清零。P2可以上线后修，P3可以不管。</strong>
 
-</section>
-<section id="s3">
+<p></section></p>
+<section id="s二">
 <p>      <div class="section-label">二、OPC自测五步法（每天30分钟）</div></p>
 
 <h3>步骤1：核心路径走查（10分钟）</h3>
@@ -785,7 +895,7 @@ td:first-child {
 
 <p>核心功能里所有有"输入"的地方，用以下值逐个测试：</p>
 
-<div class="table-wrapper"><table><thead><tr><th>输入类型</th><th>测试值</th></tr></thead><tbody><tr><td>空值</td><td>什么都不填直接提交</td></tr><tr><td>超长</td><td>复制一篇5000字文章粘贴进去</td></tr><tr><td>特殊字符</td><td>&lt;script&gt;alert(1)&lt;/script&gt; / emoji / 零宽字符</td></tr><tr><td>负数</td><td>金额输入 -100</td></tr><tr><td>超大数</td><td>金额输入 9999999999</td></tr><tr><td>手机端</td><td>在手机上重复以上测试</td></tr></tbody></table></div>
+<div class="table-wrapper"><table><thead><tr><th>输入类型</th><th>测试值</th></tr></thead><tbody><tr><td>空值</td><td>什么都不填直接提交</td></tr><tr><td>超长</td><td>复制一篇5000字文章粘贴进去</td></tr><tr><td>特殊字符</td><td></code><script>alert(1)</script><code> / emoji / 零宽字符</td></tr><tr><td>负数</td><td>金额输入 -100</td></tr><tr><td>超大数</td><td>金额输入 9999999999</td></tr><tr><td>手机端</td><td>在手机上重复以上测试</td></tr></tbody></table></div>
 <strong>如果有一个地方崩溃了，这就是今天的P0 Bug。</strong>
 
 <h3>步骤3：网络异常模拟（3分钟）</h3>
@@ -824,8 +934,8 @@ td:first-child {
 <p>SELECT * FROM orders WHERE created_at < '2024-01-01';  -- 时间戳明显错误的</p>
 <p></code>`<code></p>
 
-</section>
-<section id="s4">
+<p></section></p>
+<section id="s三">
 <p>      <div class="section-label">三、2026年OPC可用的自动化测试工具</div></p>
 
 <h3>必学：API测试用 Postman / Bruno</h3>
@@ -872,8 +982,8 @@ td:first-child {
 <p>});</p>
 <p></code>`<code></p>
 
-</section>
-<section id="s5">
+<p></section></p>
+<section id="s四">
 <p>      <div class="section-label">四、自测的时间分配公式</div></p>
 
 <p></code>`<code></p>
@@ -889,14 +999,14 @@ td:first-child {
 
 <strong>如果30分钟不够</strong> → 说明这个功能太复杂了，拆成两个功能分别上线。
 
-</section>
-<section id="s6">
+<p></section></p>
+<section id="s五">
 <p>      <div class="section-label">五、OPC自测防翻车清单</div></p>
 
 <div class="table-wrapper"><table><thead><tr><th>翻车方式</th><th>预防</th></tr></thead><tbody><tr><td><strong>在自己浏览器测完就上线</strong></td><td>必须用全新无痕窗口测一遍（清掉所有缓存和登录态）</td></tr><tr><td><strong>只在桌面测</strong></td><td>上线前手机微信打开走一遍完整流程</td></tr><tr><td><strong>回调只在本地测</strong></td><td>支付回调、OAuth回调必须在公网可访问的环境测一次（用ngrok）</td></tr><tr><td><strong>改了A功能不测B功能</strong></td><td>回归测试：改了支付的代码，重新走一遍注册→登录→功能1的流程</td></tr><tr><td><strong>"我就改了一行CSS"</strong></td><td>改了一行也要走P0核心路径。CSS可能导致按钮错位、文字消失</td></tr></tbody></table></div>
 
-</section>
-<section id="s7">
+<p></section></p>
+<section id="s六">
 <p>      <div class="section-label">六、自测通过标准（发布前）</div></p>
 
 <p></code>`<code></p>
@@ -909,8 +1019,8 @@ td:first-child {
 <p>□ 支付回调在公网环境测试通过（至少一次真实支付）</p>
 <p></code>``</p>
 
-</section>
-<section id="s8">
+<p></section></p>
+<section id="s节">
 <p>      <div class="section-label">节点资源链接</div></p>
 
 <ul><li>节点17：国内支付接入</li><li>节点19：亲友灰度测试</li><li>节点20：Bug集中修复</li></ul>
@@ -924,16 +1034,11 @@ td:first-child {
   </div>
 
   <nav class="footer-nav">
-    <a href="/nodes/17-payment-access/index.html" class="nav-link">
-      <span>←</span> 节点17
-    </a>
-    <a href="/nodes/19-friend-testing/index.html" class="nav-link">
-      节点19 <span>→</span>
-    </a>
+    <a href="/nodes/17-payment-access/index.html" class="nav-link"><span>←</span> 节点17</a>
+    <a href="/nodes/19-friend-testing/index.html" class="nav-link">节点19 <span>→</span></a>
   </nav>
 
   <script>
-  // Smooth scroll
   document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', function(e) {
       e.preventDefault();
@@ -944,30 +1049,6 @@ td:first-child {
       }
     });
   });
-
-  // Scroll spy for TOC
-  const sections = document.querySelectorAll('section[id]');
-  const tocLinks = document.querySelectorAll('.toc-link');
-
-  function updateActiveLink() {
-    const scrollPos = window.scrollY + 120;
-    sections.forEach(section => {
-      const top = section.offsetTop;
-      const height = section.offsetHeight;
-      const id = section.getAttribute('id');
-      if (scrollPos >= top && scrollPos < top + height) {
-        tocLinks.forEach(link => {
-          link.classList.remove('active');
-          if (link.getAttribute('href') === '#' + id) {
-            link.classList.add('active');
-          }
-        });
-      }
-    });
-  }
-
-  window.addEventListener('scroll', updateActiveLink, { passive: true });
-  updateActiveLink();
   </script>
 </body>
 </html>

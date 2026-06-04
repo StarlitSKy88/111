@@ -3,22 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="数字产品、课程、咨询多线并行，有稳定基础后开始打造被动收入">
+  <meta name="description" content="节点42：收入多元化 - OPC节点百科">
   <meta name="theme-color" content="#111110">
-  <title>收入多元化 - OPC节点百科</title>
+  <title>节点42：收入多元化 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../_design-tokens.css">
-  <link rel="stylesheet" href="../_layout-templates.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
+
 :root {
   --bg: #111110;
   --surface: #1A1A18;
   --text-primary: #F0EDE6;
-  --text-secondary: #B8B4AE;
-  --text-tertiary: #A8A49E;
+  --text-secondary: #7A7670;
+  --text-tertiary: #4A4744;
   --accent: #C0392B;
   --line: #2A2A28;
   --line-light: rgba(255,255,255,0.06);
@@ -32,11 +31,162 @@
   --space-4xl: 128px;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; font-weight: 400; line-height: 1.9; letter-spacing: 0.04em; -webkit-font-smoothing: antialiased; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
+html {
+  overflow-x: hidden;
+}
 
-.section-number { position: absolute; top: var(--space-2xl); right: clamp(24px, 8vw, 120px); font-size: clamp(100px, 22vw, 280px); font-weight: 100; color: var(--text-primary); opacity: 0.03; line-height: 1; letter-spacing: -0.05em; font-family: 'Noto Serif JP', serif; pointer-events: none; user-select: none; }
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* 移动端整体适配 - 使用 900px breakpoint 与现有代码一致 */
+@media (max-width: 900px) {
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+
+  body {
+    font-size: 14px;
+  }
+
+  .layout {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding: 4rem 16px 2rem !important;
+    margin: 0 !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .sidebar-toc {
+    display: none !important;
+  }
+
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  section {
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  section > * {
+    max-width: 100% !important;
+    overflow-x: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  section p {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+
+  h1 {
+    font-size: clamp(36px, 10vw, 48px) !important;
+    line-height: 1.05 !important;
+  }
+}
+
+/* Layout with Sidebar */
+.layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3rem);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
+}
+
+/* Sidebar TOC */
+.sidebar-toc {
+  position: sticky;
+  top: 5rem;
+  height: fit-content;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  padding-top: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.sidebar-toc::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar-toc::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 2px;
+}
+
+.toc-title {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.toc-list {
+  list-style: none;
+}
+
+.toc-item {
+  margin-bottom: 0.75rem;
+}
+
+.toc-link {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: block;
+  padding: 0.375rem 0;
+  padding-left: 1rem;
+  border-left: 1px solid var(--line);
+  transition: all 0.3s;
+  line-height: 1.4;
+}
+
+.toc-link:hover {
+  color: var(--text-primary);
+  border-left-color: var(--accent);
+}
+
+.toc-link.active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  font-weight: 400;
+}
+
+.toc-link.sub {
+  padding-left: 1.75rem;
+  font-size: 0.75rem;
+}
 
 /* Fixed Top Nav */
 .fixed-top-nav {
@@ -66,7 +216,9 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
   transition: color 0.3s;
 }
 
-.back-link:hover { color: var(--text-primary); }
+.back-link:hover {
+  color: var(--text-primary);
+}
 
 .node-id {
   font-family: 'Noto Serif JP', serif;
@@ -75,109 +227,568 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
   letter-spacing: 0.08em;
 }
 
-.hero { padding: var(--space-4xl) 0 var(--space-3xl); position: relative; }
-.hero-content { position: relative; z-index: 1; max-width: 800px; }
-.hero-label { font-size: 13px; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-md); }
-.hero-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
-.hero-title { font-family: 'Noto Serif JP', serif; font-size: clamp(48px, 10vw, 96px); font-weight: 300; letter-spacing: -0.03em; line-height: 0.95; margin-bottom: var(--space-xl); }
-.hero-desc { font-size: 16px; color: var(--text-secondary); line-height: 1.8; max-width: 44ch; }
+/* Header */
+header {
+  padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(2rem, 5vh, 3rem);
+}
 
-.dimensions-section { padding: var(--space-2xl) 0; border-top: 1px solid var(--line); }
-.section-label { font-size: 13px; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-md); }
-.section-label::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+/* Main content */
+main {
+  padding-bottom: 5rem;
+}
 
-.dimensions-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: var(--space-md); margin-bottom: var(--space-2xl); }
+/* 移动端底部导航适配 - 合并到 900px breakpoint */
+@media (max-width: 900px) {
+  main {
+    padding-bottom: 6rem; /* 为固定底部导航预留空间 */
+  }
 
-/* Layout */
-.layout {
+  .footer-nav {
+    overflow-x: auto;
+    justify-content: space-between;
+  }
+
+  .nav-link {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .table-wrapper {
+    position: relative;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 1.5rem 0;
+    border: 1px solid var(--line);
+  }
+
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
+}
+
+/* Section anchors offset for sticky header */
+section {
+  scroll-margin-top: 2rem;
+}
+
+section h2 {
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+}
+
+section p, section li {
+  font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
+  line-height: 1.9;
+}
+
+/* Table improvements */
+.table-wrapper {
+  margin: 1.5rem 0;
+  border: 1px solid var(--line);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-wrapper::after {
+  content: "";
+  display: block;
+}
+
+/* 移动端滑动提示 */
+@media (max-width: 900px) {
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  .table-wrapper {
+    position: relative;
+    padding-bottom: 24px;
+  }
+}
+
+table {
+  font-size: 0.875rem;
+  min-width: 560px;
+}
+
+@media (max-width: 900px) {
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
+}
+
+/* Tool Cards */
+.tool-grid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* Path blocks */
+.path-block {
+  padding: 1.5rem;
+}
+
+.workflow {
+  padding: 1rem 1.25rem;
+  font-size: 0.8125rem;
+}
+
+/* Validation cards */
+.validation-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.validation-card {
+  padding: 1.25rem;
+}
+
+/* Level items */
+.level-grid {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+/* Decision box */
+.decision-box {
+  padding: 1.25rem 1.5rem;
+}
+
+/* Main content */
+.phase-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+h1 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xl);
+}
+
+/* 移动端H1适配 */
+@media (max-width: 900px) {
+  h1 {
+    font-size: clamp(36px, 10vw, 48px);
+    line-height: 1.05;
+  }
+}
+
+.phase-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+.phase-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+
+.subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 44ch;
+  line-height: 1.8;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* 移动端副标题适配 */
+@media (max-width: 900px) {
+  .subtitle {
+    font-size: 14px;
+    max-width: 100%;
+  }
+}
+
+.node-meta {
+  margin-top: 2rem;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+}
+
+/* Sections */
+section {
+  padding-bottom: clamp(3rem, 10vh, 5rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(3rem, 10vh, 5rem);
+}
+
+section:last-of-type {
+  border-bottom: none;
+}
+
+.section-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.375rem, 4vw, 1.875rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+h3 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.125rem, 3vw, 1.375rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+p {
+  color: var(--text-secondary);
+  line-height: 1.9;
+  margin-bottom: 1.25rem;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* 移动端段落适配 */
+@media (max-width: 900px) {
+  p {
+    padding-right: 0.5rem;
+    word-break: break-all;
+    white-space: normal;
+  }
+
+  section p {
+    padding-right: 0;
+  }
+}
+
+.decision-box {
+  background: var(--surface);
+  border-left: 2px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.decision-box p {
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  margin: 0;
+}
+
+/* Tables */
+.table-wrapper {
+  overflow-x: auto;
+  margin: 2rem 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+th {
+  text-align: left;
+  font-weight: 400;
+  font-size: 0.6875rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--text-secondary);
+  vertical-align: top;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+td:first-child {
+  color: var(--text-primary);
+  font-weight: 400;
+}
+
+/* Tool Cards */
+.tool-grid {
   display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
-  gap: clamp(2rem, 4vw, 3rem);
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
+  gap: 1.5rem;
+  margin: 2rem 0;
 }
 
-/* Main content wrapper */
-.main-content {
-  min-width: 0;
+.tool-card {
+  background: var(--surface);
+  padding: 1.75rem;
+  border: 1px solid var(--line);
 }
 
-/* Sidebar TOC */
-.sidebar-toc {
-  position: sticky;
-  top: 5rem;
-  height: fit-content;
-  max-height: calc(100vh - 6rem);
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--line) transparent;
+.tool-card h4 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
 }
-.sidebar-toc::-webkit-scrollbar { width: 4px; }
-.sidebar-toc::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
-.toc-title { font-size: 0.6875rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 1.25rem; }
-.toc-list { list-style: none; }
-.toc-item { margin-bottom: 0.75rem; }
-.toc-link { font-size: 0.8125rem; color: var(--text-secondary); text-decoration: none; display: block; padding: 0.375rem 0; padding-left: 1rem; border-left: 1px solid var(--line); transition: all 0.3s; line-height: 1.4; }
-.toc-link:hover { color: var(--text-primary); border-left-color: var(--accent); }
-.toc-link.active { color: var(--accent); border-left-color: var(--accent); font-weight: 400; }
 
-/* Responsive layout */
-@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
-@media (max-width: 900px) { .dimensions-grid { grid-template-columns: 1fr; } }
+.tool-card .tagline {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
 
-.dim-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-md); position: relative; overflow: hidden; }
-.dim-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--accent); }
-.dim-badge { display: inline-block; font-size: 9px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-sm); border: 1px solid var(--accent); padding: 2px 8px; }
-.dim-title { font-family: 'Noto Serif JP', serif; font-size: 18px; font-weight: 400; color: var(--text-primary); margin-bottom: var(--space-xs); line-height: 1.3; }
-.dim-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+.tool-card p {
+  font-size: 0.875rem;
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
 
-.content-section { padding: var(--space-3xl) 0; border-top: 1px solid var(--line); }
-.grid-asymmetric { display: grid; grid-template-columns: 1.2fr 1fr; gap: var(--space-3xl); align-items: start; }
-@media (max-width: 900px) { .grid-asymmetric { grid-template-columns: 1fr; gap: var(--space-2xl); } }
+.tool-card .pros {
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+}
 
-.chapter-heading { font-family: 'Noto Serif JP', serif; font-size: clamp(28px, 5vw, 48px); font-weight: 300; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: var(--space-xl); max-width: 16em; }
-.body-text { font-size: 15px; line-height: 1.9; color: var(--text-secondary); max-width: 44ch; margin-bottom: var(--space-md); }
-.body-text strong { color: var(--text-primary); font-weight: 500; }
-.body-text .accent { color: var(--accent); font-weight: 500; }
+.tool-card .price {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.25rem 0.75rem;
+  margin-top: 1rem;
+}
 
-.answer-block { margin-bottom: var(--space-xl); }
-.answer-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: var(--space-sm); padding-bottom: var(--space-xs); border-bottom: 1px solid var(--line); }
-.answer-label.red { color: #E74C3C; border-color: rgba(231,76,60,0.3); }
-.answer-label.green { color: var(--accent); border-color: rgba(39,174,96,0.3); }
-.answer-label.blue { color: #3498DB; border-color: rgba(52,152,219,0.3); }
+/* Path Section */
+.path-block {
+  background: var(--surface);
+  padding: 2rem;
+  margin: 2rem 0;
+  border: 1px solid var(--line);
+}
 
-.answer-content { padding-left: var(--space-md); border-left: 1px solid var(--line); }
-.answer-title { font-size: 15px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-xs); }
-.answer-text { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+.path-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
 
-.core-insight { margin: var(--space-xl) 0; padding-left: var(--space-md); border-left: 1px solid var(--accent); }
-.core-insight-text { font-size: 15px; color: var(--text-secondary); line-height: 1.7; max-width: 40ch; }
+.path-number {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
 
-.balance-section-title { font-family: 'Noto Serif JP', serif; font-size: clamp(28px, 5vw, 48px); font-weight: 300; letter-spacing: -0.02em; margin-bottom: var(--space-xl); }
-.balance-intro { font-size: 15px; color: var(--text-secondary); line-height: 1.8; max-width: 46ch; margin-bottom: var(--space-2xl); }
-.balance-intro strong { color: var(--text-primary); font-weight: 500; }
+.path-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--text-primary);
+}
 
-.balance-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: var(--space-2xl); }
-@media (max-width: 768px) { .balance-grid { grid-template-columns: 1fr; gap: var(--space-xl); } }
+.path-tools {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
 
-.balance-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-lg); }
-.balance-card-label { font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-md); padding-bottom: var(--space-sm); border-bottom: 1px solid var(--line); }
-.balance-card-label.positive { color: var(--accent); }
-.balance-card-label.negative { color: var(--text-tertiary); }
+.path-block p {
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+}
 
-.balance-item { padding: var(--space-sm) 0; border-bottom: 1px solid var(--line-light); font-size: 14px; color: var(--text-secondary); }
-.balance-item:last-child { border-bottom: none; }
-.balance-item.dim { color: var(--text-tertiary); }
+.workflow {
+  background: var(--bg);
+  padding: 1.25rem 1.5rem;
+  margin-top: 1.25rem;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.9;
+}
 
-.summary-grid { display: grid; grid-template-columns: 1.5fr 1.2fr 0.8fr; gap: var(--space-xl); }
-@media (max-width: 900px) { .summary-grid { grid-template-columns: 1fr; gap: var(--space-lg); } }
+/* Validation Box */
+.validation-grid {
+  display: grid;
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
 
-.summary-card { padding: var(--space-lg) 0; border-top: 1px solid var(--line); }
-.summary-num { font-family: 'Noto Serif JP', serif; font-size: 36px; font-weight: 300; color: var(--accent); margin-bottom: var(--space-sm); }
-.summary-title { font-size: 15px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-xs); }
-.summary-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+.validation-card {
+  background: var(--surface);
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+}
 
+.validation-card h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.validation-card p {
+  font-size: 0.8125rem;
+  margin: 0;
+}
+
+.level-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.level-item {
+  background: var(--surface);
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+}
+
+.level-item .num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.5rem;
+  color: var(--accent);
+  opacity: 0.6;
+  margin-bottom: 0.5rem;
+}
+
+.level-item h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.level-item p {
+  font-size: 0.75rem;
+  margin: 0;
+}
+
+/* Cost Control */
+.cost-table {
+  margin: 2rem 0;
+}
+
+/* Quote */
+.quote-block {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+}
+
+.quote-block p {
+  font-size: 1rem;
+  color: var(--text-primary);
+  line-height: 1.8;
+}
+
+/* Network Section */
+.network-alert {
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.network-alert h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.network-alert p {
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Summary Box */
+.summary-box {
+  background: var(--surface);
+  padding: 2rem;
+  margin-top: 3rem;
+  border: 1px solid var(--line);
+}
+
+.summary-box h3 {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+}
+
+.step-list {
+  list-style: none;
+  counter-reset: steps;
+}
+
+.step-list li {
+  counter-increment: steps;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.step-list li::before {
+  content: counter(steps);
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--accent);
+  flex-shrink: 0;
+  width: 1.5rem;
+  padding-top: 0.25rem;
+}
+
+/* Footer Nav - Fixed Bottom */
 .footer-nav {
   position: fixed;
   bottom: 0;
@@ -192,6 +803,7 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
   backdrop-filter: blur(12px);
   border-top: 1px solid var(--line);
 }
+
 .nav-link {
   font-size: 0.75rem;
   color: var(--text-tertiary);
@@ -202,455 +814,144 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
   gap: 0.5rem;
   transition: color 0.3s;
 }
-.nav-link:hover { color: var(--text-primary); }
-.nav-link.disabled { opacity: 0.3; pointer-events: none; }
-.nav-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: color 0.3s ease; }
-.nav-link:hover { color: var(--text-primary); }
-.nav-arrow { font-size: 0.75rem; }
 
-.fade-section { opacity: 1; transform: translateY(0); }
-.fade-section.visible { opacity: 1; transform: translateY(0); transition: opacity 0.6s ease, transform 0.6s ease; }
-* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-  </style>
-  <style>
-  @media (max-width: 900px) {
-    html, body {
-      overflow-x: hidden !important;
-      max-width: 100vw !important;
-    }
+.nav-link:hover {
+  color: var(--text-primary);
+}
 
-    .layout {
-      display: block !important;
-      grid-template-columns: 1fr !important;
-      width: 100% !important;
-      max-width: 100vw !important;
-      padding: 4rem 16px 2rem !important;
-    }
+.nav-link.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
 
-    .sidebar-toc {
-      display: none !important;
-    }
-
-    section {
-      width: 100% !important;
-      max-width: 100vw !important;
-      overflow-x: hidden !important;
-    }
-
-    section p, section li, section td, section th {
-      width: 100% !important;
-      max-width: 100% !important;
-      word-break: break-word !important;
-      overflow-wrap: break-word !important;
-    }
-
-    .hero-title {
-      font-size: clamp(24px, 8vw, 48px) !important;
-      word-break: break-all !important;
-      overflow-wrap: break-word !important;
-      white-space: normal !important;
-      max-width: 100% !important;
-      line-height: 1.1 !important;
-    }
-
-    table {
-      display: block !important;
-      overflow-x: auto !important;
-      font-size: 12px !important;
-    }
-
-    .footer-nav {
-      flex-direction: column !important;
-      gap: 1rem !important;
-      text-align: center !important;
-    }
-
-    .footer-nav .nav-link {
-      font-size: 0.65rem !important;
-    }
-  }
   </style>
 </head>
 <body>
   <nav class="fixed-top-nav">
-    <a href="/" class="back-link">← 返回首页</a>
+    <a href="/index.html" class="back-link">← 返回首页</a>
     <span class="node-id">节点 42 / 57</span>
   </nav>
-  <div class="section-number">37</div>
 
-  <div class="layout layout-classic">
-    <nav class="sidebar-toc">
-      <div class="toc-title">目录</div>
-      <ul class="toc-list">
-        <li class="toc-item"><a href="#s1" class="toc-link">核心维度</a></li>
-        <li class="toc-item"><a href="#s2" class="toc-link">收入画布</a></li>
-        <li class="toc-item"><a href="#s4" class="toc-link">决策矩阵</a></li>
-        <li class="toc-item"><a href="#s6" class="toc-link">FIN 健康指标</a></li>
-      </ul>
-    </nav>
-    <main class="main-content">
-    <header class="hero">
-      <div class="hero-content">
-        <div class="hero-label">节点 42 · 10+</div>
-        <h1 class="hero-title">收入多元化</h1>
-        <p class="hero-desc">数字产品、课程、咨询多线并行，有稳定基础后开始打造被动收入</p>
-      </div>
+  <div class="layout">
+    <main class="container">
+      <header>
+      <div class="phase-label">10+</div>
+      <h1>节点42：收入多元化</h1>
+      <div class="node-meta">节点 42 / 57 · 最后修订：2026年6月4日</div>
     </header>
 
-    <section class="tldr fade-section" aria-label="本章速读">
-      <div class="tldr-label">本章速读</div>
-      <ul class="tldr-list">
-        <li><strong>目标：</strong>把"单一收入"变成"多线并行"——降低任何一个渠道失效的生存风险。</li>
-        <li><strong>你要做的事：</strong>梳理 4 类收入（数字产品/服务/课程/订阅）→ 找出你的"第二曲线"。</li>
-        <li><strong>不需要会：</strong>组建销售团队、投放广告、签长期合同。本章只关心"一人能维护的几个变现线"。</li>
-        <li><strong>本章产出：</strong>一份 4×4 收入矩阵 + 1 套"被动收入健康指标"（FIN 模型）。</li>
-      </ul>
-    </section>
-
-    <section id="s1" class="dimensions-section fade-section">
-      <div class="section-label">核心维度</div>
-      <div class="dimensions-grid">
-        <div class="dim-card">
-          <span class="dim-badge">D1 核心</span>
-          <h3 class="dim-title">核心交付锁定</h3>
-          <p class="dim-desc">砍到只剩一个动作，锁定你能为客户解决的不变深层问题</p>
-        </div>
-        <div class="dim-card">
-          <span class="dim-badge">D2 本质</span>
-          <h3 class="dim-title">能力产品化矩阵</h3>
-          <p class="dim-desc">服务→模板→课程→社群，四种形态一次开发</p>
-        </div>
-        <div class="dim-card">
-          <span class="dim-badge">D3 模型</span>
-          <h3 class="dim-title">渠道分发模型</h3>
-          <p class="dim-desc">1个深度平台+N个分发渠道，内容一次生产多态输出</p>
-        </div>
-        <div class="dim-card">
-          <span class="dim-badge">D4 培育</span>
-          <h3 class="dim-title">多元收入陷阱</h3>
-          <p class="dim-desc">散、浅、急三大致命陷阱，同心圆扩展法则</p>
-        </div>
-        <div class="dim-card">
-          <span class="dim-badge">D5 避坑</span>
-          <h3 class="dim-title">同心圆扩展法则</h3>
-          <p class="dim-desc">90%深度+10%探索，新项目必须复用已有技能</p>
-        </div>
-        <div class="dim-card">
-          <span class="dim-badge">D6 决策</span>
-          <h3 class="dim-title">40/30/20/10法则</h3>
-          <p class="dim-desc">产品40%+服务30%+被动20%+实验10%，反脆弱收入结构</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="s2" class="content-section fade-section">
-      <div class="section-label">节点内容</div>
-      <div class="grid-asymmetric">
-        <div>
-          <h2 class="chapter-heading">从混乱到系统：五步构建你的收入画布</h2>
-          <p class="body-text">一人公司创业的收入多元化，不是多打几份工，而是一次核心资产的深度复利。构建一个能自我造血、自我扩张的"有机体"。</p>
-
-          <div class="answer-block">
-            <div class="answer-label">节点一：核心交付</div>
-            <div class="answer-content">
-              <p class="answer-title">砍到只剩一个动作</p>
-              <p class="answer-text">2026年市场对泛泛之辈的容忍度已趋近于零。你需要把解决问题的能力压缩到一个具体的、可描述的动作上。"我帮助（特定人群）解决（一个具体问题），让他们获得（一个可衡量的结果）。"</p>
-            </div>
-          </div>
-
-          <div class="answer-block">
-            <div class="answer-label">节点二：产品化</div>
-            <div class="answer-content">
-              <p class="answer-title">让核心交付脱离你的时间</p>
-              <p class="answer-text">产品化的本质不是"做一个课程"，而是把你服务中的共性部分提取出来，形成可复用的载体。记录你最近10次咨询中被问到的前三个重复问题，把答案做成操作清单、计算表格或10分钟录屏讲解。</p>
-            </div>
-          </div>
-
-          <div class="answer-block">
-            <div class="answer-label">节点三：流量管道</div>
-            <div class="answer-content">
-              <p class="answer-title">做透一个，再复制三个</p>
-              <p class="answer-text">选定一个平台，每周产出2-3条深度内容，坚持12周。当主要渠道流量开始稳定转化，才进入分发阶段，用AI工具将一篇长文转写为短视频脚本、图文卡片、播客要点。</p>
-            </div>
-          </div>
-
-          <div class="answer-block">
-            <div class="answer-label">节点四：信任与转化</div>
-            <div class="answer-content">
-              <p class="answer-title">用成果案例代替推销</p>
-              <p class="answer-text">最有效的载体是"客户成果复盘"：客户最初的卡点是什么，你用了什么方法，最终产生了什么量化改变。每服务完一个客户，第一件事就是完成这份复盘文档。</p>
-            </div>
-          </div>
-
-          <div class="answer-block">
-            <div class="answer-label">节点五：复购与第二曲线</div>
-            <div class="answer-content">
-              <p class="answer-title">围绕同一批客户做延伸</p>
-              <p class="answer-text">"同心圆扩展"：以内核交付为中心，第一圈是消耗品（如执行工具包），第二圈是升级版（如进阶训练营），第三圈是会员服务（如行业情报解读），最外圈是跨界合作。</p>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <div class="answer-block">
-            <div class="answer-label red">错误示范</div>
-            <div class="answer-content">
-              <p class="answer-title">把"多管闲事"当"多元收入"</p>
-              <p class="answer-text">看到他人做数码评测获得可观收入，便轻易放弃了自己深耕多年的出海合规咨询主业，转型去做流量评测。这种离心式跳跃会让你瞬间丧失所有累积的信用资产。</p>
-            </div>
-          </div>
-
-          <div class="answer-block">
-            <div class="answer-label red">错误示范</div>
-            <div class="answer-content">
-              <p class="answer-title">产品未验证前过度依赖自动化</p>
-              <p class="answer-text">花费一个月精心设置复杂的邮件自动营销序列和AI聊天机器人，结果第一个付费客户反馈你的标准品根本没解决他的核心痛点。先有人工交付的完美原型，才可能有自动交付的规模。</p>
-            </div>
-          </div>
-
-          <div class="answer-block">
-            <div class="answer-label green">正确示范</div>
-            <div class="answer-content">
-              <p class="answer-title">同心圆式扩展</p>
-              <p class="answer-text">专做海外社媒代运营的OPC，第二收入曲线可以是：社媒内容模板包（复用技能）、社媒数据分析看板（工具延伸）、面向同批客户的付费教程（知识变现）。所有管道共享同一个内核。</p>
-            </div>
-          </div>
-
-          <div class="answer-block">
-            <div class="answer-label blue">数据洞察</div>
-            <div class="answer-content">
-              <p class="answer-title">2026年OPC收入结构</p>
-              <p class="answer-text">40%产品收入（数字商品与会员费，利润最高）<br>30%服务收入（高价咨询，现金流压舱石）<br>20%被动合作收入（联盟营销、授权费，边际成本趋近于零）<br>10%实验性收入（新赛道最小可行性测试）</p>
-            </div>
-          </div>
-
-          <div class="core-insight">
-            <p class="core-insight-text"><strong>核心洞察：</strong>收入多元化不是给你自己找更多的工作，而是为你唯一的资产——你脑子里的知识——打造多个无需你亲自值守就能运转的收银台。你依然独自一人，但你创造的价值开始在不同的时区、以不同的货币、24小时不间断地为你工作。</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="s4" class="content-section fade-section">
-      <div class="section-label">决策矩阵</div>
-      <h2 class="balance-section-title">做与不做的balance grid</h2>
-      <p class="balance-intro">收入多元化的关键不在于项目数量，而在于扩展方式。<strong>"同心圆式扩展"</strong>是唯一安全的多元化路径。</p>
-
-      <div class="balance-grid">
-        <div class="balance-card">
-          <div class="balance-card-label positive">做</div>
-          <div class="balance-item">核心交付已连续三个月满负荷</div>
-          <div class="balance-item">客户开始自发推荐你</div>
-          <div class="balance-item">新项目复用已有技能或客户群</div>
-          <div class="balance-item">单位时间回报率高于核心服务</div>
-          <div class="balance-item">AI工具能承接80%重复事务</div>
-          <div class="balance-item">拥有6个月生活成本现金储备</div>
-        </div>
-        <div class="balance-card">
-          <div class="balance-card-label negative">不做</div>
-          <div class="balance-item dim">核心交付还未标准化（60%流程靠你亲自处理）</div>
-          <div class="balance-item dim">客户获取依赖偶然爆款或人脉</div>
-          <div class="balance-item dim">新项目与原有核心能力完全割裂</div>
-          <div class="balance-item dim">增长完全依赖你持续投入新劳动时间</div>
-          <div class="balance-item dim">用"未来可能上市"的股权抵扣全部咨询费</div>
-          <div class="balance-item dim">在现金流不稳时追逐股权长尾收益</div>
-        </div>
-      </div>
-    </section>
-
-    <section id="s6" class="content-section fade-section">
-      <div class="section-label">FIN 健康指标</div>
-      <div class="summary-grid">
-        <div class="summary-card">
-          <div class="summary-num">40/30/20</div>
-          <h3 class="summary-title">收入结构黄金比例</h3>
-          <p class="summary-desc">产品40%+服务30%+被动合作20%，任何一块突然下滑，其他三块足以让你从容调整</p>
-        </div>
-        <div class="summary-card">
-          <div class="summary-num">3个</div>
-          <h3 class="summary-title">收入引擎验证</h3>
-          <p class="summary-desc">新项目月收入超过核心引擎20%时，才考虑为它分配更多资源</p>
-        </div>
-        <div class="summary-card">
-          <div class="summary-num">90%+10%</div>
-          <h3 class="summary-title">时间分配法则</h3>
-          <p class="summary-desc">90%精力投入核心引擎，10%测试新模式。抵抗诱惑，把一件事做透再自然裂变</p>
-        </div>
-      </div>
+    <section id="s1">
     
-    <!-- 🔵 2026年时效性内容更新 -->
-    <section id="s2026" class="section fade-section">
-      <div style="margin-bottom:var(--space-lg);">
-        <span style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);">2026 UPDATE</span>
-      </div>
-      <div class="prose" style="max-width:680px;">
-        
-<blockquote style="border-left:2px solid var(--accent);padding:var(--space-sm) var(--space-md);margin:var(--space-md) 0;color:var(--text-secondary);font-style:italic;background:var(--surface);border-radius:0 6px 6px 0;font-size:0.95rem;">**面向OPC**：你有了第一个产品，有了第一批付费用户。但如果这个产品的收入明天归零，你还有别的收入来源吗？OPC最危险的状态不是"不赚钱"，而是"只有一个赚钱的东西"。</blockquote>
+<p>node_id: 42</p>
+<p>persona: neutral</p>
+<p>cta_type: course</p>
+<p>keywords: [产品, 模板, 收入来源, 第二个产, 收入多元]</p>
 
+<blockquote class="decision-box"><p>你有了第一个产品，有了第一批付费用户。但如果这个产品的收入明天归零，你还有别的收入来源吗？OPC最危险的状态不是"不赚钱"，而是"只有一个赚钱的东西"。</p></blockquote>
 
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">一、2026年OPC收入多元化的现实</h3>
+<p></section></p>
+<section id="s一">
+<p>      <div class="section-label">一、2026年OPC收入多元化的现实</div></p>
 
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">一个残酷数据</h4>
+<h3>一个残酷数据</h3>
 
-<p style="margin:var(--space-xs) 0;color:var(--text-secondary);line-height:1.9;">2026年独立开发者调研：<strong style="color:var(--text-primary);">依赖单一产品的OPC，2年存活率仅34%。有2个以上收入来源的OPC，存活率71%。</strong></p>
+<p>2026年独立开发者调研：<strong>依赖单一产品的OPC，2年存活率仅34%。有2个以上收入来源的OPC，存活率71%。</strong></p>
 
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">收入多元化的三个层级</h4>
+<h3>收入多元化的三个层级</h3>
 
-<table style="width:100%;border-collapse:collapse;margin:var(--space-md) 0;font-size:0.88rem;">
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">层级</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">做什么</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">月收入潜力</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">难度</td></tr>
-<tr><th style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**第1层**</th><th style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">同一个产品里加第二种收费方式</th><th style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">+30%</th><th style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">⭐</th></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**第2层**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">同一个用户群做第二个产品</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">翻倍</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">⭐⭐</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**第3层**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">知识/服务变现</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">+¥5000-20000</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">⭐⭐⭐</td></tr>
-</table>
+<div class="table-wrapper"><table><thead><tr><th>层级</th><th>做什么</th><th>月收入潜力</th><th>难度</th></tr></thead><tbody><tr><td><strong>第1层</strong></td><td>同一个产品里加第二种收费方式</td><td>+30%</td><td>⭐</td></tr><tr><td><strong>第2层</strong></td><td>同一个用户群做第二个产品</td><td>翻倍</td><td>⭐⭐</td></tr><tr><td><strong>第3层</strong></td><td>知识/服务变现</td><td>+¥5000-20000</td><td>⭐⭐⭐</td></tr></tbody></table></div>
 
+<p></section></p>
+<section id="s二">
+<p>      <div class="section-label">二、第1层：一个产品，多种收费方式</div></p>
 
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">二、第1层：一个产品，多种收费方式</h3>
+<h3>2026年最有效的六种定价组合</h3>
 
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">2026年最有效的六种定价组合</h4>
+<div class="table-wrapper"><table><thead><tr><th>收费方式</th><th>适合产品</th><th>用户感知</th></tr></thead><tbody><tr><td><strong>订阅制</strong>（月/年）</td><td>SaaS/工具</td><td>"按月付，压力小"</td></tr><tr><td><strong>一次性买断</strong></td><td>模板/课程/电子书</td><td>"付一次，永远用"</td></tr><tr><td><strong>按量计费</strong></td><td>AI工具/API</td><td>"用多少付多少"</td></tr><tr><td><strong>Freemium</strong>（免费+付费功能）</td><td>所有类型</td><td>"先试后买"</td></tr><tr><td><strong>服务附加</strong>（咨询/定制）</td><td>知识型产品</td><td>"帮我做，我付钱"</td></tr><tr><td><strong>广告/联盟</strong></td><td>内容/工具</td><td>"不向用户收钱"</td></tr></tbody></table></div>
+<h3>实操案例：一个产品如何做到4种收入</h3>
 
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">收费方式</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">适合产品</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">用户感知</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**订阅制**（月/年）</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">SaaS/工具</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">"按月付，压力小"</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**一次性买断**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">模板/课程/电子书</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">"付一次，永远用"</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**按量计费**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">AI工具/API</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">"用多少付多少"</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**Freemium**（免费+付费功能）</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">所有类型</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">"先试后买"</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**服务附加**（咨询/定制）</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">知识型产品</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">"帮我做，我付钱"</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**广告/联盟**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">内容/工具</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">"不向用户收钱"</td></tr>
+<p>``<code></p>
+<p>产品：OPC节点百科</p>
 
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">实操案例：一个产品如何做到4种收入</h4>
+<p>收入来源1：会员订阅 ¥99/月（解锁全部57个节点详细内容）</p>
+<p>收入来源2：AI分析报告 ¥29/次（一次性的深度分析）</p>
+<p>收入来源3：服务 ¥999/次（1对1 OP创业诊断咨询）</p>
+<p>收入来源4：广告 ¥500/月（相关服务商投放）</p>
+<p></code>`<code></p>
 
-<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code>产品：OPC节点百科
- 
-收入来源1：会员订阅 ¥99/月（解锁全部57个节点详细内容）
-收入来源2：AI分析报告 ¥29/次（一次性的深度分析）
-收入来源3：服务 ¥999/次（1对1 OP创业诊断咨询）
-收入来源4：广告 ¥500/月（相关服务商投放）
-</code></pre>
+<strong>给自己定一个目标</strong>：3个月内，让第2种收入方式占总收入的≥20%。
 
-<p style="margin:var(--space-sm) 0;color:var(--text-secondary);font-weight:400;"><strong>给自己定一个目标</strong>：3个月内，让第2种收入方式占总收入的≥20%。</p>
+<p></section></p>
+<section id="s三">
+<p>      <div class="section-label">三、第2层：同一个用户群，第二个产品</div></p>
 
+<h3>什么时候该做第二个产品</h3>
 
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">三、第2层：同一个用户群，第二个产品</h3>
+<div class="table-wrapper"><table><thead><tr><th>信号</th><th>行动</th></tr></thead><tbody><tr><td>第一个产品月利润稳定>¥5000，持续3个月</td><td>✅ 可以开始做第二个</td></tr><tr><td>用户在群里反复问"你们有没有XX功能"</td><td>✅ XX可能是一个独立产品</td></tr><tr><td>第一个产品还在亏钱</td><td>❌ 专注做好第一个</td></tr><tr><td>第二个产品的想法和第一个完全无关</td><td>❌ 新用户群从零开始太难</td></tr></tbody></table></div>
+<h3>第二个产品的正确姿势</h3>
 
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">什么时候该做第二个产品</h4>
+<p></code>`<code></p>
+<p>你的用户都是"想一个人创业的人" → 他们还需要：</p>
+<p>  □ 公司注册代办服务（你对接代办公司，抽佣金）</p>
+<p>  □ 商标注册指南（做成付费课程 ¥99）</p>
+<p>  □ 财务记账模板（做成Notion模板 ¥49）</p>
+<p></code>``</p>
 
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">信号</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">行动</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">第一个产品月利润稳定>¥5000，持续3个月</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">✅ 可以开始做第二个</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">用户在群里反复问"你们有没有XX功能"</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">✅ XX可能是一个独立产品</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">第一个产品还在亏钱</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">❌ 专注做好第一个</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">第二个产品的想法和第一个完全无关</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">❌ 新用户群从零开始太难</td></tr>
+<strong>关键</strong>：第二个产品必须能复用第一个产品的用户群。否则不是多元化，是重头再来。
 
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">第二个产品的正确姿势</h4>
+<p></section></p>
+<section id="s四">
+<p>      <div class="section-label">四、第3层：知识/服务变现（2026年OPC上升最快的方式）</div></p>
 
-<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code>你的用户都是"想一个人创业的人" → 他们还需要：
-  □ 公司注册代办服务（你对接代办公司，抽佣金）
-  □ 商标注册指南（做成付费课程 ¥99）
-  □ 财务记账模板（做成Notion模板 ¥49）
-</code></pre>
+<h3>把你的过程变成产品</h3>
 
-<p style="margin:var(--space-sm) 0;color:var(--text-secondary);font-weight:400;"><strong>关键</strong>：第二个产品必须能复用第一个产品的用户群。否则不是多元化，是重头再来。</p>
+<div class="table-wrapper"><table><thead><tr><th>你做的事情</th><th>可以卖的东西</th></tr></thead><tbody><tr><td>用Cursor写代码</td><td>《2026年零基础用AI写代码》课程 / 1v1辅导</td></tr><tr><td>注册公司+开户+ICP</td><td>《OPC合规全流程》指南 / 代办服务</td></tr><tr><td>在小红书获客</td><td>《独立开发者小红书运营手册》电子书</td></tr><tr><td>搭Supabase后端</td><td>《30分钟Supabase从入门到上线》教程</td></tr></tbody></table></div>
+<h3>定价参考（2026年市场行情）</h3>
 
+<div class="table-wrapper"><table><thead><tr><th>产品形式</th><th>价格区间</th></tr></thead><tbody><tr><td>电子书/PDF指南</td><td>¥39-99</td></tr><tr><td>视频课程</td><td>¥99-299</td></tr><tr><td>Notion/Google模板</td><td>¥29-79</td></tr><tr><td>1v1咨询（1小时）</td><td>¥299-999</td></tr><tr><td>社群（年费）</td><td>¥199-999</td></tr></tbody></table></div>
 
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">四、第3层：知识/服务变现（2026年OPC上升最快的方式）</h3>
+<p></section></p>
+<section id="s五">
+<p>      <div class="section-label">五、多元化的时间分配</div></p>
 
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">把你的过程变成产品</h4>
+<div class="table-wrapper"><table><thead><tr><th>阶段</th><th>主业（产品1）</th><th>副业（产品2/知识变现）</th></tr></thead><tbody><tr><td>产品1月收入<¥3000</td><td>90%</td><td>10%（周末写一点内容）</td></tr><tr><td>产品1月收入¥3000-10000</td><td>70%</td><td>30%（系统化做第二个收入）</td></tr><tr><td>产品1月收入>¥10000</td><td>50%</td><td>50%（两个都认真做）</td></tr></tbody></table></div>
 
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">你做的事情</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">可以卖的东西</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">用Cursor写代码</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">《2026年零基础用AI写代码》课程 / 1v1辅导</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">注册公司+开户+ICP</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">《OPC合规全流程》指南 / 代办服务</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">在小红书获客</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">《独立开发者小红书运营手册》电子书</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">搭Supabase后端</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">《30分钟Supabase从入门到上线》教程</td></tr>
+<p></section></p>
+<section id="s六">
+<p>      <div class="section-label">六、检查清单</div></p>
 
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">定价参考（2026年市场行情）</h4>
+<ul><li><input type="checkbox" disabled> 产品1至少有2种收费方式</li><li><input type="checkbox" disabled> 第2种收入占总收入≥20%</li><li><input type="checkbox" disabled> 已识别3个"用户还需要的其他东西"</li><li><input type="checkbox" disabled> 至少有一个知识/服务变现产品在规划中</li><li><input type="checkbox" disabled> 时间分配合理（不因多元化而荒废主业）</li></ul>
 
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">产品形式</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">价格区间</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">电子书/PDF指南</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">¥39-99</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">视频课程</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">¥99-299</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">Notion/Google模板</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">¥29-79</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">1v1咨询（1小时）</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">¥299-999</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">社群（年费）</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">¥199-999</td></tr>
+<p></section></p>
+<section id="s节">
+<p>      <div class="section-label">节点资源链接</div></p>
 
-
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">五、多元化的时间分配</h3>
-
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">阶段</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">主业（产品1）</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">副业（产品2/知识变现）</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">产品1月收入<¥3000</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">90%</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">10%（周末写一点内容）</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">产品1月收入¥3000-10000</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">70%</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">30%（系统化做第二个收入）</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">产品1月收入>¥10000</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">50%</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">50%（两个都认真做）</td></tr>
-
-
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">六、检查清单</h3>
-
-<ul style="list-style:none;padding:0;margin:var(--space-sm) 0;">
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 产品1至少有2种收费方式</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 第2种收入占总收入≥20%</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 已识别3个"用户还需要的其他东西"</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 至少有一个知识/服务变现产品在规划中</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 时间分配合理（不因多元化而荒废主业）</li>
-
-        <li class="toc-item"><a href="#s2026" class="toc-link">2026年更新</a></li></ul>
-
-
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">节点资源链接</h3>
-
-<ul style="list-style:none;padding:0;margin:var(--space-sm) 0;">
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点38：定价策略</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点41：产品迭代</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点43：退出策略</li>
-</ul>
-
-
-      </div>
-      <p style="font-size:12px;color:var(--text-tertiary);margin-top:var(--space-xl);letter-spacing:0.05em;">
-        以上内容基于2026年5月最新实践编写，工具版本和价格可能更新，请以官方文档为准。
-      </p>
+<ul><li>节点38：定价策略</li><li>节点41：产品迭代</li><li>节点43：退出策略</li></ul>
     </section>
 
-    <nav class="footer-nav">
-      <a href="/nodes/41-product-iteration/index.html" class="nav-link">
-        <span class="nav-arrow">←</span>
-        节点41：每周迭代与复盘
-      </a>
-      <a href="/nodes/43-exit-plan/index.html" class="nav-link">
-        节点43：产品规模化决策
-        <span class="nav-arrow">→</span>
-      </a>
+    <div class="summary-box">
+      <h3>节点42检查清单</h3>
+      <p>完成本节点后，请确认所有检查项已通过。</p>
+    </div>
     </main>
-    <nav class="footer-nav">
-      <a href="/nodes/41-product-iteration/index.html" class="nav-link">
-        <span class="nav-arrow">←</span>
-        节点41：产品迭代与复盘
-      </a>
-      <a href="/nodes/43-exit-plan/index.html" class="nav-link">
-        节点43：产品规模化决策
-        <span class="nav-arrow">→</span>
-      </a>
-    </nav>
   </div>
 
-  <script>
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
+  <nav class="footer-nav">
+    <a href="/nodes/41-product-iteration/index.html" class="nav-link"><span>←</span> 节点41</a>
+    <a href="/nodes/43-exit-plan/index.html" class="nav-link">节点43 <span>→</span></a>
+  </nav>
 
-    // Scroll spy for TOC
-    const sections = document.querySelectorAll('section[id]');
-    const tocLinks = document.querySelectorAll('.toc-link');
-    function updateActiveLink() {
-      const scrollPos = window.scrollY + 120;
-      let current = '';
-      sections.forEach(section => {
-        if (scrollPos >= section.offsetTop) current = section.getAttribute('id');
-      });
-      tocLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === '#' + current) link.classList.add('active');
-      });
-    }
-    window.addEventListener('scroll', updateActiveLink, { passive: true });
-    updateActiveLink();
+  <script>
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').slice(1);
+      const target = document.getElementById(targetId);
+      if (target) {
+        window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+      }
+    });
+  });
   </script>
 </body>
 </html>

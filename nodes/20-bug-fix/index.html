@@ -3,15 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Bug集中修复 - OPC节点百科">
+  <meta name="description" content="节点20：Bug集中修复 - OPC节点百科">
   <meta name="theme-color" content="#111110">
   <title>节点20：Bug集中修复 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../_design-tokens.css">
-  <link rel="stylesheet" href="../_layout-templates.css">
   <style>
 
 :root {
@@ -35,6 +33,10 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   background: var(--bg);
   color: var(--text-primary);
@@ -43,6 +45,72 @@ body {
   line-height: 1.9;
   letter-spacing: 0.04em;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* 移动端整体适配 - 使用 900px breakpoint 与现有代码一致 */
+@media (max-width: 900px) {
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+
+  body {
+    font-size: 14px;
+  }
+
+  .layout {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding: 4rem 16px 2rem !important;
+    margin: 0 !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .sidebar-toc {
+    display: none !important;
+  }
+
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  section {
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  section > * {
+    max-width: 100% !important;
+    overflow-x: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  section p {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+
+  h1 {
+    font-size: clamp(36px, 10vw, 48px) !important;
+    line-height: 1.05 !important;
+  }
 }
 
 /* Layout with Sidebar */
@@ -159,68 +227,6 @@ body {
   letter-spacing: 0.08em;
 }
 
-@media (max-width: 900px) {
-  html, body {
-    overflow-x: hidden !important;
-    max-width: 100vw !important;
-  }
-
-  .layout {
-    display: block !important;
-    grid-template-columns: 1fr !important;
-    width: 100% !important;
-    max-width: 100vw !important;
-    padding: 4rem 16px 2rem !important;
-  }
-
-  .sidebar-toc {
-    display: none !important;
-  }
-
-  .fixed-top-nav {
-    padding: 0.75rem clamp(1rem, 4vw, 1.5rem);
-  }
-
-  section {
-    width: 100% !important;
-    max-width: 100vw !important;
-    overflow-x: hidden !important;
-  }
-
-  section p,
-  section li,
-  section td,
-  section th {
-    width: 100% !important;
-    max-width: 100% !important;
-    word-break: break-word !important;
-    overflow-wrap: break-word !important;
-  }
-
-  .hero-title {
-    font-size: clamp(24px, 8vw, 48px) !important;
-    word-break: break-all !important;
-    overflow-wrap: break-word !important;
-    white-space: normal !important;
-    max-width: 100% !important;
-    line-height: 1.1 !important;
-  }
-
-  .highlight-box,
-  .step-card,
-  .code-block {
-    width: 100% !important;
-    max-width: 100% !important;
-    overflow-x: hidden !important;
-  }
-
-  table {
-    display: block !important;
-    overflow-x: auto !important;
-    font-size: 12px !important;
-  }
-}
-
 /* Header */
 header {
   padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
@@ -231,6 +237,52 @@ header {
 /* Main content */
 main {
   padding-bottom: 5rem;
+}
+
+/* 移动端底部导航适配 - 合并到 900px breakpoint */
+@media (max-width: 900px) {
+  main {
+    padding-bottom: 6rem; /* 为固定底部导航预留空间 */
+  }
+
+  .footer-nav {
+    overflow-x: auto;
+    justify-content: space-between;
+  }
+
+  .nav-link {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .table-wrapper {
+    position: relative;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 1.5rem 0;
+    border: 1px solid var(--line);
+  }
+
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
 }
 
 /* Section anchors offset for sticky header */
@@ -251,14 +303,49 @@ section p, section li {
 .table-wrapper {
   margin: 1.5rem 0;
   border: 1px solid var(--line);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-wrapper::after {
+  content: "";
+  display: block;
+}
+
+/* 移动端滑动提示 */
+@media (max-width: 900px) {
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  .table-wrapper {
+    position: relative;
+    padding-bottom: 24px;
+  }
 }
 
 table {
   font-size: 0.875rem;
+  min-width: 560px;
 }
 
-td, th {
-  padding: 0.875rem 1rem;
+@media (max-width: 900px) {
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
 }
 
 /* Tool Cards */
@@ -314,6 +401,14 @@ h1 {
   margin-bottom: var(--space-xl);
 }
 
+/* 移动端H1适配 */
+@media (max-width: 900px) {
+  h1 {
+    font-size: clamp(36px, 10vw, 48px);
+    line-height: 1.05;
+  }
+}
+
 .phase-label {
   font-size: 13px;
   color: var(--accent);
@@ -331,6 +426,16 @@ h1 {
   color: var(--text-secondary);
   max-width: 44ch;
   line-height: 1.8;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* 移动端副标题适配 */
+@media (max-width: 900px) {
+  .subtitle {
+    font-size: 14px;
+    max-width: 100%;
+  }
 }
 
 .node-meta {
@@ -383,6 +488,21 @@ p {
   color: var(--text-secondary);
   line-height: 1.9;
   margin-bottom: 1.25rem;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* 移动端段落适配 */
+@media (max-width: 900px) {
+  p {
+    padding-right: 0.5rem;
+    word-break: break-all;
+    white-space: normal;
+  }
+
+  section p {
+    padding-right: 0;
+  }
 }
 
 .decision-box {
@@ -708,46 +828,29 @@ td:first-child {
 </head>
 <body>
   <nav class="fixed-top-nav">
-    <a href="/" class="back-link">← 返回首页</a>
+    <a href="/index.html" class="back-link">← 返回首页</a>
     <span class="node-id">节点 20 / 57</span>
   </nav>
 
-  <div class="layout layout-classic">
-    <aside class="sidebar-toc">
-      <div class="toc-title">目录</div>
-      <ul class="toc-list">
-        <li class="toc-item"><a href="#s2" class="toc-link">一、Bug分类：不是所有Bug都值得你今晚修</a></li>
-        <li class="toc-item"><a href="#s3" class="toc-link">二、OPC修Bug的三步法</a></li>
-        <li class="toc-item"><a href="#s4" class="toc-link">三、你不应该修的三类Bug</a></li>
-        <li class="toc-item"><a href="#s5" class="toc-link">四、修Bug的时间纪律</a></li>
-        <li class="toc-item"><a href="#s6" class="toc-link">五、检查清单</a></li>
-        <li class="toc-item"><a href="#s8" class="toc-link">节点资源链接</a></li>
-      </ul>
-    </aside>
-        <main>
+  <div class="layout">
+    <main class="container">
       <header>
-      <div class="phase-label">测试与修复</div>
-      <h1>Bug集中修复</h1>
-      <div class="node-meta">节点 20 / 57 · 最后修订：2026年5月11日</div>
+      <div class="phase-label">0-1</div>
+      <h1>节点20：Bug集中修复</h1>
+      <div class="node-meta">节点 20 / 57 · 最后修订：2026年6月4日</div>
     </header>
-
-    <section class="tldr" aria-label="本章速读">
-      <div class="tldr-label">本章速读</div>
-      <ul class="tldr-list">
-        <li><strong>目标：</strong>从一堆 Bug 里杀出一条路——按优先级修掉所有 P0/P1。</li>
-        <li><strong>你要做的事：</strong>3 步：分 P0/P1/P2 优先级 → 一次性修一批同类 Bug → 修复后回归一遍。</li>
-        <li><strong>不需要会：</strong>Bug 管理工具、Jira 流程、Sentry 高级用法。本章只教你"OPC 最小修复闭环"。</li>
-        <li><strong>本章产出：</strong>1 个 0 P0/P1、<3 P2 的可上线版本。</li>
-      </ul>
-    </section>
 
     <section id="s1">
     
+<p>node_id: 20</p>
+<p>persona: neutral</p>
+<p>cta_type: course</p>
+<p>keywords: [步骤, 分钟, 记下来, 标记, 无法复现]</p>
 
 <blockquote class="decision-box"><p>亲友测完了，反馈堆在共享表里——有的是页面白屏，有的是数字算错，有的是按钮不好点。一个人怎么从一堆Bug中杀出一条路？</p></blockquote>
 
 <p></section></p>
-<section id="s2">
+<section id="s一">
 <p>      <div class="section-label">一、Bug分类：不是所有Bug都值得你今晚修</div></p>
 
 <h3>四象限法</h3>
@@ -768,7 +871,7 @@ td:first-child {
 <div class="table-wrapper"><table><thead><tr><th>等级</th><th>定义</th><th>OPC处理策略</th></tr></thead><tbody><tr><td><strong>P0</strong></td><td>核心流程中断、数据丢失、安全漏洞</td><td>🔴 立即修，不修不睡觉</td></tr><tr><td><strong>P1</strong></td><td>计算错误、展示异常、逻辑矛盾</td><td>🟠 当天修</td></tr><tr><td><strong>P2</strong></td><td>体验问题、边界情况</td><td>🟡 排入本周计划</td></tr><tr><td><strong>P3</strong></td><td>文案错字、对齐偏差</td><td>🟢 记下来，有时间再说</td></tr></tbody></table></div>
 
 <p></section></p>
-<section id="s3">
+<section id="s二">
 <p>      <div class="section-label">二、OPC修Bug的三步法</div></p>
 
 <h3>步骤1：复现（5分钟）</h3>
@@ -796,7 +899,7 @@ td:first-child {
 <p></code>``</p>
 
 <p></section></p>
-<section id="s4">
+<section id="s三">
 <p>      <div class="section-label">三、你不应该修的三类Bug</div></p>
 
 <h3>1. 只有一个人遇到的Bug</h3>
@@ -812,20 +915,20 @@ td:first-child {
 <p>有些Bug的根因牵连太广，你评估后觉得"修了可能地震" → 记录下来，等有3个同类问题一起重构。</p>
 
 <p></section></p>
-<section id="s5">
+<section id="s四">
 <p>      <div class="section-label">四、修Bug的时间纪律</div></p>
 
 <div class="table-wrapper"><table><thead><tr><th>时段</th><th>做什么</th></tr></thead><tbody><tr><td><strong>上午9:00-9:30</strong></td><td>扫描Bug表，标出今天的P0/P1</td></tr><tr><td><strong>每修完一个Bug</strong></td><td>在表里更新状态 + 跑一遍节点18的核心路径</td></tr><tr><td><strong>晚上8:00</strong></td><td>今天的P0必须清零。P1最多剩1个</td></tr></tbody></table></div>
 <strong>绝对不要</strong>：开发新功能到一半，"顺便"修个Bug —— 上下文切换的成本比你想象的高3倍。
 
 <p></section></p>
-<section id="s6">
+<section id="s五">
 <p>      <div class="section-label">五、检查清单</div></p>
 
 <ul><li><input type="checkbox" disabled> 所有Bug都有复现步骤</li><li><input type="checkbox" disabled> P0已清零</li><li><input type="checkbox" disabled> P1不超过2个</li><li><input type="checkbox" disabled> 每个修复后跑了核心路径回归</li><li><input type="checkbox" disabled> Bug表状态已更新</li></ul>
 
 <p></section></p>
-<section id="s8">
+<section id="s节">
 <p>      <div class="section-label">节点资源链接</div></p>
 
 <ul><li>节点19：亲友灰度测试</li><li>节点21：性能基础优化</li><li>节点22：上线内容填充</li></ul>
@@ -839,16 +942,11 @@ td:first-child {
   </div>
 
   <nav class="footer-nav">
-    <a href="/nodes/19-friend-testing/index.html" class="nav-link">
-      <span>←</span> 节点19
-    </a>
-    <a href="/nodes/21-performance/index.html" class="nav-link">
-      节点21 <span>→</span>
-    </a>
+    <a href="/nodes/19-friend-testing/index.html" class="nav-link"><span>←</span> 节点19</a>
+    <a href="/nodes/21-performance/index.html" class="nav-link">节点21 <span>→</span></a>
   </nav>
 
   <script>
-  // Smooth scroll
   document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', function(e) {
       e.preventDefault();
@@ -859,30 +957,6 @@ td:first-child {
       }
     });
   });
-
-  // Scroll spy for TOC
-  const sections = document.querySelectorAll('section[id]');
-  const tocLinks = document.querySelectorAll('.toc-link');
-
-  function updateActiveLink() {
-    const scrollPos = window.scrollY + 120;
-    sections.forEach(section => {
-      const top = section.offsetTop;
-      const height = section.offsetHeight;
-      const id = section.getAttribute('id');
-      if (scrollPos >= top && scrollPos < top + height) {
-        tocLinks.forEach(link => {
-          link.classList.remove('active');
-          if (link.getAttribute('href') === '#' + id) {
-            link.classList.add('active');
-          }
-        });
-      }
-    });
-  }
-
-  window.addEventListener('scroll', updateActiveLink, { passive: true });
-  updateActiveLink();
   </script>
 </body>
 </html>

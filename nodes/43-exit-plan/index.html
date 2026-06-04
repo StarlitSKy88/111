@@ -3,22 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="公司注销、数据处理、用户通知，项目结束时体面地离开">
+  <meta name="description" content="节点43：退出策略 - OPC节点百科">
   <meta name="theme-color" content="#111110">
-  <title>产品规模化决策 - OPC节点百科</title>
+  <title>节点43：退出策略 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../_design-tokens.css">
-  <link rel="stylesheet" href="../_layout-templates.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
+
 :root {
   --bg: #111110;
   --surface: #1A1A18;
   --text-primary: #F0EDE6;
-  --text-secondary: #B8B4AE;
-  --text-tertiary: #A8A49E;
+  --text-secondary: #7A7670;
+  --text-tertiary: #4A4744;
   --accent: #C0392B;
   --line: #2A2A28;
   --line-light: rgba(255,255,255,0.06);
@@ -32,11 +31,162 @@
   --space-4xl: 128px;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; font-weight: 400; line-height: 1.9; letter-spacing: 0.04em; -webkit-font-smoothing: antialiased; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
+html {
+  overflow-x: hidden;
+}
 
-.section-number { position: absolute; top: var(--space-2xl); right: clamp(24px, 8vw, 120px); font-size: clamp(100px, 22vw, 280px); font-weight: 100; color: var(--text-primary); opacity: 0.03; line-height: 1; letter-spacing: -0.05em; font-family: 'Noto Serif JP', serif; pointer-events: none; user-select: none; }
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* 移动端整体适配 - 使用 900px breakpoint 与现有代码一致 */
+@media (max-width: 900px) {
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+
+  body {
+    font-size: 14px;
+  }
+
+  .layout {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding: 4rem 16px 2rem !important;
+    margin: 0 !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .sidebar-toc {
+    display: none !important;
+  }
+
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  section {
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  section > * {
+    max-width: 100% !important;
+    overflow-x: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  section p {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+
+  h1 {
+    font-size: clamp(36px, 10vw, 48px) !important;
+    line-height: 1.05 !important;
+  }
+}
+
+/* Layout with Sidebar */
+.layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3rem);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
+}
+
+/* Sidebar TOC */
+.sidebar-toc {
+  position: sticky;
+  top: 5rem;
+  height: fit-content;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  padding-top: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.sidebar-toc::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar-toc::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 2px;
+}
+
+.toc-title {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.toc-list {
+  list-style: none;
+}
+
+.toc-item {
+  margin-bottom: 0.75rem;
+}
+
+.toc-link {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: block;
+  padding: 0.375rem 0;
+  padding-left: 1rem;
+  border-left: 1px solid var(--line);
+  transition: all 0.3s;
+  line-height: 1.4;
+}
+
+.toc-link:hover {
+  color: var(--text-primary);
+  border-left-color: var(--accent);
+}
+
+.toc-link.active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  font-weight: 400;
+}
+
+.toc-link.sub {
+  padding-left: 1.75rem;
+  font-size: 0.75rem;
+}
 
 /* Fixed Top Nav */
 .fixed-top-nav {
@@ -66,7 +216,9 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
   transition: color 0.3s;
 }
 
-.back-link:hover { color: var(--text-primary); }
+.back-link:hover {
+  color: var(--text-primary);
+}
 
 .node-id {
   font-family: 'Noto Serif JP', serif;
@@ -75,109 +227,568 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
   letter-spacing: 0.08em;
 }
 
-.hero { padding: var(--space-4xl) 0 var(--space-3xl); position: relative; }
-.hero-content { position: relative; z-index: 1; max-width: 800px; }
-.hero-label { font-size: 13px; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-md); }
-.hero-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
-.hero-title { font-family: 'Noto Serif JP', serif; font-size: clamp(48px, 10vw, 96px); font-weight: 300; letter-spacing: -0.03em; line-height: 0.95; margin-bottom: var(--space-xl); }
-.hero-desc { font-size: 16px; color: var(--text-secondary); line-height: 1.8; max-width: 44ch; }
+/* Header */
+header {
+  padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(2rem, 5vh, 3rem);
+}
 
-.dimensions-section { padding: var(--space-2xl) 0; border-top: 1px solid var(--line); }
-.section-label { font-size: 13px; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-md); }
-.section-label::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+/* Main content */
+main {
+  padding-bottom: 5rem;
+}
 
-.dimensions-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: var(--space-md); margin-bottom: var(--space-2xl); }
+/* 移动端底部导航适配 - 合并到 900px breakpoint */
+@media (max-width: 900px) {
+  main {
+    padding-bottom: 6rem; /* 为固定底部导航预留空间 */
+  }
 
-/* Layout */
-.layout {
+  .footer-nav {
+    overflow-x: auto;
+    justify-content: space-between;
+  }
+
+  .nav-link {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .table-wrapper {
+    position: relative;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 1.5rem 0;
+    border: 1px solid var(--line);
+  }
+
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
+}
+
+/* Section anchors offset for sticky header */
+section {
+  scroll-margin-top: 2rem;
+}
+
+section h2 {
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+}
+
+section p, section li {
+  font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
+  line-height: 1.9;
+}
+
+/* Table improvements */
+.table-wrapper {
+  margin: 1.5rem 0;
+  border: 1px solid var(--line);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-wrapper::after {
+  content: "";
+  display: block;
+}
+
+/* 移动端滑动提示 */
+@media (max-width: 900px) {
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  .table-wrapper {
+    position: relative;
+    padding-bottom: 24px;
+  }
+}
+
+table {
+  font-size: 0.875rem;
+  min-width: 560px;
+}
+
+@media (max-width: 900px) {
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
+}
+
+/* Tool Cards */
+.tool-grid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* Path blocks */
+.path-block {
+  padding: 1.5rem;
+}
+
+.workflow {
+  padding: 1rem 1.25rem;
+  font-size: 0.8125rem;
+}
+
+/* Validation cards */
+.validation-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.validation-card {
+  padding: 1.25rem;
+}
+
+/* Level items */
+.level-grid {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+/* Decision box */
+.decision-box {
+  padding: 1.25rem 1.5rem;
+}
+
+/* Main content */
+.phase-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+h1 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xl);
+}
+
+/* 移动端H1适配 */
+@media (max-width: 900px) {
+  h1 {
+    font-size: clamp(36px, 10vw, 48px);
+    line-height: 1.05;
+  }
+}
+
+.phase-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+.phase-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+
+.subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 44ch;
+  line-height: 1.8;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* 移动端副标题适配 */
+@media (max-width: 900px) {
+  .subtitle {
+    font-size: 14px;
+    max-width: 100%;
+  }
+}
+
+.node-meta {
+  margin-top: 2rem;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+}
+
+/* Sections */
+section {
+  padding-bottom: clamp(3rem, 10vh, 5rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(3rem, 10vh, 5rem);
+}
+
+section:last-of-type {
+  border-bottom: none;
+}
+
+.section-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.375rem, 4vw, 1.875rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+h3 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.125rem, 3vw, 1.375rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+p {
+  color: var(--text-secondary);
+  line-height: 1.9;
+  margin-bottom: 1.25rem;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* 移动端段落适配 */
+@media (max-width: 900px) {
+  p {
+    padding-right: 0.5rem;
+    word-break: break-all;
+    white-space: normal;
+  }
+
+  section p {
+    padding-right: 0;
+  }
+}
+
+.decision-box {
+  background: var(--surface);
+  border-left: 2px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.decision-box p {
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  margin: 0;
+}
+
+/* Tables */
+.table-wrapper {
+  overflow-x: auto;
+  margin: 2rem 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+th {
+  text-align: left;
+  font-weight: 400;
+  font-size: 0.6875rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--text-secondary);
+  vertical-align: top;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+td:first-child {
+  color: var(--text-primary);
+  font-weight: 400;
+}
+
+/* Tool Cards */
+.tool-grid {
   display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
-  gap: clamp(2rem, 4vw, 3rem);
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
+  gap: 1.5rem;
+  margin: 2rem 0;
 }
 
-/* Main content wrapper */
-.main-content {
-  min-width: 0;
+.tool-card {
+  background: var(--surface);
+  padding: 1.75rem;
+  border: 1px solid var(--line);
 }
 
-/* Sidebar TOC */
-.sidebar-toc {
-  position: sticky;
-  top: 5rem;
-  height: fit-content;
-  max-height: calc(100vh - 6rem);
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--line) transparent;
+.tool-card h4 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
 }
-.sidebar-toc::-webkit-scrollbar { width: 4px; }
-.sidebar-toc::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
-.toc-title { font-size: 0.6875rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 1.25rem; }
-.toc-list { list-style: none; }
-.toc-item { margin-bottom: 0.75rem; }
-.toc-link { font-size: 0.8125rem; color: var(--text-secondary); text-decoration: none; display: block; padding: 0.375rem 0; padding-left: 1rem; border-left: 1px solid var(--line); transition: all 0.3s; line-height: 1.4; }
-.toc-link:hover { color: var(--text-primary); border-left-color: var(--accent); }
-.toc-link.active { color: var(--accent); border-left-color: var(--accent); font-weight: 400; }
 
-/* Responsive layout */
-@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
-@media (max-width: 900px) { .dimensions-grid { grid-template-columns: 1fr; } }
+.tool-card .tagline {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
 
-.dim-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-md); position: relative; overflow: hidden; }
-.dim-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--accent); }
-.dim-badge { display: inline-block; font-size: 9px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-sm); border: 1px solid var(--accent); padding: 2px 8px; }
-.dim-title { font-family: 'Noto Serif JP', serif; font-size: 18px; font-weight: 400; color: var(--text-primary); margin-bottom: var(--space-xs); line-height: 1.3; }
-.dim-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+.tool-card p {
+  font-size: 0.875rem;
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
 
-.content-section { padding: var(--space-3xl) 0; border-top: 1px solid var(--line); }
-.grid-asymmetric { display: grid; grid-template-columns: 1.2fr 1fr; gap: var(--space-3xl); align-items: start; }
-@media (max-width: 900px) { .grid-asymmetric { grid-template-columns: 1fr; gap: var(--space-2xl); } }
+.tool-card .pros {
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+}
 
-.chapter-heading { font-family: 'Noto Serif JP', serif; font-size: clamp(28px, 5vw, 48px); font-weight: 300; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: var(--space-xl); max-width: 16em; }
-.body-text { font-size: 15px; line-height: 1.9; color: var(--text-secondary); max-width: 44ch; margin-bottom: var(--space-md); }
-.body-text strong { color: var(--text-primary); font-weight: 500; }
-.body-text .accent { color: var(--accent); font-weight: 500; }
+.tool-card .price {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.25rem 0.75rem;
+  margin-top: 1rem;
+}
 
-.answer-block { margin-bottom: var(--space-xl); }
-.answer-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: var(--space-sm); padding-bottom: var(--space-xs); border-bottom: 1px solid var(--line); }
-.answer-label.red { color: #E74C3C; border-color: rgba(231,76,60,0.3); }
-.answer-label.green { color: var(--accent); border-color: rgba(39,174,96,0.3); }
-.answer-label.blue { color: #3498DB; border-color: rgba(52,152,219,0.3); }
+/* Path Section */
+.path-block {
+  background: var(--surface);
+  padding: 2rem;
+  margin: 2rem 0;
+  border: 1px solid var(--line);
+}
 
-.answer-content { padding-left: var(--space-md); border-left: 1px solid var(--line); }
-.answer-title { font-size: 15px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-xs); }
-.answer-text { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+.path-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
 
-.core-insight { margin: var(--space-xl) 0; padding-left: var(--space-md); border-left: 1px solid var(--accent); }
-.core-insight-text { font-size: 15px; color: var(--text-secondary); line-height: 1.7; max-width: 40ch; }
+.path-number {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
 
-.balance-section-title { font-family: 'Noto Serif JP', serif; font-size: clamp(28px, 5vw, 48px); font-weight: 300; letter-spacing: -0.02em; margin-bottom: var(--space-xl); }
-.balance-intro { font-size: 15px; color: var(--text-secondary); line-height: 1.8; max-width: 46ch; margin-bottom: var(--space-2xl); }
-.balance-intro strong { color: var(--text-primary); font-weight: 500; }
+.path-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--text-primary);
+}
 
-.balance-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: var(--space-2xl); }
-@media (max-width: 768px) { .balance-grid { grid-template-columns: 1fr; gap: var(--space-xl); } }
+.path-tools {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
 
-.balance-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-lg); }
-.balance-card-label { font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-md); padding-bottom: var(--space-sm); border-bottom: 1px solid var(--line); }
-.balance-card-label.positive { color: var(--accent); }
-.balance-card-label.negative { color: var(--text-tertiary); }
+.path-block p {
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+}
 
-.balance-item { padding: var(--space-sm) 0; border-bottom: 1px solid var(--line-light); font-size: 14px; color: var(--text-secondary); }
-.balance-item:last-child { border-bottom: none; }
-.balance-item.dim { color: var(--text-tertiary); }
+.workflow {
+  background: var(--bg);
+  padding: 1.25rem 1.5rem;
+  margin-top: 1.25rem;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.9;
+}
 
-.summary-grid { display: grid; grid-template-columns: 1.5fr 1.2fr 0.8fr; gap: var(--space-xl); }
-@media (max-width: 900px) { .summary-grid { grid-template-columns: 1fr; gap: var(--space-lg); } }
+/* Validation Box */
+.validation-grid {
+  display: grid;
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
 
-.summary-card { padding: var(--space-lg) 0; border-top: 1px solid var(--line); }
-.summary-num { font-family: 'Noto Serif JP', serif; font-size: 36px; font-weight: 300; color: var(--accent); margin-bottom: var(--space-sm); }
-.summary-title { font-size: 15px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-xs); }
-.summary-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+.validation-card {
+  background: var(--surface);
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+}
 
+.validation-card h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.validation-card p {
+  font-size: 0.8125rem;
+  margin: 0;
+}
+
+.level-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.level-item {
+  background: var(--surface);
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+}
+
+.level-item .num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.5rem;
+  color: var(--accent);
+  opacity: 0.6;
+  margin-bottom: 0.5rem;
+}
+
+.level-item h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.level-item p {
+  font-size: 0.75rem;
+  margin: 0;
+}
+
+/* Cost Control */
+.cost-table {
+  margin: 2rem 0;
+}
+
+/* Quote */
+.quote-block {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+}
+
+.quote-block p {
+  font-size: 1rem;
+  color: var(--text-primary);
+  line-height: 1.8;
+}
+
+/* Network Section */
+.network-alert {
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.network-alert h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.network-alert p {
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Summary Box */
+.summary-box {
+  background: var(--surface);
+  padding: 2rem;
+  margin-top: 3rem;
+  border: 1px solid var(--line);
+}
+
+.summary-box h3 {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+}
+
+.step-list {
+  list-style: none;
+  counter-reset: steps;
+}
+
+.step-list li {
+  counter-increment: steps;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.step-list li::before {
+  content: counter(steps);
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--accent);
+  flex-shrink: 0;
+  width: 1.5rem;
+  padding-top: 0.25rem;
+}
+
+/* Footer Nav - Fixed Bottom */
 .footer-nav {
   position: fixed;
   bottom: 0;
@@ -192,6 +803,7 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
   backdrop-filter: blur(12px);
   border-top: 1px solid var(--line);
 }
+
 .nav-link {
   font-size: 0.75rem;
   color: var(--text-tertiary);
@@ -202,386 +814,148 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
   gap: 0.5rem;
   transition: color 0.3s;
 }
-.nav-link:hover { color: var(--text-primary); }
-.nav-link.disabled { opacity: 0.3; pointer-events: none; }
-.nav-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: color 0.3s ease; }
-.nav-link:hover { color: var(--text-primary); }
-.nav-arrow { font-size: 0.75rem; }
 
-.fade-section { opacity: 1; transform: translateY(0); }
-.fade-section.visible { opacity: 1; transform: translateY(0); transition: opacity 0.6s ease, transform 0.6s ease; }
-* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.nav-link:hover {
+  color: var(--text-primary);
+}
+
+.nav-link.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
   </style>
 </head>
 <body>
   <nav class="fixed-top-nav">
-    <a href="/" class="back-link">← 返回首页</a>
+    <a href="/index.html" class="back-link">← 返回首页</a>
     <span class="node-id">节点 43 / 57</span>
   </nav>
-  <div class="section-number">38</div>
 
-  <div class="layout layout-classic">
-    <nav class="sidebar-toc">
-      <div class="toc-title">目录</div>
-      <ul class="toc-list">
-        <li class="toc-item"><a href="#s1" class="toc-link">核心维度</a></li>
-        <li class="toc-item"><a href="#s2" class="toc-link">退出底层逻辑</a></li>
-        <li class="toc-item"><a href="#s3" class="toc-link">资产回收</a></li>
-        <li class="toc-item"><a href="#s4" class="toc-link">用户处理</a></li>
-        <li class="toc-item"><a href="#s5" class="toc-link">公司注销</a></li>
-        <li class="toc-item"><a href="#s6" class="toc-link">FIN</a></li>
-      </ul>
-    </nav>
-    <main class="main-content">
-    <header class="hero">
-      <div class="hero-content">
-        <div class="hero-label">节点 43 · 10+</div>
-        <h1 class="hero-title">项目退出机制</h1>
-        <p class="hero-desc">公司注销、数据处理、用户通知，项目结束时体面地离开</p>
-      </div>
+  <div class="layout">
+    <main class="container">
+      <header>
+      <div class="phase-label">10+</div>
+      <h1>节点43：退出策略</h1>
+      <div class="node-meta">节点 43 / 57 · 最后修订：2026年6月4日</div>
     </header>
 
-    <section class="tldr fade-section" aria-label="本章速读">
-      <div class="tldr-label">本章速读</div>
-      <ul class="tldr-list">
-        <li><strong>目标：</strong>让项目能"体面结束"——不做了，干净退出；用户有交代，财务无风险。</li>
-        <li><strong>你要做的事：</strong>4 步：用户通知 → 数据归档/迁移 → 财务结算 → 公司注销。</li>
-        <li><strong>不需要会：</strong>法律全流程、税务清算专家。本章只给你"OPC 最小可走通的退出路径"。</li>
-        <li><strong>本章产出：</strong>1 套退出清单 + 用户通知模板，30 天内可以走完完整流程。</li>
-      </ul>
-    </section>
-
-    <section id="s1" class="dimensions-section fade-section">
-      <div class="section-label">核心维度</div>
-      <div class="dimensions-grid">
-        <div class="dim-card">
-          <span class="dim-badge">D1 核心</span>
-          <h3 class="dim-title">退出底层逻辑</h3>
-          <p class="dim-desc">不是关门歇业，而是资产剥离与价值兑现的系统化安排</p>
-        </div>
-        <div class="dim-card">
-          <span class="dim-badge">D2 本质</span>
-          <h3 class="dim-title">去个人化剥离</h3>
-          <p class="dim-desc">财务切断、权限集中、AI文档化封装，让项目脱离创始人运转</p>
-        </div>
-        <div class="dim-card">
-          <span class="dim-badge">D3 模型</span>
-          <h3 class="dim-title">估值与定价博弈</h3>
-          <p class="dim-desc">AI接管能力是2026年估值核心，自动化程度决定溢价倍数</p>
-        </div>
-        <div class="dim-card">
-          <span class="dim-badge">D4 培育</span>
-          <h3 class="dim-title">交割安全落地</h3>
-          <p class="dim-desc">原子化交付、账号变更尾款触发、历史债务熔断机制</p>
-        </div>
-        <div class="dim-card">
-          <span class="dim-badge">D5 避坑</span>
-          <h3 class="dim-title">竞业禁止与声誉</h3>
-          <p class="dim-desc">精准锁定竞争边界，社交禁言备忘，洁净室开发日志</p>
-        </div>
-        <div class="dim-card">
-          <span class="dim-badge">D6 决策</span>
-          <h3 class="dim-title">风险隔离策略</h3>
-          <p class="dim-desc">三重断链：债权人公告、买方豁免函、个人担保解除</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="s2" class="content-section fade-section">
-      <div class="section-label">节点内容</div>
-      <div class="grid-asymmetric">
-        <div>
-          <h2 class="chapter-heading">退出准备：资产的"去个人化"剥离</h2>
-          <p class="body-text">退出交易的本质，是在出售一个脱离了你依然能运转的系统。超过半数的OPC退出失败案例，并非价格谈不拢，而是买方尽调后发现资产与创始人个人账户过度捆绑。</p>
-
-          <div class="answer-block">
-            <div class="answer-label">第一阶段：财务与账户的物理切断</div>
-            <div class="answer-content">
-              <p class="answer-title">公私混同是最致命的合规红线</p>
-              <p class="answer-text">新《公司法》强化了对"实质一人公司"的穿透审查。必须将项目所有收入切换至独立对公账户，过往个人微信、支付宝收款历史必须导出完整流水并补开合规发票。服务器、API调用费、域名续费等运营成本必须从项目独立账户支出，严禁混合支付。</p>
-            </div>
-          </div>
-
-          <div class="answer-block">
-            <div class="answer-label">第二阶段：数字资产的清点与权限集中</div>
-            <div class="answer-content">
-              <p class="answer-title">无形资产三件套</p>
-              <p class="answer-text">代码与数据权属：私有数据集和大模型微调权重已成为核心议价点。<br>社媒与分发渠道：订阅号、App Store开发者账号的所有权，若无法变更估值折价30%。<br>合约权利转让：含有"主体变更即违约"条款的合同，必须先行取得客户书面谅解。</p>
-            </div>
-          </div>
-
-          <div class="answer-block">
-            <div class="answer-label">第三阶段：核心能力的AI文档化封装</div>
-            <div class="answer-content">
-              <p class="answer-title">制作"AI可读操作包"</p>
-              <p class="answer-text">录制决策逻辑：把每日判断"何时投流、何时关停、如何回复复杂客诉"的思维过程转化为结构化决策树。<br>沉淀运营提示库：整理处理业务的全部Prompt指令。一份高质量AI指令集可直接带来10%-15%的溢价。</p>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <div class="answer-block">
-            <div class="answer-label red">错误示范</div>
-            <div class="answer-content">
-              <p class="answer-title">未完成财务切断就接触买家</p>
-              <p class="answer-text">认为"找到买家再清理账目也不迟"。新买方律师会重点核查公私混同，若无法做出清晰切割，交易对手不仅会压价，更可能设置24-36个月的历史债务追索条款。</p>
-            </div>
-          </div>
-
-          <div class="answer-block">
-            <div class="answer-label red">错误示范</div>
-            <div class="answer-content">
-              <p class="answer-title">把"买代码"当成退出唯一形式</p>
-              <p class="answer-text">忽视"隐性知识"的价值交付。买家真正收购的是一个可立即投入运营的"微型盈利系统"：客户列表、自动化SOP、专属数据集。只交付代码但不交付运营逻辑，估值至少打5折。</p>
-            </div>
-          </div>
-
-          <div class="answer-block">
-            <div class="answer-label green">正确示范</div>
-            <div class="answer-content">
-              <p class="answer-title">原子化资产交付</p>
-              <p class="answer-text">使用具备存证功能的智能合约进行权限交接，留有不可篡改的时间戳。Loom视频库或AI可解析SOP文档作为尾款释放条件，在尾款确认到账瞬间移交。</p>
-            </div>
-          </div>
-
-          <div class="answer-block">
-            <div class="answer-label blue">数据洞察</div>
-            <div class="answer-content">
-              <p class="answer-title">2026年微型项目估值参考</p>
-              <p class="answer-text">AI接管型微型SaaS：MRR的2.5-3.5倍<br>高度绑定创始人个人的社群：年利润0.5-1.0倍<br>AI工作流自动化模板：月收入的8-15倍（估值黑马）</p>
-            </div>
-          </div>
-
-          <div class="core-insight">
-            <p class="core-insight-text"><strong>核心洞察：</strong>OPC退出的核心悖论是——如何在创始人物理抽身的前提下，证明项目的商业价值可以无损延续。答案不是"找到愿意接手的人"，而是"提前把项目变成不需要你的人"。</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="s4" class="content-section fade-section">
-      <div class="section-label">决策矩阵</div>
-      <h2 class="balance-section-title">做与不做的balance grid</h2>
-      <p class="balance-intro">退出机制的核心不在于"卖不卖"，而在于<strong>什么时候卖、怎么卖、如何保护自己</strong>。</p>
-
-      <div class="balance-grid">
-        <div class="balance-card">
-          <div class="balance-card-label positive">做</div>
-          <div class="balance-item">退出前6个月启动有意识的财务物理隔离</div>
-          <div class="balance-item">完成"法律体检"：清理个人关联担保、调取企业征信报告</div>
-          <div class="balance-item">在协议中设置"历史债务隔离条款"和"买方豁免函"</div>
-          <div class="balance-item">将交易款分项定价：资产转让款90%+过渡咨询费10%</div>
-          <div class="balance-item">使用Escrow智能合约自动划拨尾款</div>
-          <div class="balance-item">竞业禁止精准锁定"特定细分赛道的直接竞争"</div>
-        </div>
-        <div class="balance-card">
-          <div class="balance-card-label negative">不做</div>
-          <div class="balance-item dim">未剥离个人担保就签署交割协议</div>
-          <div class="balance-item dim">接受"全款一次性支付"而無任何对赌机制</div>
-          <div class="balance-item dim">竞业范围模糊表述为"互联网行业"</div>
-          <div class="balance-item dim">以"未来可能上市"的股权抵扣全部咨询费</div>
-          <div class="balance-item dim">交割后立刻在公开渠道对原项目进行评价或引流</div>
-          <div class="balance-item dim">不建立"洁净室开发日志"就立即启动新项目</div>
-        </div>
-      </div>
-    </section>
-
-    <section id="s6" class="content-section fade-section">
-      <div class="section-label">FIN 健康指标</div>
-      <div class="summary-grid">
-        <div class="summary-card">
-          <div class="summary-num">2.5-3.5×</div>
-          <h3 class="summary-title">AI接管型SaaS估值倍数</h3>
-          <p class="summary-desc">自动化客服覆盖90%以上、API调用逻辑完整的项目，估值维持在年化经常性收入的2.5-3.5倍</p>
-        </div>
-        <div class="summary-card">
-          <div class="summary-num">3个月</div>
-          <h3 class="summary-title">过渡期对赌观察期</h3>
-          <p class="summary-desc">将20%尾款与"AI工作流自动完成率≥85%"或"核心客户续费率下跌≤15%"挂钩</p>
-        </div>
-        <div class="summary-card">
-          <div class="summary-num">30%+50%</div>
-          <h3 class="summary-title">首付+尾款结构</h3>
-          <p class="summary-desc">首付30%锁定交易+20%域名代码库交割+50%账号转移成功后尾款，确保资产安全落地</p>
-        </div>
-      </div>
+    <section id="s1">
     
-    <!-- 🔵 2026年时效性内容更新 -->
-    <section id="s2026" class="section fade-section">
-      <div style="margin-bottom:var(--space-lg);">
-        <span style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);">2026 UPDATE</span>
-      </div>
-      <div class="prose" style="max-width:680px;">
-        
-<blockquote style="border-left:2px solid var(--accent);padding:var(--space-sm) var(--space-md);margin:var(--space-md) 0;color:var(--text-secondary);font-style:italic;background:var(--surface);border-radius:0 6px 6px 0;font-size:0.95rem;">**面向OPC**：不是每个项目都要做一辈子。知道什么时候该坚持、什么时候该放手、什么时候该卖掉——这是OPC最重要的决策能力之一。本节点告诉你2026年OPC的四种退出方式。</blockquote>
+<p>node_id: 43</p>
+<p>persona: neutral</p>
+<p>cta_type: consult</p>
+<p>keywords: [方式, 什么时候, 开源, 失败, 退出]</p>
 
+<blockquote class="decision-box"><p>不是每个项目都要做一辈子。知道什么时候该坚持、什么时候该放手、什么时候该卖掉——这是OPC最重要的决策能力之一。本节点告诉你2026年OPC的四种退出方式。</p></blockquote>
 
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">一、退出不是失败</h3>
+<p></section></p>
+<section id="s一">
+<p>      <div class="section-label">一、退出不是失败</div></p>
 
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">先纠正一个认知</h4>
+<h3>先纠正一个认知</h3>
 
-<table style="width:100%;border-collapse:collapse;margin:var(--space-md) 0;font-size:0.88rem;">
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">你以为的退出</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">实际上的退出</td></tr>
-<tr><th style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">失败、放弃、丢人</th><th style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">资源重新配置、止损、为下一个项目腾出精力</th></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">项目死了</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">经验留下了</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">白干了</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">你用X个月买了一个别人没有的经验</td></tr>
-</table>
+<div class="table-wrapper"><table><thead><tr><th>你以为的退出</th><th>实际上的退出</th></tr></thead><tbody><tr><td>失败、放弃、丢人</td><td>资源重新配置、止损、为下一个项目腾出精力</td></tr><tr><td>项目死了</td><td>经验留下了</td></tr><tr><td>白干了</td><td>你用X个月买了一个别人没有的经验</td></tr></tbody></table></div>
+<strong>2026年最成功的OPC们，平均经历过2.3个"失败"项目才找到那个赚钱的。</strong>
 
-<p style="margin:var(--space-sm) 0;color:var(--text-secondary);font-weight:400;"><strong>2026年最成功的OPC们，平均经历过2.3个"失败"项目才找到那个赚钱的。</strong></p>
+<p></section></p>
+<section id="s二">
+<p>      <div class="section-label">二、四种退出方式</div></p>
 
+<h3>方式1：关停（最快，最常用）</h3>
 
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">二、四种退出方式</h3>
+<strong>什么时候该关停</strong>：
 
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">方式1：关停（最快，最常用）</h4>
+<div class="table-wrapper"><table><thead><tr><th>信号</th><th>标准</th></tr></thead><tbody><tr><td>连续亏损</td><td>6个月总收入<总支出</td></tr><tr><td>用户不增长</td><td>连续3个月月活无增长</td></tr><tr><td>你不想做了</td><td>打开代码都觉得痛苦（持续1个月以上）</td></tr><tr><td>更好的机会来了</td><td>有一个明确更赚钱/更有意义的方向</td></tr></tbody></table></div>
+<strong>关停的正确姿势</strong>：
 
-<p style="margin:var(--space-sm) 0;color:var(--text-secondary);font-weight:400;"><strong>什么时候该关停</strong>：</p>
+<ol><li>给现有用户发一封邮件/公告："XX产品将于X月X日停止服务。数据可在X月X日前导出。感谢你的支持。"</li><li>导出所有数据备份（留作纪念和复盘）</li><li>写一篇复盘文章：《我做了X个月的产品为什么失败了》→ 这篇文章可能比你产品赚得还多（行业内有大量失败复盘文章的阅读量>10万）</li></ol>
+<h3>方式2：卖掉（最赚钱，最难）</h3>
 
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">信号</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">标准</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">连续亏损</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">6个月总收入<总支出</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">用户不增长</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">连续3个月月活无增长</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">你不想做了</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">打开代码都觉得痛苦（持续1个月以上）</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">更好的机会来了</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">有一个明确更赚钱/更有意义的方向</td></tr>
+<strong>2026年OPC产品能卖多少钱</strong>：
 
-<p style="margin:var(--space-sm) 0;color:var(--text-secondary);font-weight:400;"><strong>关停的正确姿势</strong>：</p>
+<div class="table-wrapper"><table><thead><tr><th>产品状态</th><th>估值范围</th><th>在哪卖</th></tr></thead><tbody><tr><td>有用户无收入</td><td>¥5000-20000</td><td>Acquire.com, 即刻/推特发帖</td></tr><tr><td>月收入¥1000-5000</td><td>年收入×1-2倍</td><td>Acquire.com, Flippa</td></tr><tr><td>月收入¥5000-20000</td><td>年收入×2-3倍</td><td>MicroAcquire, 私下</td></tr><tr><td>月收入>¥20000</td><td>年收入×3-5倍</td><td>投资人/同行直接联系</td></tr></tbody></table></div>
+<strong>2026年OPC产品交易平台</strong>：
 
-<p style="margin:var(--space-xs) 0;color:var(--text-secondary);line-height:1.9;">1. 给现有用户发一封邮件/公告："XX产品将于X月X日停止服务。数据可在X月X日前导出。感谢你的支持。"</p>
-<p style="margin:var(--space-xs) 0;color:var(--text-secondary);line-height:1.9;">2. 导出所有数据备份（留作纪念和复盘）</p>
-<p style="margin:var(--space-xs) 0;color:var(--text-secondary);line-height:1.9;">3. 写一篇复盘文章：《我做了X个月的产品为什么失败了》→ 这篇文章可能比你产品赚得还多（行业内有大量失败复盘文章的阅读量>10万）</p>
+<ul><li><a href="https://acquire.com">Acquire.com</a> — 全球最大的小微SaaS交易市场</li><li><a href="https://flippa.com">Flippa</a> — 适合内容站/电商/小工具</li><li>即刻/推特发帖 — 中文独立开发者圈内交易</li></ul>
+<strong>卖掉前要准备的</strong>：
+<ul><li>6个月的收入数据截图</li><li>用户数和增长曲线</li><li>技术栈文档（买家要能接手）</li><li>为什么卖的真实原因（买家会问）</li></ul>
+<h3>方式3：转为副业（最温和）</h3>
 
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">方式2：卖掉（最赚钱，最难）</h4>
+<p>产品不赚钱但用户还在用 → 不关停，也不全力做。</p>
 
-<p style="margin:var(--space-sm) 0;color:var(--text-secondary);font-weight:400;"><strong>2026年OPC产品能卖多少钱</strong>：</p>
+<p>``<code></p>
+<p>转为副业的操作：</p>
+<ol><li>服务器降到最低配置（月费¥24）</li><li>关闭需要人工介入的功能（如客服咨询）</li><li>设置自动回复："这个产品目前由我一个人维护，回复可能较慢"</li><li>每个月花1天看看运行状态</li><li>把90%的精力投入下一个产品</li></ol></code>`<code>
 
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">产品状态</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">估值范围</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">在哪卖</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">有用户无收入</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">¥5000-20000</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">Acquire.com, 即刻/推特发帖</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">月收入¥1000-5000</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">年收入×1-2倍</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">Acquire.com, Flippa</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">月收入¥5000-20000</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">年收入×2-3倍</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">MicroAcquire, 私下</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">月收入>¥20000</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">年收入×3-5倍</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">投资人/同行直接联系</td></tr>
+<h3>方式4：开源（最有长期价值）</h3>
 
-<p style="margin:var(--space-sm) 0;color:var(--text-secondary);font-weight:400;"><strong>2026年OPC产品交易平台</strong>：</p>
+<p>产品不赚钱但对社区有价值 → 开源。</p>
 
-<ul style="list-style:none;padding:0;margin:var(--space-sm) 0;">
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[Acquire.com](https://acquire.com) — 全球最大的小微SaaS交易市场</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[Flippa](https://flippa.com) — 适合内容站/电商/小工具</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">即刻/推特发帖 — 中文独立开发者圈内交易</li>
+<p></code>`<code>bash</p>
+# 1. 清理敏感信息
+<p>git filter-branch --force --index-filter \</p>
+<p>  "git rm --cached --ignore-unmatch .env" --prune-empty -- --all</p>
 
-        <li class="toc-item"><a href="#s2026" class="toc-link">2026年更新</a></li></ul>
-
-<p style="margin:var(--space-sm) 0;color:var(--text-secondary);font-weight:400;"><strong>卖掉前要准备的</strong>：</p>
-<ul style="list-style:none;padding:0;margin:var(--space-sm) 0;">
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">6个月的收入数据截图</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">用户数和增长曲线</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">技术栈文档（买家要能接手）</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">为什么卖的真实原因（买家会问）</li>
-</ul>
-
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">方式3：转为副业（最温和）</h4>
-
-<p style="margin:var(--space-xs) 0;color:var(--text-secondary);line-height:1.9;">产品不赚钱但用户还在用 → 不关停，也不全力做。</p>
-
-<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code>转为副业的操作：
-1. 服务器降到最低配置（月费¥24）
-2. 关闭需要人工介入的功能（如客服咨询）
-3. 设置自动回复："这个产品目前由我一个人维护，回复可能较慢"
-4. 每个月花1天看看运行状态
-5. 把90%的精力投入下一个产品
-</code></pre>
-
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">方式4：开源（最有长期价值）</h4>
-
-<p style="margin:var(--space-xs) 0;color:var(--text-secondary);line-height:1.9;">产品不赚钱但对社区有价值 → 开源。</p>
-
-<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code># 1. 清理敏感信息
-git filter-branch --force --index-filter \
-  "git rm --cached --ignore-unmatch .env" --prune-empty -- --all
- 
 # 2. Push到GitHub Public
-git remote add public https://github.com/你的用户名/项目名.git
-git push public main
- 
+<p>git remote add public https://github.com/你的用户名/项目名.git</p>
+<p>git push public main</p>
+
 # 3. 写README（为什么做、怎么用、为什么不做了）
 # 4. 在V2EX/即刻/推特宣布开源
-</code></pre>
+<p></code>`<code></p>
 
-<p style="margin:var(--space-sm) 0;color:var(--text-secondary);font-weight:400;"><strong>开源的价值</strong>：GitHub上的开源项目=你的永久技术名片。很多OPC的下一个客户/合伙人，是通过他的开源项目找到他的。</p>
+<strong>开源的价值</strong>：GitHub上的开源项目=你的永久技术名片。很多OPC的下一个客户/合伙人，是通过他的开源项目找到他的。
 
+<p></section></p>
+<section id="s三">
+<p>      <div class="section-label">三、退出决策框架</div></p>
 
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">三、退出决策框架</h3>
+<p></code>`<code></p>
+<p>每个季度问自己一遍：</p>
+<p>□ 这个产品还在增长吗？（用户数/收入/我的兴趣）</p>
+<p>□ 如果今天重新选择，我还会做这个产品吗？</p>
+<p>□ 我花在上面的时间，如果用来做别的，会不会更好？</p>
 
-<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code>每个季度问自己一遍：
-□ 这个产品还在增长吗？（用户数/收入/我的兴趣）
-□ 如果今天重新选择，我还会做这个产品吗？
-□ 我花在上面的时间，如果用来做别的，会不会更好？
- 
-如果有2个以上"否" → 认真考虑退出。
-</code></pre>
+<p>如果有2个以上"否" → 认真考虑退出。</p>
+<p></code>``</p>
 
+<p></section></p>
+<section id="s四">
+<p>      <div class="section-label">四、检查清单</div></p>
 
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">四、检查清单</h3>
+<ul><li><input type="checkbox" disabled> 已明确当前产品的退出标准（什么时候该关/卖/开源）</li><li><input type="checkbox" disabled> 产品数据有定期备份</li><li><input type="checkbox" disabled> 用户数据导出功能可用（关停时用户要能拿走自己的数据）</li><li><input type="checkbox" disabled> 如果卖：6个月财务数据已整理</li><li><input type="checkbox" disabled> 如果开源：敏感信息已清理</li></ul>
 
-<ul style="list-style:none;padding:0;margin:var(--space-sm) 0;">
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 已明确当前产品的退出标准（什么时候该关/卖/开源）</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 产品数据有定期备份</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 用户数据导出功能可用（关停时用户要能拿走自己的数据）</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 如果卖：6个月财务数据已整理</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 如果开源：敏感信息已清理</li>
-</ul>
+<p></section></p>
+<section id="s节">
+<p>      <div class="section-label">节点资源链接</div></p>
 
-
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">节点资源链接</h3>
-
-<ul style="list-style:none;padding:0;margin:var(--space-sm) 0;">
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点42：收入多元化</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点41：产品迭代</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点01：OPC适配度测试</li>
-</ul>
-
-
-      </div>
-      <p style="font-size:12px;color:var(--text-tertiary);margin-top:var(--space-xl);letter-spacing:0.05em;">
-        以上内容基于2026年5月最新实践编写，工具版本和价格可能更新，请以官方文档为准。
-      </p>
+<ul><li>节点42：收入多元化</li><li>节点41：产品迭代</li><li>节点01：OPC适配度测试</li></ul>
     </section>
 
-</section>
-
+    <div class="summary-box">
+      <h3>节点43检查清单</h3>
+      <p>完成本节点后，请确认所有检查项已通过。</p>
+    </div>
     </main>
-    <nav class="footer-nav">
-      <a href="/nodes/42-income-diversification/index.html" class="nav-link">
-        <span class="nav-arrow">←</span>
-        节点42：收入多元化
-      </a>
-      <a href="/nodes/44-bank-account/index.html" class="nav-link">
-        节点44：银行开户与商户号
-        <span class="nav-arrow">→</span>
-      </a>
-    </nav>
   </div>
 
-  <script>
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
+  <nav class="footer-nav">
+    <a href="/nodes/42-income-diversification/index.html" class="nav-link"><span>←</span> 节点42</a>
+    <a href="/nodes/44-bank-account/index.html" class="nav-link">节点44 <span>→</span></a>
+  </nav>
 
-    // Scroll spy for TOC
-    const sections = document.querySelectorAll('section[id]');
-    const tocLinks = document.querySelectorAll('.toc-link');
-    function updateActiveLink() {
-      const scrollPos = window.scrollY + 120;
-      let current = '';
-      sections.forEach(section => {
-        if (scrollPos >= section.offsetTop) current = section.getAttribute('id');
-      });
-      tocLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === '#' + current) link.classList.add('active');
-      });
-    }
-    window.addEventListener('scroll', updateActiveLink, { passive: true });
-    updateActiveLink();
+  <script>
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').slice(1);
+      const target = document.getElementById(targetId);
+      if (target) {
+        window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+      }
+    });
+  });
   </script>
 </body>
 </html>

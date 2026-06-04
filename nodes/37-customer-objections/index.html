@@ -1,1292 +1,1060 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OPC AI服务 - 客户异议应对手册</title>
-  <link rel="stylesheet" href="../_design-tokens.css">
-  <link rel="stylesheet" href="../_layout-templates.css">
-    <style>
-        /* ========================================
-           MA（間）日式极简主义设计系统
-           ======================================== */
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            /* 墨色暗色模式 */
-            --bg: #111110;
-            --surface: #1A1A18;
-            --text-primary: #F0EDE6;
-            --text-secondary: #7A7670;
-            --text-tertiary: #A8A49E;
-            --accent: #E05A47;
-            --line: #2A2A28;
-            --line-light: rgba(255,255,255,0.06);
-
-            /* 间距系统 */
-            --space-xs: 8px;
-            --space-sm: 16px;
-            --space-md: 24px;
-            --space-lg: 32px;
-            --space-xl: 48px;
-            --space-2xl: 64px;
-            --space-3xl: 96px;
-            --space-4xl: 128px;
-        }
-
-        body {
-            background: var(--bg);
-            color: var(--text-primary);
-            font-family: 'Noto Sans SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-            line-height: 1.9;
-            letter-spacing: 0.04em;
-            font-weight: 300;
-        }
-
-        /* 字体配对：明朝体标题 + 哥特体正文 */
-        .heading-serif {
-            font-family: 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
-            font-weight: 400;
-        }
-
-        /* 页面容器 - 非对称布局 */
-        .page {
-            position: relative;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: var(--space-3xl) clamp(24px, 8vw, 120px);
-            min-height: 100vh;
-            overflow: hidden;
-        }
-
-        .page::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: var(--line);
-        }
-
-        /* 超大数字锚点 */
-        .section-number {
-            position: absolute;
-            top: var(--space-2xl);
-            right: clamp(24px, 8vw, 120px);
-            font-size: clamp(100px, 22vw, 280px);
-            font-weight: 100;
-            color: var(--text-primary);
-            opacity: 0.03;
-            line-height: 1;
-            letter-spacing: -0.05em;
-            font-family: 'Noto Serif SC', serif;
-            pointer-events: none;
-            user-select: none;
-        }
-
-        /* 页面编号 */
-        .page-number {
-            position: absolute;
-            bottom: var(--space-xl);
-            right: clamp(24px, 8vw, 120px);
-            font-size: 11px;
-            color: var(--text-tertiary);
-            letter-spacing: 0.15em;
-        }
-
-        /* ========================================
-           封面设计 - 左对齐，超大标题
-           ======================================== */
-        .page-cover {
-            display: flex;
-            align-items: flex-end;
-            padding-bottom: var(--space-4xl);
-        }
-
-        .cover-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .cover-title {
-            font-size: clamp(48px, 10vw, 140px);
-            font-weight: 300;
-            letter-spacing: -0.03em;
-            line-height: 0.95;
-            margin-bottom: var(--space-xl);
-        }
-
-        .cover-subtitle {
-            font-size: clamp(14px, 2vw, 18px);
-            color: var(--text-secondary);
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            margin-bottom: var(--space-lg);
-        }
-
-        .cover-accent {
-            width: 48px;
-            height: 1px;
-            background: var(--accent);
-            margin-bottom: var(--space-xl);
-        }
-
-        .cover-tagline {
-            font-size: 13px;
-            color: var(--text-tertiary);
-            max-width: 32ch;
-            line-height: 1.7;
-        }
-
-        /* ========================================
-           目录页 - 极简列表
-           ======================================== */
-        .toc-header {
-            margin-bottom: var(--space-3xl);
-        }
-
-        .toc-title {
-            font-size: clamp(32px, 6vw, 72px);
-            font-weight: 300;
-            letter-spacing: -0.02em;
-            margin-bottom: var(--space-md);
-        }
-
-        .toc-line {
-            width: 48px;
-            height: 1px;
-            background: var(--accent);
-        }
-
-        .toc-list {
-            list-style: none;
-        }
-
-        .toc-item {
-            display: grid;
-            grid-template-columns: 80px 1fr auto;
-            align-items: baseline;
-            padding: var(--space-md) 0;
-            border-bottom: 1px solid var(--line);
-            gap: var(--space-lg);
-        }
-
-        .toc-num {
-            font-size: 12px;
-            color: var(--text-tertiary);
-            font-variant-numeric: tabular-nums;
-        }
-
-        .toc-name {
-            font-size: 15px;
-            color: var(--text-primary);
-        }
-
-        .toc-count {
-            font-size: 11px;
-            color: var(--text-tertiary);
-            letter-spacing: 0.1em;
-        }
-
-        /* ========================================
-           维度页 - 不对称布局，左文右卡
-           ======================================== */
-        .dimension-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--space-3xl);
-            align-items: start;
-        }
-
-        @media (max-width: 900px) {
-            .dimension-layout {
-                grid-template-columns: 1fr;
-                gap: var(--space-2xl);
-            }
-        }
-
-        /* 左侧内容区 */
-        .content-left {
-            padding-top: var(--space-sm);
-        }
-
-        .dimension-badge {
-            display: inline-block;
-            font-size: 10px;
-            color: var(--accent);
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            margin-bottom: var(--space-lg);
-            border: 1px solid var(--accent);
-            padding: 4px 10px;
-        }
-
-        .question {
-            font-size: clamp(18px, 3vw, 28px);
-            font-weight: 400;
-            line-height: 1.4;
-            letter-spacing: -0.01em;
-            margin-bottom: var(--space-lg);
-            max-width: 22em;
-        }
-
-        .question-accent {
-            width: 32px;
-            height: 1px;
-            background: var(--accent);
-            margin-bottom: var(--space-xl);
-        }
-
-        .answer-section {
-            margin-bottom: var(--space-lg);
-        }
-
-        .answer-label {
-            font-size: 10px;
-            color: var(--text-tertiary);
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            margin-bottom: var(--space-xs);
-        }
-
-        .answer-text {
-            font-size: 14px;
-            color: var(--text-secondary);
-            line-height: 1.8;
-            max-width: 40ch;
-        }
-
-        .core-insight {
-            margin: var(--space-xl) 0;
-            padding-left: var(--space-md);
-            border-left: 1px solid var(--accent);
-        }
-
-        .core-insight-title {
-            font-size: 10px;
-            color: var(--accent);
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            margin-bottom: var(--space-xs);
-        }
-
-        .core-insight-text {
-            font-size: 14px;
-            color: var(--text-primary);
-            line-height: 1.7;
-        }
-
-        .highlight-text {
-            color: var(--accent);
-            font-size: 12px;
-            margin-top: var(--space-xl);
-            letter-spacing: 0.1em;
-        }
-
-        /* 右侧卡片区 */
-        .chart-area {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-md);
-        }
-
-        .objection-block {
-            padding: var(--space-md) 0;
-            border-bottom: 1px solid var(--line);
-        }
-
-        .objection-block:last-child {
-            border-bottom: none;
-        }
-
-        .objection-label {
-            font-size: 10px;
-            color: var(--accent);
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            margin-bottom: var(--space-sm);
-        }
-
-        .objection-text {
-            font-size: 13px;
-            line-height: 1.9;
-        }
-
-        .objection-text.red {
-            color: #D32F2F;
-        }
-
-        .objection-text.green {
-            color: var(--text-primary);
-        }
-
-        /* ========================================
-           总结页 - 超大引言
-           ======================================== */
-        .summary-layout {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: var(--space-3xl);
-        }
-
-        @media (max-width: 900px) {
-            .summary-layout {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .summary-quote {
-            font-size: clamp(24px, 4vw, 42px);
-            font-weight: 300;
-            line-height: 1.5;
-            letter-spacing: -0.01em;
-            margin-bottom: var(--space-xl);
-        }
-
-        .summary-quote em {
-            color: var(--accent);
-            font-style: normal;
-        }
-
-        .summary-list {
-            list-style: none;
-        }
-
-        .summary-list li {
-            font-size: 14px;
-            color: var(--text-secondary);
-            padding: var(--space-sm) 0;
-            border-bottom: 1px solid var(--line);
-            display: flex;
-            gap: var(--space-md);
-        }
-
-        .summary-list li::before {
-            content: '→';
-            color: var(--accent);
-        }
-
-        .summary-list li span {
-            color: var(--text-primary);
-        }
-
-        /* ========================================
-           逻辑汇总表 - 极简表格
-           ======================================== */
-        .table-title {
-            font-size: clamp(28px, 5vw, 56px);
-            font-weight: 300;
-            letter-spacing: -0.02em;
-            margin-bottom: var(--space-md);
-        }
-
-        .table-line {
-            width: 32px;
-            height: 1px;
-            background: var(--accent);
-            margin-bottom: var(--space-2xl);
-        }
-
-        .logic-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12px;
-        }
-
-        .logic-table th {
-            text-align: left;
-            color: var(--accent);
-            font-weight: 400;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            padding: var(--space-md) var(--space-sm);
-            border-bottom: 1px solid var(--line);
-            font-size: 10px;
-        }
-
-        .logic-table td {
-            padding: var(--space-md) var(--space-sm);
-            border-bottom: 1px solid var(--line-light);
-            color: var(--text-secondary);
-            vertical-align: top;
-        }
-
-        .logic-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .logic-table tr:hover td {
-            background: var(--surface);
-        }
-
-        .logic-category {
-            color: var(--text-primary);
-            font-weight: 400;
-        }
-
-        .logic-question {
-            color: var(--text-secondary);
-        }
-
-        .logic-convert {
-            color: var(--text-primary);
-        }
-
-        .logic-keyword {
-            font-size: 10px;
-            color: var(--text-tertiary);
-            letter-spacing: 0.05em;
-        }
-
-        /* ========================================
-           通用结构线
-           ======================================== */
-        .divider {
-            width: 32px;
-            height: 1px;
-            background: var(--accent);
-            margin: var(--space-2xl) 0;
-        }
-
-        .section-footer {
-            margin-top: var(--space-3xl);
-            padding-top: var(--space-lg);
-            border-top: 1px solid var(--line);
-        }
-
-        .footer-note {
-            font-size: 11px;
-            color: var(--text-tertiary);
-            letter-spacing: 0.1em;
-        }
-
-        /* ========================================
-           动效 - 书法笔触感
-           ======================================== */
-        * {
-            transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        /* ========================================
-           响应式
-           ======================================== */
-        /* ========================================
-           移动端适配 - 响应式设计
-           ======================================== */
-        @media (max-width: 768px) {
-            :root {
-                /* 缩小间距系统 */
-                --space-xs: 6px;
-                --space-sm: 12px;
-                --space-md: 16px;
-                --space-lg: 24px;
-                --space-xl: 32px;
-                --space-2xl: 40px;
-                --space-3xl: 56px;
-                --space-4xl: 72px;
-            }
-
-            body {
-                font-size: 15px;
-                line-height: 1.8;
-            }
-
-            .page {
-                padding: var(--space-2xl) var(--space-lg);
-                min-height: auto;
-                margin-bottom: var(--space-3xl);
-            }
-
-            .section-number {
-                font-size: 80px;
-                opacity: 0.02;
-            }
-
-            /* 封面移动端 */
-            .cover-title {
-                font-size: clamp(36px, 12vw, 64px);
-            }
-
-            /* 目录移动端 */
-            .toc-item {
-                grid-template-columns: 50px 1fr auto;
-                gap: var(--space-sm);
-                padding: var(--space-sm) 0;
-            }
-
-            .toc-num {
-                font-size: 11px;
-            }
-
-            .toc-name {
-                font-size: 14px;
-            }
-
-            .toc-count {
-                font-size: 10px;
-            }
-
-            /* 维度页移动端 - 单列堆叠 */
-            .dimension-layout {
-                grid-template-columns: 1fr;
-                gap: var(--space-xl);
-            }
-
-            .question {
-                font-size: 18px;
-                max-width: 100%;
-            }
-
-            /* 缩小右侧卡片区字体 */
-            .objection-text {
-                font-size: 13px;
-                line-height: 1.7;
-            }
-
-            /* 表格移动端 */
-            .table-title {
-                font-size: clamp(24px, 8vw, 40px);
-            }
-
-            .logic-table {
-                font-size: 11px;
-                display: block;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-            }
-
-            .logic-table th,
-            .logic-table td {
-                padding: var(--space-sm);
-                white-space: nowrap;
-            }
-
-            /* 总结页移动端 */
-            .summary-layout {
-                grid-template-columns: 1fr;
-                gap: var(--space-xl);
-            }
-
-            .summary-quote {
-                font-size: clamp(20px, 6vw, 28px);
-            }
-
-            /* 核心观点移动端 */
-            .core-insight {
-                margin: var(--space-lg) 0;
-            }
-
-            .core-insight-text {
-                font-size: 13px;
-            }
-
-            /* 错误/正确示范移动端 */
-            .objection-block {
-                padding: var(--space-sm) 0;
-            }
-
-            /* 封底移动端 */
-            .page-cover {
-                padding-bottom: var(--space-2xl);
-                min-height: 60vh;
-            }
-        }
-
-        @media (max-width: 480px) {
-            body {
-                font-size: 14px;
-            }
-
-            .page {
-                padding: var(--space-xl) var(--space-md);
-            }
-
-            /* 目录项更紧凑 */
-            .toc-item {
-                grid-template-columns: 40px 1fr;
-                gap: var(--space-xs);
-            }
-
-            .toc-count {
-                display: none;
-            }
-
-            /* 问题文本缩小 */
-            .question {
-                font-size: 16px;
-            }
-
-            .answer-text {
-                font-size: 13px;
-            }
-
-            /* 标签缩小 */
-            .dimension-badge,
-            .answer-label,
-            .objection-label {
-                font-size: 9px;
-            }
-
-            /* 表格强制横向滚动 */
-            .logic-table {
-                font-size: 10px;
-            }
-        }
-
-        /* 触摸友好 */
-        @media (hover: none) and (pointer: coarse) {
-            .objection-block {
-                padding: var(--space-sm) 0;
-            }
-
-            /* 增大可点击区域 */
-            a, button {
-                min-height: 44px;
-                display: inline-flex;
-                align-items: center;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="节点37：客户异议应对 - OPC节点百科">
+  <meta name="theme-color" content="#111110">
+  <title>节点37：客户异议应对 - OPC节点百科</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+
+:root {
+  --bg: #111110;
+  --surface: #1A1A18;
+  --text-primary: #F0EDE6;
+  --text-secondary: #7A7670;
+  --text-tertiary: #4A4744;
+  --accent: #C0392B;
+  --line: #2A2A28;
+  --line-light: rgba(255,255,255,0.06);
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  overflow-x: hidden;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* 移动端整体适配 - 使用 900px breakpoint 与现有代码一致 */
+@media (max-width: 900px) {
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+
+  body {
+    font-size: 14px;
+  }
+
+  .layout {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding: 4rem 16px 2rem !important;
+    margin: 0 !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .sidebar-toc {
+    display: none !important;
+  }
+
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  section {
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  section > * {
+    max-width: 100% !important;
+    overflow-x: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  section p {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+
+  h1 {
+    font-size: clamp(36px, 10vw, 48px) !important;
+    line-height: 1.05 !important;
+  }
+}
+
+/* Layout with Sidebar */
+.layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3rem);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
+}
+
+/* Sidebar TOC */
+.sidebar-toc {
+  position: sticky;
+  top: 5rem;
+  height: fit-content;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  padding-top: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.sidebar-toc::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar-toc::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 2px;
+}
+
+.toc-title {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.toc-list {
+  list-style: none;
+}
+
+.toc-item {
+  margin-bottom: 0.75rem;
+}
+
+.toc-link {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: block;
+  padding: 0.375rem 0;
+  padding-left: 1rem;
+  border-left: 1px solid var(--line);
+  transition: all 0.3s;
+  line-height: 1.4;
+}
+
+.toc-link:hover {
+  color: var(--text-primary);
+  border-left-color: var(--accent);
+}
+
+.toc-link.active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  font-weight: 400;
+}
+
+.toc-link.sub {
+  padding-left: 1.75rem;
+  font-size: 0.75rem;
+}
+
+/* Fixed Top Nav */
+.fixed-top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+.back-link {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
+}
+
+.back-link:hover {
+  color: var(--text-primary);
+}
+
+.node-id {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+}
+
+/* Header */
+header {
+  padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(2rem, 5vh, 3rem);
+}
+
+/* Main content */
+main {
+  padding-bottom: 5rem;
+}
+
+/* 移动端底部导航适配 - 合并到 900px breakpoint */
+@media (max-width: 900px) {
+  main {
+    padding-bottom: 6rem; /* 为固定底部导航预留空间 */
+  }
+
+  .footer-nav {
+    overflow-x: auto;
+    justify-content: space-between;
+  }
+
+  .nav-link {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .table-wrapper {
+    position: relative;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 1.5rem 0;
+    border: 1px solid var(--line);
+  }
+
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
+}
+
+/* Section anchors offset for sticky header */
+section {
+  scroll-margin-top: 2rem;
+}
+
+section h2 {
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+}
+
+section p, section li {
+  font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
+  line-height: 1.9;
+}
+
+/* Table improvements */
+.table-wrapper {
+  margin: 1.5rem 0;
+  border: 1px solid var(--line);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-wrapper::after {
+  content: "";
+  display: block;
+}
+
+/* 移动端滑动提示 */
+@media (max-width: 900px) {
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  .table-wrapper {
+    position: relative;
+    padding-bottom: 24px;
+  }
+}
+
+table {
+  font-size: 0.875rem;
+  min-width: 560px;
+}
+
+@media (max-width: 900px) {
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
+}
+
+/* Tool Cards */
+.tool-grid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* Path blocks */
+.path-block {
+  padding: 1.5rem;
+}
+
+.workflow {
+  padding: 1rem 1.25rem;
+  font-size: 0.8125rem;
+}
+
+/* Validation cards */
+.validation-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.validation-card {
+  padding: 1.25rem;
+}
+
+/* Level items */
+.level-grid {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+/* Decision box */
+.decision-box {
+  padding: 1.25rem 1.5rem;
+}
+
+/* Main content */
+.phase-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+h1 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xl);
+}
+
+/* 移动端H1适配 */
+@media (max-width: 900px) {
+  h1 {
+    font-size: clamp(36px, 10vw, 48px);
+    line-height: 1.05;
+  }
+}
+
+.phase-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+.phase-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+
+.subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 44ch;
+  line-height: 1.8;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* 移动端副标题适配 */
+@media (max-width: 900px) {
+  .subtitle {
+    font-size: 14px;
+    max-width: 100%;
+  }
+}
+
+.node-meta {
+  margin-top: 2rem;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+}
+
+/* Sections */
+section {
+  padding-bottom: clamp(3rem, 10vh, 5rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(3rem, 10vh, 5rem);
+}
+
+section:last-of-type {
+  border-bottom: none;
+}
+
+.section-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.375rem, 4vw, 1.875rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+h3 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.125rem, 3vw, 1.375rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+p {
+  color: var(--text-secondary);
+  line-height: 1.9;
+  margin-bottom: 1.25rem;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* 移动端段落适配 */
+@media (max-width: 900px) {
+  p {
+    padding-right: 0.5rem;
+    word-break: break-all;
+    white-space: normal;
+  }
+
+  section p {
+    padding-right: 0;
+  }
+}
+
+.decision-box {
+  background: var(--surface);
+  border-left: 2px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.decision-box p {
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  margin: 0;
+}
+
+/* Tables */
+.table-wrapper {
+  overflow-x: auto;
+  margin: 2rem 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+th {
+  text-align: left;
+  font-weight: 400;
+  font-size: 0.6875rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--text-secondary);
+  vertical-align: top;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+td:first-child {
+  color: var(--text-primary);
+  font-weight: 400;
+}
+
+/* Tool Cards */
+.tool-grid {
+  display: grid;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.tool-card {
+  background: var(--surface);
+  padding: 1.75rem;
+  border: 1px solid var(--line);
+}
+
+.tool-card h4 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.tool-card .tagline {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.tool-card p {
+  font-size: 0.875rem;
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.tool-card .pros {
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+}
+
+.tool-card .price {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.25rem 0.75rem;
+  margin-top: 1rem;
+}
+
+/* Path Section */
+.path-block {
+  background: var(--surface);
+  padding: 2rem;
+  margin: 2rem 0;
+  border: 1px solid var(--line);
+}
+
+.path-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.path-number {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+.path-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.path-tools {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.path-block p {
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+}
+
+.workflow {
+  background: var(--bg);
+  padding: 1.25rem 1.5rem;
+  margin-top: 1.25rem;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.9;
+}
+
+/* Validation Box */
+.validation-grid {
+  display: grid;
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
+
+.validation-card {
+  background: var(--surface);
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+}
+
+.validation-card h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.validation-card p {
+  font-size: 0.8125rem;
+  margin: 0;
+}
+
+.level-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.level-item {
+  background: var(--surface);
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+}
+
+.level-item .num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.5rem;
+  color: var(--accent);
+  opacity: 0.6;
+  margin-bottom: 0.5rem;
+}
+
+.level-item h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.level-item p {
+  font-size: 0.75rem;
+  margin: 0;
+}
+
+/* Cost Control */
+.cost-table {
+  margin: 2rem 0;
+}
+
+/* Quote */
+.quote-block {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+}
+
+.quote-block p {
+  font-size: 1rem;
+  color: var(--text-primary);
+  line-height: 1.8;
+}
+
+/* Network Section */
+.network-alert {
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.network-alert h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.network-alert p {
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Summary Box */
+.summary-box {
+  background: var(--surface);
+  padding: 2rem;
+  margin-top: 3rem;
+  border: 1px solid var(--line);
+}
+
+.summary-box h3 {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+}
+
+.step-list {
+  list-style: none;
+  counter-reset: steps;
+}
+
+.step-list li {
+  counter-increment: steps;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.step-list li::before {
+  content: counter(steps);
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--accent);
+  flex-shrink: 0;
+  width: 1.5rem;
+  padding-top: 0.25rem;
+}
+
+/* Footer Nav - Fixed Bottom */
+.footer-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.9);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
+}
+
+.nav-link {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
+}
+
+.nav-link:hover {
+  color: var(--text-primary);
+}
+
+.nav-link.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+  </style>
 </head>
 <body>
+  <nav class="fixed-top-nav">
+    <a href="/index.html" class="back-link">← 返回首页</a>
+    <span class="node-id">节点 37 / 57</span>
+  </nav>
 
-<!-- 封面 -->
-<div class="page page-cover layout-classic">
-    <div class="cover-content">
-        <div class="cover-accent"></div>
-        <h1 class="cover-title heading-serif">OPC</h1>
-        <div class="cover-subtitle">客户异议应对手册</div>
-        <div class="cover-tagline">当甲方问起尖锐问题时，我们如何应答。<br>场景深度，决定信任高度。</div>
+  <div class="layout">
+    <main class="container">
+      <header>
+      <div class="phase-label">1-10</div>
+      <h1>节点37：客户异议应对</h1>
+      <div class="node-meta">节点 37 / 57 · 最后修订：2026年6月4日</div>
+    </header>
+
+    <section id="s1">
+    
+<p>node_id: 37</p>
+<p>persona: neutral</p>
+<p>cta_type: wechat</p>
+<p>keywords: [异议, 应对, 客户, 拒绝, 转化]</p>
+
+<blockquote class="decision-box"><p>客户说"我再想想" / "太贵了" / "用 XX 就够了" = 你<strong>没听懂他真正担心什么</strong>。本节点给你 10 个高频异议的应对模板。</p></blockquote>
+
+<p></section></p>
+<section id="s一">
+<p>      <div class="section-label">一、3 个常见的误区</div></p>
+
+<ol><li><strong>急着反驳</strong> — 客户会抗拒。先认同，再处理</li><li><strong>讲道理</strong> — 客户不听。讲故事、给证据</li><li><strong>强推</strong> — 直接失去客户。学会退一步</li></ol>
+<strong>黄金法则</strong>：<strong>认同感受 + 重新定义 + 案例证明 + 反问</strong>。
+
+<p></section></p>
+<section id="s二">
+<p>      <div class="section-label">二、10 个高频异议的应对模板</div></p>
+
+<h3>1. "我再想想"</h3>
+
+<strong>潜台词</strong>：还没说服自己，不想现场决定。
+
+<p>``<code></p>
+<p>我完全理解，重大决定都需要时间。</p>
+
+<p>不过我有个小建议：您想的是"价格"还是"效果"？</p>
+<p>如果是价格，月底有 8 折活动可以为您保留名额；</p>
+<p>如果是效果，我们可以先试用 7 天，您看可以吗？</p>
+<p></code>`<code></p>
+
+<h3>2. "太贵了 / 超出预算"</h3>
+
+<strong>潜台词</strong>：觉得不值这个价。
+
+<p></code>`<code></p>
+<p>确实，[产品名] 不是市面上最便宜的。</p>
+<p>但您可以算一笔账：</p>
+<ul><li>不用 [产品] 您每月花 XX 小时 × XX 元/小时 = XXX 元</li><li>用 [产品] 一年 XXXX 元</li><li>节省 80% 时间 = 每月省 XXX 元</li></ul>
+<p>（然后沉默 3 秒，让客户算账）</p>
+<p></code>`<code></p>
+
+<h3>3. "我用 XX 就够了 / 我自己来"</h3>
+
+<strong>潜台词</strong>：不信任你的差异化。
+
+<p></code>`<code></p>
+<p>完全可以，[竞品] 确实是优秀的产品。</p>
+<p>[产品名] 和它最大的区别是 XXX。</p>
+
+<p>（举 1 个具体场景，说明用你的省多少时间）</p>
+<p></code>`<code></p>
+
+<h3>4. "需要和老板/老婆商量"</h3>
+
+<strong>潜台词</strong>：决策权不在他，或者他自己没想清楚。
+
+<p></code>`<code></p>
+<p>完全理解，这种事确实要一起决定。</p>
+
+<p>要不这样，我整理一份"对比清单"发您，</p>
+<p>您直接转发给老板/老婆，他们看完能更快决定？</p>
+
+<p>我明天下午 3 点联系您，可以吗？</p>
+<p></code>`<code></p>
+
+<h3>5. "晚点再说 / 我再考虑一下"</h3>
+
+<strong>潜台词</strong>：礼貌拒绝。
+
+<p></code>`<code></p>
+<p>好的，没问题。</p>
+
+<p>不过为了不打扰您，我建议：</p>
+<p>您把 [产品名] 加到收藏夹 / 标记星标</p>
+<p>有任何问题随时微信我。</p>
+<p>3 个月后还在考虑的话，我发您一个专属优惠。</p>
+<p></code>`<code></p>
+
+<h3>6. "能便宜点吗"</h3>
+
+<strong>潜台词</strong>：试探水分。
+
+<p></code>`<code></p>
+<p>我理解您希望拿到更好的价格。</p>
+
+<p>不过 [产品名] 的定价是按成本 + 合理利润定的。</p>
+<p>最低能到 XXX 元（如果您一次性买 1 年的话）。</p>
+
+<p>您看这个方案可以吗？</p>
+<p></code>`<code></p>
+
+<h3>7. "你们和 XX 有什么不一样"</h3>
+
+<strong>潜台词</strong>：在做选型，需要差异化信息。
+
+<p></code>`<code></p>
+<p>主要 3 个不同：</p>
+<ol><li>XXX（最关键差异）</li><li>XXX（次要差异）</li><li>XXX（场景差异）</li></ol>
+<p>给您看 1 个真实用户的对比：[截图/链接]</p>
+<p></code>`<code></p>
+
+<h3>8. "现在忙 / 等会联系你"</h3>
+
+<strong>潜台词</strong>：当下不想被打扰。
+
+<p></code>`<code></p>
+<p>好的，那您先忙。</p>
+
+<p>我加您微信，明天下午 X 点发您详细信息，</p>
+<p>您有空再看看可以吗？</p>
+<p></code>`<code></p>
+
+<h3>9. "先试用一下再说"</h3>
+
+<strong>潜台词</strong>：真信号！马上推进。
+
+<p></code>`<code></p>
+<p>太棒了，试用是了解 [产品] 最好的方式。</p>
+
+<p>我现在就帮您开通，您邮箱/微信号是？</p>
+<p>开通后 5 分钟会收到邮件 + 短信。</p>
+<p></code>`<code></p>
+
+<h3>10. "再考虑一下 / 不需要了"</h3>
+
+<strong>潜台词</strong>：礼貌拒绝。
+
+<p></code>`<code></p>
+<p>好的，我尊重您的决定。</p>
+
+<p>方便我问 1 个问题吗：您最终没选 [产品] 的原因是什么？</p>
+<p>（无论是否购买，您的反馈对我非常宝贵）</p>
+<p></code>``</p>
+
+<p></section></p>
+<section id="s三">
+<p>      <div class="section-label">三、3 个通用技巧</div></p>
+
+<h3>技巧 1：先认同再反对</h3>
+
+<strong>不要说</strong>："你错了 / 不是这样的"
+<strong>要说</strong>："您说的对 / 我理解您的顾虑"
+<p>→ 然后再讲你的观点</p>
+
+<h3>技巧 2：用反问代替陈述</h3>
+
+<strong>不要说</strong>："我们的产品很好"
+<strong>要说</strong>："您觉得什么样的产品才算好？"
+
+<h3>技巧 3：讲故事 / 举案例</h3>
+
+<strong>不要说</strong>："我们帮 1000 个客户提升效率"
+<strong>要说</strong>："昨天有个上海的客户小王，用了 1 周后说......"
+
+<p></section></p>
+<section id="s四">
+<p>      <div class="section-label">四、3 个必会的"反问句"</div></p>
+
+<div class="table-wrapper"><table><thead><tr><th>场景</th><th>反问</th></tr></thead><tbody><tr><td>客户说"太贵"</td><td>"您觉得多少钱合理？"</td></tr><tr><td>客户说"我不需要"</td><td>"您平时怎么处理这个问题？"</td></tr><tr><td>客户说"晚点再聊"</td><td>"我哪天联系您最方便？"</td></tr></tbody></table></div>
+<p>反问 = 让客户思考真实需求 = 你重新掌握主动权。</p>
+
+<p></section></p>
+<section id="s五">
+<p>      <div class="section-label">五、3 个不能踩的雷区</div></p>
+
+<h3>雷区 1：贬低竞品</h3>
+
+<strong>永远不要</strong>说"XX 不行 / XX 垃圾"。<strong>客户用竞品 = 你在骂他品味差</strong>。
+
+<h3>雷区 2：承诺做不到的事</h3>
+
+<p>"包您 100% 涨粉" / "100 倍效果" = 立刻失去信任 + 后续纠纷。</p>
+
+<h3>雷区 3：纠缠不放</h3>
+
+<p>客户明确拒绝 2 次 = 停止跟进。<strong>过度推销 = 骚扰</strong>。</p>
+
+<p></section></p>
+<section id="s六">
+<p>      <div class="section-label">六、检查清单</div></p>
+
+<ul><li><input type="checkbox" disabled> 10 个异议应对话术已抄写</li><li><input type="checkbox" disabled> 准备 3 个真实客户案例（讲故事用）</li><li><input type="checkbox" disabled> 异议处理 SOP：先认同 → 反问 → 给方案 → 二次跟进</li><li><input type="checkbox" disabled> 每月看 10 个失败案例，分析原因</li><li><input type="checkbox" disabled> 不贬低竞品、不夸大效果</li></ul>
+
+<p></section></p>
+<section id="s节">
+<p>      <div class="section-label">节点资源链接</div></p>
+
+<ul><li>节点35：社群与私域运营</li><li>节点38：定价策略</li><li>节点40：用户转介绍机制</li></ul>
+    </section>
+
+    <div class="summary-box">
+      <h3>节点37检查清单</h3>
+      <p>完成本节点后，请确认所有检查项已通过。</p>
     </div>
-    <div class="section-number heading-serif">01</div>
-</div>
-
-<!-- 目录页 -->
-<div class="page">
-    <div class="toc-header">
-        <h2 class="toc-title heading-serif">目录</h2>
-        <div class="toc-line"></div>
-    </div>
-
-    <ul class="toc-list">
-        <li class="toc-item">
-            <span class="toc-num">01</span>
-            <span class="toc-name">信任与稳定性</span>
-            <span class="toc-count">合并3问</span>
-        </li>
-        <li class="toc-item">
-            <span class="toc-num">02</span>
-            <span class="toc-name">能力与专业性</span>
-            <span class="toc-count">合并3问</span>
-        </li>
-        <li class="toc-item">
-            <span class="toc-num">03</span>
-            <span class="toc-name">数据安全与合规</span>
-            <span class="toc-count">合并3问</span>
-        </li>
-        <li class="toc-item">
-            <span class="toc-num">04</span>
-            <span class="toc-name">服务持续性</span>
-            <span class="toc-count">合并3问</span>
-        </li>
-        <li class="toc-item">
-            <span class="toc-num">05</span>
-            <span class="toc-name">价格与价值</span>
-            <span class="toc-count">合并4问</span>
-        </li>
-        <li class="toc-item">
-            <span class="toc-num">06</span>
-            <span class="toc-name">交付与责任</span>
-            <span class="toc-count">合并4问</span>
-        </li>
-        <li class="toc-item">
-            <span class="toc-num">07</span>
-            <span class="toc-name">技术可行性</span>
-            <span class="toc-count">合并4问</span>
-        </li>
-        <li class="toc-item">
-            <span class="toc-num">08</span>
-            <span class="toc-name">替代与竞争</span>
-            <span class="toc-count">合并4问</span>
-        </li>
-        <li class="toc-item">
-            <span class="toc-num">09</span>
-            <span class="toc-name">同质化类问题</span>
-            <span class="toc-count">专项</span>
-        </li>
-    </ul>
-
-    <div class="section-footer">
-        <p class="footer-note">最后一页：深层逻辑汇总表</p>
-    </div>
-
-    <div class="section-number heading-serif">00</div>
-    <div class="page-number">02</div>
-</div>
-
-<!-- TLDR 速读 -->
-<div class="page">
-    <div class="tldr" style="margin: var(--space-4xl) auto; max-width: 720px; padding: var(--space-2xl); border: 1px solid #C0392B;">
-        <div class="tldr-label" style="color: #C0392B; letter-spacing: 0.18em; font-size: 0.6875rem; text-transform: uppercase; margin-bottom: var(--space-lg);">本章速读</div>
-        <ul class="tldr-list" style="list-style: none; padding: 0; margin: 0;">
-            <li style="padding: var(--space-sm) 0; border-bottom: 1px solid var(--line);"><strong style="color: var(--text-primary);">目标：</strong><span style="color: var(--text-secondary);">用应答脚本化解客户尖锐异议——从"被问倒"到"被信任"。</span></li>
-            <li style="padding: var(--space-sm) 0; border-bottom: 1px solid var(--line);"><strong style="color: var(--text-primary);">你要做的事：</strong><span style="color: var(--text-secondary);">3 步：分类异议（信任/能力/价格/合规）→ 写应答脚本 → 模拟演练 10 次。</span></li>
-            <li style="padding: var(--space-sm) 0; border-bottom: 1px solid var(--line);"><strong style="color: var(--text-primary);">不需要会：</strong><span style="color: var(--text-secondary);">专业销售心理学、复杂谈判技巧。本章只教你"OPC 一个人能用的应答包"。</span></li>
-            <li style="padding: var(--space-sm) 0;"><strong style="color: var(--text-primary);">本章产出：</strong><span style="color: var(--text-secondary);">1 份覆盖 8 大场景的应答脚本 + 1 份客户异议日志。</span></li>
-        </ul>
-    </div>
-</div>
-
-<!-- 维度一：信任与稳定性 -->
-<div class="page">
-    <div class="dimension-layout">
-        <div class="content-left">
-            <span class="dimension-badge">维度一</span>
-            <h3 class="question heading-serif">你们有多少人？万一跑路了怎么办？成立多久了？怎么证明不是皮包公司？</h3>
-            <div class="question-accent"></div>
-
-            <div class="answer-section">
-                <div class="answer-label">核心问题</div>
-                <div class="answer-text">规模小=不稳定=随时跑路，这是甲方最本能的顾虑。</div>
-            </div>
-
-            <div class="core-insight">
-                <div class="core-insight-title">核心转化</div>
-                <div class="core-insight-text">规模≠稳定，小而美反而更专注。关键在于：透明展示能力边界 + 建立系统化保障 + 用案例说话。</div>
-            </div>
-
-            <div class="answer-section">
-                <div class="answer-label">三步应答</div>
-                <div class="answer-text">
-                    1. 承认规模："我们确实是小团队，但正因为小，每一个项目都是我的名片"<br>
-                    2. 展示保障："我们有标准化SOP和长期合作伙伴，单点故障不会影响交付"<br>
-                    3. 用案例证明："您可以联系我们的客户，他们比我们更能说明问题"
-                </div>
-            </div>
-
-            <div class="highlight-text">→ 小而美 = 专注 = 负责到底</div>
-        </div>
-
-        <div class="chart-area">
-            <div class="objection-block">
-                <div class="objection-label">错误示范</div>
-                <div class="objection-text red">"我们虽然人少，但很专业……"（苍白辩解）<br><br>"您放心，我们不会跑路的……"（赌咒发誓，无效）<br><br>"我们和很多大公司有合作……"（模糊表述，不可信）</div>
-            </div>
-            <div class="objection-block">
-                <div class="objection-label">正确回答</div>
-                <div class="objection-text green">"我理解您的顾虑。确实，我们是小团队——但正因为小，您的项目没有层层外包，直接到我，由我负责到底。我们公司是SOP社区形式，确保即使我生病或者跑路了，公司的其他OPC也可以和您进行非常顺利的对接——我们公司现在有48名OPC，分别负责不同的项目，每个人都是可以做决策+开发+售前售后的全栈工程师。"</div>
-            </div>
-            <div class="objection-block">
-                <div class="objection-label">案例</div>
-                <div class="objection-text">南京棋盘石王磊：一演示客户就当场签单，因为"客户看到的是直接负责人，不是销售员转达给项目经理转达给开发人员"。</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="section-number heading-serif">01</div>
-    <div class="page-number">03</div>
-</div>
-
-<!-- 维度二：能力与专业性 -->
-<div class="page">
-    <div class="dimension-layout">
-        <div class="content-left">
-            <span class="dimension-badge">维度二</span>
-            <h3 class="question heading-serif">你做过我们行业吗？AI真的能解决我的问题吗？一个人怎么保证质量？</h3>
-            <div class="question-accent"></div>
-
-            <div class="answer-section">
-                <div class="answer-label">核心问题</div>
-                <div class="answer-text">跨行业=门外汉，单人=没有复核=质量无法保证。</div>
-            </div>
-
-            <div class="core-insight">
-                <div class="core-insight-title">核心转化</div>
-                <div class="core-insight-text">行业经验≠必须做过这个行业的公司，方法论可以迁移。关键在于：展示学习能力 + 强调定制调研 + 用"诊断先行"证明懂行。</div>
-            </div>
-
-            <div class="answer-section">
-                <div class="answer-label">三步应答</div>
-                <div class="answer-text">
-                    1. 承认差异："我没有做过您这个行业，但方法论是相通的"<br>
-                    2. 展示方法："在做您的方案之前，我会先做30分钟的深度调研，找到最适合您的切入点"<br>
-                    3. 用案例："您可以看看我们做过的类似场景，方法论是通用的"
-                </div>
-            </div>
-
-            <div class="highlight-text">→ 方法论迁移 > 行业复制</div>
-        </div>
-
-        <div class="chart-area">
-            <div class="objection-block">
-                <div class="objection-label">错误示范</div>
-                <div class="objection-text red">"我们做过很多行业，经验很丰富……"（空洞）<br><br>"AI很智能，肯定能解决您的问题……"（万能承诺）<br><br>"我一个人干过很多大项目……"（炫技）</div>
-            </div>
-            <div class="objection-block">
-                <div class="objection-label">正确回答</div>
-                <div class="objection-text green">"我确实没有做过您这个行业——但我做过类似的场景，解决的是同一个本质问题。您需要的不是模板复制，而是深度定制的方案。我的做法是：先和您聊30分钟，找到真正痛点，再出方案。当然如果我判断您的业务比较复杂或者独特，我们最好的解决方案就是入场一周左右。"</div>
-            </div>
-            <div class="objection-block">
-                <div class="objection-label">案例</div>
-                <div class="objection-text">姚双做银发经济"生命之书"：专注"用技术帮助老人留存记忆"这个垂直场景，即使没有先例，深度理解换来了用户信任。</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="section-number heading-serif">02</div>
-    <div class="page-number">04</div>
-</div>
-
-<!-- 维度三：数据安全与合规 -->
-<div class="page">
-    <div class="dimension-layout">
-        <div class="content-left">
-            <span class="dimension-badge">维度三</span>
-            <h3 class="question heading-serif">我的数据安全怎么保障？AI会不会泄露商业机密？合规出问题谁负责？</h3>
-            <div class="question-accent"></div>
-
-            <div class="answer-section">
-                <div class="answer-label">核心问题</div>
-                <div class="answer-text">AI是黑箱，数据泄露=商业机密外泄，违规=企业担责。</div>
-            </div>
-
-            <div class="core-insight">
-                <div class="core-insight-title">核心转化</div>
-                <div class="core-insight-text">安全是底线，不是可选项。关键在于：合同写明 + 技术保障 + 合规前置，不是口头承诺，是体系保障。</div>
-            </div>
-
-            <div class="answer-section">
-                <div class="answer-label">三步应答</div>
-                <div class="answer-text">
-                    1. 承认风险："您说得对，数据安全是底线，忽视合规的成本是不可承受的"<br>
-                    2. 展示保障："我们支持本地部署，数据不出您的环境，合同写明保密条款"<br>
-                    3. 合规前置："我们会在方案开始前就做合规诊断，告知您哪些能做，哪些不能做"
-                </div>
-            </div>
-
-            <div class="highlight-text">→ 安全是底线，不是可选项</div>
-        </div>
-
-        <div class="chart-area">
-            <div class="objection-block">
-                <div class="objection-label">错误示范</div>
-                <div class="objection-text red">"您放心，我们很安全……"（空洞承诺）<br><br>"AI不会泄露数据的……"（万能保证）<br><br>"合规问题我们会帮您注意……"（模糊表述）</div>
-            </div>
-            <div class="objection-block">
-                <div class="objection-label">正确回答</div>
-                <div class="objection-text green">"您提到的这个问题非常重要。忽视合规的成本是不可承受的。我们的做法是：合同写明数据归属，技术上支持私有化部署，并在方案开始前做合规诊断——先告诉您哪些能做，哪些不能做。"</div>
-            </div>
-            <div class="objection-block">
-                <div class="objection-label">案例</div>
-                <div class="objection-text">姚双"生命之书"：明确承诺"用户信任是OPC最珍贵的资产，我们帮助用户保护数据，让数据私有化"。数据安全不是口头承诺，是写入合同的条款。</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="section-number heading-serif">03</div>
-    <div class="page-number">05</div>
-</div>
-
-<!-- 维度四：服务持续性 -->
-<div class="page">
-    <div class="dimension-layout">
-        <div class="content-left">
-            <span class="dimension-badge">维度四</span>
-            <h3 class="question heading-serif">你走了项目怎么办？效果不好怎么办？后期想增加功能怎么办？</h3>
-            <div class="question-accent"></div>
-
-            <div class="answer-section">
-                <div class="answer-label">核心问题</div>
-                <div class="answer-text">单人=单点故障，没有售后保障，项目中断=损失惨重。</div>
-            </div>
-
-            <div class="core-insight">
-                <div class="core-insight-title">核心转化</div>
-                <div class="core-insight-text">长期承诺≠保证不离开，而是建立系统和流程让项目不依赖个人。关键在于：SOP标准化 + 生态协作 + 长期陪跑协议。</div>
-            </div>
-
-            <div class="answer-section">
-                <div class="answer-label">三步应答</div>
-                <div class="answer-text">
-                    1. 承认风险："您的担心很正常，这也是为什么我们建立SOP和协作网络"<br>
-                    2. 展示系统："我们有标准化交付流程，文档完整，合作伙伴可以接手"<br>
-                    3. 长期承诺："您不是一次性客户，是长期合作伙伴——小改动1-2天，大改动另议"
-                </div>
-            </div>
-
-            <div class="highlight-text">→ 系统化交付 > 个人依赖</div>
-        </div>
-
-        <div class="chart-area">
-            <div class="objection-block">
-                <div class="objection-label">错误示范</div>
-                <div class="objection-text red">"您放心，我不会走的……"（赌咒发誓）<br><br>"效果不好我们可以调整……"（模糊承诺）<br><br>"后期加功能很简单……"（轻视复杂度）</div>
-            </div>
-            <div class="objection-block">
-                <div class="objection-label">正确回答</div>
-                <div class="objection-text green">"我理解您的顾虑。我们应对的方式是：1) SOP标准化，通过Harness的架构方案，并且项目过程中我们会建立我们整个公司的项目知识库，脱敏客户数据后，我们团队任何一个人都可以通过AI快速了解到项目进展和相关知识，确保项目不依赖个人；2) 建立协作网络，即使有突发情况可以调动资源；3) 年度维保包含免费调整次数，长期陪跑。您的项目不会因为我个人状态而中断。"</div>
-            </div>
-            <div class="objection-block">
-                <div class="objection-label">数据支撑</div>
-                <div class="objection-text">OPC建立标准SOP：内容生产SOP、客户服务SOP、交付流程SOP。即使创始人状态不佳，标准化流程保证项目继续运转。</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="section-number heading-serif">04</div>
-    <div class="page-number">06</div>
-</div>
-
-<!-- 维度五：价格与价值 -->
-<div class="page">
-    <div class="dimension-layout">
-        <div class="content-left">
-            <span class="dimension-badge">维度五</span>
-            <h3 class="question heading-serif">为什么这么便宜？便宜会不会质量不行？后续还有哪些费用？</h3>
-            <div class="question-accent"></div>
-
-            <div class="answer-section">
-                <div class="answer-label">核心问题</div>
-                <div class="answer-text">价格背后是价值判断。大公司贵=有道理，OPC便宜=有猫腻？</div>
-            </div>
-
-            <div class="core-insight">
-                <div class="core-insight-title">核心转化</div>
-                <div class="core-insight-text">价格低≠质量低，成本结构差异才是原因。关键在于：解释成本结构 + 对比大厂价格 + ROI量化。</div>
-            </div>
-
-            <div class="answer-section">
-                <div class="answer-label">三步应答</div>
-                <div class="answer-text">
-                    1. 解释原因："我们价格低是因为没有办公室租金、没有管理层级、没有沟通损耗——省下的成本让给您"<br>
-                    2. 对比大厂："大厂起步10万+、3-6个月交付；我们1-8万、30分钟跑通"<br>
-                    3. 量化ROI："您花1万，可能带来50万+的节省，2-4个月回本"
-                </div>
-            </div>
-
-            <div class="highlight-text">→ 成本结构差异 > 质量差异</div>
-        </div>
-
-        <div class="chart-area">
-            <div class="objection-block">
-                <div class="objection-label">错误示范</div>
-                <div class="objection-text red">"我们性价比很高……"（空洞）<br><br>"便宜不代表质量差……"（辩解）<br><br>"大公司收的是品牌溢价……"（攻击对手）</div>
-            </div>
-            <div class="objection-block">
-                <div class="objection-label">正确回答</div>
-                <div class="objection-text green">"价格低不是因为质量低，是因为我们的成本结构不一样——没有办公室租金、没有管理层级、没有部门间沟通损耗。我们靠口碑和复购活着，做砸一个客户的代价远高于做砸一次促销。"</div>
-            </div>
-            <div class="objection-block">
-                <div class="objection-label">对比数据</div>
-                <div class="objection-text">大厂 vs OPC：部署周期3-6月 vs 30分钟，起步价10万+ vs 1-8万。价格差5-10倍，效果却不打折——因为省的是管理成本，不是服务质量。</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="section-number heading-serif">05</div>
-    <div class="page-number">07</div>
-</div>
-
-<!-- 维度六：交付与责任 -->
-<div class="page">
-    <div class="dimension-layout">
-        <div class="content-left">
-            <span class="dimension-badge">维度六</span>
-            <h3 class="question heading-serif">AI出错造成损失怎么办？项目延期了怎么办？能不能开票对公转账？</h3>
-            <div class="question-accent"></div>
-
-            <div class="answer-section">
-                <div class="answer-label">核心问题</div>
-                <div class="answer-text">AI黑箱=责任模糊，项目中断=企业损失，正规性=信任基础。</div>
-            </div>
-
-            <div class="core-insight">
-                <div class="core-insight-title">核心转化</div>
-                <div class="core-insight-text">责任归属必须事前明确，不是事后推诿。关键在于：合同写明责任边界 + 分阶段验收 + 灵活调整机制。</div>
-            </div>
-
-            <div class="answer-section">
-                <div class="answer-label">三步应答</div>
-                <div class="answer-text">
-                    1. 承认风险："AI不是万能的，出错的可能性存在——关键是如何处理"<br>
-                    2. 明确责任："合同写明：因我方原因造成的损失，我方承担；因甲方原因或不可抗力，各自分担"<br>
-                    3. 保障机制："分阶段验收+POC先行，不满意不收费——让您先验证效果再决定"
-                </div>
-            </div>
-
-            <div class="highlight-text">→ 责任明确 > 责任模糊</div>
-        </div>
-
-        <div class="chart-area">
-            <div class="objection-block">
-                <div class="objection-label">错误示范</div>
-                <div class="objection-text red">"AI很准确，一般不会出错……"（万能承诺）<br><br>"延期的话我们会尽快补救……"（模糊处理）<br><br>"我们可以开票……"（被动响应）</div>
-            </div>
-            <div class="objection-block">
-                <div class="objection-label">正确回答</div>
-                <div class="objection-text green">"您问得很好。我们应对方式是：1) 合同明确责任边界——因我方原因造成的损失，我方承担；2) 分阶段验收+POC先行，先用最小成本验证效果，不满意不收费；3) 我们可以开票、对公转账、签正式合同——正规性不是问题。"</div>
-            </div>
-            <div class="objection-block">
-                <div class="objection-label">支撑数据（含POC解释）</div>
-                <div class="objection-text">OPC价值：能开票、签合同、将对公收款，这是进入企业采购系统的基础。没有这层外壳，商业风险无法隔离。<br><br><strong style="color: var(--accent);">POC（Proof of Concept）概念验证：</strong>在正式投入开发前，用最小成本验证方案可行性。先跑通Demo，用数据证明效果，不满意不收费——让您先验证再决定。</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="section-number heading-serif">06</div>
-    <div class="page-number">08</div>
-</div>
-
-<!-- 维度七：技术可行性 -->
-<div class="page">
-    <div class="dimension-layout">
-        <div class="content-left">
-            <span class="dimension-badge">维度七</span>
-            <h3 class="question heading-serif">我们系统能对接吗？部署要多久？AI会不会突然失灵？用什么技术？</h3>
-            <div class="question-accent"></div>
-
-            <div class="answer-section">
-                <div class="answer-label">核心问题</div>
-                <div class="answer-text">技术兼容性未知，部署周期不确定，AI稳定性存疑。</div>
-            </div>
-
-            <div class="core-insight">
-                <div class="core-insight-title">核心转化</div>
-                <div class="core-insight-text">技术问题用技术事实回答，不是用承诺。关键在于：展示技术能力 + 承认技术边界 + 用案例证明。</div>
-            </div>
-
-            <div class="answer-section">
-                <div class="answer-label">三步应答</div>
-                <div class="answer-text">
-                    1. 技术透明："我们用主流技术栈，API接口兼容主流系统——具体需要看您的系统"<br>
-                    2. 承认边界："AI有局限性，我们不会承诺100%替代人工，关键是找到最优的人机协作点"<br>
-                    3. 用案例："佛山某制造业30分钟完成对接，库存周转天数优化50%+"
-                </div>
-            </div>
-
-            <div class="highlight-text">→ 技术透明 > 技术模糊</div>
-        </div>
-
-        <div class="chart-area">
-            <div class="objection-block">
-                <div class="objection-label">错误示范</div>
-                <div class="objection-text red">"我们的技术很先进，什么都能对接……"（万能技术）<br><br>"部署很简单，几分钟就好……"（轻视复杂度）<br><br>"AI很稳定，不会出问题的……"（万能稳定）</div>
-            </div>
-            <div class="objection-block">
-                <div class="objection-label">正确回答</div>
-                <div class="objection-text green">"技术问题需要具体分析。我们支持的接口类型包括REST API、Webhook、数据库直连等。部署周期取决于系统复杂度——简单系统30分钟，复杂系统1-2天。AI确实有局限性，我们不做100%替代的承诺，而是找到最优的人机协作点。"</div>
-            </div>
-            <div class="objection-block">
-                <div class="objection-label">案例</div>
-                <div class="objection-text">佛山某制造业：用AI助手30分钟完成部署，快速对接现有生产系统，实现库存周转天数优化50%+。技术可行性不是嘴上说的，是跑通Demo证明的。</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="section-number heading-serif">07</div>
-    <div class="page-number">09</div>
-</div>
-
-<!-- 维度八：替代与竞争 -->
-<div class="page">
-    <div class="dimension-layout">
-        <div class="content-left">
-            <span class="dimension-badge">维度八</span>
-            <h3 class="question heading-serif">AI工具越来越便宜，我自己用不就行了？大公司有团队，凭什么选你？</h3>
-            <div class="question-accent"></div>
-
-            <div class="answer-section">
-                <div class="answer-label">核心问题</div>
-                <div class="answer-text">工具平权时代，差异化=场景深度，不是工具本身。</div>
-            </div>
-
-            <div class="core-insight">
-                <div class="core-insight-title">核心转化</div>
-                <div class="core-insight-text">AI工具越来越平，真正的护城河只有一个：对某个细分场景比任何人都更深的理解。关键在于：承认工具平权 + 强调场景深度 + 用案例证明。</div>
-            </div>
-
-            <div class="answer-section">
-                <div class="answer-label">三步应答</div>
-                <div class="answer-text">
-                    1. 承认工具平权："您说得对，AI工具确实越来越平，这也是为什么我们不卖工具，卖的是场景解决方案"<br>
-                    2. 强调场景深度："真正的护城河不是工具，是对您这个场景的理解——我们在这个场景深耕多年"<br>
-                    3. 用案例："我们自己用AI工具，但帮您设计最优的AI应用方案——这才是价值所在"
-                </div>
-            </div>
-
-            <div class="highlight-text">→ 场景深度 > 工具本身</div>
-        </div>
-
-        <div class="chart-area">
-            <div class="objection-block">
-                <div class="objection-label">错误示范</div>
-                <div class="objection-text red">"我们用的AI比您能买到的更高级……"（工具军备竞赛）<br><br>"大公司人多，但效率低……"（攻击对手）<br><br>"我们有独家技术……"（技术神秘感）</div>
-            </div>
-            <div class="objection-block">
-                <div class="objection-label">正确回答</div>
-                <div class="objection-text green">"您说得对，AI工具确实越来越平，这也是趋势。我们的价值不在于'卖工具'，而在于'卖场景解决方案'——我知道怎么用AI解决您在这个场景的问题。大公司有团队，但专注度低；我们专注这个场景，理解比谁都深。"</div>
-            </div>
-            <div class="objection-block">
-                <div class="objection-label">支撑数据</div>
-                <div class="objection-text">斯坦福研究：85%营销内容趋同，因为AI工具训练数据相同。真正的差异化不是工具，是场景深度——"AI工具越来越平，工具带来的优势窗口期越来越短。真正的护城河只有一个：对某个细分场景比任何人都更深的理解。"</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="section-number heading-serif">08</div>
-    <div class="page-number">10</div>
-</div>
-
-<!-- 同质化类问题 -->
-<div class="page">
-    <div class="dimension-layout">
-        <div class="content-left">
-            <span class="dimension-badge">专项</span>
-            <h3 class="question heading-serif">为什么选择你们而不选择其他公司？你们和其他OPC或者SaaS公司有什么不同？</h3>
-            <div class="question-accent"></div>
-
-            <div class="answer-section">
-                <div class="answer-label">核心问题</div>
-                <div class="answer-text">为什么要选你不选别人？你的护城河在哪？</div>
-            </div>
-
-            <div class="core-insight">
-                <div class="core-insight-title">核心转化</div>
-                <div class="core-insight-text">AI工具越来越平，真正的护城河只有一个：对某个细分场景比任何人都更深的理解。关键在于：承认工具平权 + 强调场景深度 + 用AI项目数据库证明。</div>
-            </div>
-
-            <div class="answer-section">
-                <div class="answer-label">三步应答</div>
-                <div class="answer-text">
-                    1. 承认工具平权："您说得对，AI工具确实越来越平，这也是为什么我们不卖工具，卖的是场景解决方案"<br>
-                    2. 强调场景深度："真正的护城河不是工具，是对您这个场景的理解——我们在这个场景深耕多年"<br>
-                    3. AI项目数据库："我们建立了AI项目数据库，里面会有我们所有做过项目的流程和解决方案信息，这是我们公司独特私有的数据库"
-                </div>
-            </div>
-
-            <div class="highlight-text">→ AI项目数据库 > 场景深度 > 工具本身</div>
-        </div>
-
-        <div class="chart-area">
-            <div class="objection-block">
-                <div class="objection-label">错误示范</div>
-                <div class="objection-text red">"我们用的AI比您能买到的更高级……"（工具军备竞赛）<br><br>"大公司人多，但效率低……"（攻击对手）<br><br>"我们有独家技术……"（技术神秘感）</div>
-            </div>
-            <div class="objection-block">
-                <div class="objection-label">正确回答</div>
-                <div class="objection-text green">"AI工具确实越来越平。真正的护城河只有一个：对某个细分场景比任何人都更深的理解。我们的价值不在于'用AI'，而在于'用AI解决您的具体问题'。为此我们才建立了AI项目数据库，里面会有我们所有做过项目的流程和解决方案信息，这是我们公司独特私有的数据库。请相信我们能通过数百个敏捷案例，来找到您企业相关的最优解决方案。"</div>
-            </div>
-            <div class="objection-block">
-                <div class="objection-label">支撑数据</div>
-                <div class="objection-text">OPC AI项目数据库：我们所有做过项目的流程和解决方案信息，这是公司独特私有的数据库，通过数百个敏捷案例找到最优解决方案。</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="section-number heading-serif">09</div>
-    <div class="page-number">11</div>
-</div>
-
-<!-- 深层逻辑汇总表 -->
-<div class="page">
-    <h2 class="table-title heading-serif">深层逻辑汇总表</h2>
-    <div class="table-line"></div>
-
-    <table class="logic-table">
-        <thead>
-            <tr>
-                <th style="width: 15%;">维度</th>
-                <th style="width: 25%;">甲方担心</th>
-                <th style="width: 25%;">核心转化</th>
-                <th style="width: 35%;">关键词/话术</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td class="logic-category">信任与稳定</td>
-                <td class="logic-question">小团队=不稳定=随时跑路</td>
-                <td class="logic-convert">规模≠稳定，专注=负责到底</td>
-                <td class="logic-keyword">SOP社区 | 48名OPC全栈 | 直接责任人</td>
-            </tr>
-            <tr>
-                <td class="logic-category">能力与专业</td>
-                <td class="logic-question">没做过行业=门外汉</td>
-                <td class="logic-convert">方法论迁移>行业复制</td>
-                <td class="logic-keyword">诊断先行 | 深度调研 | 案例验证 | 入场一周</td>
-            </tr>
-            <tr>
-                <td class="logic-category">数据安全</td>
-                <td class="logic-question">AI黑箱=数据泄露</td>
-                <td class="logic-convert">安全是底线，不是可选项</td>
-                <td class="logic-keyword">合同保障 | 本地部署 | 合规前置 | 数据私有化</td>
-            </tr>
-            <tr>
-                <td class="logic-category">服务持续</td>
-                <td class="logic-question">单人=单点故障</td>
-                <td class="logic-convert">系统化交付>个人依赖</td>
-                <td class="logic-keyword">Harness架构 | 项目知识库 | AI知识库 | 长期陪跑</td>
-            </tr>
-            <tr>
-                <td class="logic-category">价格价值</td>
-                <td class="logic-question">便宜=质量差？</td>
-                <td class="logic-convert">成本结构差异>质量差异</td>
-                <td class="logic-keyword">成本透明 | ROI量化 | 大厂对比 | 口碑复购</td>
-            </tr>
-            <tr>
-                <td class="logic-category">交付责任</td>
-                <td class="logic-question">出问题找谁？</td>
-                <td class="logic-convert">责任明确>责任模糊</td>
-                <td class="logic-keyword">合同条款 | 分阶段验收 | POC先行 | 正规流程</td>
-            </tr>
-            <tr>
-                <td class="logic-category">技术可行</td>
-                <td class="logic-question">能落地吗？</td>
-                <td class="logic-convert">技术透明>技术模糊</td>
-                <td class="logic-keyword">接口兼容 | 部署周期 | 人机边界 | 案例验证</td>
-            </tr>
-            <tr>
-                <td class="logic-category">替代竞争</td>
-                <td class="logic-question">为什么要选你？</td>
-                <td class="logic-convert">场景深度>工具本身</td>
-                <td class="logic-keyword">场景理解 | 方案定制 | 工具赋能 | 差异化定位</td>
-            </tr>
-            <tr>
-                <td class="logic-category">同质化专项</td>
-                <td class="logic-question">你们和其他公司有什么不同？</td>
-                <td class="logic-convert">AI项目数据库>场景深度</td>
-                <td class="logic-keyword">数百个敏捷案例 | 私有数据库 | 最优解决方案</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <div class="section-footer">
-        <div class="divider"></div>
-        <h3 style="font-size: 14px; font-weight: 400; margin-bottom: var(--space-md); color: var(--text-primary);">总纲</h3>
-        <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.8; max-width: 58ch;">
-            <strong style="color: var(--accent);">AI放大的是已有能力，不能替代缺失能力。</strong>OPC的核心竞争力从来不是"便宜"或"快"，而是"懂"——懂行业、懂场景、懂客户的真实问题。当甲方质疑时，我们不辩解、不回避、不承诺万能，而是用<strong style="color: var(--text-primary);">透明展示能力边界 + 系统化保障 + 案例说话</strong>来建立信任。
-        </p>
-    </div>
-
-    <div class="section-number heading-serif">10</div>
-    <div class="page-number">12</div>
-</div>
-
-<!-- 封底 -->
-<div class="page page-cover layout-classic">
-    <div class="cover-content">
-        <div class="cover-accent"></div>
-        <h1 class="cover-title heading-serif">OPC</h1>
-        <div class="cover-subtitle">客户异议应答深层逻辑手册</div>
-        <div class="cover-tagline">场景深度 > 工具平权 > 信任建立</div>
-    </div>
-    <div class="section-number heading-serif"> FIN </div>
-</div>
-
+    </main>
+  </div>
+
+  <nav class="footer-nav">
+    <a href="/nodes/36-ai-customer-service/index.html" class="nav-link"><span>←</span> 节点36</a>
+    <a href="/nodes/38-pricing/index.html" class="nav-link">节点38 <span>→</span></a>
+  </nav>
+
+  <script>
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').slice(1);
+      const target = document.getElementById(targetId);
+      if (target) {
+        window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+      }
+    });
+  });
+  </script>
 </body>
 </html>

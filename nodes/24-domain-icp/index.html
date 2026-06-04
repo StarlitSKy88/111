@@ -3,15 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="域名购买与ICP备案 - OPC节点百科">
+  <meta name="description" content="节点24：域名购买与ICP备案 - OPC节点百科">
   <meta name="theme-color" content="#111110">
   <title>节点24：域名购买与ICP备案 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../_design-tokens.css">
-  <link rel="stylesheet" href="../_layout-templates.css">
   <style>
 
 :root {
@@ -35,6 +33,10 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   background: var(--bg);
   color: var(--text-primary);
@@ -43,6 +45,72 @@ body {
   line-height: 1.9;
   letter-spacing: 0.04em;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* 移动端整体适配 - 使用 900px breakpoint 与现有代码一致 */
+@media (max-width: 900px) {
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+
+  body {
+    font-size: 14px;
+  }
+
+  .layout {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding: 4rem 16px 2rem !important;
+    margin: 0 !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .sidebar-toc {
+    display: none !important;
+  }
+
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  section {
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  section > * {
+    max-width: 100% !important;
+    overflow-x: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  section p {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+
+  h1 {
+    font-size: clamp(36px, 10vw, 48px) !important;
+    line-height: 1.05 !important;
+  }
 }
 
 /* Layout with Sidebar */
@@ -159,68 +227,6 @@ body {
   letter-spacing: 0.08em;
 }
 
-@media (max-width: 900px) {
-  html, body {
-    overflow-x: hidden !important;
-    max-width: 100vw !important;
-  }
-
-  .layout {
-    display: block !important;
-    grid-template-columns: 1fr !important;
-    width: 100% !important;
-    max-width: 100vw !important;
-    padding: 4rem 16px 2rem !important;
-  }
-
-  .sidebar-toc {
-    display: none !important;
-  }
-
-  .fixed-top-nav {
-    padding: 0.75rem clamp(1rem, 4vw, 1.5rem);
-  }
-
-  section {
-    width: 100% !important;
-    max-width: 100vw !important;
-    overflow-x: hidden !important;
-  }
-
-  section p,
-  section li,
-  section td,
-  section th {
-    width: 100% !important;
-    max-width: 100% !important;
-    word-break: break-word !important;
-    overflow-wrap: break-word !important;
-  }
-
-  .hero-title {
-    font-size: clamp(24px, 8vw, 48px) !important;
-    word-break: break-all !important;
-    overflow-wrap: break-word !important;
-    white-space: normal !important;
-    max-width: 100% !important;
-    line-height: 1.1 !important;
-  }
-
-  .highlight-box,
-  .step-card,
-  .code-block {
-    width: 100% !important;
-    max-width: 100% !important;
-    overflow-x: hidden !important;
-  }
-
-  table {
-    display: block !important;
-    overflow-x: auto !important;
-    font-size: 12px !important;
-  }
-}
-
 /* Header */
 header {
   padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
@@ -231,6 +237,52 @@ header {
 /* Main content */
 main {
   padding-bottom: 5rem;
+}
+
+/* 移动端底部导航适配 - 合并到 900px breakpoint */
+@media (max-width: 900px) {
+  main {
+    padding-bottom: 6rem; /* 为固定底部导航预留空间 */
+  }
+
+  .footer-nav {
+    overflow-x: auto;
+    justify-content: space-between;
+  }
+
+  .nav-link {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .table-wrapper {
+    position: relative;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 1.5rem 0;
+    border: 1px solid var(--line);
+  }
+
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
 }
 
 /* Section anchors offset for sticky header */
@@ -251,14 +303,49 @@ section p, section li {
 .table-wrapper {
   margin: 1.5rem 0;
   border: 1px solid var(--line);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-wrapper::after {
+  content: "";
+  display: block;
+}
+
+/* 移动端滑动提示 */
+@media (max-width: 900px) {
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  .table-wrapper {
+    position: relative;
+    padding-bottom: 24px;
+  }
 }
 
 table {
   font-size: 0.875rem;
+  min-width: 560px;
 }
 
-td, th {
-  padding: 0.875rem 1rem;
+@media (max-width: 900px) {
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
 }
 
 /* Tool Cards */
@@ -314,6 +401,14 @@ h1 {
   margin-bottom: var(--space-xl);
 }
 
+/* 移动端H1适配 */
+@media (max-width: 900px) {
+  h1 {
+    font-size: clamp(36px, 10vw, 48px);
+    line-height: 1.05;
+  }
+}
+
 .phase-label {
   font-size: 13px;
   color: var(--accent);
@@ -331,6 +426,16 @@ h1 {
   color: var(--text-secondary);
   max-width: 44ch;
   line-height: 1.8;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* 移动端副标题适配 */
+@media (max-width: 900px) {
+  .subtitle {
+    font-size: 14px;
+    max-width: 100%;
+  }
 }
 
 .node-meta {
@@ -383,6 +488,21 @@ p {
   color: var(--text-secondary);
   line-height: 1.9;
   margin-bottom: 1.25rem;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* 移动端段落适配 */
+@media (max-width: 900px) {
+  p {
+    padding-right: 0.5rem;
+    word-break: break-all;
+    white-space: normal;
+  }
+
+  section p {
+    padding-right: 0;
+  }
 }
 
 .decision-box {
@@ -708,46 +828,29 @@ td:first-child {
 </head>
 <body>
   <nav class="fixed-top-nav">
-    <a href="/" class="back-link">← 返回首页</a>
+    <a href="/index.html" class="back-link">← 返回首页</a>
     <span class="node-id">节点 24 / 57</span>
   </nav>
 
-  <div class="layout layout-policy">
-    <aside class="sidebar-toc">
-      <div class="toc-title">目录</div>
-      <ul class="toc-list">
-        <li class="toc-item"><a href="#s2" class="toc-link">一、域名购买（10分钟）</a></li>
-        <li class="toc-item"><a href="#s3" class="toc-link">二、ICP备案：最让OPC头疼但必须做的事</a></li>
-        <li class="toc-item"><a href="#s4" class="toc-link">三、备案通过后的必做操作</a></li>
-        <li class="toc-item"><a href="#s5" class="toc-link">四、常见翻车</a></li>
-        <li class="toc-item"><a href="#s6" class="toc-link">五、检查清单</a></li>
-        <li class="toc-item"><a href="#s8" class="toc-link">节点资源链接</a></li>
-      </ul>
-    </aside>
-        <main>
+  <div class="layout">
+    <main class="container">
       <header>
-      <div class="phase-label">上线准备</div>
-      <h1>域名购买与ICP备案</h1>
-      <div class="node-meta">节点 24 / 57 · 最后修订：2026年5月11日</div>
+      <div class="phase-label">0-1</div>
+      <h1>节点24：域名购买与ICP备案</h1>
+      <div class="node-meta">节点 24 / 57 · 最后修订：2026年6月4日</div>
     </header>
-
-    <section class="tldr" aria-label="本章速读">
-      <div class="tldr-label">本章速读</div>
-      <ul class="tldr-list">
-        <li><strong>目标：</strong>让产品有正式网址 + 合法在中国大陆被访问。</li>
-        <li><strong>你要做的事：</strong>3 步：在腾讯云/阿里云买域名 → 提交 ICP 备案（7-20 天）→ 解析到服务器并配 SSL。</li>
-        <li><strong>不需要会：</strong>DNS 协议、CDN 配置、复杂 HTTPS 优化。本章只教你"OPC 最小上线三件套"。</li>
-        <li><strong>本章产出：</strong>1 个备案通过的域名 + 1 张 SSL 证书。</li>
-      </ul>
-    </section>
 
     <section id="s1">
     
+<p>node_id: 24</p>
+<p>persona: neutral</p>
+<p>cta_type: course</p>
+<p>keywords: [备案, 分钟, 阿里云, 腾讯云, 个人备案]</p>
 
 <blockquote class="decision-box"><p>产品做好了，但你的网址还是 <code>localhost:3000</code>。现在你需要一个正式的域名，并且让你的网站合法地在中国大陆被访问。两步走：买域名 → 备案。全程一个人可以搞定。</p></blockquote>
 
 <p></section></p>
-<section id="s2">
+<section id="s一">
 <p>      <div class="section-label">一、域名购买（10分钟）</div></p>
 
 <h3>2026年推荐注册商</h3>
@@ -763,7 +866,7 @@ td:first-child {
 <strong>注册10年</strong>（或者最长年限）。域名到期忘记续费 = 网站挂掉 + 被别人抢注。一年的域名费还不够一顿火锅，别省这个。
 
 <p></section></p>
-<section id="s3">
+<section id="s二">
 <p>      <div class="section-label">二、ICP备案：最让OPC头疼但必须做的事</div></p>
 
 <h3>先搞清楚：你需要备案吗？</h3>
@@ -785,7 +888,7 @@ td:first-child {
 <strong>OPC注意</strong>：个人备案的网站不能涉及企业/商业/电商/论坛/社交。如果你做的是商业产品 → 先用个体户或公司备案（参考节点23）。
 
 <p></section></p>
-<section id="s4">
+<section id="s三">
 <p>      <div class="section-label">三、备案通过后的必做操作</div></p>
 
 <h3>1. 网站底部加备案号</h3>
@@ -807,19 +910,19 @@ td:first-child {
 <p>备案通过 → 域名解析生效 → 立刻申请SSL证书（节点25会讲）。</p>
 
 <p></section></p>
-<section id="s5">
+<section id="s四">
 <p>      <div class="section-label">四、常见翻车</div></p>
 
 <div class="table-wrapper"><table><thead><tr><th>翻车</th><th>原因</th><th>避免</th></tr></thead><tbody><tr><td>备案被拒</td><td>网站名称带"中国"或与实际内容不符</td><td>用你产品的真实名字，不加修饰词</td></tr><tr><td>备案被拒</td><td>个人备案但网站内容明显是商业经营</td><td>注册个体户用企业备案</td></tr><tr><td>备案周期拉长</td><td>材料有问题被打回重审</td><td>提交前让服务商客服先看一遍</td></tr><tr><td>域名过期导致备案注销</td><td>备案后域名过期未续费</td><td>域名续费10年，设闹钟提前30天</td></tr></tbody></table></div>
 
 <p></section></p>
-<section id="s6">
+<section id="s五">
 <p>      <div class="section-label">五、检查清单</div></p>
 
 <ul><li><input type="checkbox" disabled> 域名已购买（建议10年）</li><li><input type="checkbox" disabled> 服务器已购买（最便宜配置即可）</li><li><input type="checkbox" disabled> 备案材料已准备（身份证、域名证书）</li><li><input type="checkbox" disabled> 备案已提交</li><li><input type="checkbox" disabled> 备案号已挂网站底部</li><li><input type="checkbox" disabled> 公安备案已完成（如当地要求）</li></ul>
 
 <p></section></p>
-<section id="s8">
+<section id="s节">
 <p>      <div class="section-label">节点资源链接</div></p>
 
 <ul><li>节点22：上线内容填充</li><li>节点23：公司注册与主体选择</li><li>节点25：网站部署与SSL</li></ul>
@@ -833,16 +936,11 @@ td:first-child {
   </div>
 
   <nav class="footer-nav">
-    <a href="/nodes/23-company-registration/index.html" class="nav-link">
-      <span>←</span> 节点23
-    </a>
-    <a href="/nodes/25-website-deployment/index.html" class="nav-link">
-      节点25 <span>→</span>
-    </a>
+    <a href="/nodes/23-company-registration/index.html" class="nav-link"><span>←</span> 节点23</a>
+    <a href="/nodes/25-website-deployment/index.html" class="nav-link">节点25 <span>→</span></a>
   </nav>
 
   <script>
-  // Smooth scroll
   document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', function(e) {
       e.preventDefault();
@@ -853,30 +951,6 @@ td:first-child {
       }
     });
   });
-
-  // Scroll spy for TOC
-  const sections = document.querySelectorAll('section[id]');
-  const tocLinks = document.querySelectorAll('.toc-link');
-
-  function updateActiveLink() {
-    const scrollPos = window.scrollY + 120;
-    sections.forEach(section => {
-      const top = section.offsetTop;
-      const height = section.offsetHeight;
-      const id = section.getAttribute('id');
-      if (scrollPos >= top && scrollPos < top + height) {
-        tocLinks.forEach(link => {
-          link.classList.remove('active');
-          if (link.getAttribute('href') === '#' + id) {
-            link.classList.add('active');
-          }
-        });
-      }
-    });
-  }
-
-  window.addEventListener('scroll', updateActiveLink, { passive: true });
-  updateActiveLink();
   </script>
 </body>
 </html>

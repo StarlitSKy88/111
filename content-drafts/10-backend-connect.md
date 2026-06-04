@@ -1,3 +1,10 @@
+---
+node_id: 10
+persona: ranmu
+cta_type: wechat
+keywords: [分钟, 用户认证, 步骤, 免费额度, 内置]
+---
+
 # 节点10：后端连接与数据库
 
 > **面向OPC**：Hello World跑通了，但你的页面是死的——没有数据、没有用户、没有记忆。本节点教你2026年OPC最省事的后端方案：Supabase，30分钟从零到有数据库+API。

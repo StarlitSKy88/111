@@ -3,22 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="你已经有了登录系统、数据库。现在要做出产品的第一个核心功能——用户真正会用的那个东西。本章不是教你写代码，是教你跟AI配合的Vibecoding循环：一次Prompt → 测试 → 出错 → 修复 → 再测试，直到功能完整可用。">
+  <meta name="description" content="节点12：核心功能1开发 - OPC节点百科">
   <meta name="theme-color" content="#111110">
-  <title>核心功能1开发 - OPC节点百科</title>
+  <title>节点12：核心功能1开发 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../_design-tokens.css">
-  <link rel="stylesheet" href="../_layout-templates.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
+
 :root {
   --bg: #111110;
   --surface: #1A1A18;
   --text-primary: #F0EDE6;
-  --text-secondary: #B8B4AE;
-  --text-tertiary: #A8A49E;
+  --text-secondary: #7A7670;
+  --text-tertiary: #4A4744;
   --accent: #C0392B;
   --line: #2A2A28;
   --line-light: rgba(255,255,255,0.06);
@@ -32,9 +31,87 @@
   --space-4xl: 128px;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; font-weight: 400; line-height: 1.9; letter-spacing: 0.04em; -webkit-font-smoothing: antialiased; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
+html {
+  overflow-x: hidden;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* 移动端整体适配 - 使用 900px breakpoint 与现有代码一致 */
+@media (max-width: 900px) {
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+
+  body {
+    font-size: 14px;
+  }
+
+  .layout {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding: 4rem 16px 2rem !important;
+    margin: 0 !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .sidebar-toc {
+    display: none !important;
+  }
+
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  section {
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  section > * {
+    max-width: 100% !important;
+    overflow-x: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  section p {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+
+  h1 {
+    font-size: clamp(36px, 10vw, 48px) !important;
+    line-height: 1.05 !important;
+  }
+}
 
 /* Layout with Sidebar */
 .layout {
@@ -58,8 +135,14 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
   scrollbar-color: var(--line) transparent;
 }
 
-.sidebar-toc::-webkit-scrollbar { width: 4px; }
-.sidebar-toc::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+.sidebar-toc::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar-toc::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 2px;
+}
 
 .toc-title {
   font-size: 0.6875rem;
@@ -69,9 +152,13 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
   margin-bottom: 1.25rem;
 }
 
-.toc-list { list-style: none; }
+.toc-list {
+  list-style: none;
+}
 
-.toc-item { margin-bottom: 0.75rem; }
+.toc-item {
+  margin-bottom: 0.75rem;
+}
 
 .toc-link {
   font-size: 0.8125rem;
@@ -85,10 +172,21 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
   line-height: 1.4;
 }
 
-.toc-link:hover { color: var(--text-primary); border-left-color: var(--accent); }
-.toc-link.active { color: var(--accent); border-left-color: var(--accent); font-weight: 400; }
+.toc-link:hover {
+  color: var(--text-primary);
+  border-left-color: var(--accent);
+}
 
-.section-number { position: absolute; top: var(--space-2xl); right: clamp(24px, 8vw, 120px); font-size: clamp(100px, 22vw, 280px); font-weight: 100; color: var(--text-primary); opacity: 0.03; line-height: 1; letter-spacing: -0.05em; font-family: 'Noto Serif JP', serif; pointer-events: none; user-select: none; }
+.toc-link.active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  font-weight: 400;
+}
+
+.toc-link.sub {
+  padding-left: 1.75rem;
+  font-size: 0.75rem;
+}
 
 /* Fixed Top Nav */
 .fixed-top-nav {
@@ -118,7 +216,9 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
   transition: color 0.3s;
 }
 
-.back-link:hover { color: var(--text-primary); }
+.back-link:hover {
+  color: var(--text-primary);
+}
 
 .node-id {
   font-family: 'Noto Serif JP', serif;
@@ -127,59 +227,568 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
   letter-spacing: 0.08em;
 }
 
-.hero { padding: var(--space-4xl) 0 var(--space-3xl); position: relative; }
-.hero-content { position: relative; z-index: 1; max-width: 800px; }
-.hero-label { font-size: 13px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-md); }
-.hero-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
-.hero-title { font-family: 'Noto Serif JP', serif; font-size: clamp(48px, 10vw, 96px); font-weight: 300; letter-spacing: -0.03em; line-height: 0.95; margin-bottom: var(--space-xl); }
-.hero-desc { font-size: 16px; color: var(--text-secondary); line-height: 1.8; max-width: 44ch; }
+/* Header */
+header {
+  padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(2rem, 5vh, 3rem);
+}
 
-.content-section { padding: var(--space-3xl) 0; border-top: 1px solid var(--line); }
-.section-label { font-size: 13px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-md); }
-.section-label::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+/* Main content */
+main {
+  padding-bottom: 5rem;
+}
 
-.highlight-box { background: var(--surface); border: 1px solid var(--accent); padding: var(--space-lg); margin: var(--space-xl) 0; }
-.highlight-label { font-size: 12px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-sm); }
-.highlight-text { font-size: 15px; color: var(--text-primary); line-height: 1.7; }
+/* 移动端底部导航适配 - 合并到 900px breakpoint */
+@media (max-width: 900px) {
+  main {
+    padding-bottom: 6rem; /* 为固定底部导航预留空间 */
+  }
 
-.quote-block { border-left: 2px solid var(--accent); padding-left: var(--space-md); margin: var(--space-lg) 0; }
-.quote-text { font-size: 15px; color: var(--text-secondary); font-style: italic; }
+  .footer-nav {
+    overflow-x: auto;
+    justify-content: space-between;
+  }
 
-.code-block { background: var(--surface); border: 1px solid var(--line); padding: var(--space-lg); margin: var(--space-md) 0; font-family: 'Geist Mono', 'SF Mono', monospace; }
-.code-label { font-size: 12px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-sm); }
-.code-content { font-size: 13px; color: var(--text-secondary); line-height: 1.7; white-space: pre-wrap; }
+  .nav-link {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
 
-.checklist-box { background: var(--surface); border: 1px solid var(--line); padding: var(--space-lg); margin: var(--space-md) 0; }
-.checklist-label { font-size: 12px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-sm); }
-.checklist-content { font-size: 13px; color: var(--text-tertiary); line-height: 1.9; font-family: monospace; }
+  .table-wrapper {
+    position: relative;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 1.5rem 0;
+    border: 1px solid var(--line);
+  }
 
-.step-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-lg); margin-bottom: var(--space-md); position: relative; }
-.step-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--accent); }
-.step-header { display: flex; align-items: baseline; gap: var(--space-md); margin-bottom: var(--space-md); }
-.step-num { font-family: 'Noto Serif JP', serif; font-size: 48px; font-weight: 300; color: var(--accent); opacity: 0.5; line-height: 1; }
-.step-title { font-family: 'Noto Serif JP', serif; font-size: 22px; font-weight: 400; }
-.step-content { font-size: 14px; color: var(--text-secondary); line-height: 1.8; padding-left: 64px; }
-@media (max-width: 768px) { .step-content { padding-left: 0; } }
-.step-content p { margin-bottom: var(--space-sm); }
-.step-content strong { color: var(--text-primary); }
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
 
-.prompt-box { background: var(--surface); border: 1px solid var(--line); padding: var(--space-lg); margin: var(--space-md) 0; }
-.prompt-label { font-size: 12px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-sm); }
-.prompt-content { font-size: 12px; color: var(--text-secondary); line-height: 1.7; white-space: pre-wrap; font-family: 'Geist Mono', 'SF Mono', monospace; }
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
 
-.loop-diagram { background: var(--surface); border: 1px solid var(--line); padding: var(--space-lg); margin: var(--space-md) 0; font-family: monospace; }
-.loop-title { font-size: 12px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-sm); }
-.loop-content { font-size: 13px; color: var(--text-tertiary); line-height: 1.9; white-space: pre-wrap; }
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
+}
 
-.test-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: var(--space-md) 0; }
-.test-table th { text-align: left; color: var(--accent); font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; padding: var(--space-sm); border-bottom: 1px solid var(--line); font-size: 12px; }
-.test-table td { padding: var(--space-sm); border-bottom: 1px solid var(--line-light); color: var(--text-secondary); vertical-align: top; }
-.test-table td:first-child { color: var(--text-primary); font-weight: 500; width: 30%; }
+/* Section anchors offset for sticky header */
+section {
+  scroll-margin-top: 2rem;
+}
 
-.done-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: var(--space-md) 0; }
-.done-table th { text-align: left; color: var(--accent); font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; padding: var(--space-sm); border-bottom: 1px solid var(--line); font-size: 12px; }
-.done-table td { padding: var(--space-sm); border-bottom: 1px solid var(--line-light); color: var(--text-secondary); vertical-align: top; }
+section h2 {
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+}
 
+section p, section li {
+  font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
+  line-height: 1.9;
+}
+
+/* Table improvements */
+.table-wrapper {
+  margin: 1.5rem 0;
+  border: 1px solid var(--line);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-wrapper::after {
+  content: "";
+  display: block;
+}
+
+/* 移动端滑动提示 */
+@media (max-width: 900px) {
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  .table-wrapper {
+    position: relative;
+    padding-bottom: 24px;
+  }
+}
+
+table {
+  font-size: 0.875rem;
+  min-width: 560px;
+}
+
+@media (max-width: 900px) {
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
+}
+
+/* Tool Cards */
+.tool-grid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* Path blocks */
+.path-block {
+  padding: 1.5rem;
+}
+
+.workflow {
+  padding: 1rem 1.25rem;
+  font-size: 0.8125rem;
+}
+
+/* Validation cards */
+.validation-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.validation-card {
+  padding: 1.25rem;
+}
+
+/* Level items */
+.level-grid {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+/* Decision box */
+.decision-box {
+  padding: 1.25rem 1.5rem;
+}
+
+/* Main content */
+.phase-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+h1 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xl);
+}
+
+/* 移动端H1适配 */
+@media (max-width: 900px) {
+  h1 {
+    font-size: clamp(36px, 10vw, 48px);
+    line-height: 1.05;
+  }
+}
+
+.phase-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+.phase-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+
+.subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 44ch;
+  line-height: 1.8;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* 移动端副标题适配 */
+@media (max-width: 900px) {
+  .subtitle {
+    font-size: 14px;
+    max-width: 100%;
+  }
+}
+
+.node-meta {
+  margin-top: 2rem;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+}
+
+/* Sections */
+section {
+  padding-bottom: clamp(3rem, 10vh, 5rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(3rem, 10vh, 5rem);
+}
+
+section:last-of-type {
+  border-bottom: none;
+}
+
+.section-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.375rem, 4vw, 1.875rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+h3 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.125rem, 3vw, 1.375rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+p {
+  color: var(--text-secondary);
+  line-height: 1.9;
+  margin-bottom: 1.25rem;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* 移动端段落适配 */
+@media (max-width: 900px) {
+  p {
+    padding-right: 0.5rem;
+    word-break: break-all;
+    white-space: normal;
+  }
+
+  section p {
+    padding-right: 0;
+  }
+}
+
+.decision-box {
+  background: var(--surface);
+  border-left: 2px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.decision-box p {
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  margin: 0;
+}
+
+/* Tables */
+.table-wrapper {
+  overflow-x: auto;
+  margin: 2rem 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+th {
+  text-align: left;
+  font-weight: 400;
+  font-size: 0.6875rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--text-secondary);
+  vertical-align: top;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+td:first-child {
+  color: var(--text-primary);
+  font-weight: 400;
+}
+
+/* Tool Cards */
+.tool-grid {
+  display: grid;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.tool-card {
+  background: var(--surface);
+  padding: 1.75rem;
+  border: 1px solid var(--line);
+}
+
+.tool-card h4 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.tool-card .tagline {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.tool-card p {
+  font-size: 0.875rem;
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.tool-card .pros {
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+}
+
+.tool-card .price {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.25rem 0.75rem;
+  margin-top: 1rem;
+}
+
+/* Path Section */
+.path-block {
+  background: var(--surface);
+  padding: 2rem;
+  margin: 2rem 0;
+  border: 1px solid var(--line);
+}
+
+.path-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.path-number {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+.path-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.path-tools {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.path-block p {
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+}
+
+.workflow {
+  background: var(--bg);
+  padding: 1.25rem 1.5rem;
+  margin-top: 1.25rem;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.9;
+}
+
+/* Validation Box */
+.validation-grid {
+  display: grid;
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
+
+.validation-card {
+  background: var(--surface);
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+}
+
+.validation-card h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.validation-card p {
+  font-size: 0.8125rem;
+  margin: 0;
+}
+
+.level-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.level-item {
+  background: var(--surface);
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+}
+
+.level-item .num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.5rem;
+  color: var(--accent);
+  opacity: 0.6;
+  margin-bottom: 0.5rem;
+}
+
+.level-item h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.level-item p {
+  font-size: 0.75rem;
+  margin: 0;
+}
+
+/* Cost Control */
+.cost-table {
+  margin: 2rem 0;
+}
+
+/* Quote */
+.quote-block {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+}
+
+.quote-block p {
+  font-size: 1rem;
+  color: var(--text-primary);
+  line-height: 1.8;
+}
+
+/* Network Section */
+.network-alert {
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.network-alert h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.network-alert p {
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Summary Box */
+.summary-box {
+  background: var(--surface);
+  padding: 2rem;
+  margin-top: 3rem;
+  border: 1px solid var(--line);
+}
+
+.summary-box h3 {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+}
+
+.step-list {
+  list-style: none;
+  counter-reset: steps;
+}
+
+.step-list li {
+  counter-increment: steps;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.step-list li::before {
+  content: counter(steps);
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--accent);
+  flex-shrink: 0;
+  width: 1.5rem;
+  padding-top: 0.25rem;
+}
+
+/* Footer Nav - Fixed Bottom */
 .footer-nav {
   position: fixed;
   bottom: 0;
@@ -194,6 +803,7 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
   backdrop-filter: blur(12px);
   border-top: 1px solid var(--line);
 }
+
 .nav-link {
   font-size: 0.75rem;
   color: var(--text-tertiary);
@@ -204,591 +814,155 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
   gap: 0.5rem;
   transition: color 0.3s;
 }
-.nav-link:hover { color: var(--text-primary); }
-.nav-link.disabled { opacity: 0.3; pointer-events: none; }
 
-.fade-section { opacity: 1; transform: translateY(0); }
-.fade-section.visible { opacity: 1; transform: translateY(0); transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.nav-link:hover {
+  color: var(--text-primary);
+}
+
+.nav-link.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
   </style>
 </head>
 <body>
   <nav class="fixed-top-nav">
-    <a href="/" class="back-link">← 返回首页</a>
+    <a href="/index.html" class="back-link">← 返回首页</a>
     <span class="node-id">节点 12 / 57</span>
   </nav>
-  <div class="section-number">12</div>
 
-  <div class="layout layout-classic">
-    <aside class="sidebar-toc">
-      <div class="toc-title">目录</div>
-      <ul class="toc-list">
-        <li class="toc-item"><a href="#s1" class="toc-link">启动前检查清单</a></li>
-        <li class="toc-item"><a href="#s2" class="toc-link">给AI的完整Prompt模板</a></li>
-        <li class="toc-item"><a href="#s3" class="toc-link">Vibecoding循环</a></li>
-        <li class="toc-item"><a href="#s4" class="toc-link">常见踩坑及标准修复Prompt</a></li>
-        <li class="toc-item"><a href="#s5" class="toc-link">功能完成标志</a></li>
-        <li class="toc-item"><a href="#s6" class="toc-link">git commit 规范</a></li>
-        <li class="toc-item"><a href="#s7" class="toc-link">总纲</a></li>
-      </ul>
-    </aside>
-
-    <main>
-    <header class="hero fade-section">
-      <div class="hero-content">
-        <div class="hero-label">节点 12 · 核心功能开发</div>
-        <h1 class="hero-title">核心功能1开发</h1>
-        <p class="hero-desc">你已经有了登录系统、数据库。现在要做出产品的第一个核心功能——用户真正会用的那个东西。本章不是教你写代码，是教你跟AI配合的Vibecoding循环：一次Prompt → 测试 → 出错 → 修复 → 再测试，直到功能完整可用。</p>
-      </div>
+  <div class="layout">
+    <main class="container">
+      <header>
+      <div class="phase-label">0-1</div>
+      <h1>节点12：核心功能1开发</h1>
+      <div class="node-meta">节点 12 / 57 · 最后修订：2026年6月4日</div>
     </header>
 
-    <section class="tldr fade-section" aria-label="本章速读">
-      <div class="tldr-label">本章速读</div>
-      <ul class="tldr-list">
-        <li><strong>目标：</strong>用 Vibecoding 循环做出产品的第一个核心功能——用户真正会用的那个。</li>
-        <li><strong>你要做的事：</strong>写启动检查清单 → 给 AI 发需求 Prompt → 测试 → 出错就修复 → 直到完整可用。</li>
-        <li><strong>不需要会：</strong>手写代码、调试器、单元测试。本章你只负责"提需求 + 验收"。</li>
-        <li><strong>本章产出：</strong>1 个端到端可用的核心功能 + 1 套"如何跟 AI 协作"的工作流。</li>
-      </ul>
-    </section>
-
-    <section id="s1" class="content-section fade-section">
-      <div class="section-label">启动前检查清单</div>
-
-      <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: var(--space-lg); line-height: 1.8;">在给AI写任何一个字之前，先确认下面5件事：</p>
-
-      <div class="checklist-box">
-        <div class="checklist-content">
-□ 1. 原型的核心页面截图打开了吗？<br>
-      → 截图就是你的"需求文档"。不用写PRD。<br><br>
-□ 2. Supabase的表建好了吗？<br>
-      → 核心功能1涉及几张表？字段都加了吗？<br>
-      → 回顾节点10：每个功能至少对应一张表。<br><br>
-□ 3. RLS策略开了吗？<br>
-      → 如果这个功能需要保护用户数据，先配好RLS（见节点11）。<br><br>
-□ 4. 明确"核心功能1"是什么——用一句话能说清楚吗？<br>
-      → 好的描述："用户输入一个链接，系统提取关键信息并保存"<br>
-      → 不好的描述："做一个内容分析工具"<br><br>
-□ 5. 准备好了一个干净的 git commit 起点吗？<br>
-      → git status 看有没有未提交的改动<br>
-      → 有的话先 commit（见节点09）
-        </div>
-      </div>
-
-      <p style="font-size: 14px; color: var(--accent); margin-top: var(--space-lg);">5项全部打勾 → 开始写Prompt。</p>
-    </section>
-
-    <section id="s2" class="content-section fade-section">
-      <div class="section-label">给AI的完整Prompt模板</div>
-
-      <div class="prompt-box">
-        <div class="prompt-content">【项目背景】
-产品名：[你的产品名]
-目标用户：[一句话描述你的用户]
-核心场景：[用户打开产品后要完成什么任务]
-
-【当前技术栈】
-- 前端：纯HTML/CSS/JS，单文件应用
-- 后端：Supabase（Project URL + anon key 见下方）
-- 认证：Supabase Auth（已实现邮箱登录）
-- 部署：Vercel
-
-【Supabase信息】
-- Project URL: https://xxxxxxxxxxxx.supabase.co
-- anon key: [你的anon key]
-
-【本月要开发的功能】
-功能名称：[核心功能1的名称]
-功能描述：[用一段话说清楚这个功能从用户视角是怎么工作的]
-
-具体交互流程：
-1. 用户看到 [页面A]，上面有 [元素1、元素2]
-2. 用户点击/输入 [操作描述]
-3. 系统做 [后端逻辑：查询Supabase / 调用AI / 计算 / ...]
-4. 用户看到 [结果页面B]，展示 [结果内容]
-5. 如果出错，显示 [错误提示文案]
-
-【数据需求】
-涉及Supabase表：[表名]
-需要调用的API：
-- 读取：[select什么字段，按什么条件]
-- 写入：[insert哪些字段，值从哪来]
-
-【UI要求】
-- 参考截图：[附上原型截图]
-- 颜色：主色#C0392B，背景#111110，文字#F0EDE6
-- 移动端适配
-- 按钮最小触控区44×44px
-- 交互反馈：加载中显示转圈，成功/失败显示提示
-
-【边界情况】（告诉AI要考虑的特殊场景）
-- 输入为空时怎么处理？
-- 数据不存在时怎么展示？
-- 网络断掉时怎么提示？
-- 用户连续点击按钮怎么防抖？
-
-【代码规范】
-- 单文件 index.html
-- CDN引入 supabase-js
-- ES Module方式（&lt;script type="module"&gt;）
-- 代码分节，用注释标注每个区块是干什么的
-- 中文注释</div>
-      </div>
-
-      <div class="highlight-box" style="margin-top: var(--space-lg);">
-        <div class="highlight-label">使用技巧</div>
-        <div class="highlight-text"><strong>一次只做一个功能。</strong> 不要在一段Prompt里塞两个功能——AI容易搞混，出错后你也不知道是哪部分出的问题。</div>
-      </div>
-    </section>
-
-    <section id="s3" class="content-section fade-section">
-      <div class="section-label">Vibecoding循环：OPC的开发节奏</div>
-
-      <div class="highlight-box">
-        <div class="highlight-label">什么是Vibecoding</div>
-        <div class="highlight-text">Vibecoding = 你描述需求 → AI生成代码 → 你测试 → 发现不对 → 描述问题 → AI修复 → 你重新测试 → 直到对为止。</div>
-      </div>
-
-      <p style="font-size: 14px; color: var(--text-secondary); margin-top: var(--space-lg); line-height: 1.8;">你不是在"调试代码"。你是在"调试AI的理解"。这个心态转变很重要。</p>
-
-      <div class="loop-diagram">
-        <div class="loop-title">标准循环流程</div>
-        <div class="loop-content">┌─────────────────────────────────────────────┐
-│               Vibecoding 循环                  │
-│                                              │
-│  ① 写Prompt ──→ ② AI生成代码                 │
-│       ↑                            ↓         │
-│       │                            │         │
-│  ④ 描述差异 ←── ③ 测试发现不对               │
-│       │                            │         │
-│       └────→ ② AI重新生成 ──→ ③ 测试         │
-│                                              │
-│  结束条件：③ 测试全部通过 → git commit        │
-│                                              │
-│  熔断条件：连续5轮还是不对 → 换个更小的目标    │
-└─────────────────────────────────────────────┘</div>
-      </div>
-
-      <div class="step-card" style="margin-top: var(--space-lg);">
-        <div class="step-header">
-          <span class="step-num">循环四步</span>
-          <h3 class="step-title">详解</h3>
-        </div>
-        <div class="step-content">
-          <p><strong>① 写Prompt</strong><br>把第二节的模板填好，发给AI。<strong>关键</strong>：一次只说一个功能。</p>
-          <p style="margin-top: var(--space-md);"><strong>② AI生成代码</strong><br>AI给你返回代码。你需要做的事（按此顺序）：<br>
-          1. 复制AI生成的完整HTML代码<br>
-          2. 粘贴到你的 index.html 中，替换全部内容（Ctrl/⌘ + A → 粘贴 → Ctrl/⌘ + S 保存）<br>
-          3. 刷新浏览器</p>
-          <p style="margin-top: var(--space-md);"><strong>③ 测试</strong><br>在浏览器里，假装你是一个第一次用这个产品的用户：</p>
-          <table class="test-table" style="margin-top: var(--space-sm);">
-            <thead>
-              <tr>
-                <th>测试什么</th>
-                <th>怎么测</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>页面正常打开了吗？</td>
-                <td>刷新浏览器，看有没有白屏</td>
-              </tr>
-              <tr>
-                <td>样式对吗？</td>
-                <td>深色背景？按钮颜色对？布局没歪？</td>
-              </tr>
-              <tr>
-                <td>核心功能走通了吗？</td>
-                <td>按原型流程完整走一遍</td>
-              </tr>
-              <tr>
-                <td>边界情况呢？</td>
-                <td>输入框留空直接点提交 → 有提示吗？</td>
-              </tr>
-              <tr>
-                <td>手机端呢？</td>
-                <td>打开浏览器的手机模拟模式（F12 → 手机图标）</td>
-              </tr>
-            </tbody>
-          </table>
-          <p style="margin-top: var(--space-md); color: var(--text-tertiary);"><strong>关键</strong>：用控制台看有没有报错。<br>
-          Chrome：F12 → Console 标签页<br>
-          红色文字 = 错误。<strong>截图保存。</strong><br>
-          黄色文字 = 警告。可以暂时忽略。</p>
-          <p style="margin-top: var(--space-md);"><strong>④ 描述差异</strong><br>当测试发现不对时，<strong>不要自己去改代码</strong>。把问题描述清楚发回给AI：</p>
-          <div class="prompt-box" style="margin-top: var(--space-sm);">
-            <div class="prompt-content">测试发现问题：
-
-1. [具体问题描述]
-   期望：[应该是什么样的]
-   实际：[现在是什么样的]
-   复现步骤：[怎么操作能触发这个问题]
-
-2. [第二个问题]
-   ...
-
-3. 控制台报错截图：
-   [粘贴截图]
-
-请修复以上问题，只改相关部分，保持其他功能不变。</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="quote-block" style="margin-top: var(--space-lg);">
-        <p class="quote-text"><strong>描述问题的黄金法则</strong>：<br>
-        坏："按钮坏了" → AI不知道怎么修<br>
-        好："点击'保存'按钮后，页面没反应，控制台显示 'saveMessage is not defined'"</p>
-      </div>
-
-      <div class="step-card" style="margin-top: var(--space-lg);">
-        <div class="step-header">
-          <span class="step-num">熔断机制</span>
-          <h3 class="step-title">什么时候停下来换个方法</h3>
-        </div>
-        <div class="step-content">
-          <p>连续5轮修复后功能还是不对 → 不要继续发同一个Prompt。</p>
-          <p style="margin-top: var(--space-md);">换个策略：<br>
-          1. <strong>缩小目标</strong>："先只做功能的第一小步——只做输入框+按钮，先不管结果展示"<br>
-          2. <strong>换种描述</strong>：用完全不同的语言重新描述功能<br>
-          3. <strong>把问题拆开</strong>："按钮点不动"和"数据没保存"是两个问题，分开报</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="s4" class="content-section fade-section">
-      <div class="section-label">常见踩坑及标准修复Prompt</div>
-
-      <div class="step-card">
-        <div class="step-header">
-          <span class="step-num">坑1</span>
-          <h3 class="step-title">AI忘了引入Supabase SDK</h3>
-        </div>
-        <div class="step-content">
-          <p><strong>症状</strong>：控制台报 supabase is not defined 或 createClient is not defined</p>
-          <p style="margin-top: var(--space-md);"><strong>修复Prompt</strong>：</p>
-          <div class="prompt-box">
-            <div class="prompt-content">请在index.html的&lt;head&gt;标签内加入Supabase CDN引用：
-
-&lt;script type="importmap"&gt;
-{
-  "imports": {
-    "@supabase/supabase-js": "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm"
-  }
-}
-&lt;/script&gt;
-
-然后用 import { createClient } from '@supabase/supabase-js' 方式引入。</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="step-card">
-        <div class="step-header">
-          <span class="step-num">坑2</span>
-          <h3 class="step-title">样式丢失</h3>
-        </div>
-        <div class="step-content">
-          <p><strong>症状</strong>：刷新后页面布局乱了、颜色不对、元素堆在一起</p>
-          <p style="margin-top: var(--space-md);"><strong>修复Prompt</strong>：</p>
-          <div class="prompt-box">
-            <div class="prompt-content">样式丢失了。请检查是否有以下问题：
-1. &lt;style&gt;标签是否在&lt;head&gt;内？
-2. CSS选择器是否和之前一致？
-3. 是否有重复的CSS规则互相覆盖？
-
-只检查样式部分，不要改功能代码。</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="step-card">
-        <div class="step-header">
-          <span class="step-num">坑3</span>
-          <h3 class="step-title">Supabase操作中user_id没填</h3>
-        </div>
-        <div class="step-content">
-          <p><strong>症状</strong>：插入数据时报错，或数据插入成功但查不出来</p>
-          <p style="margin-top: var(--space-md);"><strong>修复Prompt</strong>：</p>
-          <div class="prompt-box">
-            <div class="prompt-content">现在messages表有user_id字段，所有插入操作需要带上当前登录用户的ID。
-
-请修改所有 supabase.from('messages').insert() 调用，加上：
-user_id: (await supabase.auth.getUser()).data.user.id
-
-同时修改所有 .select() 调用，加上过滤条件只查当前用户的数据。</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="step-card">
-        <div class="step-header">
-          <span class="step-num">坑4</span>
-          <h3 class="step-title">AI一次改了太多，把之前好的功能改坏了</h3>
-        </div>
-        <div class="step-content">
-          <p><strong>症状</strong>：修了一个小bug，结果登录功能不工作了</p>
-          <p style="margin-top: var(--space-md);"><strong>修复Prompt</strong>：</p>
-          <div class="prompt-box">
-            <div class="prompt-content">之前的功能被你的修改影响了。请恢复到上一版，只修改我指定的这一个问题：
-[具体问题]
-
-其他所有功能（登录、消息列表等）保持不动。</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="highlight-box" style="margin-top: var(--space-lg); border-color: var(--accent);">
-        <div class="highlight-label">防坑策略</div>
-        <div class="highlight-text"><strong>每改完一个功能就 git commit。</strong> 这样即使AI改坏了，你可以 git checkout -- index.html 瞬间恢复。</div>
-      </div>
-    </section>
-
-    <section id="s5" class="content-section fade-section">
-      <div class="section-label">功能完成标志</div>
-
-      <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: var(--space-lg); line-height: 1.8;"><strong>判断标准（必须全部通过）</strong>：</p>
-
-      <table class="done-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>要求</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>一个完全不懂你的产品的朋友，能在不问你任何问题的情况下，独立走完核心功能</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>在手机端操作一遍，没有任何按钮点不到</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>控制台（F12 → Console）没有任何红色错误</td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td>输入框留空点提交，有中文提示（不是英文报错）</td>
-          </tr>
-          <tr>
-            <td>5</td>
-            <td>断网状态下点击按钮，有"网络异常，请检查连接"的提示</td>
-          </tr>
-          <tr>
-            <td>6</td>
-            <td>连着操作10次，功能正常不出错</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <p style="font-size: 14px; color: var(--accent); margin-top: var(--space-lg);">6项全部通过 → 功能1完成。</p>
-    </section>
-
-    <section id="s6" class="content-section fade-section">
-      <div class="section-label">git commit 规范</div>
-
-      <div class="code-block">
-        <div class="code-content">git add .
-git commit -m "完成核心功能1：[功能名称]
-- 实现[功能要点1]
-- 实现[功能要点2]
-- 修复[数量]个边界情况
-- 移动端适配完成"
-git push</div>
-      </div>
-
-      <div class="quote-block" style="margin-top: var(--space-lg);">
-        <p class="quote-text"><strong>每个功能一个commit</strong>不只是为了记录——以后如果核心功能2的开发弄乱了核心功能1的代码，你可以精确回到"功能1完成时"的那个版本。</p>
-      </div>
-    </section>
-
-    <section id="s7" class="content-section fade-section">
-      <div class="section-label">总纲</div>
-      <div class="quote-block" style="border-left-width: 3px;">
-        <p class="quote-text" style="font-size: 18px; color: var(--text-primary);">Vibecoding循环是你作为OPC的核心工作节奏。它不需要你会写代码——但需要你<strong style="color: var(--accent);">会描述问题</strong>。</p>
-      </div>
-
-      <div class="highlight-box" style="margin-top: var(--space-xl);">
-        <div class="highlight-label">OPC开发节奏</div>
-        <div class="highlight-text">
-          <strong>周一上午</strong>：写好Prompt → AI生成<br>
-          <strong>周一下午</strong>：测试 → 发现问题 → 描述差异<br>
-          <strong>周二上午</strong>：AI修复 → 重新测试<br>
-          <strong>周二下午</strong>：功能通过 → git commit<br>
-          <strong>周三</strong>：启动核心功能2
-        </div>
-      </div>
-
-      <p style="font-size: 13px; color: var(--text-tertiary); margin-top: var(--space-lg); letter-spacing: 0.05em;">
-        （本文写于2026年5月。）
-      </p>
+    <section id="s1">
     
-    <!-- 🔵 2026年时效性内容更新 -->
-    <section id="s2026" class="section fade-section">
-      <div style="margin-bottom:var(--space-lg);">
-        <span style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);">2026 UPDATE</span>
-      </div>
-      <div class="prose" style="max-width:680px;">
-        
-<blockquote style="border-left:2px solid var(--accent);padding:var(--space-sm) var(--space-md);margin:var(--space-md) 0;color:var(--text-secondary);font-style:italic;background:var(--surface);border-radius:0 6px 6px 0;font-size:0.95rem;">**面向OPC**：环境搭好了，数据库通了，现在写第一行真正创造价值的代码。核心功能1是你产品的灵魂——用户打开产品就是为了用它。本节点告诉你：怎么一个人把第一个核心功能做出来，而且做对。</blockquote>
+<p>node_id: 12</p>
+<p>persona: neutral</p>
+<p>cta_type: wechat</p>
+<p>keywords: [核心功能, 分钟, 状态, 三种状态, 步骤]</p>
 
+<blockquote class="decision-box"><p>环境搭好了，数据库通了，现在写第一行真正创造价值的代码。核心功能1是你产品的灵魂——用户打开产品就是为了用它。本节点告诉你：怎么一个人把第一个核心功能做出来，而且做对。</p></blockquote>
 
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">一、先定义，再编码</h3>
+<p></section></p>
+<section id="s一">
+<p>      <div class="section-label">一、先定义，再编码</div></p>
 
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">核心功能1的一句话定义</h4>
+<h3>核心功能1的一句话定义</h3>
 
-<blockquote style="border-left:2px solid var(--accent);padding:var(--space-sm) var(--space-md);margin:var(--space-md) 0;color:var(--text-secondary);font-style:italic;background:var(--surface);border-radius:0 6px 6px 0;font-size:0.95rem;">[用户] 通过 [操作] 获得 [结果]</blockquote>
+<p>> [用户] 通过 [操作] 获得 [结果]</p>
 
-<table style="width:100%;border-collapse:collapse;margin:var(--space-md) 0;font-size:0.88rem;">
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">产品</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">一句话</td></tr>
-<tr><th style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">OPC节点百科</th><th style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">创业者通过节点导航，找到下一步该做什么</th></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">AI简历优化</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">求职者上传简历，3分钟拿到优化建议</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">记账工具</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">用户记录收支，看到本月花了多少钱</td></tr>
-</table>
+<div class="table-wrapper"><table><thead><tr><th>产品</th><th>一句话</th></tr></thead><tbody><tr><td>OPC节点百科</td><td>创业者通过节点导航，找到下一步该做什么</td></tr><tr><td>AI简历优化</td><td>求职者上传简历，3分钟拿到优化建议</td></tr><tr><td>记账工具</td><td>用户记录收支，看到本月花了多少钱</td></tr></tbody></table></div>
+<strong>如果你写不出这句话，说明你还没想清楚。别写代码。</strong>
 
-<p style="margin:var(--space-sm) 0;color:var(--text-secondary);font-weight:400;"><strong>如果你写不出这句话，说明你还没想清楚。别写代码。</strong></p>
+<p></section></p>
+<section id="s二">
+<p>      <div class="section-label">二、2026年OPC开发核心功能1的最优路径</div></p>
 
+<h3>路径：AI辅助 + 分步验证</h3>
 
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">二、2026年OPC开发核心功能1的最优路径</h3>
+<p>``<code></p>
+<ol><li>用AI生成第一版代码（10分钟）</li><li>本地跑通核心流程（30分钟）</li><li>接入真实数据（1小时）</li><li>处理错误状态（30分钟）</li><li>加Loading/Empty/Error三种状态（30分钟）</li></ol>──────────────────────────────
+<p>总计：≈3小时完成核心功能1的80%</p>
+<p></code>`<code></p>
 
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">路径：AI辅助 + 分步验证</h4>
+<h3>步骤1：用AI生成第一版</h3>
 
-<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code>1. 用AI生成第一版代码（10分钟）
-2. 本地跑通核心流程（30分钟）
-3. 接入真实数据（1小时）
-4. 处理错误状态（30分钟）
-5. 加Loading/Empty/Error三种状态（30分钟）
-──────────────────────────────
-总计：≈3小时完成核心功能1的80%
-</code></pre>
+<p>在Cursor中打开项目，用这个prompt模板：</p>
 
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">步骤1：用AI生成第一版</h4>
+<p></code>`<code></p>
+<p>我在做一个[产品描述]，技术栈是[前端框架]+Supabase。</p>
+<p>请帮我实现核心功能：[一句话定义]</p>
+<p>要求：</p>
+<ol><li>只需要一个页面，包含输入区和结果展示区</li><li>用Supabase存取数据（表名：[表名]）</li><li>不做登录（先用匿名方式）</li><li>样式简洁，移动端友好</li></ol></code>`<code>
 
-<p style="margin:var(--space-xs) 0;color:var(--text-secondary);line-height:1.9;">在Cursor中打开项目，用这个prompt模板：</p>
+<h3>步骤2：本地跑通</h3>
 
-<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code>我在做一个[产品描述]，技术栈是[前端框架]+Supabase。
-请帮我实现核心功能：[一句话定义]
-要求：
-1. 只需要一个页面，包含输入区和结果展示区
-2. 用Supabase存取数据（表名：[表名]）
-3. 不做登录（先用匿名方式）
-4. 样式简洁，移动端友好
-</code></pre>
+<p></code>`<code></p>
+<p>打开浏览器 → 输入数据 → 点提交 → 看到结果 → 检查Supabase表中是否有数据</p>
+<p></code>`<code></p>
 
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">步骤2：本地跑通</h4>
+<strong>如果这5步有任何一步卡住了 → 回去改prompt重新生成，不要手动改代码。</strong>
 
-<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code>打开浏览器 → 输入数据 → 点提交 → 看到结果 → 检查Supabase表中是否有数据
-</code></pre>
+<h3>步骤3：三种状态的处理</h3>
 
-<p style="margin:var(--space-sm) 0;color:var(--text-secondary);font-weight:400;"><strong>如果这5步有任何一步卡住了 → 回去改prompt重新生成，不要手动改代码。</strong></p>
+<p>核心功能1必须覆盖三种状态（否则用户会觉得产品是坏的）：</p>
 
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">步骤3：三种状态的处理</h4>
+<p></code>`<code>javascript</p>
+// 状态1：加载中
+<p>if (loading) return '<div class="loading">分析中...</div>';</p>
 
-<p style="margin:var(--space-xs) 0;color:var(--text-secondary);line-height:1.9;">核心功能1必须覆盖三种状态（否则用户会觉得产品是坏的）：</p>
-
-<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code>// 状态1：加载中
-if (loading) return '&lt;div class="loading"&gt;分析中...&lt;/div&gt;';
- 
 // 状态2：空状态（首次使用）
-if (!data) return '&lt;div class="empty"&gt;上传你的简历，开始第一次分析&lt;/div&gt;';
- 
+<p>if (!data) return '<div class="empty">上传你的简历，开始第一次分析</div>';</p>
+
 // 状态3：错误
-if (error) return '&lt;div class="error"&gt;出错了：${error.message}，请刷新重试&lt;/div&gt;';
- 
+<p>if (error) return '<div class="error">出错了：${error.message}，请刷新重试</div>';</p>
+
 // 正常展示
-return renderResult(data);
-</code></pre>
+<p>return renderResult(data);</p>
+<p></code>``</p>
 
+<p></section></p>
+<section id="s三">
+<p>      <div class="section-label">三、核心功能1的完成标准（上线前自检）</div></p>
 
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">三、核心功能1的完成标准（上线前自检）</h3>
+<div class="table-wrapper"><table><thead><tr><th>标准</th><th>检查方式</th></tr></thead><tbody><tr><td>输入→输出完整链路</td><td>无痕浏览器，从头走一遍</td></tr><tr><td>数据持久化</td><td>刷新页面，数据还在</td></tr><tr><td>三种状态都有</td><td>分别触发Loading/Empty/Error</td></tr><tr><td>移动端可用</td><td>手机微信打开，核心流程走通</td></tr><tr><td>20秒内完成操作</td><td>计时：从打开到看到结果≤20秒</td></tr></tbody></table></div>
 
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">标准</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">检查方式</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">输入→输出完整链路</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">无痕浏览器，从头走一遍</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">数据持久化</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">刷新页面，数据还在</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">三种状态都有</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">分别触发Loading/Empty/Error</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">移动端可用</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">手机微信打开，核心流程走通</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">20秒内完成操作</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">计时：从打开到看到结果≤20秒</td></tr>
+<p></section></p>
+<section id="s四">
+<p>      <div class="section-label">四、最容易犯的两个错误</div></p>
 
+<h3>错误1：想要"完美"的第一版</h3>
 
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">四、最容易犯的两个错误</h3>
+<p>❌ 做了3天还在调UI颜色和动画  </p>
+<p>✅ 功能跑通就停手。UI优化等节点14一起做。</p>
 
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">错误1：想要"完美"的第一版</h4>
+<h3>错误2：跳过错误处理</h3>
 
-<p style="margin:var(--space-xs) 0;color:var(--text-secondary);line-height:1.9;">❌ 做了3天还在调UI颜色和动画  </p>
-<p style="margin:var(--space-xs) 0;color:var(--text-secondary);line-height:1.9;">✅ 功能跑通就停手。UI优化等节点14一起做。</p>
+<p>❌ "这个输入框用户不会填错的"  </p>
+<p>✅ 空输入、超长输入、特殊字符全部处理。自己测试时用真实数据，别用"test"。</p>
 
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">错误2：跳过错误处理</h4>
+<p></section></p>
+<section id="s五">
+<p>      <div class="section-label">五、检查清单</div></p>
 
-<p style="margin:var(--space-xs) 0;color:var(--text-secondary);line-height:1.9;">❌ "这个输入框用户不会填错的"  </p>
-<p style="margin:var(--space-xs) 0;color:var(--text-secondary);line-height:1.9;">✅ 空输入、超长输入、特殊字符全部处理。自己测试时用真实数据，别用"test"。</p>
+<ul><li><input type="checkbox" disabled> 核心功能的一句话定义已写出</li><li><input type="checkbox" disabled> AI生成的代码核心流程能跑通</li><li><input type="checkbox" disabled> 数据能正确存入Supabase</li><li><input type="checkbox" disabled> 三个状态（Loading/Empty/Error）都已处理</li><li><input type="checkbox" disabled> 手机微信打开核心流程可用</li><li><input type="checkbox" disabled> 从打开到看到结果≤20秒</li></ul>
 
+<p></section></p>
+<section id="s节">
+<p>      <div class="section-label">节点资源链接</div></p>
 
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">五、检查清单</h3>
-
-<ul style="list-style:none;padding:0;margin:var(--space-sm) 0;">
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 核心功能的一句话定义已写出</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] AI生成的代码核心流程能跑通</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 数据能正确存入Supabase</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 三个状态（Loading/Empty/Error）都已处理</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 手机微信打开核心流程可用</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 从打开到看到结果≤20秒</li>
-
-        <li class="toc-item"><a href="#s2026" class="toc-link">2026年更新</a></li></ul>
-
-
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">节点资源链接</h3>
-
-<ul style="list-style:none;padding:0;margin:var(--space-sm) 0;">
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点11：用户认证系统</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点13：核心功能2开发</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点14：数据展示与交互</li>
-</ul>
-
-
-      </div>
-      <p style="font-size:12px;color:var(--text-tertiary);margin-top:var(--space-xl);letter-spacing:0.05em;">
-        以上内容基于2026年5月最新实践编写，工具版本和价格可能更新，请以官方文档为准。
-      </p>
+<ul><li>节点11：用户认证系统</li><li>节点13：核心功能2开发</li><li>节点14：数据展示与交互</li></ul>
     </section>
 
-</section>
-
+    <div class="summary-box">
+      <h3>节点12检查清单</h3>
+      <p>完成本节点后，请确认所有检查项已通过。</p>
+    </div>
     </main>
   </div>
 
-    <nav class="footer-nav">
-      <a href="/nodes/11-auth-system/index.html" class="nav-link">
-        <span class="nav-arrow">←</span>
-        节点11：用户认证系统
-      </a>
-      <a href="/nodes/13-core-feature-2/index.html" class="nav-link">
-        节点13：核心功能2开发
-        <span class="nav-arrow">→</span>
-      </a>
-    </nav>
+  <nav class="footer-nav">
+    <a href="/nodes/11-auth-system/index.html" class="nav-link"><span>←</span> 节点11</a>
+    <a href="/nodes/13-core-feature-2/index.html" class="nav-link">节点13 <span>→</span></a>
+  </nav>
 
   <script>
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
-
-    const tocLinks = document.querySelectorAll('.toc-link');
-    const sections = document.querySelectorAll('.content-section');
-    const observer2 = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          tocLinks.forEach(link => link.classList.remove('active'));
-          const activeLink = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
-          if (activeLink) activeLink.classList.add('active');
-        }
-      });
-    }, { threshold: 0.3 });
-    sections.forEach(section => observer2.observe(section));
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').slice(1);
+      const target = document.getElementById(targetId);
+      if (target) {
+        window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+      }
+    });
+  });
   </script>
 </body>
 </html>

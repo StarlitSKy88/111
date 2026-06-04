@@ -3,22 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="防火墙配置、安全监控、漏洞修复，网站上线后就应该做">
+  <meta name="description" content="节点52：服务器安全 - OPC节点百科">
   <meta name="theme-color" content="#111110">
-  <title>服务器安全防护 - OPC节点百科</title>
+  <title>节点52：服务器安全 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../_design-tokens.css">
-  <link rel="stylesheet" href="../_layout-templates.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
+
 :root {
   --bg: #111110;
   --surface: #1A1A18;
   --text-primary: #F0EDE6;
-  --text-secondary: #B8B4AE;
-  --text-tertiary: #A8A49E;
+  --text-secondary: #7A7670;
+  --text-tertiary: #4A4744;
   --accent: #C0392B;
   --line: #2A2A28;
   --line-light: rgba(255,255,255,0.06);
@@ -31,19 +30,90 @@
   --space-3xl: 96px;
   --space-4xl: 128px;
 }
-* { margin: 0; padding: 0; box-sizing: border-box; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  overflow-x: hidden;
+}
+
 body {
   background: var(--bg);
   color: var(--text-primary);
-  font-family: 'Noto Sans SC', sans-serif;
-  font-weight: 400;
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
   line-height: 1.9;
   letter-spacing: 0.04em;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
+/* 移动端整体适配 - 使用 900px breakpoint 与现有代码一致 */
+@media (max-width: 900px) {
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
 
-/* Layout with Sidebar TOC */
+  body {
+    font-size: 14px;
+  }
+
+  .layout {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding: 4rem 16px 2rem !important;
+    margin: 0 !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .sidebar-toc {
+    display: none !important;
+  }
+
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  section {
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  section > * {
+    max-width: 100% !important;
+    overflow-x: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  section p {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+
+  h1 {
+    font-size: clamp(36px, 10vw, 48px) !important;
+    line-height: 1.05 !important;
+  }
+}
+
+/* Layout with Sidebar */
 .layout {
   display: grid;
   grid-template-columns: 220px minmax(0, 1fr);
@@ -51,16 +121,6 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
-}
-
-@media (max-width: 900px) {
-  .layout {
-    grid-template-columns: 1fr;
-  }
-
-  .sidebar-toc {
-    display: none;
-  }
 }
 
 /* Sidebar TOC */
@@ -123,20 +183,12 @@ body {
   font-weight: 400;
 }
 
-.section-number {
-  position: absolute;
-  top: var(--space-2xl);
-  right: clamp(24px, 8vw, 120px);
-  font-size: clamp(100px, 22vw, 280px);
-  font-weight: 100;
-  color: var(--text-primary);
-  opacity: 0.03;
-  line-height: 1;
-  letter-spacing: -0.05em;
-  font-family: 'Noto Serif JP', serif;
-  pointer-events: none;
-  user-select: none;
+.toc-link.sub {
+  padding-left: 1.75rem;
+  font-size: 0.75rem;
 }
+
+/* Fixed Top Nav */
 .fixed-top-nav {
   position: fixed;
   top: 0;
@@ -151,913 +203,778 @@ body {
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line);
 }
-.fixed-top-nav a {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.75rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-.fixed-top-nav a:hover { color: var(--text-primary); }
-.fixed-top-nav .nav-center {
+
+.back-link {
   font-size: 0.75rem;
   letter-spacing: 0.1em;
-  color: var(--text-tertiary);
-}
-.hero {
-  padding: var(--space-4xl) 0 var(--space-3xl);
-  position: relative;
-}
-.hero-content {
-  position: relative;
-  z-index: 1;
-  max-width: 800px;
-}
-.hero-label {
-  font-size: 13px;
-  color: var(--accent);
-  letter-spacing: 0.2em;
   text-transform: uppercase;
-  margin-bottom: var(--space-lg);
+  color: var(--text-secondary);
+  text-decoration: none;
   display: flex;
   align-items: center;
-  gap: var(--space-md);
+  gap: 0.5rem;
+  transition: color 0.3s;
 }
-.hero-label::before {
-  content: '';
-  width: 32px;
-  height: 1px;
-  background: var(--accent);
+
+.back-link:hover {
+  color: var(--text-primary);
 }
-.hero-title {
+
+.node-id {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+}
+
+/* Header */
+header {
+  padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(2rem, 5vh, 3rem);
+}
+
+/* Main content */
+main {
+  padding-bottom: 5rem;
+}
+
+/* 移动端底部导航适配 - 合并到 900px breakpoint */
+@media (max-width: 900px) {
+  main {
+    padding-bottom: 6rem; /* 为固定底部导航预留空间 */
+  }
+
+  .footer-nav {
+    overflow-x: auto;
+    justify-content: space-between;
+  }
+
+  .nav-link {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .table-wrapper {
+    position: relative;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 1.5rem 0;
+    border: 1px solid var(--line);
+  }
+
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
+}
+
+/* Section anchors offset for sticky header */
+section {
+  scroll-margin-top: 2rem;
+}
+
+section h2 {
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+}
+
+section p, section li {
+  font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
+  line-height: 1.9;
+}
+
+/* Table improvements */
+.table-wrapper {
+  margin: 1.5rem 0;
+  border: 1px solid var(--line);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-wrapper::after {
+  content: "";
+  display: block;
+}
+
+/* 移动端滑动提示 */
+@media (max-width: 900px) {
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  .table-wrapper {
+    position: relative;
+    padding-bottom: 24px;
+  }
+}
+
+table {
+  font-size: 0.875rem;
+  min-width: 560px;
+}
+
+@media (max-width: 900px) {
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
+}
+
+/* Tool Cards */
+.tool-grid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* Path blocks */
+.path-block {
+  padding: 1.5rem;
+}
+
+.workflow {
+  padding: 1rem 1.25rem;
+  font-size: 0.8125rem;
+}
+
+/* Validation cards */
+.validation-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.validation-card {
+  padding: 1.25rem;
+}
+
+/* Level items */
+.level-grid {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+/* Decision box */
+.decision-box {
+  padding: 1.25rem 1.5rem;
+}
+
+/* Main content */
+.phase-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+h1 {
   font-family: 'Noto Serif JP', serif;
   font-size: clamp(48px, 10vw, 96px);
   font-weight: 300;
   letter-spacing: -0.03em;
   line-height: 0.95;
+  color: var(--text-primary);
   margin-bottom: var(--space-xl);
 }
-.hero-desc {
-  font-size: 16px;
-  color: var(--text-secondary);
-  line-height: 1.8;
-  max-width: 44ch;
+
+/* 移动端H1适配 */
+@media (max-width: 900px) {
+  h1 {
+    font-size: clamp(36px, 10vw, 48px);
+    line-height: 1.05;
+  }
 }
-.content-section {
-  padding: var(--space-3xl) 0;
-  border-top: 1px solid var(--line);
-}
-.section-label {
+
+.phase-label {
   font-size: 13px;
   color: var(--accent);
-  letter-spacing: 0.2em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   margin-bottom: var(--space-lg);
   display: flex;
   align-items: center;
   gap: var(--space-md);
 }
-.section-label::before {
-  content: '';
-  width: 24px;
-  height: 1px;
-  background: var(--accent);
-}
-.grid-asymmetric {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: var(--space-3xl);
-  align-items: start;
-}
-@media (max-width: 900px) {
-  .grid-asymmetric {
-    grid-template-columns: 1fr;
-    gap: var(--space-2xl);
-  }
-}
-.chapter-heading {
-  font-family: 'Noto Serif JP', serif;
-  font-size: clamp(28px, 5vw, 48px);
-  font-weight: 300;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-  margin-bottom: var(--space-xl);
-  max-width: 16em;
-}
-.body-text {
-  font-size: 15px;
-  line-height: 1.9;
+.phase-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+
+.subtitle {
+  font-size: 16px;
   color: var(--text-secondary);
   max-width: 44ch;
-  margin-bottom: var(--space-md);
-}
-.body-text strong { color: var(--text-primary); font-weight: 500; }
-.body-text .accent { color: var(--accent); font-weight: 500; }
-.quote-block {
-  padding-left: var(--space-md);
-  border-left: 1px solid var(--accent);
-  margin: var(--space-xl) 0;
-}
-.quote-text {
-  font-size: 16px;
   line-height: 1.8;
-  color: var(--text-secondary);
-  max-width: 40ch;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
-.data-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
+
+/* 移动端副标题适配 */
+@media (max-width: 900px) {
+  .subtitle {
+    font-size: 14px;
+    max-width: 100%;
+  }
 }
-.data-card-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--space-md) var(--space-lg);
-  border-bottom: 1px solid var(--line);
-}
-.data-card-row:last-child { border-bottom: none; }
-.data-label {
-  font-size: 12px;
+
+.node-meta {
+  margin-top: 2rem;
+  font-size: 0.75rem;
   color: var(--text-tertiary);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
+}
+
+/* Sections */
+section {
+  padding-bottom: clamp(3rem, 10vh, 5rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(3rem, 10vh, 5rem);
+}
+
+section:last-of-type {
+  border-bottom: none;
+}
+
+.section-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-}
-.data-value {
-  font-size: 14px;
-  color: var(--text-primary);
-  font-weight: 500;
-}
-.data-value.accent { color: var(--accent); font-weight: 600; }
-.list-item {
-  padding: var(--space-lg) 0;
-  border-bottom: 1px solid var(--line);
-  display: grid;
-  grid-template-columns: 64px 1fr;
-  gap: var(--space-lg);
-}
-.list-item:last-child { border-bottom: none; }
-.list-num {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 32px;
-  font-weight: 300;
   color: var(--text-tertiary);
-  line-height: 1;
+  margin-bottom: 1.5rem;
 }
-.list-title {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xs);
-}
-.list-desc {
-  font-size: 14px;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  max-width: 40ch;
-}
-.core-insight {
-  margin: var(--space-xl) 0;
-  padding-left: var(--space-md);
-  border-left: 1px solid var(--accent);
-}
-.core-insight-text {
-  font-size: 15px;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  max-width: 40ch;
-}
-.balance-section-title {
+
+h2 {
   font-family: 'Noto Serif JP', serif;
-  font-size: clamp(28px, 5vw, 48px);
-  font-weight: 300;
+  font-size: clamp(1.375rem, 4vw, 1.875rem);
+  font-weight: 400;
   letter-spacing: -0.02em;
-  margin-bottom: var(--space-xl);
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
 }
-.balance-intro {
-  font-size: 15px;
+
+h3 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.125rem, 3vw, 1.375rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+p {
   color: var(--text-secondary);
-  line-height: 1.8;
-  max-width: 46ch;
-  margin-bottom: var(--space-2xl);
+  line-height: 1.9;
+  margin-bottom: 1.25rem;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
-.balance-intro strong { color: var(--text-primary); font-weight: 500; }
-.balance-grid {
-  display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  gap: var(--space-2xl);
+
+/* 移动端段落适配 */
+@media (max-width: 900px) {
+  p {
+    padding-right: 0.5rem;
+    word-break: break-all;
+    white-space: normal;
+  }
+
+  section p {
+    padding-right: 0;
+  }
 }
-@media (max-width: 768px) {
-  .balance-grid { grid-template-columns: 1fr; gap: var(--space-xl); }
-}
-.balance-card {
+
+.decision-box {
   background: var(--surface);
-  border: 1px solid var(--line);
-  padding: var(--space-lg);
+  border-left: 2px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
 }
-.balance-card-label {
-  font-size: 13px;
+
+.decision-box p {
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  margin: 0;
+}
+
+/* Tables */
+.table-wrapper {
+  overflow-x: auto;
+  margin: 2rem 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+th {
+  text-align: left;
+  font-weight: 400;
+  font-size: 0.6875rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  margin-bottom: var(--space-md);
-  padding-bottom: var(--space-sm);
+  color: var(--text-tertiary);
+  padding: 0.75rem 1rem;
   border-bottom: 1px solid var(--line);
 }
-.balance-card-label.positive { color: var(--accent); }
-.balance-card-label.negative { color: var(--text-tertiary); }
-.balance-item {
-  padding: var(--space-sm) 0;
-  border-bottom: 1px solid var(--line-light);
-  font-size: 14px;
+
+td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--line);
   color: var(--text-secondary);
+  vertical-align: top;
 }
-.balance-item:last-child { border-bottom: none; }
-.balance-item.dim { color: var(--text-tertiary); }
-.summary-grid {
-  display: grid;
-  grid-template-columns: 1.5fr 1.2fr 0.8fr;
-  gap: var(--space-xl);
+
+tr:last-child td {
+  border-bottom: none;
 }
-@media (max-width: 900px) {
-  .summary-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
-}
-.summary-card {
-  padding: var(--space-lg) 0;
-  border-top: 1px solid var(--line);
-}
-.summary-num {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 36px;
-  font-weight: 300;
-  color: var(--accent);
-  margin-bottom: var(--space-sm);
-}
-.summary-title {
-  font-size: 15px;
-  font-weight: 500;
+
+td:first-child {
   color: var(--text-primary);
-  margin-bottom: var(--space-xs);
+  font-weight: 400;
 }
-.summary-desc {
-  font-size: 14px;
+
+/* Tool Cards */
+.tool-grid {
+  display: grid;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.tool-card {
+  background: var(--surface);
+  padding: 1.75rem;
+  border: 1px solid var(--line);
+}
+
+.tool-card h4 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.tool-card .tagline {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.tool-card p {
+  font-size: 0.875rem;
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.tool-card .pros {
   color: var(--text-secondary);
-  line-height: 1.7;
+  font-size: 0.8125rem;
 }
+
+.tool-card .price {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.25rem 0.75rem;
+  margin-top: 1rem;
+}
+
+/* Path Section */
+.path-block {
+  background: var(--surface);
+  padding: 2rem;
+  margin: 2rem 0;
+  border: 1px solid var(--line);
+}
+
+.path-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.path-number {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+.path-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.path-tools {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.path-block p {
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+}
+
+.workflow {
+  background: var(--bg);
+  padding: 1.25rem 1.5rem;
+  margin-top: 1.25rem;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.9;
+}
+
+/* Validation Box */
+.validation-grid {
+  display: grid;
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
+
+.validation-card {
+  background: var(--surface);
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+}
+
+.validation-card h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.validation-card p {
+  font-size: 0.8125rem;
+  margin: 0;
+}
+
+.level-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.level-item {
+  background: var(--surface);
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+}
+
+.level-item .num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.5rem;
+  color: var(--accent);
+  opacity: 0.6;
+  margin-bottom: 0.5rem;
+}
+
+.level-item h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.level-item p {
+  font-size: 0.75rem;
+  margin: 0;
+}
+
+/* Cost Control */
+.cost-table {
+  margin: 2rem 0;
+}
+
+/* Quote */
+.quote-block {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+}
+
+.quote-block p {
+  font-size: 1rem;
+  color: var(--text-primary);
+  line-height: 1.8;
+}
+
+/* Network Section */
+.network-alert {
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.network-alert h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.network-alert p {
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Summary Box */
+.summary-box {
+  background: var(--surface);
+  padding: 2rem;
+  margin-top: 3rem;
+  border: 1px solid var(--line);
+}
+
+.summary-box h3 {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+}
+
+.step-list {
+  list-style: none;
+  counter-reset: steps;
+}
+
+.step-list li {
+  counter-increment: steps;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.step-list li::before {
+  content: counter(steps);
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--accent);
+  flex-shrink: 0;
+  width: 1.5rem;
+  padding-top: 0.25rem;
+}
+
+/* Footer Nav - Fixed Bottom */
 .footer-nav {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   z-index: 100;
-  padding: var(--space-lg) clamp(1.25rem, 4vw, 2.5rem);
-  border-top: 1px solid var(--line);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(17, 17, 16, 0.85);
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.9);
   backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
 }
+
 .nav-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
   font-size: 0.75rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
   color: var(--text-tertiary);
   text-decoration: none;
-  transition: color 0.3s ease;
-}
-.nav-link:hover { color: var(--text-primary); }
-.nav-arrow { font-size: 0.75rem; }
-.fade-section {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-.fade-section.visible { opacity: 1; transform: translateY(0); }
-* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-
-/* Dimension badge */
-.dim-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: var(--space-sm);
-}
-.dim-badge .dim-id {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--accent);
-}
-.dim-badge .dim-tag {
-  font-size: 12px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  border: 1px solid var(--line);
-  padding: 2px 8px;
-}
-.dim-badge .dim-tag.核心 { color: var(--accent); border-color: var(--accent); }
-
-/* Objection blocks */
-.obj-block {
-  padding: var(--space-lg);
-  margin: var(--space-md) 0;
-  border-left: 2px solid;
-}
-.obj-block.error {
-  background: rgba(192, 57, 43, 0.08);
-  border-color: var(--accent);
-}
-.obj-block.success {
-  background: rgba(39, 174, 96, 0.08);
-  border-color: var(--accent);
-}
-.obj-block.data {
-  background: rgba(255,255,255,0.03);
-  border-color: var(--text-tertiary);
-}
-.obj-label {
-  font-size: 12px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  margin-bottom: var(--space-sm);
+  letter-spacing: 0.08em;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
+  transition: color 0.3s;
 }
-.obj-block.error .obj-label { color: var(--accent); }
-.obj-block.success .obj-label { color: var(--accent); }
-.obj-block.data .obj-label { color: var(--text-tertiary); }
-.obj-content {
-  font-size: 14px;
-  line-height: 1.7;
-  color: var(--text-secondary);
+
+.nav-link:hover {
+  color: var(--text-primary);
 }
-.obj-content strong { color: var(--text-primary); }
+
+.nav-link.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
   </style>
 </head>
 <body>
   <nav class="fixed-top-nav">
-    <a href="/"><span>←</span> 返回首页</a>
-    <span class="nav-center">节点 52 / 57</span>
+    <a href="/index.html" class="back-link">← 返回首页</a>
+    <span class="node-id">节点 52 / 57</span>
   </nav>
-  <div class="section-number">52</div>
 
-  <div class="layout layout-tools">
-    <aside class="sidebar-toc">
-      <div class="toc-title">目录</div>
-      <ul class="toc-list">
-        <li class="toc-item"><a href="#d1" class="toc-link">D1 · OPC的安全现实</a></li>
-        <li class="toc-item"><a href="#d2" class="toc-link">D2 · 无服务器全托管</a></li>
-        <li class="toc-item"><a href="#d3" class="toc-link">D3 · 韧性取代绝对安全</a></li>
-        <li class="toc-item"><a href="#d4" class="toc-link">D4 · 10分钟安全加固</a></li>
-        <li class="toc-item"><a href="#d5" class="toc-link">D5 · 免费工具栈</a></li>
-        <li class="toc-item"><a href="#d6" class="toc-link">D6 · 做 / 不做</a></li>
-        <li class="toc-item"><a href="#s2026" class="toc-link">2026年更新</a></li>
-      </ul>
-    </aside>
-
-    <main class="main-content">
-    <header class="hero">
-      <div class="hero-content">
-        <div class="hero-label">节点 52 · 1-10</div>
-        <h1 class="hero-title">服务器安全防护</h1>
-        <p class="hero-desc">防火墙配置、安全监控、漏洞修复，网站上线后就应该做</p>
-      </div>
+  <div class="layout">
+    <main class="container">
+      <header>
+      <div class="phase-label">1-10</div>
+      <h1>节点52：服务器安全</h1>
+      <div class="node-meta">节点 52 / 57 · 最后修订：2026年6月4日</div>
     </header>
 
-    <section class="tldr" aria-label="本章速读">
-      <div class="tldr-label">本章速读</div>
-      <ul class="tldr-list">
-        <li><strong>目标：</strong>在网站正式上线当天，就把服务器防护从"裸奔"升级到"基础免疫"，挡住 80% 自动化攻击。</li>
-        <li><strong>你要做的事：</strong>3 步：① 启用云厂商 WAF + 免费证书 → ② 关闭所有非必要端口 → ③ 接入日志告警（异常登录/异常流量）。</li>
-        <li><strong>不需要会：</strong>不需要专业安全工程师，不需要买昂贵硬件防火墙，不需要自建 SOC 平台，云厂商控制台已够用。</li>
-        <li><strong>本章产出：</strong>1 张《端口暴露清单》+ 1 份《WAF 规则集》+ 1 份《告警联系人与升级 SOP》。</li>
-      </ul>
-    </section>
-
-    <!-- D1: 认知跃迁 -->
-    <section id="d1" class="content-section fade-section">
-      <div class="dim-badge">
-        <span class="dim-id">D1</span>
-        <span class="dim-tag 核心">核心</span>
-        <span class="dim-tag">本质</span>
-      </div>
-      <h2 class="chapter-heading">OPC的安全现实</h2>
-      <div class="grid-asymmetric">
-        <div class="main-content">
-          <p class="body-text">一人公司 = 所有鸡蛋放一个篮子，且没有备份方案。<strong>攻击面极窄，但一次被破 = 业务终结。</strong></p>
-          <p class="body-text"><strong>AI驱动的自动化攻击</strong>：当前生成式AI让扫描器可以7×24无差别遍历全网。弱口令、未打补丁的Redis/SSH，平均存活时间已降至数小时。</p>
-          <p class="body-text"><strong>合规义务下沉</strong>：《个人信息保护法》对处理个人信息的自然人同样适用。无论规模，只要收集手机号、邮箱或行为数据，就必须具备基本技术措施。</p>
-        </div>
-        <div class="side-content">
-          <div class="data-card">
-            <div class="data-card-row">
-              <span class="data-label">平均存活时间</span>
-              <span class="data-value accent">数小时</span>
-            </div>
-            <div class="data-card-row">
-              <span class="data-label">攻击来源</span>
-              <span class="data-value">自动化扫描</span>
-            </div>
-            <div class="data-card-row">
-              <span class="data-label">恢复目标</span>
-              <span class="data-value">≤30分钟</span>
-            </div>
-          </div>
-          <div class="obj-block error" style="margin-top: var(--space-lg);">
-            <div class="obj-label">× 错误示范</div>
-            <div class="obj-content">"我只个小站，没人会攻击我"——攻击者用AI全天候扫描，不挑目标大小，只看有没有漏洞。</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- D2: 范式转变 -->
-    <section id="d2" class="content-section fade-section">
-      <div class="dim-badge">
-        <span class="dim-id">D2</span>
-        <span class="dim-tag">模型</span>
-      </div>
-      <h2 class="chapter-heading">范式一：无服务器全托管</h2>
-      <div class="grid-asymmetric">
-        <div class="main-content">
-          <p class="body-text">2026年，<strong>自己维护服务器 = 承担半全职安全运维工作量</strong>。更务实的做法是迁移到"无服务器"或"后端即服务"架构。</p>
-
-          <div class="list-item">
-            <div class="list-num">前端</div>
-            <div>
-              <div class="list-title">Vercel / Netlify / Cloudflare Pages</div>
-              <div class="list-desc">全球边缘分发、自动HTTPS、WAF一体化，无需关心Nginx配置</div>
-            </div>
-          </div>
-          <div class="list-item">
-            <div class="list-num">后端</div>
-            <div>
-              <div class="list-title">Cloudflare Workers / Vercel Edge Functions</div>
-              <div class="list-desc">函数层级写代码，运行环境由平台隔离加固，攻击面锁定在沙箱内</div>
-            </div>
-          </div>
-          <div class="list-item">
-            <div class="list-num">数据</div>
-            <div>
-              <div class="list-title">PlanetScale / Supabase / Neon</div>
-              <div class="list-desc">Serverless数据库，自带每日备份，连接管理、防火墙策略完全托管</div>
-            </div>
-          </div>
-          <div class="list-item">
-            <div class="list-num">存储</div>
-            <div>
-              <div class="list-title">对象存储 + CDN签名URL</div>
-              <div class="list-desc">不再自建FTP或文件服务器，用云存储代替</div>
-            </div>
-          </div>
-        </div>
-        <div class="side-content">
-          <div class="obj-block success">
-            <div class="obj-label">✓ 正确示范</div>
-            <div class="obj-content">使用全托管架构后，服务器级安全事件概率下降约78%，处理时间从4.2小时降至15分钟以下。</div>
-          </div>
-          <div class="data-card" style="margin-top: var(--space-lg);">
-            <div class="data-card-row">
-              <span class="data-label">安全责任转移</span>
-              <span class="data-value">平台承担OS层</span>
-            </div>
-            <div class="data-card-row">
-              <span class="data-label">你仍需保护</span>
-              <span class="data-value">平台账号本身</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- D3: 韧性思维 -->
-    <section id="d3" class="content-section fade-section">
-      <div class="dim-badge">
-        <span class="dim-id">D3</span>
-        <span class="dim-tag">培育</span>
-      </div>
-      <h2 class="chapter-heading">范式二：韧性取代绝对安全</h2>
-      <div class="grid-asymmetric">
-        <div class="main-content">
-          <p class="body-text">一人公司没有24小时值守安全团队。理性目标不是"不被攻破"，而是<strong>"被攻破后能多快恢复"</strong>。</p>
-
-          <div class="quote-block">
-            <p class="quote-text">可以没有专职安全人员，但不能没有安全基线；可以接受攻击尝试每天都在发生，但不能接受被攻破后毫无恢复能力。</p>
-          </div>
-
-          <p class="body-text"><strong>三大工程实践</strong>：</p>
-
-          <div class="list-item">
-            <div class="list-num">1</div>
-            <div>
-              <div class="list-title">基础设施即代码(IaC)</div>
-              <div class="list-desc">用Terraform/Pulumi声明环境，Git仓库管理。服务器被篡改后，10分钟内从零重建完全相同的环境。</div>
-            </div>
-          </div>
-          <div class="list-item">
-            <div class="list-num">2</div>
-            <div>
-              <div class="list-title">不可变备份与恢复演练</div>
-              <div class="list-desc">Object Lock/WORM存储，7天内备份无法被删除或篡改。每月执行一次完整恢复演练，目标是低于30分钟。</div>
-            </div>
-          </div>
-          <div class="list-item">
-            <div class="list-num">3</div>
-            <div>
-              <div class="list-title">无状态化设计</div>
-              <div class="list-desc">用户会话、缓存、上传文件全部外移到托管Redis/对象存储/数据库，服务实例可随时销毁替换而不丢失数据。</div>
-            </div>
-          </div>
-        </div>
-        <div class="side-content">
-          <div class="obj-block success">
-            <div class="obj-label">✓ 正确示范</div>
-            <div class="obj-content">你不再追逐零日漏洞防御，而是确保入侵发生后，服务能在<strong>30分钟内重生</strong>。这种能力远比WAF更能抵抗不确定性。</div>
-          </div>
-          <div class="obj-block data" style="margin-top: var(--space-lg);">
-            <div class="obj-label">◑ 核心转变</div>
-            <div class="obj-content">从"建高墙"到"做好回滚"。防御重心从"加固服务器"转移到"加固代码和身份边界"。</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- D4: 快速加固 -->
-    <section id="d4" class="content-section fade-section">
-      <div class="dim-badge">
-        <span class="dim-id">D4</span>
-        <span class="dim-tag">避坑</span>
-      </div>
-      <h2 class="chapter-heading">10分钟安全加固</h2>
-      <div class="grid-asymmetric">
-        <div class="main-content">
-          <p class="body-text">不需要成为安全专家。<strong>用免费工具构建非对称防御</strong>，让自动化攻击绕道而行。</p>
-
-          <div class="list-item">
-            <div class="list-num">1</div>
-            <div>
-              <div class="list-title">接入Cloudflare（免费）</div>
-              <div class="list-desc">将域名DNS解析权交给Cloudflare，开启代理(橙色云朵)。自动隐藏源站IP，拦截SQL注入/XSS，DDoS无限量免费缓解。</div>
-            </div>
-          </div>
-          <div class="list-item">
-            <div class="list-num">2</div>
-            <div>
-              <div class="list-title">关闭所有入站管理端口</div>
-              <div class="list-desc">SSH/RDP/数据库端口绝不暴露公网。使用Cloudflare Tunnel或云厂商堡垒机代替直接登录。</div>
-            </div>
-          </div>
-          <div class="list-item">
-            <div class="list-num">3</div>
-            <div>
-              <div class="list-title">强制密钥登录，禁止密码</div>
-              <div class="list-desc">服务器SSH禁用密码，使用Ed25519密钥对。私钥存1Password，每90天轮换。</div>
-            </div>
-          </div>
-          <div class="list-item">
-            <div class="list-num">4</div>
-            <div>
-              <div class="list-title">GitHub密钥扫描</div>
-              <div class="list-desc">开启GitHub Advanced Security的密钥检测，每次推送前自动扫描，发现泄漏立即阻断并告警。</div>
-            </div>
-          </div>
-        </div>
-        <div class="side-content">
-          <div class="obj-block error">
-            <div class="obj-label">× 致命操作</div>
-            <div class="obj-content">把SSH/RDP端口直接暴露公网 + 弱密码。这等于在暗网挂牌出售服务器权限。</div>
-          </div>
-          <div class="obj-block success" style="margin-top: var(--space-lg);">
-            <div class="obj-label">✓ 域名安全</div>
-            <div class="obj-content">开启注册商锁定(Registry Lock)和转移锁定(Transfer Lock)，防止域名被静默转走。</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- D5: 工具栈 -->
-    <section id="d5" class="content-section fade-section">
-      <div class="dim-badge">
-        <span class="dim-id">D5</span>
-        <span class="dim-tag">培育</span>
-      </div>
-      <h2 class="chapter-heading">免费工具栈</h2>
-      <div class="grid-asymmetric">
-        <div class="main-content">
-          <div class="list-item">
-            <div class="list-num">代码</div>
-            <div>
-              <div class="list-title">GitHub Advanced Security / Snyk Free</div>
-              <div class="list-desc">代码扫描、密钥检测、依赖项审查。每周一凌晨自动审计，Critical/High漏洞未修复前禁止部署。</div>
-            </div>
-          </div>
-          <div class="list-item">
-            <div class="list-num">容器</div>
-            <div>
-              <div class="list-title">Trivy (开源无限制)</div>
-              <div class="list-desc">CI中调用，CRITICAL/HIGH漏洞让流水线失败，阻止镜像推送到生产环境。</div>
-            </div>
-          </div>
-          <div class="list-item">
-            <div class="list-num">端点</div>
-            <div>
-              <div class="list-title">微软Defender for Individuals / Sophos</div>
-              <div class="list-desc">实时保护、勒索软件文件夹限制、网络钓鱼检测。管理笔记本被入侵 = 所有防御归零。</div>
-            </div>
-          </div>
-          <div class="list-item">
-            <div class="list-num">邮件</div>
-            <div>
-              <div class="list-title">SPF + DKIM + DMARC</div>
-              <div class="list-desc">DNS中配置，DMARC设为 <code>p=reject</code> 拒绝所有未通过检验的邮件。</div>
-            </div>
-          </div>
-        </div>
-        <div class="side-content">
-          <div class="data-card">
-            <div class="data-card-row">
-              <span class="data-label">WAF</span>
-              <span class="data-value">Cloudflare免费</span>
-            </div>
-            <div class="data-card-row">
-              <span class="data-label">DDoS防护</span>
-              <span class="data-value">Cloudflare免费</span>
-            </div>
-            <div class="data-card-row">
-              <span class="data-label">代码扫描</span>
-              <span class="data-value">GitHub ADv.Security</span>
-            </div>
-          </div>
-          <div class="core-insight" style="margin-top: var(--space-lg);">
-            <p class="core-insight-text"><strong>关键红线</strong>：任何Critical或High漏洞未修复前，绝不推进部署。代码扫描必须嵌入PR流程。</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- D6: 决策框架 -->
-    <section id="d6" class="content-section fade-section">
-      <div class="dim-badge">
-        <span class="dim-id">D6</span>
-        <span class="dim-tag">决策</span>
-      </div>
-      <h2 class="chapter-heading">做 / 不做</h2>
-      <div class="balance-intro">
-        服务器安全的核心是<strong>缩小暴露面 + 零信任接入 + 一键恢复</strong>。<strong>做</strong>则韧性十足，<strong>不做</strong>则一次攻击致命。
-      </div>
-      <div class="balance-grid">
-        <div class="balance-card">
-          <div class="balance-card-label positive">✓ 做</div>
-          <div class="balance-item">优先使用全托管Serverless架构</div>
-          <div class="balance-item">接入Cloudflare隐藏源站IP</div>
-          <div class="balance-item">关闭所有公网管理端口</div>
-          <div class="balance-item">强制SSH密钥登录，禁止密码</div>
-          <div class="balance-item">代码嵌入密钥扫描和CVE检测</div>
-          <div class="balance-item">每月执行恢复演练，目标≤30分钟</div>
-          <div class="balance-item">开启域名Registry Lock</div>
-        </div>
-        <div class="balance-card">
-          <div class="balance-card-label negative">× 不做</div>
-          <div class="balance-item">自管服务器 + 弱密码SSH</div>
-          <div class="balance-item">管理端口直接暴露公网</div>
-          <div class="balance-item">代码中硬编码密钥/密码</div>
-          <div class="balance-item">不开启GitHub密钥扫描</div>
-          <div class="balance-item">从不执行恢复演练</div>
-          <div class="balance-item">忽略域名锁定</div>
-          <div class="balance-item">管理笔记本不装终端防护</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FIN -->
-    <section class="content-section fade-section">
-      <div class="section-label">财务健康指标</div>
-      <div class="summary-grid">
-        <div class="summary-card">
-          <div class="summary-num">$0</div>
-          <div class="summary-title">安全工具年费</div>
-          <div class="summary-desc">Cloudflare免费 + GitHub免费层</div>
-        </div>
-        <div class="summary-card">
-          <div class="summary-num">10分钟</div>
-          <div class="summary-title">基础加固时间</div>
-          <div class="summary-desc">Cloudflare接入 + 端口收敛 + 密钥登录</div>
-        </div>
-        <div class="summary-card">
-          <div class="summary-num">30分钟</div>
-          <div class="summary-title">恢复时间目标</div>
-          <div class="summary-desc">从零重建全部服务</div>
-        </div>
-      </div>
+    <section id="s1">
     
-    <!-- 🔵 2026年时效性内容更新 -->
-    <section id="s2026" class="section fade-section">
-      <div style="margin-bottom:var(--space-lg);">
-        <span style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);">2026 UPDATE</span>
-      </div>
-      <div class="prose" style="max-width:680px;">
-        
-<blockquote style="border-left:2px solid var(--accent);padding:var(--space-sm) var(--space-md);margin:var(--space-md) 0;color:var(--text-secondary);font-style:italic;background:var(--surface);border-radius:0 6px 6px 0;font-size:0.95rem;">**面向OPC**：你的产品在服务器上跑着，里面有用户的邮箱、密码、支付记录。一个漏洞=所有用户数据泄露=你的生意结束。本节点告诉你一个人怎么守住服务器。</blockquote>
+<p>node_id: 52</p>
+<p>persona: neutral</p>
+<p>cta_type: course</p>
+<p>keywords: [分钟, 密码, 规则, 登录, 够用]</p>
 
+<blockquote class="decision-box"><p>你的产品在服务器上跑着，里面有用户的邮箱、密码、支付记录。一个漏洞=所有用户数据泄露=你的生意结束。本节点告诉你一个人怎么守住服务器。</p></blockquote>
 
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">一、2026年OPC的最低安全基线</h3>
+<p></section></p>
+<section id="s一">
+<p>      <div class="section-label">一、2026年OPC的最低安全基线</div></p>
 
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">五条不做就会死的安全规则</h4>
+<h3>五条不做就会死的安全规则</h3>
 
-<table style="width:100%;border-collapse:collapse;margin:var(--space-md) 0;font-size:0.88rem;">
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">规则</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">不做会怎样</td></tr>
-<tr><th style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**SSH禁用密码登录，只用密钥**</th><th style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">被暴力破解→服务器变矿机</th></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**所有对外服务只开必要端口**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">多余的端口=多余的攻击面</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**数据库不暴露在公网**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">被拖库→用户数据泄露</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**HTTPS强制启用**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">中间人攻击→用户密码被窃</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**定期更新系统和依赖**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">已知漏洞被利用→入侵</td></tr>
-</table>
+<div class="table-wrapper"><table><thead><tr><th>规则</th><th>不做会怎样</th></tr></thead><tbody><tr><td><strong>SSH禁用密码登录，只用密钥</strong></td><td>被暴力破解→服务器变矿机</td></tr><tr><td><strong>所有对外服务只开必要端口</strong></td><td>多余的端口=多余的攻击面</td></tr><tr><td><strong>数据库不暴露在公网</strong></td><td>被拖库→用户数据泄露</td></tr><tr><td><strong>HTTPS强制启用</strong></td><td>中间人攻击→用户密码被窃</td></tr><tr><td><strong>定期更新系统和依赖</strong></td><td>已知漏洞被利用→入侵</td></tr></tbody></table></div>
 
+<p></section></p>
+<section id="s二">
+<p>      <div class="section-label">二、30分钟完成基础加固</div></p>
 
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">二、30分钟完成基础加固</h3>
+<h3>第1步：SSH加固（5分钟）</h3>
 
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">第1步：SSH加固（5分钟）</h4>
+<p>``<code>bash</p>
+# 1. 生成本地密钥对
+<p>ssh-keygen -t ed25519 -C "你的邮箱"</p>
 
-<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code># 1. 生成本地密钥对
-ssh-keygen -t ed25519 -C "你的邮箱"
- 
 # 2. 上传公钥到服务器
-ssh-copy-id root@你的服务器IP
- 
+<p>ssh-copy-id root@你的服务器IP</p>
+
 # 3. 禁止密码登录
-sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
-sudo sed -i 's/#PermitRootLogin yes/PermitRootLogin prohibit-password/' /etc/ssh/sshd_config
-sudo systemctl restart sshd
-</code></pre>
+<p>sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config</p>
+<p>sudo sed -i 's/#PermitRootLogin yes/PermitRootLogin prohibit-password/' /etc/ssh/sshd_config</p>
+<p>sudo systemctl restart sshd</p>
+<p></code>`<code></p>
 
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">第2步：防火墙配置（5分钟）</h4>
+<h3>第2步：防火墙配置（5分钟）</h3>
 
-<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code>sudo ufw default deny incoming
-sudo ufw default allow outgoing
-sudo ufw allow 22    # SSH
-sudo ufw allow 80    # HTTP
-sudo ufw allow 443   # HTTPS
-sudo ufw enable
-</code></pre>
+<p></code>`<code>bash</p>
+<p>sudo ufw default deny incoming</p>
+<p>sudo ufw default allow outgoing</p>
+<p>sudo ufw allow 22    # SSH</p>
+<p>sudo ufw allow 80    # HTTP</p>
+<p>sudo ufw allow 443   # HTTPS</p>
+<p>sudo ufw enable</p>
+<p></code>`<code></p>
 
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">第3步：自动安全更新（2分钟）</h4>
+<h3>第3步：自动安全更新（2分钟）</h3>
 
-<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code>sudo apt install -y unattended-upgrades
-sudo dpkg-reconfigure unattended-upgrades  # 选"Yes"
-</code></pre>
+<p></code>`<code>bash</p>
+<p>sudo apt install -y unattended-upgrades</p>
+<p>sudo dpkg-reconfigure unattended-upgrades  # 选"Yes"</p>
+<p></code>`<code></p>
 
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">第4步：数据库安全（10分钟）</h4>
+<h3>第4步：数据库安全（10分钟）</h3>
 
-<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code>-- Supabase 的 Row Level Security 必须开启
-ALTER TABLE users ENABLE ROW LEVEL SECURITY;
- 
--- 每个表定义谁能读、谁能写
-CREATE POLICY "用户读自己的数据" ON users
-  FOR SELECT USING (auth.uid() = id);
- 
--- 敏感字段不要返回给前端
--- 查询时永远不要 select * 如果包含密码/密钥字段
-</code></pre>
+<p></code>`<code>sql</p>
+<p>-- Supabase 的 Row Level Security 必须开启</p>
+<p>ALTER TABLE users ENABLE ROW LEVEL SECURITY;</p>
 
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">第5步：环境变量管理（3分钟）</h4>
+<p>-- 每个表定义谁能读、谁能写</p>
+<p>CREATE POLICY "用户读自己的数据" ON users</p>
+<p>  FOR SELECT USING (auth.uid() = id);</p>
 
-<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code># ❌ 绝不要在代码里写：
-const API_KEY = "sk-xxxxx";
- 
+<p>-- 敏感字段不要返回给前端</p>
+<p>-- 查询时永远不要 select * 如果包含密码/密钥字段</p>
+<p></code>`<code></p>
+
+<h3>第5步：环境变量管理（3分钟）</h3>
+
+<p></code>`<code>bash</p>
+# ❌ 绝不要在代码里写：
+<p>const API_KEY = "sk-xxxxx";</p>
+
 # ✅ 用环境变量：
-const API_KEY = process.env.API_KEY;
- 
+<p>const API_KEY = process.env.API_KEY;</p>
+
 # .env 文件必须加入 .gitignore
-echo ".env" &gt;&gt; .gitignore
-</code></pre>
+<p>echo ".env" >> .gitignore</p>
+<p></code>`<code></p>
 
+<p></section></p>
+<section id="s三">
+<p>      <div class="section-label">三、2026年免费安全工具</div></p>
 
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">三、2026年免费安全工具</h3>
+<div class="table-wrapper"><table><thead><tr><th>工具</th><th>做什么</th><th>怎么用</th></tr></thead><tbody><tr><td><strong>Lynis</strong></td><td>安全审计（扫描服务器找漏洞）</td><td></code>sudo apt install lynis && sudo lynis audit system<code></td></tr><tr><td><strong>Cloudflare</strong></td><td>DDoS防护+CDN+WAF</td><td>免费计划，域名DNS切到Cloudflare</td></tr><tr><td><strong>SSL Labs</strong></td><td>HTTPS配置评分</td><td><a href="https://www.ssllabs.com/ssltest/">ssllabs.com</a> 输入域名</td></tr><tr><td><strong>Have I Been Pwned</strong></td><td>检查域名是否泄露</td><td><a href="https://haveibeenpwned.com/domain/你的域名">haveibeenpwned.com</a></td></tr></tbody></table></div>
 
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">工具</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">做什么</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">怎么用</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**Lynis**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">安全审计（扫描服务器找漏洞）</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">`sudo apt install lynis && sudo lynis audit system`</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**Cloudflare**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">DDoS防护+CDN+WAF</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">免费计划，域名DNS切到Cloudflare</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**SSL Labs**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">HTTPS配置评分</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">[ssllabs.com](https://www.ssllabs.com/ssltest/) 输入域名</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**Have I Been Pwned**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">检查域名是否泄露</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">[haveibeenpwned.com](https://haveibeenpwned.com/domain/你的域名)</td></tr>
+<p></section></p>
+<section id="s四">
+<p>      <div class="section-label">四、被入侵的三个信号（发现后立刻处理）</div></p>
 
+<div class="table-wrapper"><table><thead><tr><th>信号</th><th>可能发生了什么</th><th>立刻做什么</th></tr></thead><tbody><tr><td>CPU突然100%</td><td>被装了挖矿程序</td><td></code>top<code> 查异常进程 → </code>kill` → 改密码 → 查SSH登录日志</td></tr><tr><td>数据库多了不认识的表</td><td>数据库被注入/拖库</td><td>立刻下线 → 从备份恢复 → 查API日志找注入点</td></tr><tr><td>用户反馈收到垃圾邮件</td><td>邮件服务器被利用</td><td>改邮箱密码 → 检查转发规则</td></tr></tbody></table></div>
 
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">四、被入侵的三个信号（发现后立刻处理）</h3>
+<p></section></p>
+<section id="s五">
+<p>      <div class="section-label">五、OPC不需要做的安全措施（省时间）</div></p>
 
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">信号</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">可能发生了什么</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">立刻做什么</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">CPU突然100%</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">被装了挖矿程序</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">`top` 查异常进程 → `kill` → 改密码 → 查SSH登录日志</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">数据库多了不认识的表</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">数据库被注入/拖库</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">立刻下线 → 从备份恢复 → 查API日志找注入点</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">用户反馈收到垃圾邮件</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">邮件服务器被利用</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">改邮箱密码 → 检查转发规则</td></tr>
+<div class="table-wrapper"><table><thead><tr><th>你以为需要</th><th>实际上不需要</th><th>省下时间</th></tr></thead><tbody><tr><td>买商业防火墙</td><td>Cloudflare免费WAF够用</td><td>省¥5000/年</td></tr><tr><td>请安全公司做渗透测试</td><td>日活<1000不需要</td><td>省¥20000/次</td></tr><tr><td>做SOC2/ISO27001认证</td><td>没有企业客户要求就别做</td><td>省半年</td></tr><tr><td>自建堡垒机</td><td>SSH密钥+Fail2ban够用</td><td>省1周</td></tr></tbody></table></div>
 
+<p></section></p>
+<section id="s六">
+<p>      <div class="section-label">六、检查清单</div></p>
 
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">五、OPC不需要做的安全措施（省时间）</h3>
+<ul><li><input type="checkbox" disabled> SSH只允许密钥登录</li><li><input type="checkbox" disabled> 防火墙仅开放22/80/443</li><li><input type="checkbox" disabled> 系统自动安全更新已配置</li><li><input type="checkbox" disabled> Supabase RLS已全部开启</li><li><input type="checkbox" disabled> .env在.gitignore中</li><li><input type="checkbox" disabled> SSL Labs评分≥A</li><li><input type="checkbox" disabled> 数据库有定期备份</li></ul>
 
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">你以为需要</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">实际上不需要</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">省下时间</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">买商业防火墙</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">Cloudflare免费WAF够用</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">省¥5000/年</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">请安全公司做渗透测试</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">日活<1000不需要</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">省¥20000/次</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">做SOC2/ISO27001认证</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">没有企业客户要求就别做</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">省半年</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">自建堡垒机</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">SSH密钥+Fail2ban够用</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">省1周</td></tr>
+<p></section></p>
+<section id="s节">
+<p>      <div class="section-label">节点资源链接</div></p>
 
-
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">六、检查清单</h3>
-
-<ul style="list-style:none;padding:0;margin:var(--space-sm) 0;">
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] SSH只允许密钥登录</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 防火墙仅开放22/80/443</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 系统自动安全更新已配置</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] Supabase RLS已全部开启</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] .env在.gitignore中</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] SSL Labs评分≥A</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 数据库有定期备份</li>
-
-        <li class="toc-item"><a href="#s2026" class="toc-link">2026年更新</a></li></ul>
-
-
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">节点资源链接</h3>
-
-<ul style="list-style:none;padding:0;margin:var(--space-sm) 0;">
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点51：数据备份</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点25：网站部署与SSL</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点50：广告法合规</li>
-</ul>
-
-
-      </div>
-      <p style="font-size:12px;color:var(--text-tertiary);margin-top:var(--space-xl);letter-spacing:0.05em;">
-        以上内容基于2026年5月最新实践编写，工具版本和价格可能更新，请以官方文档为准。
-      </p>
+<ul><li>节点51：数据备份</li><li>节点25：网站部署与SSL</li><li>节点50：广告法合规</li></ul>
     </section>
 
+    <div class="summary-box">
+      <h3>节点52检查清单</h3>
+      <p>完成本节点后，请确认所有检查项已通过。</p>
+    </div>
     </main>
   </div>
 
   <nav class="footer-nav">
-    <a href="/nodes/51-data-backup/index.html" class="nav-link">
-      <span class="nav-arrow">←</span>
-      节点51：数据备份与恢复
-    </a>
-    <a href="/nodes/53-global-payment/index.html" class="nav-link">
-      节点53：海外支付方案
-      <span class="nav-arrow">→</span>
-    </a>
+    <a href="/nodes/51-data-backup/index.html" class="nav-link"><span>←</span> 节点51</a>
+    <a href="/nodes/53-global-payment/index.html" class="nav-link">节点53 <span>→</span></a>
   </nav>
 
   <script>
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
-
-    // Smooth scroll for TOC links
-    document.querySelectorAll('.toc-link').forEach(link => {
-      link.addEventListener('click', function(e) {
-        e.preventDefault();
-        const targetId = this.getAttribute('href').slice(1);
-        const target = document.getElementById(targetId);
-        if (target) {
-          const offsetTop = target.offsetTop - 80;
-          window.scrollTo({
-            top: offsetTop,
-            behavior: 'smooth'
-          });
-        }
-      });
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').slice(1);
+      const target = document.getElementById(targetId);
+      if (target) {
+        window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+      }
     });
-
-    // Scroll spy for TOC
-    const sections = document.querySelectorAll('section[id]');
-    const tocLinks = document.querySelectorAll('.toc-link');
-
-    function updateActiveLink() {
-      const scrollPos = window.scrollY + 120;
-
-      sections.forEach(section => {
-        const top = section.offsetTop;
-        const height = section.offsetHeight;
-        const id = section.getAttribute('id');
-
-        if (scrollPos >= top && scrollPos < top + height) {
-          tocLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === `#${id}`) {
-              link.classList.add('active');
-            }
-          });
-        }
-      });
-    }
-
-    window.addEventListener('scroll', updateActiveLink, { passive: true });
-    updateActiveLink();
+  });
   </script>
 </body>
 </html>

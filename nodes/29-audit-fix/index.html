@@ -3,15 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="审核问题处理 - OPC节点百科">
+  <meta name="description" content="节点29：审核问题处理 - OPC节点百科">
   <meta name="theme-color" content="#111110">
   <title>节点29：审核问题处理 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../_design-tokens.css">
-  <link rel="stylesheet" href="../_layout-templates.css">
   <style>
 
 :root {
@@ -35,6 +33,10 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   background: var(--bg);
   color: var(--text-primary);
@@ -43,6 +45,72 @@ body {
   line-height: 1.9;
   letter-spacing: 0.04em;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* 移动端整体适配 - 使用 900px breakpoint 与现有代码一致 */
+@media (max-width: 900px) {
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+
+  body {
+    font-size: 14px;
+  }
+
+  .layout {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding: 4rem 16px 2rem !important;
+    margin: 0 !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .sidebar-toc {
+    display: none !important;
+  }
+
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  section {
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  section > * {
+    max-width: 100% !important;
+    overflow-x: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  section p {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+
+  h1 {
+    font-size: clamp(36px, 10vw, 48px) !important;
+    line-height: 1.05 !important;
+  }
 }
 
 /* Layout with Sidebar */
@@ -159,20 +227,6 @@ body {
   letter-spacing: 0.08em;
 }
 
-@media (max-width: 900px) {
-  .layout {
-    grid-template-columns: 1fr;
-  }
-
-  .sidebar-toc {
-    display: none;
-  }
-
-  .fixed-top-nav {
-    padding: 0.75rem clamp(1rem, 4vw, 1.5rem);
-  }
-}
-
 /* Header */
 header {
   padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
@@ -183,6 +237,52 @@ header {
 /* Main content */
 main {
   padding-bottom: 5rem;
+}
+
+/* 移动端底部导航适配 - 合并到 900px breakpoint */
+@media (max-width: 900px) {
+  main {
+    padding-bottom: 6rem; /* 为固定底部导航预留空间 */
+  }
+
+  .footer-nav {
+    overflow-x: auto;
+    justify-content: space-between;
+  }
+
+  .nav-link {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .table-wrapper {
+    position: relative;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 1.5rem 0;
+    border: 1px solid var(--line);
+  }
+
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
 }
 
 /* Section anchors offset for sticky header */
@@ -203,14 +303,49 @@ section p, section li {
 .table-wrapper {
   margin: 1.5rem 0;
   border: 1px solid var(--line);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-wrapper::after {
+  content: "";
+  display: block;
+}
+
+/* 移动端滑动提示 */
+@media (max-width: 900px) {
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  .table-wrapper {
+    position: relative;
+    padding-bottom: 24px;
+  }
 }
 
 table {
   font-size: 0.875rem;
+  min-width: 560px;
 }
 
-td, th {
-  padding: 0.875rem 1rem;
+@media (max-width: 900px) {
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
 }
 
 /* Tool Cards */
@@ -266,6 +401,14 @@ h1 {
   margin-bottom: var(--space-xl);
 }
 
+/* 移动端H1适配 */
+@media (max-width: 900px) {
+  h1 {
+    font-size: clamp(36px, 10vw, 48px);
+    line-height: 1.05;
+  }
+}
+
 .phase-label {
   font-size: 13px;
   color: var(--accent);
@@ -283,6 +426,16 @@ h1 {
   color: var(--text-secondary);
   max-width: 44ch;
   line-height: 1.8;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* 移动端副标题适配 */
+@media (max-width: 900px) {
+  .subtitle {
+    font-size: 14px;
+    max-width: 100%;
+  }
 }
 
 .node-meta {
@@ -335,6 +488,21 @@ p {
   color: var(--text-secondary);
   line-height: 1.9;
   margin-bottom: 1.25rem;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* 移动端段落适配 */
+@media (max-width: 900px) {
+  p {
+    padding-right: 0.5rem;
+    word-break: break-all;
+    white-space: normal;
+  }
+
+  section p {
+    padding-right: 0;
+  }
 }
 
 .decision-box {
@@ -657,97 +825,32 @@ td:first-child {
 }
 
   </style>
-  <style>
-  @media (max-width: 900px) {
-    html, body {
-      overflow-x: hidden !important;
-      max-width: 100vw !important;
-    }
-
-    .layout {
-      display: block !important;
-      grid-template-columns: 1fr !important;
-      width: 100% !important;
-      max-width: 100vw !important;
-      padding: 4rem 16px 2rem !important;
-    }
-
-    .sidebar-toc {
-      display: none !important;
-    }
-
-    section {
-      width: 100% !important;
-      max-width: 100vw !important;
-      overflow-x: hidden !important;
-    }
-
-    section p, section li, section td, section th {
-      width: 100% !important;
-      max-width: 100% !important;
-      word-break: break-word !important;
-      overflow-wrap: break-word !important;
-    }
-
-    .hero-title {
-      font-size: clamp(24px, 8vw, 48px) !important;
-      word-break: break-all !important;
-      overflow-wrap: break-word !important;
-      white-space: normal !important;
-      max-width: 100% !important;
-      line-height: 1.1 !important;
-    }
-
-    table {
-      display: block !important;
-      overflow-x: auto !important;
-      font-size: 12px !important;
-    }
-  }
-  </style>
 </head>
 <body>
   <nav class="fixed-top-nav">
-    <a href="/" class="back-link">← 返回首页</a>
+    <a href="/index.html" class="back-link">← 返回首页</a>
     <span class="node-id">节点 29 / 57</span>
   </nav>
 
-  <div class="layout layout-policy">
-    <aside class="sidebar-toc">
-      <div class="toc-title">目录</div>
-      <ul class="toc-list">
-        <li class="toc-item"><a href="#s2" class="toc-link">一、解读审核反馈：翻译官上线</a></li>
-        <li class="toc-item"><a href="#s3" class="toc-link">二、打回后的处理SOP（标准操作流程）</a></li>
-        <li class="toc-item"><a href="#s4" class="toc-link">三、二次提交的技巧</a></li>
-        <li class="toc-item"><a href="#s5" class="toc-link">四、如果连续被打回（三次以上）</a></li>
-        <li class="toc-item"><a href="#s6" class="toc-link">五、检查清单</a></li>
-        <li class="toc-item"><a href="#s8" class="toc-link">节点资源链接</a></li>
-      </ul>
-    </aside>
-        <main>
+  <div class="layout">
+    <main class="container">
       <header>
-      <div class="phase-label">正式上线</div>
-      <h1>审核问题处理</h1>
-      <div class="node-meta">节点 29 / 57 · 最后修订：2026年5月11日</div>
+      <div class="phase-label">0-1</div>
+      <h1>节点29：审核问题处理</h1>
+      <div class="node-meta">节点 29 / 57 · 最后修订：2026年6月4日</div>
     </header>
-
-    <section class="tldr" aria-label="本章速读">
-      <div class="tldr-label">本章速读</div>
-      <ul class="tldr-list">
-        <li><strong>目标：</strong>把"被打回"变成"快速修复并重提"——3 天内过审。</li>
-        <li><strong>你要做的事：</strong>3 步：分类问题（合规/功能/内容）→ 修复并附说明 → 重新提交。</li>
-        <li><strong>不需要会：</strong>平台规则大全、申诉策略。本章只教你"OPC 最低成本修复打回"。</li>
-        <li><strong>本章产出：</strong>1 份修复记录 + 1 次通过的重新提交。</li>
-      </ul>
-    </section>
 
     <section id="s1">
     
+<p>node_id: 29</p>
+<p>persona: neutral</p>
+<p>cta_type: wechat</p>
+<p>keywords: [反馈, 步骤, 修改说明, 处理, 审核反馈]</p>
 
 <blockquote class="decision-box"><p>审核被打回了。别慌——这不是失败，这是"平台免费帮你做了一次QA"。每个被打回的审核问题，都是在告诉你"这个地方会让用户不满"。</p></blockquote>
 
 <p></section></p>
-<section id="s2">
+<section id="s一">
 <p>      <div class="section-label">一、解读审核反馈：翻译官上线</div></p>
 
 <p>审核反馈通常写得很官方。以下是最常见的打回原因及真实含义：</p>
@@ -755,7 +858,7 @@ td:first-child {
 <div class="table-wrapper"><table><thead><tr><th>审核员写的</th><th>真实含义</th><th>修改方向</th></tr></thead><tbody><tr><td>"功能不完整"</td><td>你提交的版本有页面空白/按钮无响应</td><td>走一遍核心路径，确保每个按钮都有反应</td></tr><tr><td>"类目不符"</td><td>你选的类目和实际功能不匹配</td><td>重新选择与核心功能最接近的类目</td></tr><tr><td>"缺少必要资质"</td><td>你的功能涉及需要许可证的行业</td><td>上传相关资质，或者暂时去掉该功能</td></tr><tr><td>"存在测试数据"</td><td>审核员看到了开发中留下的假数据</td><td>清空所有测试数据，填充真实内容</td></tr><tr><td>"用户体验不足"</td><td>界面太简陋或操作逻辑混乱</td><td>参考同类已过审产品的最低标准</td></tr><tr><td>"涉及未开放能力"</td><td>你用了平台暂未开放给个人开发者的API</td><td>换成替代方案</td></tr></tbody></table></div>
 
 <p></section></p>
-<section id="s3">
+<section id="s二">
 <p>      <div class="section-label">二、打回后的处理SOP（标准操作流程）</div></p>
 
 <h3>步骤1：冷静分析（10分钟）</h3>
@@ -782,13 +885,13 @@ td:first-child {
 <strong>写修改说明的好处</strong>：审核员会感觉被尊重，二次审核速度通常更快。
 
 <p></section></p>
-<section id="s4">
+<section id="s三">
 <p>      <div class="section-label">三、二次提交的技巧</div></p>
 
 <div class="table-wrapper"><table><thead><tr><th>技巧</th><th>原因</th></tr></thead><tbody><tr><td><strong>在工作日上午提交</strong></td><td>审核员在工作日处理，早上提交可能当天出结果</td></tr><tr><td><strong>附上修改说明</strong></td><td>减少审核员重新排查的时间</td></tr><tr><td><strong>修改不要太多</strong></td><td>改得越多，审核员越需要重新审全部</td></tr><tr><td><strong>保留旧版本截图</strong></td><td>万一新版本又有问题，可以快速回退</td></tr></tbody></table></div>
 
 <p></section></p>
-<section id="s5">
+<section id="s四">
 <p>      <div class="section-label">四、如果连续被打回（三次以上）</div></p>
 
 <h3>三步自救法</h3>
@@ -796,13 +899,13 @@ td:first-child {
 <ol><li><strong>暂停提交</strong>：连续被打回说明你的理解和平台要求有系统性偏差</li><li><strong>找已过审的同类产品对比</strong>：打开竞品，逐页对比：他们有的页面你有吗？他们怎么处理权限/支付/隐私的？</li><li><strong>去官方社区/论坛提问</strong>：微信开放社区（developers.weixin.qq.com/community）有官方人员回复，贴上你的审核反馈截图，一般能得到准确方向</li></ol>
 
 <p></section></p>
-<section id="s6">
+<section id="s五">
 <p>      <div class="section-label">五、检查清单</div></p>
 
 <ul><li><input type="checkbox" disabled> 每条打回原因已理解真实含义</li><li><input type="checkbox" disabled> 修改方案已写成一句话</li><li><input type="checkbox" disabled> 只改了被打回的地方</li><li><input type="checkbox" disabled> 修改说明已写好</li><li><input type="checkbox" disabled> 工作日上午重新提交</li></ul>
 
 <p></section></p>
-<section id="s8">
+<section id="s节">
 <p>      <div class="section-label">节点资源链接</div></p>
 
 <ul><li>节点28：提交审核与等待</li><li>节点30：正式发布</li><li>节点31：数据监控</li></ul>
@@ -816,16 +919,11 @@ td:first-child {
   </div>
 
   <nav class="footer-nav">
-    <a href="/nodes/28-audit-submit/index.html" class="nav-link">
-      <span>←</span> 节点28
-    </a>
-    <a href="/nodes/30-official-launch/index.html" class="nav-link">
-      节点30 <span>→</span>
-    </a>
+    <a href="/nodes/28-audit-submit/index.html" class="nav-link"><span>←</span> 节点28</a>
+    <a href="/nodes/30-official-launch/index.html" class="nav-link">节点30 <span>→</span></a>
   </nav>
 
   <script>
-  // Smooth scroll
   document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', function(e) {
       e.preventDefault();
@@ -836,30 +934,6 @@ td:first-child {
       }
     });
   });
-
-  // Scroll spy for TOC
-  const sections = document.querySelectorAll('section[id]');
-  const tocLinks = document.querySelectorAll('.toc-link');
-
-  function updateActiveLink() {
-    const scrollPos = window.scrollY + 120;
-    sections.forEach(section => {
-      const top = section.offsetTop;
-      const height = section.offsetHeight;
-      const id = section.getAttribute('id');
-      if (scrollPos >= top && scrollPos < top + height) {
-        tocLinks.forEach(link => {
-          link.classList.remove('active');
-          if (link.getAttribute('href') === '#' + id) {
-            link.classList.add('active');
-          }
-        });
-      }
-    });
-  }
-
-  window.addEventListener('scroll', updateActiveLink, { passive: true });
-  updateActiveLink();
   </script>
 </body>
 </html>

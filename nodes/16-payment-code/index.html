@@ -3,15 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="支付代码集成 - OPC节点百科">
+  <meta name="description" content="节点16：支付代码集成 - OPC节点百科">
   <meta name="theme-color" content="#111110">
   <title>节点16：支付代码集成 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../_design-tokens.css">
-  <link rel="stylesheet" href="../_layout-templates.css">
   <style>
 
 :root {
@@ -35,6 +33,10 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   background: var(--bg);
   color: var(--text-primary);
@@ -43,6 +45,72 @@ body {
   line-height: 1.9;
   letter-spacing: 0.04em;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* 移动端整体适配 - 使用 900px breakpoint 与现有代码一致 */
+@media (max-width: 900px) {
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+
+  body {
+    font-size: 14px;
+  }
+
+  .layout {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding: 4rem 16px 2rem !important;
+    margin: 0 !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .sidebar-toc {
+    display: none !important;
+  }
+
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  section {
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  section > * {
+    max-width: 100% !important;
+    overflow-x: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  section p {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+
+  h1 {
+    font-size: clamp(36px, 10vw, 48px) !important;
+    line-height: 1.05 !important;
+  }
 }
 
 /* Layout with Sidebar */
@@ -159,68 +227,6 @@ body {
   letter-spacing: 0.08em;
 }
 
-@media (max-width: 900px) {
-  html, body {
-    overflow-x: hidden !important;
-    max-width: 100vw !important;
-  }
-
-  .layout {
-    display: block !important;
-    grid-template-columns: 1fr !important;
-    width: 100% !important;
-    max-width: 100vw !important;
-    padding: 4rem 16px 2rem !important;
-  }
-
-  .sidebar-toc {
-    display: none !important;
-  }
-
-  .fixed-top-nav {
-    padding: 0.75rem clamp(1rem, 4vw, 1.5rem);
-  }
-
-  section {
-    width: 100% !important;
-    max-width: 100vw !important;
-    overflow-x: hidden !important;
-  }
-
-  section p,
-  section li,
-  section td,
-  section th {
-    width: 100% !important;
-    max-width: 100% !important;
-    word-break: break-word !important;
-    overflow-wrap: break-word !important;
-  }
-
-  .hero-title {
-    font-size: clamp(24px, 8vw, 48px) !important;
-    word-break: break-all !important;
-    overflow-wrap: break-word !important;
-    white-space: normal !important;
-    max-width: 100% !important;
-    line-height: 1.1 !important;
-  }
-
-  .highlight-box,
-  .step-card,
-  .code-block {
-    width: 100% !important;
-    max-width: 100% !important;
-    overflow-x: hidden !important;
-  }
-
-  table {
-    display: block !important;
-    overflow-x: auto !important;
-    font-size: 12px !important;
-  }
-}
-
 /* Header */
 header {
   padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
@@ -231,6 +237,52 @@ header {
 /* Main content */
 main {
   padding-bottom: 5rem;
+}
+
+/* 移动端底部导航适配 - 合并到 900px breakpoint */
+@media (max-width: 900px) {
+  main {
+    padding-bottom: 6rem; /* 为固定底部导航预留空间 */
+  }
+
+  .footer-nav {
+    overflow-x: auto;
+    justify-content: space-between;
+  }
+
+  .nav-link {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .table-wrapper {
+    position: relative;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 1.5rem 0;
+    border: 1px solid var(--line);
+  }
+
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
 }
 
 /* Section anchors offset for sticky header */
@@ -251,14 +303,49 @@ section p, section li {
 .table-wrapper {
   margin: 1.5rem 0;
   border: 1px solid var(--line);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-wrapper::after {
+  content: "";
+  display: block;
+}
+
+/* 移动端滑动提示 */
+@media (max-width: 900px) {
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  .table-wrapper {
+    position: relative;
+    padding-bottom: 24px;
+  }
 }
 
 table {
   font-size: 0.875rem;
+  min-width: 560px;
 }
 
-td, th {
-  padding: 0.875rem 1rem;
+@media (max-width: 900px) {
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
 }
 
 /* Tool Cards */
@@ -314,6 +401,14 @@ h1 {
   margin-bottom: var(--space-xl);
 }
 
+/* 移动端H1适配 */
+@media (max-width: 900px) {
+  h1 {
+    font-size: clamp(36px, 10vw, 48px);
+    line-height: 1.05;
+  }
+}
+
 .phase-label {
   font-size: 13px;
   color: var(--accent);
@@ -331,6 +426,16 @@ h1 {
   color: var(--text-secondary);
   max-width: 44ch;
   line-height: 1.8;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* 移动端副标题适配 */
+@media (max-width: 900px) {
+  .subtitle {
+    font-size: 14px;
+    max-width: 100%;
+  }
 }
 
 .node-meta {
@@ -383,6 +488,21 @@ p {
   color: var(--text-secondary);
   line-height: 1.9;
   margin-bottom: 1.25rem;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* 移动端段落适配 */
+@media (max-width: 900px) {
+  p {
+    padding-right: 0.5rem;
+    word-break: break-all;
+    white-space: normal;
+  }
+
+  section p {
+    padding-right: 0;
+  }
 }
 
 .decision-box {
@@ -708,47 +828,29 @@ td:first-child {
 </head>
 <body>
   <nav class="fixed-top-nav">
-    <a href="/" class="back-link">← 返回首页</a>
+    <a href="/index.html" class="back-link">← 返回首页</a>
     <span class="node-id">节点 16 / 57</span>
   </nav>
 
-  <div class="layout layout-tools">
-    <aside class="sidebar-toc">
-      <div class="toc-title">目录</div>
-      <ul class="toc-list">
-        <li class="toc-item"><a href="#s2" class="toc-link">一、先理解：微信支付的钱是怎么到你账户的</a></li>
-        <li class="toc-item"><a href="#s3" class="toc-link">二、2026年微信支付的三条路径</a></li>
-        <li class="toc-item"><a href="#s4" class="toc-link">三、微信支付API V3 核心代码（2026年现行版本）</a></li>
-        <li class="toc-item"><a href="#s5" class="toc-link">四、OPC支付系统的安全铁律</a></li>
-        <li class="toc-item"><a href="#s6" class="toc-link">五、常见翻车与解决</a></li>
-        <li class="toc-item"><a href="#s7" class="toc-link">六、检查清单</a></li>
-        <li class="toc-item"><a href="#s8" class="toc-link">节点资源链接</a></li>
-      </ul>
-    </aside>
-        <main>
+  <div class="layout">
+    <main class="container">
       <header>
-      <div class="phase-label">核心功能开发</div>
-      <h1>支付代码集成</h1>
-      <div class="node-meta">节点 16 / 57 · 最后修订：2026年5月11日</div>
+      <div class="phase-label">0-1</div>
+      <h1>节点16：支付代码集成</h1>
+      <div class="node-meta">节点 16 / 57 · 最后修订：2026年6月4日</div>
     </header>
-
-    <section class="tldr" aria-label="本章速读">
-      <div class="tldr-label">本章速读</div>
-      <ul class="tldr-list">
-        <li><strong>目标：</strong>让钱能进得来——把支付 SDK 接进产品，收到第一笔钱。</li>
-        <li><strong>你要做的事：</strong>3 步：选支付渠道（微信/支付宝/Stripe）→ 装 SDK 并配密钥 → 写统一下单 + 回调验签。</li>
-        <li><strong>不需要会：</strong>金融级加密、复杂对账系统。本章只教你"OPC 最小可收钱代码"。</li>
-        <li><strong>本章产出：</strong>1 套跑通的下单→支付→回调→发货闭环代码。</li>
-      </ul>
-    </section>
 
     <section id="s1">
     
+<p>node_id: 16</p>
+<p>persona: neutral</p>
+<p>cta_type: wechat</p>
+<p>keywords: [支付, 微信支付, 你的后端, 步骤, 预支付订]</p>
 
 <blockquote class="decision-box"><p>产品做好了，用户也来了，但钱进不来。微信支付是国内OPC绕不开的关卡。本节点用最直白的方式讲清楚：从零到收到第一笔钱，代码该怎么写。</p></blockquote>
 
 <p></section></p>
-<section id="s2">
+<section id="s一">
 <p>      <div class="section-label">一、先理解：微信支付的钱是怎么到你账户的</div></p>
 
 <p>别一头扎进代码。先理解钱流动的过程：</p>
@@ -772,7 +874,7 @@ td:first-child {
 <strong>关键认知</strong>：整个流程中，你的后端从来不会"收到钱"。钱是微信代收，T+1结算到你的对公账户。你的后端只负责两件事：<strong>发起支付请求</strong> 和 <strong>确认支付结果</strong>。
 
 <p></section></p>
-<section id="s3">
+<section id="s二">
 <p>      <div class="section-label">二、2026年微信支付的三条路径</div></p>
 
 <div class="table-wrapper"><table><thead><tr><th>路径</th><th>适用场景</th><th>开发复杂度</th><th>费率</th></tr></thead><tbody><tr><td><strong>JSAPI支付</strong></td><td>微信内网页、公众号</td><td>⭐⭐ 中</td><td>0.6%</td></tr><tr><td><strong>小程序支付</strong></td><td>微信小程序内</td><td>⭐⭐ 中</td><td>0.6%</td></tr><tr><td><strong>Native支付</strong></td><td>PC网页（扫码付）</td><td>⭐ 最低</td><td>0.6%</td></tr><tr><td><strong>H5支付</strong></td><td>手机浏览器网页</td><td>⭐⭐⭐ 最高</td><td>0.6%</td></tr></tbody></table></div>
@@ -781,7 +883,7 @@ td:first-child {
 <ul><li>如果你做了微信小程序 → 小程序支付</li><li>如果你只做了Web → JSAPI（微信内打开）/ Native（电脑打开扫码）</li><li>别做H5支付，申请难度大，需要额外资质</li></ul>
 
 <p></section></p>
-<section id="s4">
+<section id="s三">
 <p>      <div class="section-label">三、微信支付API V3 核心代码（2026年现行版本）</div></p>
 
 <p>微信支付API V3是2020年推出的，2026年已经是唯一在用的版本。<strong>V2已经完全停用，不要看任何V2教程。</strong></p>
@@ -826,7 +928,7 @@ td:first-child {
 <p>    body,</p>
 <p>    {</p>
 <p>      headers: {</p>
-<p style="word-break: break-all; overflow-wrap: break-word;">        'Authorization': </code>WECHATPAY2-SHA256-RSA2048 mchid="${process.env.WECHAT_MCHID}",nonce_str="${nonceStr}",timestamp="${timestamp}",signature="${signature}",serial_no="${process.env.WECHAT_SERIAL_NO}"<code>,</p>
+<p>        'Authorization': </code>WECHATPAY2-SHA256-RSA2048 mchid="${process.env.WECHAT_MCHID}",nonce_str="${nonceStr}",timestamp="${timestamp}",signature="${signature}",serial_no="${process.env.WECHAT_SERIAL_NO}"<code>,</p>
 <p>        'Content-Type': 'application/json'</p>
 <p>      }</p>
 <p>    }</p>
@@ -917,7 +1019,7 @@ td:first-child {
 <p></code>`<code></p>
 
 <p></section></p>
-<section id="s5">
+<section id="s四">
 <p>      <div class="section-label">四、OPC支付系统的安全铁律</div></p>
 
 <h3>必须遵守的5条</h3>
@@ -928,19 +1030,19 @@ td:first-child {
 <p>微信支付提供了沙箱环境（</code>https://api.mch.weixin.qq.com/sandboxnew/`），但2026年沙箱已经逐步废弃。<strong>建议直接在正式环境做1分钱测试。</strong></p>
 
 <p></section></p>
-<section id="s6">
+<section id="s五">
 <p>      <div class="section-label">五、常见翻车与解决</div></p>
 
 <div class="table-wrapper"><table><thead><tr><th>翻车</th><th>现象</th><th>根因</th><th>解决</th></tr></thead><tbody><tr><td><strong>signature error</strong></td><td>预支付订单创建失败</td><td>签名算法有误或证书路径不对</td><td>用微信官方调试工具验证签名</td></tr><tr><td><strong>回调收不到</strong></td><td>用户付了钱订单状态不变</td><td>notify_url不可达或没有公网IP</td><td>本地开发用ngrok穿透；生产环境检查防火墙</td></tr><tr><td><strong>重复支付</strong></td><td>同一个订单用户付了两次</td><td>未做幂等处理</td><td>回调入口第一行就查订单状态</td></tr><tr><td><strong>金额不对</strong></td><td>用户付了1分钱获得999元的会员</td><td>前端传了amount参数</td><td>从前端只接收productId，后端查数据库获取价格</td></tr><tr><td><strong>openid获取失败</strong></td><td>JSAPI支付无法发起</td><td>未在微信内打开或未授权</td><td>确保页面在微信内打开，已完成网页授权</td></tr></tbody></table></div>
 
 <p></section></p>
-<section id="s7">
+<section id="s六">
 <p>      <div class="section-label">六、检查清单</div></p>
 
 <ul><li><input type="checkbox" disabled> 微信商户号已申请</li><li><input type="checkbox" disabled> APIv3证书已下载并配置到服务器环境变量</li><li><input type="checkbox" disabled> 金额完全在后端计算</li><li><input type="checkbox" disabled> 回调接口已验证能正常接收+验签</li><li><input type="checkbox" disabled> 订单状态变更有幂等保护</li><li><input type="checkbox" disabled> 做过1分钱真实支付测试</li><li><input type="checkbox" disabled> HTTPS已配置</li><li><input type="checkbox" disabled> 前端从未出现API密钥</li></ul>
 
 <p></section></p>
-<section id="s8">
+<section id="s节">
 <p>      <div class="section-label">节点资源链接</div></p>
 
 <ul><li>节点15：核心功能3开发</li><li>节点17：国内支付接入</li><li>节点18：开发者自测流程</li></ul>
@@ -954,16 +1056,11 @@ td:first-child {
   </div>
 
   <nav class="footer-nav">
-    <a href="/nodes/15-core-feature-3/index.html" class="nav-link">
-      <span>←</span> 节点15
-    </a>
-    <a href="/nodes/17-payment-access/index.html" class="nav-link">
-      节点17 <span>→</span>
-    </a>
+    <a href="/nodes/15-data-display/index.html" class="nav-link"><span>←</span> 节点15</a>
+    <a href="/nodes/17-payment-access/index.html" class="nav-link">节点17 <span>→</span></a>
   </nav>
 
   <script>
-  // Smooth scroll
   document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', function(e) {
       e.preventDefault();
@@ -974,30 +1071,6 @@ td:first-child {
       }
     });
   });
-
-  // Scroll spy for TOC
-  const sections = document.querySelectorAll('section[id]');
-  const tocLinks = document.querySelectorAll('.toc-link');
-
-  function updateActiveLink() {
-    const scrollPos = window.scrollY + 120;
-    sections.forEach(section => {
-      const top = section.offsetTop;
-      const height = section.offsetHeight;
-      const id = section.getAttribute('id');
-      if (scrollPos >= top && scrollPos < top + height) {
-        tocLinks.forEach(link => {
-          link.classList.remove('active');
-          if (link.getAttribute('href') === '#' + id) {
-            link.classList.add('active');
-          }
-        });
-      }
-    });
-  }
-
-  window.addEventListener('scroll', updateActiveLink, { passive: true });
-  updateActiveLink();
   </script>
 </body>
 </html>

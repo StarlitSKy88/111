@@ -3,15 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="审核材料准备 - OPC节点百科">
+  <meta name="description" content="节点26：审核材料准备 - OPC节点百科">
   <meta name="theme-color" content="#111110">
   <title>节点26：审核材料准备 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../_design-tokens.css">
-  <link rel="stylesheet" href="../_layout-templates.css">
   <style>
 
 :root {
@@ -35,6 +33,10 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   background: var(--bg);
   color: var(--text-primary);
@@ -43,6 +45,72 @@ body {
   line-height: 1.9;
   letter-spacing: 0.04em;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* 移动端整体适配 - 使用 900px breakpoint 与现有代码一致 */
+@media (max-width: 900px) {
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+
+  body {
+    font-size: 14px;
+  }
+
+  .layout {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding: 4rem 16px 2rem !important;
+    margin: 0 !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .sidebar-toc {
+    display: none !important;
+  }
+
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  section {
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  section > * {
+    max-width: 100% !important;
+    overflow-x: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  section p {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+
+  h1 {
+    font-size: clamp(36px, 10vw, 48px) !important;
+    line-height: 1.05 !important;
+  }
 }
 
 /* Layout with Sidebar */
@@ -159,20 +227,6 @@ body {
   letter-spacing: 0.08em;
 }
 
-@media (max-width: 900px) {
-  .layout {
-    grid-template-columns: 1fr;
-  }
-
-  .sidebar-toc {
-    display: none;
-  }
-
-  .fixed-top-nav {
-    padding: 0.75rem clamp(1rem, 4vw, 1.5rem);
-  }
-}
-
 /* Header */
 header {
   padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
@@ -183,6 +237,52 @@ header {
 /* Main content */
 main {
   padding-bottom: 5rem;
+}
+
+/* 移动端底部导航适配 - 合并到 900px breakpoint */
+@media (max-width: 900px) {
+  main {
+    padding-bottom: 6rem; /* 为固定底部导航预留空间 */
+  }
+
+  .footer-nav {
+    overflow-x: auto;
+    justify-content: space-between;
+  }
+
+  .nav-link {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .table-wrapper {
+    position: relative;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 1.5rem 0;
+    border: 1px solid var(--line);
+  }
+
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
 }
 
 /* Section anchors offset for sticky header */
@@ -203,14 +303,49 @@ section p, section li {
 .table-wrapper {
   margin: 1.5rem 0;
   border: 1px solid var(--line);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-wrapper::after {
+  content: "";
+  display: block;
+}
+
+/* 移动端滑动提示 */
+@media (max-width: 900px) {
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  .table-wrapper {
+    position: relative;
+    padding-bottom: 24px;
+  }
 }
 
 table {
   font-size: 0.875rem;
+  min-width: 560px;
 }
 
-td, th {
-  padding: 0.875rem 1rem;
+@media (max-width: 900px) {
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
 }
 
 /* Tool Cards */
@@ -266,6 +401,14 @@ h1 {
   margin-bottom: var(--space-xl);
 }
 
+/* 移动端H1适配 */
+@media (max-width: 900px) {
+  h1 {
+    font-size: clamp(36px, 10vw, 48px);
+    line-height: 1.05;
+  }
+}
+
 .phase-label {
   font-size: 13px;
   color: var(--accent);
@@ -283,6 +426,16 @@ h1 {
   color: var(--text-secondary);
   max-width: 44ch;
   line-height: 1.8;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* 移动端副标题适配 */
+@media (max-width: 900px) {
+  .subtitle {
+    font-size: 14px;
+    max-width: 100%;
+  }
 }
 
 .node-meta {
@@ -335,6 +488,21 @@ p {
   color: var(--text-secondary);
   line-height: 1.9;
   margin-bottom: 1.25rem;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* 移动端段落适配 */
+@media (max-width: 900px) {
+  p {
+    padding-right: 0.5rem;
+    word-break: break-all;
+    white-space: normal;
+  }
+
+  section p {
+    padding-right: 0;
+  }
 }
 
 .decision-box {
@@ -657,108 +825,41 @@ td:first-child {
 }
 
   </style>
-  <style>
-  @media (max-width: 900px) {
-    html, body {
-      overflow-x: hidden !important;
-      max-width: 100vw !important;
-    }
-
-    .layout {
-      display: block !important;
-      grid-template-columns: 1fr !important;
-      width: 100% !important;
-      max-width: 100vw !important;
-      padding: 4rem 16px 2rem !important;
-    }
-
-    .sidebar-toc {
-      display: none !important;
-    }
-
-    section {
-      width: 100% !important;
-      max-width: 100vw !important;
-      overflow-x: hidden !important;
-    }
-
-    section p, section li, section td, section th {
-      width: 100% !important;
-      max-width: 100% !important;
-      word-break: break-word !important;
-      overflow-wrap: break-word !important;
-    }
-
-    .hero-title {
-      font-size: clamp(24px, 8vw, 48px) !important;
-      word-break: break-all !important;
-      overflow-wrap: break-word !important;
-      white-space: normal !important;
-      max-width: 100% !important;
-      line-height: 1.1 !important;
-    }
-
-    table {
-      display: block !important;
-      overflow-x: auto !important;
-      font-size: 12px !important;
-    }
-  }
-  </style>
 </head>
 <body>
   <nav class="fixed-top-nav">
-    <a href="/" class="back-link">← 返回首页</a>
+    <a href="/index.html" class="back-link">← 返回首页</a>
     <span class="node-id">节点 26 / 57</span>
   </nav>
 
-  <div class="layout layout-policy">
-    <aside class="sidebar-toc">
-      <div class="toc-title">目录</div>
-      <ul class="toc-list">
-        <li class="toc-item"><a href="#s2" class="toc-link">一、你需要通过哪些审核？</a></li>
-        <li class="toc-item"><a href="#s3" class="toc-link">二、微信小程序审核（国内OPC最常遇到的）</a></li>
-        <li class="toc-item"><a href="#s4" class="toc-link">三、App Store审核（如果做iOS）</a></li>
-        <li class="toc-item"><a href="#s5" class="toc-link">四、审核材料模板（通用）</a></li>
-        <li class="toc-item"><a href="#s6" class="toc-link">五、检查清单</a></li>
-        <li class="toc-item"><a href="#s8" class="toc-link">节点资源链接</a></li>
-      </ul>
-    </aside>
-        <main>
+  <div class="layout">
+    <main class="container">
       <header>
-      <div class="phase-label">上线准备</div>
-      <h1>审核材料准备</h1>
-      <div class="node-meta">节点 26 / 57 · 最后修订：2026年5月11日</div>
+      <div class="phase-label">0-1</div>
+      <h1>节点26：审核材料准备</h1>
+      <div class="node-meta">节点 26 / 57 · 最后修订：2026年6月4日</div>
     </header>
-
-    <section class="tldr" aria-label="本章速读">
-      <div class="tldr-label">本章速读</div>
-      <ul class="tldr-list">
-        <li><strong>目标：</strong>准备齐各平台审核材料——一次过、不返工。</li>
-        <li><strong>你要做的事：</strong>3 步：确定发布平台（小程序/App Store/网站）→ 准备资质与隐私协议 → 自审清单逐项核对。</li>
-        <li><strong>不需要会：</strong>法务合同、深度安全审计。本章只教你"OPC 一个人能准备的最小审核包"。</li>
-        <li><strong>本章产出：</strong>1 份完整的审核材料包（资质 + 隐私协议 + 自审报告）。</li>
-      </ul>
-    </section>
 
     <section id="s1">
     
+<p>node_id: 26</p>
+<p>persona: neutral</p>
+<p>cta_type: wechat</p>
+<p>keywords: [测试账号, 微信小程, 个工作日, 审核, 提交审核]</p>
 
 <blockquote class="decision-box"><p>产品要在平台上发布（App Store、微信小程序、应用市场），审核是第一道关卡。审核不通过 = 你的产品见不到用户。本节点告诉你：不同平台审什么、怎么准备材料一次过。</p></blockquote>
 
 <p></section></p>
-<section id="s2">
+<section id="s一">
 <p>      <div class="section-label">一、你需要通过哪些审核？</div></p>
 
 <div class="table-wrapper"><table><thead><tr><th>你的产品形态</th><th>需要过的审核</th><th>审核周期</th><th>难度</th></tr></thead><tbody><tr><td><strong>Web网站</strong></td><td>无需审核（直接上线）</td><td>0天</td><td>⭐</td></tr><tr><td><strong>微信小程序</strong></td><td>微信小程序审核</td><td>1-7个工作日</td><td>⭐⭐</td></tr><tr><td><strong>iOS App</strong></td><td>App Store审核</td><td>1-3个工作日</td><td>⭐⭐⭐</td></tr><tr><td><strong>安卓App</strong></td><td>各应用市场审核</td><td>1-5个工作日</td><td>⭐⭐</td></tr><tr><td><strong>支付功能</strong></td><td>微信/支付宝商户审核</td><td>1-5个工作日</td><td>⭐⭐</td></tr></tbody></table></div>
 
 <p></section></p>
-<section id="s3">
+<section id="s二">
 <p>      <div class="section-label">二、微信小程序审核（国内OPC最常遇到的）</div></p>
 
 <h3>审核看什么（2026年微信审核规则）</h3>
-
-<p>2026年微信小程序审核变化：引入AI辅助初审，审核时长从原来的3-7天缩短至1-3天（部分类目）。但AI对违规内容的识别率提升明显，以下是最新审核要点：</p>
 
 <ol><li><strong>类目匹配</strong>：你的小程序选的类目必须和实际功能匹配。工具类不能选社交类，选了会被拒。</li><li><strong>资质齐全</strong>：涉及商业/支付/社交等类目，需要上传对应的许可证或资质证明。</li><li><strong>功能完整</strong>：提交审核时小程序不能是"空壳"。必须有可交互的功能。</li><li><strong>无诱导分享</strong>：不能有"分享到群才能用""转发得红包"等诱导行为。</li><li><strong>用户协议+隐私政策</strong>：必须有，且必须在用户使用前弹窗展示。</li></ol>
 <h3>准备材料清单</h3>
@@ -769,7 +870,7 @@ td:first-child {
 <p>> <strong>提交审核前，用微信官方的"小程序开发助手"自查。</strong> 它能检测出大部分格式问题。</p>
 
 <p></section></p>
-<section id="s4">
+<section id="s三">
 <p>      <div class="section-label">三、App Store审核（如果做iOS）</div></p>
 
 <h3>最容易被打回的5条</h3>
@@ -780,7 +881,7 @@ td:first-child {
 <ul><li>开发者账号（$99/年）</li><li>App图标（1024×1024px）</li><li>App截图（iPhone 5.5寸和6.5寸各一组，至少3张）</li><li>隐私政策URL</li><li>测试账号</li></ul>
 
 <p></section></p>
-<section id="s5">
+<section id="s四">
 <p>      <div class="section-label">四、审核材料模板（通用）</div></p>
 
 <h3>产品介绍文案（每个平台都需要）</h3>
@@ -805,13 +906,13 @@ td:first-child {
 <p></code>``</p>
 
 <p></section></p>
-<section id="s6">
+<section id="s五">
 <p>      <div class="section-label">五、检查清单</div></p>
 
 <ul><li><input type="checkbox" disabled> 审核平台已确定（小程序/App Store/应用市场）</li><li><input type="checkbox" disabled> 类目已正确选择</li><li><input type="checkbox" disabled> 产品截图已准备（≥3张）</li><li><input type="checkbox" disabled> 测试账号已创建+已测试可用</li><li><input type="checkbox" disabled> 隐私政策页面已上线+链接有效</li><li><input type="checkbox" disabled> 产品介绍文案已准备</li><li><input type="checkbox" disabled> 营业执照/资质文件已扫描</li></ul>
 
 <p></section></p>
-<section id="s8">
+<section id="s节">
 <p>      <div class="section-label">节点资源链接</div></p>
 
 <ul><li>节点25：网站部署与SSL</li><li>节点27：上线前检查清单</li><li>节点28：提交审核与等待</li></ul>
@@ -825,16 +926,11 @@ td:first-child {
   </div>
 
   <nav class="footer-nav">
-    <a href="/nodes/25-website-deployment/index.html" class="nav-link">
-      <span>←</span> 节点25
-    </a>
-    <a href="/nodes/27-launch-checklist/index.html" class="nav-link">
-      节点27 <span>→</span>
-    </a>
+    <a href="/nodes/25-website-deployment/index.html" class="nav-link"><span>←</span> 节点25</a>
+    <a href="/nodes/27-launch-checklist/index.html" class="nav-link">节点27 <span>→</span></a>
   </nav>
 
   <script>
-  // Smooth scroll
   document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', function(e) {
       e.preventDefault();
@@ -845,30 +941,6 @@ td:first-child {
       }
     });
   });
-
-  // Scroll spy for TOC
-  const sections = document.querySelectorAll('section[id]');
-  const tocLinks = document.querySelectorAll('.toc-link');
-
-  function updateActiveLink() {
-    const scrollPos = window.scrollY + 120;
-    sections.forEach(section => {
-      const top = section.offsetTop;
-      const height = section.offsetHeight;
-      const id = section.getAttribute('id');
-      if (scrollPos >= top && scrollPos < top + height) {
-        tocLinks.forEach(link => {
-          link.classList.remove('active');
-          if (link.getAttribute('href') === '#' + id) {
-            link.classList.add('active');
-          }
-        });
-      }
-    });
-  }
-
-  window.addEventListener('scroll', updateActiveLink, { passive: true });
-  updateActiveLink();
   </script>
 </body>
 </html>

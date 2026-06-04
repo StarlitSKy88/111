@@ -3,22 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="微信好友、社群、朋友圈，有100+付费用户后深耕私域">
+  <meta name="description" content="节点35：社群与私域运营 - OPC节点百科">
   <meta name="theme-color" content="#111110">
-  <title>社群与私域运营 - OPC节点百科</title>
+  <title>节点35：社群与私域运营 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../_design-tokens.css">
-  <link rel="stylesheet" href="../_layout-templates.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
+
 :root {
   --bg: #111110;
   --surface: #1A1A18;
   --text-primary: #F0EDE6;
-  --text-secondary: #B8B4AE;
-  --text-tertiary: #A8A49E;
+  --text-secondary: #7A7670;
+  --text-tertiary: #4A4744;
   --accent: #C0392B;
   --line: #2A2A28;
   --line-light: rgba(255,255,255,0.06);
@@ -32,22 +31,87 @@
   --space-4xl: 128px;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  overflow-x: hidden;
+}
 
 body {
   background: var(--bg);
   color: var(--text-primary);
-  font-family: 'Noto Sans SC', sans-serif;
-  font-weight: 400;
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
   line-height: 1.9;
   letter-spacing: 0.04em;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
+/* 移动端整体适配 - 使用 900px breakpoint 与现有代码一致 */
+@media (max-width: 900px) {
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
 
-.sidebar-toc { position: sticky; top: 5rem; height: fit-content; max-height: calc(100vh - 6rem); overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
-.sidebar-toc::-webkit-scrollbar { width: 4px; }
-.sidebar-toc::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+  body {
+    font-size: 14px;
+  }
+
+  .layout {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding: 4rem 16px 2rem !important;
+    margin: 0 !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .sidebar-toc {
+    display: none !important;
+  }
+
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  section {
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  section > * {
+    max-width: 100% !important;
+    overflow-x: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  section p {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+
+  h1 {
+    font-size: clamp(36px, 10vw, 48px) !important;
+    line-height: 1.05 !important;
+  }
+}
 
 /* Layout with Sidebar */
 .layout {
@@ -59,34 +123,72 @@ body {
   padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
 }
 
-/* Main content wrapper */
-.main-content {
-  min-width: 0;
+/* Sidebar TOC */
+.sidebar-toc {
+  position: sticky;
+  top: 5rem;
+  height: fit-content;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  padding-top: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
 }
 
-.toc-title { font-size: 0.6875rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 1.25rem; }
-.toc-list { list-style: none; }
-.toc-item { margin-bottom: 0.75rem; }
-.toc-link { font-size: 0.8125rem; color: var(--text-secondary); text-decoration: none; display: block; padding: 0.375rem 0; padding-left: 1rem; border-left: 1px solid var(--line); transition: all 0.3s; line-height: 1.4; }
-.toc-link:hover { color: var(--text-primary); border-left-color: var(--accent); }
-.toc-link.active { color: var(--accent); border-left-color: var(--accent); font-weight: 400; }
-@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .sidebar-toc { display: none; } }
+.sidebar-toc::-webkit-scrollbar {
+  width: 4px;
+}
 
-.section-number {
-  position: absolute;
-  top: var(--space-2xl);
-  right: clamp(24px, 8vw, 120px);
-  font-size: clamp(100px, 22vw, 280px);
-  font-weight: 100;
+.sidebar-toc::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 2px;
+}
+
+.toc-title {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.toc-list {
+  list-style: none;
+}
+
+.toc-item {
+  margin-bottom: 0.75rem;
+}
+
+.toc-link {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: block;
+  padding: 0.375rem 0;
+  padding-left: 1rem;
+  border-left: 1px solid var(--line);
+  transition: all 0.3s;
+  line-height: 1.4;
+}
+
+.toc-link:hover {
   color: var(--text-primary);
-  opacity: 0.03;
-  line-height: 1;
-  letter-spacing: -0.05em;
-  font-family: 'Noto Serif JP', serif;
-  pointer-events: none;
-  user-select: none;
+  border-left-color: var(--accent);
 }
 
+.toc-link.active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  font-weight: 400;
+}
+
+.toc-link.sub {
+  padding-left: 1.75rem;
+  font-size: 0.75rem;
+}
+
+/* Fixed Top Nav */
 .fixed-top-nav {
   position: fixed;
   top: 0;
@@ -102,816 +204,772 @@ body {
   border-bottom: 1px solid var(--line);
 }
 
-.fixed-top-nav .back-link {
-  position: static;
+.back-link {
   font-size: 0.75rem;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--text-tertiary);
+  color: var(--text-secondary);
   text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.fixed-top-nav .back-link:hover { color: var(--text-primary); }
-
-.fixed-top-nav .node-id {
-  font-size: 0.75rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-}
-
-.hero {
-  padding: var(--space-4xl) 0 var(--space-3xl);
-  position: relative;
-}
-
-.hero-content {
-  position: relative;
-  z-index: 1;
-  max-width: 800px;
-}
-
-.hero-label {
-  font-size: 13px;
-  color: var(--accent);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  margin-bottom: var(--space-lg);
   display: flex;
   align-items: center;
-  gap: var(--space-md);
+  gap: 0.5rem;
+  transition: color 0.3s;
 }
 
-.hero-label::before {
-  content: '';
-  width: 32px;
-  height: 1px;
-  background: var(--accent);
+.back-link:hover {
+  color: var(--text-primary);
 }
 
-.hero-title {
+.node-id {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+}
+
+/* Header */
+header {
+  padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(2rem, 5vh, 3rem);
+}
+
+/* Main content */
+main {
+  padding-bottom: 5rem;
+}
+
+/* 移动端底部导航适配 - 合并到 900px breakpoint */
+@media (max-width: 900px) {
+  main {
+    padding-bottom: 6rem; /* 为固定底部导航预留空间 */
+  }
+
+  .footer-nav {
+    overflow-x: auto;
+    justify-content: space-between;
+  }
+
+  .nav-link {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .table-wrapper {
+    position: relative;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 1.5rem 0;
+    border: 1px solid var(--line);
+  }
+
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
+}
+
+/* Section anchors offset for sticky header */
+section {
+  scroll-margin-top: 2rem;
+}
+
+section h2 {
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+}
+
+section p, section li {
+  font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
+  line-height: 1.9;
+}
+
+/* Table improvements */
+.table-wrapper {
+  margin: 1.5rem 0;
+  border: 1px solid var(--line);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-wrapper::after {
+  content: "";
+  display: block;
+}
+
+/* 移动端滑动提示 */
+@media (max-width: 900px) {
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  .table-wrapper {
+    position: relative;
+    padding-bottom: 24px;
+  }
+}
+
+table {
+  font-size: 0.875rem;
+  min-width: 560px;
+}
+
+@media (max-width: 900px) {
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
+}
+
+/* Tool Cards */
+.tool-grid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* Path blocks */
+.path-block {
+  padding: 1.5rem;
+}
+
+.workflow {
+  padding: 1rem 1.25rem;
+  font-size: 0.8125rem;
+}
+
+/* Validation cards */
+.validation-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.validation-card {
+  padding: 1.25rem;
+}
+
+/* Level items */
+.level-grid {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+/* Decision box */
+.decision-box {
+  padding: 1.25rem 1.5rem;
+}
+
+/* Main content */
+.phase-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+h1 {
   font-family: 'Noto Serif JP', serif;
   font-size: clamp(48px, 10vw, 96px);
   font-weight: 300;
   letter-spacing: -0.03em;
   line-height: 0.95;
+  color: var(--text-primary);
   margin-bottom: var(--space-xl);
 }
 
-.hero-desc {
-  font-size: 16px;
-  color: var(--text-secondary);
-  line-height: 1.8;
-  max-width: 44ch;
+/* 移动端H1适配 */
+@media (max-width: 900px) {
+  h1 {
+    font-size: clamp(36px, 10vw, 48px);
+    line-height: 1.05;
+  }
 }
 
-.content-section {
-  padding: var(--space-3xl) 0;
-  border-top: 1px solid var(--line);
-}
-
-.section-label {
+.phase-label {
   font-size: 13px;
   color: var(--accent);
-  letter-spacing: 0.2em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   margin-bottom: var(--space-lg);
   display: flex;
   align-items: center;
   gap: var(--space-md);
 }
+.phase-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
 
-.section-label::before {
-  content: '';
-  width: 24px;
-  height: 1px;
-  background: var(--accent);
+.subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 44ch;
+  line-height: 1.8;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
-/* Dimension Block */
-.dimension-block {
-  margin-bottom: var(--space-3xl);
-}
-
-.dimension-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-sm);
-  margin-bottom: var(--space-md);
-}
-
-.dimension-num {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 13px;
-  font-weight: 400;
-  color: var(--accent);
-  letter-spacing: 0.1em;
-}
-
-.dimension-tag {
-  font-size: 12px;
-  color: var(--text-tertiary);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  padding: 4px 10px;
-  border: 1px solid var(--line);
-}
-
-.dimension-question {
-  font-family: 'Noto Serif JP', serif;
-  font-size: clamp(24px, 4vw, 36px);
-  font-weight: 300;
-  letter-spacing: -0.02em;
-  line-height: 1.3;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xl);
-  max-width: 18em;
-}
-
-.grid-asymmetric {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: var(--space-3xl);
-  align-items: start;
-}
-
+/* 移动端副标题适配 */
 @media (max-width: 900px) {
-  .grid-asymmetric {
-    grid-template-columns: 1fr;
-    gap: var(--space-2xl);
+  .subtitle {
+    font-size: 14px;
+    max-width: 100%;
   }
 }
 
-.answer-block {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  padding: var(--space-lg);
-  margin-bottom: var(--space-md);
-}
-
-.answer-label {
-  font-size: 12px;
-  color: var(--accent);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  margin-bottom: var(--space-sm);
-}
-
-.answer-title {
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xs);
-}
-
-.answer-desc {
-  font-size: 14px;
-  color: var(--text-secondary);
-  line-height: 1.7;
-}
-
-/* Objection Blocks */
-.objection-block {
-  padding: var(--space-lg);
-  margin-bottom: var(--space-md);
-  border-left: 1px solid;
-}
-
-.objection-block.error {
-  background: rgba(192, 57, 43, 0.08);
-  border-color: var(--accent);
-}
-
-.objection-block.success {
-  background: rgba(39, 174, 96, 0.08);
-  border-color: var(--accent);
-}
-
-.objection-block.data {
-  background: rgba(41, 128, 185, 0.08);
-  border-color: #2980b9;
-}
-
-.objection-label {
-  font-size: 12px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  margin-bottom: var(--space-sm);
-}
-
-.objection-block.error .objection-label { color: var(--accent); }
-.objection-block.success .objection-label { color: var(--accent); }
-.objection-block.data .objection-label { color: #2980b9; }
-
-.objection-title {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xs);
-}
-
-.objection-desc {
-  font-size: 13px;
-  color: var(--text-secondary);
-  line-height: 1.6;
-}
-
-.chart-area {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  padding: var(--space-lg);
-}
-
-.chart-title {
-  font-size: 12px;
+.node-meta {
+  margin-top: 2rem;
+  font-size: 0.75rem;
   color: var(--text-tertiary);
   letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-bottom: var(--space-lg);
-  padding-bottom: var(--space-sm);
+}
+
+/* Sections */
+section {
+  padding-bottom: clamp(3rem, 10vh, 5rem);
   border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(3rem, 10vh, 5rem);
 }
 
-.core-insight {
-  margin: var(--space-xl) 0;
-  padding-left: var(--space-md);
-  border-left: 1px solid var(--accent);
+section:last-of-type {
+  border-bottom: none;
 }
 
-.core-insight-text {
-  font-size: 15px;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  max-width: 40ch;
+.section-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.5rem;
 }
 
-.balance-section-title {
+h2 {
   font-family: 'Noto Serif JP', serif;
-  font-size: clamp(24px, 4vw, 36px);
-  font-weight: 300;
+  font-size: clamp(1.375rem, 4vw, 1.875rem);
+  font-weight: 400;
   letter-spacing: -0.02em;
-  margin-bottom: var(--space-xl);
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
 }
 
-.balance-intro {
-  font-size: 15px;
+h3 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.125rem, 3vw, 1.375rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+p {
   color: var(--text-secondary);
-  line-height: 1.8;
-  max-width: 46ch;
-  margin-bottom: var(--space-2xl);
+  line-height: 1.9;
+  margin-bottom: 1.25rem;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
-.balance-intro strong { color: var(--text-primary); font-weight: 500; }
+/* 移动端段落适配 */
+@media (max-width: 900px) {
+  p {
+    padding-right: 0.5rem;
+    word-break: break-all;
+    white-space: normal;
+  }
 
-.balance-grid {
-  display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  gap: var(--space-2xl);
+  section p {
+    padding-right: 0;
+  }
 }
 
-@media (max-width: 768px) {
-  .balance-grid { grid-template-columns: 1fr; gap: var(--space-xl); }
-}
-
-.balance-card {
+.decision-box {
   background: var(--surface);
-  border: 1px solid var(--line);
-  padding: var(--space-lg);
+  border-left: 2px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
 }
 
-.balance-card-label {
-  font-size: 13px;
+.decision-box p {
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  margin: 0;
+}
+
+/* Tables */
+.table-wrapper {
+  overflow-x: auto;
+  margin: 2rem 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+th {
+  text-align: left;
+  font-weight: 400;
+  font-size: 0.6875rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  margin-bottom: var(--space-md);
-  padding-bottom: var(--space-sm);
+  color: var(--text-tertiary);
+  padding: 0.75rem 1rem;
   border-bottom: 1px solid var(--line);
 }
 
-.balance-card-label.positive { color: var(--accent); }
-.balance-card-label.negative { color: var(--text-tertiary); }
+td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--text-secondary);
+  vertical-align: top;
+}
 
-.balance-item {
-  padding: var(--space-sm) 0;
-  border-bottom: 1px solid var(--line-light);
-  font-size: 14px;
+tr:last-child td {
+  border-bottom: none;
+}
+
+td:first-child {
+  color: var(--text-primary);
+  font-weight: 400;
+}
+
+/* Tool Cards */
+.tool-grid {
+  display: grid;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.tool-card {
+  background: var(--surface);
+  padding: 1.75rem;
+  border: 1px solid var(--line);
+}
+
+.tool-card h4 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.tool-card .tagline {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.tool-card p {
+  font-size: 0.875rem;
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.tool-card .pros {
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+}
+
+.tool-card .price {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.25rem 0.75rem;
+  margin-top: 1rem;
+}
+
+/* Path Section */
+.path-block {
+  background: var(--surface);
+  padding: 2rem;
+  margin: 2rem 0;
+  border: 1px solid var(--line);
+}
+
+.path-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.path-number {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+.path-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.path-tools {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.path-block p {
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+}
+
+.workflow {
+  background: var(--bg);
+  padding: 1.25rem 1.5rem;
+  margin-top: 1.25rem;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.9;
+}
+
+/* Validation Box */
+.validation-grid {
+  display: grid;
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
+
+.validation-card {
+  background: var(--surface);
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+}
+
+.validation-card h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.validation-card p {
+  font-size: 0.8125rem;
+  margin: 0;
+}
+
+.level-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.level-item {
+  background: var(--surface);
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+}
+
+.level-item .num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.5rem;
+  color: var(--accent);
+  opacity: 0.6;
+  margin-bottom: 0.5rem;
+}
+
+.level-item h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.level-item p {
+  font-size: 0.75rem;
+  margin: 0;
+}
+
+/* Cost Control */
+.cost-table {
+  margin: 2rem 0;
+}
+
+/* Quote */
+.quote-block {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+}
+
+.quote-block p {
+  font-size: 1rem;
+  color: var(--text-primary);
+  line-height: 1.8;
+}
+
+/* Network Section */
+.network-alert {
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.network-alert h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.network-alert p {
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Summary Box */
+.summary-box {
+  background: var(--surface);
+  padding: 2rem;
+  margin-top: 3rem;
+  border: 1px solid var(--line);
+}
+
+.summary-box h3 {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+}
+
+.step-list {
+  list-style: none;
+  counter-reset: steps;
+}
+
+.step-list li {
+  counter-increment: steps;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
   color: var(--text-secondary);
 }
 
-.balance-item:last-child { border-bottom: none; }
-.balance-item.dim { color: var(--text-tertiary); }
-
-/* FIN Section */
-.fin-section {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  padding: var(--space-xl);
-  margin: var(--space-2xl) 0;
-}
-
-.fin-title {
-  font-size: 13px;
-  color: var(--accent);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  margin-bottom: var(--space-lg);
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-}
-
-.fin-title::before {
-  content: '';
-  width: 24px;
-  height: 1px;
-  background: var(--accent);
-}
-
-.fin-grid {
-  display: grid;
-  grid-template-columns: 1.5fr 1.2fr 0.8fr;
-  gap: var(--space-xl);
-}
-
-@media (max-width: 768px) {
-  .fin-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
-}
-
-.fin-item {
-  padding-top: var(--space-md);
-  border-top: 1px solid var(--line);
-}
-
-.fin-num {
+.step-list li::before {
+  content: counter(steps);
   font-family: 'Noto Serif JP', serif;
-  font-size: 32px;
-  font-weight: 300;
+  font-size: 0.75rem;
   color: var(--accent);
-  margin-bottom: var(--space-xs);
+  flex-shrink: 0;
+  width: 1.5rem;
+  padding-top: 0.25rem;
 }
 
-.fin-label {
-  font-size: 12px;
-  color: var(--text-tertiary);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
+/* Footer Nav - Fixed Bottom */
 .footer-nav {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   z-index: 100;
-  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
-  background: rgba(17, 17, 16, 0.85);
-  backdrop-filter: blur(12px);
-  border-top: 1px solid var(--line);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.9);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
 }
 
 .nav-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
   font-size: 0.75rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
   color: var(--text-tertiary);
   text-decoration: none;
-  transition: color 0.3s ease;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
 }
 
-.nav-link:hover { color: var(--text-primary); }
-.nav-arrow { font-size: 0.75rem; }
-
-.fade-section {
-  opacity: 1;
-  transform: translateY(0);
-}
-.fade-section.visible {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+.nav-link:hover {
+  color: var(--text-primary);
 }
 
-* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.nav-link.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
   </style>
 </head>
 <body>
   <nav class="fixed-top-nav">
-    <a href="/" class="back-link">← 返回首页</a>
+    <a href="/index.html" class="back-link">← 返回首页</a>
     <span class="node-id">节点 35 / 57</span>
   </nav>
-  <div class="section-number">23</div>
 
-  <div class="layout layout-steps">
-    <nav class="sidebar-toc">
-      <div class="toc-title">目录</div>
-      <ul class="toc-list">
-        <li class="toc-item"><a href="#s1" class="toc-link">信任资产</a></li>
-        <li class="toc-item"><a href="#s2" class="toc-link">朋友圈</a></li>
-        <li class="toc-item"><a href="#s3" class="toc-link">社群</a></li>
-        <li class="toc-item"><a href="#s4" class="toc-link">私聊</a></li>
-        <li class="toc-item"><a href="#s5" class="toc-link">工具</a></li>
-        <li class="toc-item"><a href="#s6" class="toc-link">风险</a></li>
-        <li class="toc-item"><a href="#s7" class="toc-link">行动清单</a></li>
-      </ul>
-    </nav>
-    <div class="main-content">
-    <header class="hero">
-      <div class="hero-content">
-        <div class="hero-label">节点 35 · 1-10</div>
-        <h1 class="hero-title">私域流量运营</h1>
-        <p class="hero-desc">微信好友、社群、朋友圈，有100+付费用户后深耕私域</p>
-      </div>
+  <div class="layout">
+    <main class="container">
+      <header>
+      <div class="phase-label">1-10</div>
+      <h1>节点35：社群与私域运营</h1>
+      <div class="node-meta">节点 35 / 57 · 最后修订：2026年6月4日</div>
     </header>
 
-    <section class="tldr fade-section" aria-label="本章速读">
-      <div class="tldr-label">本章速读</div>
-      <ul class="tldr-list">
-        <li><strong>目标：</strong>100+ 付费用户后开始深耕私域——把"一次成交"变成"持续复购 + 转介绍"。</li>
-        <li><strong>你要做的事：</strong>4 件事：个人号 IP 化 → 微信群分层运营 → 朋友圈节奏 → 客户标签化。</li>
-        <li><strong>不需要会：</strong>企业微信 SCRM、社群裂变工具、自动化营销。本章只给你"一个人能管 500 人"的方法。</li>
-        <li><strong>本章产出：</strong>1 套个人号 IP 内容日历 + 1 套群运营 SOP + 1 张客户标签表。</li>
-      </ul>
+    <section id="s1">
+    
+<p>node_id: 35</p>
+<p>persona: neutral</p>
+<p>cta_type: wechat</p>
+<p>keywords: [社群, 私域, 微信, 群, 朋友圈]</p>
+
+<blockquote class="decision-box"><p>私域 = 不需要每次花钱的流量。微信群 + 公众号 + 朋友圈 = 你的"3 件套"，让 100 个种子用户变成 1000 个付费用户。</p></blockquote>
+
+<p></section></p>
+<section id="s一">
+<p>      <div class="section-label">一、私域 vs 公域的 3 个核心区别</div></p>
+
+<div class="table-wrapper"><table><thead><tr><th>维度</th><th>公域（抖音/小红书）</th><th>私域（微信/邮件）</th></tr></thead><tbody><tr><td>流量来源</td><td>平台分发</td><td>你直接触达</td></tr><tr><td>触达成本</td><td>高（投流）</td><td>接近 0</td></tr><tr><td>信任度</td><td>低</td><td>高</td></tr><tr><td><strong>OPC 推荐</strong></td><td>引流用</td><td>转化用</td></tr></tbody></table></div>
+<strong>OPC 标配</strong>：公域引流 + 私域转化。
+
+<p></section></p>
+<section id="s二">
+<p>      <div class="section-label">二、3 个私域基础设施</div></p>
+
+<h3>1. 微信号（个人号）</h3>
+
+<ul><li>头像用真人（不是 logo）</li><li>朋友圈 1 天 1-2 条（生活 + 产品 7:3）</li><li>加好友 24 小时内必须私聊</li></ul>
+<h3>2. 微信群</h3>
+
+<div class="table-wrapper"><table><thead><tr><th>群类型</th><th>规模</th><th>用途</th></tr></thead><tbody><tr><td><strong>核心用户群</strong></td><td>100-200</td><td>反馈 + 早期用户</td></tr><tr><td><strong>产品答疑群</strong></td><td>300-500</td><td>用户互帮 + 客服</td></tr><tr><td><strong>付费会员群</strong></td><td>不限</td><td>高 ARPU 用户</td></tr></tbody></table></div>
+<strong>群规 3 条必备</strong>：
+<ol><li>不发广告（违者秒踢）</li><li>进群改备注（城市 + 行业）</li><li>鼓励分享经验</li></ol>
+<h3>3. 公众号 / 视频号</h3>
+
+<ul><li>公众号：深度文章，1 周 1 篇</li><li>视频号：30-60 秒短视频，1 周 3 条</li></ul>
+
+<p></section></p>
+<section id="s三">
+<p>      <div class="section-label">三、5 步私域冷启动</div></p>
+
+<h3>Step 1：设计诱饵</h3>
+
+<strong>好诱饵 = 用户立刻想要 + 与产品强相关</strong>。
+
+<div class="table-wrapper"><table><thead><tr><th>产品类型</th><th>诱饵示例</th></tr></thead><tbody><tr><td>SaaS 工具</td><td>"免费试用 7 天 + 1 对 1 答疑"</td></tr><tr><td>内容产品</td><td>"加入知识星球，免费领 5 个模板"</td></tr><tr><td>实物产品</td><td>"9.9 元秒杀 + 1V1 选品"</td></tr></tbody></table></div>
+<h3>Step 2：引流入口</h3>
+
+<ul><li>公众号菜单：加微信领资料</li><li>知乎文章末尾：加微信进群</li><li>产品内："遇到问题？加微信 1V1"</li><li>包裹卡片：扫码加入用户群</li></ul>
+<h3>Step 3：欢迎语 SOP</h3>
+
+<p>``<code></p>
+<p>Hi [名字]～ 欢迎加入 [群名]！</p>
+
+<p>我是 [你的名字]，[你的角色]。</p>
+
+<p>为了让你快速融入：</p>
+<p>1️⃣ 改个备注（格式：城市-行业）</p>
+<p>2️⃣ 介绍下自己（30 字内）</p>
+<p>3️⃣ 看看群精华（置顶消息）</p>
+
+<p>有问题随时 @ 我或群里问～</p>
+<p></code>`<code></p>
+
+<h3>Step 4：日常运营节奏</h3>
+
+<div class="table-wrapper"><table><thead><tr><th>频次</th><th>内容</th></tr></thead><tbody><tr><td>每天 1 条</td><td>群内话题 / 提问</td></tr><tr><td>每周 1 次</td><td>群内直播 / 答疑</td></tr><tr><td>每月 1 次</td><td>群友专属福利</td></tr></tbody></table></div>
+<h3>Step 5：转化路径</h3>
+
+<p></code>`<code></p>
+<p>陌生人 → 加微 → 拉群 → 体验产品 → 1V1 跟进 → 付费</p>
+<p>                              ↓</p>
+<p>                         朋友圈教育（每天 1-2 条）</p>
+<p></code>``</p>
+
+<p></section></p>
+<section id="s四">
+<p>      <div class="section-label">四、朋友圈运营的 3 个原则</div></p>
+
+<ol><li><strong>7:3 比例</strong> — 70% 真实生活 + 30% 产品/思考</li><li><strong>不刷屏</strong> — 1 天最多 2 条产品相关内容</li><li><strong>回复每一条评论</strong> — 这是信任建立的关键</li></ol>
+<strong>错误示范</strong>：整天发产品链接 = 屏蔽你
+<strong>正确示范</strong>：偶尔发"今天在思考 XXX 问题" = 真实感
+
+<p></section></p>
+<section id="s五">
+<p>      <div class="section-label">五、3 个常见错误</div></p>
+
+<h3>错误 1：建群就完事</h3>
+
+<strong>错</strong>。30 天没活跃的群 = 死群。要么激活，要么解散。
+
+<h3>错误 2：客服时间无限投入</h3>
+
+<strong>错</strong>。微信 1V1 答疑每天最多 1 小时。<strong>超过</strong>就<strong>写 FAQ</strong>或<strong>做教程</strong>。
+
+<h3>错误 3：忽略老用户</h3>
+
+<strong>OPC 的核心资产 = 老用户的 LTV</strong>。每月 1 次老用户专属福利。
+
+<p></section></p>
+<section id="s六">
+<p>      <div class="section-label">六、检查清单</div></p>
+
+<ul><li><input type="checkbox" disabled> 1 个微信号 / 公众号 / 视频号</li><li><input type="checkbox" disabled> 至少有 1 个活跃微信群（> 50 人）</li><li><input type="checkbox" disabled> 欢迎语 SOP 准备好</li><li><input type="checkbox" disabled> 朋友圈每天 1-2 条</li><li><input type="checkbox" disabled> 每周 1 次群内活动</li><li><input type="checkbox" disabled> 转化漏斗数字在跟踪</li></ul>
+
+<p></section></p>
+<section id="s节">
+<p>      <div class="section-label">节点资源链接</div></p>
+
+<ul><li>节点32：冷启动获客</li><li>节点34：用户反馈收集</li><li>节点37：客户异议应对</li></ul>
     </section>
 
-    <!-- Dimension 1: 信任资产 -->
-    <section id="s1" class="content-section fade-section">
-      <div class="dimension-block">
-        <div class="dimension-badge">
-          <span class="dimension-num">D1</span>
-          <span class="dimension-tag">本质</span>
-        </div>
-        <h2 class="dimension-question">私域的本质不是流量，是信任资产的复利积累</h2>
-
-        <div class="grid-asymmetric">
-          <div class="answer-col">
-            <div class="answer-block">
-              <div class="answer-label">核心原理</div>
-              <div class="answer-title">信任账户模型</div>
-              <div class="answer-desc">一人公司的私域不是"流量仓库"，而是"信任账户"。每条朋友圈、每次私聊回复、每场直播答疑，都是在向这个账户充值。用户认定的是"这个人"的专业判断，而非机构品牌。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">关键指标</div>
-              <div class="answer-title">从数量到质量</div>
-              <div class="answer-desc">2026年评估私域健康度的核心指标是"可主动唤醒的精准用户数"及"单用户生命周期价值(LTV)"，而非好友总数或群成员数量。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">价值对比</div>
-              <div class="answer-title">800人 > 5000人</div>
-              <div class="answer-desc">800人中有200人付费、50人复购、20人转介绍，远高于通过裂变灌入的5000人泛流量池。信任具有明确指向性。</div>
-            </div>
-          </div>
-          <div class="chart-col">
-            <div class="chart-area">
-              <div class="chart-title">信任积累 vs 流量采买</div>
-              <div style="margin-bottom: var(--space-md);">
-                <div style="font-size: 13px; color: var(--text-tertiary); margin-bottom: var(--space-xs);">泛流量池</div>
-                <div style="display: flex; align-items: center; gap: var(--space-sm);">
-                  <div style="flex: 1; height: 8px; background: var(--line);">
-                    <div style="width: 15%; height: 100%; background: var(--text-tertiary);"></div>
-                  </div>
-                  <span style="font-size: 12px; color: var(--text-tertiary);">15%有效</span>
-                </div>
-              </div>
-              <div style="margin-bottom: var(--space-md);">
-                <div style="font-size: 13px; color: var(--text-tertiary); margin-bottom: var(--space-xs);">精准私域池</div>
-                <div style="display: flex; align-items: center; gap: var(--space-sm);">
-                  <div style="flex: 1; height: 8px; background: var(--line);">
-                    <div style="width: 75%; height: 100%; background: var(--accent);"></div>
-                  </div>
-                  <span style="font-size: 12px; color: var(--accent);">75%有效</span>
-                </div>
-              </div>
-            </div>
-            <div class="objection-block error">
-              <div class="objection-label">错误示范</div>
-              <div class="objection-title">把私域当流量仓库，只收不养</div>
-              <div class="objection-desc">通过各种钩子导入用户后便再无后续。三个月后用户对你是谁毫无印象，发售时群发换回沉默或删除。</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Dimension 2: 分层交付 -->
-    <section id="s2" class="content-section fade-section">
-      <div class="dimension-block">
-        <div class="dimension-badge">
-          <span class="dimension-num">D2</span>
-          <span class="dimension-tag">矛盾</span>
-        </div>
-        <h2 class="dimension-question">精力天花板与用户无限期望的核心矛盾如何破解</h2>
-
-        <div class="grid-asymmetric">
-          <div class="answer-col">
-            <div class="answer-block">
-              <div class="answer-label">分层交付模型</div>
-              <div class="answer-title">四层用户分级</div>
-              <div class="answer-desc">将私域用户分为：潜在咨询者、单次购买客户、订阅/复购客户、核心高价值会员。不同层级设定截然不同的服务标准。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">AI处理</div>
-              <div class="answer-title">80%常规问答</div>
-              <div class="answer-desc">AI客服结合预设知识库完成接待与常见问题解答，仅在用户表现出明确购买信号时由创业者本人介入。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">真人处理</div>
-              <div class="answer-title">2小时内响应承诺</div>
-              <div class="answer-desc">核心高价值会员享有1对1沟通时间承诺，如"每月一次30分钟语音诊断"或"专属服务群内工作日2小时内响应"。</div>
-            </div>
-          </div>
-          <div class="chart-col">
-            <div class="chart-area">
-              <div class="chart-title">服务分层金字塔</div>
-              <div style="margin-bottom: var(--space-md);">
-                <div style="display: flex; justify-content: space-between; font-size: 13px; padding: var(--space-sm) 0; border-bottom: 1px solid var(--line-light);">
-                  <span style="color: var(--accent);">A层 · 已签约客户</span>
-                  <span style="color: var(--text-tertiary);">80人</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; font-size: 13px; padding: var(--space-sm) 0; border-bottom: 1px solid var(--line-light);">
-                  <span style="color: var(--text-primary);">B层 · 需求明确咨询者</span>
-                  <span style="color: var(--text-tertiary);">120人</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; font-size: 13px; padding: var(--space-sm) 0; border-bottom: 1px solid var(--line-light);">
-                  <span style="color: var(--text-secondary);">C层 · 观望用户</span>
-                  <span style="color: var(--text-tertiary);">100人</span>
-                </div>
-              </div>
-            </div>
-            <div class="objection-block success">
-              <div class="objection-label">正确示范</div>
-              <div class="objection-title">主动定义服务边界</div>
-              <div class="objection-desc">以有限精力主动设定服务标准，提前告知让用户建立合理预期，避免被动响应的倦怠与交付过载。</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Dimension 3: 双螺旋模型 -->
-    <section id="s2" class="content-section fade-section">
-      <div class="dimension-block">
-        <div class="dimension-badge">
-          <span class="dimension-num">D3</span>
-          <span class="dimension-tag">模型</span>
-        </div>
-        <h2 class="dimension-question">轻私域的信任构建双螺旋：专业度与温度感如何交织</h2>
-
-        <div class="grid-asymmetric">
-          <div class="answer-col">
-            <div class="answer-block">
-              <div class="answer-label">螺旋一</div>
-              <div class="answer-title">专业度螺旋：内容产品化</div>
-              <div class="answer-desc">将专业输出固化为周期性模块：每周"私域深一度"3-5分钟竖屏视频；月度"个人实战复盘白皮书"PDF。仅私域发布，作为价值确认锚点。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">螺旋二</div>
-              <div class="answer-title">温度感螺旋：自动化真人感</div>
-              <div class="answer-desc">AI触发任务+本人10秒语音交付：监测用户关键动作后，由你发送个性化祝贺。小额赠礼、朋友圈"不完美生活"流，建立情感连接。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">融合</div>
-              <div class="answer-title">共创圈形态</div>
-              <div class="answer-desc">用户不再只是消费者，而是智囊团、推广大使、产品共建者。30人"项目制小组"，设定周期目标和任务，归属感带来高转介绍率。</div>
-            </div>
-          </div>
-          <div class="chart-col">
-            <div class="chart-area">
-              <div class="chart-title">双螺旋结构</div>
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md);">
-                <div style="padding: var(--space-md); border: 1px solid var(--accent); text-align: center;">
-                  <div style="font-size: 11px; color: var(--accent); letter-spacing: 0.1em; margin-bottom: var(--space-xs);">专业度螺旋</div>
-                  <div style="font-size: 13px; color: var(--text-primary);">周期性内容产品</div>
-                </div>
-                <div style="padding: var(--space-md); border: 1px solid var(--text-tertiary); text-align: center;">
-                  <div style="font-size: 11px; color: var(--text-tertiary); letter-spacing: 0.1em; margin-bottom: var(--space-xs);">温度感螺旋</div>
-                  <div style="font-size: 13px; color: var(--text-primary);">触发式真人互动</div>
-                </div>
-              </div>
-            </div>
-            <div class="objection-block data">
-              <div class="objection-label">数据洞察</div>
-              <div class="objection-title">2026年私域底层变化</div>
-              <div class="objection-desc">合规框架收紧(最小必要+明示同意)；中心化社群→去中心化节点(30-80人小组)；AI介入达到"阈下意识辅助"成熟度。</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Dimension 4: 标签分层与里程碑 -->
-    <section id="s2" class="content-section fade-section">
-      <div class="dimension-block">
-        <div class="dimension-badge">
-          <span class="dimension-num">D4</span>
-          <span class="dimension-tag">培育</span>
-        </div>
-        <h2 class="dimension-question">从添加好友到深度绑定的精细化路径是什么</h2>
-
-        <div class="grid-asymmetric">
-          <div class="answer-col">
-            <div class="answer-block">
-              <div class="answer-label">标签分层</div>
-              <div class="answer-title">AI自动打标体系</div>
-              <div class="answer-desc">根据来源自动标记需求标签；跟踪行为自动标记活跃度层级；通过对话识别预算范围、决策角色。告别"千人一面"的群发模式。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">小群深度服务</div>
-              <div class="answer-title">30-50人微型社群</div>
-              <div class="answer-desc">每周固定频次价值输出(15分钟语音图文)；任务驱动+成果展示；AI整理沉淀生成FAQ库。群聊记录成为可付费的内容资产。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">里程碑触达</div>
-              <div class="answer-title">关键时刻自动触发</div>
-              <div class="answer-desc">好友第7天发送深度指南；课程看完80%推荐进阶内容；购买后第30天询问使用情况；21天无交互触发唤醒话术。</div>
-            </div>
-          </div>
-          <div class="chart-col">
-            <div class="chart-area">
-              <div class="chart-title">用户旅程里程碑</div>
-              <div style="display: flex; flex-direction: column; gap: var(--space-sm);">
-                <div style="display: flex; align-items: center; gap: var(--space-md);">
-                  <div style="width: 8px; height: 8px; background: var(--accent); border-radius: 2%;"></div>
-                  <div style="font-size: 13px; color: var(--text-secondary);">Day 1: 欢迎语+问卷</div>
-                </div>
-                <div style="display: flex; align-items: center; gap: var(--space-md);">
-                  <div style="width: 8px; height: 8px; background: var(--text-tertiary); border-radius: 2%;"></div>
-                  <div style="font-size: 13px; color: var(--text-secondary);">Day 7: 深度指南</div>
-                </div>
-                <div style="display: flex; align-items: center; gap: var(--space-md);">
-                  <div style="width: 8px; height: 8px; background: var(--text-tertiary); border-radius: 2%;"></div>
-                  <div style="font-size: 13px; color: var(--text-secondary);">Day 21: 沉默预警</div>
-                </div>
-                <div style="display: flex; align-items: center; gap: var(--space-md);">
-                  <div style="width: 8px; height: 8px; background: var(--accent); border-radius: 2%;"></div>
-                  <div style="font-size: 13px; color: var(--text-primary);">Day 30: 复购触发</div>
-                </div>
-              </div>
-            </div>
-            <div class="objection-block success">
-              <div class="objection-label">正确示范</div>
-              <div class="objection-title">价值前置三次原则</div>
-              <div class="objection-desc">在向用户发出任何付费邀请之前，他必须至少免费获得过三次实质性收获，再谈成交。</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Dimension 5: 避坑指南 -->
-    <section id="s2" class="content-section fade-section">
-      <div class="dimension-block">
-        <div class="dimension-badge">
-          <span class="dimension-num">D5</span>
-          <span class="dimension-tag">避坑</span>
-        </div>
-        <h2 class="dimension-question">一人公司私域运营的四个高发坑如何规避</h2>
-
-        <div class="grid-asymmetric">
-          <div class="answer-col">
-            <div class="answer-block">
-              <div class="answer-label">坑一</div>
-              <div class="answer-title">把私域当流量仓库</div>
-              <div class="answer-desc">建立"添加即服务"的肌肉记忆。72小时内必须有一次真人触达，AI设定沉默预警持续培育。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">坑二</div>
-              <div class="answer-title">自动化过载丢失温度</div>
-              <div class="answer-desc">AI可起草但发送键必须由你按；可回答事实问题但专业判断必须转接本人；节日祝福亲自修改前三句。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">坑三</div>
-              <div class="answer-title">急于变现信任未建立</div>
-              <div class="answer-desc">严格遵循"价值前置三次"原则。用户用行动(主动提问、表达感谢、在社群发言)表明信任已建立后再轻推。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">坑四</div>
-              <div class="answer-title">忽视合规底线</div>
-              <div class="answer-desc">将合规视为运营生命线。最小必要+明示同意，每条群发附退订入口，一人公司承受不起账号中断风险。</div>
-            </div>
-          </div>
-          <div class="chart-col">
-            <div class="objection-block error">
-              <div class="objection-label">错误示范</div>
-              <div class="objection-title">迷信AI万能</div>
-              <div class="objection-desc">设置全自动欢迎语、朋友圈、群发、群聊托管，整个私域像无人便利店，没有温度，没有真实人格。</div>
-            </div>
-            <div class="objection-block error">
-              <div class="objection-label">错误示范</div>
-              <div class="objection-title">用户刚添加就推销</div>
-              <div class="objection-desc">1-3天尚未感受任何价值便收到高价咨询、年度会员推销。第一句招呼后便发送付款链接，转化率必然极低。</div>
-            </div>
-            <div class="objection-block data">
-              <div class="objection-label">数据洞察</div>
-              <div class="objection-title">合规是信任建立契机</div>
-              <div class="objection-desc">过去依靠非授权抓取、私加好友、过度采集的操作路径全面收缩。明示同意反而在用户心中建立专业、可信赖第一印象。</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Dimension 6: 决策框架 -->
-    <section id="s2" class="content-section fade-section">
-      <div class="dimension-block">
-        <div class="dimension-badge">
-          <span class="dimension-num">D6</span>
-          <span class="dimension-tag">决策</span>
-        </div>
-        <h2 class="dimension-question">私域运营工具与资源配置的决策框架</h2>
-
-        <div class="balance-intro">
-          一人公司工具选型的核心逻辑不是"功能最全"，而是<strong>"最小可行且能长期独立维护"</strong>。2026年，借助AI工具，一人公司可完成从引流、承接、培育到转化的完整私域运营。
-        </div>
-
-        <div class="balance-grid">
-          <div class="balance-card">
-            <div class="balance-card-label positive">做</div>
-            <div class="balance-item">企业微信作为私域主阵地</div>
-            <div class="balance-item">AI SCRM完成自动打标与SOP触发</div>
-            <div class="balance-item">AI生成初稿+本人最终确认</div>
-            <div class="balance-item">30-50人轻量级主题小组</div>
-            <div class="balance-item">内容一鱼三吃：直播→文案→文章</div>
-            <div class="balance-item">关注月活跃用户数、开口率、复购率</div>
-          </div>
-          <div class="balance-card">
-            <div class="balance-card-label negative">不做</div>
-            <div class="balance-item dim">追求5000人泛流量数字</div>
-            <div class="balance-item dim">全自动无人便利店式运营</div>
-            <div class="balance-item dim">用户未建立信任就强行推销</div>
-            <div class="balance-item dim">批量导入非授权用户</div>
-            <div class="balance-item dim">追求完整用户画像触碰隐私红线</div>
-            <div class="balance-item dim">同时运营太多工具造成维护负担</div>
-          </div>
-        </div>
-
-        <div class="core-insight">
-          <div class="core-insight-text">
-            <strong>轻私域的本质：</strong>1000个高价值真粉，通过精细化分层获得持续的经营性现金流。2000好友里深度服务好200个，已经足够支撑一个可观的收入盘面。
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FIN Section -->
-    <section class="fin-section fade-section">
-      <div class="fin-title">FIN · 私域健康度</div>
-      <div class="fin-grid">
-        <div class="fin-item">
-          <div class="fin-num">1000</div>
-          <div class="fin-label">精准用户目标</div>
-        </div>
-        <div class="fin-item">
-          <div class="fin-num">75%</div>
-          <div class="fin-label">信任积累效率</div>
-        </div>
-        <div class="fin-item">
-          <div class="fin-num">30</div>
-          <div class="fin-label">小组人数上限</div>
-        </div>
-      </div>
-    </section>
-
-    <nav class="footer-nav">
-      <a href="/nodes/34-feedback/index.html" class="nav-link">
-        <span class="nav-arrow">←</span>
-        节点34：用户反馈收集
-      </a>
-      <a href="/nodes/36-ai-customer-service/index.html" class="nav-link">
-        节点36：AI客户服务
-        <span class="nav-arrow">→</span>
-      </a>
-    </nav>
+    <div class="summary-box">
+      <h3>节点35检查清单</h3>
+      <p>完成本节点后，请确认所有检查项已通过。</p>
     </div>
+    </main>
   </div>
 
-  <script>
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
+  <nav class="footer-nav">
+    <a href="/nodes/34-feedback/index.html" class="nav-link"><span>←</span> 节点34</a>
+    <a href="/nodes/36-ai-customer-service/index.html" class="nav-link">节点36 <span>→</span></a>
+  </nav>
 
-    // TOC scroll spy
-    const tocLinks = document.querySelectorAll('.toc-link');
-    const sections = document.querySelectorAll('section[id]');
-    const sectionObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          tocLinks.forEach(link => link.classList.remove('active'));
-          const activeLink = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
-          if (activeLink) activeLink.classList.add('active');
-        }
-      });
-    }, { rootMargin: '-20% 0px -60% 0px' });
-    sections.forEach(section => sectionObserver.observe(section));
+  <script>
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').slice(1);
+      const target = document.getElementById(targetId);
+      if (target) {
+        window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+      }
+    });
+  });
   </script>
 </body>
 </html>

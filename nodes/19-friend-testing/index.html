@@ -3,15 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="亲友灰度测试 - OPC节点百科">
+  <meta name="description" content="节点19：亲友灰度测试 - OPC节点百科">
   <meta name="theme-color" content="#111110">
   <title>节点19：亲友灰度测试 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../_design-tokens.css">
-  <link rel="stylesheet" href="../_layout-templates.css">
   <style>
 
 :root {
@@ -35,6 +33,10 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   background: var(--bg);
   color: var(--text-primary);
@@ -43,6 +45,72 @@ body {
   line-height: 1.9;
   letter-spacing: 0.04em;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* 移动端整体适配 - 使用 900px breakpoint 与现有代码一致 */
+@media (max-width: 900px) {
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+
+  body {
+    font-size: 14px;
+  }
+
+  .layout {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding: 4rem 16px 2rem !important;
+    margin: 0 !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .sidebar-toc {
+    display: none !important;
+  }
+
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  section {
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  section > * {
+    max-width: 100% !important;
+    overflow-x: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  section p {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+
+  h1 {
+    font-size: clamp(36px, 10vw, 48px) !important;
+    line-height: 1.05 !important;
+  }
 }
 
 /* Layout with Sidebar */
@@ -159,68 +227,6 @@ body {
   letter-spacing: 0.08em;
 }
 
-@media (max-width: 900px) {
-  html, body {
-    overflow-x: hidden !important;
-    max-width: 100vw !important;
-  }
-
-  .layout {
-    display: block !important;
-    grid-template-columns: 1fr !important;
-    width: 100% !important;
-    max-width: 100vw !important;
-    padding: 4rem 16px 2rem !important;
-  }
-
-  .sidebar-toc {
-    display: none !important;
-  }
-
-  .fixed-top-nav {
-    padding: 0.75rem clamp(1rem, 4vw, 1.5rem);
-  }
-
-  section {
-    width: 100% !important;
-    max-width: 100vw !important;
-    overflow-x: hidden !important;
-  }
-
-  section p,
-  section li,
-  section td,
-  section th {
-    width: 100% !important;
-    max-width: 100% !important;
-    word-break: break-word !important;
-    overflow-wrap: break-word !important;
-  }
-
-  .hero-title {
-    font-size: clamp(24px, 8vw, 48px) !important;
-    word-break: break-all !important;
-    overflow-wrap: break-word !important;
-    white-space: normal !important;
-    max-width: 100% !important;
-    line-height: 1.1 !important;
-  }
-
-  .highlight-box,
-  .step-card,
-  .code-block {
-    width: 100% !important;
-    max-width: 100% !important;
-    overflow-x: hidden !important;
-  }
-
-  table {
-    display: block !important;
-    overflow-x: auto !important;
-    font-size: 12px !important;
-  }
-}
-
 /* Header */
 header {
   padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
@@ -231,6 +237,52 @@ header {
 /* Main content */
 main {
   padding-bottom: 5rem;
+}
+
+/* 移动端底部导航适配 - 合并到 900px breakpoint */
+@media (max-width: 900px) {
+  main {
+    padding-bottom: 6rem; /* 为固定底部导航预留空间 */
+  }
+
+  .footer-nav {
+    overflow-x: auto;
+    justify-content: space-between;
+  }
+
+  .nav-link {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .table-wrapper {
+    position: relative;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 1.5rem 0;
+    border: 1px solid var(--line);
+  }
+
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
 }
 
 /* Section anchors offset for sticky header */
@@ -251,14 +303,49 @@ section p, section li {
 .table-wrapper {
   margin: 1.5rem 0;
   border: 1px solid var(--line);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-wrapper::after {
+  content: "";
+  display: block;
+}
+
+/* 移动端滑动提示 */
+@media (max-width: 900px) {
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  .table-wrapper {
+    position: relative;
+    padding-bottom: 24px;
+  }
 }
 
 table {
   font-size: 0.875rem;
+  min-width: 560px;
 }
 
-td, th {
-  padding: 0.875rem 1rem;
+@media (max-width: 900px) {
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
 }
 
 /* Tool Cards */
@@ -314,6 +401,14 @@ h1 {
   margin-bottom: var(--space-xl);
 }
 
+/* 移动端H1适配 */
+@media (max-width: 900px) {
+  h1 {
+    font-size: clamp(36px, 10vw, 48px);
+    line-height: 1.05;
+  }
+}
+
 .phase-label {
   font-size: 13px;
   color: var(--accent);
@@ -331,6 +426,16 @@ h1 {
   color: var(--text-secondary);
   max-width: 44ch;
   line-height: 1.8;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* 移动端副标题适配 */
+@media (max-width: 900px) {
+  .subtitle {
+    font-size: 14px;
+    max-width: 100%;
+  }
 }
 
 .node-meta {
@@ -383,6 +488,21 @@ p {
   color: var(--text-secondary);
   line-height: 1.9;
   margin-bottom: 1.25rem;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* 移动端段落适配 */
+@media (max-width: 900px) {
+  p {
+    padding-right: 0.5rem;
+    word-break: break-all;
+    white-space: normal;
+  }
+
+  section p {
+    padding-right: 0;
+  }
 }
 
 .decision-box {
@@ -708,47 +828,29 @@ td:first-child {
 </head>
 <body>
   <nav class="fixed-top-nav">
-    <a href="/" class="back-link">← 返回首页</a>
+    <a href="/index.html" class="back-link">← 返回首页</a>
     <span class="node-id">节点 19 / 57</span>
   </nav>
 
-  <div class="layout layout-classic">
-    <aside class="sidebar-toc">
-      <div class="toc-title">目录</div>
-      <ul class="toc-list">
-        <li class="toc-item"><a href="#s2" class="toc-link">一、为什么亲友测试是OPC的生死线</a></li>
-        <li class="toc-item"><a href="#s3" class="toc-link">二、找谁测试：四种人缺一不可</a></li>
-        <li class="toc-item"><a href="#s4" class="toc-link">三、怎么测试：给任务，不给指导</a></li>
-        <li class="toc-item"><a href="#s5" class="toc-link">四、反馈收集：用飞书/腾讯文档建一个共享表</a></li>
-        <li class="toc-item"><a href="#s6" class="toc-link">五、测试后必做的三件事</a></li>
-        <li class="toc-item"><a href="#s7" class="toc-link">六、检查清单</a></li>
-        <li class="toc-item"><a href="#s8" class="toc-link">节点资源链接</a></li>
-      </ul>
-    </aside>
-        <main>
+  <div class="layout">
+    <main class="container">
       <header>
-      <div class="phase-label">测试与修复</div>
-      <h1>亲友灰度测试</h1>
-      <div class="node-meta">节点 19 / 57 · 最后修订：2026年5月11日</div>
+      <div class="phase-label">0-1</div>
+      <h1>节点19：亲友灰度测试</h1>
+      <div class="node-meta">节点 19 / 57 · 最后修订：2026年6月4日</div>
     </header>
-
-    <section class="tldr" aria-label="本章速读">
-      <div class="tldr-label">本章速读</div>
-      <ul class="tldr-list">
-        <li><strong>目标：</strong>用 5-10 个真人跑出真实反馈——把"我觉得能用"变成"别人也能用"。</li>
-        <li><strong>你要做的事：</strong>3 步：挑对 5-10 个真实用户 → 准备任务清单 + 反馈表 → 收集问题并修复 Top3。</li>
-        <li><strong>不需要会：</strong>AB 测试、用户研究方法论、可用性测试框架。本章只教你"OPC 最小灰度"。</li>
-        <li><strong>本章产出：</strong>1 份真实用户反馈记录 + 1 个修复后的可上线版本。</li>
-      </ul>
-    </section>
 
     <section id="s1">
     
+<p>node_id: 19</p>
+<p>persona: neutral</p>
+<p>cta_type: wechat</p>
+<p>keywords: [你觉得, 超过, 完全不懂, 技术的人, 的人]</p>
 
 <blockquote class="decision-box"><p>代码写完了、自测通过了，现在你需要真人来用。但你不是大厂，没有"灰度发布系统"——你只有微信里的5-10个朋友。</p></blockquote>
 
 <p></section></p>
-<section id="s2">
+<section id="s一">
 <p>      <div class="section-label">一、为什么亲友测试是OPC的生死线</div></p>
 
 <h3>三个事实</h3>
@@ -761,14 +863,14 @@ td:first-child {
 <strong>5个人就够了。10个人最好。超过10个是浪费。</strong>
 
 <p></section></p>
-<section id="s3">
+<section id="s二">
 <p>      <div class="section-label">二、找谁测试：四种人缺一不可</div></p>
 
 <div class="table-wrapper"><table><thead><tr><th>类型</th><th>特征</th><th>人数</th></tr></thead><tbody><tr><td><strong>完全不懂技术的人</strong></td><td>你爸妈、不做技术的朋友</td><td>2人</td></tr><tr><td><strong>你的目标用户</strong></td><td>符合你产品定位的人</td><td>3人</td></tr><tr><td><strong>比你还懂的人</strong></td><td>同领域更深经验的OPC</td><td>1-2人</td></tr><tr><td><strong>用过竞品的人</strong></td><td>从竞品切过来的用户</td><td>1-2人</td></tr></tbody></table></div>
 <strong>为什么需要"完全不懂技术的人"</strong>：你爸妈能走通的流程 = 任何人都能走通。你爸妈卡住的地方 = 你的产品设计有问题。
 
 <p></section></p>
-<section id="s4">
+<section id="s三">
 <p>      <div class="section-label">三、怎么测试：给任务，不给指导</div></p>
 
 <h3>❌ 错误做法</h3>
@@ -788,26 +890,26 @@ td:first-child {
 <strong>全程不要说话。</strong> 除非他明确说"我不行了，告诉我怎么做"。
 
 <p></section></p>
-<section id="s5">
+<section id="s四">
 <p>      <div class="section-label">四、反馈收集：用飞书/腾讯文档建一个共享表</div></p>
 
 <div class="table-wrapper"><table><thead><tr><th>发现者</th><th>问题描述</th><th>严重程度</th><th>截图</th><th>状态</th></tr></thead><tbody><tr><td>张三</td><td>注册后页面空白，刷新才出现</td><td>P0</td><td>[图]</td><td>待修复</td></tr><tr><td>李四</td><td>不知道"OPC"是什么意思</td><td>P2</td><td>-</td><td>待优化</td></tr></tbody></table></div>
 <ul><li><strong>P0</strong>：核心流程中断（立即修）</li><li><strong>P1</strong>：数据错误（当天修）</li><li><strong>P2</strong>：体验问题（记录，下版本修）</li></ul>
 
 <p></section></p>
-<section id="s6">
+<section id="s五">
 <p>      <div class="section-label">五、测试后必做的三件事</div></p>
 
 <ol><li><strong>48小时内修复所有P0</strong>：别拖，拖了就不想修了</li><li><strong>回复每一个测试者</strong>："你提到的XX问题我已经修了，谢谢你"——这不是客套，是让他愿意下次再帮你测</li><li><strong>记录"啊哈时刻"</strong>：测试者的哪句话让你觉得"他get到了"？这句话将来写进你的产品介绍页</li></ol>
 
 <p></section></p>
-<section id="s7">
+<section id="s六">
 <p>      <div class="section-label">六、检查清单</div></p>
 
 <ul><li><input type="checkbox" disabled> 至少找了5个人（含2个完全不懂技术的）</li><li><input type="checkbox" disabled> 每个测试者给了具体任务，没给操作指导</li><li><input type="checkbox" disabled> 观察了犹豫点、误操作点、提问、笑容</li><li><input type="checkbox" disabled> 反馈已录入共享表（严重程度已标注）</li><li><input type="checkbox" disabled> P0问题48小时内已修复</li><li><input type="checkbox" disabled> 每个测试者已收到回复</li></ul>
 
 <p></section></p>
-<section id="s8">
+<section id="s节">
 <p>      <div class="section-label">节点资源链接</div></p>
 
 <ul><li>节点18：开发者自测流程</li><li>节点20：Bug集中修复</li><li>节点21：性能基础优化</li></ul>
@@ -821,16 +923,11 @@ td:first-child {
   </div>
 
   <nav class="footer-nav">
-    <a href="/nodes/18-developer-testing/index.html" class="nav-link">
-      <span>←</span> 节点18
-    </a>
-    <a href="/nodes/20-bug-fix/index.html" class="nav-link">
-      节点20 <span>→</span>
-    </a>
+    <a href="/nodes/18-developer-testing/index.html" class="nav-link"><span>←</span> 节点18</a>
+    <a href="/nodes/20-bug-fix/index.html" class="nav-link">节点20 <span>→</span></a>
   </nav>
 
   <script>
-  // Smooth scroll
   document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', function(e) {
       e.preventDefault();
@@ -841,30 +938,6 @@ td:first-child {
       }
     });
   });
-
-  // Scroll spy for TOC
-  const sections = document.querySelectorAll('section[id]');
-  const tocLinks = document.querySelectorAll('.toc-link');
-
-  function updateActiveLink() {
-    const scrollPos = window.scrollY + 120;
-    sections.forEach(section => {
-      const top = section.offsetTop;
-      const height = section.offsetHeight;
-      const id = section.getAttribute('id');
-      if (scrollPos >= top && scrollPos < top + height) {
-        tocLinks.forEach(link => {
-          link.classList.remove('active');
-          if (link.getAttribute('href') === '#' + id) {
-            link.classList.add('active');
-          }
-        });
-      }
-    });
-  }
-
-  window.addEventListener('scroll', updateActiveLink, { passive: true });
-  updateActiveLink();
   </script>
 </body>
 </html>

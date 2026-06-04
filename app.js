@@ -2102,8 +2102,14 @@ function doOpenNodeModal(nodeId) {
   const node = window.NODES?.find(n => n.id === nodeId);
   if (!node) return;
 
-  // 跳转到节点独立页面（目录格式：01-slug）
-  const dirName = String(node.id).padStart(2, '0') + '-' + node.slug;
+  // 节点1是测试页面（特殊路径 01-opc-fit-test/）
+  if (node.id === 1) {
+    window.location.href = '/nodes/01-opc-fit-test/index.html';
+    return;
+  }
+
+  // 跳转到节点独立页面（目录格式：1-slug，无前导零）
+  const dirName = node.id + '-' + node.slug;
   window.location.href = '/nodes/' + dirName + '/index.html';
 }
 

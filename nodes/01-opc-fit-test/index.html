@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <meta name="description" content="入口节点，测试你是否适合做OPC，AI推荐最适合你的创业路径">
@@ -8,8 +6,8 @@
   <title>OPC适配测试 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../_design-tokens.css">
   <link rel="stylesheet" href="../_layout-templates.css">
   <style>
@@ -510,6 +508,62 @@
       .btn-primary, .btn-outline { width: 100%; justify-content: center; }
     }
   </style>
+
+<style id="cta-injected">
+  .cta-block {
+    max-width: 720px;
+    margin: var(--space-3xl, 96px) auto var(--space-xl, 48px);
+    padding: var(--space-xl, 48px) var(--space-lg, 32px);
+    border-top: 1px solid var(--line, #2A2A28);
+    border-bottom: 1px solid var(--line, #2A2A28);
+    text-align: left;
+  }
+  .cta-eyebrow {
+    font-family: 'Geist Mono', 'SF Mono', monospace;
+    font-size: 0.6875rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--text-tertiary, #7A7670);
+    margin-bottom: var(--space-md, 24px);
+  }
+  .cta-title {
+    font-family: 'Noto Serif JP', 'Noto Serif SC', serif;
+    font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+    font-weight: 300;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: var(--text-primary, #F0EDE6);
+    margin: 0 0 var(--space-md, 24px);
+  }
+  .cta-desc {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--text-secondary, #B8B4AE);
+    max-width: 50ch;
+    margin: 0 0 var(--space-lg, 32px);
+  }
+  .cta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.9375rem;
+    letter-spacing: 0.04em;
+    color: var(--text-primary, #F0EDE6);
+    border-bottom: 1px solid var(--accent, #C0392B);
+    padding-bottom: 0.375rem;
+    text-decoration: none;
+    transition: opacity 300ms ease;
+  }
+  .cta-link:hover { opacity: 0.6; }
+  .cta-arrow { font-family: 'Noto Serif JP', serif; font-size: 1.1rem; }
+  .cta-meta {
+    margin-top: var(--space-md, 24px);
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.6875rem;
+    letter-spacing: 0.15em;
+    color: var(--text-quaternary, #4A4744);
+  }
+</style>
 </head>
 <body>
   <div id="app">
@@ -813,5 +867,5 @@
 
     init();
   </script>
-</body>
-</html>
+
+</body></html>

@@ -3,22 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="网站流量稳定后，微信小程序用户体验比H5更好、留存率更高、支付更方便">
+  <meta name="description" content="节点54：微信小程序部署 - OPC节点百科">
   <meta name="theme-color" content="#111110">
-  <title>微信小程序部署 - OPC节点百科</title>
+  <title>节点54：微信小程序部署 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../_design-tokens.css">
-  <link rel="stylesheet" href="../_layout-templates.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
+
 :root {
   --bg: #111110;
   --surface: #1A1A18;
   --text-primary: #F0EDE6;
-  --text-secondary: #B8B4AE;
-  --text-tertiary: #A8A49E;
+  --text-secondary: #7A7670;
+  --text-tertiary: #4A4744;
   --accent: #C0392B;
   --line: #2A2A28;
   --line-light: rgba(255,255,255,0.06);
@@ -31,32 +30,165 @@
   --space-3xl: 96px;
   --space-4xl: 128px;
 }
-* { margin: 0; padding: 0; box-sizing: border-box; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  overflow-x: hidden;
+}
+
 body {
   background: var(--bg);
   color: var(--text-primary);
-  font-family: 'Noto Sans SC', sans-serif;
-  font-weight: 400;
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
   line-height: 1.9;
   letter-spacing: 0.04em;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
+/* 移动端整体适配 - 使用 900px breakpoint 与现有代码一致 */
+@media (max-width: 900px) {
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
 
-.section-number {
-  position: absolute;
-  top: var(--space-2xl);
-  right: clamp(24px, 8vw, 120px);
-  font-size: clamp(100px, 22vw, 280px);
-  font-weight: 100;
+  body {
+    font-size: 14px;
+  }
+
+  .layout {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding: 4rem 16px 2rem !important;
+    margin: 0 !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .sidebar-toc {
+    display: none !important;
+  }
+
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  section {
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  section > * {
+    max-width: 100% !important;
+    overflow-x: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  section p {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+
+  h1 {
+    font-size: clamp(36px, 10vw, 48px) !important;
+    line-height: 1.05 !important;
+  }
+}
+
+/* Layout with Sidebar */
+.layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3rem);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
+}
+
+/* Sidebar TOC */
+.sidebar-toc {
+  position: sticky;
+  top: 5rem;
+  height: fit-content;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  padding-top: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.sidebar-toc::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar-toc::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 2px;
+}
+
+.toc-title {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.toc-list {
+  list-style: none;
+}
+
+.toc-item {
+  margin-bottom: 0.75rem;
+}
+
+.toc-link {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: block;
+  padding: 0.375rem 0;
+  padding-left: 1rem;
+  border-left: 1px solid var(--line);
+  transition: all 0.3s;
+  line-height: 1.4;
+}
+
+.toc-link:hover {
   color: var(--text-primary);
-  opacity: 0.03;
-  line-height: 1;
-  letter-spacing: -0.05em;
-  font-family: 'Noto Serif JP', serif;
-  pointer-events: none;
-  user-select: none;
+  border-left-color: var(--accent);
 }
+
+.toc-link.active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  font-weight: 400;
+}
+
+.toc-link.sub {
+  padding-left: 1.75rem;
+  font-size: 0.75rem;
+}
+
+/* Fixed Top Nav */
 .fixed-top-nav {
   position: fixed;
   top: 0;
@@ -71,747 +203,877 @@ body {
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line);
 }
-.fixed-top-nav a {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.75rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-.fixed-top-nav a:hover { color: var(--text-primary); }
-.fixed-top-nav .nav-center {
+
+.back-link {
   font-size: 0.75rem;
   letter-spacing: 0.1em;
-  color: var(--text-tertiary);
-}
-.hero {
-  padding: var(--space-4xl) 0 var(--space-3xl);
-  position: relative;
-}
-.hero-content {
-  position: relative;
-  z-index: 1;
-  max-width: 800px;
-}
-.hero-label {
-  font-size: 13px;
-  color: var(--accent);
-  letter-spacing: 0.2em;
   text-transform: uppercase;
-  margin-bottom: var(--space-lg);
+  color: var(--text-secondary);
+  text-decoration: none;
   display: flex;
   align-items: center;
-  gap: var(--space-md);
+  gap: 0.5rem;
+  transition: color 0.3s;
 }
-.hero-label::before {
-  content: '';
-  width: 32px;
-  height: 1px;
-  background: var(--accent);
+
+.back-link:hover {
+  color: var(--text-primary);
 }
-.hero-title {
+
+.node-id {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+}
+
+/* Header */
+header {
+  padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(2rem, 5vh, 3rem);
+}
+
+/* Main content */
+main {
+  padding-bottom: 5rem;
+}
+
+/* 移动端底部导航适配 - 合并到 900px breakpoint */
+@media (max-width: 900px) {
+  main {
+    padding-bottom: 6rem; /* 为固定底部导航预留空间 */
+  }
+
+  .footer-nav {
+    overflow-x: auto;
+    justify-content: space-between;
+  }
+
+  .nav-link {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .table-wrapper {
+    position: relative;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 1.5rem 0;
+    border: 1px solid var(--line);
+  }
+
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
+}
+
+/* Section anchors offset for sticky header */
+section {
+  scroll-margin-top: 2rem;
+}
+
+section h2 {
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+}
+
+section p, section li {
+  font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
+  line-height: 1.9;
+}
+
+/* Table improvements */
+.table-wrapper {
+  margin: 1.5rem 0;
+  border: 1px solid var(--line);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-wrapper::after {
+  content: "";
+  display: block;
+}
+
+/* 移动端滑动提示 */
+@media (max-width: 900px) {
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  .table-wrapper {
+    position: relative;
+    padding-bottom: 24px;
+  }
+}
+
+table {
+  font-size: 0.875rem;
+  min-width: 560px;
+}
+
+@media (max-width: 900px) {
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
+}
+
+/* Tool Cards */
+.tool-grid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* Path blocks */
+.path-block {
+  padding: 1.5rem;
+}
+
+.workflow {
+  padding: 1rem 1.25rem;
+  font-size: 0.8125rem;
+}
+
+/* Validation cards */
+.validation-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.validation-card {
+  padding: 1.25rem;
+}
+
+/* Level items */
+.level-grid {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+/* Decision box */
+.decision-box {
+  padding: 1.25rem 1.5rem;
+}
+
+/* Main content */
+.phase-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+h1 {
   font-family: 'Noto Serif JP', serif;
   font-size: clamp(48px, 10vw, 96px);
   font-weight: 300;
   letter-spacing: -0.03em;
   line-height: 0.95;
+  color: var(--text-primary);
   margin-bottom: var(--space-xl);
 }
-.hero-desc {
-  font-size: 16px;
-  color: var(--text-secondary);
-  line-height: 1.8;
-  max-width: 44ch;
+
+/* 移动端H1适配 */
+@media (max-width: 900px) {
+  h1 {
+    font-size: clamp(36px, 10vw, 48px);
+    line-height: 1.05;
+  }
 }
-.content-section {
-  padding: var(--space-3xl) 0;
-  border-top: 1px solid var(--line);
-}
-.section-label {
+
+.phase-label {
   font-size: 13px;
   color: var(--accent);
-  letter-spacing: 0.2em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   margin-bottom: var(--space-lg);
   display: flex;
   align-items: center;
   gap: var(--space-md);
 }
-.section-label::before {
-  content: '';
-  width: 24px;
-  height: 1px;
-  background: var(--accent);
-}
-.grid-asymmetric {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: var(--space-3xl);
-  align-items: start;
-}
+.phase-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
 
-/* Layout */
-.layout {
-  display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
-  gap: clamp(2rem, 4vw, 3rem);
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
-}
-
-/* Main content wrapper */
-.main-content {
-  min-width: 0;
-}
-
-/* Sidebar TOC */
-.sidebar-toc {
-  position: sticky;
-  top: 5rem;
-  height: fit-content;
-  max-height: calc(100vh - 6rem);
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--line) transparent;
-}
-.sidebar-toc::-webkit-scrollbar { width: 4px; }
-.sidebar-toc::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
-.toc-title { font-size: 0.6875rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 1.25rem; }
-.toc-list { list-style: none; }
-.toc-item { margin-bottom: 0.75rem; }
-.toc-link { font-size: 0.8125rem; color: var(--text-secondary); text-decoration: none; display: block; padding: 0.375rem 0; padding-left: 1rem; border-left: 1px solid var(--line); transition: all 0.3s; line-height: 1.4; }
-.toc-link:hover { color: var(--text-primary); border-left-color: var(--accent); }
-.toc-link.active { color: var(--accent); border-left-color: var(--accent); font-weight: 400; }
-
-/* Responsive layout */
-@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
-@media (max-width: 900px) {
-  .grid-asymmetric {
-    grid-template-columns: 1fr;
-    gap: var(--space-2xl);
-  }
-}
-.chapter-heading {
-  font-family: 'Noto Serif JP', serif;
-  font-size: clamp(28px, 5vw, 48px);
-  font-weight: 300;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-  margin-bottom: var(--space-xl);
-  max-width: 16em;
-}
-.body-text {
-  font-size: 15px;
-  line-height: 1.9;
+.subtitle {
+  font-size: 16px;
   color: var(--text-secondary);
   max-width: 44ch;
-  margin-bottom: var(--space-md);
-}
-.body-text strong { color: var(--text-primary); font-weight: 500; }
-.body-text .accent { color: var(--accent); font-weight: 500; }
-.quote-block {
-  padding-left: var(--space-md);
-  border-left: 1px solid var(--accent);
-  margin: var(--space-xl) 0;
-}
-.quote-text {
-  font-size: 16px;
   line-height: 1.8;
-  color: var(--text-secondary);
-  max-width: 40ch;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
-.data-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
+
+/* 移动端副标题适配 */
+@media (max-width: 900px) {
+  .subtitle {
+    font-size: 14px;
+    max-width: 100%;
+  }
 }
-.data-card-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--space-md) var(--space-lg);
-  border-bottom: 1px solid var(--line);
-}
-.data-card-row:last-child { border-bottom: none; }
-.data-label {
-  font-size: 12px;
+
+.node-meta {
+  margin-top: 2rem;
+  font-size: 0.75rem;
   color: var(--text-tertiary);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
+}
+
+/* Sections */
+section {
+  padding-bottom: clamp(3rem, 10vh, 5rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(3rem, 10vh, 5rem);
+}
+
+section:last-of-type {
+  border-bottom: none;
+}
+
+.section-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-}
-.data-value {
-  font-size: 14px;
-  color: var(--text-primary);
-  font-weight: 500;
-}
-.data-value.accent { color: var(--accent); font-weight: 600; }
-.list-item {
-  padding: var(--space-lg) 0;
-  border-bottom: 1px solid var(--line);
-  display: grid;
-  grid-template-columns: 64px 1fr;
-  gap: var(--space-lg);
-}
-.list-item:last-child { border-bottom: none; }
-.list-num {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 32px;
-  font-weight: 300;
   color: var(--text-tertiary);
-  line-height: 1;
+  margin-bottom: 1.5rem;
 }
-.list-title {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xs);
-}
-.list-desc {
-  font-size: 14px;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  max-width: 40ch;
-}
-.core-insight {
-  margin: var(--space-xl) 0;
-  padding-left: var(--space-md);
-  border-left: 1px solid var(--accent);
-}
-.core-insight-text {
-  font-size: 15px;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  max-width: 40ch;
-}
-.balance-section-title {
+
+h2 {
   font-family: 'Noto Serif JP', serif;
-  font-size: clamp(28px, 5vw, 48px);
-  font-weight: 300;
+  font-size: clamp(1.375rem, 4vw, 1.875rem);
+  font-weight: 400;
   letter-spacing: -0.02em;
-  margin-bottom: var(--space-xl);
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
 }
-.balance-intro {
-  font-size: 15px;
+
+h3 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.125rem, 3vw, 1.375rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+p {
   color: var(--text-secondary);
-  line-height: 1.8;
-  max-width: 46ch;
-  margin-bottom: var(--space-2xl);
+  line-height: 1.9;
+  margin-bottom: 1.25rem;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
-.balance-intro strong { color: var(--text-primary); font-weight: 500; }
-.balance-grid {
-  display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  gap: var(--space-2xl);
+
+/* 移动端段落适配 */
+@media (max-width: 900px) {
+  p {
+    padding-right: 0.5rem;
+    word-break: break-all;
+    white-space: normal;
+  }
+
+  section p {
+    padding-right: 0;
+  }
 }
-@media (max-width: 768px) {
-  .balance-grid { grid-template-columns: 1fr; gap: var(--space-xl); }
-}
-.balance-card {
+
+.decision-box {
   background: var(--surface);
-  border: 1px solid var(--line);
-  padding: var(--space-lg);
+  border-left: 2px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
 }
-.balance-card-label {
-  font-size: 13px;
+
+.decision-box p {
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  margin: 0;
+}
+
+/* Tables */
+.table-wrapper {
+  overflow-x: auto;
+  margin: 2rem 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+th {
+  text-align: left;
+  font-weight: 400;
+  font-size: 0.6875rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  margin-bottom: var(--space-md);
-  padding-bottom: var(--space-sm);
+  color: var(--text-tertiary);
+  padding: 0.75rem 1rem;
   border-bottom: 1px solid var(--line);
 }
-.balance-card-label.positive { color: var(--accent); }
-.balance-card-label.negative { color: var(--text-tertiary); }
-.balance-item {
-  padding: var(--space-sm) 0;
-  border-bottom: 1px solid var(--line-light);
-  font-size: 14px;
+
+td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--line);
   color: var(--text-secondary);
+  vertical-align: top;
 }
-.balance-item:last-child { border-bottom: none; }
-.balance-item.dim { color: var(--text-tertiary); }
-.summary-grid {
-  display: grid;
-  grid-template-columns: 1.5fr 1.2fr 0.8fr;
-  gap: var(--space-xl);
+
+tr:last-child td {
+  border-bottom: none;
 }
-@media (max-width: 900px) {
-  .summary-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
-}
-.summary-card {
-  padding: var(--space-lg) 0;
-  border-top: 1px solid var(--line);
-}
-.summary-num {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 36px;
-  font-weight: 300;
-  color: var(--accent);
-  margin-bottom: var(--space-sm);
-}
-.summary-title {
-  font-size: 15px;
-  font-weight: 500;
+
+td:first-child {
   color: var(--text-primary);
-  margin-bottom: var(--space-xs);
+  font-weight: 400;
 }
-.summary-desc {
-  font-size: 14px;
+
+/* Tool Cards */
+.tool-grid {
+  display: grid;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.tool-card {
+  background: var(--surface);
+  padding: 1.75rem;
+  border: 1px solid var(--line);
+}
+
+.tool-card h4 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.tool-card .tagline {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.tool-card p {
+  font-size: 0.875rem;
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.tool-card .pros {
   color: var(--text-secondary);
-  line-height: 1.7;
+  font-size: 0.8125rem;
 }
+
+.tool-card .price {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.25rem 0.75rem;
+  margin-top: 1rem;
+}
+
+/* Path Section */
+.path-block {
+  background: var(--surface);
+  padding: 2rem;
+  margin: 2rem 0;
+  border: 1px solid var(--line);
+}
+
+.path-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.path-number {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+.path-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.path-tools {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.path-block p {
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+}
+
+.workflow {
+  background: var(--bg);
+  padding: 1.25rem 1.5rem;
+  margin-top: 1.25rem;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.9;
+}
+
+/* Validation Box */
+.validation-grid {
+  display: grid;
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
+
+.validation-card {
+  background: var(--surface);
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+}
+
+.validation-card h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.validation-card p {
+  font-size: 0.8125rem;
+  margin: 0;
+}
+
+.level-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.level-item {
+  background: var(--surface);
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+}
+
+.level-item .num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.5rem;
+  color: var(--accent);
+  opacity: 0.6;
+  margin-bottom: 0.5rem;
+}
+
+.level-item h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.level-item p {
+  font-size: 0.75rem;
+  margin: 0;
+}
+
+/* Cost Control */
+.cost-table {
+  margin: 2rem 0;
+}
+
+/* Quote */
+.quote-block {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+}
+
+.quote-block p {
+  font-size: 1rem;
+  color: var(--text-primary);
+  line-height: 1.8;
+}
+
+/* Network Section */
+.network-alert {
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.network-alert h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.network-alert p {
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Summary Box */
+.summary-box {
+  background: var(--surface);
+  padding: 2rem;
+  margin-top: 3rem;
+  border: 1px solid var(--line);
+}
+
+.summary-box h3 {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+}
+
+.step-list {
+  list-style: none;
+  counter-reset: steps;
+}
+
+.step-list li {
+  counter-increment: steps;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.step-list li::before {
+  content: counter(steps);
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--accent);
+  flex-shrink: 0;
+  width: 1.5rem;
+  padding-top: 0.25rem;
+}
+
+/* Footer Nav - Fixed Bottom */
 .footer-nav {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   z-index: 100;
-  padding: var(--space-lg) clamp(1.25rem, 4vw, 2.5rem);
-  border-top: 1px solid var(--line);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(17, 17, 16, 0.85);
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.9);
   backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
 }
+
 .nav-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
   font-size: 0.75rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
   color: var(--text-tertiary);
   text-decoration: none;
-  transition: color 0.3s ease;
-}
-.nav-link:hover { color: var(--text-primary); }
-.nav-arrow { font-size: 0.75rem; }
-.fade-section {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-.fade-section.visible { opacity: 1; transform: translateY(0); }
-* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-
-/* Dimension badge */
-.dim-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: var(--space-sm);
-}
-.dim-badge .dim-id {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--accent);
-}
-.dim-badge .dim-tag {
-  font-size: 12px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  border: 1px solid var(--line);
-  padding: 2px 8px;
-}
-.dim-badge .dim-tag.核心 { color: var(--accent); border-color: var(--accent); }
-
-/* Objection blocks */
-.obj-block {
-  padding: var(--space-lg);
-  margin: var(--space-md) 0;
-  border-left: 2px solid;
-}
-.obj-block.error {
-  background: rgba(192, 57, 43, 0.08);
-  border-color: var(--accent);
-}
-.obj-block.success {
-  background: rgba(39, 174, 96, 0.08);
-  border-color: var(--accent);
-}
-.obj-block.data {
-  background: rgba(255,255,255,0.03);
-  border-color: var(--text-tertiary);
-}
-.obj-label {
-  font-size: 12px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  margin-bottom: var(--space-sm);
+  letter-spacing: 0.08em;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
+  transition: color 0.3s;
 }
-.obj-block.error .obj-label { color: var(--accent); }
-.obj-block.success .obj-label { color: var(--accent); }
-.obj-block.data .obj-label { color: var(--text-tertiary); }
-.obj-content {
-  font-size: 14px;
-  line-height: 1.7;
-  color: var(--text-secondary);
+
+.nav-link:hover {
+  color: var(--text-primary);
 }
-.obj-content strong { color: var(--text-primary); }
+
+.nav-link.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
   </style>
 </head>
 <body>
   <nav class="fixed-top-nav">
-    <a href="/"><span>←</span> 返回首页</a>
-    <span class="nav-center">节点 54 / 57</span>
+    <a href="/index.html" class="back-link">← 返回首页</a>
+    <span class="node-id">节点 54 / 57</span>
   </nav>
-  <div class="section-number">54</div>
 
-  <div class="layout layout-tools">
-    <nav class="sidebar-toc">
-      <div class="toc-title">目录</div>
-      <ul class="toc-list">
-        <li class="toc-item"><a href="#d1" class="toc-link">D1 · 判断时机</a></li>
-        <li class="toc-item"><a href="#d2" class="toc-link">D2 · 注册认证</a></li>
-        <li class="toc-item"><a href="#d3" class="toc-link">D3 · 开发发布</a></li>
-        <li class="toc-item"><a href="#d4" class="toc-link">D4 · 支付接入</a></li>
-        <li class="toc-item"><a href="#fin" class="toc-link">FIN</a></li>
-      </ul>
-    </nav>
-    <main class="main-content">
-    <header class="hero">
-      <div class="hero-content">
-        <div class="hero-label">节点 54 · 并行支撑层</div>
-        <h1 class="hero-title">微信小程序部署</h1>
-        <p class="hero-desc">网站流量稳定后需要更轻量的用户入口，用户体验比H5更好、留存率更高、支付更方便</p>
-      </div>
+  <div class="layout">
+    <main class="container">
+      <header>
+      <div class="phase-label">1-10</div>
+      <h1>节点54：微信小程序部署</h1>
+      <div class="node-meta">节点 54 / 57 · 最后修订：2026年6月4日</div>
     </header>
 
-    <section class="tldr" aria-label="本章速读">
-      <div class="tldr-label">本章速读</div>
-      <ul class="tldr-list">
-        <li><strong>目标：</strong>在 H5 产品日活稳定后，把核心用户路径 1:1 复刻到微信小程序，享受微信生态的留存与支付便利。</li>
-        <li><strong>你要做的事：</strong>3 步：① 注册小程序 AppID（个人/企业均可）→ ② 用 uni-app / Taro 跨端复用代码 → ③ 提交审核并发布体验版。</li>
-        <li><strong>不需要会：</strong>不需要从零学 WXML/WXSS（用 Vue 语法即可），不需要企业资质才能上线（个人主体可上线非社交类），不需要独立后端。</li>
-        <li><strong>本章产出：</strong>1 个可运行的小程序 Demo + 1 份《类目与资质清单》+ 1 份《审核避坑 Checklist》。</li>
-      </ul>
+    <section id="s1">
+    
+<p>node_id: 54</p>
+<p>persona: neutral</p>
+<p>cta_type: wechat</p>
+<p>keywords: [小程序, 方案, 微信开发, 者工具, 微信小程]</p>
+
+<blockquote class="decision-box"><p>网站流量稳定后，你需要更轻量的用户入口。微信小程序用户体验比H5更好、留存率更高、支付更方便。本节点告诉你2026年OPC如何从0到1上线微信小程序。</p></blockquote>
+
+<p></section></p>
+<section id="s一">
+<p>      <div class="section-label">一、先判断：你的网站流量到"小程序时刻"了吗</div></p>
+
+<h3>小程序适合的场景</h3>
+
+<div class="table-wrapper"><table><thead><tr><th>你的情况</th><th>建议</th></tr></thead><tbody><tr><td>网站UV > 500/天，用户主要移动端访问</td><td>立即做小程序</td></tr><tr><td>网站UV > 200/天，有付费用户</td><td>可以考虑小程序</td></tr><tr><td>网站UV < 100/天</td><td>先优化网站，别分散精力</td></tr></tbody></table></div>
+<strong>核心指标</strong>：用户在你的网站完成一次关键行为（比如付费、提交表单）超过20次/天，就可以考虑小程序。
+
+<h3>小程序 vs H5 vs App</h3>
+
+<div class="table-wrapper"><table><thead><tr><th>方案</th><th>开发成本</th><th>用户体验</th><th>分发效率</th><th>适合阶段</th></tr></thead><tbody><tr><td><strong>H5网站</strong></td><td>低</td><td>中</td><td>高（扫码即用）</td><td>早期验证</td></tr><tr><td><strong>微信小程序</strong></td><td>中</td><td>高</td><td>中（需要安装）</td><td>增长期</td></tr><tr><td><strong>原生App</strong></td><td>高</td><td>最高</td><td>低（应用市场）</td><td>成熟期</td></tr></tbody></table></div>
+<strong>OPC首选</strong>：先用H5验证商业模式，小程序是增长工具而非救命稻草。
+
+<p></section></p>
+<section id="s二">
+<p>      <div class="section-label">二、2026年微信小程序注册与账号体系</div></p>
+
+<h3>个人开发者账号（OPC首选）</h3>
+
+<strong>注册地址</strong>：mp.weixin.qq.com
+
+<strong>准备材料</strong>：
+<ul><li>微信个人开发者账号（已实名认证）</li><li>邮箱（未绑定其他小程序/公众号）</li><li>手机号</li></ul>
+<strong>费用</strong>：个人开发者每年认证费 ¥300（需要营业执照才能免认证费）
+
+<h3>企业主体账号</h3>
+
+<p>如果你的公司已经注册完成（节点23），建议使用企业主体账号：</p>
+<ul><li>无需每年 ¥300 认证费</li><li>可以开通微信支付商户号</li><li>可以申请更多接口权限</li></ul>
+<strong>建议</strong>：OPC第一年用个人账号验证，第二年有收入后升级企业账号。
+
+<p></section></p>
+<section id="s三">
+<p>      <div class="section-label">三、开发工具与框架选择（2026年）</div></p>
+
+<h3>方案A：微信开发者工具 + 原生开发（推荐零基础）</h3>
+
+<p>``<code></p>
+<p>优点：官方支持，文档最全，调试方便</p>
+<p>缺点：原生开发效率低，不支持Vue/React</p>
+<p></code>`<code></p>
+
+<strong>适合</strong>：完全零基础，第一次接触小程序开发
+
+<strong>学习路径</strong>：
+<ol><li>下载「微信开发者工具」</li><li>看官方「第一个小程序」教程（2小时）</li><li>对着官方示例改出自己的第一个页面</li></ol>
+<h3>方案B：Taro + React（推荐有前端经验）</h3>
+
+<p></code>`<code>bash</p>
+# 安装Taro
+<p>npm install -g @tarojs/cli</p>
+
+# 创建项目
+<p>taro init my-miniapp</p>
+
+# 支持React/Vue语法，一次编译多端
+<p></code>`<code></p>
+
+<strong>优点</strong>：可以用React语法，支持Vue；代码复用率高
+<strong>缺点</strong>：需要配置，学习成本比原生高
+
+<strong>适合</strong>：有前端基础的OPC（节点06学过React的可以直接用）
+
+<h3>方案C：UniApp + Vue（推荐国内开发者）</h3>
+
+<p></code>`<code>bash</p>
+# 安装UniApp
+<p>npm install -g @vue/cli</p>
+<p>vue create -p dcloudio/uni-preset-vue my-project</p>
+
+# 一套代码，编译到微信/支付宝/H5多端
+<p></code>`<code></p>
+
+<strong>优点</strong>：生态好，国内文档丰富；一次开发多端上线
+<strong>缺点</strong>：包体积比原生大约200KB
+
+<strong>适合</strong>：国内开发者，想快速多端分发
+
+<h3>2026年OPC工具栈推荐</h3>
+
+<div class="table-wrapper"><table><thead><tr><th>角色</th><th>推荐方案</th><th>原因</th></tr></thead><tbody><tr><td>零基础OPC</td><td>原生开发</td><td>文档最完整，问题少</td></tr><tr><td>有前端经验的OPC</td><td>Taro + React</td><td>代码复用，学习曲线平缓</td></tr><tr><td>想快速多端的OPC</td><td>UniApp</td><td>微信/支付宝/抖音一次搞定</td></tr></tbody></table></div>
+
+<p></section></p>
+<section id="s四">
+<p>      <div class="section-label">四、开发流程（OPC精简版）</div></p>
+
+<h3>步骤1：创建项目（30分钟）</h3>
+
+<ol><li>打开微信开发者工具 → 新建项目</li><li>选择「小程序」项目类型</li><li>填写 AppID（去 mp.weixin.qq.com 注册获取）</li><li>选择「不使用云开发」→ 填写项目名称</li></ol>
+<h3>步骤2：理解小程序项目结构（1小时）</h3>
+
+<p></code>`<code></p>
+<p>my-miniapp/</p>
+<p>├── app.js          # 小程序入口，全局逻辑</p>
+<p>├── app.json        # 全局配置，页面路由</p>
+<p>├── app.wxss        # 全局样式</p>
+<p>├── pages/          # 页面目录</p>
+<p>│   ├── index/      # 首页</p>
+<p>│   │   ├── index.js</p>
+<p>│   │   ├── index.wxml</p>
+<p>│   │   ├── index.wxss</p>
+<p>│   │   └── index.json</p>
+<p>│   └── other/      # 其他页面</p>
+<p>├── components/     # 组件目录</p>
+<p>└── utils/         # 工具函数</p>
+<p></code>`<code></p>
+
+<strong>最小小程序只需要</strong>：app.js + app.json + pages/index/index.js + pages/index/index.wxml
+
+<h3>步骤3：实现核心页面（1-3天）</h3>
+
+<strong>不要做完整版小程序</strong>。OPC小程序只需要：
+<ul><li>核心功能展示（1-2个页面）</li><li>用户登录/微信授权</li><li>一个关键操作（比如查看内容、下单）</li></ul>
+<p></code>`<code>javascript</p>
+// app.js 最精简版
+<p>App({</p>
+<p>  onLaunch() {</p>
+<p>    // 检测登录状态</p>
+<p>    wx.checkSession({</p>
+<p>      success: () => checkLogin(),</p>
+<p>      fail: () => doLogin()</p>
+<p>    })</p>
+<p>  }</p>
+<p>})</p>
+<p></code>`<code></p>
+
+<h3>步骤4：接入微信支付（如果你有付费功能）</h3>
+
+<strong>前置条件</strong>：已注册商户号（节点44）
+
+<p></code>`<code>javascript</p>
+// 微信支付统一下单
+<p>wx.requestPayment({</p>
+<p>  timeStamp: res.timeStamp,</p>
+<p>  nonceStr: res.nonceStr,</p>
+<p>  package: res.package,</p>
+<p>  signType: 'MD5',</p>
+<p>  paySign: res.paySign,</p>
+<p>  success: () => { /* 支付成功 */ },</p>
+<p>  fail: () => { /* 支付失败 */ }</p>
+<p>})</p>
+<p></code>``</p>
+
+<strong>注意</strong>：个人账号无法使用微信支付，必须升级企业账号。
+
+<p></section></p>
+<section id="s五">
+<p>      <div class="section-label">五、提交审核与发布</div></p>
+
+<h3>提交流程</h3>
+
+<ol><li>完成开发 → 点击「上传」按钮</li><li>填写版本号和项目备注</li><li>登录公众平台 mp.weixin.qq.com</li><li>点击「版本管理」→「提交审核」</li></ol>
+<h3>审核时间（2026年）</h3>
+
+<div class="table-wrapper"><table><thead><tr><th>审核类型</th><th>审核时间</th></tr></thead><tbody><tr><td>首次提交</td><td>3-7个工作日</td></tr><tr><td>迭代更新</td><td>1-3个工作日</td></tr><tr><td>紧急修复</td><td>24小时内（特殊通道）</td></tr></tbody></table></div>
+<h3>审核避坑指南</h3>
+
+<strong>❌ 常见被拒原因</strong>：
+<ul><li>页面有Bug，打不开</li><li>诱导分享（分享到朋友圈）</li><li>虚拟支付（购买虚拟物品）</li><li>缺少隐私政策页面</li><li>内容涉及需要资质行业（医疗、金融等）</li></ul>
+<strong>✅ 通过审核的核心原则</strong>：
+<ul><li>功能完整无Bug</li><li>不涉及需要许可的内容</li><li>有用户协议和隐私政策</li><li>支付功能需认证企业账号</li></ul>
+<h3>快速过审技巧</h3>
+
+<ol><li><strong>第一版功能要少</strong>：只放核心功能，不要做完整版</li><li><strong>隐私政策必须有</strong>：在「设置」→「隐私政策」添加</li><li><strong>测试账号要真实</strong>：不要用假数据糊弄审核员</li><li><strong>联系方式要正确</strong>：审核员会打电话核实</li></ol>
+
+<p></section></p>
+<section id="s六">
+<p>      <div class="section-label">六、上线后运营（小程序特有点)</div></p>
+
+<h3>微信生态特有入口</h3>
+
+<div class="table-wrapper"><table><thead><tr><th>入口</th><th>说明</th></tr></thead><tbody><tr><td>微信搜一搜</td><td>用户搜索小程序名称</td></tr><tr><td>二维码</td><td>线下扫码，核心流量来源</td></tr><tr><td>公众号菜单</td><td>已有粉丝的转化入口</td></tr><tr><td>好友/群分享</td><td>裂变传播</td></tr><tr><td>小程序商店</td><td>微信发现 → 小程序</td></tr></tbody></table></div>
+<h3>留存率提升技巧</h3>
+
+<p>微信小程序留存率普遍低于App，但有方法提升：</p>
+
+<ol><li><strong>消息订阅</strong>：用户完成关键行为后，引导订阅消息</li><li><strong>常用功能浮窗</strong>：把小程序「添加我的小程序」按钮放到显眼位置</li><li><strong>内容更新提醒</strong>：有更新时通过公众号推送</li><li><strong>多入口铺设</strong>：在网站、H5、公众号都放小程序入口</li></ol>
+<h3>小程序数据分析</h3>
+
+<p>微信开发者工具 → 「数据分析」面板：</p>
+<ul><li>访问量、访问时长、留存率</li><li>用户画像（性别、地区、机型）</li><li>页面点击热力图</li></ul>
+
+<p></section></p>
+<section id="s七">
+<p>      <div class="section-label">七、成本估算（2026年）</div></p>
+
+<div class="table-wrapper"><table><thead><tr><th>环节</th><th>费用</th><th>说明</th></tr></thead><tbody><tr><td>微信认证费</td><td>¥300/年</td><td>个人账号；企业账号免认证费</td></tr><tr><td>开发工具</td><td>免费</td><td>微信开发者工具</td></tr><tr><td>服务器</td><td>¥0-200/月</td><td>初期用云开发自带免费额度</td></tr><tr><td>域名SSL</td><td>免费</td><td>个人测试用腾讯云免费证书</td></tr><tr><td><strong>总计</strong></td><td><strong>¥300-2700/年</strong></td><td>主要成本是认证费</td></tr></tbody></table></div>
+
+<p></section></p>
+<section id="s八">
+<p>      <div class="section-label">八、检查清单</div></p>
+
+<ul><li><input type="checkbox" disabled> 判断网站流量是否达到「小程序时刻」</li><li><input type="checkbox" disabled> 在 mp.weixin.qq.com 注册小程序账号</li><li><input type="checkbox" disabled> 下载安装微信开发者工具</li><li><input type="checkbox" disabled> 完成小程序项目结构搭建</li><li><input type="checkbox" disabled> 实现1-2个核心页面（不超过3个）</li><li><input type="checkbox" disabled> 添加隐私政策页面</li><li><input type="checkbox" disabled> 如需支付，确认已升级企业主体</li><li><input type="checkbox" disabled> 提交审核并通过</li><li><input type="checkbox" disabled> 上线后7天内查看数据分析</li></ul>
+
+<p></section></p>
+<section id="s节">
+<p>      <div class="section-label">节点资源链接</div></p>
+
+<ul><li>节点44：银行开户与商户号</li><li>节点53：海外支付方案</li><li>节点22：上线内容填充</li></ul>
     </section>
 
-    <!-- D1: 判断时机 -->
-    <section id="d1" class="content-section fade-section">
-      <div class="dim-badge">
-        <span class="dim-id">D1</span>
-        <span class="dim-tag 核心">核心</span>
-        <span class="dim-tag">本质</span>
-      </div>
-      <h2 class="chapter-heading">先判断：你的网站流量到"小程序时刻"了吗</h2>
-      <div class="grid-asymmetric">
-        <div class="main-content">
-          <p class="body-text">小程序用户体验比H5更好、留存率更高、支付更方便。但<strong>不是所有OPC都需要小程序</strong>。</p>
-          <p class="body-text"><strong>核心指标</strong>：用户在你的网站完成一次关键行为（比如付费、提交表单）超过20次/天，就可以考虑小程序。</p>
-        </div>
-        <div class="side-content">
-          <div class="data-card">
-            <div class="data-card-row">
-              <span class="data-label">UV > 500/天</span>
-              <span class="data-value">立即做小程序</span>
-            </div>
-            <div class="data-card-row">
-              <span class="data-label">UV > 200/天</span>
-              <span class="data-value">可以考虑</span>
-            </div>
-            <div class="data-card-row">
-              <span class="data-label">UV < 100/天</span>
-              <span class="data-value accent">先优化网站</span>
-            </div>
-          </div>
-          <div class="obj-block error" style="margin-top: var(--space-lg);">
-            <div class="obj-label">× 致命错误</div>
-            <div class="obj-content">网站还没跑通，就分散精力做小程序。H5是增长工具，小程序是放大工具——先用H5验证商业模式。</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- D2: 对比选择 -->
-    <section class="content-section fade-section">
-      <div class="dim-badge">
-        <span class="dim-id">D2</span>
-        <span class="dim-tag">模型</span>
-      </div>
-      <h2 class="chapter-heading">小程序 vs H5 vs App</h2>
-      <div class="grid-asymmetric">
-        <div class="main-content">
-          <div class="list-item">
-            <div class="list-num">01</div>
-            <div>
-              <div class="list-title">H5网站</div>
-              <div class="list-desc">开发成本低，用户扫二维码就能用，分发效率最高。适合早期验证。</div>
-            </div>
-          </div>
-          <div class="list-item">
-            <div class="list-num">02</div>
-            <div>
-              <div class="list-title">微信小程序</div>
-              <div class="list-desc">用户体验高、留存率高、微信支付方便。需要安装，分发效率中等。</div>
-            </div>
-          </div>
-          <div class="list-item">
-            <div class="list-num">03</div>
-            <div>
-              <div class="list-title">原生App</div>
-              <div class="list-desc">用户体验最高，但开发成本高、应用市场分发效率低。适合成熟期。</div>
-            </div>
-          </div>
-        </div>
-        <div class="side-content">
-          <div class="obj-block success">
-            <div class="obj-label">✓ OPC首选</div>
-            <div class="obj-content">先用H5验证商业模式，小程序是增长工具而非救命稻草。第一年用H5，第二年有流量后再小程序。</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- D3: 账号注册 -->
-    <section class="content-section fade-section">
-      <div class="dim-badge">
-        <span class="dim-id">D3</span>
-        <span class="dim-tag">培育</span>
-      </div>
-      <h2 class="chapter-heading">2026年微信小程序注册与账号体系</h2>
-      <div class="grid-asymmetric">
-        <div class="main-content">
-          <p class="body-text"><strong>个人开发者账号</strong>（OPC首选）</p>
-          <p class="body-text">注册地址：mp.weixin.qq.com</p>
-          <p class="body-text">准备材料：微信个人开发者账号（已实名认证）、邮箱、手机号。</p>
-          <p class="body-text"><strong>费用</strong>：个人开发者每年认证费 ¥300（需要营业执照才能免认证费）</p>
-          <div class="quote-block" style="margin-top: var(--space-xl);">
-            <p class="quote-text"><strong>企业主体账号</strong>：如果公司已经注册完成（节点23），建议使用企业主体账号——无需每年 ¥300 认证费，可以开通微信支付商户号。</p>
-          </div>
-        </div>
-        <div class="side-content">
-          <div class="obj-block success">
-            <div class="obj-label">✓ 建议路径</div>
-            <div class="obj-content">OPC第一年用个人账号验证，第二年有收入后升级企业账号。</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- D4: 开发工具 -->
-    <section class="content-section fade-section">
-      <div class="dim-badge">
-        <span class="dim-id">D4</span>
-        <span class="dim-tag">工具</span>
-      </div>
-      <h2 class="chapter-heading">开发工具与框架选择（2026年）</h2>
-      <div class="grid-asymmetric">
-        <div class="main-content">
-          <div class="list-item">
-            <div class="list-num">01</div>
-            <div>
-              <div class="list-title">微信开发者工具 + 原生开发</div>
-              <div class="list-desc">官方支持，文档最全，调试方便。适合完全零基础、第一次接触小程序开发。</div>
-            </div>
-          </div>
-          <div class="list-item">
-            <div class="list-num">02</div>
-            <div>
-              <div class="list-title">Taro + React（推荐有前端经验）</div>
-              <div class="list-desc">可以用React语法，支持Vue；代码复用率高。节点06学过React的可以直接用。</div>
-            </div>
-          </div>
-          <div class="list-item">
-            <div class="list-num">03</div>
-            <div>
-              <div class="list-title">UniApp + Vue</div>
-              <div class="list-desc">生态好，国内文档丰富；一次开发多端上线（微信/支付宝/抖音）。包体积比原生大约200KB。</div>
-            </div>
-          </div>
-        </div>
-        <div class="side-content">
-          <div class="data-card">
-            <div class="data-card-row">
-              <span class="data-label">零基础OPC</span>
-              <span class="data-value">原生开发</span>
-            </div>
-            <div class="data-card-row">
-              <span class="data-label">有前端经验</span>
-              <span class="data-value">Taro + React</span>
-            </div>
-            <div class="data-card-row">
-              <span class="data-label">想快速多端</span>
-              <span class="data-value accent">UniApp</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- D5: 开发流程 -->
-    <section class="content-section fade-section">
-      <div class="dim-badge">
-        <span class="dim-id">D5</span>
-        <span class="dim-tag">流程</span>
-      </div>
-      <h2 class="chapter-heading">开发流程（OPC精简版）</h2>
-      <div class="grid-asymmetric">
-        <div class="main-content">
-          <div class="list-item">
-            <div class="list-num">1</div>
-            <div>
-              <div class="list-title">创建项目（30分钟）</div>
-              <div class="list-desc">打开微信开发者工具 → 新建项目 → 选择「小程序」→ 填写 AppID → 填写项目名称。</div>
-            </div>
-          </div>
-          <div class="list-item">
-            <div class="list-num">2</div>
-            <div>
-              <div class="list-title">理解项目结构（1小时）</div>
-              <div class="list-desc">app.js（入口）、app.json（配置）、pages/（页面）。最小小程序只需要：app.js + app.json + pages/index/。</div>
-            </div>
-          </div>
-          <div class="list-item">
-            <div class="list-num">3</div>
-            <div>
-              <div class="list-title">实现核心页面（1-3天）</div>
-              <div class="list-desc"><strong>不要做完整版小程序</strong>。OPC小程序只需要：核心功能展示（1-2个页面）+ 用户登录 + 一个关键操作。</div>
-            </div>
-          </div>
-        </div>
-        <div class="side-content">
-          <div class="obj-block error">
-            <div class="obj-label">× 致命操作</div>
-            <div class="obj-content">做完整版小程序。第一版功能要少，只放核心功能，不要做完整版——审核员看到功能完整但有Bug会直接拒绝。</div>
-          </div>
-          <div class="obj-block success" style="margin-top: var(--space-lg);">
-            <div class="obj-label">✓ 正确示范</div>
-            <div class="obj-content">第一个版本只做1个核心页面，审核通过后再迭代。这样可以快速上线、快速验证。</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- D6: 审核发布 -->
-    <section class="content-section fade-section">
-      <div class="dim-badge">
-        <span class="dim-id">D6</span>
-        <span class="dim-tag">审核</span>
-      </div>
-      <h2 class="chapter-heading">提交审核与发布</h2>
-      <div class="grid-asymmetric">
-        <div class="main-content">
-          <p class="body-text"><strong>审核时间（2026年）</strong></p>
-          <p class="body-text">首次提交：3-7个工作日 | 迭代更新：1-3个工作日 | 紧急修复：24小时内</p>
-
-          <p class="body-text" style="margin-top: var(--space-xl);"><strong>❌ 常见被拒原因</strong></p>
-          <p class="body-text">页面有Bug打不开、诱导分享、虚拟支付、缺少隐私政策页面、内容涉及需要资质行业（医疗、金融等）。</p>
-
-          <p class="body-text" style="margin-top: var(--space-xl);"><strong>✓ 快速过审技巧</strong></p>
-          <p class="body-text">第一版功能要少、隐私政策必须有、测试账号要真实、联系方式要正确（审核员会打电话核实）。</p>
-        </div>
-        <div class="side-content">
-          <div class="data-card">
-            <div class="data-card-row">
-              <span class="data-label">首次提交</span>
-              <span class="data-value">3-7个工作日</span>
-            </div>
-            <div class="data-card-row">
-              <span class="data-label">迭代更新</span>
-              <span class="data-value">1-3个工作日</span>
-            </div>
-            <div class="data-card-row">
-              <span class="data-label">紧急修复</span>
-              <span class="data-value accent">24小时内</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- D7: 成本 -->
-    <section class="content-section fade-section">
-      <div class="dim-badge">
-        <span class="dim-id">D7</span>
-        <span class="dim-tag">成本</span>
-      </div>
-      <h2 class="chapter-heading">成本估算（2026年）</h2>
-      <div class="grid-asymmetric">
-        <div class="main-content">
-          <div class="list-item">
-            <div class="list-num">¥300</div>
-            <div>
-              <div class="list-title">微信认证费/年</div>
-              <div class="list-desc">个人账号需要；企业账号免认证费</div>
-            </div>
-          </div>
-          <div class="list-item">
-            <div class="list-num">¥0</div>
-            <div>
-              <div class="list-title">开发工具</div>
-              <div class="list-desc">微信开发者工具免费使用</div>
-            </div>
-          </div>
-          <div class="list-item">
-            <div class="list-num">¥0-200</div>
-            <div>
-              <div class="list-title">服务器/月</div>
-              <div class="list-desc">初期用云开发自带免费额度</div>
-            </div>
-          </div>
-        </div>
-        <div class="side-content">
-          <div class="core-insight">
-            <p class="core-insight-text"><strong>总计</strong>：¥300-2700/年，主要成本是认证费。小程序是低成本高回报的放大工具。</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FIN -->
-    <section id="fin" class="content-section fade-section">
-    <section class="content-section fade-section">
-      <div class="section-label">财务健康指标</div>
-      <div class="summary-grid">
-        <div class="summary-card">
-          <div class="summary-num">¥300</div>
-          <div class="summary-title">最低年成本</div>
-          <div class="summary-desc">个人账号认证费</div>
-        </div>
-        <div class="summary-card">
-          <div class="summary-num">3天</div>
-          <div class="summary-title">最快上线</div>
-          <div class="summary-desc">第一版精简小程序</div>
-        </div>
-        <div class="summary-card">
-          <div class="summary-num">20次</div>
-          <div class="summary-title">关键行为/天</div>
-          <div class="summary-desc">小程序时刻判断标准</div>
-        </div>
-      </div>
-    </section>
-
+    <div class="summary-box">
+      <h3>节点54检查清单</h3>
+      <p>完成本节点后，请确认所有检查项已通过。</p>
+    </div>
     </main>
   </div>
 
   <nav class="footer-nav">
-    <a href="/nodes/53-global-payment/index.html" class="nav-link">
-      <span class="nav-arrow">←</span>
-      节点53：海外支付方案
-    </a>
-    <a href="/nodes/55-outsourcing/index.html" class="nav-link">
-      节点55：外包策略与执行
-      <span class="nav-arrow">→</span>
-    </a>
+    <a href="/nodes/53-global-payment/index.html" class="nav-link"><span>←</span> 节点53</a>
+    <a href="/nodes/55-outsourcing/index.html" class="nav-link">节点55 <span>→</span></a>
   </nav>
 
   <script>
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').slice(1);
+      const target = document.getElementById(targetId);
+      if (target) {
+        window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+      }
+    });
+  });
   </script>
 </body>
 </html>

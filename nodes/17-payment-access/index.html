@@ -3,22 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="一人公司国内支付接入完整指南：主体选择、微信支付宝接入、数字人民币、费率谈判、审核避坑">
+  <meta name="description" content="节点17：国内支付接入 - OPC节点百科">
   <meta name="theme-color" content="#111110">
-  <title>国内支付接入 - OPC节点百科</title>
+  <title>节点17：国内支付接入 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../_design-tokens.css">
-  <link rel="stylesheet" href="../_layout-templates.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
+
 :root {
   --bg: #111110;
   --surface: #1A1A18;
   --text-primary: #F0EDE6;
   --text-secondary: #7A7670;
-  --text-tertiary: #A8A49E;
+  --text-tertiary: #4A4744;
   --accent: #C0392B;
   --line: #2A2A28;
   --line-light: rgba(255,255,255,0.06);
@@ -32,11 +31,162 @@
   --space-4xl: 128px;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: var(--bg); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; font-weight: 400; line-height: 1.9; letter-spacing: 0.04em; -webkit-font-smoothing: antialiased; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
+html {
+  overflow-x: hidden;
+}
 
-.section-number { position: absolute; top: var(--space-2xl); right: clamp(24px, 8vw, 120px); font-size: clamp(100px, 22vw, 280px); font-weight: 100; color: var(--text-primary); opacity: 0.03; line-height: 1; letter-spacing: -0.05em; font-family: 'Noto Serif JP', serif; pointer-events: none; user-select: none; }
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* 移动端整体适配 - 使用 900px breakpoint 与现有代码一致 */
+@media (max-width: 900px) {
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+
+  body {
+    font-size: 14px;
+  }
+
+  .layout {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding: 4rem 16px 2rem !important;
+    margin: 0 !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .sidebar-toc {
+    display: none !important;
+  }
+
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  section {
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  section > * {
+    max-width: 100% !important;
+    overflow-x: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  section p {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+
+  h1 {
+    font-size: clamp(36px, 10vw, 48px) !important;
+    line-height: 1.05 !important;
+  }
+}
+
+/* Layout with Sidebar */
+.layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3rem);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
+}
+
+/* Sidebar TOC */
+.sidebar-toc {
+  position: sticky;
+  top: 5rem;
+  height: fit-content;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  padding-top: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.sidebar-toc::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar-toc::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 2px;
+}
+
+.toc-title {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.toc-list {
+  list-style: none;
+}
+
+.toc-item {
+  margin-bottom: 0.75rem;
+}
+
+.toc-link {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: block;
+  padding: 0.375rem 0;
+  padding-left: 1rem;
+  border-left: 1px solid var(--line);
+  transition: all 0.3s;
+  line-height: 1.4;
+}
+
+.toc-link:hover {
+  color: var(--text-primary);
+  border-left-color: var(--accent);
+}
+
+.toc-link.active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  font-weight: 400;
+}
+
+.toc-link.sub {
+  padding-left: 1.75rem;
+  font-size: 0.75rem;
+}
 
 /* Fixed Top Nav */
 .fixed-top-nav {
@@ -66,7 +216,9 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
   transition: color 0.3s;
 }
 
-.back-link:hover { color: var(--text-primary); }
+.back-link:hover {
+  color: var(--text-primary);
+}
 
 .node-id {
   font-family: 'Noto Serif JP', serif;
@@ -75,107 +227,568 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
   letter-spacing: 0.08em;
 }
 
-.hero { padding: var(--space-4xl) 0 var(--space-3xl); position: relative; }
-.hero-content { position: relative; z-index: 1; max-width: 800px; }
-.hero-label { font-size: 13px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-md); }
-.hero-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
-.hero-title { font-family: 'Noto Serif JP', serif; font-size: clamp(48px, 10vw, 96px); font-weight: 300; letter-spacing: -0.03em; line-height: 0.95; margin-bottom: var(--space-xl); }
-.hero-desc { font-size: 16px; color: var(--text-secondary); line-height: 1.8; max-width: 44ch; }
+/* Header */
+header {
+  padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(2rem, 5vh, 3rem);
+}
 
-/* 费率对比区 */
-.rate-section { padding: var(--space-3xl) 0; border-top: 1px solid var(--line); }
-.section-header { display: flex; align-items: baseline; gap: var(--space-md); margin-bottom: var(--space-xl); }
-.section-num { font-family: 'Noto Serif JP', serif; font-size: 48px; font-weight: 300; color: var(--accent); opacity: 0.5; line-height: 1; }
-.section-title { font-family: 'Noto Serif JP', serif; font-size: clamp(24px, 4vw, 36px); font-weight: 300; letter-spacing: -0.02em; }
+/* Main content */
+main {
+  padding-bottom: 5rem;
+}
 
-/* 费率对比网格 */
-.rate-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: var(--space-md); }
-/* Layout */
-.layout {
+/* 移动端底部导航适配 - 合并到 900px breakpoint */
+@media (max-width: 900px) {
+  main {
+    padding-bottom: 6rem; /* 为固定底部导航预留空间 */
+  }
+
+  .footer-nav {
+    overflow-x: auto;
+    justify-content: space-between;
+  }
+
+  .nav-link {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .table-wrapper {
+    position: relative;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 1.5rem 0;
+    border: 1px solid var(--line);
+  }
+
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
+}
+
+/* Section anchors offset for sticky header */
+section {
+  scroll-margin-top: 2rem;
+}
+
+section h2 {
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+}
+
+section p, section li {
+  font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
+  line-height: 1.9;
+}
+
+/* Table improvements */
+.table-wrapper {
+  margin: 1.5rem 0;
+  border: 1px solid var(--line);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-wrapper::after {
+  content: "";
+  display: block;
+}
+
+/* 移动端滑动提示 */
+@media (max-width: 900px) {
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  .table-wrapper {
+    position: relative;
+    padding-bottom: 24px;
+  }
+}
+
+table {
+  font-size: 0.875rem;
+  min-width: 560px;
+}
+
+@media (max-width: 900px) {
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
+}
+
+/* Tool Cards */
+.tool-grid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* Path blocks */
+.path-block {
+  padding: 1.5rem;
+}
+
+.workflow {
+  padding: 1rem 1.25rem;
+  font-size: 0.8125rem;
+}
+
+/* Validation cards */
+.validation-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.validation-card {
+  padding: 1.25rem;
+}
+
+/* Level items */
+.level-grid {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+/* Decision box */
+.decision-box {
+  padding: 1.25rem 1.5rem;
+}
+
+/* Main content */
+.phase-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+h1 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xl);
+}
+
+/* 移动端H1适配 */
+@media (max-width: 900px) {
+  h1 {
+    font-size: clamp(36px, 10vw, 48px);
+    line-height: 1.05;
+  }
+}
+
+.phase-label {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+.phase-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+
+.subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 44ch;
+  line-height: 1.8;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* 移动端副标题适配 */
+@media (max-width: 900px) {
+  .subtitle {
+    font-size: 14px;
+    max-width: 100%;
+  }
+}
+
+.node-meta {
+  margin-top: 2rem;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+}
+
+/* Sections */
+section {
+  padding-bottom: clamp(3rem, 10vh, 5rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(3rem, 10vh, 5rem);
+}
+
+section:last-of-type {
+  border-bottom: none;
+}
+
+.section-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.375rem, 4vw, 1.875rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+h3 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.125rem, 3vw, 1.375rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+p {
+  color: var(--text-secondary);
+  line-height: 1.9;
+  margin-bottom: 1.25rem;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* 移动端段落适配 */
+@media (max-width: 900px) {
+  p {
+    padding-right: 0.5rem;
+    word-break: break-all;
+    white-space: normal;
+  }
+
+  section p {
+    padding-right: 0;
+  }
+}
+
+.decision-box {
+  background: var(--surface);
+  border-left: 2px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.decision-box p {
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  margin: 0;
+}
+
+/* Tables */
+.table-wrapper {
+  overflow-x: auto;
+  margin: 2rem 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+th {
+  text-align: left;
+  font-weight: 400;
+  font-size: 0.6875rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--text-secondary);
+  vertical-align: top;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+td:first-child {
+  color: var(--text-primary);
+  font-weight: 400;
+}
+
+/* Tool Cards */
+.tool-grid {
   display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
-  gap: clamp(2rem, 4vw, 3rem);
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
+  gap: 1.5rem;
+  margin: 2rem 0;
 }
 
-/* Main content wrapper */
-.main-content {
-  min-width: 0;
+.tool-card {
+  background: var(--surface);
+  padding: 1.75rem;
+  border: 1px solid var(--line);
 }
 
-/* Responsive layout */
-@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+.tool-card h4 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
 
-@media (max-width: 900px) { .rate-grid { grid-template-columns: 1fr; } }
-.rate-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-lg); text-align: center; }
-.rate-card.highlight { border-color: var(--accent); }
-.rate-channel { font-size: 12px; color: var(--text-tertiary); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: var(--space-sm); }
-.rate-value { font-family: 'Noto Serif JP', serif; font-size: 48px; font-weight: 300; color: var(--text-primary); line-height: 1; margin-bottom: var(--space-xs); }
-.rate-card.highlight .rate-value { color: var(--accent); }
-.rate-label { font-size: 11px; color: var(--text-tertiary); margin-bottom: var(--space-md); }
-.rate-save { font-size: 13px; color: var(--accent); margin-top: var(--space-sm); }
+.tool-card .tagline {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
 
-/* 计算器区块 */
-.calc-box { background: var(--surface); border: 1px solid var(--line); padding: var(--space-xl); margin-top: var(--space-xl); }
-.calc-header { display: flex; align-items: baseline; gap: var(--space-md); margin-bottom: var(--space-lg); }
-.calc-title { font-family: 'Noto Serif JP', serif; font-size: 20px; font-weight: 300; }
-.calc-row { display: flex; justify-content: space-between; padding: var(--space-sm) 0; border-bottom: 1px solid var(--line-light); font-size: 14px; }
-.calc-row:last-child { border-bottom: none; }
-.calc-label { color: var(--text-secondary); }
-.calc-value { color: var(--text-primary); font-weight: 500; }
-.calc-value.highlight { color: var(--accent); }
-.calc-result { display: flex; justify-content: space-between; padding: var(--space-md) 0; margin-top: var(--space-md); border-top: 1px solid var(--line); }
-.calc-result-label { font-size: 14px; color: var(--text-primary); font-weight: 500; }
-.calc-result-value { font-family: 'Noto Serif JP', serif; font-size: 28px; font-weight: 300; color: var(--accent); }
+.tool-card p {
+  font-size: 0.875rem;
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
 
-/* 主体选择 */
-.entity-section { padding: var(--space-3xl) 0; border-top: 1px solid var(--line); }
-.entity-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: var(--space-lg); margin-top: var(--space-xl); }
-@media (max-width: 768px) { .entity-grid { grid-template-columns: 1fr; } }
-.entity-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-lg); }
-.entity-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; }
-.entity-card.prime::before { background: var(--accent); }
-.entity-card.prime { position: relative; border-color: var(--accent); }
-.entity-tag { font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-sm); color: var(--accent); }
-.entity-name { font-size: 18px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-md); }
-.entity-pros { display: flex; flex-direction: column; gap: var(--space-xs); }
-.entity-pro { font-size: 13px; color: var(--text-secondary); padding-left: var(--space-md); position: relative; }
-.entity-pro::before { content: '✓'; position: absolute; left: 0; color: var(--accent); }
-.entity-con { font-size: 13px; color: var(--text-tertiary); padding-left: var(--space-md); position: relative; }
-.entity-con::before { content: '×'; position: absolute; left: 0; color: var(--accent); }
+.tool-card .pros {
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+}
 
-/* 通道卡片 */
-.channel-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: var(--space-md); margin-top: var(--space-xl); }
-@media (max-width: 768px) { .channel-grid { grid-template-columns: 1fr; } }
-.channel-card { background: var(--surface); border: 1px solid var(--line); padding: var(--space-md); position: relative; }
-.channel-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; }
-.channel-card.wechat::before { background: #07C160; }
-.channel-card.alipay::before { background: #1677FF; }
-.channel-card.dcep::before { background: var(--accent); }
-.channel-name { font-size: 14px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-xs); }
-.channel-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
-.channel-tag { display: inline-block; font-size: 12px; padding: 2px 8px; margin-top: var(--space-sm); border: 1px solid; }
-.channel-tag.green { color: var(--accent); border-color: var(--accent); }
-.channel-tag.red { color: var(--accent); border-color: var(--accent); }
+.tool-card .price {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.25rem 0.75rem;
+  margin-top: 1rem;
+}
 
-/* 清单区块 */
-.checklist-section { padding: var(--space-3xl) 0; border-top: 1px solid var(--line); }
-.checklist-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: var(--space-md); margin-top: var(--space-lg); }
-@media (max-width: 768px) { .checklist-grid { grid-template-columns: 1fr; } }
-.check-item { display: flex; align-items: flex-start; gap: var(--space-md); padding: var(--space-md); background: var(--surface); border: 1px solid var(--line); }
-.check-num { font-family: 'Noto Serif JP', serif; font-size: 24px; font-weight: 300; color: var(--accent); opacity: 0.5; line-height: 1; flex: 0 0 40px; }
-.check-content {}
-.check-title { font-size: 14px; font-weight: 500; color: var(--text-primary); margin-bottom: 4px; }
-.check-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+/* Path Section */
+.path-block {
+  background: var(--surface);
+  padding: 2rem;
+  margin: 2rem 0;
+  border: 1px solid var(--line);
+}
 
-/* 警告区块 */
-.warning-box { background: rgba(192, 57, 43, 0.08); border: 1px solid var(--accent); padding: var(--space-lg); margin: var(--space-xl) 0; }
-.warning-label { font-size: 12px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: var(--space-sm); }
-.warning-text { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+.path-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
 
-/* 底部导航 */
+.path-number {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+.path-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.path-tools {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.path-block p {
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+}
+
+.workflow {
+  background: var(--bg);
+  padding: 1.25rem 1.5rem;
+  margin-top: 1.25rem;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.9;
+}
+
+/* Validation Box */
+.validation-grid {
+  display: grid;
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
+
+.validation-card {
+  background: var(--surface);
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+}
+
+.validation-card h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.validation-card p {
+  font-size: 0.8125rem;
+  margin: 0;
+}
+
+.level-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.level-item {
+  background: var(--surface);
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+}
+
+.level-item .num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.5rem;
+  color: var(--accent);
+  opacity: 0.6;
+  margin-bottom: 0.5rem;
+}
+
+.level-item h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.level-item p {
+  font-size: 0.75rem;
+  margin: 0;
+}
+
+/* Cost Control */
+.cost-table {
+  margin: 2rem 0;
+}
+
+/* Quote */
+.quote-block {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+}
+
+.quote-block p {
+  font-size: 1rem;
+  color: var(--text-primary);
+  line-height: 1.8;
+}
+
+/* Network Section */
+.network-alert {
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.network-alert h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.network-alert p {
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Summary Box */
+.summary-box {
+  background: var(--surface);
+  padding: 2rem;
+  margin-top: 3rem;
+  border: 1px solid var(--line);
+}
+
+.summary-box h3 {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+}
+
+.step-list {
+  list-style: none;
+  counter-reset: steps;
+}
+
+.step-list li {
+  counter-increment: steps;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.step-list li::before {
+  content: counter(steps);
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--accent);
+  flex-shrink: 0;
+  width: 1.5rem;
+  padding-top: 0.25rem;
+}
+
+/* Footer Nav - Fixed Bottom */
 .footer-nav {
   position: fixed;
   bottom: 0;
@@ -190,6 +803,7 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
   backdrop-filter: blur(12px);
   border-top: 1px solid var(--line);
 }
+
 .nav-link {
   font-size: 0.75rem;
   color: var(--text-tertiary);
@@ -200,242 +814,163 @@ body { background: var(--bg); color: var(--text-primary); font-family: 'Noto San
   gap: 0.5rem;
   transition: color 0.3s;
 }
-.nav-link:hover { color: var(--text-primary); }
-.nav-link.disabled { opacity: 0.3; pointer-events: none; }
-.nav-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: color 0.3s ease; }
-.nav-link:hover { color: var(--text-primary); }
-.nav-arrow { font-size: 0.75rem; }
 
-.fade-section { opacity: 1; transform: translateY(0); }
-.fade-section.visible { opacity: 1; transform: translateY(0); transition: opacity 0.6s ease, transform 0.6s ease; }
-* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.nav-link:hover {
+  color: var(--text-primary);
+}
+
+.nav-link.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
   </style>
 </head>
 <body>
   <nav class="fixed-top-nav">
-    <a href="/" class="back-link">← 返回首页</a>
+    <a href="/index.html" class="back-link">← 返回首页</a>
     <span class="node-id">节点 17 / 57</span>
   </nav>
-  <div class="section-number">13</div>
 
-  <div class="layout layout-tools">
-    <header class="hero fade-section">
-      <div class="hero-content">
-        <div class="hero-label">节点 17 · 1-10</div>
-        <h1 class="hero-title">国内支付<br>接入</h1>
-        <p class="hero-desc">微信支付、支付宝、数字人民币——2026年一人公司收款闭环完整指南</p>
-      </div>
+  <div class="layout">
+    <main class="container">
+      <header>
+      <div class="phase-label">0-1</div>
+      <h1>节点17：国内支付接入</h1>
+      <div class="node-meta">节点 17 / 57 · 最后修订：2026年6月4日</div>
     </header>
 
-    <section class="tldr fade-section" aria-label="本章速读">
-      <div class="tldr-label">本章速读</div>
-      <ul class="tldr-list">
-        <li><strong>目标：</strong>让客户能在 5 分钟内完成付款——微信、支付宝、数字人民币三个通道全跑通。</li>
-        <li><strong>你要做的事：</strong>选通道 → 申请商户号 → 接入代码 → 对账（3 步，1-3 天完成）。</li>
-        <li><strong>不需要会：</strong>金融协议、证书管理、对账系统。服务商已包好。</li>
-        <li><strong>本章产出：</strong>一个能收钱的页面，2026 年最新费率（数字人民币 0 费率）。</li>
-      </ul>
+    <section id="s1">
+    
+<p>node_id: 17</p>
+<p>persona: neutral</p>
+<p>cta_type: wechat</p>
+<p>keywords: [支付, 微信, 支付宝, 商户号, 接入]</p>
+
+<blockquote class="decision-box"><p>国内支付= 微信支付 + 支付宝 + 银联。OPC 90% 的产品只用前两个。本节点告诉你<strong>最少的钱、最快的速度</strong>接入。</p></blockquote>
+
+<p></section></p>
+<section id="s一">
+<p>      <div class="section-label">一、3 个国内支付通道的对比</div></p>
+
+<div class="table-wrapper"><table><thead><tr><th>通道</th><th>手续费</th><th>提现时间</th><th>接入难度</th><th>适用场景</th></tr></thead><tbody><tr><td><strong>微信支付</strong></td><td>0.6%</td><td>T+1</td><td>中（需商户号）</td><td>C 端 / 小程序</td></tr><tr><td><strong>支付宝</strong></td><td>0.6%</td><td>T+1</td><td>中</td><td>C 端 / 电商</td></tr><tr><td><strong>银联</strong></td><td>0.6%</td><td>T+1</td><td>高</td><td>B 端 / 大额</td></tr></tbody></table></div>
+<strong>OPC 必接</strong>：微信 + 支付宝，二者覆盖国内 95% 用户。
+
+<p></section></p>
+<section id="s二">
+<p>      <div class="section-label">二、3 步走通微信支付（OPC 极简版）</div></p>
+
+<h3>Step 1：注册商户号（个人可办）</h3>
+
+<div class="table-wrapper"><table><thead><tr><th>主体类型</th><th>需要的材料</th><th>时间</th></tr></thead><tbody><tr><td><strong>个体工商户</strong></td><td>营业执照 + 法人身份证 + 银行账户</td><td>1-2 周</td></tr><tr><td><strong>企业</strong></td><td>营业执照 + 对公账户 + 法人身份证</td><td>2-3 周</td></tr><tr><td><strong>个人（受限）</strong></td><td>仅支持部分场景</td><td>—</td></tr></tbody></table></div>
+<strong>OPC 强烈建议</strong>：办<strong>个体工商户</strong>，成本 200-500 元，1 周拿到。
+
+<h3>Step 2：拿到 API 凭证</h3>
+
+<p>登录 pay.weixin.qq.com → 账户中心 → API 安全：</p>
+<ul><li><code>AppID</code>（小程序 ID）</li><li><code>mch_id</code>（商户号）</li><li><code>API Key</code>（API 密钥 V2 / V3）</li><li><code>API 证书</code>（退款用）</li></ul>
+<h3>Step 3：服务端生成支付订单</h3>
+
+<p>``<code>javascript</p>
+// 用官方 SDK：wechatpay-node-v3
+<p>const WxPay = require('wechatpay-node-v3').default;</p>
+<p>const pay = new WxPay({</p>
+<p>  appid: 'wx...',</p>
+<p>  mchid: '16...',</p>
+<p>  publicKey: fs.readFileSync('./apiclient_cert.pem'),</p>
+<p>  privateKey: fs.readFileSync('./apiclient_key.pem'),</p>
+<p>});</p>
+
+<p>const result = await pay.transactions_native({</p>
+<p>  description: 'OPC产品-月卡',</p>
+<p>  out_trade_no: 'ORDER_' + Date.now(),</p>
+<p>  notify_url: 'https://yourdomain.com/api/pay/wechat/notify',</p>
+<p>  amount: { total: 9900, currency: 'CNY' },  // 99.00 元 = 9900 分</p>
+<p>});</p>
+<p></code>`<code></p>
+
+<p>返回 </code>code_url<code>，前端用 </code>qrcode.js<code> 渲染成二维码，用户扫码支付。</p>
+
+<p></section></p>
+<section id="s三">
+<p>      <div class="section-label">三、回调验证（最容易出 bug 的地方）</div></p>
+
+<p></code>`<code>javascript</p>
+// /api/pay/wechat/notify
+<p>app.post('/api/pay/wechat/notify', async (req, res) => {</p>
+<p>  // 1. 验证签名（用微信的 callback 头里的 signature）</p>
+<p>  // 2. 解密回调数据</p>
+<p>  // 3. 检查 out_trade_no 是否已处理（防重复）</p>
+<p>  // 4. 业务处理：标记订单已支付</p>
+<p>  // 5. 返回 { code: 'SUCCESS', message: '成功' }</p>
+<p>});</p>
+<p></code>`<code></p>
+
+<strong>4 步不能省</strong>：
+<ol><li>验证签名 = 防止假回调</li><li>解密 = V3 是 AES-256-GCM 加密</li><li>幂等检查 = 防止重复发货</li><li>返回 SUCCESS = 否则微信会重试 5 次</li></ol>
+
+<p></section></p>
+<section id="s四">
+<p>      <div class="section-label">四、支付宝（比微信简单 50%）</div></p>
+
+<div class="table-wrapper"><table><thead><tr><th>维度</th><th>微信</th><th>支付宝</th></tr></thead><tbody><tr><td>个人开发者支持</td><td>❌ 必须商户号</td><td>✅ 沙箱测试友好</td></tr><tr><td>沙箱</td><td>难申请</td><td>1 分钟开</td></tr><tr><td>文档质量</td><td>一般</td><td>极好</td></tr><tr><td><strong>接入速度</strong></td><td><strong>1-2 天</strong></td><td><strong>2-4 小时</strong></td></tr></tbody></table></div>
+<strong>OPC 技巧</strong>：先接支付宝跑通流程，再接微信。
+
+<p></section></p>
+<section id="s五">
+<p>      <div class="section-label">五、3 个常见坑</div></p>
+
+<h3>坑 1：回调 URL 用 http</h3>
+
+<p>微信/支付宝<strong>只接受 https</strong>。本地开发用 </code>ngrok<code> 或 </code>frp<code> 临时映射。</p>
+
+<h3>坑 2：金额用元而不是分</h3>
+
+<p></code>`<code>javascript</p>
+// 错：amount: { total: 99 }     // 0.99 元
+// 对：amount: { total: 9900 }   // 99.00 元 = 9900 分
+<p></code>`<code></p>
+
+<h3>坑 3：忘记对账</h3>
+
+<strong>每天对账</strong>：</code>/api/pay/wechat/query` 查当天订单，发现异常订单手动处理。
+
+<p></section></p>
+<section id="s六">
+<p>      <div class="section-label">六、检查清单</div></p>
+
+<ul><li><input type="checkbox" disabled> 办完个体工商户营业执照</li><li><input type="checkbox" disabled> 拿到微信支付商户号</li><li><input type="checkbox" disabled> 接入支付（沙箱测试通过）</li><li><input type="checkbox" disabled> 回调通知能验证签名 + 幂等</li><li><input type="checkbox" disabled> 退款流程测试过</li><li><input type="checkbox" disabled> 每天对账脚本在跑</li></ul>
+
+<p></section></p>
+<section id="s节">
+<p>      <div class="section-label">节点资源链接</div></p>
+
+<ul><li>节点16：支付代码集成</li><li>节点44：银行开户与商户号</li><li>节点53：海外支付方案</li></ul>
     </section>
 
-    <!-- 费率对比 -->
-    <section class="rate-section fade-section">
-      <div class="section-header">
-        <span class="section-num">费率</span>
-        <h2 class="section-title">通道费率对比</h2>
-      </div>
-
-      <div class="rate-grid">
-        <div class="rate-card">
-          <div class="rate-channel">官方标准</div>
-          <div class="rate-value">0.6%</div>
-          <div class="rate-label">微信 / 支付宝</div>
-          <div class="rate-save">月流水10万 = 年省0元</div>
-        </div>
-        <div class="rate-card">
-          <div class="rate-channel">服务商谈判</div>
-          <div class="rate-value">0.38%</div>
-          <div class="rate-label">标准优惠费率</div>
-          <div class="rate-save">月流水10万 = 年省2640元</div>
-        </div>
-        <div class="rate-card highlight">
-          <div class="rate-channel">谈判低价</div>
-          <div class="rate-value">0.25%</div>
-          <div class="rate-label">极限压价</div>
-          <div class="rate-save">月流水10万 = 年省4200元</div>
-        </div>
-      </div>
-
-      <div class="calc-box">
-        <div class="calc-header">
-          <span class="calc-title">年手续费计算器</span>
-        </div>
-        <div class="calc-row">
-          <span class="calc-label">月流水</span>
-          <span class="calc-value">10万元</span>
-        </div>
-        <div class="calc-row">
-          <span class="calc-label">官方费率 0.6%</span>
-          <span class="calc-value">年手续费 ¥7,200</span>
-        </div>
-        <div class="calc-row">
-          <span class="calc-label">谈判费率 0.25%</span>
-          <span class="calc-value highlight">年手续费 ¥3,000</span>
-        </div>
-        <div class="calc-result">
-          <span class="calc-result-label">年节省</span>
-          <span class="calc-result-value">¥4,200</span>
-        </div>
-      </div>
-
-      <div class="warning-box">
-        <div class="warning-label">谈判话术</div>
-        <div class="warning-text">"我正在同步启用数字人民币收款（零费率），如果微信/支付宝费率降不下来，主要收款可以引导过去。"——用零费率作为压价筹码。</div>
-      </div>
-    </section>
-
-    <!-- 主体选择 -->
-    <section class="entity-section fade-section">
-      <div class="section-header">
-        <span class="section-num">主体</span>
-        <h2 class="section-title">个体户 vs 一人有限公司</h2>
-      </div>
-
-      <div class="entity-grid">
-        <div class="entity-card prime">
-          <div class="entity-tag">推荐起步</div>
-          <div class="entity-name">个体工商户</div>
-          <div class="entity-pros">
-            <div class="entity-pro">免对公账户，直接绑定个人银行卡</div>
-            <div class="entity-pro">审核周期短，1-3个工作日上线</div>
-            <div class="entity-pro">微信小微通道日限额5-10万</div>
-            <div class="entity-pro">支付宝已全面免对公账户</div>
-          </div>
-        </div>
-        <div class="entity-card">
-          <div class="entity-tag">进阶选择</div>
-          <div class="entity-name">一人有限公司</div>
-          <div class="entity-pros">
-            <div class="entity-pro">可开对公账户，满足大客户开票需求</div>
-            <div class="entity-pro">有利于未来股权融资</div>
-            </div>
-          <div class="entity-pros" style="margin-top: var(--space-md);">
-            <div class="entity-con">必须验证对公账户</div>
-            <div class="entity-con">公对私转账需完整账务记录</div>
-            <div class="entity-con">有一定维护成本</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 支付通道 -->
-    <section class="rate-section fade-section">
-      <div class="section-header">
-        <span class="section-num">通道</span>
-        <h2 class="section-title">三大支付通道</h2>
-      </div>
-
-      <div class="channel-grid">
-        <div class="channel-card dcep">
-          <div class="channel-name">数字人民币</div>
-          <div class="channel-desc">资金实时到账，无任何沉淀。2026-01-01 新一代管理体系启动：钱包余额按活期存款计息（中国首个为央行数字货币计息的经济体），覆盖全国80% 线下零售场景，商户端持续零手续费。</div>
-          <span class="channel-tag green">零费率 · 实时到账 · 余额计息 <span class="upd-tag">2026 升级</span></span>
-        </div>
-        <div class="channel-card wechat">
-          <div class="channel-name">微信支付</div>
-          <div class="channel-desc">小微商户通道免对公账户，直接绑定个人银行卡。日收款限额5-10万。</div>
-          <span class="channel-tag red">需服务商申请</span>
-        </div>
-        <div class="channel-card alipay">
-          <div class="channel-name">支付宝</div>
-          <div class="channel-desc">商户后台自主权更高，可自行配置支付后优惠券、会员卡系统，无需依赖服务商。</div>
-          <span class="channel-tag red">需服务商申请</span>
-        </div>
-        <div class="channel-card">
-          <div class="channel-name">银行聚合码</div>
-          <div class="channel-desc">2026年多家银行推"首年零费率"获取存款沉淀。代价是结算账户必须在该银行。</div>
-          <span class="channel-tag">T+1到账</span>
-        </div>
-      </div>
-
-      <div class="checklist-grid" style="margin-top: var(--space-xl);">
-        <div class="check-item">
-          <div class="check-num">01</div>
-          <div class="check-content">
-            <div class="check-title">ICP备案前置</div>
-            <div class="check-desc">任何网页或小程序的线上收款，审核时自动校验ICP备案号。没有备案，申请直接被拒。</div>
-          </div>
-        </div>
-        <div class="check-item">
-          <div class="check-num">02</div>
-          <div class="check-content">
-            <div class="check-title">经营范围含"互联网销售"</div>
-            <div class="check-desc">最高频拒绝理由。注册执照时加上：互联网销售（除需要许可的商品）、信息技术咨询服务。</div>
-          </div>
-        </div>
-        <div class="check-item">
-          <div class="check-num">03</div>
-          <div class="check-content">
-            <div class="check-title">对公账户先激活</div>
-            <div class="check-desc">一人有限公司必须验证对公账户。注册公司后第一时间开对公账户，每月至少一笔主动交易保持活跃。</div>
-          </div>
-        </div>
-        <div class="check-item">
-          <div class="check-num">04</div>
-          <div class="check-content">
-            <div class="check-title">虚拟商品需ICP证</div>
-            <div class="check-desc">软件授权码、在线课程、电子书等虚拟商品，微信支付要求提供《增值电信业务经营许可证》。</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 结算周期 -->
-    <section class="entity-section fade-section">
-      <div class="section-header">
-        <span class="section-num">到账</span>
-        <h2 class="section-title">结算周期对比</h2>
-      </div>
-
-      <div class="calc-box" style="margin-top: 0;">
-        <div class="calc-row">
-          <span class="calc-label">传统T+1</span>
-          <span class="calc-value">周五收款，周一到账</span>
-        </div>
-        <div class="calc-row">
-          <span class="calc-label">网商银行/微众银行</span>
-          <span class="calc-value">365天实时清算，周末也到账</span>
-        </div>
-        <div class="calc-row">
-          <span class="calc-label">数字人民币</span>
-          <span class="calc-value highlight">实时到账，当天可用</span>
-        </div>
-      </div>
-
-      <div class="warning-box">
-        <div class="warning-label">合规红线</div>
-        <div class="warning-text">一人有限公司公对私转账必须通过"工资薪金"、"报销"或"分红"等规范名义操作，保留完整账务记录与完税凭证。否则触发关联交易误判和法人主体混同问题。</div>
-      </div>
-    </section>
-
-    <nav class="footer-nav">
-      <a href="/nodes/16-payment-code/index.html" class="nav-link">
-        <span class="nav-arrow">←</span>
-        节点16：支付代码集成
-      </a>
-      <a href="/nodes/18-developer-testing/index.html" class="nav-link">
-        节点18：开发者自测流程
-        <span class="nav-arrow">→</span>
-      </a>
-    </nav>
+    <div class="summary-box">
+      <h3>节点17检查清单</h3>
+      <p>完成本节点后，请确认所有检查项已通过。</p>
+    </div>
+    </main>
   </div>
 
+  <nav class="footer-nav">
+    <a href="/nodes/16-payment-code/index.html" class="nav-link"><span>←</span> 节点16</a>
+    <a href="/nodes/18-developer-testing/index.html" class="nav-link">节点18 <span>→</span></a>
+  </nav>
+
   <script>
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').slice(1);
+      const target = document.getElementById(targetId);
+      if (target) {
+        window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+      }
+    });
+  });
   </script>
 </body>
 </html>

@@ -3,22 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="数据备份与恢复 - OPC节点百科30 - 2026年最新备份策略与工具">
+  <meta name="description" content="节点51：数据备份与恢复 - OPC节点百科">
   <meta name="theme-color" content="#111110">
-  <title>数据备份与恢复 - OPC节点百科</title>
+  <title>节点51：数据备份与恢复 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../_design-tokens.css">
-  <link rel="stylesheet" href="../_layout-templates.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
+
 :root {
   --bg: #111110;
   --surface: #1A1A18;
   --text-primary: #F0EDE6;
-  --text-secondary: #B8B4AE;
-  --text-tertiary: #A8A49E;
+  --text-secondary: #7A7670;
+  --text-tertiary: #4A4744;
   --accent: #C0392B;
   --line: #2A2A28;
   --line-light: rgba(255,255,255,0.06);
@@ -32,27 +31,87 @@
   --space-4xl: 128px;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; }
+html {
+  overflow-x: hidden;
+}
 
 body {
   background: var(--bg);
   color: var(--text-primary);
-  font-family: 'Noto Sans SC', sans-serif;
-  font-weight: 400;
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
   line-height: 1.9;
   letter-spacing: 0.04em;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
-::selection { background: var(--accent); color: var(--bg); }
+/* 移动端整体适配 - 使用 900px breakpoint 与现有代码一致 */
+@media (max-width: 900px) {
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
 
-/* Layout */
+  body {
+    font-size: 14px;
+  }
 
-.sidebar-toc { position: sticky; top: 5rem; height: fit-content; max-height: calc(100vh - 6rem); overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
-.sidebar-toc::-webkit-scrollbar { width: 4px; }
-.sidebar-toc::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+  .layout {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding: 4rem 16px 2rem !important;
+    margin: 0 !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .sidebar-toc {
+    display: none !important;
+  }
+
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  section {
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  section > * {
+    max-width: 100% !important;
+    overflow-x: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  section p {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+
+  h1 {
+    font-size: clamp(36px, 10vw, 48px) !important;
+    line-height: 1.05 !important;
+  }
+}
 
 /* Layout with Sidebar */
 .layout {
@@ -64,36 +123,72 @@ body {
   padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
 }
 
-/* Main content wrapper */
-.main-content {
-  min-width: 0;
+/* Sidebar TOC */
+.sidebar-toc {
+  position: sticky;
+  top: 5rem;
+  height: fit-content;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  padding-top: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
 }
 
-.toc-title { font-size: 0.6875rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 1.25rem; }
-.toc-list { list-style: none; }
-.toc-item { margin-bottom: 0.75rem; }
-.toc-link { font-size: 0.8125rem; color: var(--text-secondary); text-decoration: none; display: block; padding: 0.375rem 0; padding-left: 1rem; border-left: 1px solid var(--line); transition: all 0.3s; line-height: 1.4; }
-.toc-link:hover { color: var(--text-primary); border-left-color: var(--accent); }
-.toc-link.active { color: var(--accent); border-left-color: var(--accent); font-weight: 400; }
-@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .sidebar-toc { display: none; } }
+.sidebar-toc::-webkit-scrollbar {
+  width: 4px;
+}
 
-/* Section number watermark */
-.section-number {
-  position: absolute;
-  top: var(--space-2xl);
-  right: clamp(24px, 8vw, 120px);
-  font-size: clamp(100px, 22vw, 280px);
-  font-weight: 100;
+.sidebar-toc::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 2px;
+}
+
+.toc-title {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.toc-list {
+  list-style: none;
+}
+
+.toc-item {
+  margin-bottom: 0.75rem;
+}
+
+.toc-link {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: block;
+  padding: 0.375rem 0;
+  padding-left: 1rem;
+  border-left: 1px solid var(--line);
+  transition: all 0.3s;
+  line-height: 1.4;
+}
+
+.toc-link:hover {
   color: var(--text-primary);
-  opacity: 0.03;
-  line-height: 1;
-  letter-spacing: -0.05em;
-  font-family: 'Noto Serif JP', serif;
-  pointer-events: none;
-  user-select: none;
+  border-left-color: var(--accent);
 }
 
-/* Fixed top navigation */
+.toc-link.active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  font-weight: 400;
+}
+
+.toc-link.sub {
+  padding-left: 1.75rem;
+  font-size: 0.75rem;
+}
+
+/* Fixed Top Nav */
 .fixed-top-nav {
   position: fixed;
   top: 0;
@@ -108,986 +203,844 @@ body {
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line);
 }
-.fixed-top-nav .nav-center {
+
+.back-link {
   font-size: 0.75rem;
   letter-spacing: 0.1em;
-  color: var(--text-tertiary);
-}
-
-/* Hero */
-.hero {
-  padding: var(--space-4xl) 0 var(--space-3xl);
-  position: relative;
-}
-
-.hero-content {
-  position: relative;
-  z-index: 1;
-  max-width: 800px;
-}
-
-.hero-label {
-  font-size: 13px;
-  color: var(--accent);
-  letter-spacing: 0.2em;
   text-transform: uppercase;
-  margin-bottom: var(--space-lg);
+  color: var(--text-secondary);
+  text-decoration: none;
   display: flex;
   align-items: center;
-  gap: var(--space-md);
+  gap: 0.5rem;
+  transition: color 0.3s;
 }
 
-.hero-label::before {
-  content: '';
-  width: 32px;
-  height: 1px;
-  background: var(--accent);
+.back-link:hover {
+  color: var(--text-primary);
 }
 
-.hero-title {
+.node-id {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+}
+
+/* Header */
+header {
+  padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(2rem, 5vh, 3rem);
+}
+
+/* Main content */
+main {
+  padding-bottom: 5rem;
+}
+
+/* 移动端底部导航适配 - 合并到 900px breakpoint */
+@media (max-width: 900px) {
+  main {
+    padding-bottom: 6rem; /* 为固定底部导航预留空间 */
+  }
+
+  .footer-nav {
+    overflow-x: auto;
+    justify-content: space-between;
+  }
+
+  .nav-link {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .table-wrapper {
+    position: relative;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 1.5rem 0;
+    border: 1px solid var(--line);
+  }
+
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
+}
+
+/* Section anchors offset for sticky header */
+section {
+  scroll-margin-top: 2rem;
+}
+
+section h2 {
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+}
+
+section p, section li {
+  font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
+  line-height: 1.9;
+}
+
+/* Table improvements */
+.table-wrapper {
+  margin: 1.5rem 0;
+  border: 1px solid var(--line);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-wrapper::after {
+  content: "";
+  display: block;
+}
+
+/* 移动端滑动提示 */
+@media (max-width: 900px) {
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  .table-wrapper {
+    position: relative;
+    padding-bottom: 24px;
+  }
+}
+
+table {
+  font-size: 0.875rem;
+  min-width: 560px;
+}
+
+@media (max-width: 900px) {
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
+}
+
+/* Tool Cards */
+.tool-grid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* Path blocks */
+.path-block {
+  padding: 1.5rem;
+}
+
+.workflow {
+  padding: 1rem 1.25rem;
+  font-size: 0.8125rem;
+}
+
+/* Validation cards */
+.validation-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.validation-card {
+  padding: 1.25rem;
+}
+
+/* Level items */
+.level-grid {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+/* Decision box */
+.decision-box {
+  padding: 1.25rem 1.5rem;
+}
+
+/* Main content */
+.phase-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+h1 {
   font-family: 'Noto Serif JP', serif;
   font-size: clamp(48px, 10vw, 96px);
   font-weight: 300;
   letter-spacing: -0.03em;
   line-height: 0.95;
+  color: var(--text-primary);
   margin-bottom: var(--space-xl);
 }
 
-.hero-desc {
-  font-size: 16px;
-  color: var(--text-secondary);
-  line-height: 1.8;
-  max-width: 44ch;
+/* 移动端H1适配 */
+@media (max-width: 900px) {
+  h1 {
+    font-size: clamp(36px, 10vw, 48px);
+    line-height: 1.05;
+  }
 }
 
-/* Content sections */
-.content-section {
-  padding: var(--space-3xl) 0;
-  border-top: 1px solid var(--line);
-}
-
-.section-label {
+.phase-label {
   font-size: 13px;
   color: var(--accent);
-  letter-spacing: 0.2em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   margin-bottom: var(--space-lg);
   display: flex;
   align-items: center;
   gap: var(--space-md);
 }
+.phase-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
 
-.section-label::before {
-  content: '';
-  width: 24px;
-  height: 1px;
-  background: var(--accent);
+.subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 44ch;
+  line-height: 1.8;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
-/* Asymmetric grid */
-.grid-asymmetric {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: var(--space-3xl);
-  align-items: start;
-}
-
+/* 移动端副标题适配 */
 @media (max-width: 900px) {
-  .grid-asymmetric {
-    grid-template-columns: 1fr;
-    gap: var(--space-2xl);
+  .subtitle {
+    font-size: 14px;
+    max-width: 100%;
   }
 }
 
-/* Chapter heading */
-.chapter-heading {
-  font-family: 'Noto Serif JP', serif;
-  font-size: clamp(28px, 5vw, 48px);
-  font-weight: 300;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-  margin-bottom: var(--space-xl);
-  max-width: 16em;
+.node-meta {
+  margin-top: 2rem;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
 }
 
-/* Body text */
-.body-text {
-  font-size: 15px;
+/* Sections */
+section {
+  padding-bottom: clamp(3rem, 10vh, 5rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(3rem, 10vh, 5rem);
+}
+
+section:last-of-type {
+  border-bottom: none;
+}
+
+.section-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.375rem, 4vw, 1.875rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+h3 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.125rem, 3vw, 1.375rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+p {
+  color: var(--text-secondary);
   line-height: 1.9;
-  color: var(--text-secondary);
-  max-width: 44ch;
-  margin-bottom: var(--space-md);
+  margin-bottom: 1.25rem;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
-.body-text strong { color: var(--text-primary); font-weight: 500; }
-.body-text .accent { color: var(--accent); font-weight: 500; }
+/* 移动端段落适配 */
+@media (max-width: 900px) {
+  p {
+    padding-right: 0.5rem;
+    word-break: break-all;
+    white-space: normal;
+  }
 
-/* Quote block */
-.quote-block {
-  padding-left: var(--space-md);
-  border-left: 1px solid var(--accent);
-  margin: var(--space-xl) 0;
+  section p {
+    padding-right: 0;
+  }
 }
 
-.quote-text {
-  font-size: 16px;
-  line-height: 1.8;
-  color: var(--text-secondary);
-  max-width: 40ch;
-}
-
-/* Insight tag */
-.insight-tag {
-  display: inline-block;
-  font-size: 12px;
-  color: var(--accent);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  margin-bottom: var(--space-lg);
-  border: 1px solid var(--accent);
-  padding: 4px 12px;
-}
-
-/* Data card */
-.data-card {
+.decision-box {
   background: var(--surface);
-  border: 1px solid var(--line);
+  border-left: 2px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
 }
 
-.data-card-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--space-md) var(--space-lg);
-  border-bottom: 1px solid var(--line);
-}
-
-.data-card-row:last-child { border-bottom: none; }
-
-.data-label {
-  font-size: 12px;
-  color: var(--text-tertiary);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.data-value {
-  font-size: 14px;
+.decision-box p {
   color: var(--text-primary);
-  font-weight: 500;
+  font-size: 0.9375rem;
+  margin: 0;
 }
 
-.data-value.accent { color: var(--accent); font-weight: 600; }
-
-/* List item */
-.list-item {
-  padding: var(--space-lg) 0;
-  border-bottom: 1px solid var(--line);
-  display: grid;
-  grid-template-columns: 64px 1fr;
-  gap: var(--space-lg);
+/* Tables */
+.table-wrapper {
+  overflow-x: auto;
+  margin: 2rem 0;
+  -webkit-overflow-scrolling: touch;
 }
 
-.list-item:last-child { border-bottom: none; }
-
-.list-num {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 32px;
-  font-weight: 300;
-  color: var(--text-tertiary);
-  line-height: 1;
+table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 0.875rem;
 }
 
-.list-title {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xs);
-}
-
-.list-desc {
-  font-size: 14px;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  max-width: 40ch;
-}
-
-/* Core insight */
-.core-insight {
-  margin: var(--space-xl) 0;
-  padding-left: var(--space-md);
-  border-left: 1px solid var(--accent);
-}
-
-.core-insight-text {
-  font-size: 15px;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  max-width: 40ch;
-}
-
-/* Balance section */
-.balance-section-title {
-  font-family: 'Noto Serif JP', serif;
-  font-size: clamp(28px, 5vw, 48px);
-  font-weight: 300;
-  letter-spacing: -0.02em;
-  margin-bottom: var(--space-xl);
-}
-
-.balance-intro {
-  font-size: 15px;
-  color: var(--text-secondary);
-  line-height: 1.8;
-  max-width: 46ch;
-  margin-bottom: var(--space-2xl);
-}
-
-.balance-intro strong { color: var(--text-primary); font-weight: 500; }
-
-.balance-grid {
-  display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  gap: var(--space-2xl);
-}
-
-@media (max-width: 768px) {
-  .balance-grid { grid-template-columns: 1fr; gap: var(--space-xl); }
-}
-
-.balance-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  padding: var(--space-lg);
-}
-
-.balance-card-label {
-  font-size: 13px;
+th {
+  text-align: left;
+  font-weight: 400;
+  font-size: 0.6875rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  margin-bottom: var(--space-md);
-  padding-bottom: var(--space-sm);
+  color: var(--text-tertiary);
+  padding: 0.75rem 1rem;
   border-bottom: 1px solid var(--line);
 }
 
-.balance-card-label.positive { color: var(--accent); }
-.balance-card-label.negative { color: var(--text-tertiary); }
-
-.balance-item {
-  padding: var(--space-sm) 0;
-  border-bottom: 1px solid var(--line-light);
-  font-size: 14px;
+td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--line);
   color: var(--text-secondary);
+  vertical-align: top;
 }
 
-.balance-item:last-child { border-bottom: none; }
-.balance-item.dim { color: var(--text-tertiary); }
-
-/* Summary grid */
-.summary-grid {
-  display: grid;
-  grid-template-columns: 1.5fr 1.2fr 0.8fr;
-  gap: var(--space-xl);
+tr:last-child td {
+  border-bottom: none;
 }
 
-@media (max-width: 900px) {
-  .summary-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
-}
-
-.summary-card {
-  padding: var(--space-lg) 0;
-  border-top: 1px solid var(--line);
-}
-
-.summary-num {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 36px;
-  font-weight: 300;
-  color: var(--accent);
-  margin-bottom: var(--space-sm);
-}
-
-.summary-title {
-  font-size: 15px;
-  font-weight: 500;
+td:first-child {
   color: var(--text-primary);
-  margin-bottom: var(--space-xs);
+  font-weight: 400;
 }
 
-.summary-desc {
-  font-size: 14px;
+/* Tool Cards */
+.tool-grid {
+  display: grid;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.tool-card {
+  background: var(--surface);
+  padding: 1.75rem;
+  border: 1px solid var(--line);
+}
+
+.tool-card h4 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.tool-card .tagline {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.tool-card p {
+  font-size: 0.875rem;
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.tool-card .pros {
   color: var(--text-secondary);
-  line-height: 1.7;
+  font-size: 0.8125rem;
 }
 
-/* Footer nav */
+.tool-card .price {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.25rem 0.75rem;
+  margin-top: 1rem;
+}
+
+/* Path Section */
+.path-block {
+  background: var(--surface);
+  padding: 2rem;
+  margin: 2rem 0;
+  border: 1px solid var(--line);
+}
+
+.path-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.path-number {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+.path-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.path-tools {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.path-block p {
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+}
+
+.workflow {
+  background: var(--bg);
+  padding: 1.25rem 1.5rem;
+  margin-top: 1.25rem;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.9;
+}
+
+/* Validation Box */
+.validation-grid {
+  display: grid;
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
+
+.validation-card {
+  background: var(--surface);
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+}
+
+.validation-card h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.validation-card p {
+  font-size: 0.8125rem;
+  margin: 0;
+}
+
+.level-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.level-item {
+  background: var(--surface);
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+}
+
+.level-item .num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.5rem;
+  color: var(--accent);
+  opacity: 0.6;
+  margin-bottom: 0.5rem;
+}
+
+.level-item h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.level-item p {
+  font-size: 0.75rem;
+  margin: 0;
+}
+
+/* Cost Control */
+.cost-table {
+  margin: 2rem 0;
+}
+
+/* Quote */
+.quote-block {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+}
+
+.quote-block p {
+  font-size: 1rem;
+  color: var(--text-primary);
+  line-height: 1.8;
+}
+
+/* Network Section */
+.network-alert {
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.network-alert h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.network-alert p {
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Summary Box */
+.summary-box {
+  background: var(--surface);
+  padding: 2rem;
+  margin-top: 3rem;
+  border: 1px solid var(--line);
+}
+
+.summary-box h3 {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+}
+
+.step-list {
+  list-style: none;
+  counter-reset: steps;
+}
+
+.step-list li {
+  counter-increment: steps;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.step-list li::before {
+  content: counter(steps);
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--accent);
+  flex-shrink: 0;
+  width: 1.5rem;
+  padding-top: 0.25rem;
+}
+
+/* Footer Nav - Fixed Bottom */
 .footer-nav {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   z-index: 100;
-  padding: var(--space-lg) clamp(1.25rem, 4vw, 2.5rem);
-  border-top: 1px solid var(--line);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(17, 17, 16, 0.85);
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.9);
   backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
 }
 
 .nav-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
   font-size: 0.75rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
   color: var(--text-tertiary);
   text-decoration: none;
-  transition: opacity 0.3s ease;
-}
-
-.nav-link:hover { opacity: 0.6; }
-
-.nav-arrow { font-size: 0.75rem; }
-
-/* Fade animation */
-.fade-section {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.fade-section.visible { opacity: 1; transform: translateY(0); }
-
-/* Objection blocks */
-.obj-block {
-  padding: var(--space-lg);
-  margin: var(--space-md) 0;
-  border-left: 2px solid;
-}
-
-.obj-block.error {
-  background: rgba(192, 57, 43, 0.08);
-  border-color: var(--accent);
-}
-
-.obj-block.success {
-  background: rgba(39, 174, 96, 0.08);
-  border-color: var(--accent);
-}
-
-.obj-block.data {
-  background: rgba(255,255,255,0.03);
-  border-color: var(--text-tertiary);
-}
-
-.obj-label {
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  margin-bottom: var(--space-sm);
+  letter-spacing: 0.08em;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
+  transition: color 0.3s;
 }
 
-.obj-block.error .obj-label { color: var(--accent); }
-.obj-block.success .obj-label { color: var(--accent); }
-.obj-block.data .obj-label { color: var(--text-tertiary); }
-
-.obj-content {
-  font-size: 14px;
-  line-height: 1.7;
-  color: var(--text-secondary);
+.nav-link:hover {
+  color: var(--text-primary);
 }
 
-.obj-content strong { color: var(--text-primary); }
-
-/* Checklist */
-.checklist {
-  list-style: none;
-  padding: 0;
-  margin: var(--space-lg) 0;
+.nav-link.disabled {
+  opacity: 0.3;
+  pointer-events: none;
 }
 
-.checklist li {
-  padding: var(--space-sm) 0;
-  border-bottom: 1px solid var(--line);
-  font-size: 14px;
-  color: var(--text-secondary);
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-sm);
-}
-
-.checklist li:last-child { border-bottom: none; }
-.checklist li::before {
-  content: '□';
-  color: var(--accent);
-  font-size: 16px;
-  line-height: 1.4;
-}
-
-.checklist li.checked::before {
-  content: '■';
-}
-
-/* Chapter number marker */
-.chapter-marker {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 13px;
-  color: var(--text-tertiary);
-  letter-spacing: 0.1em;
-  margin-bottom: var(--space-sm);
-}
   </style>
 </head>
 <body>
   <nav class="fixed-top-nav">
-    <a href="/"><span>←</span> 返回首页</a>
-    <span class="nav-center">节点 51 / 57</span>
+    <a href="/index.html" class="back-link">← 返回首页</a>
+    <span class="node-id">节点 51 / 57</span>
   </nav>
-  <div class="section-number">51</div>
 
-  <div class="layout layout-tools">
-    <nav class="sidebar-toc">
-      <div class="toc-title">目录</div>
-      <ul class="toc-list">
-        <li class="toc-item"><a href="#s1" class="toc-link">备份认知</a></li>
-        <li class="toc-item"><a href="#s2" class="toc-link">备份类型</a></li>
-        <li class="toc-item"><a href="#s3" class="toc-link">工具选择</a></li>
-        <li class="toc-item"><a href="#s4" class="toc-link">恢复流程</a></li>
-        <li class="toc-item"><a href="#s5" class="toc-link">安全防护</a></li>
-        <li class="toc-item"><a href="#s6" class="toc-link">冷备方案</a></li>
-        <li class="toc-item"><a href="#s7" class="toc-link">测试验证</a></li>
-        <li class="toc-item"><a href="#s8" class="toc-link">成本优化</a></li>
-        <li class="toc-item"><a href="#s9" class="toc-link">行动清单</a></li>
-      </ul>
-    </nav>
-    <div class="main-content">
-    <header class="hero">
-      <div class="hero-content">
-        <div class="hero-label">节点 51 · 1-10</div>
-        <h1 class="hero-title">数据备份与恢复</h1>
-        <p class="hero-desc">自动备份、异地容灾、恢复测试，有100+用户数据后必须做</p>
-      </div>
+  <div class="layout">
+    <main class="container">
+      <header>
+      <div class="phase-label">1-10</div>
+      <h1>节点51：数据备份与恢复</h1>
+      <div class="node-meta">节点 51 / 57 · 最后修订：2026年6月4日</div>
     </header>
 
-    <section class="tldr" aria-label="本章速读">
-      <div class="tldr-label">本章速读</div>
-      <ul class="tldr-list">
-        <li><strong>目标：</strong>在用户量突破 100+ 的当天，就建立 3-2-1 自动备份体系，确保任意一次故障都能在 1 小时内恢复业务。</li>
-        <li><strong>你要做的事：</strong>3 步：① 选定托管云原生备份（如阿里云 DBS / 腾讯云 CDB）→ ② 配 3-2-1 异地策略 → ③ 季度做一次恢复演练。</li>
-        <li><strong>不需要会：</strong>不需要自建机房，不需要懂底层存储原理，不需要自己写备份脚本（云厂商已封装），不需要 24 小时值守。</li>
-        <li><strong>本章产出：</strong>1 张《RTO/RPO 指标表》+ 1 份《自动备份策略配置》+ 1 份《季度恢复演练报告》模板。</li>
-      </ul>
+    <section id="s1">
+    
+<p>node_id: 51</p>
+<p>persona: neutral</p>
+<p>cta_type: wechat</p>
+<p>keywords: [备份, 恢复, 灾备, 数据库, 安全]</p>
+
+<blockquote class="decision-box"><p>数据丢失 = OPC 死亡。1 次硬盘故障 / 1 次误删 = 客户全没。<strong>3-2-1 备份策略</strong>让你 99.9% 不会丢数据。</p></blockquote>
+
+<p></section></p>
+<section id="s一">
+<p>      <div class="section-label">一、OPC 数据丢失的 3 个真实场景</div></p>
+
+<div class="table-wrapper"><table><thead><tr><th>场景</th><th>概率</th><th>后果</th></tr></thead><tbody><tr><td>误删数据库</td><td>高</td><td>客户数据全没</td></tr><tr><td>服务器硬盘故障</td><td>中</td><td>全部历史数据</td></tr><tr><td>服务商倒闭（云厂商）</td><td>低</td><td>业务停摆</td></tr></tbody></table></div>
+<strong>OPC 永远假设"最坏会发生"</strong>。
+
+<p></section></p>
+<section id="s二">
+<p>      <div class="section-label">二、3-2-1 备份策略（OPC 黄金法则）</div></p>
+
+<p>``<code></p>
+<p>3 份副本</p>
+<p>2 种介质</p>
+<p>1 份异地</p>
+<p></code>`<code></p>
+
+<strong>OPC 实施</strong>：
+<ul><li>1 份：生产数据库（Supabase 主库）</li><li>1 份：每日自动备份（Supabase 自带 + 异地 OSS）</li><li>1 份：周备份到本地硬盘</li></ul>
+
+<p></section></p>
+<section id="s三">
+<p>      <div class="section-label">三、Supabase 自动备份</div></p>
+
+<strong>Supabase 免费版</strong>：无自动备份。
+<strong>Supabase Pro（25 美元/月）</strong>：7 天自动备份 + Point-in-time recovery。
+
+<h3>升级后自动有：</h3>
+<ul><li>每日 1 次全量备份</li><li>保留 7 天</li><li>一键恢复到任意时间点</li></ul>
+<h3>免费版 OPC 解法：自己写脚本</h3>
+
+<p></code>`<code>bash</p>
+# 用 supabase CLI 每日导出
+<p>pg_dump "postgresql://postgres:[password]@db.xxx.supabase.co:5432/postgres" \</p>
+<p>  > backup_$(date +%Y%m%d).sql</p>
+
+# 上传到阿里云 OSS
+<p>ossutil cp backup_$(date +%Y%m%d).sql \</p>
+<p>  oss://opc-backup/database/</p>
+<p></code>`<code></p>
+
+<p>加到 cron：每天凌晨 3 点跑。</p>
+
+<p></section></p>
+<section id="s四">
+<p>      <div class="section-label">四、3 层备份架构</div></p>
+
+<h3>Layer 1：应用层（关键文件）</h3>
+
+<div class="table-wrapper"><table><thead><tr><th>文件</th><th>备份方式</th></tr></thead><tbody><tr><td>用户头像 / 上传</td><td>OSS 跨区域复制</td></tr><tr><td>配置文件</td><td>推到 GitHub private repo</td></tr><tr><td>业务代码</td><td>Git（已经是备份）</td></tr></tbody></table></div>
+<h3>Layer 2：数据库层</h3>
+
+<div class="table-wrapper"><table><thead><tr><th>备份</th><th>频率</th><th>保留</th></tr></thead><tbody><tr><td>全量备份</td><td>每天</td><td>7 天</td></tr><tr><td>增量备份</td><td>每小时</td><td>24 小时</td></tr><tr><td>周备份</td><td>每周</td><td>30 天</td></tr></tbody></table></div>
+<h3>Layer 3：基础设施</h3>
+
+<div class="table-wrapper"><table><thead><tr><th>资源</th><th>备份</th></tr></thead><tbody><tr><td>域名</td><td>备份到 Cloudflare 防止过期</td></tr><tr><td>DNS 记录</td><td>截图存档</td></tr><tr><td>服务器配置</td><td>用 Ansible / Terraform</td></tr><tr><td>第三方密钥</td><td>1Password / Bitwarden</td></tr></tbody></table></div>
+
+<p></section></p>
+<section id="s五">
+<p>      <div class="section-label">五、3 个备份脚本示例</div></p>
+
+<h3>1. 每日数据库备份 + 清理</h3>
+
+<p></code>`<code>bash</p>
+#!/bin/bash
+# backup-db.sh
+<p>BACKUP_DIR="/var/backups/opc"</p>
+<p>TIMESTAMP=$(date +%Y%m%d_%H%M%S)</p>
+<p>PGPASSWORD=$DB_PASSWORD pg_dump $DB_URL > $BACKUP_DIR/db_$TIMESTAMP.sql</p>
+
+# 压缩
+<p>gzip $BACKUP_DIR/db_$TIMESTAMP.sql</p>
+
+# 上传到 OSS
+<p>ossutil cp $BACKUP_DIR/db_$TIMESTAMP.sql.gz oss://opc-backup/db/</p>
+
+# 删除 7 天前的本地备份
+<p>find $BACKUP_DIR -name "db_*.sql.gz" -mtime +7 -delete</p>
+<p></code>`<code></p>
+
+<p>加到 crontab：</p>
+<p></code>`<code>bash</p>
+<p>0 3 * * * /opt/scripts/backup-db.sh</p>
+<p></code>`<code></p>
+
+<h3>2. 关键文件备份</h3>
+
+<p></code>`<code>bash</p>
+#!/bin/bash
+# backup-files.sh
+<p>tar -czf /var/backups/files_$(date +%Y%m%d).tar.gz /var/www/uploads/</p>
+<p>ossutil cp /var/backups/files_*.tar.gz oss://opc-backup/files/</p>
+<p></code>`<code></p>
+
+<h3>3. 备份验证（每月 1 次）</h3>
+
+<p></code>`<code>bash</p>
+#!/bin/bash
+# verify-backup.sh
+# 下载昨天的备份，恢复到测试库，验证数据完整性
+<p>LATEST=$(ossutil ls oss://opc-backup/db/ | tail -1 | awk '{print $4}')</p>
+<p>ossutil cp $LATEST /tmp/test.sql.gz</p>
+<p>gunzip /tmp/test.sql.gz</p>
+<p>psql -h test-db -U postgres -d test -f /tmp/test.sql</p>
+# 自动跑一个 COUNT(*) 验证
+<p></code>`<code></p>
+
+<p></section></p>
+<section id="s六">
+<p>      <div class="section-label">六、3 个数据恢复场景的 SOP</div></p>
+
+<h3>场景 1：误删 1 条数据</h3>
+
+<p></code>`<code>sql</p>
+<p>-- Supabase Pro: PITR</p>
+<p>SELECT * FROM users WHERE id = 'xxx' AND deleted_at > NOW() - INTERVAL '1 hour';</p>
+<p></code>`<code></p>
+
+<h3>场景 2：误删整张表</h3>
+
+<p></code>`<code>bash</p>
+# 从最近一次备份恢复
+<p>psql -h db.xxx.supabase.co -U postgres -d postgres -f backup_20260604.sql</p>
+<p></code>`<code></p>
+
+<h3>场景 3：整个数据库被攻击 / 损坏</h3>
+
+<p></code>`<code>bash</p>
+# 1. 启用新数据库
+# 2. 从异地备份恢复
+# 3. 通知用户数据已恢复
+# 4. 改所有密码 / API 密钥
+<p></code>``</p>
+
+<strong>RTO（恢复时间目标）</strong>：OPC 应该是 4 小时以内。
+<strong>RPO（数据丢失目标）</strong>：OPC 应该是 24 小时以内。
+
+<p></section></p>
+<section id="s七">
+<p>      <div class="section-label">七、3 个常见错误</div></p>
+
+<h3>错误 1：备份了但没验证</h3>
+
+<strong>症状</strong>：备份 6 个月，恢复时发现是空文件。
+<strong>解法</strong>：每月 1 次"恢复测试"。
+
+<h3>错误 2：备份和源在同台机器</h3>
+
+<strong>症状</strong>：服务器炸了，备份也炸了。
+<strong>解法</strong>：跨区域 / 跨服务商。
+
+<h3>错误 3：凭据推到 GitHub</h3>
+
+<strong>症状</strong>：黑客拿到 OSS 密钥 = 删光备份。
+<strong>解法</strong>：用 IAM Role / 短期 token。
+
+<p></section></p>
+<section id="s八">
+<p>      <div class="section-label">八、检查清单</div></p>
+
+<ul><li><input type="checkbox" disabled> 启用 Supabase Pro 或自建备份</li><li><input type="checkbox" disabled> 备份脚本每天自动跑</li><li><input type="checkbox" disabled> 备份传到异地 OSS / S3</li><li><input type="checkbox" disabled> 保留 30 天历史备份</li><li><input type="checkbox" disabled> 每月 1 次恢复测试</li><li><input type="checkbox" disabled> 关键密钥存 1Password</li><li><input type="checkbox" disabled> RTO / RPO 已明确</li></ul>
+
+<p></section></p>
+<section id="s节">
+<p>      <div class="section-label">节点资源链接</div></p>
+
+<ul><li>节点44：银行开户与商户号</li><li>节点46：现金流与财务基础</li><li>节点52：服务器安全防护</li></ul>
     </section>
 
-    <!-- 壹: 认知跃迁 -->
-    <section id="s1" class="content-section fade-section">
-      <div class="chapter-marker">壹</div>
-      <h2 class="chapter-heading">为什么2026年备份是生死线？</h2>
-      <div class="grid-asymmetric">
-        <div class="main-content">
-          <p class="body-text">OPC没有团队分摊风险，没有IT部门处理故障。<strong>所有客户资料、设计源文件、财务凭证、AI生成内容、系统配置——都沉淀在你的设备里。</strong>这本该是优势，因为数据都在你手中。但换个角度：崩溃点也只有一个。</p>
-          <p class="body-text"><strong>攻击者已精准锁定个体创业者。</strong>2024-2025年，勒索软件即服务（RaaS）模式让攻击成本降至极低。攻击者用AI扫描全网寻找开放端口、弱口令和未打补丁的Redis/SSH。OPC的存活窗口已从过去的"可能一周没事"缩短至"数小时"。</p>
-          <p class="body-text"><strong>AI生成内容的悖论。</strong>每次用同样的提示词，不一定能生成同样的结果。随机种子、模型版本、温度值——都会影响输出。AI生成内容一旦丢失，没有"重新来一条"这个选项。这与传统文件不同，你的Word文档删了可以重写，AI内容删了就是永久损失。</p>
-          <p class="body-text"><strong>国内法规的隐性压力。</strong>《个人信息保护法》要求处理个人信息的自然人必须具备基本技术措施。OPC即便只收集手机号和邮箱，也必须考虑数据安全。服务器被加密后，用户数据无法访问——这本身就是合规风险。</p>
-        </div>
-        <div class="side-content">
-          <div class="data-card">
-            <div class="data-card-row">
-              <span class="data-label">OPC攻击面</span>
-              <span class="data-value accent">单点失效</span>
-            </div>
-            <div class="data-card-row">
-              <span class="data-label">平均存活时间</span>
-              <span class="data-value">数小时</span>
-            </div>
-            <div class="data-card-row">
-              <span class="data-label">勒索赎金中位数</span>
-              <span class="data-value">¥15万</span>
-            </div>
-          </div>
-          <div class="obj-block error" style="margin-top: var(--space-lg);">
-            <div class="obj-label">× 致命误解</div>
-            <div class="obj-content">"我的文件都在云端，很安全"——云同步（OneDrive/iCloud/Google Drive）是双向镜像。你删他也删，你被勒索他也同步加密。账号被盗等于备份入口沦陷。</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 贰: 核心原则 -->
-    <section id="s2" class="content-section fade-section">
-      <div class="chapter-marker">贰</div>
-      <h2 class="chapter-heading">3-2-1-0法则：适配OPC的备份公理</h2>
-      <div class="grid-asymmetric">
-        <div class="main-content">
-          <p class="body-text">这不是企业级方案，是<strong>单人可执行到位的具体动作</strong>。3-2-1-0法则已存在数十年，但在2026年需要新的解读。</p>
-
-          <div class="list-item">
-            <div class="list-num">叁</div>
-            <div>
-              <div class="list-title">三份总数据副本</div>
-              <div class="list-desc">1份日常使用的主数据 + 2份独立备份。关键约束：这两份备份不能存入同一存储类型。如果你用两块外置硬盘做备份，一旦遇到电压故障或固件问题，两块可能同时报销。</div>
-            </div>
-          </div>
-
-          <div class="list-item">
-            <div class="list-num">贰</div>
-            <div>
-              <div class="list-title">两种不同存储介质</div>
-              <div class="list-desc">推荐组合：本地外置固态硬盘（高速访问）+ 云端对象存储（异地保护）。或者：本地NAS（日常快照）+ 云端冷存储（长期归档）。避免单存储类型承担全部备份职责。</div>
-            </div>
-          </div>
-
-          <div class="list-item">
-            <div class="list-num">壹</div>
-            <div>
-              <div class="list-title">一份异地离线隔离副本</div>
-              <div class="list-desc">这是对抗勒索软件的实战关键。选项一：外置硬盘备份后物理拔除，存放于别处。选项二：云存储启用对象锁定（Object Lock），设置不可删除期限（如7天），即使攻击者获得账号权限也无法立即删除你的备份。</div>
-            </div>
-          </div>
-
-          <div class="list-item">
-            <div class="list-num">零</div>
-            <div>
-              <div class="list-title">零个未验证的静默错误</div>
-              <div class="list-desc">一份从未被验证可恢复的备份，等同于占用磁盘空间的未知文件。静默数据损坏（Bit Rot）是真实威胁——归档数年的照片可能悄然出现坏块。使用带哈希校验的备份工具，定期执行实际恢复验证。</div>
-            </div>
-          </div>
-        </div>
-        <div class="side-content">
-          <div class="obj-block success">
-            <div class="obj-label">✓ OPC最优路径</div>
-            <div class="obj-content">主设备工作 → 本地外置硬盘每日定时备份 → 云端冷存储自动加密增量上传。设置后自动化执行，每月花10分钟确认一次。备份的本质不是"存了"，而是"能取回来"。</div>
-          </div>
-          <div class="obj-block data" style="margin-top: var(--space-lg);">
-            <div class="obj-label">◑ 2026年新技术</div>
-            <div class="obj-content">Backblaze等工具已内嵌AI异常检测。当监测到大规模文件扩展名异常变更（如突然出现大量.locked文件）时，自动挂起备份任务并告警，阻断勒索加密扩散至云端。这是2024年前没有的防御层。</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 叁: 工具选型 -->
-    <section id="s2" class="content-section fade-section">
-      <div class="chapter-marker">叁</div>
-      <h2 class="chapter-heading">工具选型：四层架构</h2>
-      <div class="grid-asymmetric">
-        <div class="main-content">
-          <p class="body-text">一人公司不需要复杂方案，要的是<strong>"设置后即忘"的智能工具链</strong>。按职责分层选择：</p>
-
-          <div class="list-item">
-            <div class="list-num">壹</div>
-            <div>
-              <div class="list-title">Backblaze Personal（第一层：云端无限备份）</div>
-              <div class="list-desc">固定年费单机无限备份，安装后自动后台运行。AI异常检测在勒索大批量加密时自动暂停任务，防止被加密的文件同步到云端。年费约$99（当前约¥720）。支持Mac/Windows，自动加密客户端后再上传。</div>
-            </div>
-          </div>
-
-          <div class="list-item">
-            <div class="list-num">贰</div>
-            <div>
-              <div class="list-title">macOS: Time Machine + Arq（本地快照+云端加密）</div>
-              <div class="list-desc">Time Machine做本地Hourly快照，Arq软件搭配Google Drive、Backblaze B2或Wasabi空间，自动加密增量上传。Arq支持本地+云端双层，加密密钥仅存储于本地，平台无法访问你的数据。适合需要合规敏感数据的OPC。</div>
-            </div>
-          </div>
-
-          <div class="list-item">
-            <div class="list-num">叁</div>
-            <div>
-              <div class="list-title">Windows: Veeam Agent免费版</div>
-              <div class="list-desc">系统级备份，支持完整镜像+增量。支持备份至本地NAS、外置硬盘或云端（Backblaze B2、Azure Blob）。免费版功能完整，无隐藏限制。适合Windows OPC的日常备份。</div>
-            </div>
-          </div>
-
-          <div class="list-item">
-            <div class="list-num">肆</div>
-            <div>
-              <div class="list-title">技术型: Restic / Kopia（自托管开源）</div>
-              <div class="list-desc">开源自托管，对接Wasabi、Cloudflare R2、Backblaze B2等S3兼容冷存储。增量备份、端到端加密、去重存储、哈希校验。命令行友好，有Web UI可选（Kopia）。适合有技术背景、想完全掌控数据流向的OPC。</div>
-            </div>
-          </div>
-        </div>
-        <div class="side-content">
-          <div class="data-card">
-            <div class="data-card-row">
-              <span class="data-label">Backblaze</span>
-              <span class="data-value">$99/年</span>
-            </div>
-            <div class="data-card-row">
-              <span class="data-label">Arq</span>
-              <span class="data-value">$49.99/台</span>
-            </div>
-            <div class="data-card-row">
-              <span class="data-label">Veeam免费版</span>
-              <span class="data-value">免费</span>
-            </div>
-            <div class="data-card-row">
-              <span class="data-label">Restic/Kopia</span>
-              <span class="data-value">免费开源</span>
-            </div>
-          </div>
-          <div class="core-insight" style="margin-top: var(--space-lg);">
-            <p class="core-insight-text"><strong>核心原则</strong>：同步盘（OneDrive/Google Drive/iCloud）是便利工具，版本快照才是保全底线。云同步必须配合独立备份层使用，切忌把同步盘当作备份。</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 肆: 致命误区 -->
-    <section id="s2" class="content-section fade-section">
-      <div class="chapter-marker">肆</div>
-      <h2 class="chapter-heading">四大致命误区</h2>
-      <div class="grid-asymmetric">
-        <div class="main-content">
-          <div class="obj-block error">
-            <div class="obj-label">× 误区一：云端=安全</div>
-            <div class="obj-content">云同步是双向实时镜像。云端的数据与你本地数据完全同步——你删他也删，你被勒索加密他也同步加密。更危险的是：一旦账号被攻击者接管，他们可以立即删除你的备份副本，等于丧失了恢复的唯一途径。必须建立独立的备份层，与同步盘完全解耦。</div>
-          </div>
-
-          <div class="obj-block error">
-            <div class="obj-label">× 误区二：备份=完成</div>
-            <div class="obj-content">"备份完成"和"能成功恢复"之间存在巨大鸿沟。现实中的 Silent Data Corruption（静默数据损坏）每TB存储介质每年约有0.03%的概率发生。备份文件可能看似完整，但部分数据已悄然损坏。一份从未被验证可恢复的备份，是占用空间的未知风险。每月必须执行一次抽检恢复。</div>
-          </div>
-
-          <div class="obj-block error">
-            <div class="obj-label">× 误区三：备份盘始终连接系统</div>
-            <div class="obj-content">如果备份盘始终挂载为Z盘或D盘，勒索软件在加密本地文件时会循路径感染备份盘。2024年的勒索软件已能扫描并加密所有可见存储设备，包括映射的网络驱动器和USB外置硬盘。隔离备份必须是物理断开（拔线）或不可变存储（Object Lock）。</div>
-          </div>
-
-          <div class="obj-block error">
-            <div class="obj-label">× 误区四：只依赖手机验证码</div>
-            <div class="obj-content">SIM交换攻击（SIM Swap）已成熟化。攻击者致电运营商声称手机丢失，将号码转移至新SIM卡，随即接收你的短信验证码。2025年针对加密货币和金融账户的SIM交换攻击增长了约220%。备份账号必须使用硬件安全密钥（YubiKey）或通行密钥（Passkey），不接受短信验证码。</div>
-          </div>
-        </div>
-        <div class="side-content">
-          <div class="obj-block success">
-            <div class="obj-label">✓ 正确认知</div>
-            <div class="obj-content">备份的本质是建立一份<strong>与当前操作环境隔离、不可被实时修改</strong>的副本。这是在云端时代个人仍需掌控的最后防线。备份不是技术行为，是风险管理行为。</div>
-          </div>
-          <div class="data-card" style="margin-top: var(--space-lg);">
-            <div class="data-card-row">
-              <span class="data-label">勒索软件目标</span>
-              <span class="data-value">单人创业者</span>
-            </div>
-            <div class="data-card-row">
-              <span class="data-label">选择原因</span>
-              <span class="data-value">支付意愿强</span>
-            </div>
-            <div class="data-card-row">
-              <span class="data-label">防御关键</span>
-              <span class="data-value">离线隔离</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 伍: 恢复验证 -->
-    <section id="s2" class="content-section fade-section">
-      <div class="chapter-marker">伍</div>
-      <h2 class="chapter-heading">恢复即服务：验证才是终点</h2>
-      <div class="grid-asymmetric">
-        <div class="main-content">
-          <p class="body-text"><strong>备份不算完成，能恢复才算。</strong>OPC必须建立可验证的恢复能力，而非堆积"看起来有备份"的虚假安全感。</p>
-
-          <div class="quote-block">
-            <p class="quote-text">备份是成本，恢复才是资产。无法恢复的备份是负债。</p>
-          </div>
-
-          <p class="body-text"><strong>月度文件抽检</strong>（每月10分钟）：</p>
-          <ul class="checklist">
-            <li>随机抽取一个3-7天前存档的文件或文件夹</li>
-            <li>执行一次无提示的独立还原操作</li>
-            <li>确认内容可读、结构完整、文件名正确</li>
-            <li>如有条件，校验文件哈希值与存档时记录是否一致</li>
-          </ul>
-
-          <p class="body-text"><strong>季度整机演练</strong>（每季度15分钟）：</p>
-          <ul class="checklist">
-            <li>用备用设备或虚拟机模拟"主设备彻底损毁"</li>
-            <li>从零开始，依据恢复导航图重建核心业务环境</li>
-            <li>验证系统、代码、数据、配置是否能在2小时内完全恢复</li>
-            <li>记录实际耗时，分析瓶颈，调整备份策略</li>
-          </ul>
-        </div>
-        <div class="side-content">
-          <div class="obj-block success">
-            <div class="obj-label">✓ 恢复导航图必备内容</div>
-            <div class="obj-content">
-              <ul style="list-style: none; padding: 0; margin: 0;">
-                <li style="padding: 4px 0; font-size: 13px; color: var(--text-secondary);">① 操作系统恢复途径与启动介质</li>
-                <li style="padding: 4px 0; font-size: 13px; color: var(--text-secondary);">② BitLocker/FileVault恢复密钥存放位置</li>
-                <li style="padding: 4px 0; font-size: 13px; color: var(--text-secondary);">③ 备份集解密口令（存储于密码管理器）</li>
-                <li style="padding: 4px 0; font-size: 13px; color: var(--text-secondary);">④ 核心云端账户恢复码（离线备份）</li>
-                <li style="padding: 4px 0; font-size: 13px; color: var(--text-secondary);">⑤ 密码管理器紧急访问凭证</li>
-                <li style="padding: 4px 0; font-size: 13px; color: var(--text-secondary);">⑥ 常用软件许可证备份</li>
-              </ul>
-            </div>
-          </div>
-          <div class="obj-block data" style="margin-top: var(--space-lg);">
-            <div class="obj-label">◑ 存放位置</div>
-            <div class="obj-content">恢复导航图应存入云端密码管理器加密笔记区，或打印后锁入保险柜。绝不能与生产环境存放在同一设备或同一云账号下。</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 陆: 成本分析 -->
-    <section id="s2" class="content-section fade-section">
-      <div class="chapter-marker">陆</div>
-      <h2 class="chapter-heading">成本与ROI分析</h2>
-      <div class="grid-asymmetric">
-        <div class="main-content">
-          <p class="body-text">OPC的资源是时间与金钱。<strong>备份的投入应与业务风险相匹配。</strong>不是为了复杂而复杂，是为了在灾难发生时能用最小代价恢复。</p>
-
-          <div class="list-item">
-            <div class="list-num">壹</div>
-            <div>
-              <div class="list-title">低成本方案（年费¥0-800）</div>
-              <div class="list-desc">使用系统原生工具（Time Machine / Windows Backup）+ 免费云存储（Backblaze B2首月免费，1GB约¥0.07/月）。总成本：主要是外置硬盘（约¥300-800一次性投入）+ 电费。适合初创期OPC。</div>
-            </div>
-          </div>
-
-          <div class="list-item">
-            <div class="list-num">贰</div>
-            <div>
-              <div class="list-title">中等成本方案（年费¥800-2000）</div>
-              <div class="list-desc">Backblaze Personal（¥720/年）+ 本地NAS或外置硬盘双备份。覆盖自动化云备份+本地快速恢复。适合月收入¥1万以上的OPC。</div>
-            </div>
-          </div>
-
-          <div class="list-item">
-            <div class="list-num">叁</div>
-            <div>
-              <div class="list-title">高可靠方案（年费¥2000-5000）</div>
-              <div class="list-desc">Restic/Kopia + 多个云存储目的地（Backblaze B2 + Cloudflare R2备份）+ 每年硬件更新检查。适合依赖数字资产（代码、设计稿、客户数据）作为核心产品的OPC。</div>
-            </div>
-          </div>
-        </div>
-        <div class="side-content">
-          <div class="data-card">
-            <div class="data-card-row">
-              <span class="data-label">一次勒索损失</span>
-              <span class="data-value accent">¥5万+</span>
-            </div>
-            <div class="data-card-row">
-              <span class="data-label">备份年成本（低）</span>
-              <span class="data-value">¥0-800</span>
-            </div>
-            <div class="data-card-row">
-              <span class="data-label">ROI</span>
-              <span class="data-value">>50倍</span>
-            </div>
-          </div>
-          <div class="obj-block success" style="margin-top: var(--space-lg);">
-            <div class="obj-label">✓ 风险管理视角</div>
-            <div class="obj-content">如果业务依赖数字资产（网站数据、客户数据库、设计文件），备份成本应小于年收入的1%。一次宕机导致的损失（客户流失、订单损失、合规罚款）远大于备份投入。</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 柒: AI时代的新挑战 -->
-    <section id="s2" class="content-section fade-section">
-      <div class="chapter-marker">柒</div>
-      <h2 class="chapter-heading">AI时代的新挑战</h2>
-      <div class="grid-asymmetric">
-        <div class="main-content">
-          <p class="body-text">2025-2026年，AI已深度嵌入OPC的工作流。这带来了新型数据风险：</p>
-
-          <div class="list-item">
-            <div class="list-num">壹</div>
-            <div>
-              <div class="list-title">提示词资产的脆弱性</div>
-              <div class="list-desc">你花了数十小时调优的提示词模板、工作流、角色设定——这些不是代码，是知识资产。一旦设备丢失或损坏，重新构建需要大量时间。建议将核心提示词存档于密码管理器加密笔记中，并备份到云端。</div>
-            </div>
-          </div>
-
-          <div class="list-item">
-            <div class="list-num">贰</div>
-            <div>
-              <div class="list-title">AI生成内容的版本控制</div>
-              <div class="list-desc">AI生成的内容需要版本控制。你可能需要回溯到三个月前的生成结果进行比对或复用。传统文件版本控制工具（如Git）适用于代码，但不直接适用于AI生成的图片、文案、方案。建议建立标准化的AI输出归档命名规则。</div>
-            </div>
-          </div>
-
-          <div class="list-item">
-            <div class="list-num">叁</div>
-            <div>
-              <div class="list-title">模型输出的一致性问题</div>
-              <div class="list-desc">2025年的模型版本更新导致部分历史输出无法复现。如果你的业务依赖AI生成内容的特定风格或格式，备份策略必须包含"模型输出快照"——不是备份代码，是备份特定时间点的输出样本，作为未来参照。</div>
-            </div>
-          </div>
-        </div>
-        <div class="side-content">
-          <div class="obj-block data">
-            <div class="obj-label">◑ 2026年新现实</div>
-            <div class="obj-content">GitHub Copilot、ChatGPT Claude API已经深度嵌入代码和内容工作流。这些工具的状态（如订阅信息、API额度、自定义指令）也是需要备份的数字资产。当账号异常时，你的自定义GPTs和Copilot配置丢失等于生产力中断。</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 捌: 决策框架 -->
-    <section id="s2" class="content-section fade-section">
-      <div class="chapter-marker">捌</div>
-      <h2 class="chapter-heading">做 / 不做</h2>
-      <div class="balance-intro">
-        数据备份与恢复是OPC业务连续性的基石。<strong>做</strong>则灾难可控、恢复有序，<strong>不做</strong>则一次攻击或硬件故障即宣告业务终结。
-      </div>
-      <div class="balance-grid">
-        <div class="balance-card">
-          <div class="balance-card-label positive">✓ 做</div>
-          <div class="balance-item">采用3-2-1-0备份规则</div>
-          <div class="balance-item">至少1份离线隔离备份（物理断开或Object Lock）</div>
-          <div class="balance-item">使用端到端加密的备份工具</div>
-          <div class="balance-item">备份账号启用硬件2FA（YubiKey或Passkey）</div>
-          <div class="balance-item">每月执行文件级恢复验证（抽检）</div>
-          <div class="balance-item">每季度执行整机演练（模拟恢复）</div>
-          <div class="balance-item">恢复导航图离线保存在密码管理器</div>
-          <div class="balance-item">归档核心AI提示词和自定义配置</div>
-        </div>
-        <div class="balance-card">
-          <div class="balance-card-label negative">× 不做</div>
-          <div class="balance-item">仅依赖云同步（OneDrive/iCloud）</div>
-          <div class="balance-item">备份盘始终挂载系统不断开</div>
-          <div class="balance-item">只备份，从不验证</div>
-          <div class="balance-item">只用短信验证码保护备份账号</div>
-          <div class="balance-item">所有设备使用同一密码</div>
-          <div class="balance-item">恢复导航图存放在线文档</div>
-          <div class="balance-item">忽视AI生成内容的版本归档</div>
-          <div class="balance-item">不测试恢复流程就认为备份有效</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 玖: 操作清单 -->
-    <section id="s2" class="content-section fade-section">
-      <div class="chapter-marker">玖</div>
-      <h2 class="chapter-heading">30天执行清单</h2>
-      <div class="grid-asymmetric">
-        <div class="main-content">
-          <p class="body-text"><strong>第一周：建立基础备份</strong></p>
-          <ul class="checklist">
-            <li>购买一块外置固态硬盘（至少1TB）</li>
-            <li>安装Backblaze并配置自动备份</li>
-            <li>设置Time Machine（Mac）或Veeam（Windows）本地快照</li>
-            <li>备份账号启用硬件2FA</li>
-          </ul>
-
-          <p class="body-text" style="margin-top: var(--space-xl);"><strong>第二周：配置云端隔离层</strong></p>
-          <ul class="checklist">
-            <li>注册Backblaze B2或Cloudflare R2存储账户</li>
-            <li>配置Arq或Restic对接云端，启用端到端加密</li>
-            <li>设置每日自动增量备份</li>
-            <li>验证云端备份可成功下载恢复</li>
-          </ul>
-
-          <p class="body-text" style="margin-top: var(--space-xl);"><strong>第三周：建立恢复验证机制</strong></p>
-          <ul class="checklist">
-            <li>创建恢复导航图文档</li>
-            <li>执行第一次文件级恢复抽检</li>
-            <li>将恢复导航图存入密码管理器</li>
-            <li>归档核心AI提示词和配置</li>
-          </ul>
-
-          <p class="body-text" style="margin-top: var(--space-xl);"><strong>第四周：优化与自动化</strong></p>
-          <ul class="checklist">
-            <li>测试季度整机恢复流程（如有可能）</li>
-            <li>确认备份日程设置正确（自动化执行）</li>
-            <li>记录实际恢复耗时，与目标对比</li>
-            <li>根据演练结果调整备份策略</li>
-          </ul>
-        </div>
-        <div class="side-content">
-          <div class="data-card">
-            <div class="data-card-row">
-              <span class="data-label">启动成本</span>
-              <span class="data-value">¥300-800</span>
-            </div>
-            <div class="data-card-row">
-              <span class="data-label">每日维护</span>
-              <span class="data-value">5分钟</span>
-            </div>
-            <div class="data-card-row">
-              <span class="data-label">月度验证</span>
-              <span class="data-value">10分钟</span>
-            </div>
-            <div class="data-card-row">
-              <span class="data-label">季度演练</span>
-              <span class="data-value">15分钟</span>
-            </div>
-          </div>
-          <div class="obj-block success" style="margin-top: var(--space-lg);">
-            <div class="obj-label">✓ 关键认知</div>
-            <div class="obj-content">备份不是项目，是习惯。技术设置一次完成，后续靠自动化和定期验证维持。OPX的备份系统应该是"设置后遗忘，发生问题时庆幸有它"。</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 拾: 财务健康指标 -->
-    <section id="s10" class="content-section fade-section">
-      <div class="chapter-marker">拾</div>
-      <div class="section-label">财务健康指标</div>
-      <div class="summary-grid">
-        <div class="summary-card">
-          <div class="summary-num">¥720</div>
-          <div class="summary-title">年备份成本</div>
-          <div class="summary-desc">Backblaze云端无限备份，AI防护勒索同步感染</div>
-        </div>
-        <div class="summary-card">
-          <div class="summary-num">2小时</div>
-          <div class="summary-title">恢复时间目标</div>
-          <div class="summary-desc">新设备上重建核心业务环境</div>
-        </div>
-        <div class="summary-card">
-          <div class="summary-num">3份</div>
-          <div class="summary-title">备份副本</div>
-          <div class="summary-desc">本地快照+云端加密+离线隔离</div>
-        </div>
-      </div>
-    </section>
-
-    <nav class="footer-nav">
-      <a href="/nodes/50-ad-compliance/index.html" class="nav-link">
-        <span class="nav-arrow">←</span>
-        节点50：广告合规
-      </a>
-      <a href="/nodes/52-server-security/index.html" class="nav-link">
-        节点52：服务器安全防护
-        <span class="nav-arrow">→</span>
-      </a>
-    </footer>
+    <div class="summary-box">
+      <h3>节点51检查清单</h3>
+      <p>完成本节点后，请确认所有检查项已通过。</p>
     </div>
+    </main>
   </div>
 
-  <script>
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
-      });
-    }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
-    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
+  <nav class="footer-nav">
+    <a href="/nodes/50-ad-compliance/index.html" class="nav-link"><span>←</span> 节点50</a>
+    <a href="/nodes/52-server-security/index.html" class="nav-link">节点52 <span>→</span></a>
+  </nav>
 
-    // TOC scroll spy
-    const tocLinks = document.querySelectorAll('.toc-link');
-    const sections = document.querySelectorAll('section[id]');
-    const sectionObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          tocLinks.forEach(link => link.classList.remove('active'));
-          const activeLink = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
-          if (activeLink) activeLink.classList.add('active');
-        }
-      });
-    }, { rootMargin: '-20% 0px -60% 0px' });
-    sections.forEach(section => sectionObserver.observe(section));
+  <script>
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').slice(1);
+      const target = document.getElementById(targetId);
+      if (target) {
+        window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+      }
+    });
+  });
   </script>
 </body>
 </html>

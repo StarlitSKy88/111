@@ -3,26 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="广告投放入门 - OPC节点百科">
+  <meta name="description" content="节点39：广告投放 - OPC节点百科">
   <meta name="theme-color" content="#111110">
-  <title>广告投放 - OPC节点百科</title>
+  <title>节点39：广告投放 - OPC节点百科</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../_design-tokens.css">
-  <link rel="stylesheet" href="../_layout-templates.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
+
 :root {
   --bg: #111110;
   --surface: #1A1A18;
   --text-primary: #F0EDE6;
-  --text-secondary: #B8B4AE;
-  --text-tertiary: #A8A49E;
+  --text-secondary: #7A7670;
+  --text-tertiary: #4A4744;
   --accent: #C0392B;
   --line: #2A2A28;
   --line-light: rgba(255,255,255,0.06);
-
   --space-xs: 8px;
   --space-sm: 16px;
   --space-md: 24px;
@@ -33,22 +31,87 @@
   --space-4xl: 128px;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  overflow-x: hidden;
+}
 
 body {
   background: var(--bg);
   color: var(--text-primary);
-  font-family: 'Noto Sans SC', sans-serif;
-  font-weight: 400;
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
   line-height: 1.9;
   letter-spacing: 0.04em;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
+/* 移动端整体适配 - 使用 900px breakpoint 与现有代码一致 */
+@media (max-width: 900px) {
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
 
-.sidebar-toc { position: sticky; top: 5rem; height: fit-content; max-height: calc(100vh - 6rem); overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
-.sidebar-toc::-webkit-scrollbar { width: 4px; }
-.sidebar-toc::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+  body {
+    font-size: 14px;
+  }
+
+  .layout {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding: 4rem 16px 2rem !important;
+    margin: 0 !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .sidebar-toc {
+    display: none !important;
+  }
+
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  section {
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  section > * {
+    max-width: 100% !important;
+    overflow-x: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  section p {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+
+  h1 {
+    font-size: clamp(36px, 10vw, 48px) !important;
+    line-height: 1.05 !important;
+  }
+}
 
 /* Layout with Sidebar */
 .layout {
@@ -60,34 +123,72 @@ body {
   padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
 }
 
-/* Main content wrapper */
-.main-content {
-  min-width: 0;
+/* Sidebar TOC */
+.sidebar-toc {
+  position: sticky;
+  top: 5rem;
+  height: fit-content;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  padding-top: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
 }
 
-.toc-title { font-size: 0.6875rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 1.25rem; }
-.toc-list { list-style: none; }
-.toc-item { margin-bottom: 0.75rem; }
-.toc-link { font-size: 0.8125rem; color: var(--text-secondary); text-decoration: none; display: block; padding: 0.375rem 0; padding-left: 1rem; border-left: 1px solid var(--line); transition: all 0.3s; line-height: 1.4; }
-.toc-link:hover { color: var(--text-primary); border-left-color: var(--accent); }
-.toc-link.active { color: var(--accent); border-left-color: var(--accent); font-weight: 400; }
-@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .sidebar-toc { display: none; } }
+.sidebar-toc::-webkit-scrollbar {
+  width: 4px;
+}
 
-.section-number {
-  position: absolute;
-  top: var(--space-2xl);
-  right: clamp(24px, 8vw, 120px);
-  font-size: clamp(100px, 22vw, 280px);
-  font-weight: 100;
+.sidebar-toc::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 2px;
+}
+
+.toc-title {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.toc-list {
+  list-style: none;
+}
+
+.toc-item {
+  margin-bottom: 0.75rem;
+}
+
+.toc-link {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: block;
+  padding: 0.375rem 0;
+  padding-left: 1rem;
+  border-left: 1px solid var(--line);
+  transition: all 0.3s;
+  line-height: 1.4;
+}
+
+.toc-link:hover {
   color: var(--text-primary);
-  opacity: 0.03;
-  line-height: 1;
-  letter-spacing: -0.05em;
-  font-family: 'Noto Serif JP', serif;
-  pointer-events: none;
-  user-select: none;
+  border-left-color: var(--accent);
 }
 
+.toc-link.active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  font-weight: 400;
+}
+
+.toc-link.sub {
+  padding-left: 1.75rem;
+  font-size: 0.75rem;
+}
+
+/* Fixed Top Nav */
 .fixed-top-nav {
   position: fixed;
   top: 0;
@@ -103,1203 +204,753 @@ body {
   border-bottom: 1px solid var(--line);
 }
 
-.fixed-top-nav .back-link {
-  position: static;
+.back-link {
   font-size: 0.75rem;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--text-tertiary);
+  color: var(--text-secondary);
   text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.fixed-top-nav .back-link:hover { color: var(--text-primary); }
-
-.fixed-top-nav .node-id {
-  font-size: 0.75rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-}
-
-.hero {
-  padding: var(--space-4xl) 0 var(--space-3xl);
-  position: relative;
-}
-
-.hero-content {
-  position: relative;
-  z-index: 1;
-  max-width: 800px;
-}
-
-.hero-label {
-  font-size: 13px;
-  color: var(--accent);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  margin-bottom: var(--space-lg);
   display: flex;
   align-items: center;
-  gap: var(--space-md);
+  gap: 0.5rem;
+  transition: color 0.3s;
 }
 
-.hero-label::before {
-  content: '';
-  width: 32px;
-  height: 1px;
-  background: var(--accent);
+.back-link:hover {
+  color: var(--text-primary);
 }
 
-.hero-title {
+.node-id {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+}
+
+/* Header */
+header {
+  padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(2rem, 5vh, 3rem);
+}
+
+/* Main content */
+main {
+  padding-bottom: 5rem;
+}
+
+/* 移动端底部导航适配 - 合并到 900px breakpoint */
+@media (max-width: 900px) {
+  main {
+    padding-bottom: 6rem; /* 为固定底部导航预留空间 */
+  }
+
+  .footer-nav {
+    overflow-x: auto;
+    justify-content: space-between;
+  }
+
+  .nav-link {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .table-wrapper {
+    position: relative;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 1.5rem 0;
+    border: 1px solid var(--line);
+  }
+
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
+}
+
+/* Section anchors offset for sticky header */
+section {
+  scroll-margin-top: 2rem;
+}
+
+section h2 {
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+}
+
+section p, section li {
+  font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
+  line-height: 1.9;
+}
+
+/* Table improvements */
+.table-wrapper {
+  margin: 1.5rem 0;
+  border: 1px solid var(--line);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-wrapper::after {
+  content: "";
+  display: block;
+}
+
+/* 移动端滑动提示 */
+@media (max-width: 900px) {
+  .table-wrapper::after {
+    content: "← 左右滑动 →";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 8px;
+    pointer-events: none;
+  }
+
+  .table-wrapper {
+    position: relative;
+    padding-bottom: 24px;
+  }
+}
+
+table {
+  font-size: 0.875rem;
+  min-width: 560px;
+}
+
+@media (max-width: 900px) {
+  table {
+    min-width: 100%;
+    font-size: 0.8125rem;
+  }
+
+  td, th {
+    padding: 0.625rem 0.75rem;
+  }
+}
+
+/* Tool Cards */
+.tool-grid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* Path blocks */
+.path-block {
+  padding: 1.5rem;
+}
+
+.workflow {
+  padding: 1rem 1.25rem;
+  font-size: 0.8125rem;
+}
+
+/* Validation cards */
+.validation-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.validation-card {
+  padding: 1.25rem;
+}
+
+/* Level items */
+.level-grid {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+/* Decision box */
+.decision-box {
+  padding: 1.25rem 1.5rem;
+}
+
+/* Main content */
+.phase-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+h1 {
   font-family: 'Noto Serif JP', serif;
   font-size: clamp(48px, 10vw, 96px);
   font-weight: 300;
   letter-spacing: -0.03em;
   line-height: 0.95;
+  color: var(--text-primary);
   margin-bottom: var(--space-xl);
 }
 
-.hero-desc {
-  font-size: 16px;
-  color: var(--text-secondary);
-  line-height: 1.8;
-  max-width: 44ch;
+/* 移动端H1适配 */
+@media (max-width: 900px) {
+  h1 {
+    font-size: clamp(36px, 10vw, 48px);
+    line-height: 1.05;
+  }
 }
 
-.content-section {
-  padding: var(--space-3xl) 0;
-  border-top: 1px solid var(--line);
-}
-
-.section-label {
+.phase-label {
   font-size: 13px;
   color: var(--accent);
-  letter-spacing: 0.2em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   margin-bottom: var(--space-lg);
   display: flex;
   align-items: center;
   gap: var(--space-md);
 }
+.phase-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
 
-.section-label::before {
-  content: '';
-  width: 24px;
-  height: 1px;
-  background: var(--accent);
+.subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 44ch;
+  line-height: 1.8;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
-.grid-asymmetric {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: var(--space-3xl);
-  align-items: start;
-}
-
+/* 移动端副标题适配 */
 @media (max-width: 900px) {
-  .grid-asymmetric {
-    grid-template-columns: 1fr;
-    gap: var(--space-2xl);
+  .subtitle {
+    font-size: 14px;
+    max-width: 100%;
   }
 }
 
-.chapter-heading {
-  font-family: 'Noto Serif JP', serif;
-  font-size: clamp(28px, 5vw, 48px);
-  font-weight: 300;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-  margin-bottom: var(--space-xl);
-  max-width: 16em;
+.node-meta {
+  margin-top: 2rem;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
 }
 
-.body-text {
-  font-size: 15px;
+/* Sections */
+section {
+  padding-bottom: clamp(3rem, 10vh, 5rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(3rem, 10vh, 5rem);
+}
+
+section:last-of-type {
+  border-bottom: none;
+}
+
+.section-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.375rem, 4vw, 1.875rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+h3 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.125rem, 3vw, 1.375rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+p {
+  color: var(--text-secondary);
   line-height: 1.9;
-  color: var(--text-secondary);
-  max-width: 44ch;
-  margin-bottom: var(--space-md);
+  margin-bottom: 1.25rem;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
-.body-text strong { color: var(--text-primary); font-weight: 500; }
-.body-text .accent { color: var(--accent); font-weight: 500; }
+/* 移动端段落适配 */
+@media (max-width: 900px) {
+  p {
+    padding-right: 0.5rem;
+    word-break: break-all;
+    white-space: normal;
+  }
 
-.quote-block {
-  padding-left: var(--space-md);
-  border-left: 1px solid var(--accent);
-  margin: var(--space-xl) 0;
+  section p {
+    padding-right: 0;
+  }
 }
 
-.quote-text {
-  font-size: 16px;
-  line-height: 1.8;
-  color: var(--text-secondary);
-  max-width: 40ch;
-}
-
-.insight-tag {
-  display: inline-block;
-  font-size: 12px;
-  color: var(--accent);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  margin-bottom: var(--space-lg);
-  border: 1px solid var(--accent);
-  padding: 4px 12px;
-}
-
-.data-card {
+.decision-box {
   background: var(--surface);
-  border: 1px solid var(--line);
+  border-left: 2px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
 }
 
-.data-card-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--space-md) var(--space-lg);
-  border-bottom: 1px solid var(--line);
-}
-
-.data-card-row:last-child { border-bottom: none; }
-
-.data-label {
-  font-size: 12px;
-  color: var(--text-tertiary);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.data-value {
-  font-size: 14px;
+.decision-box p {
   color: var(--text-primary);
-  font-weight: 500;
+  font-size: 0.9375rem;
+  margin: 0;
 }
 
-.data-value.accent { color: var(--accent); font-weight: 600; }
-
-.list-item {
-  padding: var(--space-lg) 0;
-  border-bottom: 1px solid var(--line);
-  display: grid;
-  grid-template-columns: 64px 1fr;
-  gap: var(--space-lg);
+/* Tables */
+.table-wrapper {
+  overflow-x: auto;
+  margin: 2rem 0;
+  -webkit-overflow-scrolling: touch;
 }
 
-.list-item:last-child { border-bottom: none; }
-
-.list-num {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 32px;
-  font-weight: 300;
-  color: var(--text-tertiary);
-  line-height: 1;
+table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 0.875rem;
 }
 
-.list-title {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xs);
-}
-
-.list-desc {
-  font-size: 14px;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  max-width: 40ch;
-}
-
-.core-insight {
-  margin: var(--space-xl) 0;
-  padding-left: var(--space-md);
-  border-left: 1px solid var(--accent);
-}
-
-.core-insight-text {
-  font-size: 15px;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  max-width: 40ch;
-}
-
-.balance-section-title {
-  font-family: 'Noto Serif JP', serif;
-  font-size: clamp(28px, 5vw, 48px);
-  font-weight: 300;
-  letter-spacing: -0.02em;
-  margin-bottom: var(--space-xl);
-}
-
-.balance-intro {
-  font-size: 15px;
-  color: var(--text-secondary);
-  line-height: 1.8;
-  max-width: 46ch;
-  margin-bottom: var(--space-2xl);
-}
-
-.balance-intro strong { color: var(--text-primary); font-weight: 500; }
-
-.balance-grid {
-  display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  gap: var(--space-2xl);
-}
-
-@media (max-width: 768px) {
-  .balance-grid { grid-template-columns: 1fr; gap: var(--space-xl); }
-}
-
-.balance-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  padding: var(--space-lg);
-}
-
-.balance-card-label {
-  font-size: 13px;
+th {
+  text-align: left;
+  font-weight: 400;
+  font-size: 0.6875rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  margin-bottom: var(--space-md);
-  padding-bottom: var(--space-sm);
+  color: var(--text-tertiary);
+  padding: 0.75rem 1rem;
   border-bottom: 1px solid var(--line);
 }
 
-.balance-card-label.positive { color: var(--accent); }
-.balance-card-label.negative { color: var(--text-tertiary); }
-
-.balance-item {
-  padding: var(--space-sm) 0;
-  border-bottom: 1px solid var(--line-light);
-  font-size: 14px;
+td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--line);
   color: var(--text-secondary);
+  vertical-align: top;
 }
 
-.balance-item:last-child { border-bottom: none; }
-.balance-item.dim { color: var(--text-tertiary); }
-
-.summary-grid {
-  display: grid;
-  grid-template-columns: 1.5fr 1.2fr 0.8fr;
-  gap: var(--space-xl);
+tr:last-child td {
+  border-bottom: none;
 }
 
-@media (max-width: 900px) {
-  .summary-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
-}
-
-.summary-card {
-  padding: var(--space-lg) 0;
-  border-top: 1px solid var(--line);
-}
-
-.summary-num {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 36px;
-  font-weight: 300;
-  color: var(--accent);
-  margin-bottom: var(--space-sm);
-}
-
-.summary-title {
-  font-size: 15px;
-  font-weight: 500;
+td:first-child {
   color: var(--text-primary);
-  margin-bottom: var(--space-xs);
+  font-weight: 400;
 }
 
-.summary-desc {
-  font-size: 14px;
+/* Tool Cards */
+.tool-grid {
+  display: grid;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.tool-card {
+  background: var(--surface);
+  padding: 1.75rem;
+  border: 1px solid var(--line);
+}
+
+.tool-card h4 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.tool-card .tagline {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.tool-card p {
+  font-size: 0.875rem;
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.tool-card .pros {
   color: var(--text-secondary);
-  line-height: 1.7;
+  font-size: 0.8125rem;
 }
 
+.tool-card .price {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.25rem 0.75rem;
+  margin-top: 1rem;
+}
+
+/* Path Section */
+.path-block {
+  background: var(--surface);
+  padding: 2rem;
+  margin: 2rem 0;
+  border: 1px solid var(--line);
+}
+
+.path-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.path-number {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+.path-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.path-tools {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.25rem;
+}
+
+.path-block p {
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+}
+
+.workflow {
+  background: var(--bg);
+  padding: 1.25rem 1.5rem;
+  margin-top: 1.25rem;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.9;
+}
+
+/* Validation Box */
+.validation-grid {
+  display: grid;
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
+
+.validation-card {
+  background: var(--surface);
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+}
+
+.validation-card h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.validation-card p {
+  font-size: 0.8125rem;
+  margin: 0;
+}
+
+.level-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.level-item {
+  background: var(--surface);
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+}
+
+.level-item .num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.5rem;
+  color: var(--accent);
+  opacity: 0.6;
+  margin-bottom: 0.5rem;
+}
+
+.level-item h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.level-item p {
+  font-size: 0.75rem;
+  margin: 0;
+}
+
+/* Cost Control */
+.cost-table {
+  margin: 2rem 0;
+}
+
+/* Quote */
+.quote-block {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+}
+
+.quote-block p {
+  font-size: 1rem;
+  color: var(--text-primary);
+  line-height: 1.8;
+}
+
+/* Network Section */
+.network-alert {
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+}
+
+.network-alert h4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.network-alert p {
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Summary Box */
+.summary-box {
+  background: var(--surface);
+  padding: 2rem;
+  margin-top: 3rem;
+  border: 1px solid var(--line);
+}
+
+.summary-box h3 {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+}
+
+.step-list {
+  list-style: none;
+  counter-reset: steps;
+}
+
+.step-list li {
+  counter-increment: steps;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.step-list li::before {
+  content: counter(steps);
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: var(--accent);
+  flex-shrink: 0;
+  width: 1.5rem;
+  padding-top: 0.25rem;
+}
+
+/* Footer Nav - Fixed Bottom */
 .footer-nav {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   z-index: 100;
-  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
-  background: rgba(17, 17, 16, 0.85);
-  backdrop-filter: blur(12px);
-  border-top: 1px solid var(--line);
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.nav-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.75rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.nav-link:hover { color: var(--text-primary); }
-.nav-arrow { font-size: 0.75rem; }
-
-.fade-section {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.fade-section.visible { opacity: 1; transform: translateY(0); }
-
-* { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-
-/* Dimension blocks */
-.dimension-block {
-  margin-bottom: var(--space-3xl);
-}
-
-.dimension-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-sm);
-  margin-bottom: var(--space-lg);
-}
-
-.dimension-num {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--accent);
-  letter-spacing: 0.1em;
-}
-
-.dimension-tag {
-  font-size: 12px;
-  color: var(--text-tertiary);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  padding: 4px 10px;
-  border: 1px solid var(--line);
-}
-
-.dimension-question {
-  font-family: 'Noto Serif JP', serif;
-  font-size: clamp(24px, 4vw, 40px);
-  font-weight: 300;
-  letter-spacing: -0.02em;
-  line-height: 1.3;
-  margin-bottom: var(--space-xl);
-  max-width: 18em;
-}
-
-/* Answer blocks */
-.answer-section {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-}
-
-.answer-block {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  padding: var(--space-lg);
-  transition: border-color 0.3s ease;
-}
-
-.answer-block:hover {
-  border-color: var(--text-tertiary);
-}
-
-.answer-label {
-  font-size: 13px;
-  color: var(--accent);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  margin-bottom: var(--space-sm);
-}
-
-.answer-title {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xs);
-}
-
-.answer-desc {
-  font-size: 14px;
-  color: var(--text-secondary);
-  line-height: 1.7;
-}
-
-/* Objection blocks */
-.objection-block {
-  padding: var(--space-lg);
-  margin-bottom: var(--space-md);
-}
-
-.objection-block.error {
-  background: rgba(192, 57, 43, 0.08);
-  border-left: 2px solid var(--accent);
-}
-
-.objection-block.success {
-  background: rgba(39, 174, 96, 0.08);
-  border-left: 2px solid var(--accent);
-}
-
-.objection-block.data {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-left: 2px solid var(--text-tertiary);
-}
-
-.objection-label {
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  margin-bottom: var(--space-sm);
-}
-
-.objection-block.error .objection-label { color: var(--accent); }
-.objection-block.success .objection-label { color: var(--accent); }
-.objection-block.data .objection-label { color: var(--text-tertiary); }
-
-.objection-title {
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xs);
-}
-
-.objection-desc {
-  font-size: 13px;
-  color: var(--text-secondary);
-  line-height: 1.6;
-}
-
-/* Decision table */
-.decision-table {
-  background: var(--surface);
-  border: 1px solid var(--line);
-}
-
-.decision-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr 2fr;
-  gap: var(--space-md);
-  padding: var(--space-md) var(--space-lg);
-  border-bottom: 1px solid var(--line);
-  align-items: center;
-}
-
-.decision-row:last-child { border-bottom: none; }
-
-.decision-condition {
-  font-size: 13px;
-  color: var(--text-secondary);
-}
-
-.decision-action {
-  font-size: 13px;
-  color: var(--text-primary);
-  font-weight: 500;
-}
-
-.decision-result {
-  font-size: 13px;
-  color: var(--text-tertiary);
-}
-
-@media (max-width: 768px) {
-  .decision-row {
-    grid-template-columns: 1fr;
-    gap: var(--space-xs);
-  }
-}
-
-/* 3-day cycle */
-.cycle-item {
-  display: grid;
-  grid-template-columns: 80px 1fr;
-  gap: var(--space-lg);
-  padding: var(--space-lg) 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.cycle-item:last-child { border-bottom: none; }
-
-.cycle-day {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 18px;
-  font-weight: 300;
-  color: var(--accent);
-}
-
-.cycle-title {
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xs);
-}
-
-.cycle-desc {
-  font-size: 13px;
-  color: var(--text-secondary);
-  line-height: 1.6;
-}
-
-/* Metric card */
-.metric-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  padding: var(--space-lg);
-  margin-bottom: var(--space-md);
-}
-
-.metric-label {
-  font-size: 11px;
-  color: var(--text-tertiary);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-bottom: var(--space-sm);
-}
-
-.metric-value {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 28px;
-  font-weight: 300;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xs);
-}
-
-.metric-value.accent { color: var(--accent); }
-
-.metric-desc {
-  font-size: 12px;
-  color: var(--text-tertiary);
-}
-
-/* FIN section */
-.fin-section {
-  margin-top: var(--space-3xl);
-  padding-top: var(--space-2xl);
+  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgba(17, 17, 16, 0.9);
+  backdrop-filter: blur(12px);
   border-top: 1px solid var(--line);
 }
 
-.fin-title {
-  font-family: 'Noto Serif JP', serif;
-  font-size: clamp(32px, 6vw, 56px);
-  font-weight: 300;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
-  margin-bottom: var(--space-xl);
-}
-
-.fin-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-xl);
-}
-
-@media (max-width: 768px) {
-  .fin-grid { grid-template-columns: 1fr; }
-}
-
-.fin-card {
-  padding: var(--space-lg);
-  background: var(--surface);
-  border: 1px solid var(--line);
-}
-
-.fin-label {
-  font-size: 10px;
-  color: var(--accent);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  margin-bottom: var(--space-md);
-}
-
-.fin-value {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 28px;
-  font-weight: 300;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xs);
-}
-
-.fin-desc {
-  font-size: 13px;
+.nav-link {
+  font-size: 0.75rem;
   color: var(--text-tertiary);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
 }
-</style>
+
+.nav-link:hover {
+  color: var(--text-primary);
+}
+
+.nav-link.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+  </style>
 </head>
 <body>
   <nav class="fixed-top-nav">
-    <a href="/" class="back-link">← 返回首页</a>
+    <a href="/index.html" class="back-link">← 返回首页</a>
     <span class="node-id">节点 39 / 57</span>
   </nav>
-  <div class="section-number">22</div>
 
-  <div class="layout layout-classic">
-    <nav class="sidebar-toc">
-      <div class="toc-title">目录</div>
-      <ul class="toc-list">
-        <li class="toc-item"><a href="#s1" class="toc-link">广告本质</a></li>
-        <li class="toc-item"><a href="#s2" class="toc-link">渠道选择</a></li>
-        <li class="toc-item"><a href="#s3" class="toc-link">内容策略</a></li>
-        <li class="toc-item"><a href="#s4" class="toc-link">投放操作</a></li>
-        <li class="toc-item"><a href="#s5" class="toc-link">数据分析</a></li>
-        <li class="toc-item"><a href="#s6" class="toc-link">问题诊断</a></li>
-        <li class="toc-item"><a href="#s7" class="toc-link">行动清单</a></li>
-      
-        <li class="toc-item"><a href="#s2026" class="toc-link">2026年更新</a></li></ul>
-    </nav>
-    <div class="main-content">
-    <header class="hero">
-      <div class="hero-content">
-        <div class="hero-label">节点 39 · 增长扩展</div>
-        <h1 class="hero-title">广告投放入门</h1>
-        <p class="hero-desc">广告是OPC的时间杠杆——你付出一次广告费，换取不在场时仍持续运转的获客动作。</p>
-      </div>
+  <div class="layout">
+    <main class="container">
+      <header>
+      <div class="phase-label">1-10</div>
+      <h1>节点39：广告投放</h1>
+      <div class="node-meta">节点 39 / 57 · 最后修订：2026年6月4日</div>
     </header>
 
-    <section class="tldr" aria-label="本章速读">
-      <div class="tldr-label">本章速读</div>
-      <ul class="tldr-list">
-        <li><strong>目标：</strong>用最低预算跑通 1 个广告渠道——验证 ROI 为正后再加码。</li>
-        <li><strong>你要做的事：</strong>3 步：选 1 个渠道（小红书/抖音/微信）→ 投 500 元试 1 周 → 算 CAC 后决定加码或停。</li>
-        <li><strong>不需要会：</strong>投放优化师技能、复杂出价策略。本章只教你"OPC 最小广告验证"。</li>
-        <li><strong>本章产出：</strong>1 个有 1 周数据的广告实验 + 1 份 ROI 决策表。</li>
-      </ul>
-    </section>
-
-    <!-- Dimension 1: 广告本质 -->
-    <section id="s1" class="content-section fade-section">
-      <div class="dimension-block">
-        <div class="dimension-badge">
-          <span class="dimension-num">01</span>
-          <span class="dimension-tag">认知框架</span>
-        </div>
-        <h2 class="dimension-question">广告不是烧钱，是购买「市场反馈」的侦察兵</h2>
-
-        <div class="grid-asymmetric">
-          <div class="answer-section">
-            <div class="answer-block">
-              <div class="answer-label">核心逻辑</div>
-              <div class="answer-title">投入的每一块钱都要带着利润回来</div>
-              <div class="answer-desc">OPC的广告本质是一台精密的现金循环机。不是「花钱买曝光」，是「花钱买数据」。每一块钱的任务不是购买流量，而是验证你的价值主张与用户画像的匹配度。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">独特优势</div>
-              <div class="answer-title">从广告到收款，全链路透明</div>
-              <div class="answer-desc">大公司市场部花钱，销售部跟进，产品部交付——三者数据不通。作为OPC，从广告曝光到最终收款，整条链路完全透明。这是你独有的竞争壁垒。</div>
-            </div>
-          </div>
-
-          <div>
-            <div class="insight-tag">核心指标</div>
-            <div class="data-card">
-              <div class="data-card-row">
-                <span class="data-label">有效千次展现成本</span>
-                <span class="data-value accent">¥80-100</span>
-              </div>
-              <div class="data-card-row">
-                <span class="data-label">单次行动成本红线</span>
-                <span class="data-value">¥30-60</span>
-              </div>
-              <div class="data-card-row">
-                <span class="data-label">预算来源</span>
-                <span class="data-value">昨日净利润的20-30%</span>
-              </div>
-            </div>
-
-            <div class="core-insight">
-              <p class="core-insight-text">广告费不是沉没成本，是带着明确使命的侦察兵。它买的是市场反馈，不是曝光。</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Dimension 2: 账户结构 -->
-    <section id="s2" class="content-section fade-section">
-      <div class="dimension-block">
-        <div class="dimension-badge">
-          <span class="dimension-num">02</span>
-          <span class="dimension-tag">账户架构</span>
-        </div>
-        <h2 class="dimension-question">单人极简广告账户——三个层级对应三个决策节奏</h2>
-
-        <div class="grid-asymmetric">
-          <div>
-            <div class="list-item">
-              <span class="list-num">01</span>
-              <div>
-                <div class="list-title">1个验证型广告系列</div>
-                <div class="list-desc">一次只有一个核心目标。例如「以不超过30元的成本，获取一个添加微信的精准线索」。算法才能集中资源找到最可能完成此事的人。</div>
-              </div>
-            </div>
-            <div class="list-item">
-              <span class="list-num">02</span>
-              <div>
-                <div class="list-title">2-3个侦察型广告组</div>
-                <div class="list-desc">每个广告组代表一个独立假设：场景人群定向、兴趣行为定向、或纯算法信任。不要同时跑三个目标。</div>
-              </div>
-            </div>
-            <div class="list-item">
-              <span class="list-num">03</span>
-              <div>
-                <div class="list-title">3-4条变量素材</div>
-                <div class="list-desc">测试的不是颜色或按钮，而是价值主张的表达方式：痛点直击、数据背书、低门槛引诱。</div>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div class="objection-block data">
-              <div class="objection-label">素材类型示例</div>
-              <div class="objection-title">三种沟通方式</div>
-              <div class="objection-desc">
-                <strong>痛点直击：</strong>「一个人摸索三个月，不如一场45分钟的1v1诊断」<br><br>
-                <strong>数据背书：</strong>「我从0到月入3万的OPC创业复盘：只因为我做对了这一个动作」<br><br>
-                <strong>低门槛引诱：</strong>「免费领取《2026OPC获客困局破冰指南》」
-              </div>
-            </div>
-
-            <div class="objection-block success">
-              <div class="objection-label">最优结果</div>
-              <div class="objection-title">找到黄金组合</div>
-              <div class="objection-desc">找到一组【最有效假设 + 最有效沟通方式】的黄金组合。最低产出是：用少量花费排除了多个错误选项。</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Dimension 3: 三天优化循环 -->
-    <section id="s2" class="content-section fade-section">
-      <div class="dimension-block">
-        <div class="dimension-badge">
-          <span class="dimension-num">03</span>
-          <span class="dimension-tag">执行流程</span>
-        </div>
-        <h2 class="dimension-question">三天优化循环——用最小成本快速验证</h2>
-
-        <div class="grid-asymmetric">
-          <div>
-            <div class="cycle-item">
-              <span class="cycle-day">第一天</span>
-              <div>
-                <div class="cycle-title">播种与静默</div>
-                <div class="cycle-desc">下午或傍晚启动所有广告组，关闭通知。创业者的焦虑会让你产生「操作一下就会变好」的错觉，但这只会打断算法学习。把时间用于准备内容或打磨产品。</div>
-              </div>
-            </div>
-            <div class="cycle-item">
-              <span class="cycle-day">第二天傍晚</span>
-              <div>
-                <div class="cycle-title">冷酷收割者</div>
-                <div class="cycle-desc">打开广告后台，执行「秒关」准则：消耗超过1.5倍目标成本且无暗号反馈的广告组→直接关停；有点击但添加率极低的素材→标记为「低效沟通」。你不是在关闭希望，是在修剪枯枝。</div>
-              </div>
-            </div>
-            <div class="cycle-item">
-              <span class="cycle-day">第三天</span>
-              <div>
-                <div class="cycle-title">有纪律的放大器</div>
-                <div class="cycle-desc">找到有暗号反馈的广告组，复制该组（不要在原组加预算），将新组日预算提升30%-50%。分析优胜素材的钩子逻辑，用AI快速生成2个新版本放入新组测试。</div>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div class="insight-tag">单人仪表盘</div>
-            <div class="metric-card">
-              <div class="metric-label">核心指标 1</div>
-              <div class="metric-value accent">¥80-100</div>
-              <div class="metric-desc">千次展现成本。持续高于此值需优化素材前3秒钩子</div>
-            </div>
-            <div class="metric-card">
-              <div class="metric-label">核心指标 2</div>
-              <div class="metric-value">¥30</div>
-              <div class="metric-desc">单次行动成本 = 总花费 ÷ 核心目标完成数</div>
-            </div>
-            <div class="metric-card">
-              <div class="metric-label">核心指标 3</div>
-              <div class="metric-value accent">暗号归因</div>
-              <div class="metric-desc">用「暗号」追踪哪个广告组带来了客户，比平台归因更精准</div>
-            </div>
-
-            <div class="quote-block">
-              <p class="quote-text">每天只在早10点和晚6点各看一次，每次不超过15分钟。其他时间专注做产品交付和客户沟通。</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Dimension 4: AI素材生产 -->
-    <section id="s2" class="content-section fade-section">
-      <div class="dimension-block">
-        <div class="dimension-badge">
-          <span class="dimension-num">04</span>
-          <span class="dimension-tag">AI协作</span>
-        </div>
-        <h2 class="dimension-question">AI素材工厂——一人具备小型工作室的产出能力</h2>
-
-        <div class="grid-asymmetric">
-          <div class="answer-section">
-            <div class="answer-block">
-              <div class="answer-label">去AI味技巧</div>
-              <div class="answer-title">人工打乱AI的「塑料感」</div>
-              <div class="answer-desc">AI生成长文案后仅截取口语化最自然的两句作为开头；用AI生成图片后在手机相册截屏一下，或叠加极低透明度的生活噪点。提示词要求「口误感」「呼吸感」「手机随手拍的晃动感」。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">数字人配置</div>
-              <div class="answer-title">「打断式提问」文案结构</div>
-              <div class="answer-desc">数字人开场抛出目标客户最痛的问题，停顿2秒，然后说「如果你刚才心里咯噔了一下，那么接下来的3分钟是专门为你录的。」这种强制性互动暗示能极大降低划走率。</div>
-            </div>
-            <div class="answer-block">
-              <div class="answer-label">一次制作多平台</div>
-              <div class="answer-title">同一素材多形态分发</div>
-              <div class="answer-desc">同一段素材略作调整后可同步投放到抖音、小红书和视频号。每周集中2小时生产素材，其余时间交给系统自动轮替和择优。</div>
-            </div>
-          </div>
-
-          <div>
-            <div class="objection-block success">
-              <div class="objection-label">效率提升</div>
-              <div class="objection-title">AI素材点击率提升30%+</div>
-              <div class="objection-desc">明确要求「口误感」「呼吸感」后，AI素材的点击率显著高于标准AI腔调。</div>
-            </div>
-
-            <div class="objection-block data">
-              <div class="objection-label">实操流程</div>
-              <div class="objection-title">30分钟批量生产</div>
-              <div class="objection-desc">1. 整理产品核心卖点和用户常见疑问（30分钟）<br>2. 喂给文案模型+图像视频模型批量生成30+变体<br>3. 选取最有真实感的片段，叠加真实语音证言<br>4. 同步投放多平台</div>
-            </div>
-
-            <div class="core-insight">
-              <p class="core-insight-text">决策留在人脑，执行丢给AI。你只需要判断哪条素材值得保留，哪条直接淘汰。</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Dimension 5: 风险规避 -->
-    <section id="s2" class="content-section fade-section">
-      <div class="dimension-block">
-        <div class="dimension-badge">
-          <span class="dimension-num">05</span>
-          <span class="dimension-tag">风险规避</span>
-        </div>
-        <h2 class="dimension-question">四个高危陷阱——OPC广告投放的生死线</h2>
-
-        <div class="grid-asymmetric">
-          <div>
-            <div class="list-item">
-              <span class="list-num">01</span>
-              <div>
-                <div class="list-title">现金流回正前禁碰品牌广告</div>
-                <div class="list-desc">在月利润稳定超过3万元之前，任何「提升品牌声量」「种草蓄水」的投放都是致命的现金流陷阱。必须死死咬住「购买」「加微信48小时内转账」等硬动作。</div>
-              </div>
-            </div>
-            <div class="list-item">
-              <span class="list-num">02</span>
-              <div>
-                <div class="list-title">警惕「一键托管」</div>
-                <div class="list-desc">月消耗低于5万元前，切勿开启完全黑盒的智能托管。给出明确的「目标每次转化费用」上限，让算法在你看得懂的范围内工作。</div>
-              </div>
-            </div>
-            <div class="list-item">
-              <span class="list-num">03</span>
-              <div>
-                <div class="list-title">拒绝长合同和年框</div>
-                <div class="list-desc">保持「广告账户余额不超过3天预算」的原则。这样当某个渠道效率骤降时，能在5分钟内完成预算转移。永远把切换平台的主动权攥在自己手里。</div>
-              </div>
-            </div>
-            <div class="list-item">
-              <span class="list-num">04</span>
-              <div>
-                <div class="list-title">破除「学习期」迷信</div>
-                <div class="list-desc">消耗到目标成本1.5倍仍无转化信号，立刻关停。小预算模型下，没有爆发迹象的广告组说明素材或人群匹配度极低，及时重置能保住下一轮测试的弹药。</div>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div class="objection-block error">
-              <div class="objection-label">陷阱案例</div>
-              <div class="objection-title">40元/条的留资线索</div>
-              <div class="objection-desc">40元一个的留资线索，最终付费转化率不到0.3%——广告触达的是好奇但无支付能力的人群，不是你的目标客户。</div>
-            </div>
-
-            <div class="objection-block success">
-              <div class="objection-label">正确做法</div>
-              <div class="objection-title">硬止损线</div>
-              <div class="objection-desc">单次转化目标成本的1.5倍 = 关停线。例如预设线索成本20元，消耗达到30元仍无转化→立即关停，不等待系统判定学习结束。</div>
-            </div>
-
-            <div class="quote-block">
-              <p class="quote-text">账面ROI算下来不亏，但你没把自己的时间成本折进去。时薪33元的「虚假忙碌」是OPC最危险的幻觉。</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Dimension 6: 决策框架 -->
-    <section id="s2" class="content-section fade-section">
-      <div class="dimension-block">
-        <div class="dimension-badge">
-          <span class="dimension-num">06</span>
-          <span class="dimension-tag">决策框架</span>
-        </div>
-        <h2 class="dimension-question">广告投放决策表——什么时候做什么事</h2>
-
-        <div class="grid-asymmetric">
-          <div>
-            <div class="decision-table">
-              <div class="decision-row" style="background: var(--surface);">
-                <span class="decision-condition">日预算 ¥50-100</span>
-                <span class="decision-action">拆分为3-4个广告组</span>
-                <span class="decision-result">测试不同假设，快速排错</span>
-              </div>
-              <div class="decision-row">
-                <span class="decision-condition">消耗达1.5倍红线</span>
-                <span class="decision-action">立即关停</span>
-                <span class="decision-result">不等系统学习，马上重置</span>
-              </div>
-              <div class="decision-row" style="background: var(--surface);">
-                <span class="decision-condition">有暗号反馈</span>
-                <span class="decision-action">复制该广告组</span>
-                <span class="decision-result">其他一致，预算+30-50%</span>
-              </div>
-              <div class="decision-row">
-                <span class="decision-condition">素材表现好</span>
-                <span class="decision-action">去硬广化发布</span>
-                <span class="decision-result">广告素材变自然流量内容</span>
-              </div>
-              <div class="decision-row" style="background: var(--surface);">
-                <span class="decision-condition">月消耗稳定3-5万</span>
-                <span class="decision-action">优化转化容器</span>
-                <span class="decision-result">从卖产品转向卖人设</span>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div class="insight-tag">决策原则</div>
-            <div class="balance-grid">
-              <div>
-                <div class="balance-card-label positive">做</div>
-                <div class="balance-item">用暗号归因追踪效果</div>
-                <div class="balance-item">设置硬止损线</div>
-                <div class="balance-item">素材是最好的定向工具</div>
-                <div class="balance-item">日预算=昨日净利润的20-30%</div>
-                <div class="balance-item">固定操作窗口，每天2次共30分钟</div>
-              </div>
-              <div>
-                <div class="balance-card-label negative">不做</div>
-                <div class="balance-item">开启完全黑盒的智能托管</div>
-                <div class="balance-item">签署年框/长合同</div>
-                <div class="balance-item">在现金流回正前投品牌广告</div>
-                <div class="balance-item">引导用户关注公众号/收藏/下载APP</div>
-                <div class="balance-item">每天刷新后台几十次</div>
-              </div>
-            </div>
-
-            <div class="quote-block" style="margin-top: var(--space-xl);">
-              <p class="quote-text">广告投放不仅为你获取客户，更在实时为你指明产品最正确的进化方向。这是只有同时手握产品和市场的你，才能捕捉到的闪电式机会。</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FIN: 财务健康 -->
-    <section id="s2" class="content-section fade-section">
-      <div class="section-label">FIN · 财务健康指标</div>
-      <div class="fin-section">
-        <h2 class="fin-title">广告的财务意义</h2>
-        <div class="fin-grid">
-          <div class="fin-card">
-            <div class="fin-label">及格线</div>
-            <div class="fin-value">时薪 > ¥100</div>
-            <div class="fin-desc">广告ROI折算后必须高于你外包/咨询的单价</div>
-          </div>
-          <div class="fin-card">
-            <div class="fin-label">线索成本红线</div>
-            <div class="fin-value">¥30-60</div>
-            <div class="fin-desc">客单价3000元×80%毛利÷3 = 60元红线</div>
-          </div>
-          <div class="fin-card">
-            <div class="fin-label">最小测试预算</div>
-            <div class="fin-value">¥150</div>
-            <div class="fin-desc">足以测试3个广告组×1.5倍红线</div>
-          </div>
-          <div class="fin-card">
-            <div class="fin-label">自然流量激活</div>
-            <div class="fin-value">3x</div>
-            <div class="fin-desc">好的付费广告能激活账号自然推荐量</div>
-          </div>
-        </div>
-      </div>
+    <section id="s1">
     
-    <!-- 🔵 2026年时效性内容更新 -->
-    <section id="s2026" class="section fade-section">
-      <div style="margin-bottom:var(--space-lg);">
-        <span style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);">2026 UPDATE</span>
-      </div>
-      <div class="prose" style="max-width:680px;">
-        
-<blockquote style="border-left:2px solid var(--accent);padding:var(--space-sm) var(--space-md);margin:var(--space-md) 0;color:var(--text-secondary);font-style:italic;background:var(--surface);border-radius:0 6px 6px 0;font-size:0.95rem;">**面向OPC**：内容做了、社群建了、推荐也跑了——现在你考虑花钱买用户。但OPC的广告预算不是"几万块试试水"，而是"几百块验证一个假设"。本节点告诉你2026年怎么花最少的钱，买到最值的用户。</blockquote>
+<p>node_id: 39</p>
+<p>persona: neutral</p>
+<p>cta_type: wechat</p>
+<p>keywords: [用户, 广告, 步骤, 标题, 广告投放]</p>
 
+<blockquote class="decision-box"><p>内容做了、社群建了、推荐也跑了——现在你考虑花钱买用户。但OPC的广告预算不是"几万块试试水"，而是"几百块验证一个假设"。本节点告诉你2026年怎么花最少的钱，买到最值的用户。</p></blockquote>
 
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">一、投广告的前提条件（缺一不可）</h3>
+<p></section></p>
+<section id="s一">
+<p>      <div class="section-label">一、投广告的前提条件（缺一不可）</div></p>
 
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">先问自己三个问题</h4>
+<h3>先问自己三个问题</h3>
 
-<table style="width:100%;border-collapse:collapse;margin:var(--space-md) 0;font-size:0.88rem;">
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">问题</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">及格线</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">不及格别投</td></tr>
-<tr><th style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">你的免费获客渠道已经跑通了吗？</th><th style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">每月自然新增≥50用户</th><th style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">回去做内容（节点33）</th></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">你知道一个用户值多少钱吗？</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">能算出LTV（用户生命周期价值）</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">先跑3个月数据再投</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">你投广告的ROI能算清楚吗？</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">花¥1广告费，至少赚回¥1</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">设好转化追踪再投</td></tr>
-</table>
+<div class="table-wrapper"><table><thead><tr><th>问题</th><th>及格线</th><th>不及格别投</th></tr></thead><tbody><tr><td>你的免费获客渠道已经跑通了吗？</td><td>每月自然新增≥50用户</td><td>回去做内容（节点33）</td></tr><tr><td>你知道一个用户值多少钱吗？</td><td>能算出LTV（用户生命周期价值）</td><td>先跑3个月数据再投</td></tr><tr><td>你投广告的ROI能算清楚吗？</td><td>花¥1广告费，至少赚回¥1</td><td>设好转化追踪再投</td></tr></tbody></table></div>
+<strong>OPC铁律</strong>：月利润<¥5000之前，不投广告。5000以下的增长靠内容和社群。
 
-<p style="margin:var(--space-sm) 0;color:var(--text-secondary);font-weight:400;"><strong>OPC铁律</strong>：月利润<¥5000之前，不投广告。5000以下的增长靠内容和社群。</p>
+<p></section></p>
+<section id="s二">
+<p>      <div class="section-label">二、2026年OPC能投的四个平台</div></p>
 
+<div class="table-wrapper"><table><thead><tr><th>平台</th><th>最低日预算</th><th>适合产品</th><th>2026年特点</th></tr></thead><tbody><tr><td><strong>微信朋友圈广告</strong></td><td>¥50/天</td><td>面向企业主/30岁以上用户</td><td>精准但贵，CPM约¥30-50</td></tr><tr><td><strong>小红书聚光</strong></td><td>¥100/天</td><td>面向年轻女性/生活方式</td><td>种草效果好，但需要好看的内容</td></tr><tr><td><strong>抖音巨量引擎</strong></td><td>¥200/天</td><td>面向大众用户</td><td>流量大但转化率低</td></tr><tr><td><strong>知乎效果广告</strong></td><td>¥50/天</td><td>面向高知/决策型用户</td><td>CPM低（¥5-10），适合SaaS/工具</td></tr></tbody></table></div>
+<strong>OPC首选</strong>：知乎效果广告。原因：CPM最低、用户质量最高、投放门槛最低。
 
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">二、2026年OPC能投的四个平台</h3>
+<p></section></p>
+<section id="s三">
+<p>      <div class="section-label">三、广告投放的三步法（以知乎为例）</div></p>
 
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">平台</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">最低日预算</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">适合产品</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">2026年特点</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**微信朋友圈广告**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">¥50/天</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">面向企业主/30岁以上用户</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">精准但贵，CPM约¥30-50</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**小红书聚光**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">¥100/天</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">面向年轻女性/生活方式</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">种草效果好，但需要好看的内容</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**抖音巨量引擎**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">¥200/天</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">面向大众用户</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">流量大但转化率低</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">**知乎效果广告**</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">¥50/天</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">面向高知/决策型用户</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">CPM低（¥5-10），适合SaaS/工具</td></tr>
+<h3>步骤1：创建一条"不像广告"的广告</h3>
 
-<p style="margin:var(--space-sm) 0;color:var(--text-secondary);font-weight:400;"><strong>OPC首选</strong>：知乎效果广告。原因：CPM最低、用户质量最高、投放门槛最低。</p>
+<p>``<code>markdown</p>
+<p>标题：【真实经历】我一个人花了30天做了一款XX工具</p>
+<p>内容：之前一直用Excel记账，每次月底都头疼。后来干脆自己做了个工具，现在用了3个月...</p>
+<p>配图：产品截图（不要用精美设计的海报——真实图点击率更高）</p>
+<p>落地页：产品的核心功能页面（不要专门做landing page）</p>
+<p></code>`<code></p>
 
+<strong>关键</strong>：知乎用户讨厌广告。你的广告必须看起来像一篇正常回答/文章。
 
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">三、广告投放的三步法（以知乎为例）</h3>
+<h3>步骤2：设预算和定向</h3>
 
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">步骤1：创建一条"不像广告"的广告</h4>
+<p></code>`<code></p>
+<p>日预算：¥50（最低启动）</p>
+<p>定向：关注"创业""独立开发""效率工具"话题的用户</p>
+<p>地域：一线城市（付费意愿最高）</p>
+<p>出价：OCPM自动优化</p>
+<p></code>`<code></p>
 
-<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code>标题：【真实经历】我一个人花了30天做了一款XX工具
-内容：之前一直用Excel记账，每次月底都头疼。后来干脆自己做了个工具，现在用了3个月...
-配图：产品截图（不要用精美设计的海报——真实图点击率更高）
-落地页：产品的核心功能页面（不要专门做landing page）
-</code></pre>
+<h3>步骤3：看数据、调、再投</h3>
 
-<p style="margin:var(--space-sm) 0;color:var(--text-secondary);font-weight:400;"><strong>关键</strong>：知乎用户讨厌广告。你的广告必须看起来像一篇正常回答/文章。</p>
+<div class="table-wrapper"><table><thead><tr><th>数据</th><th>正常</th><th>需要优化</th></tr></thead><tbody><tr><td>CTR（点击率）</td><td>>1%</td><td><0.5%→换标题/封面图</td></tr><tr><td>CPC（单次点击成本）</td><td><¥3</td><td>>¥5→关闭该广告</td></tr><tr><td>CPM（千次曝光成本）</td><td><¥20</td><td>>¥30→换定向</td></tr><tr><td>转化率</td><td>>2%</td><td><1%→换落地页</td></tr></tbody></table></div>
+<strong>前¥200是测试预算。</strong> 不要一次性充¥5000——先花¥200看数据，再决定加不加。
 
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">步骤2：设预算和定向</h4>
+<p></section></p>
+<section id="s四">
+<p>      <div class="section-label">四、OPC广告 vs 大厂广告</div></p>
 
-<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code>日预算：¥50（最低启动）
-定向：关注"创业""独立开发""效率工具"话题的用户
-地域：一线城市（付费意愿最高）
-出价：OCPM自动优化
-</code></pre>
+<div class="table-wrapper"><table><thead><tr><th>维度</th><th>大厂</th><th>OPC</th></tr></thead><tbody><tr><td>月预算</td><td>¥10万+</td><td>¥500-2000</td></tr><tr><td>优化方式</td><td>专业优化师天天调</td><td>你每周看一次数据</td></tr><tr><td>素材</td><td>专业设计团队出图</td><td>Canva模板+产品截图</td></tr><tr><td>目标</td><td>品牌曝光+转化</td><td>只追转化</td></tr></tbody></table></div>
+<strong>记住这个差距。</strong> 不要学大厂的打法——他们烧的是融资的钱，你烧的是自己的饭钱。
 
-<h4 style="font-size:1.05rem;font-weight:400;margin:var(--space-md) 0 var(--space-xs);color:var(--text-primary);">步骤3：看数据、调、再投</h4>
+<p></section></p>
+<section id="s五">
+<p>      <div class="section-label">五、一次¥200的广告实验模板</div></p>
 
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">数据</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">正常</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">需要优化</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">CTR（点击率）</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">>1%</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;"><0.5%→换标题/封面图</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">CPC（单次点击成本）</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;"><¥3</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">>¥5→关闭该广告</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">CPM（千次曝光成本）</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;"><¥20</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">>¥30→换定向</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">转化率</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">>2%</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;"><1%→换落地页</td></tr>
+<p></code>`<code></p>
+<p>广告平台：知乎</p>
+<p>日预算：¥50，跑4天</p>
+<p>标题A："我花了30天做了XX"（真实经历型）</p>
+<p>标题B："2026年还在用Excel记账？试试这个"（痛点型）</p>
+<p>每个标题¥100预算，看哪个CTR高</p>
+<p>4天后：高CTR的留下，低的关掉</p>
+<p>如果两个CTR都<0.5%→广告不适合你目前的产品，回去做内容</p>
+<p></code>``</p>
 
-<p style="margin:var(--space-sm) 0;color:var(--text-secondary);font-weight:400;"><strong>前¥200是测试预算。</strong> 不要一次性充¥5000——先花¥200看数据，再决定加不加。</p>
+<p></section></p>
+<section id="s六">
+<p>      <div class="section-label">六、检查清单</div></p>
 
+<ul><li><input type="checkbox" disabled> 免费获客渠道已跑通（月自然新增≥50）</li><li><input type="checkbox" disabled> LTV已估算（用户生命周期价值>获客成本）</li><li><input type="checkbox" disabled> 转化追踪已设置（能知道广告带来了几个注册/付费）</li><li><input type="checkbox" disabled> 首次投放预算≤¥200</li><li><input type="checkbox" disabled> 至少测试2个不同标题/封面</li><li><input type="checkbox" disabled> 4天后根据数据决定继续或停止</li></ul>
 
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">四、OPC广告 vs 大厂广告</h3>
+<p></section></p>
+<section id="s节">
+<p>      <div class="section-label">节点资源链接</div></p>
 
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">维度</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">大厂</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">OPC</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">月预算</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">¥10万+</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">¥500-2000</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">优化方式</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">专业优化师天天调</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">你每周看一次数据</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">素材</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">专业设计团队出图</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">Canva模板+产品截图</td></tr>
-<tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">目标</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">品牌曝光+转化</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;">只追转化</td></tr>
-
-<p style="margin:var(--space-sm) 0;color:var(--text-secondary);font-weight:400;"><strong>记住这个差距。</strong> 不要学大厂的打法——他们烧的是融资的钱，你烧的是自己的饭钱。</p>
-
-
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">五、一次¥200的广告实验模板</h3>
-
-<pre style="background:var(--surface);padding:var(--space-md);border-radius:8px;overflow-x:auto;font-size:0.82rem;line-height:1.6;margin:var(--space-md) 0;border:1px solid var(--line);"><code>广告平台：知乎
-日预算：¥50，跑4天
-标题A："我花了30天做了XX"（真实经历型）
-标题B："2026年还在用Excel记账？试试这个"（痛点型）
-每个标题¥100预算，看哪个CTR高
-4天后：高CTR的留下，低的关掉
-如果两个CTR都&lt;0.5%→广告不适合你目前的产品，回去做内容
-</code></pre>
-
-
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">六、检查清单</h3>
-
-<ul style="list-style:none;padding:0;margin:var(--space-sm) 0;">
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 免费获客渠道已跑通（月自然新增≥50）</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] LTV已估算（用户生命周期价值>获客成本）</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 转化追踪已设置（能知道广告带来了几个注册/付费）</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 首次投放预算≤¥200</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 至少测试2个不同标题/封面</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">[ ] 4天后根据数据决定继续或停止</li>
-</ul>
-
-
-<h3 style="font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:300;margin:var(--space-lg) 0 var(--space-sm);color:var(--text-primary);border-left:2px solid var(--accent);padding-left:var(--space-sm);">节点资源链接</h3>
-
-<ul style="list-style:none;padding:0;margin:var(--space-sm) 0;">
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点38：定价策略</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点40：裂变与推荐</li>
-<li style="margin:6px 0;color:var(--text-secondary);padding-left:var(--space-sm);">节点33：内容营销与SEO/ASO</li>
-</ul>
-
-
-      </div>
-      <p style="font-size:12px;color:var(--text-tertiary);margin-top:var(--space-xl);letter-spacing:0.05em;">
-        以上内容基于2026年5月最新实践编写，工具版本和价格可能更新，请以官方文档为准。
-      </p>
+<ul><li>节点38：定价策略</li><li>节点40：裂变与推荐</li><li>节点33：内容营销与SEO/ASO</li></ul>
     </section>
 
-</section>
-
-    <nav class="footer-nav">
-      <a href="/nodes/38-pricing/index.html" class="nav-link">
-        <span class="nav-arrow">←</span>
-        节点38：定价策略
-      </a>
-      <a href="/nodes/40-referral/index.html" class="nav-link">
-        节点40：用户转介绍机制
-        <span class="nav-arrow">→</span>
-      </a>
-    </nav>
+    <div class="summary-box">
+      <h3>节点39检查清单</h3>
+      <p>完成本节点后，请确认所有检查项已通过。</p>
     </div>
+    </main>
   </div>
 
-  <script>
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
+  <nav class="footer-nav">
+    <a href="/nodes/38-pricing/index.html" class="nav-link"><span>←</span> 节点38</a>
+    <a href="/nodes/40-referral/index.html" class="nav-link">节点40 <span>→</span></a>
+  </nav>
 
-    // TOC scroll spy
-    const tocLinks = document.querySelectorAll('.toc-link');
-    const sections = document.querySelectorAll('section[id]');
-    const sectionObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          tocLinks.forEach(link => link.classList.remove('active'));
-          const activeLink = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
-          if (activeLink) activeLink.classList.add('active');
-        }
-      });
-    }, { rootMargin: '-20% 0px -60% 0px' });
-    sections.forEach(section => sectionObserver.observe(section));
+  <script>
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').slice(1);
+      const target = document.getElementById(targetId);
+      if (target) {
+        window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+      }
+    });
+  });
   </script>
 </body>
 </html>
