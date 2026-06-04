@@ -30,7 +30,7 @@ TEMPLATE_FILE = REPO_ROOT / "nodes-mcn" / "01-ai-side-hustle-truth" / "index.htm
 
 LITELLM_BASE_URL = os.environ.get("LITELLM_BASE_URL", "http://localhost:9118/v1")
 LITELLM_API_KEY = os.environ.get("LITELLM_API_KEY", "dummy")
-LITELLM_MODEL = os.environ.get("LITELLM_MODEL", "minimax-M3")
+LITELLM_MODEL = os.environ.get("LITELLM_MODEL", "MiniMax-M3")
 
 # ============== A4 脚本生成 Prompt ==============
 SYSTEM_PROMPT = """你是「愚者 AI · 邪修 AI 老炮」(戴黑帽+口罩，从不露面，靠 AI 副业多挣 1 万)。
@@ -106,7 +106,7 @@ def call_litellm(node: dict, max_retries: int = 3) -> str:
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": build_user_prompt(node)},
         ],
-        "max_tokens": 4000,
+        "max_tokens": 6000,
         "temperature": 0.7,
     }
 
@@ -121,9 +121,14 @@ def call_litellm(node: dict, max_retries: int = 3) -> str:
 
     for attempt in range(max_retries):
         try:
-            with request.urlopen(req, timeout=60) as resp:
+            with request.urlopen(req, timeout=180) as resp:
                 data = json.loads(resp.read())
-                return data["choices"][0]["message"]["content"].strip()
+                content = data["choices"][0]["message"].get("content", "") or ""
+                if not content.strip():
+                    # 推理模型可能把内容放在 reasoning_content
+                    reasoning = data["choices"][0]["message"].get("reasoning_content", "") or ""
+                    content = reasoning
+                return content.strip()
         except error.URLError as e:
             if attempt < max_retries - 1:
                 wait = 2 ** attempt
