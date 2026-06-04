@@ -1,0 +1,210 @@
+# ONE-MCN 内容规则 (8 条授权)
+# 授权日期: 2026-06-04
+# 授权人: 昴君
+# 读取方: ~/.hermes/skills/one-mcn/*/SKILL.md (VPS Skills)
+# 修改: 编辑本文件 + 提交 git, 蕾姆下次运行即按新规则
+
+# ============== A4 脚本生成 ==============
+script:
+  # 风格
+  style: dialogue              # 对话体 (1-2 句对话开场)
+  word_count:
+    min: 90                    # 最少 90 字
+    max: 120                   # 最多 120 字
+    target: 105                # 目标 105 字 (45s 口播)
+  # 段落结构 (4 段式)
+  structure:
+    - name: 反问
+      word_range: [15, 20]     # 15-20 字
+      purpose: 吸引停留 (前 3s 决定 80% 完播)
+    - name: 案例
+      word_range: [40, 60]     # 40-60 字
+      purpose: 1 个真实人物故事, 必有具体数字
+    - name: 总结
+      word_range: [20, 30]     # 20-30 字
+      purpose: 1 句金句/方法论
+    - name: CTA
+      word_range: [10, 15]     # 10-15 字
+      purpose: 引导评论/加微/看链接
+  # 禁忌开场
+  forbidden_openings:
+    - 今天我们来讲
+    - 大家好我是
+    - 这期视频
+  # 推荐开场模板
+  preferred_openings:
+    - "我跟你说啊，XX？…"
+    - "你猜怎么着，XX…"
+    - "你知道吗，XX…"
+    - "诶，XX 居然…"
+
+# ============== A5 红线审查 ==============
+red_lines:
+  count: 7
+  rules:
+    - id: 雇人
+      description: 招人/团队/雇员/合伙人
+      keywords: [雇, 招人, 团队, 雇员, 合伙人, 联合创始]
+    - id: 融资
+      description: 投资/融资/估值/上市
+      keywords: [融资, 投资, 估值, IPO, 上市, 天使, A 轮]
+    - id: 谎言
+      description: 虚假数据/伪造案例
+      keywords: [保证, 100%, 必赚, 稳赚, 躺赚]
+    - id: 灰产
+      description: 擦边/灰产/黑产
+      keywords: [灰产, 黑产, 擦边, 偏门]
+    - id: 夸大
+      description: 夸大/绝对化/违反广告法
+      keywords: [最, 第一, 唯一, 顶级, 绝对, 国家级]
+    - id: 政治
+      description: 政治/宗教/民族
+      keywords: [政治, 宗教, 民族, 党派]
+    - id: 色情
+      description: 色情/暴力/低俗
+      keywords: [色情, 暴力, 低俗, 血腥]
+  on_trigger:
+    action: block_and_suggest
+    message: "命中红线 {rule}, 不自动发布. 建议改写: {suggestion}"
+
+# ============== A6 封面生成 ==============
+cover:
+  style: minimal               # 极简留白 (Ma 間)
+  # 背景色 (二选一, 交替使用)
+  backgrounds:
+    dark: "#111110"            # 暖近黑
+    light: "#F8F5F0"           # 和纸色
+  # 主体
+  font:
+    family: "Noto Serif JP"
+    weights: [200, 300]
+  # 字号 (clamp)
+  font_size: "clamp(48px, 8vw, 96px)"
+  # 行高
+  line_height: 0.95
+  # 字间距
+  letter_spacing: "-0.03em"
+  # 强调色 (每封面 1 处)
+  accent_color: "#C0392B"      # 朱红
+  accent_usage: "1 个数字 或 1 个词"
+  # 结构
+  layout:
+    - 主体 12-16 字 (居中或左对齐 1/3)
+    - 底部 8px 朱红短水平线
+  # 禁忌
+  forbidden:
+    - 圆角 (border-radius > 2px)
+    - 渐变 (linear-gradient, radial-gradient)
+    - 多色 (3+ colors)
+    - Emoji
+    - 边框包围
+
+# ============== A7 TTS 配音 ==============
+tts:
+  voice: female_sophisticated  # 女性知性
+  provider: minimax            # 默认 MiniMax-M3
+  speed: 1.0
+  pitch: 0                     # 默认
+  # 停顿设置
+  pauses:
+    comma: 0.2s                # 逗号
+    period: 0.4s               # 句号
+    question: 0.5s             # 问号
+  # 背景音乐
+  bgm: none                    # 不加 BGM (纯净)
+
+# ============== B1 自动发布 ==============
+publish:
+  # 频次
+  frequency_per_day: 2
+  # 发布时间 (双高峰)
+  times:
+    - "12:00"                  # 午间高峰
+    - "20:00"                  # 晚间高峰
+  # 间隔
+  min_interval_hours: 6
+  # 平台 (本期先视频号)
+  platforms:
+    - name: 视频号
+      enabled: true
+      account_id: sphxzc9sQFa0nKy
+    - name: 抖音
+      enabled: false            # 后续开通
+    - name: 小红书
+      enabled: false
+  # 标题模板
+  title_templates:
+    - "{persona}跟你说啊，{hook}"
+    - "{number}个{topic}真相，第{n}个没人讲"
+    - "你知道吗，{topic}其实{insight}"
+  # 标签 (3-5 个)
+  hashtags:
+    - "#OPC"
+    - "#一个人公司"
+    - "#AI创业"
+    - "#被裁员"
+    - "#副业"
+
+# ============== 晚站会数据汇总 ==============
+daily_review:
+  time: "20:00"
+  duration_minutes: 15
+  fields:
+    - name: 发布数
+      source: B1-publish log
+      compare: vs_昨日
+    - name: 完播率
+      source: B2-data
+      threshold: "> 30%"
+    - name: 总播放
+      source: B2-data
+      compare: vs_昨日
+    - name: 点赞
+      source: B2-data
+      ratio: 点赞/播放 "> 3%"
+    - name: 评论
+      source: B2-data
+      highlight: 高赞评论 top 3
+    - name: 分享
+      source: B2-data
+      ratio: 分享/播放 "> 1%"
+    - name: 加微
+      source: /go/wechat attribution
+      compare: vs_昨日
+    - name: 收入
+      source: api/payments.json
+      compare: vs_昨日
+  output: 飞书 04·销售管道 (授权后)
+  g0_check: true                # 同步检查 G0 熔断状态
+
+# ============== 加微自动欢迎语 ==============
+welcome:
+  structure: 5_sentence         # 5 句丰富
+  sentences:
+    - name: 问候
+      word_range: [10, 15]
+      template: "你好{昵称}，我是{人设}。"
+    - name: 认同
+      word_range: [15, 20]
+      template: "看到你关注了我，很开心。"
+    - name: 价值
+      word_range: [30, 50]
+      template: "送你 1 个工具: 节点 {node_id} {node_title} ({url})，帮你快速理解{topic}。"
+    - name: CTA
+      word_range: [20, 30]
+      template: "想知道你做哪一块的？我可以帮你找 1 个最适合你起步的节点。"
+    - name: 邀请
+      word_range: [10, 15]
+      template: "回复 {keyword} 我把详细攻略发你。"
+  # 触发: 新用户加微后 1 分钟内自动发
+  trigger: new_follower_added
+  delay_seconds: 60
+
+# ============== 元信息 ==============
+meta:
+  version: "1.0"
+  authorized_by: 昴君
+  authorized_at: "2026-06-04"
+  valid_from: "2026-06-04"
+  valid_until: "2026-12-31"   # 半年后需重新授权
+  change_process: "编辑本文件 + git commit, 蕾姆下次运行即生效"
