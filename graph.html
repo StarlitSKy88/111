@@ -8,7 +8,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='9' stroke='%23C0392B' stroke-width='1' fill='none'/><circle cx='16' cy='16' r='2.5' fill='%23C0392B'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@200;300;400;500;700&family=Noto+Serif+JP:wght@200;300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@200;300&family=Geist+Mono:wght@300&family=Noto+Sans+SC:wght@300;400&family=Noto+Serif+JP:wght@200;300;400&display=swap" rel="stylesheet">
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
@@ -18,13 +18,24 @@
       --bg: #111110;
       --surface: #1A1A18;
       --text-primary: #F0EDE6;
-      --text-secondary: #B8B4AE;
-      --text-tertiary: #7A7670;
+      --text-secondary: #A09A94;
+      --text-tertiary: #6A6560;
       --text-quaternary: #4A4744;
       --line: #2A2A28;
       --line-soft: #1F1F1D;
       --line-strong: #4A4744;
       --accent: #C0392B;
+      /* Spacing scale (8px multiples) */
+      --space-xs: 8px;
+      --space-sm: 16px;
+      --space-md: 24px;
+      --space-lg: 32px;
+      --space-xl: 48px;
+      --space-2xl: 64px;
+      --space-3xl: 96px;
+      --space-4xl: 128px;
+      /* Motion */
+      --transition-soft: 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -33,6 +44,82 @@
       height: 100%;
       overflow: hidden;
     }
+
+    /* ========== NOISE LAYER (atmosphere) ========== */
+    .noise-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      mix-blend-mode: overlay;
+    }
+
+    /* ========== HERO STAMP LAYER ========== */
+    .hero-stamp {
+      position: fixed;
+      left: clamp(1.25rem, 4vw, 2.5rem);
+      bottom: clamp(2.5rem, 6vh, 5rem);
+      z-index: 5;
+      max-width: 540px;
+      pointer-events: none;
+      opacity: 0;
+    }
+    .stamp-number {
+      font-family: 'EB Garamond', 'Noto Serif JP', serif;
+      font-size: clamp(140px, 22vw, 380px);
+      font-weight: 200;
+      line-height: 0.85;
+      letter-spacing: -0.06em;
+      color: var(--accent);
+      opacity: 0.04;
+      position: absolute;
+      top: -3.5rem;
+      left: -0.5rem;
+      user-select: none;
+      pointer-events: none;
+    }
+    .stamp-eyebrow {
+      font-family: 'Geist Mono', 'SF Mono', monospace;
+      font-size: 0.6875rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.875rem;
+      margin-bottom: var(--space-md);
+    }
+    .stamp-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 32px;
+      height: 1px;
+      background: var(--accent);
+    }
+    .stamp-declaration {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
+      font-weight: 300;
+      line-height: 1.4;
+      letter-spacing: 0.02em;
+      color: var(--text-primary);
+      max-width: 18ch;
+      margin-bottom: var(--space-md);
+    }
+    .stamp-meta {
+      font-family: 'Geist Mono', monospace;
+      font-size: 0.5625rem;
+      letter-spacing: 0.25em;
+      color: var(--text-quaternary);
+      text-transform: uppercase;
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+    .stamp-meta-divider { color: var(--accent); opacity: 0.6; }
 
     /* ========== MOTION ========== */
     .node-group, .link {
@@ -51,6 +138,9 @@
         opacity: 1 !important;
         transform: none !important;
       }
+      .hero-stamp { opacity: 1 !important; }
+      .stamp-number { animation: none !important; }
+      .stamp-declaration > span { transform: translateY(0) !important; opacity: 1 !important; }
     }
 
     body {
@@ -138,9 +228,10 @@
 
     .stage-chip {
       display: flex;
-      align-items: center;
-      gap: 0.875rem;
-      padding: 0.625rem 0;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+      padding: 0.5rem 0;
       border-top: 1px solid var(--line-soft);
       cursor: pointer;
       background: transparent;
@@ -150,41 +241,50 @@
       text-align: left;
       width: 100%;
       font-family: inherit;
-      transition: opacity 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      transition: opacity var(--transition-soft);
     }
 
     .stage-chip:last-child { border-bottom: 1px solid var(--line-soft); }
 
-    .stage-chip:hover { opacity: 0.7; }
+    .stage-chip:hover .stage-chip-num { border-color: var(--accent); }
+    .stage-chip:hover .stage-chip-name { color: var(--text-primary); }
 
-    .stage-chip.active .stage-chip-num { color: var(--text-primary); }
+    .stage-chip.active .stage-chip-num {
+      border-color: var(--accent);
+      background: rgba(192, 57, 43, 0.04);
+    }
+    .stage-chip.active .stage-chip-num-inner { color: var(--accent); }
     .stage-chip.active .stage-chip-name { color: var(--text-primary); }
 
     .stage-chip-num {
-      font-family: 'Noto Serif JP', serif;
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--line-strong);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color var(--transition-soft), background var(--transition-soft);
+    }
+
+    .stage-chip-num-inner {
+      font-family: 'EB Garamond', 'Noto Serif JP', serif;
       font-size: 0.875rem;
       color: var(--text-tertiary);
       font-weight: 300;
-      letter-spacing: 0.05em;
-      min-width: 1.5rem;
-      transition: color 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      letter-spacing: 0;
+      transition: color var(--transition-soft);
     }
 
     .stage-chip-name {
-      font-family: 'Noto Serif JP', serif;
-      font-size: 0.8125rem;
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 0.6875rem;
       color: var(--text-secondary);
       font-weight: 300;
-      letter-spacing: 0.02em;
-      flex: 1;
+      letter-spacing: 0.04em;
     }
 
     .stage-chip-count {
-      font-family: 'Noto Sans SC', sans-serif;
-      font-size: 0.5625rem;
-      color: var(--text-quaternary);
-      letter-spacing: 0.1em;
-      font-weight: 300;
+      display: none;  /* 印章式不再显示计数 */
     }
 
     .stage-reset {
@@ -1164,7 +1264,7 @@
         btn.className = 'stage-chip';
         btn.dataset.stage = stage.id;
         btn.innerHTML = `
-          <span class="stage-chip-num">${String(sIdx + 1).padStart(2, '0')}</span>
+          <span class="stage-chip-num"><span class="stage-chip-num-inner">${String(sIdx + 1).padStart(2, '0')}</span></span>
           <span class="stage-chip-name">${stage.name}</span>
           <span class="stage-chip-count">${count}</span>
         `;
@@ -1343,6 +1443,7 @@
       const nodeArr = nodeElements.nodes();
       const linkArr = linkElements.nodes();
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const hero = document.getElementById('hero-stamp');
 
       if (reduced) {
         gsap.set(nodeArr, { opacity: 1, y: 0 });
@@ -1350,16 +1451,47 @@
           const d = d3.select(el).datum();
           return d.type === 'key' ? 0.7 : (d.type === 'reference' ? 0.62 : 0.38);
         }});
+        if (hero) gsap.set(hero, { opacity: 1 });
         return;
       }
 
-      // Initial state: all invisible
+      // Initial state
       gsap.set(nodeArr, { opacity: 0, y: 12 });
       gsap.set(linkArr, { opacity: 0 });
+      if (hero) {
+        gsap.set(hero, { opacity: 0, y: 40 });
+        const numEl = hero.querySelector('.stamp-number');
+        const eyebrowEl = hero.querySelector('.stamp-eyebrow');
+        const declEl = hero.querySelector('.stamp-declaration');
+        const metaEl = hero.querySelector('.stamp-meta');
+        gsap.set([eyebrowEl, declEl, metaEl], { opacity: 0, y: 16 });
+        if (numEl) gsap.set(numEl, { opacity: 0, scale: 0.96 });
+      }
 
       const tl = gsap.timeline();
 
-      // Stage-by-stage reveal — let the knowledge graph emerge organically
+      // === Phase 1 (0.0-1.0s): Hero "57" stamp fades in from below ===
+      if (hero) {
+        tl.to(hero, { opacity: 1, y: 0, duration: 1.0, ease: 'power2.out' }, 0);
+        const numEl = hero.querySelector('.stamp-number');
+        if (numEl) {
+          tl.to(numEl, { opacity: 0.04, scale: 1, duration: 1.2, ease: 'power2.out' }, 0);
+        }
+        // Eyebrow first
+        tl.to(hero.querySelector('.stamp-eyebrow'), { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 0.4);
+        // Declaration
+        tl.to(hero.querySelector('.stamp-declaration'), { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, 0.6);
+        // Meta
+        tl.to(hero.querySelector('.stamp-meta'), { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 1.0);
+      }
+
+      // === Phase 3 (1.4-2.4s): Hero fades to 30% opacity (becomes background) ===
+      if (hero) {
+        tl.to(hero, { opacity: 0.3, duration: 1.0, ease: 'sine.inOut' }, 1.4);
+      }
+
+      // === Phase 4 (1.8-3.6s): Nodes appear stage-by-stage ===
+      const STAGE_START = 1.8;
       STAGES.forEach((stage, sIdx) => {
         const stageNodeEls = nodeArr.filter(el => {
           const d = d3.select(el).datum();
@@ -1373,7 +1505,7 @@
           return sid1 === stage.id && sid2 === stage.id;
         });
 
-        const at = sIdx * 0.18;
+        const at = STAGE_START + sIdx * 0.18;
         tl.to(stageNodeEls, {
           opacity: 1,
           y: 0,
@@ -1392,7 +1524,7 @@
         }
       });
 
-      // Key + reference links fade in last (these carry the cross-stage "knowledge")
+      // === Phase 5 (3.2-4.5s): Cross-stage key/reference links ===
       const extraLinkEls = linkArr.filter(el => {
         const l = d3.select(el).datum();
         return l && (l.type === 'key' || l.type === 'reference');
@@ -1406,7 +1538,7 @@
           duration: 0.8,
           stagger: 0.025,
           ease: 'sine.out'
-        }, STAGES.length * 0.18 + 0.1);
+        }, STAGE_START + STAGES.length * 0.18 + 0.1);
       }
     }
 
@@ -1477,5 +1609,22 @@
       setTimeout(init, 0);
     }
   </script>
+
+  <!-- Hero stamp layer (asymmetric anchor, lower-left) -->
+  <section class="hero-stamp" id="hero-stamp" aria-hidden="true">
+    <div class="stamp-number">57</div>
+    <div class="stamp-eyebrow">知识图谱 · KNOWLEDGE GRAPH</div>
+    <h1 class="stamp-declaration">一个人公司创业的<br>完整路径</h1>
+    <div class="stamp-meta">
+      <span>57 节点</span>
+      <span class="stamp-meta-divider">/</span>
+      <span>7 阶段</span>
+      <span class="stamp-meta-divider">/</span>
+      <span>61 关系</span>
+    </div>
+  </section>
+
+  <!-- Subtle paper-grain noise (atmosphere only) -->
+  <div class="noise-layer" aria-hidden="true"></div>
 </body>
 </html>

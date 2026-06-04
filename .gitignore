@@ -37,6 +37,9 @@ temp/
 /node53-*.png
 /node54-*.png
 
+# Local archives (Playwright screenshots, mobile checks, etc.)
+/archive/
+
 # Internal caches
 .atomic/
 .ralph/
