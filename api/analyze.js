@@ -13,6 +13,36 @@ const DATA_DIR = path.join(__dirname, '..', 'data');
 app.use(cors());
 app.use(express.json());
 
+// ========== ONE-MCN 归因追踪 ==========
+// /go/wechat?from=node-XX — 302 重定向到微信二维码页 + 写 attribution.json
+const WECHAT_QR_URL = process.env.WECHAT_QR_URL || 'https://opc.taomyst.top/go/wechat-qr.html';
+
+app.get('/go/wechat', (req, res) => {
+  const from = (req.query.from || 'unknown').toString().slice(0, 64);
+  const record = dataStore.trackAttribution({
+    from,
+    source: 'node',
+    ip: req.ip || req.headers['x-forwarded-for'] || null,
+    user_agent: (req.headers['user-agent'] || '').slice(0, 256),
+    referer: (req.headers['referer'] || '').slice(0, 256)
+  });
+  // 拼接 UTM 参数到目标 URL（让后续 analytics 也能识别）
+  const sep = WECHAT_QR_URL.includes('?') ? '&' : '?';
+  const target = `${WECHAT_QR_URL}${sep}utm_source=opcone-node&utm_medium=cta&utm_campaign=${encodeURIComponent(from)}&at=${record.id}`;
+  res.redirect(302, target);
+});
+
+// 归因统计 API（管理后台用）
+app.get('/api/attribution/stats', (req, res) => {
+  res.json(dataStore.getAttributionStats());
+});
+
+// 归因明细（管理后台用）
+app.get('/api/attribution/records', (req, res) => {
+  const limit = Math.min(parseInt(req.query.limit) || 100, 1000);
+  res.json(dataStore.readAttribution().slice(0, limit));
+});
+
 // 静态文件服务 - pending_reviews 目录
 // ========== 用户认证 API — 用户名+密码 ==========
 

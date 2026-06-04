@@ -6,6 +6,7 @@ const DATA_DIR = path.join(__dirname, '..');
 const RESULTS_FILE = path.join(DATA_DIR, 'data', 'results.json');
 const PAYMENTS_FILE = path.join(DATA_DIR, 'data', 'payments.json');
 const PRICING_FILE = path.join(DATA_DIR, 'data', 'pricing.json');
+const ATTRIBUTION_FILE = path.join(DATA_DIR, 'data', 'attribution.json');
 
 // 确保数据目录存在
 function ensureDataDir() {
@@ -109,6 +110,57 @@ function updatePayment(result_id, wechat_id) {
     });
   }
   writePayments(payments);
+}
+
+// 读取归因数据
+function readAttribution() {
+  ensureDataDir();
+  if (!fs.existsSync(ATTRIBUTION_FILE)) return [];
+  try {
+    return JSON.parse(fs.readFileSync(ATTRIBUTION_FILE, 'utf-8'));
+  } catch (e) { return []; }
+}
+
+// 写入归因数据
+function writeAttribution(records) {
+  ensureDataDir();
+  fs.writeFileSync(ATTRIBUTION_FILE, JSON.stringify(records, null, 2));
+}
+
+// 记录归因点击
+function trackAttribution(data) {
+  const records = readAttribution();
+  const record = {
+    id: crypto.randomUUID(),
+    timestamp: new Date().toISOString(),
+    from: data.from,           // 节点 ID 或来源标识
+    source: data.source || 'node',
+    ip: data.ip || null,
+    user_agent: data.user_agent || null,
+    referer: data.referer || null,
+    converted: false           // 后续如加微信/付费，标记为 true
+  };
+  records.unshift(record);
+  writeAttribution(records.slice(0, 10000));  // 上限 1 万条
+  return record;
+}
+
+// 归因统计：按 from 分组计数
+function getAttributionStats() {
+  const records = readAttribution();
+  const byNode = {};
+  records.forEach(r => {
+    const key = r.from || 'unknown';
+    byNode[key] = (byNode[key] || 0) + 1;
+  });
+  return {
+    total: records.length,
+    unique_nodes: Object.keys(byNode).length,
+    by_node: byNode,
+    last_24h: records.filter(r =>
+      Date.now() - new Date(r.timestamp).getTime() < 24 * 60 * 60 * 1000
+    ).length
+  };
 }
 
 // 获取统计数据
@@ -216,5 +268,10 @@ module.exports = {
   getAllResults,
   getResultById,
   getPricing,
-  updatePricing
+  updatePricing,
+  // CTA 归因
+  readAttribution,
+  writeAttribution,
+  trackAttribution,
+  getAttributionStats
 };

@@ -768,6 +768,7 @@
           <button class="tab-btn" data-tab="referral" onclick="switchTab('referral')">分销</button>
           <button class="tab-btn" data-tab="system" onclick="switchTab('system')">系统配置</button>
           <button class="tab-btn" data-tab="analytics" onclick="switchTab('analytics')">运营数据</button>
+          <button class="tab-btn" data-tab="attribution" onclick="switchTab('attribution')">CTA 归因</button>
         </div>
 
         <!-- Results Tab -->
@@ -1234,6 +1235,75 @@
                   <tbody id="node-completion-body"></tbody>
                 </table>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============== CTA 归因标签页 ============== -->
+        <div id="tab-attribution" class="tab-content">
+          <!-- 4 个统计卡 -->
+          <div class="panel" style="margin-bottom: 1.5rem;">
+            <div class="panel-header">
+              <div class="panel-title">CTA 归因实时面板</div>
+              <div style="display: flex; gap: 0.5rem;">
+                <button class="btn" onclick="loadAttributionData()">刷新</button>
+                <button class="btn" onclick="downloadAttribution()">下载原始数据</button>
+              </div>
+            </div>
+            <div id="attribution-loading" class="loading">
+              <div class="spinner"></div>
+              <div>加载中</div>
+            </div>
+            <div id="attribution-container" style="display: none;">
+              <div class="stats-grid" id="attribution-stats-grid"></div>
+            </div>
+          </div>
+
+          <!-- 节点点击排名 TOP 15 -->
+          <div class="panel" style="margin-bottom: 1.5rem;">
+            <div class="panel-header">
+              <div class="panel-title">节点点击排名 TOP 15</div>
+              <div style="font-size: 0.625rem; color: var(--text-tertiary);">按归因标识聚合 · 反映"哪个节点最让用户想加微信"</div>
+            </div>
+            <div id="attribution-top-loading" class="loading">
+              <div class="spinner"></div>
+            </div>
+            <div id="attribution-top-container" style="display: none;">
+              <div id="attribution-top-bars"></div>
+            </div>
+          </div>
+
+          <!-- 24h 时间线 -->
+          <div class="panel" style="margin-bottom: 1.5rem;">
+            <div class="panel-header">
+              <div class="panel-title">24 小时时间线</div>
+              <div style="font-size: 0.625rem; color: var(--text-tertiary);">每小时点击分布 · SVG sparkline</div>
+            </div>
+            <div id="attribution-timeline-container" style="display: none;">
+              <div id="attribution-timeline" style="height: 120px;"></div>
+            </div>
+          </div>
+
+          <!-- 原始记录 -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">最近 100 条点击</div>
+              <button class="btn" onclick="loadAttributionRecords()">刷新</button>
+            </div>
+            <div class="table-wrapper">
+              <table class="data-table" id="attribution-records-table">
+                <thead>
+                  <tr>
+                    <th>时间</th>
+                    <th>来源</th>
+                    <th>媒介</th>
+                    <th>活动</th>
+                    <th>IP</th>
+                    <th>UA</th>
+                  </tr>
+                </thead>
+                <tbody id="attribution-records-body"></tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -3005,6 +3075,172 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeModal();
     });
+
+    // ============== CTA 归因面板 ==============
+    async function loadAttributionData() {
+      document.getElementById('attribution-loading').style.display = 'block';
+      document.getElementById('attribution-container').style.display = 'none';
+
+      try {
+        const [statsRes, recordsRes] = await Promise.all([
+          fetch(API_BASE + '/api/attribution/stats'),
+          fetch(API_BASE + '/api/attribution/records?limit=100')
+        ]);
+        const stats = await statsRes.json();
+        const records = await recordsRes.json();
+
+        // 1. 4 个统计卡
+        const today = new Date().toISOString().slice(0, 10);
+        const sevenDaysAgo = Date.now() - 7 * 86400 * 1000;
+        const todayClicks = records.filter(r => r.timestamp && r.timestamp.startsWith(today)).length;
+        const weekClicks = records.filter(r => new Date(r.timestamp).getTime() >= sevenDaysAgo).length;
+        const byNode = stats.by_node || stats.by_from || {};
+
+        document.getElementById('attribution-stats-grid').innerHTML = `
+          <div class="stat-card">
+            <div class="stat-label">总点击数</div>
+            <div class="stat-value">${stats.total || records.length}</div>
+            <div class="stat-meta">全时段累计</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">独立 from 标识</div>
+            <div class="stat-value">${Object.keys(byNode).length}</div>
+            <div class="stat-meta">有产出的节点数</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">今日点击</div>
+            <div class="stat-value">${todayClicks}</div>
+            <div class="stat-meta">${today}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">7 日点击</div>
+            <div class="stat-value">${weekClicks}</div>
+            <div class="stat-meta">近 168 小时</div>
+          </div>
+        `;
+
+        // 2. TOP 15 节点排名（横条 progress bar）
+        const topEntries = Object.entries(byNode)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 15);
+        const maxClicks = topEntries[0] ? topEntries[0][1] : 1;
+
+        if (topEntries.length === 0) {
+          document.getElementById('attribution-top-bars').innerHTML =
+            '<div style="text-align:center;padding:2rem;color:var(--text-tertiary);">暂无点击数据 — 用户开始点节点底部 CTA 后将自动填充</div>';
+        } else {
+          document.getElementById('attribution-top-bars').innerHTML = topEntries.map(([from, count], i) => {
+            const pct = (count / maxClicks * 100).toFixed(1);
+            const isTop3 = i < 3;
+            return `
+              <div style="display:flex;align-items:center;gap:1rem;padding:0.75rem 0;border-bottom:1px solid var(--line);">
+                <div style="width:1.5rem;text-align:center;font-family:'Geist Mono',monospace;font-size:0.75rem;color:${isTop3 ? 'var(--accent)' : 'var(--text-tertiary)'};">${i + 1}</div>
+                <div style="flex:1;">
+                  <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.25rem;">
+                    <code style="font-family:'Geist Mono',monospace;font-size:0.75rem;color:var(--text-primary);">${from}</code>
+                    ${isTop3 ? '<span style="font-size:0.625rem;color:var(--accent);">★</span>' : ''}
+                  </div>
+                  <div style="height:6px;background:var(--surface);position:relative;overflow:hidden;">
+                    <div style="position:absolute;left:0;top:0;height:100%;width:${pct}%;background:${isTop3 ? 'var(--accent)' : 'var(--text-secondary)'};transition:width 600ms ease;"></div>
+                  </div>
+                </div>
+                <div style="min-width:3rem;text-align:right;font-family:'Geist Mono',monospace;font-size:0.875rem;color:var(--text-primary);">${count}</div>
+              </div>
+            `;
+          }).join('');
+        }
+
+        // 3. 24h 时间线（SVG sparkline）
+        const hourCounts = new Array(24).fill(0);
+        records.forEach(r => {
+          if (!r.timestamp) return;
+          const hour = new Date(r.timestamp).getHours();
+          hourCounts[hour]++;
+        });
+        const maxHour = Math.max(1, ...hourCounts);
+        const svgBars = hourCounts.map((c, h) => {
+          const x = (h / 24 * 100).toFixed(2);
+          const h_pct = (c / maxHour * 80).toFixed(1);
+          return `<rect x="${x}%" y="${(100 - h_pct).toFixed(1)}%" width="3%" height="${h_pct}%" fill="var(--accent)" opacity="${c > 0 ? 0.9 : 0.2}"/>`;
+        }).join('');
+        const labels = [0, 6, 12, 18, 23].map(h => {
+          const x = (h / 24 * 100).toFixed(2);
+          return `<text x="${x}%" y="98%" fill="var(--text-quaternary)" font-size="0.5625rem" text-anchor="middle" font-family="'Geist Mono',monospace">${h}</text>`;
+        }).join('');
+
+        document.getElementById('attribution-timeline').innerHTML = `
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="width:100%;height:100%;">
+            ${svgBars}
+            ${labels}
+          </svg>
+          <div style="display:flex;justify-content:space-between;margin-top:0.5rem;font-size:0.625rem;color:var(--text-tertiary);">
+            <span>00:00</span>
+            <span>12:00</span>
+            <span>23:59</span>
+          </div>
+        `;
+
+        document.getElementById('attribution-loading').style.display = 'none';
+        document.getElementById('attribution-container').style.display = 'block';
+        document.getElementById('attribution-top-loading').style.display = 'none';
+        document.getElementById('attribution-top-container').style.display = 'block';
+        document.getElementById('attribution-timeline-container').style.display = 'block';
+      } catch (err) {
+        document.getElementById('attribution-loading').innerHTML =
+          '<div style="color:var(--accent);">加载失败: ' + err.message + '</div>';
+      }
+    }
+
+    async function loadAttributionRecords() {
+      try {
+        const res = await fetch(API_BASE + '/api/attribution/records?limit=100');
+        const records = await res.json();
+        const tbody = document.getElementById('attribution-records-body');
+        if (records.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-tertiary);">暂无点击记录</td></tr>';
+          return;
+        }
+        tbody.innerHTML = records.map(r => `
+          <tr>
+            <td class="time">${(r.timestamp || '').replace('T', ' ').slice(0, 19)}</td>
+            <td><code style="font-size:0.625rem;">${r.from || '-'}</code></td>
+            <td>${r.source || '-'}</td>
+            <td>node-cta</td>
+            <td class="time" style="font-size:0.5625rem;">${(r.ip || '-').slice(0, 16)}</td>
+            <td style="font-size:0.5625rem;max-width:20rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${(r.user_agent || '').replace(/"/g, '&quot;')}">${(r.user_agent || '-').slice(0, 60)}</td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        document.getElementById('attribution-records-body').innerHTML =
+          '<tr><td colspan="6" style="text-align:center;color:var(--accent);">加载失败: ' + err.message + '</td></tr>';
+      }
+    }
+
+    async function downloadAttribution() {
+      try {
+        const res = await fetch(API_BASE + '/api/attribution/records?limit=10000');
+        const records = await res.json();
+        const blob = new Blob([JSON.stringify(records, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `attribution-${new Date().toISOString().slice(0, 10)}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+      } catch (err) {
+        alert('下载失败: ' + err.message);
+      }
+    }
+
+    // Hook into tab switching
+    const origSwitchTab = switchTab;
+    switchTab = function(tab) {
+      origSwitchTab(tab);
+      if (tab === 'attribution') {
+        loadAttributionData();
+        loadAttributionRecords();
+      }
+    };
 
     // Initial load
     loadData();
