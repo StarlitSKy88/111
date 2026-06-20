@@ -3,994 +3,129 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="节点09：Git版本控制初始化 - OPC节点百科">
+  <meta name="description" content="Git 版本管理 - 1 人 MCN 节点库">
   <meta name="theme-color" content="#111110">
-  <title>节点09：Git版本控制初始化 - OPC节点百科</title>
+  <title>节点09：Git 版本管理 - 一人 MCN 节点库</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../_design-tokens.css">
   <style>
-
-:root {
-  --bg: #111110;
-  --surface: #1A1A18;
-  --text-primary: #F0EDE6;
-  --text-secondary: #7A7670;
-  --text-tertiary: #4A4744;
-  --accent: #C0392B;
-  --line: #2A2A28;
-  --line-light: rgba(255,255,255,0.06);
-  --space-xs: 8px;
-  --space-sm: 16px;
-  --space-md: 24px;
-  --space-lg: 32px;
-  --space-xl: 48px;
-  --space-2xl: 64px;
-  --space-3xl: 96px;
-  --space-4xl: 128px;
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-html {
-  overflow-x: hidden;
-}
-
-body {
-  background: var(--bg);
-  color: var(--text-primary);
-  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-weight: 300;
-  line-height: 1.9;
-  letter-spacing: 0.04em;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-}
-
-/* 移动端整体适配 - 使用 900px breakpoint 与现有代码一致 */
-@media (max-width: 900px) {
-  html, body {
-    overflow-x: hidden !important;
-    max-width: 100vw !important;
-  }
-
-  body {
-    font-size: 14px;
-  }
-
-  .layout {
-    display: block !important;
-    width: 100% !important;
-    max-width: 100vw !important;
-    padding: 4rem 16px 2rem !important;
-    margin: 0 !important;
-    grid-template-columns: 1fr !important;
-  }
-
-  .sidebar-toc {
-    display: none !important;
-  }
-
-  .container {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 0 !important;
-  }
-
-  section {
-    width: 100% !important;
-    max-width: 100vw !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-  }
-
-  section > * {
-    max-width: 100% !important;
-    overflow-x: visible !important;
-    box-sizing: border-box !important;
-  }
-
-  section p {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    word-break: break-word !important;
-    overflow-wrap: break-word !important;
-    white-space: normal !important;
-    display: block !important;
-    box-sizing: border-box !important;
-  }
-
-  h1 {
-    font-size: clamp(36px, 10vw, 48px) !important;
-    line-height: 1.05 !important;
-  }
-}
-
-/* Layout with Sidebar */
-.layout {
-  display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
-  gap: clamp(2rem, 4vw, 3rem);
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
-}
-
-/* Sidebar TOC */
-.sidebar-toc {
-  position: sticky;
-  top: 5rem;
-  height: fit-content;
-  max-height: calc(100vh - 6rem);
-  overflow-y: auto;
-  padding-top: 0;
-  scrollbar-width: thin;
-  scrollbar-color: var(--line) transparent;
-}
-
-.sidebar-toc::-webkit-scrollbar {
-  width: 4px;
-}
-
-.sidebar-toc::-webkit-scrollbar-thumb {
-  background: var(--line);
-  border-radius: 2px;
-}
-
-.toc-title {
-  font-size: 0.6875rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  margin-bottom: 1.25rem;
-}
-
-.toc-list {
-  list-style: none;
-}
-
-.toc-item {
-  margin-bottom: 0.75rem;
-}
-
-.toc-link {
-  font-size: 0.8125rem;
-  color: var(--text-secondary);
-  text-decoration: none;
-  display: block;
-  padding: 0.375rem 0;
-  padding-left: 1rem;
-  border-left: 1px solid var(--line);
-  transition: all 0.3s;
-  line-height: 1.4;
-}
-
-.toc-link:hover {
-  color: var(--text-primary);
-  border-left-color: var(--accent);
-}
-
-.toc-link.active {
-  color: var(--accent);
-  border-left-color: var(--accent);
-  font-weight: 400;
-}
-
-.toc-link.sub {
-  padding-left: 1.75rem;
-  font-size: 0.75rem;
-}
-
-/* Fixed Top Nav */
-.fixed-top-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
-  background: rgba(17, 17, 16, 0.85);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--line);
-}
-
-.back-link {
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-secondary);
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: color 0.3s;
-}
-
-.back-link:hover {
-  color: var(--text-primary);
-}
-
-.node-id {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 0.75rem;
-  color: var(--text-tertiary);
-  letter-spacing: 0.08em;
-}
-
-/* Header */
-header {
-  padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
-  border-bottom: 1px solid var(--line);
-  margin-bottom: clamp(2rem, 5vh, 3rem);
-}
-
-/* Main content */
-main {
-  padding-bottom: 5rem;
-}
-
-/* 移动端底部导航适配 - 合并到 900px breakpoint */
-@media (max-width: 900px) {
-  main {
-    padding-bottom: 6rem; /* 为固定底部导航预留空间 */
-  }
-
-  .footer-nav {
-    overflow-x: auto;
-    justify-content: space-between;
-  }
-
-  .nav-link {
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  .table-wrapper {
-    position: relative;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    margin: 1.5rem 0;
-    border: 1px solid var(--line);
-  }
-
-  .table-wrapper::after {
-    content: "← 左右滑动 →";
-    position: absolute;
-    right: 8px;
-    bottom: 8px;
-    font-size: 0.625rem;
-    color: var(--text-tertiary);
-    background: var(--surface);
-    padding: 2px 8px;
-    pointer-events: none;
-  }
-
-  table {
-    min-width: 100%;
-    font-size: 0.8125rem;
-  }
-
-  td, th {
-    padding: 0.625rem 0.75rem;
-  }
-}
-
-/* Section anchors offset for sticky header */
-section {
-  scroll-margin-top: 2rem;
-}
-
-section h2 {
-  font-size: clamp(1.5rem, 3.5vw, 2rem);
-}
-
-section p, section li {
-  font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
-  line-height: 1.9;
-}
-
-/* Table improvements */
-.table-wrapper {
-  margin: 1.5rem 0;
-  border: 1px solid var(--line);
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.table-wrapper::after {
-  content: "";
-  display: block;
-}
-
-/* 移动端滑动提示 */
-@media (max-width: 900px) {
-  .table-wrapper::after {
-    content: "← 左右滑动 →";
-    position: absolute;
-    right: 8px;
-    bottom: 8px;
-    font-size: 0.625rem;
-    color: var(--text-tertiary);
-    background: var(--surface);
-    padding: 2px 8px;
-    pointer-events: none;
-  }
-
-  .table-wrapper {
-    position: relative;
-    padding-bottom: 24px;
-  }
-}
-
-table {
-  font-size: 0.875rem;
-  min-width: 560px;
-}
-
-@media (max-width: 900px) {
-  table {
-    min-width: 100%;
-    font-size: 0.8125rem;
-  }
-
-  td, th {
-    padding: 0.625rem 0.75rem;
-  }
-}
-
-/* Tool Cards */
-.tool-grid {
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-}
-
-/* Path blocks */
-.path-block {
-  padding: 1.5rem;
-}
-
-.workflow {
-  padding: 1rem 1.25rem;
-  font-size: 0.8125rem;
-}
-
-/* Validation cards */
-.validation-grid {
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-}
-
-.validation-card {
-  padding: 1.25rem;
-}
-
-/* Level items */
-.level-grid {
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-}
-
-/* Decision box */
-.decision-box {
-  padding: 1.25rem 1.5rem;
-}
-
-/* Main content */
-.phase-label {
-  font-size: 0.6875rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 1.25rem;
-}
-
-h1 {
-  font-family: 'Noto Serif JP', serif;
-  font-size: clamp(48px, 10vw, 96px);
-  font-weight: 300;
-  letter-spacing: -0.03em;
-  line-height: 0.95;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xl);
-}
-
-/* 移动端H1适配 */
-@media (max-width: 900px) {
-  h1 {
-    font-size: clamp(36px, 10vw, 48px);
-    line-height: 1.05;
-  }
-}
-
-.phase-label {
-  font-size: 13px;
-  color: var(--accent);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  margin-bottom: var(--space-lg);
-  display: flex;
-  align-items: center;
-  gap: var(--space-md);
-}
-.phase-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
-
-.subtitle {
-  font-size: 16px;
-  color: var(--text-secondary);
-  max-width: 44ch;
-  line-height: 1.8;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
-
-/* 移动端副标题适配 */
-@media (max-width: 900px) {
-  .subtitle {
-    font-size: 14px;
-    max-width: 100%;
-  }
-}
-
-.node-meta {
-  margin-top: 2rem;
-  font-size: 0.75rem;
-  color: var(--text-tertiary);
-  letter-spacing: 0.1em;
-}
-
-/* Sections */
-section {
-  padding-bottom: clamp(3rem, 10vh, 5rem);
-  border-bottom: 1px solid var(--line);
-  margin-bottom: clamp(3rem, 10vh, 5rem);
-}
-
-section:last-of-type {
-  border-bottom: none;
-}
-
-.section-label {
-  font-size: 0.6875rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  margin-bottom: 1.5rem;
-}
-
-h2 {
-  font-family: 'Noto Serif JP', serif;
-  font-size: clamp(1.375rem, 4vw, 1.875rem);
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  line-height: 1.3;
-  color: var(--text-primary);
-  margin-bottom: 1.5rem;
-}
-
-h3 {
-  font-family: 'Noto Serif JP', serif;
-  font-size: clamp(1.125rem, 3vw, 1.375rem);
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  color: var(--text-primary);
-  margin-bottom: 1rem;
-  margin-top: 2rem;
-}
-
-p {
-  color: var(--text-secondary);
-  line-height: 1.9;
-  margin-bottom: 1.25rem;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-}
-
-/* 移动端段落适配 */
-@media (max-width: 900px) {
-  p {
-    padding-right: 0.5rem;
-    word-break: break-all;
-    white-space: normal;
-  }
-
-  section p {
-    padding-right: 0;
-  }
-}
-
-.decision-box {
-  background: var(--surface);
-  border-left: 2px solid var(--accent);
-  padding: 1.5rem 2rem;
-  margin: 2rem 0;
-}
-
-.decision-box p {
-  color: var(--text-primary);
-  font-size: 0.9375rem;
-  margin: 0;
-}
-
-/* Tables */
-.table-wrapper {
-  overflow-x: auto;
-  margin: 2rem 0;
-  -webkit-overflow-scrolling: touch;
-}
-
-table {
-  width: 100%;
-  min-width: 560px;
-  border-collapse: collapse;
-  font-size: 0.875rem;
-}
-
-th {
-  text-align: left;
-  font-weight: 400;
-  font-size: 0.6875rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid var(--line);
-}
-
-td {
-  padding: 1rem;
-  border-bottom: 1px solid var(--line);
-  color: var(--text-secondary);
-  vertical-align: top;
-}
-
-tr:last-child td {
-  border-bottom: none;
-}
-
-td:first-child {
-  color: var(--text-primary);
-  font-weight: 400;
-}
-
-/* Tool Cards */
-.tool-grid {
-  display: grid;
-  gap: 1.5rem;
-  margin: 2rem 0;
-}
-
-.tool-card {
-  background: var(--surface);
-  padding: 1.75rem;
-  border: 1px solid var(--line);
-}
-
-.tool-card h4 {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 1.125rem;
-  font-weight: 400;
-  color: var(--text-primary);
-  margin-bottom: 0.75rem;
-}
-
-.tool-card .tagline {
-  font-size: 0.8125rem;
-  color: var(--text-tertiary);
-  margin-bottom: 1.25rem;
-}
-
-.tool-card p {
-  font-size: 0.875rem;
-  line-height: 1.8;
-  margin-bottom: 0.75rem;
-}
-
-.tool-card .pros {
-  color: var(--text-secondary);
-  font-size: 0.8125rem;
-}
-
-.tool-card .price {
-  display: inline-block;
-  font-size: 0.75rem;
-  color: var(--accent);
-  border: 1px solid var(--accent);
-  padding: 0.25rem 0.75rem;
-  margin-top: 1rem;
-}
-
-/* Path Section */
-.path-block {
-  background: var(--surface);
-  padding: 2rem;
-  margin: 2rem 0;
-  border: 1px solid var(--line);
-}
-
-.path-header {
-  display: flex;
-  align-items: baseline;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
-}
-
-.path-number {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 0.75rem;
-  color: var(--accent);
-  letter-spacing: 0.1em;
-}
-
-.path-title {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 1.25rem;
-  font-weight: 400;
-  color: var(--text-primary);
-}
-
-.path-tools {
-  font-size: 0.8125rem;
-  color: var(--text-tertiary);
-  margin-bottom: 1.25rem;
-}
-
-.path-block p {
-  font-size: 0.875rem;
-  margin-bottom: 0.75rem;
-}
-
-.workflow {
-  background: var(--bg);
-  padding: 1.25rem 1.5rem;
-  margin-top: 1.25rem;
-  font-size: 0.8125rem;
-  color: var(--text-secondary);
-  line-height: 1.9;
-}
-
-/* Validation Box */
-.validation-grid {
-  display: grid;
-  gap: 1.25rem;
-  margin: 2rem 0;
-}
-
-.validation-card {
-  background: var(--surface);
-  padding: 1.5rem;
-  border: 1px solid var(--line);
-}
-
-.validation-card h4 {
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: var(--text-primary);
-  margin-bottom: 0.75rem;
-}
-
-.validation-card p {
-  font-size: 0.8125rem;
-  margin: 0;
-}
-
-.level-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin: 1.5rem 0;
-}
-
-.level-item {
-  background: var(--surface);
-  padding: 1.25rem;
-  border: 1px solid var(--line);
-}
-
-.level-item .num {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 1.5rem;
-  color: var(--accent);
-  opacity: 0.6;
-  margin-bottom: 0.5rem;
-}
-
-.level-item h4 {
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: var(--text-primary);
-  margin-bottom: 0.5rem;
-}
-
-.level-item p {
-  font-size: 0.75rem;
-  margin: 0;
-}
-
-/* Cost Control */
-.cost-table {
-  margin: 2rem 0;
-}
-
-/* Quote */
-.quote-block {
-  border-left: 2px solid var(--accent);
-  padding-left: 1.5rem;
-  margin: 2rem 0;
-}
-
-.quote-block p {
-  font-size: 1rem;
-  color: var(--text-primary);
-  line-height: 1.8;
-}
-
-/* Network Section */
-.network-alert {
-  background: var(--surface);
-  border: 1px solid var(--accent);
-  padding: 1.5rem 2rem;
-  margin: 2rem 0;
-}
-
-.network-alert h4 {
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: var(--accent);
-  margin-bottom: 0.75rem;
-}
-
-.network-alert p {
-  font-size: 0.875rem;
-  margin: 0;
-}
-
-/* Summary Box */
-.summary-box {
-  background: var(--surface);
-  padding: 2rem;
-  margin-top: 3rem;
-  border: 1px solid var(--line);
-}
-
-.summary-box h3 {
-  margin-top: 0;
-  margin-bottom: 1.25rem;
-}
-
-.step-list {
-  list-style: none;
-  counter-reset: steps;
-}
-
-.step-list li {
-  counter-increment: steps;
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-}
-
-.step-list li::before {
-  content: counter(steps);
-  font-family: 'Noto Serif JP', serif;
-  font-size: 0.75rem;
-  color: var(--accent);
-  flex-shrink: 0;
-  width: 1.5rem;
-  padding-top: 0.25rem;
-}
-
-/* Footer Nav - Fixed Bottom */
-.footer-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
-  background: rgba(17, 17, 16, 0.9);
-  backdrop-filter: blur(12px);
-  border-top: 1px solid var(--line);
-}
-
-.nav-link {
-  font-size: 0.75rem;
-  color: var(--text-tertiary);
-  text-decoration: none;
-  letter-spacing: 0.08em;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: color 0.3s;
-}
-
-.nav-link:hover {
-  color: var(--text-primary);
-}
-
-.nav-link.disabled {
-  opacity: 0.3;
-  pointer-events: none;
-}
-
+    :root {
+      --bg: #111110; --surface: #1A1A18;
+      --text-primary: #F0EDE6; --text-secondary: #B8B4AE; --text-tertiary: #7A7670;
+      --line: #2A2A28; --accent: #C0392B;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text-primary);
+      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.8; letter-spacing: 0.03em;
+      min-height: 100dvh; -webkit-font-smoothing: antialiased; }
+    .fixed-top-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+      background: rgba(17, 17, 16, 0.85); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-home { color: var(--text-primary); text-decoration: none;
+      font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .nav-node-id { color: var(--text-tertiary); font-size: 0.75rem; letter-spacing: 0.1em; }
+    .page { max-width: 1200px; margin: 0 auto;
+      padding: 6rem clamp(24px, 5vw, 80px) 4rem; }
+    .hero { padding: var(--space-3xl) 0 var(--space-xl); }
+    .hero-label { color: var(--accent); font-size: 0.75rem;
+      letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; }
+    .hero h1 { font-family: 'Noto Serif JP', serif;
+      font-size: clamp(48px, 10vw, 96px); font-weight: 300; line-height: 0.95;
+      letter-spacing: -0.03em; margin-bottom: 1rem; }
+    .hero-subtitle { font-size: 1.125rem; color: var(--text-secondary);
+      margin-bottom: 1rem; line-height: 1.5; }
+    .lead { max-width: 44ch; color: var(--text-secondary);
+      font-size: 1rem; line-height: 1.85; margin-bottom: 2rem; }
+    .meta-row { display: inline-flex; gap: 1.5rem;
+      font-size: 0.8125rem; color: var(--text-tertiary);
+      padding: 0.75rem 1.25rem; border: 1px solid var(--line); margin-bottom: 3rem; }
+    .meta-row b { color: var(--text-primary); font-weight: 500; }
+    .block { padding: var(--space-2xl) 0; border-top: 1px solid var(--line); }
+    .block h2 { font-family: 'Noto Serif JP', serif;
+      font-size: clamp(20px, 2.5vw, 28px); font-weight: 400; line-height: 1.3;
+      margin-bottom: 1.5rem; }
+    .block ul { list-style: none; padding: 0; }
+    .block li { padding: 0.5rem 0 0.5rem 1.5rem;
+      border-bottom: 1px solid var(--line); position: relative;
+      color: var(--text-primary); font-size: 0.9375rem; line-height: 1.8; }
+    .block li::before { content: '·'; position: absolute; left: 0;
+      color: var(--accent); font-weight: 700; }
+    .block li:last-child { border-bottom: none; }
+    .footer-nav { position: fixed; bottom: 0; left: 0; right: 0;
+      display: flex; justify-content: space-between;
+      padding: 1rem clamp(1.25rem, 4vw, 2.5rem);
+      background: rgba(17, 17, 16, 0.9); backdrop-filter: blur(12px);
+      border-top: 1px solid var(--line); z-index: 100; }
+    .nav-link { color: var(--text-secondary); text-decoration: none;
+      font-size: 0.8125rem; letter-spacing: 0.08em; transition: color 0.3s; }
+    .nav-link:hover { color: var(--accent); }
   </style>
+<link rel="stylesheet" href="../_layout-templates.css">
 </head>
 <body>
-  <nav class="fixed-top-nav">
-    <a href="/index.html" class="back-link">← 返回首页</a>
-    <span class="node-id">节点 9 / 57</span>
-  </nav>
 
-  <div class="layout">
-    <main class="container">
-      <header>
-      <div class="phase-label">0-1</div>
-      <h1>节点09：Git版本控制初始化</h1>
-      <div class="node-meta">节点 9 / 57 · 最后修订：2026年6月4日</div>
-    </header>
+<nav class="fixed-top-nav">
+  <a href="/" class="nav-home">◉ 飞轮首页</a>
+  <span class="nav-node-id">节点 09 · P1 产品阶段</span>
+</nav>
 
-    <section id="s1">
-    
-<p>node_id: 9</p>
-<p>persona: ranmu</p>
-<p>cta_type: wechat</p>
-<p>keywords: [Git, 版本, 控制, 提交, GitHub]</p>
+<main class="layout layout-classic">
+  <header class="hero">
+    <div class="hero-label">节点 09 · P1 产品阶段</div>
+    <h1>Git 版本管理<br>分支策略 + 提交规范</h1>
+    <p class="hero-subtitle">1 人也要用 Git</p>
+    <p class="lead">1 人 MCN 「Git 版本管理」完整 SOP · 14 节点中第 1 个</p>
+    <div class="meta-row">
+      <span><b>20 min</b> 读完</span>
+      <span><b>1 人</b> 可做</span>
+      <span>阶段 <b>P1 产品阶段</b></span>
+    </div>
+  </header>
 
-<blockquote class="decision-box"><p>Git 不是程序员的专利，OPC 也要用。它的作用是<strong>让"我 3 周前写的东西怎么没了"这种事不再发生</strong>。</p></blockquote>
-
-<p></section></p>
-<section id="s一">
-<p>      <div class="section-label">一、OPC 为什么必须用 Git</div></p>
-
-<div class="table-wrapper"><table><thead><tr><th>不用的后果</th><th>用的好处</th></tr></thead><tbody><tr><td>改坏代码回不去了</td><td>任何改动都能回到上一版本</td></tr><tr><td>多个文件改动混在一起</td><td>每次改动有清晰的提交记录</td></tr><tr><td>电脑坏了文件全没</td><td>推到 GitHub 就是免费备份</td></tr><tr><td>想看 1 个月前写的啥</td><td><code>git log</code> 一键查看历史</td></tr></tbody></table></div>
-<strong>3 个 OPC 必会的命令</strong>：<code>git add</code>、<code>git commit</code>、<code>git push</code>。其他都是锦上添花。
-
-<p></section></p>
-<section id="s二">
-<p>      <div class="section-label">二、初始化项目的 4 步</div></p>
-
-<h3>Step 1：项目根目录初始化</h3>
-
-<p>``<code>bash</p>
-<p>cd my-opc-app</p>
-<p>git init</p>
-<p>git branch -M main</p>
-<p></code>`<code></p>
-
-<h3>Step 2：写 .gitignore</h3>
-
-<p>Next.js 已经有现成的 </code>.gitignore<code>，但 OPC 要再加 3 条：</p>
-
-<p></code>`<code>gitignore</p>
-# 永远不要提交
-<p>.env</p>
-<p>.env.local</p>
-<p>.DS_Store</p>
-
-# 依赖
-<p>node_modules/</p>
-
-# 编译产物
-<p>.next/</p>
-<p>out/</p>
-<p>dist/</p>
-<p></code>`<code></p>
-
-<strong>最重要的 1 条</strong>：</code>.env<code> 里通常有 API key，一旦推到 GitHub = 公开发布。
-
-<h3>Step 3：第一次提交</h3>
-
-<p></code>`<code>bash</p>
-<p>git add .</p>
-<p>git commit -m "feat: initial commit"</p>
-<p></code>`<code></p>
-
-<h3>Step 4：连 GitHub</h3>
-
-<p></code>`<code>bash</p>
-# 在 GitHub 创建空仓库后
-<p>git remote add origin https://github.com/你的用户名/my-opc-app.git</p>
-<p>git push -u origin main</p>
-<p></code>`<code></p>
-
-<p></section></p>
-<section id="s三">
-<p>      <div class="section-label">三、Commit 命名规范（OPC 简化版）</div></p>
-
-<strong>不要写</strong> "fix" / "update" / "改了一下"。
-
-<strong>用 5 个动词开头</strong>：
-<ul><li></code>feat:<code> 新功能</li><li></code>fix:<code> 修 bug</li><li></code>docs:<code> 改文档</li><li></code>style:<code> 改格式（不影响代码逻辑）</li><li></code>chore:<code> 杂事（升级依赖、删文件）</li></ul>
-<p></code>`<code></p>
-<p>feat: 添加用户登录页面</p>
-<p>fix: 修复注册按钮点击没反应</p>
-<p>docs: 更新 README 部署说明</p>
-<p>chore: 升级 next 到 14.2</p>
-<p></code>`<code></p>
-
-<p></section></p>
-<section id="s四">
-<p>      <div class="section-label">四、3 个救命场景</div></p>
-
-<h3>场景 1：刚才改坏了，回滚</h3>
-
-<p></code>`<code>bash</p>
-# 看最近 5 次提交
-<p>git log --oneline -5</p>
-
-# 回滚到指定版本（hash 来自上面）
-<p>git reset --hard abc123</p>
-<p></code>`<code></p>
-
-<h3>场景 2：临时改点东西又不想提交</h3>
-
-<p></code>`<code>bash</p>
-<p>git stash       # 暂存当前修改</p>
-<p>git stash pop   # 恢复</p>
-<p></code>`<code></p>
-
-<h3>场景 3：在新电脑继续开发</h3>
-
-<p></code>`<code>bash</p>
-<p>git clone https://github.com/你的用户名/my-opc-app.git</p>
-<p>cd my-opc-app</p>
-<p>npm install</p>
-<p></code>`<code></p>
-
-<p></section></p>
-<section id="s五">
-<p>      <div class="section-label">五、Git 工具推荐</div></p>
-
-<div class="table-wrapper"><table><thead><tr><th>工具</th><th>用途</th></tr></thead><tbody><tr><td><strong>GitHub Desktop</strong></td><td>GUI 工具，可视化 diff 和历史</td></tr><tr><td><strong>VS Code GitLens 插件</strong></td><td>代码里直接看到谁改的、什么时候</td></tr><tr><td><strong>GitHub Mobile App</strong></td><td>手机上看 PR / issue 通知</td></tr></tbody></table></div>
-<strong>不要用命令行以外的方式提交</strong>？错，OPC 不需要酷，用 GUI 工具完全 OK。
-
-<p></section></p>
-<section id="s六">
-<p>      <div class="section-label">六、检查清单</div></p>
-
-<ul><li><input type="checkbox" disabled> 项目有 .gitignore 包含 .env</li><li><input type="checkbox" disabled> 代码推到 GitHub</li><li><input type="checkbox" disabled> commit 命名用 feat/fix/docs/style/chore 前缀</li><li><input type="checkbox" disabled> 知道 </code>git log<code> 和 </code>git reset --hard` 怎么用</li><li><input type="checkbox" disabled> 至少有 1 个 backup 在 GitHub（电脑坏了不慌）</li></ul>
-
-<p></section></p>
-<section id="s节">
-<p>      <div class="section-label">节点资源链接</div></p>
-
-<ul><li>节点08：Hello World 启动</li><li>节点10：后端CRUD连接测试</li><li>节点20：Bug集中修复</li></ul>
+    <section class="block">
+      <h2>为什么 1 人 MCN 要用 Git？</h2>
+      <ul>
+        <li>① 视频脚本迭代需要版本回溯（D5 视频比 D1 强太多）</li>
+        <li>② 配置文件管理（豆包 TTS 参数表 / 剪映预设）</li>
+        <li>③ 内容日历版本化（飞书表格 / 飞书 wiki 配合）</li>
+        <li>④ 多设备同步（Mac 剪 + Win 审）</li>
+      </ul>
     </section>
 
-    <div class="summary-box">
-      <h3>节点9检查清单</h3>
-      <p>完成本节点后，请确认所有检查项已通过。</p>
-    </div>
-    </main>
-  </div>
+    <section class="block">
+      <h2>1 人 MCN 简化版 Git Flow</h2>
+      <ul>
+        <li>main：稳定可用（线上在跑的脚本/配置）</li>
+        <li>dev：日常开发（每天 commit）</li>
+        <li>feature/*：单个钩子脚本实验（用完即弃）</li>
+        <li>→ 1 人项目不需要 hotfix/release 分支</li>
+      </ul>
+    </section>
 
-  <nav class="footer-nav">
-    <a href="/nodes/8-hello-world/index.html" class="nav-link"><span>←</span> 节点8</a>
-    <a href="/nodes/10-backend-connect/index.html" class="nav-link">节点10 <span>→</span></a>
-  </nav>
+    <section class="block">
+      <h2>提交规范</h2>
+      <ul>
+        <li>feat: 新增 1 个钩子脚本</li>
+        <li>fix: 修复 TTS 合成问题</li>
+        <li>docs: 更新内容日历</li>
+        <li>test: 测试新模板</li>
+        <li>chore: 杂项（更新豆包模型等）</li>
+      </ul>
+    </section>
 
-  <script>
-  document.querySelectorAll('a[href^="#"]').forEach(link => {
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-      const targetId = this.getAttribute('href').slice(1);
-      const target = document.getElementById(targetId);
-      if (target) {
-        window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
-      }
-    });
-  });
-  </script>
+</main>
+
+<nav class="footer-nav">
+  <a href="/nodes/08-/index.html" class="nav-link"><span>←</span> 节点 08</a>
+  <a href="/nodes/10-backend-connect/index.html" class="nav-link">节点 10 <span>→</span></a>
+</nav>
 </body>
 </html>

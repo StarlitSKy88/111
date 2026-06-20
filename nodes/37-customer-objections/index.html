@@ -3,1058 +3,119 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="节点37：客户异议应对 - OPC节点百科">
+  <meta name="description" content="异议处理 - 1 人 MCN 节点库">
   <meta name="theme-color" content="#111110">
-  <title>节点37：客户异议应对 - OPC节点百科</title>
+  <title>节点37：异议处理 - 一人 MCN 节点库</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../_design-tokens.css">
   <style>
-
-:root {
-  --bg: #111110;
-  --surface: #1A1A18;
-  --text-primary: #F0EDE6;
-  --text-secondary: #7A7670;
-  --text-tertiary: #4A4744;
-  --accent: #C0392B;
-  --line: #2A2A28;
-  --line-light: rgba(255,255,255,0.06);
-  --space-xs: 8px;
-  --space-sm: 16px;
-  --space-md: 24px;
-  --space-lg: 32px;
-  --space-xl: 48px;
-  --space-2xl: 64px;
-  --space-3xl: 96px;
-  --space-4xl: 128px;
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-html {
-  overflow-x: hidden;
-}
-
-body {
-  background: var(--bg);
-  color: var(--text-primary);
-  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-weight: 300;
-  line-height: 1.9;
-  letter-spacing: 0.04em;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-}
-
-/* 移动端整体适配 - 使用 900px breakpoint 与现有代码一致 */
-@media (max-width: 900px) {
-  html, body {
-    overflow-x: hidden !important;
-    max-width: 100vw !important;
-  }
-
-  body {
-    font-size: 14px;
-  }
-
-  .layout {
-    display: block !important;
-    width: 100% !important;
-    max-width: 100vw !important;
-    padding: 4rem 16px 2rem !important;
-    margin: 0 !important;
-    grid-template-columns: 1fr !important;
-  }
-
-  .sidebar-toc {
-    display: none !important;
-  }
-
-  .container {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 0 !important;
-  }
-
-  section {
-    width: 100% !important;
-    max-width: 100vw !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-  }
-
-  section > * {
-    max-width: 100% !important;
-    overflow-x: visible !important;
-    box-sizing: border-box !important;
-  }
-
-  section p {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    word-break: break-word !important;
-    overflow-wrap: break-word !important;
-    white-space: normal !important;
-    display: block !important;
-    box-sizing: border-box !important;
-  }
-
-  h1 {
-    font-size: clamp(36px, 10vw, 48px) !important;
-    line-height: 1.05 !important;
-  }
-}
-
-/* Layout with Sidebar */
-.layout {
-  display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
-  gap: clamp(2rem, 4vw, 3rem);
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
-}
-
-/* Sidebar TOC */
-.sidebar-toc {
-  position: sticky;
-  top: 5rem;
-  height: fit-content;
-  max-height: calc(100vh - 6rem);
-  overflow-y: auto;
-  padding-top: 0;
-  scrollbar-width: thin;
-  scrollbar-color: var(--line) transparent;
-}
-
-.sidebar-toc::-webkit-scrollbar {
-  width: 4px;
-}
-
-.sidebar-toc::-webkit-scrollbar-thumb {
-  background: var(--line);
-  border-radius: 2px;
-}
-
-.toc-title {
-  font-size: 0.6875rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  margin-bottom: 1.25rem;
-}
-
-.toc-list {
-  list-style: none;
-}
-
-.toc-item {
-  margin-bottom: 0.75rem;
-}
-
-.toc-link {
-  font-size: 0.8125rem;
-  color: var(--text-secondary);
-  text-decoration: none;
-  display: block;
-  padding: 0.375rem 0;
-  padding-left: 1rem;
-  border-left: 1px solid var(--line);
-  transition: all 0.3s;
-  line-height: 1.4;
-}
-
-.toc-link:hover {
-  color: var(--text-primary);
-  border-left-color: var(--accent);
-}
-
-.toc-link.active {
-  color: var(--accent);
-  border-left-color: var(--accent);
-  font-weight: 400;
-}
-
-.toc-link.sub {
-  padding-left: 1.75rem;
-  font-size: 0.75rem;
-}
-
-/* Fixed Top Nav */
-.fixed-top-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
-  background: rgba(17, 17, 16, 0.85);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--line);
-}
-
-.back-link {
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-secondary);
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: color 0.3s;
-}
-
-.back-link:hover {
-  color: var(--text-primary);
-}
-
-.node-id {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 0.75rem;
-  color: var(--text-tertiary);
-  letter-spacing: 0.08em;
-}
-
-/* Header */
-header {
-  padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
-  border-bottom: 1px solid var(--line);
-  margin-bottom: clamp(2rem, 5vh, 3rem);
-}
-
-/* Main content */
-main {
-  padding-bottom: 5rem;
-}
-
-/* 移动端底部导航适配 - 合并到 900px breakpoint */
-@media (max-width: 900px) {
-  main {
-    padding-bottom: 6rem; /* 为固定底部导航预留空间 */
-  }
-
-  .footer-nav {
-    overflow-x: auto;
-    justify-content: space-between;
-  }
-
-  .nav-link {
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  .table-wrapper {
-    position: relative;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    margin: 1.5rem 0;
-    border: 1px solid var(--line);
-  }
-
-  .table-wrapper::after {
-    content: "← 左右滑动 →";
-    position: absolute;
-    right: 8px;
-    bottom: 8px;
-    font-size: 0.625rem;
-    color: var(--text-tertiary);
-    background: var(--surface);
-    padding: 2px 8px;
-    pointer-events: none;
-  }
-
-  table {
-    min-width: 100%;
-    font-size: 0.8125rem;
-  }
-
-  td, th {
-    padding: 0.625rem 0.75rem;
-  }
-}
-
-/* Section anchors offset for sticky header */
-section {
-  scroll-margin-top: 2rem;
-}
-
-section h2 {
-  font-size: clamp(1.5rem, 3.5vw, 2rem);
-}
-
-section p, section li {
-  font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
-  line-height: 1.9;
-}
-
-/* Table improvements */
-.table-wrapper {
-  margin: 1.5rem 0;
-  border: 1px solid var(--line);
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.table-wrapper::after {
-  content: "";
-  display: block;
-}
-
-/* 移动端滑动提示 */
-@media (max-width: 900px) {
-  .table-wrapper::after {
-    content: "← 左右滑动 →";
-    position: absolute;
-    right: 8px;
-    bottom: 8px;
-    font-size: 0.625rem;
-    color: var(--text-tertiary);
-    background: var(--surface);
-    padding: 2px 8px;
-    pointer-events: none;
-  }
-
-  .table-wrapper {
-    position: relative;
-    padding-bottom: 24px;
-  }
-}
-
-table {
-  font-size: 0.875rem;
-  min-width: 560px;
-}
-
-@media (max-width: 900px) {
-  table {
-    min-width: 100%;
-    font-size: 0.8125rem;
-  }
-
-  td, th {
-    padding: 0.625rem 0.75rem;
-  }
-}
-
-/* Tool Cards */
-.tool-grid {
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-}
-
-/* Path blocks */
-.path-block {
-  padding: 1.5rem;
-}
-
-.workflow {
-  padding: 1rem 1.25rem;
-  font-size: 0.8125rem;
-}
-
-/* Validation cards */
-.validation-grid {
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-}
-
-.validation-card {
-  padding: 1.25rem;
-}
-
-/* Level items */
-.level-grid {
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-}
-
-/* Decision box */
-.decision-box {
-  padding: 1.25rem 1.5rem;
-}
-
-/* Main content */
-.phase-label {
-  font-size: 0.6875rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 1.25rem;
-}
-
-h1 {
-  font-family: 'Noto Serif JP', serif;
-  font-size: clamp(48px, 10vw, 96px);
-  font-weight: 300;
-  letter-spacing: -0.03em;
-  line-height: 0.95;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xl);
-}
-
-/* 移动端H1适配 */
-@media (max-width: 900px) {
-  h1 {
-    font-size: clamp(36px, 10vw, 48px);
-    line-height: 1.05;
-  }
-}
-
-.phase-label {
-  font-size: 13px;
-  color: var(--accent);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  margin-bottom: var(--space-lg);
-  display: flex;
-  align-items: center;
-  gap: var(--space-md);
-}
-.phase-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
-
-.subtitle {
-  font-size: 16px;
-  color: var(--text-secondary);
-  max-width: 44ch;
-  line-height: 1.8;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
-
-/* 移动端副标题适配 */
-@media (max-width: 900px) {
-  .subtitle {
-    font-size: 14px;
-    max-width: 100%;
-  }
-}
-
-.node-meta {
-  margin-top: 2rem;
-  font-size: 0.75rem;
-  color: var(--text-tertiary);
-  letter-spacing: 0.1em;
-}
-
-/* Sections */
-section {
-  padding-bottom: clamp(3rem, 10vh, 5rem);
-  border-bottom: 1px solid var(--line);
-  margin-bottom: clamp(3rem, 10vh, 5rem);
-}
-
-section:last-of-type {
-  border-bottom: none;
-}
-
-.section-label {
-  font-size: 0.6875rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  margin-bottom: 1.5rem;
-}
-
-h2 {
-  font-family: 'Noto Serif JP', serif;
-  font-size: clamp(1.375rem, 4vw, 1.875rem);
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  line-height: 1.3;
-  color: var(--text-primary);
-  margin-bottom: 1.5rem;
-}
-
-h3 {
-  font-family: 'Noto Serif JP', serif;
-  font-size: clamp(1.125rem, 3vw, 1.375rem);
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  color: var(--text-primary);
-  margin-bottom: 1rem;
-  margin-top: 2rem;
-}
-
-p {
-  color: var(--text-secondary);
-  line-height: 1.9;
-  margin-bottom: 1.25rem;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-}
-
-/* 移动端段落适配 */
-@media (max-width: 900px) {
-  p {
-    padding-right: 0.5rem;
-    word-break: break-all;
-    white-space: normal;
-  }
-
-  section p {
-    padding-right: 0;
-  }
-}
-
-.decision-box {
-  background: var(--surface);
-  border-left: 2px solid var(--accent);
-  padding: 1.5rem 2rem;
-  margin: 2rem 0;
-}
-
-.decision-box p {
-  color: var(--text-primary);
-  font-size: 0.9375rem;
-  margin: 0;
-}
-
-/* Tables */
-.table-wrapper {
-  overflow-x: auto;
-  margin: 2rem 0;
-  -webkit-overflow-scrolling: touch;
-}
-
-table {
-  width: 100%;
-  min-width: 560px;
-  border-collapse: collapse;
-  font-size: 0.875rem;
-}
-
-th {
-  text-align: left;
-  font-weight: 400;
-  font-size: 0.6875rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid var(--line);
-}
-
-td {
-  padding: 1rem;
-  border-bottom: 1px solid var(--line);
-  color: var(--text-secondary);
-  vertical-align: top;
-}
-
-tr:last-child td {
-  border-bottom: none;
-}
-
-td:first-child {
-  color: var(--text-primary);
-  font-weight: 400;
-}
-
-/* Tool Cards */
-.tool-grid {
-  display: grid;
-  gap: 1.5rem;
-  margin: 2rem 0;
-}
-
-.tool-card {
-  background: var(--surface);
-  padding: 1.75rem;
-  border: 1px solid var(--line);
-}
-
-.tool-card h4 {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 1.125rem;
-  font-weight: 400;
-  color: var(--text-primary);
-  margin-bottom: 0.75rem;
-}
-
-.tool-card .tagline {
-  font-size: 0.8125rem;
-  color: var(--text-tertiary);
-  margin-bottom: 1.25rem;
-}
-
-.tool-card p {
-  font-size: 0.875rem;
-  line-height: 1.8;
-  margin-bottom: 0.75rem;
-}
-
-.tool-card .pros {
-  color: var(--text-secondary);
-  font-size: 0.8125rem;
-}
-
-.tool-card .price {
-  display: inline-block;
-  font-size: 0.75rem;
-  color: var(--accent);
-  border: 1px solid var(--accent);
-  padding: 0.25rem 0.75rem;
-  margin-top: 1rem;
-}
-
-/* Path Section */
-.path-block {
-  background: var(--surface);
-  padding: 2rem;
-  margin: 2rem 0;
-  border: 1px solid var(--line);
-}
-
-.path-header {
-  display: flex;
-  align-items: baseline;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
-}
-
-.path-number {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 0.75rem;
-  color: var(--accent);
-  letter-spacing: 0.1em;
-}
-
-.path-title {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 1.25rem;
-  font-weight: 400;
-  color: var(--text-primary);
-}
-
-.path-tools {
-  font-size: 0.8125rem;
-  color: var(--text-tertiary);
-  margin-bottom: 1.25rem;
-}
-
-.path-block p {
-  font-size: 0.875rem;
-  margin-bottom: 0.75rem;
-}
-
-.workflow {
-  background: var(--bg);
-  padding: 1.25rem 1.5rem;
-  margin-top: 1.25rem;
-  font-size: 0.8125rem;
-  color: var(--text-secondary);
-  line-height: 1.9;
-}
-
-/* Validation Box */
-.validation-grid {
-  display: grid;
-  gap: 1.25rem;
-  margin: 2rem 0;
-}
-
-.validation-card {
-  background: var(--surface);
-  padding: 1.5rem;
-  border: 1px solid var(--line);
-}
-
-.validation-card h4 {
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: var(--text-primary);
-  margin-bottom: 0.75rem;
-}
-
-.validation-card p {
-  font-size: 0.8125rem;
-  margin: 0;
-}
-
-.level-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin: 1.5rem 0;
-}
-
-.level-item {
-  background: var(--surface);
-  padding: 1.25rem;
-  border: 1px solid var(--line);
-}
-
-.level-item .num {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 1.5rem;
-  color: var(--accent);
-  opacity: 0.6;
-  margin-bottom: 0.5rem;
-}
-
-.level-item h4 {
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: var(--text-primary);
-  margin-bottom: 0.5rem;
-}
-
-.level-item p {
-  font-size: 0.75rem;
-  margin: 0;
-}
-
-/* Cost Control */
-.cost-table {
-  margin: 2rem 0;
-}
-
-/* Quote */
-.quote-block {
-  border-left: 2px solid var(--accent);
-  padding-left: 1.5rem;
-  margin: 2rem 0;
-}
-
-.quote-block p {
-  font-size: 1rem;
-  color: var(--text-primary);
-  line-height: 1.8;
-}
-
-/* Network Section */
-.network-alert {
-  background: var(--surface);
-  border: 1px solid var(--accent);
-  padding: 1.5rem 2rem;
-  margin: 2rem 0;
-}
-
-.network-alert h4 {
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: var(--accent);
-  margin-bottom: 0.75rem;
-}
-
-.network-alert p {
-  font-size: 0.875rem;
-  margin: 0;
-}
-
-/* Summary Box */
-.summary-box {
-  background: var(--surface);
-  padding: 2rem;
-  margin-top: 3rem;
-  border: 1px solid var(--line);
-}
-
-.summary-box h3 {
-  margin-top: 0;
-  margin-bottom: 1.25rem;
-}
-
-.step-list {
-  list-style: none;
-  counter-reset: steps;
-}
-
-.step-list li {
-  counter-increment: steps;
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-}
-
-.step-list li::before {
-  content: counter(steps);
-  font-family: 'Noto Serif JP', serif;
-  font-size: 0.75rem;
-  color: var(--accent);
-  flex-shrink: 0;
-  width: 1.5rem;
-  padding-top: 0.25rem;
-}
-
-/* Footer Nav - Fixed Bottom */
-.footer-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
-  background: rgba(17, 17, 16, 0.9);
-  backdrop-filter: blur(12px);
-  border-top: 1px solid var(--line);
-}
-
-.nav-link {
-  font-size: 0.75rem;
-  color: var(--text-tertiary);
-  text-decoration: none;
-  letter-spacing: 0.08em;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: color 0.3s;
-}
-
-.nav-link:hover {
-  color: var(--text-primary);
-}
-
-.nav-link.disabled {
-  opacity: 0.3;
-  pointer-events: none;
-}
-
+    :root { --bg: #111110; --surface: #1A1A18; --text-primary: #F0EDE6;
+      --text-secondary: #B8B4AE; --text-tertiary: #7A7670; --line: #2A2A28; --accent: #C0392B; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text-primary);
+      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.8; letter-spacing: 0.03em; min-height: 100dvh; -webkit-font-smoothing: antialiased; }
+    .fixed-top-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+      background: rgba(17, 17, 16, 0.85); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line); }
+    .nav-home { color: var(--text-primary); text-decoration: none;
+      font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .nav-node-id { color: var(--text-tertiary); font-size: 0.75rem; letter-spacing: 0.1em; }
+    .page { max-width: 1200px; margin: 0 auto; padding: 6rem clamp(24px, 5vw, 80px) 4rem; }
+    .hero { padding: var(--space-3xl) 0 var(--space-xl); }
+    .hero-label { color: var(--accent); font-size: 0.75rem; letter-spacing: 0.2em;
+      text-transform: uppercase; margin-bottom: 1.5rem; }
+    .hero h1 { font-family: 'Noto Serif JP', serif;
+      font-size: clamp(48px, 10vw, 96px); font-weight: 300; line-height: 0.95;
+      letter-spacing: -0.03em; margin-bottom: 1rem; }
+    .hero-subtitle { font-size: 1.125rem; color: var(--text-secondary);
+      margin-bottom: 1rem; line-height: 1.5; }
+    .lead { max-width: 44ch; color: var(--text-secondary);
+      font-size: 1rem; line-height: 1.85; margin-bottom: 2rem; }
+    .meta-row { display: inline-flex; gap: 1.5rem; font-size: 0.8125rem;
+      color: var(--text-tertiary); padding: 0.75rem 1.25rem;
+      border: 1px solid var(--line); margin-bottom: 3rem; }
+    .meta-row b { color: var(--text-primary); font-weight: 500; }
+    .block { padding: var(--space-2xl) 0; border-top: 1px solid var(--line); }
+    .block h2 { font-family: 'Noto Serif JP', serif;
+      font-size: clamp(20px, 2.5vw, 28px); font-weight: 400; line-height: 1.3;
+      margin-bottom: 1.5rem; }
+    .block ul { list-style: none; padding: 0; }
+    .block li { padding: 0.5rem 0 0.5rem 1.5rem; border-bottom: 1px solid var(--line);
+      position: relative; color: var(--text-primary); font-size: 0.9375rem; line-height: 1.8; }
+    .block li::before { content: '·'; position: absolute; left: 0;
+      color: var(--accent); font-weight: 700; }
+    .block li:last-child { border-bottom: none; }
+    .footer-nav { position: fixed; bottom: 0; left: 0; right: 0;
+      display: flex; justify-content: space-between;
+      padding: 1rem clamp(1.25rem, 4vw, 2.5rem);
+      background: rgba(17, 17, 16, 0.9); backdrop-filter: blur(12px);
+      border-top: 1px solid var(--line); z-index: 100; }
+    .nav-link { color: var(--text-secondary); text-decoration: none;
+      font-size: 0.8125rem; letter-spacing: 0.08em; transition: color 0.3s; }
+    .nav-link:hover { color: var(--accent); }
   </style>
+<link rel="stylesheet" href="../_layout-templates.css">
 </head>
 <body>
-  <nav class="fixed-top-nav">
-    <a href="/index.html" class="back-link">← 返回首页</a>
-    <span class="node-id">节点 37 / 57</span>
-  </nav>
 
-  <div class="layout">
-    <main class="container">
-      <header>
-      <div class="phase-label">1-10</div>
-      <h1>节点37：客户异议应对</h1>
-      <div class="node-meta">节点 37 / 57 · 最后修订：2026年6月4日</div>
-    </header>
-
-    <section id="s1">
-    
-<p>node_id: 37</p>
-<p>persona: neutral</p>
-<p>cta_type: wechat</p>
-<p>keywords: [异议, 应对, 客户, 拒绝, 转化]</p>
-
-<blockquote class="decision-box"><p>客户说"我再想想" / "太贵了" / "用 XX 就够了" = 你<strong>没听懂他真正担心什么</strong>。本节点给你 10 个高频异议的应对模板。</p></blockquote>
-
-<p></section></p>
-<section id="s一">
-<p>      <div class="section-label">一、3 个常见的误区</div></p>
-
-<ol><li><strong>急着反驳</strong> — 客户会抗拒。先认同，再处理</li><li><strong>讲道理</strong> — 客户不听。讲故事、给证据</li><li><strong>强推</strong> — 直接失去客户。学会退一步</li></ol>
-<strong>黄金法则</strong>：<strong>认同感受 + 重新定义 + 案例证明 + 反问</strong>。
-
-<p></section></p>
-<section id="s二">
-<p>      <div class="section-label">二、10 个高频异议的应对模板</div></p>
-
-<h3>1. "我再想想"</h3>
-
-<strong>潜台词</strong>：还没说服自己，不想现场决定。
-
-<p>``<code></p>
-<p>我完全理解，重大决定都需要时间。</p>
-
-<p>不过我有个小建议：您想的是"价格"还是"效果"？</p>
-<p>如果是价格，月底有 8 折活动可以为您保留名额；</p>
-<p>如果是效果，我们可以先试用 7 天，您看可以吗？</p>
-<p></code>`<code></p>
-
-<h3>2. "太贵了 / 超出预算"</h3>
-
-<strong>潜台词</strong>：觉得不值这个价。
-
-<p></code>`<code></p>
-<p>确实，[产品名] 不是市面上最便宜的。</p>
-<p>但您可以算一笔账：</p>
-<ul><li>不用 [产品] 您每月花 XX 小时 × XX 元/小时 = XXX 元</li><li>用 [产品] 一年 XXXX 元</li><li>节省 80% 时间 = 每月省 XXX 元</li></ul>
-<p>（然后沉默 3 秒，让客户算账）</p>
-<p></code>`<code></p>
-
-<h3>3. "我用 XX 就够了 / 我自己来"</h3>
-
-<strong>潜台词</strong>：不信任你的差异化。
-
-<p></code>`<code></p>
-<p>完全可以，[竞品] 确实是优秀的产品。</p>
-<p>[产品名] 和它最大的区别是 XXX。</p>
-
-<p>（举 1 个具体场景，说明用你的省多少时间）</p>
-<p></code>`<code></p>
-
-<h3>4. "需要和老板/老婆商量"</h3>
-
-<strong>潜台词</strong>：决策权不在他，或者他自己没想清楚。
-
-<p></code>`<code></p>
-<p>完全理解，这种事确实要一起决定。</p>
-
-<p>要不这样，我整理一份"对比清单"发您，</p>
-<p>您直接转发给老板/老婆，他们看完能更快决定？</p>
-
-<p>我明天下午 3 点联系您，可以吗？</p>
-<p></code>`<code></p>
-
-<h3>5. "晚点再说 / 我再考虑一下"</h3>
-
-<strong>潜台词</strong>：礼貌拒绝。
-
-<p></code>`<code></p>
-<p>好的，没问题。</p>
-
-<p>不过为了不打扰您，我建议：</p>
-<p>您把 [产品名] 加到收藏夹 / 标记星标</p>
-<p>有任何问题随时微信我。</p>
-<p>3 个月后还在考虑的话，我发您一个专属优惠。</p>
-<p></code>`<code></p>
-
-<h3>6. "能便宜点吗"</h3>
-
-<strong>潜台词</strong>：试探水分。
-
-<p></code>`<code></p>
-<p>我理解您希望拿到更好的价格。</p>
-
-<p>不过 [产品名] 的定价是按成本 + 合理利润定的。</p>
-<p>最低能到 XXX 元（如果您一次性买 1 年的话）。</p>
-
-<p>您看这个方案可以吗？</p>
-<p></code>`<code></p>
-
-<h3>7. "你们和 XX 有什么不一样"</h3>
-
-<strong>潜台词</strong>：在做选型，需要差异化信息。
-
-<p></code>`<code></p>
-<p>主要 3 个不同：</p>
-<ol><li>XXX（最关键差异）</li><li>XXX（次要差异）</li><li>XXX（场景差异）</li></ol>
-<p>给您看 1 个真实用户的对比：[截图/链接]</p>
-<p></code>`<code></p>
-
-<h3>8. "现在忙 / 等会联系你"</h3>
-
-<strong>潜台词</strong>：当下不想被打扰。
-
-<p></code>`<code></p>
-<p>好的，那您先忙。</p>
-
-<p>我加您微信，明天下午 X 点发您详细信息，</p>
-<p>您有空再看看可以吗？</p>
-<p></code>`<code></p>
-
-<h3>9. "先试用一下再说"</h3>
-
-<strong>潜台词</strong>：真信号！马上推进。
-
-<p></code>`<code></p>
-<p>太棒了，试用是了解 [产品] 最好的方式。</p>
-
-<p>我现在就帮您开通，您邮箱/微信号是？</p>
-<p>开通后 5 分钟会收到邮件 + 短信。</p>
-<p></code>`<code></p>
-
-<h3>10. "再考虑一下 / 不需要了"</h3>
-
-<strong>潜台词</strong>：礼貌拒绝。
-
-<p></code>`<code></p>
-<p>好的，我尊重您的决定。</p>
-
-<p>方便我问 1 个问题吗：您最终没选 [产品] 的原因是什么？</p>
-<p>（无论是否购买，您的反馈对我非常宝贵）</p>
-<p></code>``</p>
-
-<p></section></p>
-<section id="s三">
-<p>      <div class="section-label">三、3 个通用技巧</div></p>
-
-<h3>技巧 1：先认同再反对</h3>
-
-<strong>不要说</strong>："你错了 / 不是这样的"
-<strong>要说</strong>："您说的对 / 我理解您的顾虑"
-<p>→ 然后再讲你的观点</p>
-
-<h3>技巧 2：用反问代替陈述</h3>
-
-<strong>不要说</strong>："我们的产品很好"
-<strong>要说</strong>："您觉得什么样的产品才算好？"
-
-<h3>技巧 3：讲故事 / 举案例</h3>
-
-<strong>不要说</strong>："我们帮 1000 个客户提升效率"
-<strong>要说</strong>："昨天有个上海的客户小王，用了 1 周后说......"
-
-<p></section></p>
-<section id="s四">
-<p>      <div class="section-label">四、3 个必会的"反问句"</div></p>
-
-<div class="table-wrapper"><table><thead><tr><th>场景</th><th>反问</th></tr></thead><tbody><tr><td>客户说"太贵"</td><td>"您觉得多少钱合理？"</td></tr><tr><td>客户说"我不需要"</td><td>"您平时怎么处理这个问题？"</td></tr><tr><td>客户说"晚点再聊"</td><td>"我哪天联系您最方便？"</td></tr></tbody></table></div>
-<p>反问 = 让客户思考真实需求 = 你重新掌握主动权。</p>
-
-<p></section></p>
-<section id="s五">
-<p>      <div class="section-label">五、3 个不能踩的雷区</div></p>
-
-<h3>雷区 1：贬低竞品</h3>
-
-<strong>永远不要</strong>说"XX 不行 / XX 垃圾"。<strong>客户用竞品 = 你在骂他品味差</strong>。
-
-<h3>雷区 2：承诺做不到的事</h3>
-
-<p>"包您 100% 涨粉" / "100 倍效果" = 立刻失去信任 + 后续纠纷。</p>
-
-<h3>雷区 3：纠缠不放</h3>
-
-<p>客户明确拒绝 2 次 = 停止跟进。<strong>过度推销 = 骚扰</strong>。</p>
-
-<p></section></p>
-<section id="s六">
-<p>      <div class="section-label">六、检查清单</div></p>
-
-<ul><li><input type="checkbox" disabled> 10 个异议应对话术已抄写</li><li><input type="checkbox" disabled> 准备 3 个真实客户案例（讲故事用）</li><li><input type="checkbox" disabled> 异议处理 SOP：先认同 → 反问 → 给方案 → 二次跟进</li><li><input type="checkbox" disabled> 每月看 10 个失败案例，分析原因</li><li><input type="checkbox" disabled> 不贬低竞品、不夸大效果</li></ul>
-
-<p></section></p>
-<section id="s节">
-<p>      <div class="section-label">节点资源链接</div></p>
-
-<ul><li>节点35：社群与私域运营</li><li>节点38：定价策略</li><li>节点40：用户转介绍机制</li></ul>
+<nav class="fixed-top-nav">
+  <a href="/" class="nav-home">◉ 飞轮首页</a>
+  <span class="nav-node-id">节点 37 · P3 增长阶段</span>
+</nav>
+
+<main class="layout layout-classic">
+  <header class="hero">
+    <div class="hero-label">节点 37 · P3 增长阶段</div>
+    <h1>异议处理<br>7 套异议破解话术</h1>
+    <p class="hero-subtitle">客户嫌贵嫌慢嫌难</p>
+    <p class="lead">1 人 MCN 「异议处理」完整 SOP</p>
+    <div class="meta-row">
+      <span><b>25 min</b> 读完</span>
+      <span><b>1 人</b> 可做</span>
+      <span>阶段 <b>P3 增长阶段</b></span>
+    </div>
+  </header>
+
+    <section class="block">
+      <h2>7 套异议破解</h2>
+      <ul>
+        <li>异议 1: '太贵了'</li>
+        <li>  → '你花 ¥199 买 1 个 SOP，1 个月能赚回来吗？'</li>
+        <li>异议 2: '没时间学'</li>
+        <li>  → '我 M1 也是每天 30 分钟，0 基础跑通'</li>
+        <li>异议 3: '太难了'</li>
+        <li>  → '工具我都列好了，照做就行'</li>
+        <li>异议 4: '我朋友圈没人'</li>
+        <li>  → 'M1 不是卖朋友圈，是卖公域 + 私域组合'</li>
+        <li>异议 5: '等一等再说'</li>
+        <li>  → 'M1 早鸟价 ¥149，7 天后恢复 ¥199'</li>
+        <li>异议 6: '别人免费教'</li>
+        <li>  → '免费的最贵，时间是最大的成本'</li>
+        <li>异议 7: '我学不会'</li>
+        <li>  → '30 天 1v1 群答疑，不会就问'</li>
+      </ul>
     </section>
 
-    <div class="summary-box">
-      <h3>节点37检查清单</h3>
-      <p>完成本节点后，请确认所有检查项已通过。</p>
-    </div>
-    </main>
-  </div>
+    <section class="block">
+      <h2>异议处理 3 原则</h2>
+      <ul>
+        <li>① 不否定客户（'你说得对'）</li>
+        <li>② 不立刻降价（先讲价值）</li>
+        <li>③ 不与他人比（专注自己的差异化）</li>
+      </ul>
+    </section>
 
-  <nav class="footer-nav">
-    <a href="/nodes/36-ai-customer-service/index.html" class="nav-link"><span>←</span> 节点36</a>
-    <a href="/nodes/38-pricing/index.html" class="nav-link">节点38 <span>→</span></a>
-  </nav>
+</main>
 
-  <script>
-  document.querySelectorAll('a[href^="#"]').forEach(link => {
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-      const targetId = this.getAttribute('href').slice(1);
-      const target = document.getElementById(targetId);
-      if (target) {
-        window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
-      }
-    });
-  });
-  </script>
+<nav class="footer-nav">
+  <a href="/nodes/36-ai-customer-service/index.html" class="nav-link"><span>←</span> 节点 36</a>
+  <a href="/nodes/38-node38/index.html" class="nav-link">节点 38 <span>→</span></a>
+</nav>
 </body>
 </html>

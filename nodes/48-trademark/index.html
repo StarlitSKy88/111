@@ -3,990 +3,110 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="节点48：商标申请 - OPC节点百科">
+  <meta name="description" content="商标注册 - 1 人 MCN 节点库">
   <meta name="theme-color" content="#111110">
-  <title>节点48：商标申请 - OPC节点百科</title>
+  <title>节点48：商标注册 - 一人 MCN 节点库</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../_design-tokens.css">
   <style>
-
-:root {
-  --bg: #111110;
-  --surface: #1A1A18;
-  --text-primary: #F0EDE6;
-  --text-secondary: #7A7670;
-  --text-tertiary: #4A4744;
-  --accent: #C0392B;
-  --line: #2A2A28;
-  --line-light: rgba(255,255,255,0.06);
-  --space-xs: 8px;
-  --space-sm: 16px;
-  --space-md: 24px;
-  --space-lg: 32px;
-  --space-xl: 48px;
-  --space-2xl: 64px;
-  --space-3xl: 96px;
-  --space-4xl: 128px;
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-html {
-  overflow-x: hidden;
-}
-
-body {
-  background: var(--bg);
-  color: var(--text-primary);
-  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-weight: 300;
-  line-height: 1.9;
-  letter-spacing: 0.04em;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-}
-
-/* 移动端整体适配 - 使用 900px breakpoint 与现有代码一致 */
-@media (max-width: 900px) {
-  html, body {
-    overflow-x: hidden !important;
-    max-width: 100vw !important;
-  }
-
-  body {
-    font-size: 14px;
-  }
-
-  .layout {
-    display: block !important;
-    width: 100% !important;
-    max-width: 100vw !important;
-    padding: 4rem 16px 2rem !important;
-    margin: 0 !important;
-    grid-template-columns: 1fr !important;
-  }
-
-  .sidebar-toc {
-    display: none !important;
-  }
-
-  .container {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 0 !important;
-  }
-
-  section {
-    width: 100% !important;
-    max-width: 100vw !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-  }
-
-  section > * {
-    max-width: 100% !important;
-    overflow-x: visible !important;
-    box-sizing: border-box !important;
-  }
-
-  section p {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    word-break: break-word !important;
-    overflow-wrap: break-word !important;
-    white-space: normal !important;
-    display: block !important;
-    box-sizing: border-box !important;
-  }
-
-  h1 {
-    font-size: clamp(36px, 10vw, 48px) !important;
-    line-height: 1.05 !important;
-  }
-}
-
-/* Layout with Sidebar */
-.layout {
-  display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
-  gap: clamp(2rem, 4vw, 3rem);
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
-}
-
-/* Sidebar TOC */
-.sidebar-toc {
-  position: sticky;
-  top: 5rem;
-  height: fit-content;
-  max-height: calc(100vh - 6rem);
-  overflow-y: auto;
-  padding-top: 0;
-  scrollbar-width: thin;
-  scrollbar-color: var(--line) transparent;
-}
-
-.sidebar-toc::-webkit-scrollbar {
-  width: 4px;
-}
-
-.sidebar-toc::-webkit-scrollbar-thumb {
-  background: var(--line);
-  border-radius: 2px;
-}
-
-.toc-title {
-  font-size: 0.6875rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  margin-bottom: 1.25rem;
-}
-
-.toc-list {
-  list-style: none;
-}
-
-.toc-item {
-  margin-bottom: 0.75rem;
-}
-
-.toc-link {
-  font-size: 0.8125rem;
-  color: var(--text-secondary);
-  text-decoration: none;
-  display: block;
-  padding: 0.375rem 0;
-  padding-left: 1rem;
-  border-left: 1px solid var(--line);
-  transition: all 0.3s;
-  line-height: 1.4;
-}
-
-.toc-link:hover {
-  color: var(--text-primary);
-  border-left-color: var(--accent);
-}
-
-.toc-link.active {
-  color: var(--accent);
-  border-left-color: var(--accent);
-  font-weight: 400;
-}
-
-.toc-link.sub {
-  padding-left: 1.75rem;
-  font-size: 0.75rem;
-}
-
-/* Fixed Top Nav */
-.fixed-top-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
-  background: rgba(17, 17, 16, 0.85);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--line);
-}
-
-.back-link {
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-secondary);
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: color 0.3s;
-}
-
-.back-link:hover {
-  color: var(--text-primary);
-}
-
-.node-id {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 0.75rem;
-  color: var(--text-tertiary);
-  letter-spacing: 0.08em;
-}
-
-/* Header */
-header {
-  padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
-  border-bottom: 1px solid var(--line);
-  margin-bottom: clamp(2rem, 5vh, 3rem);
-}
-
-/* Main content */
-main {
-  padding-bottom: 5rem;
-}
-
-/* 移动端底部导航适配 - 合并到 900px breakpoint */
-@media (max-width: 900px) {
-  main {
-    padding-bottom: 6rem; /* 为固定底部导航预留空间 */
-  }
-
-  .footer-nav {
-    overflow-x: auto;
-    justify-content: space-between;
-  }
-
-  .nav-link {
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  .table-wrapper {
-    position: relative;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    margin: 1.5rem 0;
-    border: 1px solid var(--line);
-  }
-
-  .table-wrapper::after {
-    content: "← 左右滑动 →";
-    position: absolute;
-    right: 8px;
-    bottom: 8px;
-    font-size: 0.625rem;
-    color: var(--text-tertiary);
-    background: var(--surface);
-    padding: 2px 8px;
-    pointer-events: none;
-  }
-
-  table {
-    min-width: 100%;
-    font-size: 0.8125rem;
-  }
-
-  td, th {
-    padding: 0.625rem 0.75rem;
-  }
-}
-
-/* Section anchors offset for sticky header */
-section {
-  scroll-margin-top: 2rem;
-}
-
-section h2 {
-  font-size: clamp(1.5rem, 3.5vw, 2rem);
-}
-
-section p, section li {
-  font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
-  line-height: 1.9;
-}
-
-/* Table improvements */
-.table-wrapper {
-  margin: 1.5rem 0;
-  border: 1px solid var(--line);
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.table-wrapper::after {
-  content: "";
-  display: block;
-}
-
-/* 移动端滑动提示 */
-@media (max-width: 900px) {
-  .table-wrapper::after {
-    content: "← 左右滑动 →";
-    position: absolute;
-    right: 8px;
-    bottom: 8px;
-    font-size: 0.625rem;
-    color: var(--text-tertiary);
-    background: var(--surface);
-    padding: 2px 8px;
-    pointer-events: none;
-  }
-
-  .table-wrapper {
-    position: relative;
-    padding-bottom: 24px;
-  }
-}
-
-table {
-  font-size: 0.875rem;
-  min-width: 560px;
-}
-
-@media (max-width: 900px) {
-  table {
-    min-width: 100%;
-    font-size: 0.8125rem;
-  }
-
-  td, th {
-    padding: 0.625rem 0.75rem;
-  }
-}
-
-/* Tool Cards */
-.tool-grid {
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-}
-
-/* Path blocks */
-.path-block {
-  padding: 1.5rem;
-}
-
-.workflow {
-  padding: 1rem 1.25rem;
-  font-size: 0.8125rem;
-}
-
-/* Validation cards */
-.validation-grid {
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-}
-
-.validation-card {
-  padding: 1.25rem;
-}
-
-/* Level items */
-.level-grid {
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-}
-
-/* Decision box */
-.decision-box {
-  padding: 1.25rem 1.5rem;
-}
-
-/* Main content */
-.phase-label {
-  font-size: 0.6875rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 1.25rem;
-}
-
-h1 {
-  font-family: 'Noto Serif JP', serif;
-  font-size: clamp(48px, 10vw, 96px);
-  font-weight: 300;
-  letter-spacing: -0.03em;
-  line-height: 0.95;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xl);
-}
-
-/* 移动端H1适配 */
-@media (max-width: 900px) {
-  h1 {
-    font-size: clamp(36px, 10vw, 48px);
-    line-height: 1.05;
-  }
-}
-
-.phase-label {
-  font-size: 13px;
-  color: var(--accent);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  margin-bottom: var(--space-lg);
-  display: flex;
-  align-items: center;
-  gap: var(--space-md);
-}
-.phase-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
-
-.subtitle {
-  font-size: 16px;
-  color: var(--text-secondary);
-  max-width: 44ch;
-  line-height: 1.8;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
-
-/* 移动端副标题适配 */
-@media (max-width: 900px) {
-  .subtitle {
-    font-size: 14px;
-    max-width: 100%;
-  }
-}
-
-.node-meta {
-  margin-top: 2rem;
-  font-size: 0.75rem;
-  color: var(--text-tertiary);
-  letter-spacing: 0.1em;
-}
-
-/* Sections */
-section {
-  padding-bottom: clamp(3rem, 10vh, 5rem);
-  border-bottom: 1px solid var(--line);
-  margin-bottom: clamp(3rem, 10vh, 5rem);
-}
-
-section:last-of-type {
-  border-bottom: none;
-}
-
-.section-label {
-  font-size: 0.6875rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  margin-bottom: 1.5rem;
-}
-
-h2 {
-  font-family: 'Noto Serif JP', serif;
-  font-size: clamp(1.375rem, 4vw, 1.875rem);
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  line-height: 1.3;
-  color: var(--text-primary);
-  margin-bottom: 1.5rem;
-}
-
-h3 {
-  font-family: 'Noto Serif JP', serif;
-  font-size: clamp(1.125rem, 3vw, 1.375rem);
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  color: var(--text-primary);
-  margin-bottom: 1rem;
-  margin-top: 2rem;
-}
-
-p {
-  color: var(--text-secondary);
-  line-height: 1.9;
-  margin-bottom: 1.25rem;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-}
-
-/* 移动端段落适配 */
-@media (max-width: 900px) {
-  p {
-    padding-right: 0.5rem;
-    word-break: break-all;
-    white-space: normal;
-  }
-
-  section p {
-    padding-right: 0;
-  }
-}
-
-.decision-box {
-  background: var(--surface);
-  border-left: 2px solid var(--accent);
-  padding: 1.5rem 2rem;
-  margin: 2rem 0;
-}
-
-.decision-box p {
-  color: var(--text-primary);
-  font-size: 0.9375rem;
-  margin: 0;
-}
-
-/* Tables */
-.table-wrapper {
-  overflow-x: auto;
-  margin: 2rem 0;
-  -webkit-overflow-scrolling: touch;
-}
-
-table {
-  width: 100%;
-  min-width: 560px;
-  border-collapse: collapse;
-  font-size: 0.875rem;
-}
-
-th {
-  text-align: left;
-  font-weight: 400;
-  font-size: 0.6875rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid var(--line);
-}
-
-td {
-  padding: 1rem;
-  border-bottom: 1px solid var(--line);
-  color: var(--text-secondary);
-  vertical-align: top;
-}
-
-tr:last-child td {
-  border-bottom: none;
-}
-
-td:first-child {
-  color: var(--text-primary);
-  font-weight: 400;
-}
-
-/* Tool Cards */
-.tool-grid {
-  display: grid;
-  gap: 1.5rem;
-  margin: 2rem 0;
-}
-
-.tool-card {
-  background: var(--surface);
-  padding: 1.75rem;
-  border: 1px solid var(--line);
-}
-
-.tool-card h4 {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 1.125rem;
-  font-weight: 400;
-  color: var(--text-primary);
-  margin-bottom: 0.75rem;
-}
-
-.tool-card .tagline {
-  font-size: 0.8125rem;
-  color: var(--text-tertiary);
-  margin-bottom: 1.25rem;
-}
-
-.tool-card p {
-  font-size: 0.875rem;
-  line-height: 1.8;
-  margin-bottom: 0.75rem;
-}
-
-.tool-card .pros {
-  color: var(--text-secondary);
-  font-size: 0.8125rem;
-}
-
-.tool-card .price {
-  display: inline-block;
-  font-size: 0.75rem;
-  color: var(--accent);
-  border: 1px solid var(--accent);
-  padding: 0.25rem 0.75rem;
-  margin-top: 1rem;
-}
-
-/* Path Section */
-.path-block {
-  background: var(--surface);
-  padding: 2rem;
-  margin: 2rem 0;
-  border: 1px solid var(--line);
-}
-
-.path-header {
-  display: flex;
-  align-items: baseline;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
-}
-
-.path-number {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 0.75rem;
-  color: var(--accent);
-  letter-spacing: 0.1em;
-}
-
-.path-title {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 1.25rem;
-  font-weight: 400;
-  color: var(--text-primary);
-}
-
-.path-tools {
-  font-size: 0.8125rem;
-  color: var(--text-tertiary);
-  margin-bottom: 1.25rem;
-}
-
-.path-block p {
-  font-size: 0.875rem;
-  margin-bottom: 0.75rem;
-}
-
-.workflow {
-  background: var(--bg);
-  padding: 1.25rem 1.5rem;
-  margin-top: 1.25rem;
-  font-size: 0.8125rem;
-  color: var(--text-secondary);
-  line-height: 1.9;
-}
-
-/* Validation Box */
-.validation-grid {
-  display: grid;
-  gap: 1.25rem;
-  margin: 2rem 0;
-}
-
-.validation-card {
-  background: var(--surface);
-  padding: 1.5rem;
-  border: 1px solid var(--line);
-}
-
-.validation-card h4 {
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: var(--text-primary);
-  margin-bottom: 0.75rem;
-}
-
-.validation-card p {
-  font-size: 0.8125rem;
-  margin: 0;
-}
-
-.level-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin: 1.5rem 0;
-}
-
-.level-item {
-  background: var(--surface);
-  padding: 1.25rem;
-  border: 1px solid var(--line);
-}
-
-.level-item .num {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 1.5rem;
-  color: var(--accent);
-  opacity: 0.6;
-  margin-bottom: 0.5rem;
-}
-
-.level-item h4 {
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: var(--text-primary);
-  margin-bottom: 0.5rem;
-}
-
-.level-item p {
-  font-size: 0.75rem;
-  margin: 0;
-}
-
-/* Cost Control */
-.cost-table {
-  margin: 2rem 0;
-}
-
-/* Quote */
-.quote-block {
-  border-left: 2px solid var(--accent);
-  padding-left: 1.5rem;
-  margin: 2rem 0;
-}
-
-.quote-block p {
-  font-size: 1rem;
-  color: var(--text-primary);
-  line-height: 1.8;
-}
-
-/* Network Section */
-.network-alert {
-  background: var(--surface);
-  border: 1px solid var(--accent);
-  padding: 1.5rem 2rem;
-  margin: 2rem 0;
-}
-
-.network-alert h4 {
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: var(--accent);
-  margin-bottom: 0.75rem;
-}
-
-.network-alert p {
-  font-size: 0.875rem;
-  margin: 0;
-}
-
-/* Summary Box */
-.summary-box {
-  background: var(--surface);
-  padding: 2rem;
-  margin-top: 3rem;
-  border: 1px solid var(--line);
-}
-
-.summary-box h3 {
-  margin-top: 0;
-  margin-bottom: 1.25rem;
-}
-
-.step-list {
-  list-style: none;
-  counter-reset: steps;
-}
-
-.step-list li {
-  counter-increment: steps;
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-}
-
-.step-list li::before {
-  content: counter(steps);
-  font-family: 'Noto Serif JP', serif;
-  font-size: 0.75rem;
-  color: var(--accent);
-  flex-shrink: 0;
-  width: 1.5rem;
-  padding-top: 0.25rem;
-}
-
-/* Footer Nav - Fixed Bottom */
-.footer-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
-  background: rgba(17, 17, 16, 0.9);
-  backdrop-filter: blur(12px);
-  border-top: 1px solid var(--line);
-}
-
-.nav-link {
-  font-size: 0.75rem;
-  color: var(--text-tertiary);
-  text-decoration: none;
-  letter-spacing: 0.08em;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: color 0.3s;
-}
-
-.nav-link:hover {
-  color: var(--text-primary);
-}
-
-.nav-link.disabled {
-  opacity: 0.3;
-  pointer-events: none;
-}
-
+    :root { --bg: #111110; --surface: #1A1A18; --text-primary: #F0EDE6;
+      --text-secondary: #B8B4AE; --text-tertiary: #7A7670; --line: #2A2A28; --accent: #C0392B; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text-primary);
+      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.8; letter-spacing: 0.03em; min-height: 100dvh; -webkit-font-smoothing: antialiased; }
+    .fixed-top-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+      background: rgba(17, 17, 16, 0.85); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line); }
+    .nav-home { color: var(--text-primary); text-decoration: none;
+      font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .nav-node-id { color: var(--text-tertiary); font-size: 0.75rem; letter-spacing: 0.1em; }
+    .page { max-width: 1200px; margin: 0 auto; padding: 6rem clamp(24px, 5vw, 80px) 4rem; }
+    .hero { padding: var(--space-3xl) 0 var(--space-xl); }
+    .hero-label { color: var(--accent); font-size: 0.75rem; letter-spacing: 0.2em;
+      text-transform: uppercase; margin-bottom: 1.5rem; }
+    .hero h1 { font-family: 'Noto Serif JP', serif;
+      font-size: clamp(48px, 10vw, 96px); font-weight: 300; line-height: 0.95;
+      letter-spacing: -0.03em; margin-bottom: 1rem; }
+    .hero-subtitle { font-size: 1.125rem; color: var(--text-secondary);
+      margin-bottom: 1rem; line-height: 1.5; }
+    .lead { max-width: 44ch; color: var(--text-secondary);
+      font-size: 1rem; line-height: 1.85; margin-bottom: 2rem; }
+    .meta-row { display: inline-flex; gap: 1.5rem; font-size: 0.8125rem;
+      color: var(--text-tertiary); padding: 0.75rem 1.25rem;
+      border: 1px solid var(--line); margin-bottom: 3rem; }
+    .meta-row b { color: var(--text-primary); font-weight: 500; }
+    .block { padding: var(--space-2xl) 0; border-top: 1px solid var(--line); }
+    .block h2 { font-family: 'Noto Serif JP', serif;
+      font-size: clamp(20px, 2.5vw, 28px); font-weight: 400; line-height: 1.3;
+      margin-bottom: 1.5rem; }
+    .block ul { list-style: none; padding: 0; }
+    .block li { padding: 0.5rem 0 0.5rem 1.5rem; border-bottom: 1px solid var(--line);
+      position: relative; color: var(--text-primary); font-size: 0.9375rem; line-height: 1.8; }
+    .block li::before { content: '·'; position: absolute; left: 0;
+      color: var(--accent); font-weight: 700; }
+    .block li:last-child { border-bottom: none; }
+    .footer-nav { position: fixed; bottom: 0; left: 0; right: 0;
+      display: flex; justify-content: space-between;
+      padding: 1rem clamp(1.25rem, 4vw, 2.5rem);
+      background: rgba(17, 17, 16, 0.9); backdrop-filter: blur(12px);
+      border-top: 1px solid var(--line); z-index: 100; }
+    .nav-link { color: var(--text-secondary); text-decoration: none;
+      font-size: 0.8125rem; letter-spacing: 0.08em; transition: color 0.3s; }
+    .nav-link:hover { color: var(--accent); }
   </style>
+<link rel="stylesheet" href="../_layout-templates.css">
 </head>
 <body>
-  <nav class="fixed-top-nav">
-    <a href="/index.html" class="back-link">← 返回首页</a>
-    <span class="node-id">节点 48 / 57</span>
-  </nav>
 
-  <div class="layout">
-    <main class="container">
-      <header>
-      <div class="phase-label">1-10</div>
-      <h1>节点48：商标申请</h1>
-      <div class="node-meta">节点 48 / 57 · 最后修订：2026年6月4日</div>
-    </header>
+<nav class="fixed-top-nav">
+  <a href="/" class="nav-home">◉ 飞轮首页</a>
+  <span class="nav-node-id">节点 48 · P5 合规阶段</span>
+</nav>
 
-    <section id="s1">
-    
-<p>node_id: 48</p>
-<p>persona: neutral</p>
-<p>cta_type: wechat</p>
-<p>keywords: [商标, 注册, 类别, 知识产权, 品牌]</p>
+<main class="layout layout-policy">
+  <header class="hero">
+    <div class="hero-label">节点 48 · P5 合规阶段</div>
+    <h1>商标注册<br>1 步流程 + 类目表</h1>
+    <p class="hero-subtitle">1 类商标 ¥270</p>
+    <p class="lead">1 人 MCN 「商标注册」完整 SOP</p>
+    <div class="meta-row">
+      <span><b>30 min</b> 读完</span>
+      <span><b>1 人</b> 可做</span>
+      <span>阶段 <b>P5 合规阶段</b></span>
+    </div>
+  </header>
 
-<blockquote class="decision-box"><p>上线 1 年内被抢注商标 = 改名 + 损失百万。<strong>OPC 必须上线后立刻注册商标</strong>，这是 2000 元能避免的最大的坑。</p></blockquote>
-
-<p></section></p>
-<section id="s一">
-<p>      <div class="section-label">一、商标注册的 3 个理由</div></p>
-
-<ol><li><strong>保护品牌</strong> — 别人不能注册你同名商标</li><li><strong>入驻平台需要</strong> — 抖音/天猫/京东开店要商标证</li><li><strong>无形资产</strong> — 1 个商标评估 10-100 万，可质押融资</li></ol>
-<strong>OPC 不做 = 1 年后被告 / 改名</strong>。
-
-<p></section></p>
-<section id="s二">
-<p>      <div class="section-label">二、3 个商标基础知识</div></p>
-
-<h3>1. 商标分类（45 类）</h3>
-
-<div class="table-wrapper"><table><thead><tr><th>类别</th><th>内容</th><th>OPC 常选</th></tr></thead><tbody><tr><td>第 9 类</td><td>App / 软件 / 电子产品</td><td>✅</td></tr><tr><td>第 35 类</td><td>广告 / 商业服务</td><td>✅</td></tr><tr><td>第 38 类</td><td>通信 / 电信</td><td>选</td></tr><tr><td>第 41 类</td><td>教育 / 培训</td><td>选</td></tr><tr><td>第 42 类</td><td>软件开发 / SaaS</td><td>✅</td></tr><tr><td>第 45 类</td><td>社交 / 安全</td><td>选</td></tr></tbody></table></div>
-<strong>OPC 默认</strong>：第 9 + 35 + 42 类（<strong>3 类 = 900 元</strong>）。
-
-<h3>2. 商标构成</h3>
-
-<div class="table-wrapper"><table><thead><tr><th>类型</th><th>例子</th><th>难度</th></tr></thead><tbody><tr><td>文字</td><td>"蕾姆"</td><td>易注册</td></tr><tr><td>图形</td><td>Logo 图案</td><td>中</td></tr><tr><td>文字 + 图形</td><td>组合</td><td>中</td></tr><tr><td>声音 / 立体</td><td>独特</td><td>难</td></tr></tbody></table></div>
-<strong>OPC 推荐</strong>：先注册<strong>文字商标</strong>（最快 + 最便宜），再考虑图形。
-
-<h3>3. 商标的"在先原则"</h3>
-
-<p>谁先申请 = 谁拥有。</p>
-<strong>早 1 天 = 省 1 万</strong>。
-
-<p></section></p>
-<section id="s三">
-<p>      <div class="section-label">三、3 步注册流程</div></p>
-
-<h3>Step 1：商标查询（30 分钟）</h3>
-
-<strong>必须先查</strong>！否则 100% 驳回。
-
-<p>去 <a href="https://sbj.cnipa.gov.cn">中国商标网</a> 检索：</p>
-<ul><li>同名商标（在同类别）</li><li>近似商标（读音/字形相似）</li></ul>
-<strong>通过率 < 80% = 换名字</strong>。
-
-<h3>Step 2：准备材料（1 天）</h3>
-
-<div class="table-wrapper"><table><thead><tr><th>材料</th><th>说明</th></tr></thead><tbody><tr><td>商标图样</td><td>JPG/PNG, 800×800 px</td></tr><tr><td>身份证明</td><td>个体户执照 / 公司营业执照</td></tr><tr><td>商标代理委托书</td><td>找代理时签</td></tr><tr><td>类别 + 商品项目</td><td>选对类别</td></tr></tbody></table></div>
-<h3>Step 3：提交申请（1 天）</h3>
-
-<div class="table-wrapper"><table><thead><tr><th>渠道</th><th>费用</th><th>推荐</th></tr></thead><tbody><tr><td><strong>自己申请</strong></td><td>270 元/类</td><td>熟悉流程</td></tr><tr><td><strong>代理公司</strong></td><td>800-1500 元/类</td><td>第一次推荐</td></tr><tr><td><strong>阿里云 / 腾讯云</strong></td><td>800-1200 元/类</td><td>标准价</td></tr></tbody></table></div>
-<strong>审查周期</strong>：9-12 个月。
-<strong>下证后有效期</strong>：10 年（到期可续）。
-
-<p></section></p>
-<section id="s四">
-<p>      <div class="section-label">四、3 个常见驳回原因</div></p>
-
-<h3>1. 和已有商标近似</h3>
-
-<strong>症状</strong>："蕾姆" → "雷姆" / "LEMU" → 驳回。
-<strong>解法</strong>：注册前严格查询 + 设计差异化。
-
-<h3>2. 缺乏显著性</h3>
-
-<strong>症状</strong>："最好的工具" / "智能助手" → 驳回。
-<strong>解法</strong>：用自造词 / 独特名字。
-
-<h3>3. 类别选错</h3>
-
-<strong>症状</strong>：做 SaaS 却注册了第 25 类（服装）→ 别人可抢注第 9 类。
-<strong>解法</strong>：选核心 3 类（9 + 35 + 42）。
-
-<p></section></p>
-<section id="s五">
-<p>      <div class="section-label">五、3 个 OPC 商标策略</div></p>
-
-<h3>策略 1：先文字后图形</h3>
-
-<ul><li>文字商标：270 元/类，下证快</li><li>图形商标：300 元/类，审查慢</li><li>文字 + 图形 组合：300 元/类</li></ul>
-<strong>先拿文字证 = 立刻受保护</strong>。
-
-<h3>策略 2：核心 + 防御</h3>
-
-<div class="table-wrapper"><table><thead><tr><th>类型</th><th>类别</th><th>预算</th></tr></thead><tbody><tr><td>核心</td><td>9 + 35 + 42</td><td>900 元</td></tr><tr><td>防御</td><td>9 + 35 + 42 + 38 + 41</td><td>1500 元</td></tr></tbody></table></div>
-<strong>有钱就做防御注册</strong>，防止他人抢注。
-
-<h3>策略 3：海外商标</h3>
-
-<p>如果产品有海外用户，<strong>单独注册</strong>：</p>
-<ul><li>美国商标：250 美元/类</li><li>欧盟商标：850 欧元/类</li><li>日本商标：12000 日元/类 + 翻译费</li></ul>
-
-<p></section></p>
-<section id="s六">
-<p>      <div class="section-label">六、商标的 3 个常见误区</div></p>
-
-<h3>误区 1：注册了商标 = 可以随便用</h3>
-
-<strong>错</strong>。商标必须在注册类别内使用。
-<ul><li>注册了"蕾姆"第 9 类 = 不能做"蕾姆"服装</li><li>服装类需要另外注册</li></ul>
-<h3>误区 2：注册成功就永远保护</h3>
-
-<strong>错</strong>。连续 3 年不使用 = 任何人可申请撤销。
-<strong>解法</strong>：保留使用证据（产品截图、宣传材料）。
-
-<h3>误区 3：个人不能注册商标</h3>
-
-<strong>可以</strong>。用身份证 + 个体户营业执照即可。
-
-<p></section></p>
-<section id="s七">
-<p>      <div class="section-label">七、检查清单</div></p>
-
-<ul><li><input type="checkbox" disabled> 完成商标查询（无近似）</li><li><input type="checkbox" disabled> 选定 3-5 个核心类别</li><li><input type="checkbox" disabled> 准备商标图样 + 材料</li><li><input type="checkbox" disabled> 提交申请（自办或代理）</li><li><input type="checkbox" disabled> 9-12 个月等下证</li><li><input type="checkbox" disabled> 每年保留使用证据</li></ul>
-
-<p></section></p>
-<section id="s节">
-<p>      <div class="section-label">节点资源链接</div></p>
-
-<ul><li>节点23：公司注册与主体选择</li><li>节点49：软件著作权登记</li><li>节点50：广告合规</li></ul>
+    <section class="block">
+      <h2>M1 不需要商标</h2>
+      <ul>
+        <li>M1 阶段 0 收入，商标 = 浪费钱</li>
+        <li>M2 阶段月营收 > ¥1 万再考虑</li>
+        <li>→ 阿泽 M1 暂不注册</li>
+      </ul>
     </section>
 
-    <div class="summary-box">
-      <h3>节点48检查清单</h3>
-      <p>完成本节点后，请确认所有检查项已通过。</p>
-    </div>
-    </main>
-  </div>
+    <section class="block">
+      <h2>1 步流程（M2 阶段）</h2>
+      <ul>
+        <li>Step 1: 微信搜索'商标帮'小程序</li>
+        <li>Step 2: 查名（¥0）</li>
+        <li>Step 3: 选类目（35-41 类互联网）</li>
+        <li>Step 4: 提交（¥270/类）</li>
+        <li>Step 5: 9-12 个月下证</li>
+      </ul>
+    </section>
 
-  <nav class="footer-nav">
-    <a href="/nodes/47-business-email/index.html" class="nav-link"><span>←</span> 节点47</a>
-    <a href="/nodes/49-copyright/index.html" class="nav-link">节点49 <span>→</span></a>
-  </nav>
+</main>
 
-  <script>
-  document.querySelectorAll('a[href^="#"]').forEach(link => {
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-      const targetId = this.getAttribute('href').slice(1);
-      const target = document.getElementById(targetId);
-      if (target) {
-        window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
-      }
-    });
-  });
-  </script>
+<nav class="footer-nav">
+  <a href="/nodes/47-business-email/index.html" class="nav-link"><span>←</span> 节点 47</a>
+  <a href="/nodes/49-copyright/index.html" class="nav-link">节点 49 <span>→</span></a>
+</nav>
 </body>
 </html>

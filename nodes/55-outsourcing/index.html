@@ -3,1022 +3,116 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="节点55：外包策略与执行 - OPC节点百科">
+  <meta name="description" content="外包协作 - 1 人 MCN 节点库">
   <meta name="theme-color" content="#111110">
-  <title>节点55：外包策略与执行 - OPC节点百科</title>
+  <title>节点55：外包协作 - 一人 MCN 节点库</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../_design-tokens.css">
   <style>
-
-:root {
-  --bg: #111110;
-  --surface: #1A1A18;
-  --text-primary: #F0EDE6;
-  --text-secondary: #7A7670;
-  --text-tertiary: #4A4744;
-  --accent: #C0392B;
-  --line: #2A2A28;
-  --line-light: rgba(255,255,255,0.06);
-  --space-xs: 8px;
-  --space-sm: 16px;
-  --space-md: 24px;
-  --space-lg: 32px;
-  --space-xl: 48px;
-  --space-2xl: 64px;
-  --space-3xl: 96px;
-  --space-4xl: 128px;
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-html {
-  overflow-x: hidden;
-}
-
-body {
-  background: var(--bg);
-  color: var(--text-primary);
-  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-weight: 300;
-  line-height: 1.9;
-  letter-spacing: 0.04em;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-}
-
-/* 移动端整体适配 - 使用 900px breakpoint 与现有代码一致 */
-@media (max-width: 900px) {
-  html, body {
-    overflow-x: hidden !important;
-    max-width: 100vw !important;
-  }
-
-  body {
-    font-size: 14px;
-  }
-
-  .layout {
-    display: block !important;
-    width: 100% !important;
-    max-width: 100vw !important;
-    padding: 4rem 16px 2rem !important;
-    margin: 0 !important;
-    grid-template-columns: 1fr !important;
-  }
-
-  .sidebar-toc {
-    display: none !important;
-  }
-
-  .container {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 0 !important;
-  }
-
-  section {
-    width: 100% !important;
-    max-width: 100vw !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-  }
-
-  section > * {
-    max-width: 100% !important;
-    overflow-x: visible !important;
-    box-sizing: border-box !important;
-  }
-
-  section p {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    word-break: break-word !important;
-    overflow-wrap: break-word !important;
-    white-space: normal !important;
-    display: block !important;
-    box-sizing: border-box !important;
-  }
-
-  h1 {
-    font-size: clamp(36px, 10vw, 48px) !important;
-    line-height: 1.05 !important;
-  }
-}
-
-/* Layout with Sidebar */
-.layout {
-  display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
-  gap: clamp(2rem, 4vw, 3rem);
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 5rem clamp(1.25rem, 5vw, 3rem) 2rem;
-}
-
-/* Sidebar TOC */
-.sidebar-toc {
-  position: sticky;
-  top: 5rem;
-  height: fit-content;
-  max-height: calc(100vh - 6rem);
-  overflow-y: auto;
-  padding-top: 0;
-  scrollbar-width: thin;
-  scrollbar-color: var(--line) transparent;
-}
-
-.sidebar-toc::-webkit-scrollbar {
-  width: 4px;
-}
-
-.sidebar-toc::-webkit-scrollbar-thumb {
-  background: var(--line);
-  border-radius: 2px;
-}
-
-.toc-title {
-  font-size: 0.6875rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  margin-bottom: 1.25rem;
-}
-
-.toc-list {
-  list-style: none;
-}
-
-.toc-item {
-  margin-bottom: 0.75rem;
-}
-
-.toc-link {
-  font-size: 0.8125rem;
-  color: var(--text-secondary);
-  text-decoration: none;
-  display: block;
-  padding: 0.375rem 0;
-  padding-left: 1rem;
-  border-left: 1px solid var(--line);
-  transition: all 0.3s;
-  line-height: 1.4;
-}
-
-.toc-link:hover {
-  color: var(--text-primary);
-  border-left-color: var(--accent);
-}
-
-.toc-link.active {
-  color: var(--accent);
-  border-left-color: var(--accent);
-  font-weight: 400;
-}
-
-.toc-link.sub {
-  padding-left: 1.75rem;
-  font-size: 0.75rem;
-}
-
-/* Fixed Top Nav */
-.fixed-top-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
-  background: rgba(17, 17, 16, 0.85);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--line);
-}
-
-.back-link {
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-secondary);
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: color 0.3s;
-}
-
-.back-link:hover {
-  color: var(--text-primary);
-}
-
-.node-id {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 0.75rem;
-  color: var(--text-tertiary);
-  letter-spacing: 0.08em;
-}
-
-/* Header */
-header {
-  padding: clamp(4rem, 10vh, 6rem) 0 clamp(2rem, 5vh, 3rem);
-  border-bottom: 1px solid var(--line);
-  margin-bottom: clamp(2rem, 5vh, 3rem);
-}
-
-/* Main content */
-main {
-  padding-bottom: 5rem;
-}
-
-/* 移动端底部导航适配 - 合并到 900px breakpoint */
-@media (max-width: 900px) {
-  main {
-    padding-bottom: 6rem; /* 为固定底部导航预留空间 */
-  }
-
-  .footer-nav {
-    overflow-x: auto;
-    justify-content: space-between;
-  }
-
-  .nav-link {
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  .table-wrapper {
-    position: relative;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    margin: 1.5rem 0;
-    border: 1px solid var(--line);
-  }
-
-  .table-wrapper::after {
-    content: "← 左右滑动 →";
-    position: absolute;
-    right: 8px;
-    bottom: 8px;
-    font-size: 0.625rem;
-    color: var(--text-tertiary);
-    background: var(--surface);
-    padding: 2px 8px;
-    pointer-events: none;
-  }
-
-  table {
-    min-width: 100%;
-    font-size: 0.8125rem;
-  }
-
-  td, th {
-    padding: 0.625rem 0.75rem;
-  }
-}
-
-/* Section anchors offset for sticky header */
-section {
-  scroll-margin-top: 2rem;
-}
-
-section h2 {
-  font-size: clamp(1.5rem, 3.5vw, 2rem);
-}
-
-section p, section li {
-  font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
-  line-height: 1.9;
-}
-
-/* Table improvements */
-.table-wrapper {
-  margin: 1.5rem 0;
-  border: 1px solid var(--line);
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.table-wrapper::after {
-  content: "";
-  display: block;
-}
-
-/* 移动端滑动提示 */
-@media (max-width: 900px) {
-  .table-wrapper::after {
-    content: "← 左右滑动 →";
-    position: absolute;
-    right: 8px;
-    bottom: 8px;
-    font-size: 0.625rem;
-    color: var(--text-tertiary);
-    background: var(--surface);
-    padding: 2px 8px;
-    pointer-events: none;
-  }
-
-  .table-wrapper {
-    position: relative;
-    padding-bottom: 24px;
-  }
-}
-
-table {
-  font-size: 0.875rem;
-  min-width: 560px;
-}
-
-@media (max-width: 900px) {
-  table {
-    min-width: 100%;
-    font-size: 0.8125rem;
-  }
-
-  td, th {
-    padding: 0.625rem 0.75rem;
-  }
-}
-
-/* Tool Cards */
-.tool-grid {
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-}
-
-/* Path blocks */
-.path-block {
-  padding: 1.5rem;
-}
-
-.workflow {
-  padding: 1rem 1.25rem;
-  font-size: 0.8125rem;
-}
-
-/* Validation cards */
-.validation-grid {
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-}
-
-.validation-card {
-  padding: 1.25rem;
-}
-
-/* Level items */
-.level-grid {
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-}
-
-/* Decision box */
-.decision-box {
-  padding: 1.25rem 1.5rem;
-}
-
-/* Main content */
-.phase-label {
-  font-size: 0.6875rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 1.25rem;
-}
-
-h1 {
-  font-family: 'Noto Serif JP', serif;
-  font-size: clamp(48px, 10vw, 96px);
-  font-weight: 300;
-  letter-spacing: -0.03em;
-  line-height: 0.95;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xl);
-}
-
-/* 移动端H1适配 */
-@media (max-width: 900px) {
-  h1 {
-    font-size: clamp(36px, 10vw, 48px);
-    line-height: 1.05;
-  }
-}
-
-.phase-label {
-  font-size: 13px;
-  color: var(--accent);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  margin-bottom: var(--space-lg);
-  display: flex;
-  align-items: center;
-  gap: var(--space-md);
-}
-.phase-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
-
-.subtitle {
-  font-size: 16px;
-  color: var(--text-secondary);
-  max-width: 44ch;
-  line-height: 1.8;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
-
-/* 移动端副标题适配 */
-@media (max-width: 900px) {
-  .subtitle {
-    font-size: 14px;
-    max-width: 100%;
-  }
-}
-
-.node-meta {
-  margin-top: 2rem;
-  font-size: 0.75rem;
-  color: var(--text-tertiary);
-  letter-spacing: 0.1em;
-}
-
-/* Sections */
-section {
-  padding-bottom: clamp(3rem, 10vh, 5rem);
-  border-bottom: 1px solid var(--line);
-  margin-bottom: clamp(3rem, 10vh, 5rem);
-}
-
-section:last-of-type {
-  border-bottom: none;
-}
-
-.section-label {
-  font-size: 0.6875rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  margin-bottom: 1.5rem;
-}
-
-h2 {
-  font-family: 'Noto Serif JP', serif;
-  font-size: clamp(1.375rem, 4vw, 1.875rem);
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  line-height: 1.3;
-  color: var(--text-primary);
-  margin-bottom: 1.5rem;
-}
-
-h3 {
-  font-family: 'Noto Serif JP', serif;
-  font-size: clamp(1.125rem, 3vw, 1.375rem);
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  color: var(--text-primary);
-  margin-bottom: 1rem;
-  margin-top: 2rem;
-}
-
-p {
-  color: var(--text-secondary);
-  line-height: 1.9;
-  margin-bottom: 1.25rem;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-}
-
-/* 移动端段落适配 */
-@media (max-width: 900px) {
-  p {
-    padding-right: 0.5rem;
-    word-break: break-all;
-    white-space: normal;
-  }
-
-  section p {
-    padding-right: 0;
-  }
-}
-
-.decision-box {
-  background: var(--surface);
-  border-left: 2px solid var(--accent);
-  padding: 1.5rem 2rem;
-  margin: 2rem 0;
-}
-
-.decision-box p {
-  color: var(--text-primary);
-  font-size: 0.9375rem;
-  margin: 0;
-}
-
-/* Tables */
-.table-wrapper {
-  overflow-x: auto;
-  margin: 2rem 0;
-  -webkit-overflow-scrolling: touch;
-}
-
-table {
-  width: 100%;
-  min-width: 560px;
-  border-collapse: collapse;
-  font-size: 0.875rem;
-}
-
-th {
-  text-align: left;
-  font-weight: 400;
-  font-size: 0.6875rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid var(--line);
-}
-
-td {
-  padding: 1rem;
-  border-bottom: 1px solid var(--line);
-  color: var(--text-secondary);
-  vertical-align: top;
-}
-
-tr:last-child td {
-  border-bottom: none;
-}
-
-td:first-child {
-  color: var(--text-primary);
-  font-weight: 400;
-}
-
-/* Tool Cards */
-.tool-grid {
-  display: grid;
-  gap: 1.5rem;
-  margin: 2rem 0;
-}
-
-.tool-card {
-  background: var(--surface);
-  padding: 1.75rem;
-  border: 1px solid var(--line);
-}
-
-.tool-card h4 {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 1.125rem;
-  font-weight: 400;
-  color: var(--text-primary);
-  margin-bottom: 0.75rem;
-}
-
-.tool-card .tagline {
-  font-size: 0.8125rem;
-  color: var(--text-tertiary);
-  margin-bottom: 1.25rem;
-}
-
-.tool-card p {
-  font-size: 0.875rem;
-  line-height: 1.8;
-  margin-bottom: 0.75rem;
-}
-
-.tool-card .pros {
-  color: var(--text-secondary);
-  font-size: 0.8125rem;
-}
-
-.tool-card .price {
-  display: inline-block;
-  font-size: 0.75rem;
-  color: var(--accent);
-  border: 1px solid var(--accent);
-  padding: 0.25rem 0.75rem;
-  margin-top: 1rem;
-}
-
-/* Path Section */
-.path-block {
-  background: var(--surface);
-  padding: 2rem;
-  margin: 2rem 0;
-  border: 1px solid var(--line);
-}
-
-.path-header {
-  display: flex;
-  align-items: baseline;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
-}
-
-.path-number {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 0.75rem;
-  color: var(--accent);
-  letter-spacing: 0.1em;
-}
-
-.path-title {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 1.25rem;
-  font-weight: 400;
-  color: var(--text-primary);
-}
-
-.path-tools {
-  font-size: 0.8125rem;
-  color: var(--text-tertiary);
-  margin-bottom: 1.25rem;
-}
-
-.path-block p {
-  font-size: 0.875rem;
-  margin-bottom: 0.75rem;
-}
-
-.workflow {
-  background: var(--bg);
-  padding: 1.25rem 1.5rem;
-  margin-top: 1.25rem;
-  font-size: 0.8125rem;
-  color: var(--text-secondary);
-  line-height: 1.9;
-}
-
-/* Validation Box */
-.validation-grid {
-  display: grid;
-  gap: 1.25rem;
-  margin: 2rem 0;
-}
-
-.validation-card {
-  background: var(--surface);
-  padding: 1.5rem;
-  border: 1px solid var(--line);
-}
-
-.validation-card h4 {
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: var(--text-primary);
-  margin-bottom: 0.75rem;
-}
-
-.validation-card p {
-  font-size: 0.8125rem;
-  margin: 0;
-}
-
-.level-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin: 1.5rem 0;
-}
-
-.level-item {
-  background: var(--surface);
-  padding: 1.25rem;
-  border: 1px solid var(--line);
-}
-
-.level-item .num {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 1.5rem;
-  color: var(--accent);
-  opacity: 0.6;
-  margin-bottom: 0.5rem;
-}
-
-.level-item h4 {
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: var(--text-primary);
-  margin-bottom: 0.5rem;
-}
-
-.level-item p {
-  font-size: 0.75rem;
-  margin: 0;
-}
-
-/* Cost Control */
-.cost-table {
-  margin: 2rem 0;
-}
-
-/* Quote */
-.quote-block {
-  border-left: 2px solid var(--accent);
-  padding-left: 1.5rem;
-  margin: 2rem 0;
-}
-
-.quote-block p {
-  font-size: 1rem;
-  color: var(--text-primary);
-  line-height: 1.8;
-}
-
-/* Network Section */
-.network-alert {
-  background: var(--surface);
-  border: 1px solid var(--accent);
-  padding: 1.5rem 2rem;
-  margin: 2rem 0;
-}
-
-.network-alert h4 {
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: var(--accent);
-  margin-bottom: 0.75rem;
-}
-
-.network-alert p {
-  font-size: 0.875rem;
-  margin: 0;
-}
-
-/* Summary Box */
-.summary-box {
-  background: var(--surface);
-  padding: 2rem;
-  margin-top: 3rem;
-  border: 1px solid var(--line);
-}
-
-.summary-box h3 {
-  margin-top: 0;
-  margin-bottom: 1.25rem;
-}
-
-.step-list {
-  list-style: none;
-  counter-reset: steps;
-}
-
-.step-list li {
-  counter-increment: steps;
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-}
-
-.step-list li::before {
-  content: counter(steps);
-  font-family: 'Noto Serif JP', serif;
-  font-size: 0.75rem;
-  color: var(--accent);
-  flex-shrink: 0;
-  width: 1.5rem;
-  padding-top: 0.25rem;
-}
-
-/* Footer Nav - Fixed Bottom */
-.footer-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
-  background: rgba(17, 17, 16, 0.9);
-  backdrop-filter: blur(12px);
-  border-top: 1px solid var(--line);
-}
-
-.nav-link {
-  font-size: 0.75rem;
-  color: var(--text-tertiary);
-  text-decoration: none;
-  letter-spacing: 0.08em;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: color 0.3s;
-}
-
-.nav-link:hover {
-  color: var(--text-primary);
-}
-
-.nav-link.disabled {
-  opacity: 0.3;
-  pointer-events: none;
-}
-
+    :root { --bg: #111110; --surface: #1A1A18; --text-primary: #F0EDE6;
+      --text-secondary: #B8B4AE; --text-tertiary: #7A7670; --line: #2A2A28; --accent: #C0392B; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text-primary);
+      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.8; letter-spacing: 0.03em; min-height: 100dvh; -webkit-font-smoothing: antialiased; }
+    .fixed-top-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.875rem clamp(1.25rem, 4vw, 2.5rem);
+      background: rgba(17, 17, 16, 0.85); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line); }
+    .nav-home { color: var(--text-primary); text-decoration: none;
+      font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .nav-node-id { color: var(--text-tertiary); font-size: 0.75rem; letter-spacing: 0.1em; }
+    .page { max-width: 1200px; margin: 0 auto; padding: 6rem clamp(24px, 5vw, 80px) 4rem; }
+    .hero { padding: var(--space-3xl) 0 var(--space-xl); }
+    .hero-label { color: var(--accent); font-size: 0.75rem; letter-spacing: 0.2em;
+      text-transform: uppercase; margin-bottom: 1.5rem; }
+    .hero h1 { font-family: 'Noto Serif JP', serif;
+      font-size: clamp(48px, 10vw, 96px); font-weight: 300; line-height: 0.95;
+      letter-spacing: -0.03em; margin-bottom: 1rem; }
+    .hero-subtitle { font-size: 1.125rem; color: var(--text-secondary);
+      margin-bottom: 1rem; line-height: 1.5; }
+    .lead { max-width: 44ch; color: var(--text-secondary);
+      font-size: 1rem; line-height: 1.85; margin-bottom: 2rem; }
+    .meta-row { display: inline-flex; gap: 1.5rem; font-size: 0.8125rem;
+      color: var(--text-tertiary); padding: 0.75rem 1.25rem;
+      border: 1px solid var(--line); margin-bottom: 3rem; }
+    .meta-row b { color: var(--text-primary); font-weight: 500; }
+    .block { padding: var(--space-2xl) 0; border-top: 1px solid var(--line); }
+    .block h2 { font-family: 'Noto Serif JP', serif;
+      font-size: clamp(20px, 2.5vw, 28px); font-weight: 400; line-height: 1.3;
+      margin-bottom: 1.5rem; }
+    .block ul { list-style: none; padding: 0; }
+    .block li { padding: 0.5rem 0 0.5rem 1.5rem; border-bottom: 1px solid var(--line);
+      position: relative; color: var(--text-primary); font-size: 0.9375rem; line-height: 1.8; }
+    .block li::before { content: '·'; position: absolute; left: 0;
+      color: var(--accent); font-weight: 700; }
+    .block li:last-child { border-bottom: none; }
+    .footer-nav { position: fixed; bottom: 0; left: 0; right: 0;
+      display: flex; justify-content: space-between;
+      padding: 1rem clamp(1.25rem, 4vw, 2.5rem);
+      background: rgba(17, 17, 16, 0.9); backdrop-filter: blur(12px);
+      border-top: 1px solid var(--line); z-index: 100; }
+    .nav-link { color: var(--text-secondary); text-decoration: none;
+      font-size: 0.8125rem; letter-spacing: 0.08em; transition: color 0.3s; }
+    .nav-link:hover { color: var(--accent); }
   </style>
+<link rel="stylesheet" href="../_layout-templates.css">
 </head>
 <body>
-  <nav class="fixed-top-nav">
-    <a href="/index.html" class="back-link">← 返回首页</a>
-    <span class="node-id">节点 55 / 57</span>
-  </nav>
 
-  <div class="layout">
-    <main class="container">
-      <header>
-      <div class="phase-label">1-10</div>
-      <h1>节点55：外包策略与执行</h1>
-      <div class="node-meta">节点 55 / 57 · 最后修订：2026年6月4日</div>
-    </header>
+<nav class="fixed-top-nav">
+  <a href="/" class="nav-home">◉ 飞轮首页</a>
+  <span class="nav-node-id">节点 55 · P6 扩张阶段</span>
+</nav>
 
-    <section id="s1">
-    
-<p>node_id: 55</p>
-<p>persona: neutral</p>
-<p>cta_type: wechat</p>
-<p>keywords: [外包, 兼职, 自由, 职业, 合作]</p>
+<main class="layout layout-tools">
+  <header class="hero">
+    <div class="hero-label">节点 55 · P6 扩张阶段</div>
+    <h1>外包协作<br>3 类外包 + 合同模板</h1>
+    <p class="hero-subtitle">1 人 MCN 什么时候请外包</p>
+    <p class="lead">1 人 MCN 「外包协作」完整 SOP</p>
+    <div class="meta-row">
+      <span><b>30 min</b> 读完</span>
+      <span><b>1 人</b> 可做</span>
+      <span>阶段 <b>P6 扩张阶段</b></span>
+    </div>
+  </header>
 
-<blockquote class="decision-box"><p>OPC 一个人，但<strong>某些事必须外包</strong>——设计、客服、3 天以上的体力活。本节点告诉你<strong>怎么雇人不被坑</strong>。</p></blockquote>
-
-<p></section></p>
-<section id="s一">
-<p>      <div class="section-label">一、OPC 必外包的 5 类事</div></p>
-
-<div class="table-wrapper"><table><thead><tr><th>类别</th><th>自己做的成本</th><th>外包的成本</th><th>外包理由</th></tr></thead><tbody><tr><td><strong>Logo / UI 设计</strong></td><td>3 天 = 0 收入</td><td>500-3000 元</td><td>速度快 10 倍</td></tr><tr><td><strong>客服 / 答疑</strong></td><td>每天 2 小时</td><td>2000-5000/月</td><td>时间复用</td></tr><tr><td><strong>短视频剪辑</strong></td><td>1 天学不会</td><td>100-500/条</td><td>专业工具</td></tr><tr><td><strong>数据标注 / 录入</strong></td><td>1 周</td><td>500-1500</td><td>重复劳动</td></tr><tr><td><strong>海外推广</strong></td><td>0 渠道</td><td>1-3 万/月</td><td>资源杠杆</td></tr></tbody></table></div>
-<strong>OPC 永远算"机会成本"</strong>：你 1 小时值 200 元，外包 100 元 = 净赚 100 元。
-
-<p></section></p>
-<section id="s二">
-<p>      <div class="section-label">二、3 个主流外包渠道</div></p>
-
-<h3>1. 国内兼职平台</h3>
-
-<div class="table-wrapper"><table><thead><tr><th>平台</th><th>适合</th><th>价格</th></tr></thead><tbody><tr><td><strong>猪八戒</strong></td><td>设计 / 简单开发</td><td>中</td></tr><tr><td><strong>电鸭社区</strong></td><td>远程兼职 / 程序员</td><td>中</td></tr><tr><td><strong>闲鱼 / 豆瓣</strong></td><td>小活 / 设计</td><td>低</td></tr><tr><td><strong>即刻动态</strong></td><td>高质量自由职业</td><td>中高</td></tr></tbody></table></div>
-<h3>2. 海外平台</h3>
-
-<div class="table-wrapper"><table><thead><tr><th>平台</th><th>适合</th><th>价格</th></tr></thead><tbody><tr><td><strong>Upwork</strong></td><td>全球程序员 / 设计</td><td>中高</td></tr><tr><td><strong>Fiverr</strong></td><td>小活 / 标准化任务</td><td>低</td></tr><tr><td><strong>Toptal</strong></td><td>高端人才（前 3%）</td><td>高</td></tr></tbody></table></div>
-<h3>3. AI 工具（最便宜）</h3>
-
-<div class="table-wrapper"><table><thead><tr><th>工具</th><th>替代</th></tr></thead><tbody><tr><td><strong>Coze / Dify</strong></td><td>客服</td></tr><tr><td><strong>Cursor / Claude Code</strong></td><td>编程</td></tr><tr><td><strong>Midjourney / GPT-4o</strong></td><td>设计</td></tr><tr><td><strong>ElevenLabs</strong></td><td>配音</td></tr></tbody></table></div>
-<strong>OPC 优先用 AI 工具</strong>——便宜 + 24 小时在线。
-
-<p></section></p>
-<section id="s三">
-<p>      <div class="section-label">三、3 步找到靠谱外包</div></p>
-
-<h3>Step 1：写清晰的"工作说明书"</h3>
-
-<strong>错误</strong>："帮我做一个 logo"
-<strong>正确</strong>：
-<p>``<code></p>
-<p>需求：SaaS 工具 logo，名称"蕾姆"</p>
-<p>风格：极简 / 暗色 / 朱红强调色</p>
-<p>尺寸：512x512, 1024x1024, SVG</p>
-<p>参考：附件 3 张竞品</p>
-<p>预算：500-1500 元</p>
-<p>交付：Figma 源文件 + PNG 5 个尺寸</p>
-<p>时间：3 天</p>
-<p></code>`<code></p>
-
-<strong>写得越细 = 越少返工</strong>。
-
-<h3>Step 2：先小单测试</h3>
-
-<ul><li>第一单 100-300 元</li><li>测 3 个候选人</li><li>看 1 个完整工作流</li></ul>
-<h3>Step 3：长期合作前先建立信任</h3>
-
-<div class="table-wrapper"><table><thead><tr><th>信号</th><th>含义</th></tr></thead><tbody><tr><td>准时交付</td><td>靠谱</td></tr><tr><td>主动提建议</td><td>走心</td></tr><tr><td>超预期完成</td><td>值得长期</td></tr><tr><td>经常迟到</td><td>换人</td></tr><tr><td>交付不符</td><td>立即停止合作</td></tr></tbody></table></div>
-
-<p></section></p>
-<section id="s四">
-<p>      <div class="section-label">四、3 个 OPC 必签的合同条款</div></p>
-
-<h3>1. 知识产权归属</h3>
-
-<p></code>`<code></p>
-<p>乙方为甲方创作的所有工作成果（包括但不限于设计稿、代码、文档），</p>
-<p>其知识产权归甲方所有，乙方不得保留或转让。</p>
-<p></code>`<code></p>
-
-<strong>没有这一条 = 外包方可以拿你的设计 / 代码再卖给别人</strong>。
-
-<h3>2. 保密协议（NDA）</h3>
-
-<p></code>`<code></p>
-<p>乙方对甲方提供的产品信息、商业计划、客户数据等保密，</p>
-<p>未经书面同意不得向第三方披露。</p>
-<p></code>`<code></p>
-
-<strong>OPC 必备</strong>——你把产品思路告诉设计师，设计师可能卖给你的竞品。
-
-<h3>3. 退款条款</h3>
-
-<p></code>`<code></p>
-<p>若乙方在 X 天内未交付，甲方有权终止合作并要求退款（已交付部分除外）。</p>
-<p></code>``</p>
-
-<p></section></p>
-<section id="s五">
-<p>      <div class="section-label">五、3 个 OPC 外包支付方式</div></p>
-
-<h3>1. 分阶段付款</h3>
-
-<div class="table-wrapper"><table><thead><tr><th>阶段</th><th>比例</th></tr></thead><tbody><tr><td>启动</td><td>30%</td></tr><tr><td>初稿交付</td><td>30%</td></tr><tr><td>修改完成</td><td>30%</td></tr><tr><td>最终交付</td><td>10%</td></tr></tbody></table></div>
-<h3>2. 平台托管</h3>
-
-<p>猪八戒 / Upwork 等平台有托管支付，<strong>验收后才打款</strong>给乙方。</p>
-
-<h3>3. 试用 1 周再签长期</h3>
-
-<p>第一次合作不要签年付，按月或按项目结算。</p>
-
-<p></section></p>
-<section id="s六">
-<p>      <div class="section-label">六、3 个必会的外包管理技巧</div></p>
-
-<h3>1. 用 Notion / Trello 管理任务</h3>
-
-<p>不要用微信来回调任务 = 后期全乱。</p>
-
-<h3>2. 每天 15 分钟同步</h3>
-
-<p>早上 9 点 / 晚上 9 点 = 两次 check-in。</p>
-
-<h3>3. 验收清单（SOP）</h3>
-
-<p>每次交付都过：</p>
-<ul><li><input type="checkbox" disabled> 是否符合需求文档</li><li><input type="checkbox" disabled> 文件格式是否正确</li><li><input type="checkbox" disabled> 源文件是否提供</li><li><input type="checkbox" disabled> 知识产权是否转让</li></ul>
-
-<p></section></p>
-<section id="s七">
-<p>      <div class="section-label">七、3 个常见坑</div></p>
-
-<h3>坑 1：最便宜 = 最好</h3>
-
-<strong>错</strong>。<strong>99% 的便宜 = 质量差 + 重新做</strong>。
-<strong>OPC 真理</strong>：花 1000 元做对 = 比花 500 元做错重做 3 次便宜。
-
-<h3>坑 2：一个人做所有事</h3>
-
-<strong>错</strong>。OPC 不是 996 的码农。
-<strong>真理</strong>：雇人 = 你赚更多 = 业务增长。
-
-<h3>坑 3：签了合同就不管</h3>
-
-<strong>错</strong>。合同是底线，<strong>日常沟通</strong>才是关键。
-<strong>建议</strong>：每周 1 次 30 分钟视频同步。
-
-<p></section></p>
-<section id="s八">
-<p>      <div class="section-label">八、3 个 OPC 必算的账</div></p>
-
-<div class="table-wrapper"><table><thead><tr><th>指标</th><th>公式</th><th>健康</th></tr></thead><tbody><tr><td>雇人 ROI</td><td>外包产出营收 / 外包成本</td><td>> 3</td></tr><tr><td>时间节省</td><td>雇人省的小时 × 时薪</td><td>> 0</td></tr><tr><td>长期成本</td><td>月度固定外包 / 月营收</td><td>< 30%</td></tr></tbody></table></div>
-
-<p></section></p>
-<section id="s九">
-<p>      <div class="section-label">九、检查清单</div></p>
-
-<ul><li><input type="checkbox" disabled> 列出 3 个必外包的事</li><li><input type="checkbox" disabled> 写 1 份标准"工作说明书"模板</li><li><input type="checkbox" disabled> 在 2 个平台注册账号</li><li><input type="checkbox" disabled> 第一次合作签 NDA + 知识产权协议</li><li><input type="checkbox" disabled> 验收 SOP 写好</li><li><input type="checkbox" disabled> 每月 1 次外包 ROI 复盘</li></ul>
-
-<p></section></p>
-<section id="s节">
-<p>      <div class="section-label">节点资源链接</div></p>
-
-<ul><li>节点46：现金流与财务基础</li><li>节点56：精力与能量管理</li><li>节点35：社群与私域运营</li></ul>
+    <section class="block">
+      <h2>什么时候请外包？</h2>
+      <ul>
+        <li>① 月营收 > ¥3 万（负担得起）</li>
+        <li>② 自己花 1 周做不完的任务</li>
+        <li>③ 不涉及核心方法论的工作</li>
+      </ul>
     </section>
 
-    <div class="summary-box">
-      <h3>节点55检查清单</h3>
-      <p>完成本节点后，请确认所有检查项已通过。</p>
-    </div>
-    </main>
-  </div>
+    <section class="block">
+      <h2>3 类外包</h2>
+      <ul>
+        <li>① 设计（封面/落地页）— ¥200-1000/次</li>
+        <li>② 剪辑（视频）— ¥50-200/条</li>
+        <li>③ 客服（1v1）— ¥3000-5000/月</li>
+      </ul>
+    </section>
 
-  <nav class="footer-nav">
-    <a href="/nodes/54-wechat-miniapp/index.html" class="nav-link"><span>←</span> 节点54</a>
-    <a href="/nodes/56-energy-management/index.html" class="nav-link">节点56 <span>→</span></a>
-  </nav>
+    <section class="block">
+      <h2>1 份合同模板</h2>
+      <ul>
+        <li>WorkForHire + 保密条款 + 知识产权</li>
+        <li>→ 法大大/契约锁 有标准模板</li>
+      </ul>
+    </section>
 
-  <script>
-  document.querySelectorAll('a[href^="#"]').forEach(link => {
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-      const targetId = this.getAttribute('href').slice(1);
-      const target = document.getElementById(targetId);
-      if (target) {
-        window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
-      }
-    });
-  });
-  </script>
+</main>
+
+<nav class="footer-nav">
+  <a href="/nodes/54-wechat-miniapp/index.html" class="nav-link"><span>←</span> 节点 54</a>
+  <a href="/nodes/56-energy-management/index.html" class="nav-link">节点 56 <span>→</span></a>
+</nav>
 </body>
 </html>
