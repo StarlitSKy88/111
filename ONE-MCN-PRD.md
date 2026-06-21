@@ -28,7 +28,7 @@
 | **核心方法** | Agent 全权决策 + 用户 weekly review（合伙人角色）|
 | **3 Tier 定价** | Tier 1 ¥999/月 · Tier 2 ¥999/月 · Tier 3 ¥50,000/次 |
 | **Stage 4** | 独立商业化框架（试用→付费→续费→推荐），与 Tier 1-3 解耦 |
-| **M1 工作量** | 138 任务 / Day 0-7 milestone = **真实 6-10 周（1-2 人团队）** |
+| **M1 工作量** | 140 任务 / Day 0-7 milestone = **真实 6-10 周（1-2 人团队）** |
 
 > ⚠️ 与 v4.1 的差异：v4.2 引入 12 个 lead-with-assumption 技术假设（含 RLS、幂等性、备份恢复）+ 8 个商业假设（GTM/CAC/LTV/续费）+ 12 个 CRITICAL 风险标注。配套新文档 `ONE-MCN-COMMERCIAL.md`（竞品 + GTM + Unit Economics + 团队）。
 

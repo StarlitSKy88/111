@@ -15,8 +15,8 @@
 | **目标读者** | ONE-MCN 团队（昴君 + 蕾姆 + 3 个 subagent：writer / reviewer / verifier）|
 | **核心目标** | 在 M1（Day 0-7）上线**生产级**产品，在 M6 达到 PMF |
 | **方法论** | ai-pm 方法论 + Reddit r/SaaS + GitHub production-readiness + Stripe docs + **Anthropic harness 4 篇** |
-| **任务总数** | **175 个原子任务**（138 M1 + 16 M2 + 8 M3 + 13 M4-M6，每个含失败模式 + 验证 + 回滚） |
-| **真实工作量** | **6-10 周（1-2 人团队）**——M1 SOP 的 138 任务对应"7 天"是 M1 启动里程碑，不是单人 deadline |
+| **任务总数** | **177 个原子任务**（140 M1 + 16 M2 + 8 M3 + 13 M4-M6，每个含失败模式 + 验证 + 回滚） |
+| **真实工作量** | **6-10 周（1-2 人团队）**——M1 SOP 的 140 任务对应"7 天"是 M1 启动里程碑，不是单人 deadline |
 | **三段式闭环** | **Write → Review → Verify → Loop**（按 Anthropic Best Practices）|
 | **配套 subagent** | `.claude/agents/writer.md` / `.claude/agents/reviewer.md` / `.claude/agents/verifier.md` |
 
@@ -97,7 +97,7 @@
 | **开发速度** | 快 | 慢 50-80% |
 | **适用场景** | 简单任务 / 一次性脚本 | ONE-MCN 这种 PMF 阶段关键代码 |
 
-**蕾姆的中立评估**：M1-SOP 138 个任务 = 95% 是"关键代码"（数据库迁移 / Stripe webhook / RLS 多租户 / 备份恢复）。**这三段式值得**慢 50% 来换 95% 的漏洞发现率。
+**蕾姆的中立评估**：M1-SOP 140 个任务 = 95% 是"关键代码"（数据库迁移 / Stripe webhook / RLS 多租户 / 备份恢复）。**这三段式值得**慢 50% 来换 95% 的漏洞发现率。
 
 ---
 

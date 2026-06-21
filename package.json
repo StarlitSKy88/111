@@ -1,0 +1,32 @@
+{
+  "name": "one-mcn",
+  "version": "0.1.0",
+  "description": "ONE-MCN · 1 人 MCN 公司 · vibcoding roadmap",
+  "private": true,
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "test": "vitest run",
+    "db:migrate": "psql -U postgres -d one_mcn_test -f src/db/migrations/V001__initial.sql",
+    "db:reset": "psql -U postgres -d one_mcn_test -c 'DROP SCHEMA public CASCADE; CREATE SCHEMA public;' && pnpm db:migrate",
+    "loop:l-w-infra-01": "bash scripts/loop/l-w-infra-01.sh"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "pg": "^8.13.0",
+    "dotenv": "^16.4.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.0.0",
+    "@types/pg": "^8.11.10",
+    "typescript": "^5.6.0",
+    "tsx": "^4.19.0",
+    "vitest": "^2.1.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

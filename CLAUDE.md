@@ -2,7 +2,7 @@
 
 > **正在 vibcoding 的需求（不是未来愿景）**
 > 4 阶段流水线 + 3 Tier 定价 + Stage 4 独立商业化框架
-> + 12 个技术假设 + 8 个商业假设 + 12 个 CRITICAL 风险 + 175 原子任务
+> + 12 个技术假设 + 8 个商业假设 + 12 个 CRITICAL 风险 + 177 原子任务
 > + vibcoding + 0 员工 + 100% Loop harness 推进
 
 ## 🎯 ONE-MCN 项目声明（v5.0 重大转向）
@@ -31,7 +31,7 @@
 |:---|:---|:---|
 | **`ONE-MCN-PRD.md`** | 产品需求：4 阶段 + 3 Tier + 12 技术假设 + 8 商业假设 + 12 风险 | v4.2 ✅ |
 | **`ONE-MCN-ARCHITECTURE.md`** | 技术架构：4 阶段组件 + 3 Tier 模块 + 失败模式 | v4.2 ✅ |
-| **`ONE-MCN-M1-SOP.md`** | 运营 SOP：M1-M6 共 175 原子任务 + 三段式闭环 | v4.2 ✅ |
+| **`ONE-MCN-M1-SOP.md`** | 运营 SOP：M1-M6 共 177 原子任务 + 三段式闭环 | v4.2 ✅ |
 | **`ONE-MCN-LOOP-LIST.md`** | Loop 清单：40 loop × ~165 原子验证 + L-W/R/V- 前缀 | v4.2 ✅ |
 | **`ONE-MCN-COMMERCIAL.md`** ⭐ | 商业文档：竞品 + GTM + Unit Economics + 团队 + Design Partner | v1.1 ✅ |
 
@@ -223,7 +223,7 @@ ONE-MCN-PRD.md ──┬──→ ONE-MCN-COMMERCIAL.md（商业假设 B1-B8 来
                  └──→ ONE-MCN-ARCHITECTURE.md（12 假设 A1-A12 实现细节）
 
 ONE-MCN-ARCHITECTURE.md ──┬──→ ONE-MCN-PRD.md（架构服务 PRD 需求）
-                          └──→ ONE-MCN-M1-SOP.md（架构落地的 138 任务）
+                          └──→ ONE-MCN-M1-SOP.md（架构落地的 140 任务）
 
 ONE-MCN-M1-SOP.md ──┬──→ ONE-MCN-LOOP-LIST.md（任务对应 Loop 验证）
                      └──→ ONE-MCN-PRD.md（每个任务对应 PRD 假设）
