@@ -19,7 +19,7 @@ export async function withTenant<T>(
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
-    await client.query(\`SET LOCAL app.tenant_id = \${tenantId}\`);
+    await client.query('SET LOCAL app.tenant_id = $1', [tenantId]);
     const result = await callback(client);
     await client.query('COMMIT');
     return result;
