@@ -426,21 +426,30 @@ src/tier2/
 
 ### 7.3 Tier 3 · 系统性陪跑（¥50,000/次）
 
+**v5.1 新增 · 0 员工下的角色定义**：
+
+| 角色 | 实际承担者 | 职责 |
+|:---|:---|:---|
+| **1v1 顾问交付** | 蕾姆 / Codex agent | Codex session + 文档交付 + 代码示例 + 提示词 |
+| **关键节点 review** | 昴君 | 月度复盘签字 + Tier 3 入学审核 + 紧急响应判断 |
+| **Tier 3 招生上限** | M1-M3 ≤ 1 人 / M3-M6 ≤ 3 人 | 避免 0 员工超负荷 |
+
 ```
 src/tier3/
-├── consultant-pool.json          # 1v1 顾问资源池
-├── custom-agent-builder.ts       # 定制 Agent 构建
-├── industry-resources.json       # 行业资源库
+├── consultant-pool.json          # 1v1 顾问资源池（蕾姆 + Codex 视为 1 个虚拟顾问）
+├── custom-agent-builder.ts       # 定制 Agent 构建（Codex 生成）
+├── industry-resources.json       # 行业资源库（蕾姆维护 + Codex 补充）
 ├── session-booking.ts            # 12 个月陪跑 session 预订
-├── monthly-review.ts             # 月度深度复盘
-└── emergency-response.ts         # 24h 紧急响应
+├── monthly-review.ts             # 月度深度复盘（Codex 报告 + 昴君签字）
+└── emergency-response.ts         # 24h 紧急响应（蕾姆即响应 + Codex 文档支持）
 ```
 
 **Tier 3 与 Stage 的关系**：
 - 包含 Tier 1 + Tier 2 全部功能
-- 提供 Stage 1-2 的 1v1 定制服务
-- 提供 Stage 3 的深度复盘
+- 提供 Stage 1-2 的 1v1 定制服务（蕾姆/Codex 交付）
+- 提供 Stage 3 的深度复盘（Codex 报告 + 昴君 review）
 - **不**包含日常运营（这是 Tier 2）
+- **关键约束**：Tier 3 用户数 ≤ 3（M3-M6 阶段，避免 0 员工超负荷）
 
 ### 7.4 Stage 4 · 独立商业化框架（与 Tier 解耦）
 

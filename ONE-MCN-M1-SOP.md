@@ -149,6 +149,11 @@ is_deleted BOOLEAN DEFAULT FALSE  -- 软删除（GDPR right to erasure）
 
 ### Day 0：数据库基础设施 + 安全基线（24 任务）
 
+> **v5.1 并行架构**：D0-1（数据库 + RLS）与 Discovery 对话引擎同时开工。
+> **轨道 A**（基础设施）：D0-1 → D0-24（数据库 + 速率限制 + HTTPS + CORS）
+> **轨道 B**（Discovery 引擎，并行启动）：**Day 1 即可 demo** — design partner 在 D1 就能跑"伪 Discovery"（人工扮演 AI）+ 真实对话引擎骨架
+> 这避免"D4 才有 Discovery，Day 1-3 design partner 无法 demo"的问题。
+
 #### 3.1 数据库 schema 创建（8 任务）
 
 | 编号 | 任务 | 失败模式 | 验证（单命令）|
@@ -327,6 +332,9 @@ is_deleted BOOLEAN DEFAULT FALSE  -- 软删除（GDPR right to erasure）
 ---
 
 ### Day 4：Discovery 对话引擎 + 数据采集（16 任务）
+
+> **v5.1 并行架构**：Discovery 对话引擎实际从 **Day 0 轨道 B** 开工，到 Day 4 已完成 50%+。
+> Day 4 主要工作：5 状态机高级特性（max_turns + 上下文窗口管理）+ 蓝图生成器 + 案例库完整化。
 
 #### 3.18 Discovery 对话状态机（6 任务）
 

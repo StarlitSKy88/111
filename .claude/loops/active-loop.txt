@@ -1,0 +1,1 @@
+L-W-INFRA-01:D0-1 设计 8 张表 schema — pending（等 PostgreSQL 启动）

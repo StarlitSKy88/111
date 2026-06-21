@@ -44,3 +44,22 @@ temp/
 # Internal caches
 .atomic/
 .ralph/
+
+# 临时文件（${OUT} 路径未展开 + review 截图）
+${OUT}/
+review_*.png
+review_*.json
+review_audit.js
+final_*_*.png
+m_nav_*.png
+v_*_*.png
+mockups/index-C*.html
+temp/
+.claude/
+attribution-dashboard-v4.png
+
+# 例外：.claude/loops/ 需要追踪（用于 active-loop 状态恢复）
+!.claude/loops/
+.claude/loops/*
+!.claude/loops/active-loop.txt
+!.claude/agents/

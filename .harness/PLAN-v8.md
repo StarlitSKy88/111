@@ -140,7 +140,77 @@ pass_criteria:
 - ✅ 32 个 OPC skill 全部删除，按 ONE-MCN 4 阶段重组
 - ✅ 蕾姆人设备份到项目根 AGENTS.md（650 行 / 27KB）
 
-## 6. 状态同步
+## 6. 每日 Backup + Session Resume 协议（v5.1 新增）
+
+> **背景**：0 员工 vibcoding 模式的最大风险是单点失败（蕾姆 session 中断 / Codex API 限流 / 昴君电脑故障）。
+> **协议**：每个工作日结束前 + 每个 loop 完成后，必须执行以下备份。
+
+### 6.1 每日 Backup 路径（cron 每天 23:00 自动）
+
+```bash
+# 1. Git tag（最稳定）
+git tag -a "v5.1-eod-$(date +%Y%m%d)" -m "每日 end-of-day 备份"
+git push --tags
+
+# 2. .harness/ 状态快照
+cp .harness/state.json .harness/state.json.eod-$(date +%Y%m%d)
+cp .harness/PLAN-v8.md .harness/PLAN-v8.md.eod-$(date +%Y%m%d)
+
+# 3. 关键决策记录（loop_notes）
+echo "$(date +%Y-%m-%d): [loop-id] [verdict] [notes]" >> LOOP_NOTES.md
+```
+
+### 6.2 Session Resume 协议（蕾姆中断后恢复）
+
+```bash
+# 1. 检查 active-loop.txt 状态
+cat .claude/loops/active-loop.txt
+
+# 2. 检查 LOOP_NOTES.md 最近 5 条
+tail -5 LOOP_NOTES.md
+
+# 3. 检查 git log 最近 10 条
+git log --oneline -10
+
+# 4. 检查 .harness/state.json 的 current_loop 字段
+jq '.current_loop, .loop_status, .blockers' .harness/state.json
+```
+
+### 6.3 关键决策一键可读（CHECKPOINT 协议）
+
+```bash
+# 创建 CHECKPOINT.md 包含当前所有关键信息
+cat > CHECKPOINT.md <<EOF
+# ONE-MCN v5.1 CHECKPOINT（$(date +%Y-%m-%d)）
+
+## 当前状态
+- Stage: M1 Day $(jq -r '.current_day' .harness/state.json)
+- Loop: $(jq -r '.current_loop' .harness/state.json)
+- 状态: $(jq -r '.loop_status' .harness/state.json)
+
+## 最近决策
+$(git log --oneline -5)
+
+## 阻塞
+$(jq -r '.blockers | join("\n- ")' .harness/state.json)
+
+## 下一步
+$(jq -r '.next_loop | tostring' .harness/state.json)
+EOF
+```
+
+### 6.4 0 员工风险对冲（4 层防护）
+
+| 层级 | 风险 | 防护 |
+|:---|:---|:---|
+| L1 | 蕾姆 session 中断 | git tag eod 备份 + CHECKPOINT.md |
+| L2 | Codex API 限流 | 切换备份 Codex / Claude Code 接力 |
+| L3 | 昴君电脑故障 | iCloud 同步 .harness/ + LOOP_NOTES.md |
+| L4 | 全部失败 | .deleted-backup-2026-06-22/ + git history（数月可恢复）|
+
+---
+
+## 7. 状态同步
 
 | 资源 | 状态 |
 |:---|:---|
