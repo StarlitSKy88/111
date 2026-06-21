@@ -1,0 +1,15 @@
+{
+  "tier1": {
+    "monthly_price": 999,
+    "name": "ONE-MCN Tier 1 - MVP 助推器",
+    "early_bird_price": 699
+  },
+  "tier2": {
+    "monthly_price": 999,
+    "name": "ONE-MCN Tier 2 - 产品放大器"
+  },
+  "tier3": {
+    "one_time_price": 50000,
+    "name": "ONE-MCN Tier 3 - 系统性陪跑"
+  }
+}
