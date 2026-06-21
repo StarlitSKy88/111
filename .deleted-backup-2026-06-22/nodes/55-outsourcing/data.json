@@ -2,11 +2,13 @@
   "id": 55,
   "slug": "outsourcing",
   "title": "外包策略与执行",
-  "phase": "产品验证与准备",
+  "phase": "扩张阶段",
   "difficulty": "进阶",
   "category": "1-10",
   "summary": "外包时机、平台选择、避坑指南，把不擅长不想做的事情外包出去",
   "content": "",
   "created_at": "2026-05-09T00:00:00Z",
-  "updated_at": "2026-05-10T00:00:00Z"
+  "updated_at": "2026-06-10T22:30:00Z",
+  "phase_code": "P6",
+  "phase_en": "SCALE"
 }

@@ -2,12 +2,14 @@
   "id": 37,
   "slug": "customer-objections",
   "title": "客户异议应对",
-  "phase": "上线后迭代与运营",
+  "phase": "增长阶段",
   "difficulty": "进阶",
   "category": "post",
   "summary": "当客户说\"太贵了\"、\"不需要\"、\"再考虑考虑\"，你怎么回应？",
   "content": "",
   "external_url": "https://opc.taomyst.top/",
   "created_at": "2026-05-09T00:00:00Z",
-  "updated_at": "2026-05-10T00:00:00Z"
+  "updated_at": "2026-06-10T22:30:00Z",
+  "phase_code": "P3",
+  "phase_en": "GROW"
 }

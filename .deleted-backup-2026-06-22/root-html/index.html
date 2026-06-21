@@ -1,1213 +1,1323 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="OPC适配自测 - 10道题，测试你是否适合做一人公司。">
-  <meta name="theme-color" content="#111110">
-  <title>OPC适配自测</title>
-
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111110'/><circle cx='16' cy='16' r='12' stroke='%23C0392B' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='5' fill='%23C0392B'/></svg>">
-
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
-
-  <style>
-    /* ========================================
-       Ma (間) Design System — 墨色暗色模式
-       响应式移动优先
-       ======================================== */
-
-    :root {
-      --bg: #111110;
-      --surface: #1A1A18;
-      --text-primary: #F0EDE6;
-      --text-secondary: #A09A94;
-      --text-tertiary: #6A6560;
-      --accent: #C0392B;
-      --accent-dark: #a33025;
-      --line: #2A2A28;
-      --success: #22c55e;
-      --danger: #ef4444;
-    }
-
-    /* === Reset & Base === */
-    *, *::before, *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    html {
-      font-size: 16px;
-      -webkit-text-size-adjust: 100%;
-    }
-
-    body {
-      font-family: 'Noto Sans SC', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: var(--bg);
-      color: var(--text-primary);
-      min-height: 100dvh;
-      line-height: 1.8;
-      letter-spacing: 0.03em;
-      -webkit-font-smoothing: antialiased;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    /* === Typography — Mobile First === */
-    .text-display {
-      font-size: clamp(2.5rem, 12vw, 8rem);
-      font-weight: 200;
-      letter-spacing: -0.04em;
-      line-height: 1.05;
-    }
-
-    .text-headline {
-      font-size: clamp(1.125rem, 5vw, 1.75rem);
-      font-weight: 300;
-      letter-spacing: -0.015em;
-      line-height: 1.5;
-    }
-
-    .text-body {
-      font-size: 0.875rem;
-      line-height: 1.85;
-      letter-spacing: 0.02em;
-    }
-
-    .text-label {
-      font-size: 0.625rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-    }
-
-    /* === Ma Grid — Asymmetric Layout === */
-    .ma-layout {
-      display: grid;
-      grid-template-columns: 1fr;
-      padding: 0 1.25rem;
-      gap: 0;
-    }
-
-    .ma-center {
-      grid-column: 1;
-      max-width: 100%;
-    }
-
-    @media (min-width: 768px) {
-      .ma-layout {
-        padding: 0 clamp(2rem, 6vw, 5rem);
-      }
-    }
-
-    /* === Spacing — Generous Ma whitespace === */
-    .section-gap {
-      padding-top: 4rem;
-      padding-bottom: 4rem;
-    }
-
-    @media (min-width: 640px) {
-      .section-gap {
-        padding-top: 6rem;
-        padding-bottom: 6rem;
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .section-gap {
-        padding-top: 8rem;
-        padding-bottom: 8rem;
-      }
-    }
-
-    @media (min-width: 640px) {
-      .text-body {
-        font-size: 0.9375rem;
-        line-height: 1.9;
-      }
-    }
-
-    /* === Progress Bar === */
-    .progress-bar {
-      height: 1px;
-      background: var(--line);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .progress-bar::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      height: 100%;
-      width: var(--progress, 0%);
-      background: var(--accent);
-      transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-
-    .progress-meta {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 0.75rem;
-      padding: 0 0.25rem;
-    }
-
-    /* === Question Number === */
-    .question-number {
-      font-size: 0.5625rem;
-      letter-spacing: 0.22em;
-      color: var(--text-tertiary);
-      text-transform: uppercase;
-    }
-
-    /* === Option Button — Mobile First === */
-    .opt {
-      display: block;
-      width: 100%;
-      text-align: left;
-      padding: 1rem 0;
-      background: transparent;
-      border: none;
-      border-bottom: 1px solid var(--line);
-      color: var(--text-primary);
-      cursor: pointer;
-      transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      position: relative;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .opt::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 50%;
-      width: 0;
-      height: 1px;
-      background: var(--accent);
-      transform: translateY(-50%);
-      transition: width 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-
-    .opt:hover {
-      padding-left: 1.25rem;
-    }
-
-    .opt:hover::before {
-      width: 0.5rem;
-    }
-
-    .opt:active {
-      background: rgba(192, 57, 43, 0.05);
-    }
-
-    .opt-key {
-      display: inline-block;
-      width: 1.25rem;
-      font-size: 0.6875rem;
-      color: var(--text-tertiary);
-      margin-right: 1rem;
-    }
-
-    .opt.selected {
-      padding-left: 1.25rem;
-    }
-
-    .opt.selected::before {
-      width: 0.5rem;
-    }
-
-    .opt.selected .opt-key {
-      color: var(--accent);
-    }
-
-    @media (min-width: 640px) {
-      .opt {
-        padding: 1.25rem 0;
-      }
-      .opt:hover {
-        padding-left: 1.5rem;
-      }
-      .opt:hover::before {
-        width: 0.75rem;
-      }
-      .opt.selected {
-        padding-left: 1.5rem;
-      }
-      .opt.selected::before {
-        width: 0.75rem;
-      }
-      .opt-key {
-        width: 1.5rem;
-        font-size: 0.75rem;
-        margin-right: 1.25rem;
-      }
-    }
-
-    /* === Loading — Linear bar, editorial feel === */
-    .loading-bar {
-      width: 100%;
-      height: 1px;
-      background: var(--line);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .loading-bar::after {
-      content: '';
-      position: absolute;
-      left: -50%;
-      top: 0;
-      width: 50%;
-      height: 100%;
-      background: var(--accent);
-      animation: loading-slide 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
-    }
-
-    @keyframes loading-slide {
-      to { left: 200%; }
-    }
-
-    .spinner {
-      width: 100%;
-      height: 1px;
-      background: var(--line);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .spinner::after {
-      content: '';
-      position: absolute;
-      left: -50%;
-      top: 0;
-      width: 50%;
-      height: 100%;
-      background: var(--accent);
-      animation: loading-slide 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
-    }
-
-    @keyframes loading-slide {
-      to { left: 200%; }
-    }
-
-    /* === Score Display === */
-    .score {
-      font-size: clamp(4rem, 22vw, 10rem);
-      font-weight: 100;
-      letter-spacing: -0.06em;
-      line-height: 1;
-      color: var(--accent);
-    }
-
-    /* === Result Screen === */
-    .result-section {
-      padding: 2.5rem 0;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .result-section:first-child {
-      padding-top: 0;
-    }
-
-    @media (min-width: 640px) {
-      .result-section {
-        padding: 4rem 0;
-      }
-    }
-
-    /* Strengths & Weaknesses Grid */
-    .result-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-
-    @media (min-width: 640px) {
-      .result-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 3rem;
-      }
-    }
-
-    /* === Actions — 文字链接风格 === */
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem 1.5rem;
-      padding: 2rem 0;
-    }
-
-    .action {
-      display: inline-block;
-      padding: 0.5rem 0;
-      color: var(--text-secondary);
-      text-decoration: none;
-      border-bottom: 1px solid var(--line);
-      cursor: pointer;
-      transition: all 0.4s ease;
-      background: none;
-      border-top: none;
-      border-left: none;
-      border-right: none;
-      font-size: 0.75rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      min-height: 44px;
-      line-height: 1.5;
-    }
-
-    .action:hover {
-      color: var(--text-primary);
-      border-bottom-color: var(--text-primary);
-    }
-
-    @media (min-width: 640px) {
-      .action {
-        font-size: 0.8125rem;
-        letter-spacing: 0.1em;
-      }
-    }
-
-    /* === Share Card === */
-    #share-card {
-      background: var(--surface);
-      padding: 2rem 1.5rem;
-      border: 1px solid var(--line);
-      margin: 0 -0.5rem;
-    }
-
-    @media (min-width: 640px) {
-      #share-card {
-        padding: 3rem 2rem;
-        margin: 0;
-      }
-    }
-
-    /* === CTA Button — Japanese Ma brutalist style, no pill === */
-    .btn-pdf {
-      display: block;
-      width: 100%;
-      padding: 1.25rem 2rem;
-      background: var(--accent);
-      color: var(--text-primary);
-      border: none;
-      font-size: 0.625rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      min-height: 52px;
-      /* No border-radius — raw square edges */
-    }
-
-    .btn-pdf:hover {
-      background: var(--accent-dark);
-      opacity: 0.85;
-    }
-
-    @media (min-width: 640px) {
-      .btn-pdf {
-        font-size: 0.75rem;
-        letter-spacing: 0.15em;
-      }
-    }
-
-    /* === Hidden === */
-    .hidden {
-      display: none !important;
-    }
-
-    /* === Phase Grid - Responsive Ma Card Layout === */
-    @media (min-width: 640px) {
-      .phase-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 1.5rem !important;
-      }
-      .phase-header {
-        grid-template-columns: 2fr 1fr !important;
-        align-items: end;
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .phase-grid {
-        grid-template-columns: repeat(3, 1fr) !important;
-        gap: 1.75rem !important;
-      }
-    }
-
-    /* === Section Spacing - Ma Breathing Room === */
-    section {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding-left: clamp(1.5rem, 5vw, 6rem);
-      padding-right: clamp(1.5rem, 5vw, 6rem);
-    }
-
-    /* === Error State === */
-    .input-error {
-      border-color: var(--danger) !important;
-    }
-
-    .error-message {
-      color: var(--danger);
-      font-size: 0.75rem;
-      margin-top: 0.5rem;
-      text-align: center;
-    }
-
-    /* === Button Disabled === */
-    .btn-disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      pointer-events: none;
-    }
-
-    /* === Animations === */
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .fade-up {
-      animation: fadeUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-      opacity: 0;
-    }
-
-    @keyframes scoreIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    .score-in {
-      animation: scoreIn 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-    }
-
-    /* === Focus States === */
-    :focus-visible {
-      outline: 1px solid var(--accent);
-      outline-offset: 3px;
-    }
-
-    /* === Selection === */
-    ::selection {
-      background: var(--accent);
-      color: #fff;
-    }
-
-    /* === Skip Link (Accessibility) === */
-    .skip-link {
-      position: absolute;
-      top: -100px;
-      left: 0;
-      background: var(--accent);
-      color: #fff;
-      padding: 0.75rem 1.5rem;
-      z-index: 9999;
-      text-decoration: none;
-      font-size: 0.75rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      transition: top 0.3s ease;
-    }
-
-    .skip-link:focus {
-      top: 0;
-      outline: none;
-    }
-
-    /* === Scrollbar === */
-    ::-webkit-scrollbar {
-      width: 2px;
-    }
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: var(--text-tertiary);
-    }
-
-    /* === Reduced Motion === */
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
-
-    /* === Safe Area (iPhone notch) === */
-    @supports (padding: max(0px)) {
-      .ma-layout {
-        padding-left: max(1.25rem, env(safe-area-inset-left));
-        padding-right: max(1.25rem, env(safe-area-inset-right));
-      }
-    }
-
-    /* === Subscription Plan Card Hover === */
-    #plan-monthly:hover, #plan-yearly:hover {
-      border-color: var(--accent);
-      background: rgba(192,57,43,0.05);
-    }
-
-    #plan-monthly.selected, #plan-yearly.selected {
-      border-color: var(--accent);
-      background: rgba(192,57,43,0.08);
-    }
-
-    /* === Auth Input === */
-    .auth-input {
-      width: 100%;
-      padding: 0.875rem 1rem;
-      background: var(--bg);
-      border: 1px solid var(--line);
-      color: var(--text-primary);
-      font-size: 0.875rem;
-      outline: none;
-      transition: border-color 0.3s ease;
-      margin-bottom: 1rem;
-    }
-
-    .auth-input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.15);
-      transform: translateY(-1px);
-    }
-
-    .auth-input::placeholder {
-      color: var(--text-tertiary);
-    }
-
-    /* === Hero Entrance Animation === */
-    #hero-section .text-label,
-    #hero-section h1,
-    #hero-section p,
-    #hero-section button {
-      opacity: 0;
-      transform: translateY(20px);
-      animation: ma-reveal 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-    }
-
-    #hero-section .text-label {
-      animation-delay: 0.1s;
-    }
-
-    #hero-section h1 {
-      animation-delay: 0.25s;
-    }
-
-    #hero-section > div > p {
-      animation-delay: 0.4s;
-    }
-
-    #hero-section > div > button {
-      animation-delay: 0.55s;
-    }
-
-    @keyframes ma-reveal {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* === Scroll Indicator === */
-    .scroll-indicator {
-      position: absolute;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      opacity: 0;
-      animation: ma-reveal 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-      animation-delay: 0.8s;
-    }
-
-    .scroll-indicator-line {
-      width: 1px;
-      height: 40px;
-      background: linear-gradient(to bottom, var(--accent), transparent);
-      animation: scroll-pulse 2s ease-in-out infinite;
-    }
-
-    .scroll-indicator-text {
-      font-size: 0.5625rem;
-      letter-spacing: 0.2em;
-      color: var(--text-tertiary);
-      text-transform: uppercase;
-    }
-
-    @keyframes scroll-pulse {
-      0%, 100% { opacity: 0.3; transform: scaleY(0.8); }
-      50% { opacity: 1; transform: scaleY(1); }
-    }
-
-    /* === Service Promise Responsive === */
-    @media (max-width: 480px) {
-      #hero-section .service-promises {
-        gap: 1.5rem !important;
-      }
-    }
-
-    /* === Pricing Card Mobile Responsive === */
-    @media (max-width: 640px) {
-      #plan-monthly, #plan-yearly {
-        aspect-ratio: 1/1 !important;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ONE-MCN — 一人 MCN 飞轮 · Mockup C</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400&family=JetBrains+Mono:wght@300;400;500&family=Noto+Sans+SC:wght@200;300;400&display=swap" rel="stylesheet" onerror="this.disabled=true">
+<style>
+/* 系统字体优先 fallback（评审环境无网时） */
+@font-face{font-family:'Noto Serif JP FB';src:local('Hiragino Mincho ProN'),local('Songti SC'),local('Source Han Serif SC'),local('Noto Serif CJK SC');font-display:swap}
+@font-face{font-family:'Noto Sans SC FB';src:local('PingFang SC'),local('Hiragino Sans GB'),local('Microsoft YaHei'),local('Noto Sans CJK SC');font-display:swap}
+@font-face{font-family:'JetBrains Mono FB';src:local('SF Mono'),local('Menlo'),local('Monaco'),local('Cascadia Code'),local('Consolas');font-display:swap}
+</style>
+<style>
+:root{
+  --bg:#0B0B0A;--surface:#131312;--surface-2:#1A1A18;
+  --ink:#F0EDE6;--ink-2:#7A7670;--ink-3:#3A3835;
+  --accent:#C0392B;--accent-dim:#7A2218;
+  --term-green:#33FF66;--term-amber:#E8B339;
+  --line:#262522;--line-faint:rgba(240,237,230,0.06);
+  --w:1240px;
+  --ease:cubic-bezier(0.2,0.7,0.2,1);
+  --ease-out:cubic-bezier(0.16,1,0.3,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:'Noto Sans SC','Noto Sans SC FB','PingFang SC','Hiragino Sans GB','Microsoft YaHei',-apple-system,sans-serif;
+  font-weight:300;line-height:1.85;letter-spacing:0.03em;
+  -webkit-font-smoothing:antialiased;
+  background-image:
+    radial-gradient(at 8% 0%,rgba(192,57,43,0.08) 0%,transparent 50%),
+    radial-gradient(at 92% 100%,rgba(51,255,102,0.03) 0%,transparent 50%);
+}
+.mono{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco','Monaco','Cascadia Code','Consolas',monospace;letter-spacing:0.02em}
+.serif{font-family:'Noto Serif JP','Noto Serif JP FB','Hiragino Mincho ProN','Songti SC','Source Han Serif SC','Source Han Serif SC',serif;font-weight:300}
+.term{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco','Monaco','Cascadia Code','Consolas',monospace;font-weight:400;color:var(--term-green)}
+.wrap{max-width:var(--w);margin:0 auto;padding:0 32px}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:rgba(11,11,10,0.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line-faint);padding:18px 0}
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:12px}
+.brand-mark{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:14px;color:var(--accent)}
+.brand-name{font-family:'Noto Serif JP','Noto Serif JP FB','Hiragino Mincho ProN','Songti SC','Source Han Serif SC',serif;font-size:20px;font-weight:300;letter-spacing:0.2em}
+.nav-links{display:flex;gap:32px;font-size:13px;color:var(--ink-2)}
+.nav-links a{cursor:pointer;transition:color .2s}
+.nav-links a:hover{color:var(--ink)}
+.nav-status{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:11px;display:flex;align-items:center;gap:8px;color:var(--ink-2)}
+@media(max-width:640px){.nav-status span:not(:last-child){display:none}}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--term-green);box-shadow:0 0 8px var(--term-green);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{50%{opacity:0.3}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes scaleIn{from{opacity:0;transform:scale(0.96)}to{opacity:1;transform:scale(1)}}
+@keyframes countUp{from{opacity:0.4}to{opacity:1}}
+@keyframes glow{50%{box-shadow:0 0 16px rgba(192,57,43,0.4)}}
+.fade{opacity:0;transform:translateY(24px);transition:opacity 0.9s var(--ease-out),transform 0.9s var(--ease-out)}
+.fade.in{opacity:1!important;transform:translateY(0);visibility:visible}
+.fade-d1{transition-delay:0.08s}
+.fade-d2{transition-delay:0.16s}
+.fade-d3{transition-delay:0.24s}
+.fade-d4{transition-delay:0.32s}
+.fade-d5{transition-delay:0.40s}
+.fade-d6{transition-delay:0.48s}
+
+/* HERO */
+.hero{padding:120px 0 80px;position:relative;overflow:hidden;border-bottom:1px solid var(--line);min-height:90vh;display:flex;align-items:center}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,0.012) 2px,rgba(255,255,255,0.012) 4px),radial-gradient(circle at 30% 40%,rgba(192,57,43,0.08) 0%,transparent 50%);pointer-events:none}
+.hero::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(240,237,230,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(240,237,230,0.02) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;mask-image:radial-gradient(circle at 30% 50%,black 0%,transparent 70%);-webkit-mask-image:radial-gradient(circle at 30% 50%,black 0%,transparent 70%)}
+.hero-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:64px;align-items:center}
+.hero-prompt{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:14px;color:var(--ink-2);margin-bottom:24px;display:flex;align-items:center;gap:8px}
+.prompt-sigil{color:var(--accent);font-weight:500}
+.cursor{display:inline-block;width:8px;height:16px;background:var(--ink);animation:blink 1.1s steps(1) infinite;margin-left:4px;vertical-align:middle}
+@keyframes blink{50%{opacity:0}}
+.hero h1{font-family:'Noto Serif JP';font-weight:200;font-size:clamp(48px,6vw,84px);line-height:1.05;letter-spacing:0.04em;margin-bottom:24px}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero-sub{font-size:17px;color:var(--ink-2);max-width:560px;margin-bottom:40px;font-weight:300}
+.hero-meta{display:flex;gap:32px;font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:12px;color:var(--ink-3);border-top:1px solid var(--line-faint);padding-top:20px}
+.hero-meta b{color:var(--ink);font-weight:400;margin-right:8px}
+
+.term-box{background:#0A0A09;border:1px solid var(--line);font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:12.5px;line-height:1.7;color:#A8A39A;border-radius:2px;overflow:hidden;box-shadow:0 30px 60px -20px rgba(0,0,0,0.6)}
+.term-bar{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#0F0F0E;border-bottom:1px solid var(--line);font-size:11px;color:var(--ink-3)}
+.tb-dot{width:9px;height:9px;border-radius:50%}
+.tb-r{background:#FF5F57}.tb-y{background:#FEBC2E}.tb-g{background:#28C840}
+.term-body{padding:18px 18px 22px}
+.term-line{display:flex;gap:8px;margin-bottom:4px;opacity:0;transform:translateX(-8px);transition:opacity 0.5s var(--ease-out),transform 0.5s var(--ease-out)}
+.hero.in .term-line{opacity:1;transform:translateX(0)}
+.hero.in .tl-1{transition-delay:0.4s}
+.hero.in .tl-2{transition-delay:0.55s}
+.hero.in .tl-3{transition-delay:0.7s}
+.hero.in .tl-4{transition-delay:0.85s}
+.hero.in .tl-5{transition-delay:1.0s}
+.hero.in .tl-6{transition-delay:1.15s}
+.hero.in .tl-7{transition-delay:1.3s}
+.hero.in .tl-8{transition-delay:1.45s}
+@keyframes lineIn{to{opacity:1}}
+.tl-1{animation-delay:.1s}.tl-2{animation-delay:.4s}.tl-3{animation-delay:.8s}.tl-4{animation-delay:1.2s}.tl-5{animation-delay:1.5s}.tl-6{animation-delay:1.9s}.tl-7{animation-delay:2.3s}.tl-8{animation-delay:2.6s}
+.prompt-c{color:var(--accent);user-select:none}
+.comment{color:var(--ink-3)}
+.ok{color:var(--term-green)}.warn{color:var(--term-amber)}.err{color:#FF6B5E}
+
+/* BENTO */
+.bento{padding:96px 0;border-bottom:1px solid var(--line)}
+.bento-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:48px}
+.bento-head h2{font-family:'Noto Serif JP';font-weight:300;font-size:36px;letter-spacing:0.08em}
+.bento-head .tag{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:11px;color:var(--ink-3);letter-spacing:0.2em}
+/* 产品速览横排 · 5 块让用户一眼明白这是什么 */
+.product-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:24px}
+.product-strip .ps-cell{transition:all 0.4s var(--ease-out)}
+.product-strip .ps-cell:hover{background:var(--surface-2);transform:translateY(-2px)}
+.product-strip .ps-cell:nth-child(1){transition-delay:.05s}
+.product-strip .ps-cell:nth-child(2){transition-delay:.12s}
+.product-strip .ps-cell:nth-child(3){transition-delay:.19s}
+.product-strip .ps-cell:nth-child(4){transition-delay:.26s}
+.product-strip .ps-cell:nth-child(5){transition-delay:.33s}
+.ps-cell{background:var(--bg);padding:20px 22px;display:flex;flex-direction:column;gap:8px;transition:background .25s}
+.ps-cell:hover{background:var(--surface)}
+.ps-num{display:flex;align-items:baseline;gap:6px}
+.ps-num b{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:30px;font-weight:300;color:var(--ink);letter-spacing:-0.01em;line-height:1}
+.ps-u{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:11px;color:var(--accent);letter-spacing:0.15em}
+.ps-cap{font-family:'Noto Sans SC','Noto Sans SC FB','PingFang SC','Hiragino Sans GB',-apple-system,sans-serif;font-size:13px;font-weight:400;color:var(--ink-2);letter-spacing:0.04em}
+.ps-d{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:10.5px;color:var(--ink-3);letter-spacing:0.02em;line-height:1.6}
+@media(max-width:1200px){.product-strip{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:760px){.product-strip{grid-template-columns:repeat(2,1fr)}}
+/* 3 簇仪表盘 - 簇间大 gap，簇内紧贴 */
+.dash-clusters{display:flex;flex-direction:column;gap:56px}
+.cluster{display:flex;flex-direction:column;gap:20px}
+.cluster-h{display:flex;align-items:center;gap:14px;padding:4px;transition:all .2s;cursor:default}
+.cluster-h:hover{padding-left:8px}
+.cluster-h:hover .cluster-num{transform:scale(1.05);transition:transform .3s var(--ease)}
+.cluster-num{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:11px;color:var(--accent);letter-spacing:0.2em;padding:5px 12px;border:1px solid var(--accent);background:rgba(192,57,43,0.05);font-weight:500;transition:all .2s}
+.cluster-tt{flex:1;min-width:0}
+.cluster-t{font-family:'Noto Serif JP','Noto Serif JP FB','Hiragino Mincho ProN','Songti SC','Source Han Serif SC',serif;font-size:22px;font-weight:300;letter-spacing:0.06em;color:var(--ink);line-height:1.1}
+.cluster-sub{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:10.5px;color:var(--ink-3);letter-spacing:0.1em;margin-top:4px}
+.cluster-tag{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:10px;letter-spacing:0.15em;padding:6px 12px;border:1px solid var(--line);color:var(--ink-3);background:rgba(255,255,255,0.02);white-space:nowrap}
+.cluster-tag.live{color:var(--term-green);border-color:rgba(51,255,102,0.3);background:rgba(51,255,102,0.05);animation:pulse 2s ease-in-out infinite}
+.cluster-tag.up{color:var(--term-green);border-color:rgba(51,255,102,0.3);background:rgba(51,255,102,0.05)}
+
+.cluster-grid{display:grid;gap:20px}
+.cluster-3{grid-template-columns:repeat(3,1fr);align-items:stretch}
+.cluster-2{grid-template-columns:repeat(2,1fr);align-items:stretch}
+.cluster-1{grid-template-columns:1fr}
+
+.b{background:var(--surface);border:1px solid var(--line);padding:24px 22px;display:flex;flex-direction:column;gap:14px;transition:all .3s;position:relative;overflow:hidden}
+.b:hover{background:var(--surface-2);border-color:var(--ink-3);transform:translateY(-1px)}
+.b::after{content:attr(data-corner);position:absolute;top:12px;right:14px;font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:9px;color:var(--ink-3);letter-spacing:0.15em}
+
+/* 仪表盘通用头部 */
+.dash-h{display:flex;align-items:flex-start;gap:12px;padding-bottom:12px;border-bottom:1px solid var(--line-faint)}
+.dash-num{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:11px;color:var(--accent);letter-spacing:0.2em;padding-top:2px;min-width:18px}
+.dash-tt{flex:1}
+.dash-t{font-family:'Noto Serif JP';font-size:24px;font-weight:300;letter-spacing:0.08em;line-height:1.1;color:var(--ink)}
+.dash-sub{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:10px;color:var(--ink-3);letter-spacing:0.1em;margin-top:4px}
+.dash-badge{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:9px;letter-spacing:0.18em;padding:3px 8px;border:1px solid var(--line);color:var(--ink-3);background:rgba(255,255,255,0.02);align-self:flex-start}
+.dash-badge.on{color:var(--term-green);border-color:rgba(51,255,102,0.3);background:rgba(51,255,102,0.05)}
+.dash-badge.up{color:var(--term-green);border-color:rgba(51,255,102,0.3);background:rgba(51,255,102,0.05)}
+
+/* 4 块各占 1 列 */
+.b-boot{background:linear-gradient(180deg,#0F0F0E,#131312)}
+.b-live{background:linear-gradient(180deg,#0F0F0E,#131312)}
+.b-projects{background:linear-gradient(180deg,#0F0F0E,#131312)}
+/* 飞轮图 - 圆形循环 */
+.flywheel{display:flex;gap:24px;flex:1;align-items:center}
+.flywheel-svg{width:240px;height:240px;flex-shrink:0}
+.flywheel-svg .fw-node circle{transition:transform .3s;transform-origin:center}
+.flywheel-svg .fw-node:hover circle{transform:scale(1.05)}
+.flywheel-svg .fw-arrow{stroke-dasharray:300;stroke-dashoffset:300;animation:fw-draw 1.5s var(--ease-out) forwards}
+.flywheel-svg .fw-arrow:nth-of-type(2){animation-delay:.3s}
+.flywheel-svg .fw-arrow:nth-of-type(3){animation-delay:.6s}
+@keyframes fw-draw{to{stroke-dashoffset:0}}
+.flywheel-svg .fw-node{opacity:0;animation:scaleIn .5s var(--ease-out) forwards}
+.flywheel-svg .fw-a{animation-delay:.8s}
+.flywheel-svg .fw-b{animation-delay:1.0s}
+.flywheel-svg .fw-c{animation-delay:1.2s}
+.flywheel-legend{display:flex;flex-direction:column;gap:14px;flex:1}
+.fw-leg{display:flex;gap:12px;align-items:flex-start}
+.fw-leg-mark{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border:1px solid;font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:13px;font-weight:500;flex-shrink:0}
+.fw-leg-body{display:flex;flex-direction:column;gap:3px;min-width:0}
+.fw-leg-body b{font-family:'Noto Sans SC','Noto Sans SC FB','PingFang SC','Hiragino Sans GB',-apple-system,sans-serif;font-size:13px;font-weight:500;color:var(--ink);letter-spacing:0.04em}
+.fw-leg-body span{font-size:11px;color:var(--ink-2);line-height:1.5;letter-spacing:0.02em}
+.b-daily{background:linear-gradient(180deg,#0F0F0E,#131312)}
+.b-stack{background:linear-gradient(180deg,#0F0F0E,#131312)}
+.b-yield{background:linear-gradient(180deg,#0F0F0E,#131312)}
+
+/* 模块 1 - BOOT */
+.boot-term{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:11px;line-height:1.8;color:var(--ink-2);background:rgba(0,0,0,0.3);padding:12px 14px;border:1px solid var(--line-faint);flex:1}
+.boot-line{display:flex;gap:8px;opacity:0;animation:lineIn .4s forwards}
+.boot-line:nth-child(1){animation-delay:.1s}
+.boot-line:nth-child(2){animation-delay:.4s}
+.boot-line:nth-child(3){animation-delay:.7s}
+.boot-line:nth-child(4){animation-delay:1s}
+.boot-line:nth-child(5){animation-delay:1.3s}
+.prompt-c{color:var(--accent);user-select:none}
+.ok{color:var(--term-green)}
+.warn{color:var(--term-amber)}
+.comment{color:var(--ink-3)}
+.boot-bar{margin-top:4px}
+.boot-bar-cap{display:flex;justify-content:space-between;align-items:baseline;font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:10px;color:var(--ink-3);letter-spacing:0.1em;margin-bottom:6px}
+.boot-bar-cap b{color:var(--term-green);font-weight:500}
+.boot-bar-track{height:4px;background:var(--line);overflow:hidden}
+.boot-bar-fill{height:100%;background:linear-gradient(90deg,var(--term-green),var(--term-amber));transition:width 1.5s}
+
+/* 模块 2 - LIVE */
+.live-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;flex:1;align-content:start}
+.live-cell{background:rgba(0,0,0,0.2);padding:10px 12px;border:1px solid var(--line-faint);display:flex;flex-direction:column;gap:6px;min-height:72px}
+.live-cap{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:9px;color:var(--ink-3);letter-spacing:0.2em}
+.live-val{font-family:'JetBrains Mono';font-size:18px;font-weight:300;color:var(--ink);letter-spacing:0.02em;line-height:1}
+.live-val.ok{color:var(--term-green)}
+.live-bar{height:2px;background:var(--line);overflow:hidden;margin-top:auto}
+.live-fill{height:100%;transition:width 1.5s}
+.live-pulse{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:10px;color:var(--ink-3);letter-spacing:0.05em;padding-top:8px;border-top:1px solid var(--line-faint)}
+.live-pulse-dot{width:6px;height:6px;border-radius:50%;background:var(--term-green);box-shadow:0 0 6px var(--term-green);animation:pulse 1.5s ease-in-out infinite}
+
+/* 模块 3 - DAILY */
+.day-tl{display:flex;flex-direction:column;gap:0;flex:1;overflow:hidden;min-width:0;scrollbar-gutter:stable}
+.day-row{display:grid;grid-template-columns:42px minmax(0,1fr) auto 14px;align-items:center;gap:8px;padding:5px 0;font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:11px;color:var(--ink-2);border-bottom:1px dotted var(--line-faint);transition:color .2s;overflow:hidden}
+.day-row:hover{color:var(--ink)}
+.day-row:last-child{border-bottom:0}
+.day-t{color:var(--ink-3);font-size:10px;letter-spacing:0.05em}
+.day-n{font-size:11px;letter-spacing:0.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.day-d{font-size:10px;color:var(--ink-3);letter-spacing:0.03em;white-space:nowrap;overflow:hidden}
+.day-s{text-align:right;color:var(--ink-3);font-size:10px}
+.day-row.done .day-s{color:var(--term-green)}
+.day-row.now{background:rgba(192,57,43,0.06);padding-left:6px;margin:0 -6px;border-left:2px solid var(--accent);border-bottom:1px solid var(--line-faint)}
+.day-row.now .day-s{color:var(--accent);animation:blink 1.1s steps(1) infinite}
+.day-row.now .day-t{color:var(--accent)}
+
+/* 模块 4 - YIELD */
+.yield-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;flex:1;border-top:1px solid var(--line-faint);border-left:1px solid var(--line-faint)}
+.yield{padding:10px 12px;border-right:1px solid var(--line-faint);border-bottom:1px solid var(--line-faint);display:flex;flex-direction:column;gap:3px;background:linear-gradient(180deg,transparent,rgba(192,57,43,0.02))}
+.yield-cap{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:9px;color:var(--ink-3);letter-spacing:0.15em}
+.yield-num{font-family:'JetBrains Mono';font-size:18px;font-weight:300;color:var(--ink);letter-spacing:-0.02em;line-height:1.1}
+.yield-delta{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:9px;color:var(--ink-3);letter-spacing:0.05em;margin-top:2px}
+.yield-delta.up{color:var(--term-green)}
+.yield-foot{margin-top:auto;padding-top:8px;border-top:1px solid var(--line-faint)}
+.yield-foot-cap{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:9px;color:var(--ink-3);letter-spacing:0.15em;margin-bottom:4px}
+
+
+
+
+
+
+
+
+
+/* NODES SECTION */
+.nodes{padding:96px 0;background:var(--surface);border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+.nodes::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent) 50%,transparent);opacity:0.5}
+.nodes::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent) 50%,transparent);opacity:0.5}
+.sec-h{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:32px;gap:32px;flex-wrap:wrap}
+.sec-h h2{font-family:'Noto Serif JP';font-weight:300;font-size:42px;letter-spacing:0.06em}
+.sec-h h2 small{display:block;font-size:13px;color:var(--ink-2);margin-top:8px;font-family:'Noto Sans SC';font-weight:200;letter-spacing:0.04em}
+.nodes-stat{display:flex;gap:32px;font-family:'JetBrains Mono'}
+.nodes-stat div{text-align:right}
+.nodes-stat b{display:block;font-size:32px;font-weight:300;color:var(--ink);line-height:1;letter-spacing:-0.02em}
+.nodes-stat span{display:block;font-size:10px;color:var(--ink-3);letter-spacing:0.15em;margin-top:4px}
+
+/* 流水线顶部 */
+.pipeline-bar{display:flex;align-items:center;gap:8px;padding:18px 24px;background:var(--bg);border:1px solid var(--line);margin-bottom:24px;flex-wrap:wrap}
+.pl-stage{display:flex;align-items:center;gap:8px;padding:6px 12px;font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:11px;letter-spacing:0.1em}
+.pl-dot{width:8px;height:8px;border-radius:50%;background:var(--ink-3);transition:all .3s}
+.pl-stage.done .pl-dot{background:var(--term-green);box-shadow:0 0 6px var(--term-green)}
+.pl-stage.now .pl-dot{background:var(--accent);box-shadow:0 0 6px var(--accent);animation:pulse 1.2s ease-in-out infinite}
+.pl-stage.now .pl-lab{color:var(--accent)}
+.pl-stage.done .pl-lab{color:var(--ink)}
+.pl-lab{color:var(--ink-3)}
+.pl-arrow{width:24px;height:1px;background:var(--line);position:relative}
+.pl-arrow::after{content:'';position:absolute;right:-1px;top:-3px;width:6px;height:6px;border-right:1px solid var(--ink-3);border-top:1px solid var(--ink-3);transform:rotate(45deg)}
+.pl-meta{margin-left:auto;display:flex;gap:12px;font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:11px;color:var(--ink-3);letter-spacing:0.1em}
+.pl-meta-divider{color:var(--line)}
+
+/* 脑图容器 */
+.brain{background:var(--bg);border:1px solid var(--line);margin-bottom:24px;position:relative;overflow:hidden}
+.brain::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(192,57,43,0.05) 0%,transparent 60%);pointer-events:none;z-index:0}
+.tree-root{position:relative;z-index:1}
+.tree-branches{position:relative;z-index:2;display:flex;flex-direction:column;gap:24px}
+
+/* 树状脑图 - 根节点 */
+.tree-root{display:flex;align-items:center;gap:20px;padding:24px 28px;background:linear-gradient(90deg,rgba(192,57,43,0.08),rgba(192,57,43,0.02),var(--bg) 80%);border-bottom:1px solid var(--line);position:relative;z-index:1;margin-bottom:32px}
+.tree-root::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent)}
+.tree-root-mark{font-family:'Noto Serif JP';font-size:28px;font-weight:200;color:var(--accent);letter-spacing:0.1em;padding:10px 18px;border:1px solid var(--accent);background:rgba(192,57,43,0.05);flex-shrink:0}
+.tree-root-info{flex:1;min-width:0}
+.tree-root-t{font-family:'Noto Serif JP','Noto Serif JP FB','Hiragino Mincho ProN','Songti SC','Source Han Serif SC',serif;font-size:20px;font-weight:300;letter-spacing:0.06em;color:var(--ink);margin-bottom:6px;line-height:1.2}
+.tree-root-meta{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:11px;color:var(--ink-3);letter-spacing:0.1em}
+.tree-root-progress{display:flex;flex-direction:column;gap:6px;min-width:180px}
+.tree-root-prog-cap{display:flex;justify-content:space-between;font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:10px;color:var(--ink-3);letter-spacing:0.1em}
+.tree-root-prog-cap span:first-child{color:var(--ink);font-weight:500}
+.tree-root-prog-bar{height:3px;background:var(--line);overflow:hidden}
+.tree-root-prog-fill{height:100%;width:14%;background:linear-gradient(90deg,var(--accent),var(--term-amber))}
+.tree-root-pulse{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:10px;color:var(--ink-3);letter-spacing:0.1em}
+.tree-root-dot{width:6px;height:6px;border-radius:50%;background:var(--term-green);box-shadow:0 0 6px var(--term-green);animation:pulse 1.5s ease-in-out infinite}
+
+/* 树状分支 - 竖向堆叠 */
+.tree-branches{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line)}
+.tree-stage{background:var(--bg);padding:28px;display:flex;flex-direction:column;gap:18px;border-bottom:1px solid var(--line);transition:background .2s;position:relative;z-index:2;margin-bottom:24px}
+.tree-stage:last-child{border-bottom:0}
+.tree-stage:hover{background:var(--surface-2)}
+.tree-stage.active{background:linear-gradient(90deg,rgba(192,57,43,0.04),transparent)}
+.tree-stage.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);box-shadow:0 0 12px rgba(192,57,43,0.5);animation:glow 3s ease-in-out infinite}
+
+/* 阶段头部 */
+.ts-head{display:grid;grid-template-columns:60px 1fr auto auto;gap:24px;align-items:center;padding-bottom:18px;border-bottom:1px solid var(--line-faint)}
+.ts-mark{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:18px;color:var(--ink-3);background:rgba(255,255,255,0.02);border:1px solid var(--line);width:60px;height:60px;display:flex;align-items:center;justify-content:center;letter-spacing:0.1em;font-weight:500;flex-shrink:0}
+.tree-stage.active .ts-mark{color:var(--accent);background:rgba(192,57,43,0.1);border-color:var(--accent);box-shadow:0 0 12px rgba(192,57,43,0.2)}
+.ts-info{min-width:0}
+.ts-t{font-family:'Noto Serif JP','Noto Serif JP FB','Hiragino Mincho ProN','Songti SC','Source Han Serif SC',serif;font-size:22px;font-weight:300;letter-spacing:0.04em;color:var(--ink-2);line-height:1.1;display:flex;align-items:baseline;gap:12px}
+.tree-stage.active .ts-t{color:var(--ink)}
+.ts-en{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:11px;color:var(--ink-3);letter-spacing:0.2em;font-weight:400}
+.ts-d{font-size:13px;color:var(--ink-3);line-height:1.6;margin-top:6px}
+.ts-stat{display:flex;gap:16px;align-items:center;font-family:'JetBrains Mono'}
+.ts-stat div{text-align:center}
+.ts-stat b{display:block;font-size:16px;font-weight:400;color:var(--ink-2);line-height:1}
+.tree-stage.active .ts-stat b{color:var(--ink)}
+.ts-stat span{display:block;font-size:9px;color:var(--ink-3);letter-spacing:0.15em;margin-top:4px}
+.ts-prog{display:flex;flex-direction:column;gap:6px;min-width:100px;align-items:flex-end}
+.ts-prog-bar{width:100px;height:3px;background:var(--line);overflow:hidden}
+.ts-prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--term-amber))}
+.ts-prog-t{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:9px;color:var(--ink-3);letter-spacing:0.1em}
+
+/* 节点卡片 - 大的 */
+.ts-nodes{display:grid;grid-template-columns:1fr;gap:14px;margin-top:8px}
+.tn{background:var(--surface);border:1px solid var(--line);padding:20px 22px;display:grid;grid-template-columns:80px 1fr auto auto;grid-template-rows:auto auto;column-gap:18px;row-gap:6px;align-items:center;cursor:pointer;transition:all .25s var(--ease);text-decoration:none;color:inherit;min-height:120px;position:relative;overflow:hidden}
+.tn:hover{background:var(--surface-2);border-color:var(--ink-3);transform:translateX(2px)}
+.tn.done{border-left:3px solid var(--term-green);background:rgba(51,255,102,0.02)}
+.tn.now{background:rgba(192,57,43,0.06);border:1.5px solid var(--accent);box-shadow:0 0 24px -4px rgba(192,57,43,0.35);position:relative;overflow:hidden}
+.tn.now::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);box-shadow:0 0 12px var(--accent);animation:nowPulse 2.4s ease-in-out infinite;z-index:1}
+@keyframes nowPulse{50%{box-shadow:0 0 24px var(--accent);opacity:0.7}}
+.tn.now .tn-id{color:var(--accent);background:rgba(192,57,43,0.15);border-color:var(--accent)}
+.tn-id{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:18px;color:var(--ink-2);background:rgba(255,255,255,0.025);border:1px solid var(--line);width:64px;height:64px;display:flex;align-items:center;justify-content:center;letter-spacing:0.02em;font-weight:400;flex-shrink:0;grid-column:1;grid-row:1/3;align-self:center}
+.tn-body{min-width:0;display:flex;flex-direction:column;gap:4px;grid-column:2;grid-row:1/3;align-self:center}
+.tn-t{font-family:'Noto Serif JP';font-size:15px;font-weight:300;letter-spacing:0.04em;color:var(--ink);line-height:1.2}
+.tn-d{font-size:13px;color:var(--ink-3);line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.tn-stat{font-family:'JetBrains Mono';text-align:center;flex-shrink:0;min-width:64px;grid-column:3;grid-row:1/2;align-self:center}
+.tn-stat b{display:block;font-size:13px;color:var(--ink);letter-spacing:0.02em;font-weight:400;line-height:1}
+.tn-stat span{display:block;font-size:8.5px;color:var(--ink-3);letter-spacing:0.15em;margin-top:3px}
+.tn-tag{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:10px;letter-spacing:0.15em;padding:7px 14px;border:1px solid var(--line);color:var(--ink-3);background:rgba(255,255,255,0.02);white-space:nowrap;flex-shrink:0;align-self:center;grid-column:4;grid-row:1/2}
+.tn.done .tn-tag{color:var(--term-green);border-color:rgba(51,255,102,0.3);background:rgba(51,255,102,0.05)}
+.tn.now .tn-tag{color:var(--accent);border-color:rgba(192,57,43,0.5);background:rgba(192,57,43,0.1);animation:blink 2s ease-in-out infinite}
+
+/* 树状底部 CTA */
+.tree-cta{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;background:var(--bg);border-top:1px solid var(--line);font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:11px;color:var(--ink-3);letter-spacing:0.1em}
+.tree-cta-btn{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:11px;letter-spacing:0.18em;padding:8px 16px;border:1px solid var(--accent);color:var(--accent);cursor:pointer;transition:all .2s}
+.tree-cta-btn:hover{background:var(--accent);color:var(--ink)}
+
+/* MANIFESTO */
+.mani{padding:96px 0;border-bottom:1px solid var(--line);position:relative;background:linear-gradient(180deg,var(--bg),var(--surface))}
+.mani{position:relative;overflow:hidden}
+
+.mani::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 80% 50%,rgba(192,57,43,0.05) 0%,transparent 60%);pointer-events:none}
+.mani::after{content:'v2 · 飞轮 · 12 Agent · 3 链 · 0 雇人';position:absolute;bottom:32px;right:48px;font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:10px;color:var(--accent);opacity:0.25;letter-spacing:0.4em;pointer-events:none}
+.mani p{font-family:'Noto Serif JP';font-weight:200;font-size:clamp(28px,3.5vw,52px);line-height:1.5;letter-spacing:0.04em;max-width:900px;position:relative;z-index:1}
+.mani p em{font-style:normal;color:var(--accent)}
+.mani .sig{margin-top:48px;font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:12px;color:var(--ink-3);display:flex;gap:24px;align-items:center}
+.mani .sig::before{content:'';width:32px;height:1px;background:var(--accent)}.mani .sig::before{content:'';width:32px;height:1px;background:var(--accent)}
+
+/* ============ TOC 滚动锚点 ============ */
+.toc{position:fixed;right:32px;top:50%;transform:translateY(-50%);z-index:90;display:flex;flex-direction:column;gap:18px;padding:18px 14px;background:rgba(11,11,10,0.6);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:2px}
+.toc-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:all .2s;text-decoration:none}
+.toc-num{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:9px;color:var(--ink-3);letter-spacing:0.15em;font-weight:400}
+.toc-lab{font-family:'Noto Serif JP';font-size:11px;color:var(--ink-3);writing-mode:vertical-rl;letter-spacing:0.2em;transition:color .2s}
+.toc-item:hover .toc-lab{color:var(--ink)}
+.toc-item.active .toc-num{color:var(--accent);font-weight:500}
+.toc-item.active .toc-lab{color:var(--accent)}
+.toc-item.active::before{content:'';position:absolute;left:-14px;top:50%;transform:translateY(-50%);width:2px;height:24px;background:var(--accent)}
+.toc-line{width:1px;height:20px;background:var(--line);margin:0 auto}
+.toc-prog{width:1px;height:60px;background:var(--line);position:relative;overflow:hidden}
+.toc-prog::after{content:'';position:absolute;top:0;left:0;width:100%;height:var(--scroll,0%);background:linear-gradient(180deg,var(--accent),var(--term-amber));transition:height 0.1s linear}
+/* 仪表盘块 stagger - 同 cluster 内按位置延迟 */
+.cluster-grid > .b:nth-child(1){transition-delay:0.05s}
+.cluster-grid > .b:nth-child(2){transition-delay:0.15s}
+.cluster-grid > .b:nth-child(3){transition-delay:0.25s}
+.cluster-grid > .b:nth-child(4){transition-delay:0.35s}
+.cluster-grid > .b:nth-child(5){transition-delay:0.45s}
+.cluster-grid > .b:nth-child(6){transition-delay:0.55s}
+
+/* 节点卡 stagger - 阶段内按位置 */
+.ts-nodes > .tn:nth-child(odd){transition-delay:0.04s}
+.ts-nodes > .tn:nth-child(even){transition-delay:0.12s}
+.ts-nodes > .tn:nth-child(3n){transition-delay:0.20s}
+.ts-nodes > .tn:nth-child(4n){transition-delay:0.28s}
+.ts-nodes .tn:hover{transform:translateX(6px) scale(1.005);border-color:var(--accent);box-shadow:0 8px 24px -8px rgba(192,57,43,0.3)}
+.ts-nodes .tn.now:hover{transform:translateX(8px) scale(1.01)}
+
+
+/* ============ Hero mega number ============ */
+.hero-mega{margin:32px 0 28px;padding:24px 0;border-top:1px solid var(--line-faint);border-bottom:1px solid var(--line-faint)}
+.mega-num{font-family:'JetBrains Mono';font-size:clamp(48px,6vw,72px);font-weight:200;color:var(--ink);letter-spacing:-0.04em;line-height:1;margin-bottom:8px;font-variant-numeric:tabular-nums}
+.mega-cap{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:10px;color:var(--ink-3);letter-spacing:0.2em;text-transform:uppercase}
+
+/* section divider */
+.section-divider{display:flex;align-items:center;justify-content:center;height:96px;gap:12px;color:var(--ink-3);font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:10px;letter-spacing:0.3em}
+.section-divider::before,.section-divider::after{content:'';flex:0 0 80px;height:1px;background:var(--line)}
+
+
+/* CTA */
+.cta{padding:96px 0;text-align:center;background:radial-gradient(ellipse at center,rgba(192,57,43,0.08) 0%,transparent 60%)}
+.cta h2{font-family:'Noto Serif JP';font-weight:200;font-size:clamp(40px,5vw,68px);letter-spacing:0.05em;margin-bottom:16px;line-height:1.1}
+.cta h2 em{font-style:normal;color:var(--accent);position:relative}
+.cta h2 em::after{content:'';position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .6s var(--ease-out)}
+.cta.in h2 em::after{transform:scaleX(1)}
+.cta p{color:var(--ink-2);margin-bottom:40px;font-size:15px}
+.cta-row{display:inline-flex;gap:16px}
+.btn{font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:12.5px;letter-spacing:0.18em;padding:16px 32px;border:1px solid;cursor:pointer;text-decoration:none;display:inline-block;transition:all .25s}
+.btn-p{background:var(--accent);border-color:var(--accent);color:var(--ink)}
+.btn-p:hover{background:transparent;color:var(--accent)}
+.btn-g{background:transparent;border-color:var(--line);color:var(--ink-2)}
+.btn-g:hover{border-color:var(--ink);color:var(--ink)}
+
+/* FOOTER */
+.foot{border-top:1px solid var(--line);padding:48px 0;font-family:'JetBrains Mono','JetBrains Mono FB','SF Mono','Menlo','Monaco',monospace;font-size:11px;color:var(--ink-3);letter-spacing:0.1em}
+.foot-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.foot a{color:var(--ink-2);text-decoration:none;transition:color .2s}
+.foot a:hover{color:var(--ink)}
+
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1000;opacity:0.4;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.95 0 0 0 0 0.93 0 0 0 0 0.90 0 0 0 0.04 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");mix-blend-mode:overlay}
+
+@media (max-width:1024px){.hero-grid{grid-template-columns:1fr;gap:48px}.bento-grid{grid-template-columns:repeat(2,1fr)}.b-boot,.b-live,.b-projects,.b-daily,.b-stack,.b-yield{grid-column:span 1;grid-row:span 1}.brain-tree{grid-template-columns:repeat(4,1fr)}.branch{min-height:auto}}
+@media (max-width:640px){.wrap{padding:0 20px}.nav-links{display:none}.bento-grid{grid-template-columns:1fr}.b-boot,.b-live,.b-projects,.b-daily,.b-stack,.b-yield{grid-column:span 1;grid-row:span 1}.b{min-height:0;padding:20px 16px}.live-grid{grid-template-columns:1fr 1fr}.yield-grid{grid-template-columns:1fr 1fr}.brain-tree{grid-template-columns:1fr 1fr}.branch{min-height:auto;padding:10px 8px}.brain-root{flex-wrap:wrap;padding:14px 16px}.pipeline-bar{font-size:10px;gap:4px;padding:12px}.pl-arrow{width:12px}.stk-items{font-size:9px}.tree-cta{flex-direction:column;gap:10px;align-items:flex-start}}
+/* ============ 响应式精修 ============ */
+/* 平板 (≤1024) - 避免标题换行 */
+@media(max-width:1100px){
+  .bento-head h2{font-size:30px}
+  .bento-head h2 small{display:block;margin-top:6px}
+  .ts-head{flex-wrap:wrap;gap:14px;padding:18px 20px}
+  .ts-stat{flex:1}
+  .tn{padding:18px 20px;gap:16px}
+  .tn-id{width:54px;height:54px;font-size:18px}
+  .ps-cell{padding:16px 18px}
+  .ps-num b{font-size:24px}
+}
+/* 小平板 (≤900) - product-strip 改 3 列 */
+@media(max-width:900px){
+  .product-strip{grid-template-columns:repeat(3,1fr)}
+  .nav-row{gap:18px}
+  .nav-links{gap:20px;font-size:12px}
+  .toc{display:none}
+}
+/* 手机 (≤640) - 全面调整 */
+@media(max-width:640px){
+  .wrap{padding:0 18px}
+  .nav{padding:14px 0}
+  .nav-row{gap:10px}
+  .brand-name{font-size:16px;letter-spacing:0.15em}
+  .nav-links{display:none}
+  .nav-status{font-size:10px}
+  .toc{display:none}
+  .hero{padding:80px 0 50px;min-height:auto}
+  .hero-grid{grid-template-columns:1fr;gap:32px}
+  .hero h1{font-size:38px;line-height:1.1}
+  .hero h1 br{display:none}
+  .hero-sub{font-size:14px;margin-bottom:28px}
+  .hero-mega{margin-bottom:24px}
+  .mega-num{font-size:48px}
+  .hero-meta{flex-wrap:wrap;gap:14px;font-size:11px}
+  .term-body{padding:14px 14px 18px;font-size:11px}
+  .bento{padding:60px 0}
+  .bento-head h2{font-size:22px;line-height:1.2}
+  .bento-head h2 small{font-size:13px;display:block;margin-top:4px}
+  .bento-head{flex-direction:column;align-items:flex-start;gap:12px;margin-bottom:32px}
+  .product-strip{grid-template-columns:repeat(2,1fr);margin-bottom:18px}
+  .ps-cell{padding:14px 14px;gap:6px}
+  .ps-num b{font-size:22px}
+  .ps-u{font-size:10px}
+  .ps-cap{font-size:12px}
+  .ps-d{font-size:9.5px}
+  .pipeline-bar{flex-wrap:wrap;font-size:9px;padding:10px 12px;gap:2px}
+  .pl-stage{padding:2px 6px}
+  .pl-arrow{width:14px}
+  .pl-meta{width:100%;margin-top:6px;justify-content:flex-end}
+  .cluster-h{padding:0;flex-wrap:wrap}
+  .cluster-t{font-size:18px}
+  .cluster-sub{font-size:9.5px}
+  .cluster-grid{grid-template-columns:1fr !important;gap:14px}
+  .b{padding:18px 16px;gap:10px}
+  .dash-t{font-size:18px}
+  .boot-stages{font-size:10px;gap:2px}
+  .live-grid{grid-template-columns:1fr 1fr;gap:6px}
+  .live-cell{padding:8px 10px;min-height:62px}
+  .live-val{font-size:15px}
+  .day-row{grid-template-columns:38px 1fr 14px;gap:6px;padding:4px 0;font-size:10px}
+  .day-d{display:none}
+  .flywheel{flex-direction:column;align-items:flex-start;gap:20px}
+  .flywheel-svg{width:200px;height:200px;align-self:center}
+  .flywheel-legend{width:100%}
+  .stk-layer{gap:8px;padding:8px 0}
+  .stk-items{flex-wrap:wrap;gap:4px}
+  .stk-item{font-size:10px;padding:3px 6px}
+  .yield-num{font-size:16px}
+  .nodes{padding:60px 0}
+  .nodes-stat{font-size:11px}
+  .nodes-stat b{font-size:22px}
+  .tree-root{flex-direction:column;align-items:stretch;padding:14px;gap:10px;top:60px}
+  .tree-root-mark{font-size:18px;padding:6px 10px;align-self:flex-start}
+  .tree-root-info{text-align:left}
+  .tree-root-t{font-size:14px;line-height:1.3}
+  .tree-root-meta{font-size:9.5px;line-height:1.5}
+  .tree-root-progress{min-width:0;width:100%}
+  .tree-root-prog-cap{font-size:9.5px}
+  .tree-root-prog-bar{width:100%}
+  .tree-root-pulse{align-self:flex-end}
+  .ts-head{grid-template-columns:50px 1fr;gap:10px;padding:14px 14px}
+  .ts-mark{width:50px;height:50px;font-size:14px;padding:6px}
+  .ts-t{font-size:15px}
+  .ts-d{font-size:11px}
+  .ts-stat{grid-column:1/-1;justify-content:flex-start;gap:12px}
+  .ts-prog{grid-column:1/-1;align-items:flex-start}
+  .ts-nodes{gap:10px}
+  .tn{grid-template-columns:48px 1fr auto;grid-template-rows:auto auto;padding:14px;min-height:auto;column-gap:12px;row-gap:6px;border-radius:2px}
+  .tn-id{width:48px;height:48px;font-size:16px;grid-row:1/3}
+  .tn-t{font-size:14px}
+  .tn-d{font-size:11.5px;-webkit-line-clamp:2}
+  .tn-body{grid-row:1/3}
+  .tn-stat{grid-column:3;grid-row:1;justify-self:end;align-self:center;padding:0;font-size:9px;display:inline-flex;gap:4px;align-items:baseline;min-width:0}
+  .tn-tag{grid-column:3;grid-row:2;justify-self:end;align-self:center;padding:3px 8px;font-size:9px}
+  .tn.now .tn-tag{background:rgba(192,57,43,0.15);border-color:var(--accent);color:var(--accent);font-weight:500}
+  .tn.done .tn-tag{background:rgba(51,255,102,0.08);border-color:rgba(51,255,102,0.3);color:var(--term-green)}
+  .tn-stat b{font-size:11px;display:inline}
+  .tn-stat span{font-size:8px;display:inline;margin-left:4px}
+  .tree-cta{flex-direction:column;gap:10px;align-items:flex-start;padding:14px 16px}
+  .mani{padding:60px 0}
+  .mani p{font-size:24px !important;line-height:1.5 !important}
+  .mani .sig{flex-wrap:wrap;gap:10px;font-size:10px}
+  .mani::after{font-size:9px;bottom:12px;right:18px;letter-spacing:0.3em}
+  .cta h2{font-size:28px}
+  .cta-row{flex-direction:column;width:100%}
+  .cta-row .btn{width:100%;text-align:center}
+  .foot-row{flex-direction:column;gap:8px;align-items:flex-start;font-size:10px}
+}
+</style>
 </head>
 <body>
-  <!-- Skip to main content for accessibility -->
-  <a href="#main-content" class="skip-link">跳转到主要内容</a>
 
-  <!-- 导航栏 -->
-  <nav id="main-nav" style="
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    background: rgba(17, 17, 16, 0.8);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--line);
-    padding: 0.75rem 1.25rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: background 0.3s ease;
-  ">
-    <div style="font-size: 0.75rem; letter-spacing: 0.1em; color: var(--text-secondary);">
-      OPC节点百科
+<nav class="nav"><div class="wrap nav-row">
+  <div class="brand"><span class="brand-mark">◉</span><span class="brand-name">ONE-MCN</span></div>
+  <div class="nav-links"><a>飞轮</a><a>节点库</a><a>账本</a><a>文档</a><a>飞轮日志</a></div>
+  <div class="nav-status"><span class="dot"></span><span>hermes · online</span></div>
+</div></nav>
+
+<!-- 左侧滚动锚点 TOC -->
+<nav class="toc" id="toc">
+  <a href="#sec-hero" class="toc-item active" data-target="sec-hero">
+    <span class="toc-num">00</span>
+    <span class="toc-lab">首屏</span>
+  </a>
+  <a href="#sec-bento" class="toc-item" data-target="sec-bento">
+    <span class="toc-num">01</span>
+    <span class="toc-lab">仪表盘</span>
+  </a>
+  <a href="#sec-nodes" class="toc-item" data-target="sec-nodes">
+    <span class="toc-num">02</span>
+    <span class="toc-lab">节点库</span>
+  </a>
+  <a href="#sec-mani" class="toc-item" data-target="sec-mani">
+    <span class="toc-num">03</span>
+    <span class="toc-lab">宣言</span>
+  </a>
+  <div class="toc-line"></div>
+  <div class="toc-prog" id="toc-prog"></div>
+</nav>
+
+<section id="sec-hero" class="hero fade"><div class="wrap hero-grid">
+  <div>
+    <div class="hero-prompt"><span class="prompt-sigil">$</span><span>hermes dashboard --watch</span><span class="cursor"></span></div>
+    <h1>一人 MCN 飞轮<br><em>零雇人</em>，十二 Agent 自运转</h1>
+    <p class="hero-sub">十二个 Agent 自运转的获客飞轮。OPC 节点库、训练营、技术栈三层协同。三十天账本、十七个状态指标、零雇人成本——全部公开、全部可查。</p>
+    <div class="hero-mega">
+      <div class="mega-num" data-count="487210" data-suffix="">487,210</div>
+      <div class="mega-cap">总播放 · D0 → D15</div>
     </div>
-    <div id="auth-section">
-      <!-- 动态渲染：登录按钮 或 用户信息+登出 -->
+    <div class="hero-meta">
+      <span><b data-count="16">16</b>Skill 协同</span>
+      <span><b>7×24</b>自动运行</span>
+      <span><b data-count="0" data-prefix="¥ ">¥ 0</b>雇人成本</span>
+      <span><b data-count="57">57</b>节点</span>
     </div>
-  </nav>
+  </div>
+  <div class="term-box">
+    <div class="term-bar"><span class="tb-dot tb-r"></span><span class="tb-dot tb-y"></span><span class="tb-dot tb-g"></span><span style="margin-left:auto">root@one-mcn:~ — tmux</span></div>
+    <div class="term-body">
+      <div class="term-line tl-1"><span class="prompt-c">$</span><span>hermes status</span></div>
+      <div class="term-line tl-2"><span class="comment"># A 链 · 内容生产</span></div>
+      <div class="term-line tl-3"><span class="ok">✓</span><span> a1-scan         online</span></div>
+      <div class="term-line tl-4"><span class="ok">✓</span><span> a4-script        online</span></div>
+      <div class="term-line tl-5"><span class="comment"># B 链 · 投放 + 数据</span></div>
+      <div class="term-line tl-6"><span class="ok">✓</span><span> b1-publish       online</span></div>
+      <div class="term-line tl-7"><span class="warn">⚠</span><span> b2-data          waiting · cron 16:00</span></div>
+      <div class="term-line tl-8"><span class="ok">✓</span><span> g0-guard         armed</span></div>
+    </div>
+  </div>
+</div></section>
 
-  <!-- Hero 首屏 — Ma 不对称布局 + SVG 知识图谱 -->
-  <section id="hero-section" style="
-    position: relative;
-    min-height: 75vh;
-    background: var(--bg);
-    padding: 7rem clamp(1.5rem, 5vw, 6rem) 5rem;
-    overflow: hidden;
-  ">
-    <!-- 超大数字锚点 01 -->
-    <span style="position: absolute; top: 1rem; right: 0.5rem; font-size: 22vw; font-weight: 200; color: var(--text-primary); opacity: 0.03; line-height: 0.85; letter-spacing: -0.05em; user-select: none; pointer-events: none; font-family: 'Noto Serif JP', serif;">01</span>
+<section id="sec-bento" class="bento fade"><div class="wrap">
+  <div class="bento-head">
+    <h2>飞轮仪表盘 <small>产品说明 · 实时状态 · 30 天账本 · 一屏全览</small></h2>
+    <span class="tag">/ LIVE · D15 · 23:47</span>
+  </div>
 
-    <div class="hero-grid" style="
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 3rem;
-      max-width: 1400px;
-      margin: 0 auto;
-      align-items: center;
-    ">
-      <!-- 左侧：排版区 -->
-      <div style="position: relative; z-index: 2;">
-        <div style="margin-bottom: 1.75rem;">
-          <span class="text-label" style="color: var(--text-tertiary); letter-spacing: 0.3em;">OPC 创业路径 · 一人公司</span>
+  <!-- 顶部产品速览 · 5 块 metric 让人一眼明白这是做什么的 -->
+  <div class="product-strip">
+    <div class="ps-cell">
+      <div class="ps-num"><b data-count="12">12</b><span class="ps-u">Agent</span></div>
+      <div class="ps-cap">自运转内容生产</div>
+      <div class="ps-d">扫描 / 脚本 / 配音 / 封面 / 投放 24h 不停</div>
+    </div>
+    <div class="ps-cell">
+      <div class="ps-num"><b data-count="8">8</b><span class="ps-u">平台</span></div>
+      <div class="ps-cap">一键多平台发布</div>
+      <div class="ps-d">视频号 / 抖音 / 小红书 / B 站 / 飞书…</div>
+    </div>
+    <div class="ps-cell">
+      <div class="ps-num"><b data-count="57">57</b><span class="ps-u">节点</span></div>
+      <div class="ps-cap">OPC 一人公司节点库</div>
+      <div class="ps-d">7 阶段 / 28 天 / 一天一篇 / 看完才信</div>
+    </div>
+    <div class="ps-cell">
+      <div class="ps-num"><b data-count="0" data-prefix="¥ ">¥ 0</b><span class="ps-u">雇人</span></div>
+      <div class="ps-cap">全 AI 团队 · 零雇人</div>
+      <div class="ps-d">VPS 月成本 ¥65 · Token 186k / 周</div>
+    </div>
+    <div class="ps-cell">
+      <div class="ps-num"><b data-count="487210">487,210</b><span class="ps-u">播放</span></div>
+      <div class="ps-cap">D0 → D15 累计真实数据</div>
+      <div class="ps-d">加微 2,341 · 课程收入 ¥18,600</div>
+    </div>
+  </div>
+
+  <!-- 流水线状态机 · 当前运行节点 -->
+  <div class="pipeline-bar">
+    <div class="pl-stage done"><span class="pl-dot"></span><span class="pl-lab">SCAN</span></div>
+    <div class="pl-arrow"></div>
+    <div class="pl-stage done"><span class="pl-dot"></span><span class="pl-lab">SCRIPT</span></div>
+    <div class="pl-arrow"></div>
+    <div class="pl-stage done"><span class="pl-dot"></span><span class="pl-lab">PUBLISH</span></div>
+    <div class="pl-arrow"></div>
+    <div class="pl-stage now"><span class="pl-dot"></span><span class="pl-lab">DATA</span></div>
+    <div class="pl-arrow"></div>
+    <div class="pl-stage"><span class="pl-dot"></span><span class="pl-lab">YIELD</span></div>
+    <div class="pl-arrow"></div>
+    <div class="pl-stage"><span class="pl-dot"></span><span class="pl-lab">REPORT</span></div>
+    <div class="pl-meta">
+      <span>D 15 · 23:47</span>
+      <span class="pl-meta-divider">|</span>
+      <span>M1 · 进度 50%</span>
+    </div>
+  </div>
+
+    <div class="dash-clusters">
+
+    <!-- 簇 1 - 状态 · 启动 / 运行 / 今日 -->
+    <div class="cluster">
+      <div class="cluster-h">
+        <span class="cluster-num">01</span>
+        <div class="cluster-tt">
+          <div class="cluster-t">系统状态</div>
+          <div class="cluster-sub">实时运行 · cron 健康 · 今日任务</div>
+        </div>
+        <span class="cluster-tag live">● LIVE</span>
+      </div>
+      <div class="cluster-grid cluster-3">
+        <div class="b b-boot" data-corner="01 · BOOT">
+          <div class="dash-h"><span class="dash-t">启动序列</span><span class="dash-badge ok">READY</span></div>
+          <div class="boot-stages">
+            <div class="bst done"><span class="bst-i">01</span><span class="bst-l">解析</span><span class="bst-s">ok</span></div>
+            <div class="bst done"><span class="bst-i">02</span><span class="bst-l">依赖</span><span class="bst-s">ok</span></div>
+            <div class="bst done"><span class="bst-i">03</span><span class="bst-l">Skill 加载</span><span class="bst-s">ok</span></div>
+            <div class="bst done"><span class="bst-i">04</span><span class="bst-l">Cron 调度</span><span class="bst-s">ok</span></div>
+            <div class="bst done"><span class="bst-i">05</span><span class="bst-l">Gateway</span><span class="bst-s">ok</span></div>
+            <div class="bst done"><span class="bst-i">06</span><span class="bst-l">飞书 webhook</span><span class="bst-s">ok</span></div>
+            <div class="bst active"><span class="bst-i">07</span><span class="bst-l">Hermes 注册</span><span class="bst-s">▸</span></div>
+            <div class="bst"><span class="bst-i">08</span><span class="bst-l">进入主循环</span><span class="bst-s">·</span></div>
+          </div>
+          <div class="boot-bar">
+            <div class="boot-bar-cap"><span>INIT</span><b>87%</b></div>
+            <div class="boot-bar-track"><div class="boot-bar-fill" style="width:87%"></div></div>
+          </div>
         </div>
 
-        <h1 style="
-          font-size: clamp(3.5rem, 11vw, 8.5rem);
-          font-weight: 200;
-          letter-spacing: -0.04em;
-          line-height: 0.95;
-          margin-bottom: 2rem;
-          color: var(--text-primary);
-          font-family: 'Noto Serif JP', serif;
-        ">
-          57 个<br>创业节点
-        </h1>
+        <div class="b b-live" data-corner="02 · LIVE">
+          <div class="dash-h"><span class="dash-t">运行监控</span><span class="dash-badge on">ONLINE</span></div>
+          <div class="live-grid">
+            <div class="live-cell"><div class="live-cap">CRON</div><div class="live-val ok">12 / 12</div><div class="live-mini">上次 06:00</div></div>
+            <div class="live-cell"><div class="live-cap">NEXT</div><div class="live-val">16:00</div><div class="live-mini">2h 13m</div></div>
+            <div class="live-cell"><div class="live-cap">G0</div><div class="live-val ok">ARMED</div><div class="live-mini">D3&lt;200</div></div>
+            <div class="live-cell"><div class="live-cap">UPTIME</div><div class="live-val">14d 6h</div><div class="live-mini">99.7%</div></div>
+            <div class="live-cell"><div class="live-cap">CPU</div><div class="live-val">23%</div><div class="live-bar"><div class="live-fill" style="width:23%;background:var(--term-green)"></div></div></div>
+            <div class="live-cell"><div class="live-cap">MEM</div><div class="live-val">412M</div><div class="live-bar"><div class="live-fill" style="width:38%;background:var(--term-green)"></div></div></div>
+            <div class="live-cell"><div class="live-cap">TOKEN</div><div class="live-val">186k</div><div class="live-bar"><div class="live-fill" style="width:62%;background:var(--term-amber)"></div></div></div>
+            <div class="live-cell"><div class="live-cap">FEISHU</div><div class="live-val ok">200</div><div class="live-bar"><div class="live-fill" style="width:100%;background:var(--term-green)"></div></div></div>
+          </div>
+        </div>
 
-        <p style="
-          font-size: 1rem;
-          color: var(--text-secondary);
-          line-height: 2.0;
-          margin-bottom: 3rem;
-          max-width: 44ch;
-          letter-spacing: 0.03em;
-        ">
-          从想法到赚钱的完整路径。<br>
-          每一个里程碑，精确导航。
-        </p>
-
-        <a href="graph.html" class="ma-link" style="
-          display: inline-flex;
-          align-items: center;
-          gap: 0.625rem;
-          font-size: 0.75rem;
-          letter-spacing: 0.18em;
-          text-transform: uppercase;
-          color: var(--text-primary);
-          text-decoration: none;
-          border-bottom: 1px solid var(--text-primary);
-          padding-bottom: 0.375rem;
-          font-weight: 500;
-          transition: opacity 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        ">
-          探索知识图谱
-          <span style="font-size: 0.625rem;">→</span>
-        </a>
-      </div>
-
-      <!-- 右侧：SVG 知识图谱 -->
-      <div style="position: relative; min-height: 380px;">
-        <div id="hero-graph" style="width: 100%; height: 100%;"></div>
+        <div class="b b-daily" data-corner="04 · DAILY">
+          <div class="dash-h"><span class="dash-t">今日任务</span><span class="dash-badge run">8/12</span></div>
+          <div class="day-tl">
+            <div class="day-row done"><span class="day-t">06:00</span><span class="day-n">B3 日报</span><span class="day-d">+2.3k</span><span class="day-s">✓</span></div>
+            <div class="day-row done"><span class="day-t">08:00</span><span class="day-n">A2 爆款拆解</span><span class="day-d">12 条</span><span class="day-s">✓</span></div>
+            <div class="day-row done"><span class="day-t">09:00</span><span class="day-n">A3 反向需求</span><span class="day-d">5 痛点</span><span class="day-s">✓</span></div>
+            <div class="day-row done"><span class="day-t">10:00</span><span class="day-n">A4 脚本生成</span><span class="day-d">3 篇</span><span class="day-s">✓</span></div>
+            <div class="day-row done"><span class="day-t">10:30</span><span class="day-n">A5 红线审查</span><span class="day-d">pass</span><span class="day-s">✓</span></div>
+            <div class="day-row done"><span class="day-t">11:00</span><span class="day-n">A6 配图封面</span><span class="day-d">3 张</span><span class="day-s">✓</span></div>
+            <div class="day-row done"><span class="day-t">11:30</span><span class="day-n">A7 TTS 配音</span><span class="day-d">3 段</span><span class="day-s">✓</span></div>
+            <div class="day-row done"><span class="day-t">14:30</span><span class="day-n">B1 智能发布</span><span class="day-d">6 平台</span><span class="day-s">✓</span></div>
+            <div class="day-row now"><span class="day-t">16:00</span><span class="day-n">B2 数据采集</span><span class="day-d">采样中</span><span class="day-s">▸</span></div>
+            <div class="day-row"><span class="day-t">18:00</span><span class="day-n">B2 数据采集</span><span class="day-d">queued</span><span class="day-s">·</span></div>
+            <div class="day-row"><span class="day-t">20:00</span><span class="day-n">B2 数据采集</span><span class="day-d">queued</span><span class="day-s">·</span></div>
+            <div class="day-row"><span class="day-t">22:00</span><span class="day-n">B2 数据采集</span><span class="day-d">queued</span><span class="day-s">·</span></div>
+          </div>
+        </div>
       </div>
     </div>
-  </section>
 
-  <style>
-    @media (min-width: 900px) {
-      .hero-grid {
-        grid-template-columns: 1.1fr 1fr !important;
-        gap: 4rem !important;
-      }
+    <!-- 簇 2 - 产品 · 飞轮原理 + 技术栈 -->
+    <div class="cluster">
+      <div class="cluster-h">
+        <span class="cluster-num">02</span>
+        <div class="cluster-tt">
+          <div class="cluster-t">飞轮原理</div>
+          <div class="cluster-sub">A 引流 → B 沉淀 → C 转化 → A 选题 · 自循环</div>
+        </div>
+        <span class="cluster-tag">FLYWHEEL · v2</span>
+      </div>
+      <div class="cluster-grid cluster-2">
+        <div class="b b-projects" data-corner="03 · FLYWHEEL">
+          <div class="dash-h"><span class="dash-t">三件套 · 飞轮循环</span><span class="dash-badge">3 / 3</span></div>
+          <div class="flywheel">
+            <svg class="flywheel-svg" viewBox="0 0 380 280" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+                  <path d="M0,0 L10,5 L0,10 z" fill="#C0392B"/>
+                </marker>
+                <radialGradient id="centerGlow" cx="50%" cy="50%">
+                  <stop offset="0%" stop-color="#C0392B" stop-opacity="0.15"/>
+                  <stop offset="100%" stop-color="#C0392B" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <!-- 中心光晕 -->
+              <circle cx="190" cy="140" r="80" fill="url(#centerGlow)"/>
+              <!-- 循环轨迹 -->
+              <circle cx="190" cy="140" r="90" fill="none" stroke="#262522" stroke-width="1" stroke-dasharray="2 4"/>
+              <!-- 三个圆 A B C -->
+              <g class="fw-node fw-a">
+                <circle cx="190" cy="60" r="36" fill="#0B0B0A" stroke="#C0392B" stroke-width="1.5"/>
+                <text x="190" y="55" text-anchor="middle" fill="#F0EDE6" font-family="JetBrains Mono" font-size="22" font-weight="500">A</text>
+                <text x="190" y="74" text-anchor="middle" fill="#7A7670" font-family="Noto Sans SC" font-size="9">引流</text>
+              </g>
+              <g class="fw-node fw-b">
+                <circle cx="266" cy="190" r="36" fill="#0B0B0A" stroke="#C0392B" stroke-width="1.5"/>
+                <text x="266" y="185" text-anchor="middle" fill="#F0EDE6" font-family="JetBrains Mono" font-size="22" font-weight="500">B</text>
+                <text x="266" y="204" text-anchor="middle" fill="#7A7670" font-family="Noto Sans SC" font-size="9">沉淀</text>
+              </g>
+              <g class="fw-node fw-c">
+                <circle cx="114" cy="190" r="36" fill="#0B0B0A" stroke="#C0392B" stroke-width="1.5"/>
+                <text x="114" y="185" text-anchor="middle" fill="#F0EDE6" font-family="JetBrains Mono" font-size="22" font-weight="500">C</text>
+                <text x="114" y="204" text-anchor="middle" fill="#7A7670" font-family="Noto Sans SC" font-size="9">转化</text>
+              </g>
+              <!-- 弧形箭头 A→B -->
+              <path d="M 222 80 A 100 100 0 0 1 260 170" fill="none" stroke="#C0392B" stroke-width="1.2" marker-end="url(#arr)" class="fw-arrow"/>
+              <!-- 弧形箭头 B→C -->
+              <path d="M 244 220 A 100 100 0 0 1 136 220" fill="none" stroke="#C0392B" stroke-width="1.2" marker-end="url(#arr)" class="fw-arrow"/>
+              <!-- 弧形箭头 C→A -->
+              <path d="M 120 170 A 100 100 0 0 1 158 80" fill="none" stroke="#C0392B" stroke-width="1.2" marker-end="url(#arr)" class="fw-arrow"/>
+              <!-- 中心文本 -->
+              <text x="190" y="135" text-anchor="middle" fill="#F0EDE6" font-family="Noto Serif JP" font-size="13" font-weight="300">飞轮</text>
+              <text x="190" y="150" text-anchor="middle" fill="#7A7670" font-family="JetBrains Mono" font-size="9">v2 · D15</text>
+            </svg>
+            <div class="flywheel-legend">
+              <div class="fw-leg"><span class="fw-leg-mark" style="background:rgba(192,57,43,0.15);border-color:#C0392B;color:#C0392B">A</span><div class="fw-leg-body"><b>ONE-MCN</b><span>12 Agent 自动内容生产 + 8 平台发布</span></div></div>
+              <div class="fw-leg"><span class="fw-leg-mark" style="background:rgba(192,57,43,0.15);border-color:#C0392B;color:#C0392B">B</span><div class="fw-leg-body"><b>OPC 节点库</b><span>57 节点 / 7 阶段 / 28 天看完才信</span></div></div>
+              <div class="fw-leg"><span class="fw-leg-mark" style="background:rgba(192,57,43,0.15);border-color:#C0392B;color:#C0392B">C</span><div class="fw-leg-body"><b>训练营</b><span>5 阶漏斗 / ¥0 → ¥4,999 合伙人</span></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="b b-stack" data-corner="05 · STACK">
+          <div class="dash-h"><span class="dash-t">技术栈 · 4 层</span><span class="dash-badge">LLM → VPS</span></div>
+          <div class="stack-tree">
+            <div class="stk-layer">
+              <div class="stk-mark">L1</div>
+              <div class="stk-body">
+                <div class="stk-cap">LLM 大脑</div>
+                <div class="stk-items">
+                  <span class="stk-item">MiniMax M3</span>
+                  <span class="stk-item alt">DeepSeek</span>
+                  <span class="stk-item alt">GLM 5.1</span>
+                </div>
+              </div>
+            </div>
+            <div class="stk-arrow">↓</div>
+            <div class="stk-layer">
+              <div class="stk-mark">L2</div>
+              <div class="stk-body">
+                <div class="stk-cap">Hermes Agent · 16 Skill</div>
+                <div class="stk-items">
+                  <span class="stk-item">a1-a7</span>
+                  <span class="stk-item">b1-b3</span>
+                  <span class="stk-item">c1-c4</span>
+                  <span class="stk-item">d1</span>
+                  <span class="stk-item">g0</span>
+                </div>
+              </div>
+            </div>
+            <div class="stk-arrow">↓</div>
+            <div class="stk-layer">
+              <div class="stk-mark">L3</div>
+              <div class="stk-body">
+                <div class="stk-cap">Gateway · 8 平台</div>
+                <div class="stk-items">
+                  <span class="stk-item">视频号</span>
+                  <span class="stk-item">抖音</span>
+                  <span class="stk-item">小红书</span>
+                  <span class="stk-item">B 站</span>
+                  <span class="stk-item">飞书</span>
+                  <span class="stk-item">+3</span>
+                </div>
+              </div>
+            </div>
+            <div class="stk-arrow">↓</div>
+            <div class="stk-layer">
+              <div class="stk-mark">L4</div>
+              <div class="stk-body">
+                <div class="stk-cap">基础设施 · VPS + 监控</div>
+                <div class="stk-items">
+                  <span class="stk-item">Ubuntu 22.04</span>
+                  <span class="stk-item">PM2</span>
+                  <span class="stk-item">Nginx</span>
+                  <span class="stk-item">Certbot</span>
+                  <span class="stk-item">taomyst.top</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 簇 3 - 收益 · 30 天账本（全宽横排） -->
+    <div class="cluster">
+      <div class="cluster-h">
+        <span class="cluster-num">03</span>
+        <div class="cluster-tt">
+          <div class="cluster-t">30 天账本</div>
+          <div class="cluster-sub">M1 · D0 → D15 · 实时累计 · 全程公开</div>
+        </div>
+        <span class="cluster-tag up">▲ +24%</span>
+      </div>
+      <div class="cluster-grid cluster-1">
+        <div class="b b-yield" data-corner="06 · YIELD">
+          <div class="dash-h"><span class="dash-t">真实数据 · 可学可复用</span><span class="dash-badge up">+24%</span></div>
+          <div class="yield-grid">
+            <div class="yield"><div class="yield-cap">总播放</div><div class="yield-num">487,210</div><div class="yield-delta up">▲ 12.4% · D+1</div></div>
+            <div class="yield"><div class="yield-cap">加微</div><div class="yield-num">2,341</div><div class="yield-delta up">▲ 8.1% · D+1</div></div>
+            <div class="yield"><div class="yield-cap">课程收入</div><div class="yield-num">¥ 18,600</div><div class="yield-delta up">▲ 24.0% · 7d</div></div>
+            <div class="yield"><div class="yield-cap">雇人成本</div><div class="yield-num">¥ 0</div><div class="yield-delta">— 持平</div></div>
+            <div class="yield"><div class="yield-cap">Token 消耗</div><div class="yield-num">186k</div><div class="yield-delta up">▲ 6.2% · 7d</div></div>
+            <div class="yield"><div class="yield-cap">VPS 月成本</div><div class="yield-num">¥ 65</div><div class="yield-delta">— 固定</div></div>
+          </div>
+          <div class="yield-foot">
+            <div class="yield-foot-cap">D 0 → D 15 · 累计播放曲线</div>
+            <svg viewBox="0 0 320 30" preserveAspectRatio="none" style="width:100%;height:30px">
+              <polyline points="0,28 20,27 40,25 60,24 80,22 100,20 120,18 140,15 160,13 180,10 200,8 220,7 240,5 260,4 280,3 300,2 320,1" fill="none" stroke="#C0392B" stroke-width="1.5"/>
+              <circle cx="320" cy="1" r="2.5" fill="#C0392B"/>
+            </svg>
+            <div class="yield-foot-meta">
+              <span>下次 B2 · 16:00</span>
+              <span class="yield-foot-divider">·</span>
+              <span>同步飞书日报</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div></section>
+
+<section id="sec-nodes" class="nodes fade"><div class="wrap">
+  <div class="sec-h">
+    <div>
+      <h2>节点库 <small>OPC 一人公司 · 五十七步 · 七阶段 · 竖向树状 · 每节点带简介</small></h2>
+    </div>
+    <div class="nodes-stat">
+      <div><b>57</b><span>节点</span></div>
+      <div><b>7</b><span>阶段</span></div>
+      <div><b>28d</b><span>读完</span></div>
+    </div>
+  </div>
+
+  <!-- 7 阶段树状脑图（全部并排显示） -->
+  <div class="brain">
+
+    <!-- 根节点 -->
+    <div class="tree-root">
+      <div class="tree-root-mark">OPC</div>
+      <div class="tree-root-info">
+        <div class="tree-root-t">OPC 一人公司 · 飞轮节点库</div>
+        <div class="tree-root-meta">57 个节点 · 7 个阶段 · 28 天读完 · 当前 D0 / 14%</div>
+      </div>
+      <div class="tree-root-progress">
+        <div class="tree-root-prog-cap"><span>8/57</span><span>14%</span></div>
+        <div class="tree-root-prog-bar"><div class="tree-root-prog-fill"></div></div>
+      </div>
+      <div class="tree-root-pulse">
+        <span class="tree-root-dot"></span>
+        <span>live</span>
+      </div>
+    </div>
+
+    <!-- 7 个阶段 - 竖向堆叠 -->
+    <div class="tree-branches">
+
+      <!-- P0 自测 · 当前阶段 · 8 节点 -->
+      <div class="tree-stage active">
+        <div class="ts-head">
+          <div class="ts-mark">P0</div>
+          <div class="ts-info">
+            <div class="ts-t">自测阶段 <span class="ts-en">FIT</span></div>
+            <div class="ts-d">先验证你适不适合做 OPC · 8 个节点 · 40 分钟读完 · 0 工具需要</div>
+          </div>
+          <div class="ts-stat">
+            <div><b>8</b><span>节点</span></div>
+            <div><b>40m</b><span>读完</span></div>
+            <div><b>2/8</b><span>已读</span></div>
+          </div>
+          <div class="ts-prog">
+            <div class="ts-prog-bar"><div class="ts-prog-fill" style="width:25%"></div></div>
+            <span class="ts-prog-t">D0 → D3</span>
+          </div>
+        </div>
+        <div class="ts-nodes">
+          <a class="tn done">
+            <div class="tn-id">01</div>
+            <div class="tn-body">
+              <div class="tn-t">OPC 适配自测</div>
+              <div class="tn-d">5 分钟看完 8 道判断题，你就知道 OPC 适不适合你。附 3 个真实案例对照表。</div>
+            </div>
+            <div class="tn-stat"><b>5 min</b><span>读完</span></div>
+            <div class="tn-tag done">✓ 已读</div>
+          </a>
+          <a class="tn done">
+            <div class="tn-id">02</div>
+            <div class="tn-body">
+              <div class="tn-t">盘点个人资源</div>
+              <div class="tn-d">你有什么？时间、钱、技能、关系。1 张资源地图 + 1 套评估公式，10 分钟定位你的起跑线。</div>
+            </div>
+            <div class="tn-stat"><b>10 min</b><span>读完</span></div>
+            <div class="tn-tag done">✓ 已读</div>
+          </a>
+          <a class="tn now">
+            <div class="tn-id">03</div>
+            <div class="tn-body">
+              <div class="tn-t">问题定义</div>
+              <div class="tn-d">你想解决谁的什么问题？套用"4W1H + 痛点 - 收益"模板，30 分钟写出可验证的问题陈述。</div>
+            </div>
+            <div class="tn-stat"><b>30 min</b><span>读完</span></div>
+            <div class="tn-tag now">▸ 今天读</div>
+          </a>
+          <a class="tn">
+            <div class="tn-id">04</div>
+            <div class="tn-body">
+              <div class="tn-t">原型设计</div>
+              <div class="tn-d">画一张能讲清楚的草图。5 种低保真原型工具对比 + 1 个 OPC 真实项目拆解。</div>
+            </div>
+            <div class="tn-stat"><b>45 min</b><span>读完</span></div>
+            <div class="tn-tag">未读</div>
+          </a>
+          <a class="tn">
+            <div class="tn-id">05</div>
+            <div class="tn-body">
+              <div class="tn-t">MVP 范围</div>
+              <div class="tn-d">只做"能验证想法"的最小版本。3 步砍范围法 + RICE 评分表。</div>
+            </div>
+            <div class="tn-stat"><b>30 min</b><span>读完</span></div>
+            <div class="tn-tag">未读</div>
+          </a>
+          <a class="tn">
+            <div class="tn-id">06</div>
+            <div class="tn-body">
+              <div class="tn-t">技术选型</div>
+              <div class="tn-d">用熟不用新，1 人能维护。3 套 OPC 技术栈对比（前端 / 后端 / 数据库）。</div>
+            </div>
+            <div class="tn-stat"><b>20 min</b><span>读完</span></div>
+            <div class="tn-tag">未读</div>
+          </a>
+          <a class="tn">
+            <div class="tn-id">07</div>
+            <div class="tn-body">
+              <div class="tn-t">开发环境</div>
+              <div class="tn-d">30 分钟搭好不折腾。VSCode + Git + Node + 1 个云 VPS 的最小配置清单。</div>
+            </div>
+            <div class="tn-stat"><b>30 min</b><span>读完</span></div>
+            <div class="tn-tag">未读</div>
+          </a>
+          <a class="tn">
+            <div class="tn-id">08</div>
+            <div class="tn-body">
+              <div class="tn-t">Hello World</div>
+              <div class="tn-d">把最小闭环跑通。Express 5 + 一个接口 + 一个页面 = 你自己的 OPC 雏形。</div>
+            </div>
+            <div class="tn-stat"><b>20 min</b><span>读完</span></div>
+            <div class="tn-tag">未读</div>
+          </a>
+        </div>
+      </div>
+
+      <!-- P1 产品 · 14 节点 -->
+      <div class="tree-stage">
+        <div class="ts-head">
+          <div class="ts-mark">P1</div>
+          <div class="ts-info">
+            <div class="ts-t">产品阶段 <span class="ts-en">MVP</span></div>
+            <div class="ts-d">把 MVP 做出来 · 14 个节点 · 2 周 · 0→1 的核心 11 步</div>
+          </div>
+          <div class="ts-stat">
+            <div><b>14</b><span>节点</span></div>
+            <div><b>2w</b><span>读完</span></div>
+            <div><b>0/14</b><span>已读</span></div>
+          </div>
+          <div class="ts-prog">
+            <div class="ts-prog-bar"><div class="ts-prog-fill" style="width:0%"></div></div>
+            <span class="ts-prog-t">D4 → D17</span>
+          </div>
+        </div>
+        <div class="ts-nodes">
+          <a class="tn"><div class="tn-id">09</div><div class="tn-body"><div class="tn-t">Git 版本管理</div><div class="tn-d">一人也要用 Git。分支策略 + 提交规范 + 1 套 OPC 实战工作流。</div></div><div class="tn-stat"><b>20 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">10</div><div class="tn-body"><div class="tn-t">后端对接</div><div class="tn-d">前端怎么调后端？RESTful + JSON + Token 三件套，1 套最小代码模板。</div></div><div class="tn-stat"><b>30 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">11</div><div class="tn-body"><div class="tn-t">账号体系</div><div class="tn-d">JWT + 加盐 + 1 套 OPC 单人用户体系代码。15 分钟接入。</div></div><div class="tn-stat"><b>30 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">12</div><div class="tn-body"><div class="tn-t">核心功能 1</div><div class="tn-d">MVP 的第 1 个核心功能怎么挑？4 步定位 + 2 个真实 OPC 案例。</div></div><div class="tn-stat"><b>45 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">13</div><div class="tn-body"><div class="tn-t">核心功能 2</div><div class="tn-d">第 2 个核心功能的优先级判断。MoSCoW 法则 + 5 个坑。</div></div><div class="tn-stat"><b>30 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">14</div><div class="tn-body"><div class="tn-t">核心功能 3</div><div class="tn-d">最小可用闭环。第 3 个功能砍不砍？3 套判断标准。</div></div><div class="tn-stat"><b>30 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">15</div><div class="tn-body"><div class="tn-t">数据展示</div><div class="tn-d">让用户看见数据。ECharts + 1 套 OPC 仪表盘模板。</div></div><div class="tn-stat"><b>40 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">16</div><div class="tn-body"><div class="tn-t">支付接入</div><div class="tn-d">微信支付 / 支付宝 怎么选？1 张决策表 + 1 段最小代码。</div></div><div class="tn-stat"><b>45 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">17</div><div class="tn-body"><div class="tn-t">支付权限</div><div class="tn-d">付费会员怎么设计？3 套权限模型 + 1 套 OPC 实践。</div></div><div class="tn-stat"><b>30 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">18</div><div class="tn-body"><div class="tn-t">开发者自测</div><div class="tn-d">自测清单：20 个 OPC 常见 Bug 提前发现。</div></div><div class="tn-stat"><b>20 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">19</div><div class="tn-body"><div class="tn-t">朋友内测</div><div class="tn-d">找 5 个朋友内测。问卷模板 + 反馈整理表。</div></div><div class="tn-stat"><b>30 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">20</div><div class="tn-body"><div class="tn-t">Bug 修复</div><div class="tn-d">3 套优先级 + 7 个 OPC 实战修复案例。</div></div><div class="tn-stat"><b>40 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">21</div><div class="tn-body"><div class="tn-t">性能优化</div><div class="tn-d">Lighthouse 9 分手。7 个 OPC 真实优化点。</div></div><div class="tn-stat"><b>45 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">22</div><div class="tn-body"><div class="tn-t">发布物料</div><div class="tn-d">截图 / 视频 / 介绍页 1 套模板。</div></div><div class="tn-stat"><b>30 min</b></div><div class="tn-tag">未读</div></a>
+        </div>
+      </div>
+
+      <!-- P2 验证 · 10 节点 -->
+      <div class="tree-stage">
+        <div class="ts-head">
+          <div class="ts-mark">P2</div>
+          <div class="ts-info">
+            <div class="ts-t">验证阶段 <span class="ts-en">TEST</span></div>
+            <div class="ts-d">把 MVP 跑通上线 · 10 个节点 · 1 周 · 含公司注册 / ICP / 审核</div>
+          </div>
+          <div class="ts-stat">
+            <div><b>10</b><span>节点</span></div>
+            <div><b>1w</b><span>读完</span></div>
+            <div><b>0/10</b><span>已读</span></div>
+          </div>
+          <div class="ts-prog">
+            <div class="ts-prog-bar"><div class="ts-prog-fill" style="width:0%"></div></div>
+            <span class="ts-prog-t">D18 → D24</span>
+          </div>
+        </div>
+        <div class="ts-nodes">
+          <a class="tn"><div class="tn-id">23</div><div class="tn-body"><div class="tn-t">公司注册</div><div class="tn-d">个体工商户 vs 有限公司？5 步线上注册流程 + 1 张成本表。</div></div><div class="tn-stat"><b>45 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">24</div><div class="tn-body"><div class="tn-t">域名 ICP</div><div class="tn-d">阿里云 / 腾讯云 / Cloudflare 怎么选？3 套对比 + 1 段备案流程。</div></div><div class="tn-stat"><b>30 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">25</div><div class="tn-body"><div class="tn-t">网站部署</div><div class="tn-d">VPS + PM2 + Nginx + Certbot 1 套部署脚本。</div></div><div class="tn-stat"><b>40 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">26</div><div class="tn-body"><div class="tn-t">审核材料</div><div class="tn-d">网安备案 / ICP / 公安备案 三件套清单。</div></div><div class="tn-stat"><b>30 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">27</div><div class="tn-body"><div class="tn-t">发布清单</div><div class="tn-d">上线前 20 项 checklist · 含法律 / 性能 / 内容。</div></div><div class="tn-stat"><b>20 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">28</div><div class="tn-body"><div class="tn-t">审核提交</div><div class="tn-d">3 大平台提交流程 + 7 个常见被拒原因。</div></div><div class="tn-stat"><b>30 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">29</div><div class="tn-body"><div class="tn-t">审核整改</div><div class="tn-d">被拒后怎么改？5 步整改 SOP + 模板邮件。</div></div><div class="tn-stat"><b>25 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">30</div><div class="tn-body"><div class="tn-t">正式发布</div><div class="tn-d">灰度 → 50% → 100% 三阶段发布 SOP。</div></div><div class="tn-stat"><b>30 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">31</div><div class="tn-body"><div class="tn-t">数据监控</div><div class="tn-d">PV / UV / 转化 / 留存 4 张仪表盘模板。</div></div><div class="tn-stat"><b>40 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">32</div><div class="tn-body"><div class="tn-t">冷启动</div><div class="tn-d">0 粉到 100 粉的 7 步 SOP · 含 5 个 OPC 真实案例。</div></div><div class="tn-stat"><b>45 min</b></div><div class="tn-tag">未读</div></a>
+        </div>
+      </div>
+
+      <!-- P3 增长 · 9 节点 -->
+      <div class="tree-stage">
+        <div class="ts-head">
+          <div class="ts-mark">P3</div>
+          <div class="ts-info">
+            <div class="ts-t">增长阶段 <span class="ts-en">GROW</span></div>
+            <div class="ts-d">让用户知道你 · 9 个节点 · 2 周 · 营销 / 私域 / 裂变</div>
+          </div>
+          <div class="ts-stat">
+            <div><b>9</b><span>节点</span></div>
+            <div><b>2w</b><span>读完</span></div>
+            <div><b>0/9</b><span>已读</span></div>
+          </div>
+          <div class="ts-prog">
+            <div class="ts-prog-bar"><div class="ts-prog-fill" style="width:0%"></div></div>
+            <span class="ts-prog-t">D25 → D38</span>
+          </div>
+        </div>
+        <div class="ts-nodes">
+          <a class="tn"><div class="tn-id">33</div><div class="tn-body"><div class="tn-t">内容营销</div><div class="tn-d">小红书 / 视频号 / 抖音 怎么打？3 套打法 + 1 张内容日历。</div></div><div class="tn-stat"><b>45 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">34</div><div class="tn-body"><div class="tn-t">反馈迭代</div><div class="tn-d">用户反馈怎么收？怎么排？4 步收集 + ICE 评分。</div></div><div class="tn-stat"><b>30 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">35</div><div class="tn-body"><div class="tn-t">私域运营</div><div class="tn-d">加微之后做什么？朋友圈剧本 + 群运营 SOP。</div></div><div class="tn-stat"><b>40 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">36</div><div class="tn-body"><div class="tn-t">AI 客服</div><div class="tn-d">1 人公司怎么回 1000 个客户？智能客服 + 5 套话术模板。</div></div><div class="tn-stat"><b>30 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">37</div><div class="tn-body"><div class="tn-t">异议处理</div><div class="tn-d">客户嫌贵 / 嫌慢 / 嫌难？7 套异议破解话术。</div></div><div class="tn-stat"><b>25 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">38</div><div class="tn-body"><div class="tn-t">定价策略</div><div class="tn-d">¥9 / ¥99 / ¥999 / ¥9999 怎么分层？4 阶定价表 + 心理价位表。</div></div><div class="tn-stat"><b>40 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">39</div><div class="tn-body"><div class="tn-t">广告投放</div><div class="tn-d">100 元起投，3 套平台 ROI 对比 + 1 张优化表。</div></div><div class="tn-stat"><b>45 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">40</div><div class="tn-body"><div class="tn-t">老带新</div><div class="tn-d">K=0.5 怎么做到？3 套裂变海报 + 1 套邀请机制。</div></div><div class="tn-stat"><b>30 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">41</div><div class="tn-body"><div class="tn-t">产品迭代</div><div class="tn-d">每周一个小版本。版本号规范 + changelog 模板。</div></div><div class="tn-stat"><b>20 min</b></div><div class="tn-tag">未读</div></a>
+        </div>
+      </div>
+
+      <!-- P4 销售 · 5 节点 -->
+      <div class="tree-stage">
+        <div class="ts-head">
+          <div class="ts-mark">P4</div>
+          <div class="ts-info">
+            <div class="ts-t">销售阶段 <span class="ts-en">SELL</span></div>
+            <div class="ts-d">把流量变成钱 · 5 个节点 · 1 周 · 收入多元 / 退出 / 财税</div>
+          </div>
+          <div class="ts-stat">
+            <div><b>5</b><span>节点</span></div>
+            <div><b>1w</b><span>读完</span></div>
+            <div><b>0/5</b><span>已读</span></div>
+          </div>
+          <div class="ts-prog">
+            <div class="ts-prog-bar"><div class="ts-prog-fill" style="width:0%"></div></div>
+            <span class="ts-prog-t">D39 → D45</span>
+          </div>
+        </div>
+        <div class="ts-nodes">
+          <a class="tn"><div class="tn-id">42</div><div class="tn-body"><div class="tn-t">收入多元化</div><div class="tn-d">不要只有 1 条收入线。5 种 OPC 收入模式 + 1 张组合表。</div></div><div class="tn-stat"><b>30 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">43</div><div class="tn-body"><div class="tn-t">退出计划</div><div class="tn-d">卖 / 并 / 关 怎么选？3 套退出估值方法 + 1 张决策表。</div></div><div class="tn-stat"><b>45 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">44</div><div class="tn-body"><div class="tn-t">对公账户</div><div class="tn-d">基本户 / 一般户 / 专用户 怎么开？3 步开对公账户 SOP。</div></div><div class="tn-stat"><b>30 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">45</div><div class="tn-body"><div class="tn-t">税务报到</div><div class="tn-d">小规模 vs 一般纳税人？1 张税种表 + 季度申报 SOP。</div></div><div class="tn-stat"><b>40 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">46</div><div class="tn-body"><div class="tn-t">现金流</div><div class="tn-d">6 个月不饿死需要多少钱？1 张现金流测算模板。</div></div><div class="tn-stat"><b>30 min</b></div><div class="tn-tag">未读</div></a>
+        </div>
+      </div>
+
+      <!-- P5 合规 · 5 节点 -->
+      <div class="tree-stage">
+        <div class="ts-head">
+          <div class="ts-mark">P5</div>
+          <div class="ts-info">
+            <div class="ts-t">合规阶段 <span class="ts-en">LAW</span></div>
+            <div class="ts-d">让自己不被告 · 5 个节点 · 3 天 · 商标 / 版权 / 广告法</div>
+          </div>
+          <div class="ts-stat">
+            <div><b>5</b><span>节点</span></div>
+            <div><b>3d</b><span>读完</span></div>
+            <div><b>0/5</b><span>已读</span></div>
+          </div>
+          <div class="ts-prog">
+            <div class="ts-prog-bar"><div class="ts-prog-fill" style="width:0%"></div></div>
+            <span class="ts-prog-t">D46 → D48</span>
+          </div>
+        </div>
+        <div class="ts-nodes">
+          <a class="tn"><div class="tn-id">47</div><div class="tn-body"><div class="tn-t">商务邮箱</div><div class="tn-d">域名邮箱怎么搭？腾讯企业邮 / 阿里云邮 5 分钟开通。</div></div><div class="tn-stat"><b>15 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">48</div><div class="tn-body"><div class="tn-t">商标注册</div><div class="tn-d">1 类商标 ¥270 · 3 类 ¥810。1 步流程 + 1 张类目表。</div></div><div class="tn-stat"><b>30 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">49</div><div class="tn-body"><div class="tn-t">软件版权</div><div class="tn-d">软著登记 60 天下证。1 套申请模板 + 1 段加急流程。</div></div><div class="tn-stat"><b>30 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">50</div><div class="tn-body"><div class="tn-t">广告合规</div><div class="tn-d">广告法 9 大红线 + 1 套 OPC 自查清单。</div></div><div class="tn-stat"><b>40 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">51</div><div class="tn-body"><div class="tn-t">数据备份</div><div class="tn-d">3-2-1 备份策略 + 1 套 OPC 数据库 + 文件 + 配置 备份脚本。</div></div><div class="tn-stat"><b>30 min</b></div><div class="tn-tag">未读</div></a>
+        </div>
+      </div>
+
+      <!-- P6 扩张 · 6 节点 -->
+      <div class="tree-stage">
+        <div class="ts-head">
+          <div class="ts-mark">P6</div>
+          <div class="ts-info">
+            <div class="ts-t">扩张阶段 <span class="ts-en">SCALE</span></div>
+            <div class="ts-d">从 1 人到 1+N · 6 个节点 · 持续 · 服务 / 支付 / 精力</div>
+          </div>
+          <div class="ts-stat">
+            <div><b>6</b><span>节点</span></div>
+            <div><b>持续</b><span>读完</span></div>
+            <div><b>0/6</b><span>已读</span></div>
+          </div>
+          <div class="ts-prog">
+            <div class="ts-prog-bar"><div class="ts-prog-fill" style="width:0%"></div></div>
+            <span class="ts-prog-t">D49 →</span>
+          </div>
+        </div>
+        <div class="ts-nodes">
+          <a class="tn"><div class="tn-id">52</div><div class="tn-body"><div class="tn-t">服务安全</div><div class="tn-d">WAF + DDoS + 1 套 OPC 实战防护清单。</div></div><div class="tn-stat"><b>45 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">53</div><div class="tn-body"><div class="tn-t">全球支付</div><div class="tn-d">Stripe / Paddle / 国内三方 怎么选？3 套对比 + 1 段集成代码。</div></div><div class="tn-stat"><b>40 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">54</div><div class="tn-body"><div class="tn-t">微信小程序</div><div class="tn-d">Web 转小程序 1 套流程 + 1 段 uni-app 代码。</div></div><div class="tn-stat"><b>45 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">55</div><div class="tn-body"><div class="tn-t">外包协作</div><div class="tn-d">什么时候请外包？3 类外包 + 1 份合同模板。</div></div><div class="tn-stat"><b>30 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">56</div><div class="tn-body"><div class="tn-t">精力管理</div><div class="tn-d">1 人不猝死指南。1 张周精力表 + 4 个能量管理动作。</div></div><div class="tn-stat"><b>25 min</b></div><div class="tn-tag">未读</div></a>
+          <a class="tn"><div class="tn-id">57</div><div class="tn-body"><div class="tn-t">政策红利</div><div class="tn-d">小微 / 高新 / 残保金 1 张可申请政策表 + 申报 SOP。</div></div><div class="tn-stat"><b>40 min</b></div><div class="tn-tag">未读</div></a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="tree-cta">
+    <span>57 个节点 · 7 个阶段 · 一次看完</span>
+    <a class="tree-cta-btn">进入完整节点库 →</a>
+  </div>
+
+</div></section>
+
+<section id="sec-mani" class="mani fade"><div class="wrap">
+  <p><em>不是 PPT。</em><br>是跑在 VPS 上的十二 Agent 飞轮。<br>凌晨三点还在工作，<br>因为它不需要睡眠。</p>
+  <div class="sig">
+    <span>蕾姆 · 2026.06.09</span>
+    <span style="color:var(--accent)">$ git log --oneline -1</span>
+    <span>869c5c9</span>
+  </div>
+</div></section>
+
+<section class="cta"><div class="wrap">
+  <h2>从看见 → 信任 → 付费</h2>
+  <p>飞轮已经在转。下一个节点，由你决定。</p>
+  <div class="cta-row">
+    <a class="btn btn-p" style="cursor:pointer">$ 看完整仪表盘</a>
+    <a class="btn btn-g" style="cursor:pointer">看 16 Skill 详情 →</a>
+  </div>
+</div></section>
+
+<footer class="foot"><div class="wrap foot-row">
+  <span>© 2026 ONE-MCN · taomyst.top</span>
+  <span>v2.0.3 · 16/16 Skill · M1 → 2026-07-03</span>
+  <span><a style="cursor:pointer">GitHub</a> · <a style="cursor:pointer">飞书</a> · <a style="cursor:pointer">Hermes</a></span>
+</div></footer>
+
+<script>
+// ============ 基础 ============
+document.querySelectorAll('.filter button').forEach(b=>{
+  b.onclick=()=>{document.querySelectorAll('.filter button').forEach(x=>x.classList.remove('on'));b.classList.add('on')};
+});
+const status=document.querySelector('.nav-status span:last-child');
+if(status) setInterval(()=>{status.textContent='hermes · '+new Date().toLocaleTimeString('en-GB')+' · online'},1000);
+
+// ============ IntersectionObserver 滚动触发 fadeUp ============
+const io=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('in');
+      io.unobserve(e.target);
     }
-  </style>
+  });
+},{threshold:0.08,rootMargin:'200px 0px 200px 0px'});
+document.querySelectorAll('.fade,.cluster,.tree-stage,.b').forEach(el=>{
+  if(!el.classList.contains('fade')) el.classList.add('fade');
+  io.observe(el);
+});
 
-  <!-- 节点百科区块 — Japanese Ma 不对称布局 -->
-<section id="nodes-section" style="padding: 8rem 0; background: var(--surface);">
-  <div style="max-width: 1400px; margin: 0 auto; padding: 0 clamp(1.5rem, 5vw, 6rem);">
+// 首屏 + 整页 fade-in（mockup 评审模式下，初始就触发全部 fade 元素）
+const forceFirst=()=>{
+  // mockup 场景下：全部 fade 元素立即显示，避免 IO 错过
+  document.querySelectorAll('.fade').forEach(el=>el.classList.add('in'));
+};
+// 立即执行
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded', forceFirst);
+} else {
+  forceFirst();
+}
+requestAnimationFrame(forceFirst);
+window.addEventListener('load',forceFirst);
+setTimeout(forceFirst,100);
+setTimeout(forceFirst,500);
 
-    <!-- 标题组 — 左对齐偏心 -->
-    <div style="margin-bottom: 6rem; max-width: 38rem; position: relative;">
-      <span style="position: absolute; top: -3rem; left: -0.5rem; font-size: 18vw; font-weight: 200; color: var(--text-primary); opacity: 0.03; line-height: 0.85; letter-spacing: -0.05em; user-select: none; pointer-events: none; font-family: 'Noto Serif JP', serif;">02</span>
-      <div class="text-label" style="margin-bottom: 1.5rem; color: var(--text-tertiary); letter-spacing: 0.3em;">导航地图</div>
-      <h2 style="
-        font-size: clamp(1.75rem, 4vw, 2.5rem);
-        font-weight: 200;
-        letter-spacing: -0.03em;
-        line-height: 1.2;
-        margin-bottom: 1.5rem;
-        color: var(--text-primary);
-        font-family: 'Noto Serif JP', serif;
-      ">完整节点导航</h2>
-      <p style="
-        font-size: 0.9375rem;
-        color: var(--text-secondary);
-        line-height: 1.9;
-        max-width: 44ch;
-        letter-spacing: 0.02em;
-        margin-bottom: 2rem;
-      ">
-        按阶段分组，点击任意节点获取攻略。
-      </p>
-      <a href="graph.html" style="
-        display: inline-flex;
-        align-items: center;
-        gap: 0.625rem;
-        font-size: 0.75rem;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: var(--text-primary);
-        text-decoration: none;
-        border-bottom: 1px solid var(--text-primary);
-        padding-bottom: 0.375rem;
-        font-weight: 500;
-        transition: opacity 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      " onmouseover="this.style.opacity='0.6';" onmouseout="this.style.opacity='1';">
-        进入知识图谱
-        <span style="font-size: 0.625rem;">→</span>
-      </a>
-    </div>
+// ============ 数字 countUp 动画 ============
+const countIo=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting) return;
+    const el=e.target;
+    if(el.dataset.counted) return;
+    el.dataset.counted='1';
+    const target=parseInt(el.dataset.count||'0',10);
+    const suffix=el.dataset.suffix||'';
+    const prefix=el.dataset.prefix||'';
+    el.textContent=prefix+0+suffix;
+    const dur=1400;
+    const start=performance.now();
+    const step=(now)=>{
+      const t=Math.min((now-start)/dur,1);
+      const eased=1-Math.pow(1-t,3);
+      const v=Math.floor(target*eased);
+      el.textContent=prefix+v.toLocaleString('en-US')+suffix;
+      if(t<1) requestAnimationFrame(step);
+      else el.textContent=prefix+target.toLocaleString('en-US')+suffix;
+    };
+    requestAnimationFrame(step);
+    countIo.unobserve(el);
+  });
+},{threshold:0.4});
+document.querySelectorAll('[data-count]').forEach(el=>countIo.observe(el));
 
-    <!-- 难度筛选 — 极简过滤 -->
-    <div style="display: flex; gap: 2.5rem; margin-bottom: 4rem; flex-wrap: wrap; align-items: center;">
-      <button class="action" onclick="filterNodes('all')" id="filter-all" style="border-bottom: 1px solid var(--accent); color: var(--text-primary);">全部</button>
-      <button class="action" onclick="filterNodes('入门')" id="filter-入门">入门</button>
-      <button class="action" onclick="filterNodes('进阶')" id="filter-进阶">进阶</button>
-      <button class="action" onclick="filterNodes('高级')" id="filter-高级">高级</button>
-    </div>
+// ============ Scroll-spy TOC 高亮 + 进度条 ============
+const tocItems=document.querySelectorAll('.toc-item');
+const sections=['sec-hero','sec-bento','sec-nodes','sec-mani'].map(id=>document.getElementById(id)).filter(Boolean);
+const tocProg=document.getElementById('toc-prog');
+const setActive=(id)=>{
+  tocItems.forEach(t=>t.classList.toggle('active',t.dataset.target===id));
+};
+const onScroll=()=>{
+  const y=window.scrollY;
+  const h=document.documentElement.scrollHeight-window.innerHeight;
+  const pct=Math.min(100,Math.max(0,(y/h)*100));
+  if(tocProg){
+    tocProg.style.setProperty('--p',pct+'%');
+    tocProg.style.setProperty('--scroll',pct+'%');
+  }
+  let current='sec-hero';
+  for(const s of sections){
+    const r=s.getBoundingClientRect();
+    if(r.top<=window.innerHeight*0.4) current=s.id;
+  }
+  setActive(current);
+};
+window.addEventListener('scroll',onScroll,{passive:true});
+onScroll();
 
-    <!-- 节点网格 -->
-    <div id="nodes-grid">
-        <!-- 动态生成 -->
-    </div>
-  </div>
-</section>
-
-<!-- 会员订阅区块 — Ma 极简布局 -->
-<section id="pricing-section" style="padding: 10rem 0; background: var(--surface); border-top: 1px solid var(--line);">
-  <div style="max-width: 1400px; margin: 0 auto; padding: 0 clamp(1.5rem, 5vw, 6rem);">
-
-    <!-- 左对齐标题 -->
-    <div style="margin-bottom: 4rem;">
-      <div class="text-label" style="margin-bottom: 1.5rem; color: var(--accent); letter-spacing: 0.2em;">会员订阅</div>
-      <h2 style="
-        font-size: clamp(1.5rem, 3vw, 2rem);
-        font-weight: 300;
-        letter-spacing: -0.02em;
-        line-height: 1.3;
-        color: var(--text-primary);
-      ">解锁全部57个节点</h2>
-    </div>
-
-    <!-- 定价卡片 — 竖向3:4比例 -->
-    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; max-width: 500px;">
-
-      <!-- 月付 -->
-      <div onclick="openSubscriptionModal(); selectSubscriptionPlan('monthly');" id="plan-monthly" style="
-        background: var(--bg);
-        border: 1px solid var(--accent);
-        padding: 2rem;
-        cursor: pointer;
-        transition: all 0.4s ease;
-        display: flex;
-        flex-direction: column;
-        aspect-ratio: 3/4;
-      "
-      onmouseenter="this.style.background='var(--accent)'; this.querySelector('.plan-title').style.color='#FFFFFF'; this.querySelector('.plan-price').style.color='#FFFFFF'; this.querySelector('.plan-sub').style.color='rgba(255,255,255,0.7)'; this.querySelector('.plan-benefits').style.color='rgba(255,255,255,0.6)';"
-      onmouseleave="this.style.background='var(--bg)'; this.querySelector('.plan-title').style.color='var(--text-primary)'; this.querySelector('.plan-price').style.color='var(--text-primary)'; this.querySelector('.plan-sub').style.color='var(--text-tertiary)'; this.querySelector('.plan-benefits').style.color='var(--text-tertiary)';">
-        <div class="plan-title" style="font-size: 0.875rem; color: var(--text-primary); letter-spacing: 0.08em; margin-bottom: auto;">月付</div>
-        <div class="plan-price" style="font-size: 2.5rem; color: var(--text-primary); font-weight: 300; letter-spacing: -0.02em; margin-bottom: 0.5rem;">¥9.9</div>
-        <div class="plan-sub" style="font-size: 0.6875rem; color: var(--text-tertiary); letter-spacing: 0.05em; margin-bottom: 1.5rem;">随时可取消</div>
-        <div class="plan-benefits" style="font-size: 0.6875rem; color: var(--text-tertiary); letter-spacing: 0.03em; line-height: 1.8; border-top: 1px solid var(--line); padding-top: 1rem;">
-          · 全站节点浏览<br>
-          · AI内容优先看<br>
-          · 专属答疑服务
-        </div>
-      </div>
-
-      <!-- 年付 - 20%折扣 -->
-      <div onclick="openSubscriptionModal(); selectSubscriptionPlan('yearly');" id="plan-yearly" style="
-        background: var(--bg);
-        border: 1px solid var(--accent);
-        padding: 2rem;
-        cursor: pointer;
-        transition: all 0.4s ease;
-        display: flex;
-        flex-direction: column;
-        aspect-ratio: 3/4;
-        position: relative;
-      "
-      onmouseenter="this.style.background='var(--accent)'; this.querySelector('.plan-title').style.color='#FFFFFF'; this.querySelector('.plan-price').style.color='#FFFFFF'; this.querySelector('.plan-sub').style.color='rgba(255,255,255,0.7)'; this.querySelector('.plan-tag').style.background='#FFFFFF'; this.querySelector('.plan-tag').style.color='var(--accent)'; this.querySelector('.plan-benefits').style.color='rgba(255,255,255,0.6)';"
-      onmouseleave="this.style.background='var(--bg)'; this.querySelector('.plan-title').style.color='var(--accent)'; this.querySelector('.plan-price').style.color='var(--text-primary)'; this.querySelector('.plan-sub').style.color='var(--text-tertiary)'; this.querySelector('.plan-tag').style.background='var(--accent)'; this.querySelector('.plan-tag').style.color='#FFFFFF'; this.querySelector('.plan-benefits').style.color='var(--text-tertiary)';">
-        <div class="plan-tag" style="position: absolute; top: 1rem; right: 1rem; background: var(--accent); color: #FFFFFF; font-size: 0.5625rem; padding: 0.25rem 0.5rem; letter-spacing: 0.1em;">推荐</div>
-        <div class="plan-title" style="font-size: 0.875rem; color: var(--accent); letter-spacing: 0.08em; margin-bottom: auto;">20%折扣</div>
-        <div class="plan-price" style="font-size: 2.5rem; color: var(--text-primary); font-weight: 300; letter-spacing: -0.02em; margin-bottom: 0.25rem;">¥99</div>
-        <div class="plan-sub" style="font-size: 0.6875rem; color: var(--text-tertiary); letter-spacing: 0.05em; margin-bottom: 0.5rem;">限时8折 · 原价¥119</div>
-        <div style="font-size: 0.625rem; color: var(--accent); letter-spacing: 0.05em; margin-bottom: 1rem;">相当于月付¥8.25</div>
-        <div class="plan-benefits" style="font-size: 0.6875rem; color: var(--text-tertiary); letter-spacing: 0.03em; line-height: 1.8; border-top: 1px solid var(--line); padding-top: 1rem;">
-          · 全站节点浏览<br>
-          · AI内容优先看<br>
-          · 专属答疑服务<br>
-          · 1对1陪跑咨询
-        </div>
-      </div>
-    </div>
-
-    <p style="margin-top: 2.5rem; font-size: 0.75rem; color: var(--text-tertiary); letter-spacing: 0.05em;">支付安全加密 · 7天无理由退款</p>
-  </div>
-</section>
-
-<div id="app" tabindex="-1"></div>
-
-<!-- 登录/注册模态框 -->
-<div id="auth-modal" class="hidden" style="
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0,0,0,0.85);
-  z-index: 2000;
-  padding: 1rem;
-">
-  <div style="
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    max-width: 360px;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    padding: 2rem;
-  ">
-    <button onclick="closeAuthModal()" style="
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: none;
-      border: none;
-      color: var(--text-secondary);
-      font-size: 1.25rem;
-      cursor: pointer;
-      line-height: 1;
-    ">×</button>
-
-    <div id="auth-modal-content">
-      <!-- 动态渲染登录/注册表单 -->
-    </div>
-  </div>
-</div>
-
-<!-- 订阅模态框 -->
-<div id="subscription-modal" class="hidden" style="
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0,0,0,0.85);
-  z-index: 2000;
-  padding: 1rem;
-">
-  <div style="
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    max-width: 400px;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    padding: 2rem;
-  ">
-    <button onclick="closeSubscriptionModal()" style="
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: none;
-      border: none;
-      color: var(--text-secondary);
-      font-size: 1.25rem;
-      cursor: pointer;
-      line-height: 1;
-    ">×</button>
-
-    <div style="text-align: center; margin-bottom: 2rem;">
-      <div class="text-label" style="margin-bottom: 0.5rem; color: var(--accent);">订阅服务</div>
-      <h3 style="font-size: 1.25rem; font-weight: 400; color: var(--text-primary);">解锁全部57个节点</h3>
-    </div>
-
-    <div style="display: grid; gap: 1rem; margin-bottom: 1.5rem;">
-      <div onclick="selectSubscriptionPlan('monthly')" id="plan-monthly" style="
-        padding: 1.25rem;
-        border: 1px solid var(--line);
-        cursor: pointer;
-        transition: all 0.3s ease;
-      ">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <span style="font-size: 0.875rem; color: var(--text-primary);">月付</span>
-          <span style="font-size: 1.25rem; color: var(--accent); font-weight: 300;">¥9.9<span style="font-size: 0.75rem; color: var(--text-tertiary);">/月</span></span>
-        </div>
-      </div>
-
-      <div onclick="selectSubscriptionPlan('yearly')" id="plan-yearly" style="
-        padding: 1.25rem;
-        border: 1px solid var(--accent);
-        cursor: pointer;
-        background: rgba(192,57,43,0.05);
-        position: relative;
-      ">
-        <div style="
-          position: absolute;
-          top: -0.5rem;
-          right: 1rem;
-          font-size: 0.5rem;
-          letter-spacing: 0.15em;
-          text-transform: uppercase;
-          color: var(--accent);
-          background: var(--surface);
-          padding: 0.25rem 0.5rem;
-        ">推荐</div>
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <span style="font-size: 0.875rem; color: var(--text-primary);">年付</span>
-          <span style="font-size: 1.25rem; color: var(--accent); font-weight: 300;">¥99<span style="font-size: 0.75rem; color: var(--text-tertiary);">/年</span></span>
-        </div>
-        <div style="font-size: 0.6875rem; color: var(--text-tertiary); margin-top: 0.25rem;">相当于月付¥8.25，省40%</div>
-      </div>
-    </div>
-
-    <button onclick="confirmSubscription()" id="confirm-subscription-btn" class="btn-pdf" style="width: 100%; opacity: 0.5; cursor: not-allowed;" disabled>
-      选择订阅方案
-    </button>
-
-    <div style="text-align: center; margin-top: 1rem;">
-      <span class="text-label" style="color: var(--text-tertiary);">支付安全加密 · 7天无理由退款</span>
-    </div>
-  </div>
-</div>
-
-<!-- 节点详情模态框 -->
-<div id="node-modal" class="hidden" style="
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0,0,0,0.8);
-  z-index: 1000;
-  overflow-y: auto;
-  padding: 2rem 0;
-">
-  <div style="
-    max-width: 600px;
-    margin: 0 auto;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    padding: 2rem;
-  ">
-    <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
-      <div>
-        <div class="text-label" id="modal-category" style="margin-bottom: 0.25rem;"></div>
-        <h3 id="modal-title" style="font-size: 1.25rem; font-weight: 400;"></h3>
-      </div>
-      <button onclick="closeNodeModal()" style="
-        background: none;
-        border: none;
-        color: var(--text-secondary);
-        font-size: 1.5rem;
-        cursor: pointer;
-        padding: 0.5rem;
-      ">×</button>
-    </div>
-
-    <div id="modal-content" class="text-body" style="color: var(--text-secondary); margin-bottom: 1.5rem;">
-      <div class="spinner" style="margin: 2rem auto;"></div>
-    </div>
-
-    <div style="border-top: 1px solid var(--line); padding-top: 1.5rem;">
-      <button onclick="consultForNode()" class="btn-pdf" style="width: 100%;">
-        咨询此节点 · ¥299
-      </button>
-    </div>
-  </div>
-</div>
-
-  <script>
-    // ========== HERO 知识图谱 SVG 渲染 (Ma 风格) ==========
-    (function renderHeroGraph() {
-      const container = document.getElementById('hero-graph');
-      if (!container) return;
-
-      const STAGES = [
-        { name: '产品验证', range: [1, 6] },
-        { name: '环境搭建', range: [7, 10] },
-        { name: '核心开发', range: [11, 17] },
-        { name: '测试修复', range: [18, 21] },
-        { name: '上线准备', range: [22, 30] },
-        { name: '运营迭代', range: [31, 43] },
-        { name: '支撑层', range: [44, 57] }
-      ];
-
-      // SVG 画布
-      const W = 700, H = 400;
-      const colW = W / 7;
-
-      // 计算每个节点坐标
-      const nodes = [];
-      STAGES.forEach((stage, sIdx) => {
-        const [start, end] = stage.range;
-        const count = end - start + 1;
-        const colX = colW * sIdx + colW / 2;
-        const colH = H - 60;
-        const startY = 30;
-
-        for (let i = 0; i < count; i++) {
-          const nodeId = start + i;
-          const y = startY + (colH * i / (count - 1 || 1));
-          nodes.push({
-            id: nodeId,
-            stage: sIdx,
-            x: colX,
-            y: y
-          });
-        }
-      });
-
-      // 节点索引
-      const byId = {};
-      nodes.forEach(n => byId[n.id] = n);
-
-      // 顺序连接（阶段内）
-      const seqLinks = [];
-      STAGES.forEach(stage => {
-        for (let i = stage.range[0]; i < stage.range[1]; i++) {
-          seqLinks.push([i, i + 1]);
-        }
-      });
-
-      // 跨阶段连接（关键转折点）
-      const crossLinks = [
-        [6, 11], [10, 11], [17, 18], [21, 22], [30, 31], [43, 44],
-        [17, 22], [43, 57]
-      ];
-
-      // 生成 SVG
-      const svg = [];
-      svg.push(`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; display:block;">`);
-
-      // 阶段标签（顶部小字）
-      STAGES.forEach((stage, sIdx) => {
-        const x = colW * sIdx + colW / 2;
-        svg.push(`<text x="${x}" y="16" text-anchor="middle" font-family="'Noto Sans SC', sans-serif" font-size="10" letter-spacing="0.15em" fill="#7A7670" style="text-transform: uppercase;">${String(sIdx + 1).padStart(2, '0')}</text>`);
-      });
-
-      // 顺序连线（暗灰 1px）
-      seqLinks.forEach(([a, b]) => {
-        const n1 = byId[a], n2 = byId[b];
-        if (!n1 || !n2) return;
-        svg.push(`<line x1="${n1.x}" y1="${n1.y}" x2="${n2.x}" y2="${n2.y}" stroke="#2A2A28" stroke-width="1" />`);
-      });
-
-      // 跨阶段连线（朱红 1px）
-      crossLinks.forEach(([a, b]) => {
-        const n1 = byId[a], n2 = byId[b];
-        if (!n1 || !n2) return;
-        // 用平滑的贝塞尔曲线
-        const cx1 = n1.x + (n2.x - n1.x) * 0.5;
-        const cy1 = n1.y;
-        const cx2 = n2.x - (n2.x - n1.x) * 0.5;
-        const cy2 = n2.y;
-        svg.push(`<path d="M ${n1.x} ${n1.y} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${n2.x} ${n2.y}" fill="none" stroke="#C0392B" stroke-width="1" opacity="0.6" />`);
-      });
-
-      // 节点圆圈
-      nodes.forEach(n => {
-        const isKey = (n.id === 1 || n.id === 11 || n.id === 22 || n.id === 30 || n.id === 43 || n.id === 57);
-        const r = isKey ? 3.5 : 2.5;
-        const stroke = isKey ? '#C0392B' : '#7A7670';
-        svg.push(`<circle cx="${n.x}" cy="${n.y}" r="${r}" fill="${isKey ? '#C0392B' : '#F0EDE6'}" stroke="${stroke}" stroke-width="${isKey ? 1.5 : 1}" />`);
-      });
-
-      // 关键节点编号（仅在关键节点上显示小数字）
-      const keyNodes = [1, 11, 22, 30, 43, 57];
-      keyNodes.forEach(id => {
-        const n = byId[id];
-        if (!n) return;
-        svg.push(`<text x="${n.x + 8}" y="${n.y + 3}" font-family="'Noto Sans SC', sans-serif" font-size="9" fill="#C0392B" letter-spacing="0.05em">${String(id).padStart(2, '0')}</text>`);
-      });
-
-      // 底部阶段名（极小标签）
-      STAGES.forEach((stage, sIdx) => {
-        const x = colW * sIdx + colW / 2;
-        svg.push(`<text x="${x}" y="${H - 6}" text-anchor="middle" font-family="'Noto Serif JP', serif" font-size="10" fill="#A09A94" letter-spacing="0.08em">${stage.name}</text>`);
-      });
-
-      svg.push(`</svg>`);
-      container.innerHTML = svg.join('');
-    })();
-  </script>
-
-  <script src="app.js?v=20260509"></script>
+// ============ TOC click 平滑滚动 ============
+tocItems.forEach(t=>{
+  t.addEventListener('click',(e)=>{
+    e.preventDefault();
+    const target=document.getElementById(t.dataset.target);
+    if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+</script>
 </body>
 </html>

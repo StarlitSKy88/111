@@ -2,11 +2,13 @@
   "id": 53,
   "slug": "global-payment",
   "title": "海外支付方案",
-  "phase": "产品验证与准备",
+  "phase": "扩张阶段",
   "difficulty": "进阶",
   "category": "1-10",
   "summary": "Stripe、PayPal、Wise，想做海外市场时接入",
   "content": "",
   "created_at": "2026-05-09T00:00:00Z",
-  "updated_at": "2026-05-10T00:00:00Z"
+  "updated_at": "2026-06-10T22:30:00Z",
+  "phase_code": "P6",
+  "phase_en": "SCALE"
 }

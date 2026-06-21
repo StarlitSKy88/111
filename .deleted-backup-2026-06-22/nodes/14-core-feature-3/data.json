@@ -1,0 +1,14 @@
+{
+  "id": 14,
+  "slug": "core-feature-3",
+  "title": "核心功能3开发",
+  "phase": "产品阶段",
+  "difficulty": "进阶",
+  "category": "0-1",
+  "summary": "最后一个核心功能开发完成，三大功能全部联动",
+  "content": "",
+  "created_at": "2026-06-10T00:00:00Z",
+  "updated_at": "2026-06-10T22:30:00Z",
+  "phase_code": "P1",
+  "phase_en": "MVP"
+}

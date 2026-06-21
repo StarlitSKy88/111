@@ -1,0 +1,24 @@
+{
+  "task_id": "task-upgrade-02",
+  "category": "upgrade",
+  "status": "pending",
+  "description": "升级原21(内容营销与SEO) → 新33(内容营销与SEO/ASO)",
+  "source_node": "原21-content-marketing",
+  "target_node": "新33",
+  "upgrade_summary": "原21只讲SEO。升级加入ASO应用商店优化（微信小程序+App Store）。",
+  "outline": [
+    "一、SEO基础（原21核心内容保留）",
+    "二、ASO四要素：标题→描述→截图→评价",
+    "三、微信小程序搜索排名技巧（名称/描述/关键词）",
+    "四、App Store关键词优化实战",
+    "五、AI辅助SEO/ASO写作工具（2026年5月推荐）",
+    "六、内容发布节奏与平台选择矩阵"
+  ],
+  "verification": [
+    "ASO四要素有具体示例和操作步骤",
+    "微信小程序排名因素引用2026年最新规则",
+    "AI写作工具推荐为2026年5月有效（名称/免费方案/限制）",
+    "SEO部分保留原21核心内容",
+    "内容发布节奏适合OPC(不是团队规模)"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": 3,
+  "slug": "problem-definition",
+  "title": "问题定义与用户调研",
+  "phase": "自测阶段",
+  "difficulty": "入门",
+  "category": "0-1",
+  "summary": "痛点验证、用户访谈、需求优先级排序，找到真正值得解决的问题",
+  "content": "",
+  "created_at": "2026-06-10T00:00:00Z",
+  "updated_at": "2026-06-10T22:30:00Z",
+  "phase_code": "P0",
+  "phase_en": "FIT"
+}
