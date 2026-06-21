@@ -1,0 +1,65 @@
+# ONE-MCN M1 Day 0 第一个任务：L-W-INFRA-01
+# 状态：pending（vibcoding 启动准备中）
+# 阻塞：PostgreSQL 环境未启动
+
+{
+  "loop_id": "L-W-INFRA-01",
+  "loop_name": "数据库 Schema + RLS 多租户",
+  "stage": "M1 Day 0",
+  "estimated_atomic_tasks": 24,
+  "verification_count": 6,
+  "dependencies": [
+    "PostgreSQL 16+ running locally",
+    "test_restore database created",
+    "environment variable DATABASE_URL set"
+  ],
+  "atomic_tasks": [
+    {
+      "id": "D0-1",
+      "task": "设计 8 张表 schema（考虑外键、约束、索引）",
+      "verification": "grep -c 'FOREIGN KEY' schema.sql >= 7"
+    },
+    {
+      "id": "D0-2",
+      "task": "编写 migration 脚本（V001__initial.sql）",
+      "verification": "psql -f V001__initial.sql 2>&1 | grep -c ERROR == 0"
+    },
+    {
+      "id": "D0-3",
+      "task": "在 staging 验证 migration 可重入",
+      "verification": "psql -f V001__initial.sql && psql -f V001__initial.sql 2>&1 | grep -c ERROR == 0"
+    },
+    {
+      "id": "D0-4",
+      "task": "编写 V002__rollback.sql",
+      "verification": "psql -f V002__rollback.sql && psql -c '\\dt' | wc -l == 0"
+    },
+    {
+      "id": "D0-5",
+      "task": "验证 8 张表全部创建",
+      "verification": "psql -c '\\dt' | grep -E '(users|blueprints|brand_buildings|tier1_packages|monitor_metrics|tier2_executions|tier_subscriptions|stripe_events)' | wc -l == 8"
+    },
+    {
+      "id": "D0-6",
+      "task": "验证所有表有 tenant_id + created_at",
+      "verification": "psql -c 'SELECT table_name FROM information_schema.columns WHERE column_name IN (\\'tenant_id\\',\\'created_at\\') GROUP BY table_name HAVING COUNT(DISTINCT column_name) = 2' | wc -l == 8"
+    },
+    {
+      "id": "D0-7",
+      "task": "验证 created_at 索引",
+      "verification": "psql -c 'SELECT COUNT(*) FROM pg_indexes WHERE indexname LIKE \\'%_created_at_idx\\'' | awk '$1 >= 8'"
+    },
+    {
+      "id": "D0-8",
+      "task": "验证 tenant_id 复合索引",
+      "verification": "psql -c 'SELECT COUNT(*) FROM pg_indexes WHERE indexdef LIKE \\'%tenant_id%\\'' | awk '$1 >= 6'"
+    }
+  ],
+  "verification_summary": [
+    "8 张表全部创建（users/blueprints/brand_buildings/tier1_packages/monitor_metrics/tier2_executions/tier_subscriptions/stripe_events）",
+    "RLS 启用 + FORCE",
+    "tenant_id + created_at 复合索引",
+    "created_at 索引 ≥ 8"
+  ],
+  "next_loop": "L-W-INFRA-02 (RLS 多租户 Policy)"
+}

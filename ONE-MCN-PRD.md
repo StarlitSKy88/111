@@ -1,499 +1,608 @@
-# 一人 MCN 机构 · PRD（产品需求文档）v2.0.2
+# 1 人 MCN 公司 · PRD v5.0
 
-> **作者**：蕾姆（以中立产品经理视角撰写）
-> **创建日期**：2026-06-03
-> **更新日期**：2026-06-04
-> **版本**：v2.0.2（v2.0.1 + HermesPet 前端伴侣层）
-> **状态**：v2.0.2 终稿，待 M1 实战校准
-> **配套**：`ONE-MCN-README-v2.0.md` / `ONE-MCN-HARNESS-v2.0.md` / `ONE-MCN-AGENT-MATRIX.md` / `ONE-MCN-100-ACCOUNTS-SCAN.md` / `ONE-MCN-BUSINESS-PLAN.md` / `ONE-MCN-EVALUATION-REPORT.md`
+> **One-Person MCN · Product Requirements Document**
+> **版本**：v5.0（vibcoding roadmap — 0 员工 + 100% Loop Engineering 推进）
+> **核心定位**：**帮用户建立自己的 1 人 MCN 品牌**，完整商业闭环
+> **创建日期**：2026-06-21
+> **更新日期**：2026-06-22（v5.0：OPC 节点百科已全部删除，ONE-MCN 是 vibcoding roadmap）
+> **配套**：`ONE-MCN-ARCHITECTURE.md` / `ONE-MCN-M1-SOP.md` / `ONE-MCN-LOOP-LIST.md` / `ONE-MCN-COMMERCIAL.md`
+
+## v5.0 项目状态（2026-06-22 重大转向）
+
+- **产品定位**：正在 vibcoding 的需求（不是未来愿景）
+- **开发模式**：0 员工 + 100% vibcoding + Loop Engineering
+- **OPC 节点百科**：2026-06-22 已全部删除（本地 + VPS）
+- **文档角色**：vibcoding roadmap（每天从 LOOP-LIST 拿 1 个 loop 推进）
+- **roadmap 来源**：本 5 份文档 + 33 个 one-mcn-skills/ + `.harness/PLAN-v7.md`
 
 ---
 
-## 0. 文档信息
+## 0. 文档元信息
 
 | 字段 | 内容 |
 |:---|:---|
-| **产品名称** | 一人 MCN 机构 Harness |
-| **代号** | ONE-MCN |
-| **版本** | v1.0 |
-| **目标用户** | OPC 创业者（一名全职+0 现金+Mac+手机）|
-| **核心场景** | 视频化获客 + 私域变现 + 6 个月 ¥10 万下限 |
-| **技术栈** | MiniMax M3 + 豆包 TTS + 飞书 5 表 + 4 平台原生 API |
+| **产品名** | 1 人 MCN 公司（ONE-MCN）|
+| **版本** | v5.0（vibcoding roadmap + 3 Tier + 4 阶段 + Stage 4 解耦 + 8 个商业假设 + 12 个技术假设 + 12 个 CRITICAL 风险）|
+| **形态** | 4 阶段流水线（Discovery → Brand Building → Monitor → Monetize）|
+| **主线/辅线** | 主线: MVP→验证→扩展品牌 / 辅线: 获客+产品+售后 |
+| **核心方法** | Agent 全权决策 + 用户 weekly review（合伙人角色）|
+| **3 Tier 定价** | Tier 1 ¥999/月 · Tier 2 ¥999/月 · Tier 3 ¥50,000/次 |
+| **Stage 4** | 独立商业化框架（试用→付费→续费→推荐），与 Tier 1-3 解耦 |
+| **M1 工作量** | 138 任务 / Day 0-7 milestone = **真实 6-10 周（1-2 人团队）** |
+
+> ⚠️ 与 v4.1 的差异：v4.2 引入 12 个 lead-with-assumption 技术假设（含 RLS、幂等性、备份恢复）+ 8 个商业假设（GTM/CAC/LTV/续费）+ 12 个 CRITICAL 风险标注。配套新文档 `ONE-MCN-COMMERCIAL.md`（竞品 + GTM + Unit Economics + 团队）。
 
 ---
 
-## 1. 产品概述
+## 1. 核心假设（Lead with Assumption, Falsifiable, 12 假设）
 
-### 1.1 一句话定位
+> **ai-pm 方法论**：先列可 falsifiable 假设，不列 feature list。
+> **12 个假设来源**：Reddit r/SaaS 真实数据 + GitHub production-readiness 实战 + Stripe 文档 + PG RLS 案例 + Pieter Levels 哲学
 
-> **用 AI 沉浸式对话 + 0 元启动 + 多平台同步发布，让一名 OPC 创业者在 6 个月内从 0 到月入 10 万的视频化获客与私域变现操作系统。**
-
-### 1.2 核心价值主张
-
-1. **极致真实感**：真人露面（口罩+帽子）+ AI 沉浸式对话 = 独家形态
-2. **0 元启动**：Mac + 手机 + AI API + 飞书 = 全部免费
-3. **可复用**：Harness 文档化，可教给 100+ OPC 创业者
-
-### 1.3 核心场景（用户旅程）
-
-```
-L1 刷到 (14:00)  →  L2 关注 (当晚)  →  L3 私域 (3 天后)
-L4 朋友圈 (7 天) →  L5 ¥999 群 (14 天) →  L6 ¥3999 陪跑 (30 天)
-L7 合伙人 (90 天)
-```
-
----
-
-## 2. 目标用户
-
-### 2.1 主用户画像
-
-| 维度 | 描述 |
-|:---|:---|
-| **名字** | 陈先生 |
-| **年龄** | 28-35 岁 |
-| **状态** | 被裁/想转型/35 岁焦虑 |
-| **痛点** | 收入不稳定 + 不知道下一步 + 房贷压力 |
-| **预算** | ¥999-3999 愿意为陪跑付费 |
-| **触达** | 视频号/抖音/小红书 |
-
-### 2.2 创作者画像（产品使用者）
-
-| 维度 | 描述 |
-|:---|:---|
-| **名字** | 昴君（OPC 创业者）|
-| **技能** | 零基础内容创作 + Mac/手机熟练 |
-| **时间** | 全职 8h/天 |
-| **人设** | 高冷黑客（口罩+帽子+毒舌）|
-| **目标** | 6 个月 ¥10 万下限 |
-
-### 2.3 反向用户（不适合）
-
-- 不愿意出镜/写脚本
-- 预算 < ¥999
-- 期望被动收入
-- 不能全职投入
+| # | 假设 | Falsifiable 标准 | 监控命令 | 如果错怎么办 |
+|:--|:---|:---|:---|:---|
+| **A1** | 用户"想做 1 人 MCN"但**不知道具体怎么做** | 50% 用户在 Discovery 表达"我不知道做啥" | `psql -c "SELECT COUNT(*) FILTER (WHERE blueprint_id IS NULL) * 100.0 / COUNT(*) FROM users WHERE created_at > NOW() - INTERVAL '30 days'"` | 加更多引导示例 + 案例库 |
+| **A2** | **多轮 AI 对话**比一次性问卷更能挖掘真实需求 | 阶段 1 完成率（对话 > 5 轮）≥ 60% | `psql -c "SELECT COUNT(*) FILTER (WHERE discovery_turns >= 5) * 100.0 / COUNT(*) FROM users WHERE blueprint_id IS NOT NULL"` | 改用半结构化问卷 |
+| **A3** | Agent 全权决策 + 用户 weekly review 比"用户决策 + Agent 执行"更高效 | Agent 自动执行成功率 ≥ 80% | `psql -c "SELECT COUNT(*) FILTER (WHERE auto_decided) * 100.0 / COUNT(*) FROM agent_executions WHERE created_at > NOW() - INTERVAL '7 days'"` | 加 confirmation gate 降权 |
+| **A4** | **4 阶段严格串行**比"全模块一次性"成功率高 | 阶段 2 验收通过率 ≥ 30% | `psql -c "SELECT COUNT(*) FILTER (WHERE validated_at IS NOT NULL) * 100.0 / COUNT(*) FROM brand_buildings WHERE started_at < NOW() - INTERVAL '60 days'"` | 允许阶段 2 部分完成后再进 3 |
+| **A5** | **试用 + 转化**比直接付费更适合 0→1 阶段 | 试用→付费 ≥ 10%，续费 ≥ 70% | `psql -c "SELECT (COUNT(*) FILTER (WHERE first_trial_at IS NOT NULL)) * 100.0 / COUNT(*) FROM users WHERE created_at > NOW() - INTERVAL '30 days'"` | 改为分层付费 |
+| **A6** | Agent 角色 = **合伙人**（自动推 + 用户 review）而非助手 | 用户每周 review 时间 < 30 min | `psql -c "SELECT AVG(EXTRACT(EPOCH FROM review_end_at - review_start_at)) / 60 FROM agent_reviews WHERE created_at > NOW() - INTERVAL '7 days'"` | 增加 review 摘要 |
+| **A7** | 数据反馈 = **push + pull 组合**比单一通道好 | push 响应率 ≥ 40%，pull 周活 ≥ 50% | `psql -c "SELECT (COUNT(*) FILTER (WHERE pushed_at IS NOT NULL)) * 100.0 / COUNT(*) FROM alerts WHERE created_at > NOW() - INTERVAL '30 days'"` | 优化 push 时机 |
+| **A8** | **🔴 CRITICAL：多租户数据 100% 隔离**（RLS + tenant_id）| 任何跨租户查询返回非空 | `psql -c "SET app.tenant_id='T1'; INSERT INTO users(email,tenant_id) VALUES('a@t.com','T1'); SET app.tenant_id='T2'; SELECT email FROM users;"` 必须 = 0 行 | 立即停服 + 启用 FORCE RLS |
+| **A9** | **🔴 CRITICAL：Stripe webhook 100% 幂等**（避免双重扣费）| 重复事件 → 重复处理 | `psql -c "SELECT (COUNT(*) - COUNT(DISTINCT event_id)) FROM stripe_events"` 必须 = 0 | 立即改用 INSERT ... ON CONFLICT |
+| **A10** | **🔴 CRITICAL：Stripe 签名 100% 验证**（防伪造）| 任何 webhook 接受未签名请求 | `psql -c "SELECT COUNT(*) FROM stripe_events WHERE signature_verified = false"` 必须 = 0 | 立即修复 express.raw + constructEvent |
+| **A11** | **🔴 CRITICAL：数据备份 24h 内可恢复** | 任何 24h 周期无成功备份 | `find /backup -name "*.sql" -mtime -1 \| wc -l` ≥ 1 | 立即人工备份 + 调查 |
+| **A12** | **🔴 CRITICAL：Tier 3 必须从 Tier 2 转化**（防止绕过）| 任何直接进 | `psql -c "SELECT COUNT(*) FROM tier_subscriptions WHERE tier='tier3' AND user_id NOT IN (SELECT user_id FROM tier_subscriptions WHERE tier='tier2')"` 必须 = 0 | 立即修复 API + 服务端校验 |
 
 ---
 
-## 3. 用户故事（21 条）
-
-### 3.1 创作者侧（US-C1 ~ US-C8）
-
-| ID | 用户故事 | 优先级 |
-|:---|:---|:---:|
-| US-C1 | 作为黑客人设，**我想要每天 06:00 自动收到 5 条对标账号爆款**，以便不用人工翻 50 条。 | P0 |
-| US-C2 | 作为黑客人设，**我想要系统自动生成 3 条候选选题 + 钩子**，以便我只需挑 1 条。 | P0 |
-| US-C3 | 作为黑客人设，**我想要每条视频拍摄前看到 30 秒分镜脚本**，以便 1 次过审。 | P0 |
-| US-C4 | 作为黑客人设，**我想要剪映 API 一键生成 1 分钟竖屏视频**，以便 30 分钟内完成剪辑。 | P1 |
-| US-C5 | 作为黑客人设，**我想要发布前自动过 7 条红线审查**，以便不被封号。 | P0 |
-| US-C6 | 作为黑客人设，**我想要每周日 22:00 看到本周数据复盘**，以便调整下周钩子。 | P1 |
-| US-C7 | 作为黑客人设，**我想要加微用户的标签自动打（观望/意向/已付费/合伙人）**，以便分层运营。 | P0 |
-| US-C8 | 作为黑客人设，**我想要私域话术一键复制到微信**，以便每天私信 50 人不超 30 分钟。 | P1 |
-
-### 3.2 观众侧（US-U1 ~ US-U7）
-
-| ID | 用户故事 | 优先级 |
-|:---|:---|:---:|
-| US-U1 | 作为 32 岁被裁程序员，**我想要在前 3 秒看到 1 个反常识数据**，以便决定是否继续看。 | P0 |
-| US-U2 | 作为被裁程序员，**我想要听到有人骂我"还在幻想大厂"**，以便被骂醒。 | P0 |
-| US-U3 | 作为被裁程序员，**我想要知道"具体第 1 步做什么"**，以便今天就能开始。 | P0 |
-| US-U4 | 作为被裁程序员，**我想要加微信后看到 3 天真实朋友圈**，以便判断是否值得信。 | P1 |
-| US-U5 | 作为被裁程序员，**我想要 ¥999 群里有 3 个比我早 30 天的人**回答问题，以便不孤单。 | P1 |
-| US-U6 | 作为被裁程序员，**我想要 1v1 陪跑前看到 7 天 OPC 诊断报告样本**，以便知道值不值 ¥3999。 | P2 |
-| US-U7 | 作为被裁程序员，**我想要 30 天后看到"第 X 步已经完成"的证据**，以便有正反馈。 | P1 |
-
-### 3.3 系统侧（US-S1 ~ US-S6）
-
-| ID | 用户故事 | 优先级 |
-|:---|:---|:---:|
-| US-S1 | 作为飞书多维表，**我想要每天 06:00 自动从监控账号抓取 5 条爆款**，以便减少人工。 | P0 |
-| US-S2 | 作为 AI Agent 评审团，**我想要在 10 分钟内输出 3 条候选选题 + 风险评级**，以便人设挑。 | P0 |
-| US-S3 | 作为 24h SOP 引擎，**我想要按时间块提醒创作者 + 自动备份产出物**，以便不漏。 | P0 |
-| US-S4 | 作为红线审查 Agent，**我想要对每条脚本/标题 grep 200 个灰产敏感词**，以便零封号。 | P0 |
-| US-S5 | 作为私域 CRM，**我想要按"加微天数+互动次数"自动给用户打标签**，以便精准跟进。 | P1 |
-| US-S6 | 作为数据复盘 Agent，**我想要每周日 22:00 自动生成 5 页周报**，以便创作者只看结论。 | P2 |
-
----
-
-## 4. 功能需求（按模块）
-
-### 4.1 模块 A · 飞书数据中台（5 个功能）
-
-| 编号 | 功能 | 优先级 | 验收 |
-|:---|:---|:---:|:---|
-| F-A-01 | 监控表自动抓取 | P0 | 每天 06:00 自动更新 5 条爆款 |
-| F-A-02 | 选题表 AI 字段 | P0 | 每天 08:00 推送 3 候选 |
-| F-A-03 | 发布表 4 平台同步 | P0 | 14:30 一键发布 |
-| F-A-04 | 钩子库管理 | P0 | 25 条 → 50 条 → 100 条 |
-| F-A-05 | 私域 CRM 标签 | P0 | 4 阶用户分层 |
-
-### 4.2 模块 B · 内容生产（6 个功能）
-
-| 编号 | 功能 | 优先级 | 验收 |
-|:---|:---|:---:|:---|
-| F-B-01 | 钩子库 5 类模板 | P0 | 5 类 × 5 条 = 25 条 |
-| F-B-02 | 剧本公式三段式 | P0 | 前半段+升华+引流 |
-| F-B-03 | 4 AI 提示词库 | P0 | MiniMax M3 + 豆包阿泽/燃木 |
-| F-B-04 | 拍摄 0 元方案 | P0 | 电脑桌+手机+口罩 |
-| F-B-05 | 剪映剪辑 SOP | P1 | 10 分钟成片 |
-| F-B-06 | 红线审查 Agent | P0 | 7 条红线 0 失误 |
-
-### 4.3 模块 C · 私域承接（4 个功能）
-
-| 编号 | 功能 | 优先级 | 验收 |
-|:---|:---|:---:|:---|
-| F-C-01 | 4 平台钩子位 | P0 | 加微率 ≥ 8% |
-| F-C-02 | 加微话术 SOP | P0 | 回复率 ≥ 50% |
-| F-C-03 | 朋友圈 7 天循环 | P0 | 每天 1 条 |
-| F-C-04 | 4 阶定价卡点 | P0 | ¥0/¥999/¥3999/合伙人 |
-
-### 4.4 模块 D · 4 平台发布（4 个功能）
-
-| 编号 | 功能 | 优先级 | 验收 |
-|:---|:---|:---:|:---|
-| F-D-01 | 视频号发布 (60%) | P0 | 1-3 分钟竖屏 |
-| F-D-02 | 抖音发布 (30%) | P0 | 1-2 分钟竖屏 |
-| F-D-03 | 小红书发布 (5%) | P0 | 1-2 分钟 3:4 |
-| F-D-04 | B站发布 (5%) | P0 | 3-5 分钟 16:9 |
-| F-D-05 | 红线审查 + 一键发布 | P0 | 14:30 自动发布 |
-| F-D-06 | [预留] 虚拟人模块 | P3 | 6 个月内不实施 |
-
-### 4.5 模块 E · 24h SOP 引擎（1 个功能）
-
-| 编号 | 功能 | 优先级 | 验收 |
-|:---|:---|:---:|:---|
-| F-E-01 | 24h 时间块自动化 | P0 | 06:00-22:00 全流程提醒 |
-
-### 4.6 模块 F · 收入验证 + 复盘（4 个功能）
-
-| 编号 | 功能 | 优先级 | 验收 |
-|:---|:---|:---:|:---|
-| F-F-01 | 收入漏斗周看板 | P1 | 每周日 22:00 生成 |
-| F-F-02 | 周复盘 Agent | P2 | 5 页周报 |
-| F-F-03 | 月度产品迭代 SOP | P2 | 每月 1 号 |
-| F-F-04 | 6 个月目标达成验证 | P0 | ¥10 万下限 |
-
----
-
-## 5. 非功能需求（NFR）
-
-### 5.1 性能
-
-| 指标 | 要求 |
-|:---|:---|
-| AI 响应时间 | MiniMax M3 脚本生成 ≤ 30 秒 |
-| 4 平台一键发布 | ≤ 5 分钟 |
-| 数据看板刷新 | 每日 22:00 自动 |
-| 红线审查 | 实时（≤ 10 秒）|
-
-### 5.2 可用性
-
-| 指标 | 要求 |
-|:---|:---|
-| 飞书操作可用性 | ≥ 99% |
-| MiniMax M3 可用性 | ≥ 99% |
-| 4 平台发布成功率 | ≥ 95% |
-| 系统故障恢复 | ≤ 4 小时 |
-
-### 5.3 安全
-
-| 指标 | 要求 |
-|:---|:---|
-| 用户数据加密 | 微信小号 + 飞书 RBAC |
-| 备份完整性 | 三重备份 ≥ 99% 完整度 |
-| 红线审查 | 7 条硬红线 0 失误 |
-
-### 5.4 成本
-
-| 指标 | 要求 |
-|:---|:---|
-| AI API 月成本 | ≤ ¥500 |
-| 总月运营成本 | ≤ ¥800 |
-| 6 个月总成本 | ≤ ¥5000 |
-
----
-
-## 6. 验收标准（5 维模板）
-
-> 每条需求必须填满 5 个字段：系统组件 / 内容 / SOP / 衡量 / 拒收条件。
-> Stage 4 已展开 15/15 条 MUST 需求。详见 `/Users/opc-1/Downloads/O/opcone/ONE-MCN-HARNESS.md` 第 1-7 节。
-
----
-
-## 7. 数据收集与监控
-
-### 7.1 核心 KPI 矩阵（20 个指标）
-
-**内容数据（5 个）**：
-1. 4 平台播放量
-2. 4 平台完播率
-3. 4 平台点赞/评论/转发
-4. 视频被推荐/被限流
-5. 4 平台违规记录
-
-**私域数据（5 个）**：
-6. 加微数（按平台来源）
-7. 加微→¥999 转化数
-8. ¥999→¥3999 转化数
-9. 私域用户活跃度
-10. 私域用户流失数
-
-**收入数据（5 个）**：
-11. 月累计收入
-12. 单客 LTV
-13. 4 阶定价转化率
-14. 退款率
-15. 现金流余额
-
-**运营数据（5 个）**：
-16. 钩子模板命中率
-17. 7 大痛点命中分布
-18. 4 AI 提示词采纳率
-19. SOP 执行率
-20. 封号/违规事件
-
-### 7.2 收集工具
-
-- 蝉妈妈（抖音）
-- 灰豚数据（视频号）
-- 小红书蒲公英
-- B站创作中心
-- 微信支付商户号
-- 飞书多维表
-- MiniMax M3 API
-- Mac Numbers/Excel
-- 本地 SQLite（可选）
-
-### 7.3 看板（4 个）
-
-1. 内容总览（4 平台播放量趋势）
-2. 私域漏斗（加微→¥999→¥3999）
-3. 收入趋势（月/6 个月累计）
-4. SOP 执行（时间块+触发准确率）
-
----
-
-## 8. 里程碑（M1-M6）
-
-| 里程碑 | 时间 | 关键交付 | 验收门 |
-|:---|:---|:---|:---|
-| M1 启动 | 2026-07-03 | 飞书 5 表 + 4 平台 + 4 AI + 数据看板 | G1 ≥ 1000 播放 |
-| M1 末 | 2026-07-31 | 12 条视频 + 钩子库 25 + 灰产剧本 30 | ¥1 万下限 |
-| M2 末 | 2026-08-31 | 私域承接跑通 + Web 端 MVP | 加微 ≥ 50 + ¥999 ≥ 5 |
-| M3 末 | 2026-09-30 | 钩子库 50 + ¥3999 上线 | 累计 ≥ ¥3 万 + 50 万播放 |
-| M4 末 | 2026-10-31 | 体系自动化 | 累计 ≥ ¥5 万 + 100 万播放 |
-| M5 末 | 2026-11-30 | 放量 | 累计 ≥ ¥7 万 |
-| M6 末 | 2026-12-31 | 验证 | 累计 ≥ ¥10 万 + 1000 万播放 |
-
----
-
-## 9. 风险与对冲
-
-### 9.1 极高风险
-
-| 风险 | 对冲 |
-|:---|:---|
-| M1 ¥0 收入 | Pre-mortem + 3 备选方案 |
-| G1-G6 过严 | 已校准 G1=1000 播放 |
-| 4 平台同时封号 | 矩阵号 + 红线审查 |
-
-### 9.2 高风险
-
-| 风险 | 对冲 |
-|:---|:---|
-| 人设被扒 | 灰产+OPC 暗示+每月 1 次实锤 |
-| 毒舌挂名被告 | 3 条红线自审 |
-| ¥999 转化 < 5% | M2 末调整钩子+剧本 |
-| 钩子模板跑偏 | M1 末评估后**不直接改 Q6，先评估** |
-| MiniMax M3 限流 | DeepSeek V3 备份 |
-
-### 9.3 中风险
-
-| 风险 | 对冲 |
-|:---|:---|
-| 私域用户流失 | 朋友圈 7 天循环 + 1v1 跟进 |
-| 单平台限流 | 4 平台分散 |
-| 内容产能不足 | 钩子库+AI 提示词降工作量 |
-| 直播内容失控 | 直播前 30 分钟预演 |
-
----
-
-## 10. 成功标准
-
-### 10.1 MVP 成功（M1 末）
-
-- 4 平台 4 周累计播放 ≥ 1 万
-- 月累计收入 ≥ ¥1 万
-- 钩子库 25 条入库
-- 灰产剧本集 30 条入库
-- 数据看板跑通
-
-### 10.2 6 个月成功（M6 末）
-
-- 6 个月累计收入 ≥ ¥10 万
-- 4 平台累计播放 ≥ 1000 万
-- 0 封号
-- 4 阶定价全部跑通（合伙人除外）
-- Harness 文档化（可教给下一个人）
-
-### 10.3 12 个月成功（M12 末）
-
-- 启动训练营产品（¥4999/人）
-- 招募 10+ 学员
-- 增量收入 ≥ ¥50,000
-
----
-
-## 11. ⚠️ 蕾姆的红线提示
-
-> ⚠️ 涉及法律/合规风险内容：
-> 1. **不挂名真实身份证号/住址/家庭成员**
-> 2. **不暗示具体灰产操作流程**（只点行业痛点，不教方法）
-> 3. **客户好评必须脱敏**（化名+模糊背景）
-> 4. **直播内容实时预演**
-> 5. **红线和收入截图发布前人工审查**
-
----
-
-## 12. v2.0 重大更新附录
-
-> **更新日期**：2026-06-03
-> **新评分**：**9.8/10**（A+ 级）
-> **触发**：昴君指出 3 大根本性误判（雇人反方向 / 缺爆款生成逻辑 / 用户画像错位）
-
-### v2.0 用户故事升级（新增 13 条）
-
-#### 创作者侧（US-C9 ~ US-C12）
-
-| ID | 用户故事 | 优先级 |
-|:---|:---|:---:|
-| US-C9 | 作为黑客人设，**我想要 12 Agent 7×24 自动产出 30-50 条候选脚本**，以便我每天只需选 4 条。 | P0 |
-| US-C10 | 作为黑客人设，**我想要 A1 赛道扫描 6h 一次，捕获 4 平台 100 账号爆款**，以便钩子库实时更新。 | P0 |
-| US-C11 | 作为黑客人设，**我想要 5 类爆款公式（A-E）自动生成脚本**，以便 2 分钟出 1 条。 | P0 |
-| US-C12 | 作为黑客人设，**我想要 G0 Day 3 早期熔断机制**，以便方向错时 1 周内可切换。 | P0 |
-
-#### 观众侧（US-U8 ~ US-U11）
-
-| ID | 用户故事 | 优先级 |
-|:---|:---|:---:|
-| US-U8 | 作为 28 岁 0 基础小白，**我想要前 3 秒看到"反常识数据 / 真实案例 / 反差对比 / 副业第 1 步 / 反 AI 渣"之一**，以便决定是否继续看。 | P0 |
-| US-U9 | 作为 0 基础小白，**我想要加微后第 3 天看到 ¥199 早鸟**（AI 工具包 + 7 节录播），以便低成本试一下。 | P0 |
-| US-U10 | 作为 0 基础小白，**我想要 ¥999 群里有 5 类公式完整训练 + 21 天打卡**，以便 1 个月学会 1 项 AI 副业。 | P1 |
-| US-U11 | 作为 0 基础小白，**我想要老学员推荐后立即拿到 ¥200-800 现金奖励**，以便推荐身边朋友。 | P2 |
-
-#### 系统侧（US-S7 ~ US-S11）
-
-| ID | 用户故事 | 优先级 |
-|:---|:---|:---:|
-| US-S7 | 作为 A1 赛道扫描 Agent，**我想要 6h 一次扫描 4 平台 100 账号**，以便 7×24 捕获爆款。 | P0 |
-| US-S8 | 作为 A4 脚本生成 Agent，**我想要基于 5 类公式 + 5 维度拆解 + 人设生成 30/60 秒脚本**，以便 2 分钟出 1 条。 | P0 |
-| US-S9 | 作为 A5 红线审查 Agent，**我想要对每条脚本 7 红线 + 200 灰产词审查**，以便 0 失误。 | P0 |
-| US-S10 | 作为 C4 裂变追踪 Agent，**我想要自动识别老带新 4 种触发 + 自动发奖励**，以便 K=0.5+ 自然增长。 | P1 |
-| US-S11 | 作为 D1 24h SOP 引擎，**我想要按时间块触发 12 Agent + 飞书通知 + 异常熔断**，以便全链路 7×24 自动化。 | P0 |
-
-### v2.0 功能需求升级（24 → 38 条）
-
-#### 模块 G · 12 Agent 自动化矩阵（12 个功能）
-
-| 编号 | 功能 | 优先级 | Agent |
-|:---|:---|:---:|:---|
-| F-G-01 | A1 赛道扫描 6h/次 | P0 | A1 |
-| F-G-02 | A2 爆款拆解 5min/条 | P0 | A2 |
-| F-G-03 | A3 反向需求 8min/条 | P0 | A3 |
-| F-G-04 | A4 脚本生成 2min/条 | P0 | A4 |
-| F-G-05 | A5 红线审查 10s/条 | P0 | A5 |
-| F-G-06 | A6 配图封面 30s/条 | P1 | A6 |
-| F-G-07 | A7 TTS 生成 15s/条 | P0 | A7 |
-| F-G-08 | B1 智能发布 4 平台 14:30 | P0 | B1 |
-| F-G-09 | B2 数据采集 2h/次 | P0 | B2 |
-| F-G-10 | B3 复盘分析 周日 22:00 | P2 | B3 |
-| F-G-11 | C1 私域客服 7×24 | P0 | C1 |
-| F-G-12 | C2 朋友圈 每天 1 条 | P1 | C2 |
-| F-G-13 | C3 标签管理 实时 | P0 | C3 |
-| F-G-14 | C4 裂变追踪 实时 | P1 | C4 |
-| F-G-15 | D1 24h SOP 引擎 | P0 | D1 |
-
-#### 模块 H · 5 类爆款公式（5 个功能）
-
-| 编号 | 功能 | 优先级 | 验收 |
-|:---|:---|:---:|:---|
-| F-H-01 | 公式 A 反常识数据 × 20 钩子 | P0 | 完播率 ≥ 35% |
-| F-H-02 | 公式 B 真实案例 × 20 钩子 | P0 | 完播率 ≥ 35% |
-| F-H-03 | 公式 C 反差对比 × 20 钩子 | P0 | 完播率 ≥ 30% |
-| F-H-04 | 公式 D 副业第 1 步 × 20 钩子 | P0 | 完播率 ≥ 40% |
-| F-H-05 | 公式 E 反 AI 渣 × 20 钩子 | P0 | 完播率 ≥ 30% |
-
-#### 模块 I · 5 阶定价漏斗（5 个功能）
-
-| 编号 | 功能 | 优先级 | 验证 |
-|:---|:---|:---:|:---|
-| F-I-01 | L0 加微（¥0）| P0 | 加微率 ≥ 8% |
-| F-I-02 | L1 ¥199 早鸟 | P0 | 加微→早鸟 ≥ 5% |
-| F-I-03 | L2 ¥999 群 | P0 | 早鸟→群 ≥ 30% |
-| F-I-04 | L3 ¥3999 陪跑 | P0 | 群→陪跑 ≥ 5% |
-| F-I-05 | L4 ¥4999 训练营 | P0 | 陪跑→训练营 ≥ 10% |
-| F-I-06 | L5 IP 合伙人 30% 分润 | P0 | 训练营→合伙人 ≥ 5% |
-
-#### 模块 J · 病毒系数 K=0.5+（4 个功能）
-
-| 编号 | 功能 | 优先级 | 奖励 |
-|:---|:---|:---:|:---|
-| F-J-01 | 老带新 ¥999 | P0 | ¥200 现金 |
-| F-J-02 | 老带新 ¥3999 | P0 | ¥500 现金 |
-| F-J-03 | 老带新 ¥4999 训练营 | P0 | ¥800 现金 |
-| F-J-04 | 老带新 3 人进群 | P0 | 免费升级 L3 陪跑 |
-
-#### 模块 K · G0 早期熔断（5 个功能）
-
-| 编号 | 功能 | 优先级 | 触发 |
-|:---|:---|:---:|:---|
-| F-K-01 | Day 3 切账号方向 | P0 | 4 平台 < 200 |
-| F-K-02 | Day 3 停发重做 | P0 | 双账号 < 200 |
-| F-K-03 | Day 5 Plan B 启动 | P0 | 双账号 < 500 |
-| F-K-04 | Day 7 Plan B 完成 | P0 | 4 平台 < 1000 |
-| F-K-05 | 红线触发整改 | P0 | 任一红线 |
-
-### v2.0 5 阶成功标准（3 阶 → 5 阶）
-
-| 阶段 | 时点 | 关键交付 | 累计收入 | 验证 |
-|:---|:---|:---|:---:|:---|
-| **M1 末** | 2026-07-31 | 12 Agent + 5 类公式 + 5 阶漏斗 | ¥1万 | G3 ≥ 10万播放 |
-| **M6 末** | 2026-12-31 | 训练营原型 + 钩子库 100 | **¥10万** | G6 ≥ 1000万播放 |
-| **M12 末** | 2027-06-30 | 训练营 1 期 + 学员成功 | ¥60万 累计 | 10+ 学员 + NPS ≥ 8 |
-| **M18 末** | 2027-12-31 | IP 子号 3+ | ¥120万 累计 | 3 子号 + 分润 ≥ ¥30万 |
-| **M24 末** | 2028-06-30 | IP 化 5-10 | **¥500万** 累计 | 5+ 子号 + 被动 ≥ 30% |
-
-### v2.0 非功能需求升级
-
-| 指标 | v1.0 | v2.0 |
+## 1.5 商业假设（Business Assumption, Falsifiable, 8 假设）
+
+> **为什么需要商业假设**：12 个技术假设回答"产品能不能做出来"，但 0→1 阶段更关键的是"做出来有没有人付钱"。**以下 8 个假设决定 ONE-MCN 是否能跑通 PMF**。
+>
+> **数据来源**：OpenView 2025 PLG Benchmark + Reddit r/SaaS + 公开资料整理（详见 `ONE-MCN-COMMERCIAL.md`）。
+
+| # | 假设 | Falsifiable 标准 | 监控命令 | 如果错怎么办 |
+|:--|:---|:---|:---|:---|
+| **B1** | **ICP 付费意愿**：28-40 岁 0 收入/月入 <1万 愿意付 ¥999/月（10%+ 月收入）| M3 后 Tier 1 转化 < 5% | `psql -c "SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM users WHERE created_at > NOW() - INTERVAL '90 days') FROM tier_subscriptions WHERE tier='tier1'"` | 降到 ¥499/月试 30 天 / 重定义 ICP |
+| **B2** | **付费转化**：14 天试用 → 付费 ≥ 10% | M3 后 < 10% | `psql -c "SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM trials WHERE created_at > NOW() - INTERVAL '90 days') FROM paid_users WHERE first_trial_at IS NOT NULL"` | 缩短试用到 7 天 / 强化试用期内 onboarding |
+| **B3** | **Tier 1 → Tier 2 ≥ 20%** | M6 后 < 20% | `psql -c "SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM tier1_users WHERE tier1_end_at < NOW() - INTERVAL '30 days') FROM users WHERE tier1_completed_at IS NOT NULL AND tier2_started_at IS NOT NULL"` | 重写 Tier 2 价值主张 / 合并 Tier 1+2 |
+| **B4** | **早鸟 ¥699/月锁价有效拉新** | M3 后早鸟用户 < 20 | `psql -c "SELECT COUNT(*) FROM tier_subscriptions WHERE is_early_bird = TRUE"` | 提高早鸟价到 ¥799 / 延长早鸟窗口 |
+| **B5** | **CAC < ¥300**（前 100 用户真实获客成本）| 100 用户后 > ¥300 | `python -c "cac = sum(spend) / paid_users_count; assert cac < 300"` | 暂停付费获客 / 全部转 design partner 推荐 |
+| **B6** | **LTV/CAC ≥ 3.0**（OpenView 健康线）| M6 后 < 3.0 | `python -c "ltv = calc_ltv(); cac = calc_cac(); assert ltv/cac >= 3.0; print(ltv/cac)"` | 提高月费 / 强化续费机制 |
+| **B7** | **GTM 假设**：抖音/小红书/视频号/X 能找前 100 用户 | M3 后 < 50 注册 | `psql -c "SELECT COUNT(*) FROM users WHERE created_at > NOW() - INTERVAL '90 days'"` | 切换渠道（LinkedIn/即刻/私域裂变）|
+| **B8** | **续费 ≥ 70%**（年化）| M6 后 < 70% | `psql -c "SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM paid_users WHERE created_at < NOW() - INTERVAL '30 days') FROM paid_users WHERE renewed_at IS NOT NULL"` | 强化 push 周报 + 主动 review + dunning |
+
+**商业假设的验证节奏**：
+
+| 阶段 | 验证假设 | 通过标准 |
 |:---|:---|:---|
-| 内容产能 | 1 人 2-3 条/天 | 12 Agent 30-50 条/天 |
-| 赛道分析 | 无 | 100 账号 6h/次 |
-| 钩子库规模 | 25-100 条死 | 7×24 引擎 + 100 公式 + 实时爆款 |
-| 漏斗阶数 | 4 阶 | 5 阶 |
-| 病毒系数 | K=0 | K=0.5+ |
-| 早期验证 | G1 7 天 | G0 3 天 + G1-G6 |
-| 月度成本 | ¥13000-16000 | ¥550（节省 95%+）|
-
-### ⚠️ 蕾姆的红线提示（v2.0 增量）
-
-1. **公式 E 反 AI 渣** 涉及对其他 AI 创作者的批评——**不可在视频里点名道姓**（避免名誉权风险）
-2. **¥199 早鸟** 涉及"低价引流"——发布前需明确"早鸟限时 + 不承诺续期"（避免价格欺诈）
-3. **K=0.5+ 老带新** 涉及"分销奖励"——发布前需确认当地法规允许"老带新"现金奖励（避免传销认定）
-4. **¥4999 训练营** 涉及"教育服务承诺"——发布前需明确"课程内容 / 退款规则 / 学员成功概率"（避免虚假宣传）
-5. **IP 合伙人 30% 分润** 涉及"多级分销"——发布前需确认法规允许多级分销 + 签订非劳动合同协议
+| M1 (Day 0-7) | 仅验证 B1（ICP 注册）| ≥ 5 个 design partner 完成 Discovery |
+| M2 (Day 8-30) | 验证 B2/B4（试用 + 早鸟）| 试用转化 ≥ 20%（design partner 高意愿）|
+| M3 (Day 31-60) | 验证 B5/B7（GTM + CAC）| 30 个付费用户，CAC < ¥300 |
+| M4-M6 (Day 61-180) | 验证 B3/B6/B8（Tier 升级 + LTV + 续费）| LTV/CAC ≥ 3.0 + 续费率 ≥ 70% |
 
 ---
 
-## 13. 变更记录
+## 2. ICP（理想客户画像）
+
+| 维度 | 描述 |
+|:---|:---|
+| **年龄** | 28-40 岁 |
+| **现状** | 0 收入 OR 月入 < 1 万 OR 想从打工转型 |
+| **核心需求** | "想建自己的 1 人品牌"，但**不知道具体怎么做** |
+| **痛点** | 不知道自身定位 + 不知道哪个赛道 + 不知道如何变现 |
+| **预算** | 试用 14 天免费 → ¥699/月（早鸟，前 100）/ ¥999/月（标准 Tier 1+2）/ ¥50,000/次（Tier 3 咨询陪跑） |
+| **触达** | 抖音/小红书/视频号（刷到 OPC 节点引流）/ X（海外）|
+
+**早期 ICP 子集**（PMF 验证用）：
+- **子集 A**：28-35 岁，前互联网/广告/媒体从业者，已有一定内容输出能力
+- **子集 B**：35-40 岁，传统行业老板转型，预算充足但缺乏互联网打法
+- **子集 C**：海外华人，英文输出，目标海外 MCN 市场
+
+---
+
+## 3. 4 阶段流水线（严格串行）
+
+### 3.1 阶段 1：Discovery（发现）
+
+**Assumption**：A1, A2
+
+**输入**：用户首次进入产品
+
+**核心形态**：**多轮 AI 对话**（5-10 轮），不是问卷
+
+**关键任务**（每个 1 个原子单位）：
+
+| 编号 | 任务 | 验收（单命令） |
+|:--|:---|:---|
+| 1-1 | 设计 5-10 轮对话 prompt 模板 | `ls prompts/discovery/*.md \| wc -l >= 5` |
+| 1-2 | 实现对话状态机（5 状态：开场/能力/需求/方向/总结） | `jq '.states \| length' src/discovery/state-machine.json == 5` |
+| 1-3 | 实现"能力图谱"提取（从对话中提取 10 维度能力） | `jq '.capabilities \| length' src/discovery/extract.js >= 10` |
+| 1-4 | 实现"需求图谱"提取（10 维度需求 + 优先级） | `jq '.dimensions \| length' src/discovery/extract.js == 10` |
+| 1-5 | 实现"个人品牌蓝图生成器"（基于能力+需求 → 蓝图） | `jq '.blueprint_sections \| length' src/discovery/blueprint.js >= 5` |
+| 1-6 | 实现"案例展示"组件（OPC 节点作为展示用） | `ls src/discovery/examples/*.md \| wc -l >= 20` |
+| 1-7 | 实现"对话完成度跟踪"（每轮埋点） | `test -f src/discovery/analytics/tracker.ts` |
+| 1-8 | 实现"阶段 1 → 阶段 2 触发器"（蓝图确认后） | `jq '.trigger.conditions \| length' src/discovery/handoff.js >= 3` |
+
+**阶段 1 Eval**：
+
+| 指标 | 目标 | 验证命令（单条） |
+|:---|:---|:---|
+| **对话完成率**（≥ 5 轮） | ≥ 60% | `psql -c "SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM users) FROM users WHERE discovery_turns >= 5"` |
+| **蓝图生成成功率** | ≥ 90% | `psql -c "SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM users WHERE discovery_turns >= 5) FROM users WHERE blueprint_id IS NOT NULL"` |
+| **用户满意度**（1-5 星） | ≥ 4.0 | `psql -c "SELECT AVG(rating) FROM discovery_feedback WHERE created_at > NOW() - INTERVAL '30 days'"` |
+| **平均对话轮数** | 5-10 轮 | `psql -c "SELECT AVG(discovery_turns) FROM users WHERE blueprint_id IS NOT NULL"` |
+
+---
+
+### 3.2 阶段 2：Brand Building（品牌建设）
+
+**Assumption**：A3, A4
+
+**输入**：阶段 1 的个人品牌蓝图
+
+**输出**：完整的品牌 4 部分 + 4 个自动化 Agent + **指标转化验证通过**
+
+**双线结构**：
+- **主线（线性成长）**：MVP → 验证 → 扩展品牌
+- **辅线（产品模块）**：获客 + 产品开发 + 售后
+
+**关键任务**（原子）：
+
+| 编号 | 任务 | 验收（单命令） |
+|:--|:---|:---|
+| 2-1 | 实现 Agent 1：内容生产 Agent（按蓝图生成内容） | `jq '.agent_id' src/agents/content-agent.json == "content-agent-v1"` |
+| 2-2 | 实现 Agent 2：获客 Agent（多渠道获客执行） | `jq '.channels \| length' src/agents/acquisition-agent.json >= 3` |
+| 2-3 | 实现 Agent 3：产品交付 Agent（产品上线+客服） | `jq '.delivery_methods' src/agents/delivery-agent.json \| wc -l >= 2` |
+| 2-4 | 实现 Agent 4：售后 Agent（用户跟进+复购触发） | `jq '.follow_up_triggers \| length' src/agents/support-agent.json >= 3` |
+| 2-5 | 实现"品牌一致性审查"Agent（红线 + 调性） | `jq '.red_lines \| length' src/agents/consistency-agent.json >= 7` |
+| 2-6 | 实现 MVP 上线功能（蓝图中最小可执行子集） | `test -f src/mvp-launch/launch.ts` |
+| 2-7 | 实现"指标采集"模块（浏览/转化/复购） | `ls src/metrics/collectors/*.ts \| wc -l >= 3` |
+| 2-8 | 实现"阶段 2 → 阶段 3 触发器"（指标达 baseline） | `jq '.baseline.metrics' src/brand/handoff.js \| jq length >= 3` |
+
+**Agent 决策边界（合伙人角色）**：
+
+| 动作类型 | Agent 权限 | 用户 review |
+|:---|:---|:---|
+| 内容起草 | 全自动 | 周 review |
+| 内容发布 | 自动（小账号） / 用户确认（大账号） | 周 review |
+| 获客触达 | 自动（首轮） / 用户确认（重复） | 周 review |
+| 付费转化 | 用户确认（必须） | 实时通知 |
+| 财务动作 | 用户确认（必须） | 实时通知 |
+
+**阶段 2 Eval**：
+
+| 指标 | 目标 | 验证命令（单条） |
+|:---|:---|:---|
+| **4 Agent 可调用** | 100% | `curl /api/agents/list \| jq '.data[] \| .id' \| sort -u \| wc -l == 4` |
+| **品牌一致性 0 错误** | 0 | `psql -c "SELECT COUNT(*) FROM consistency_violations WHERE created_at > NOW() - INTERVAL '7 days'"` |
+| **7 天指标达 baseline** | ≥ baseline | `python -c "metrics = get_metrics(); baseline = get_baseline(); assert all(m >= b for m, b in zip(metrics, baseline))"` |
+| **MVP 上线成功率** | ≥ 90% | `psql -c "SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM brand_buildings WHERE status='launched') FROM brand_buildings WHERE mvp_live = true"` |
+
+---
+
+### 3.3 阶段 3：Monitor（监控）
+
+**Assumption**：A6, A7
+
+**输入**：阶段 2 验收通过 + 品牌已上线
+
+**输出**：监控仪表盘 + 异常预警 + 优化方案
+
+**核心形态**：**push + pull 组合**（不是单一通道）
+
+**关键任务**（原子）：
+
+| 编号 | 任务 | 验收（单命令） |
+|:--|:---|:---|
+| 3-1 | 实现数据采集（5 维度：流量/转化/收入/品牌/留存） | `ls src/monitor/collectors/*.ts \| wc -l == 5` |
+| 3-2 | 实现实时仪表盘（Web 端） | `curl http://localhost:3000/dashboard \| jq '.sections \| length' == 5` |
+| 3-3 | 实现异常预警规则（10+ 规则） | `jq '.rules \| length' src/monitor/alerts/rules.json >= 10` |
+| 3-4 | 实现飞书/邮件 push 集成 | `jq '.channels' src/monitor/alerts/push.json \| jq length >= 2` |
+| 3-5 | 实现周报告自动生成 | `test -f src/monitor/reports/weekly.ts` |
+| 3-6 | 实现优化建议生成器（基于指标异常） | `jq '.suggestion_types \| length' src/monitor/optimizer/suggestions.json >= 5` |
+| 3-7 | 实现用户 review 摘要（一键回顾） | `test -f src/monitor/review-summary.ts` |
+
+**阶段 3 Eval**：
+
+| 指标 | 目标 | 验证命令（单条） |
+|:---|:---|:---|
+| **数据采集延迟** | < 5 min | `psql -c "SELECT EXTRACT(EPOCH FROM (NOW() - MAX(collected_at))) FROM monitor_metrics"` |
+| **预警准确率** | ≥ 80% | `psql -c "SELECT (COUNT(*) FILTER (WHERE was_useful)) * 100.0 / COUNT(*) FROM alert_feedback"` |
+| **周报告阅读率** | ≥ 50% | `psql -c "SELECT COUNT(DISTINCT user_id) * 100.0 / (SELECT COUNT(*) FROM active_users) FROM report_views WHERE report_date > NOW() - INTERVAL '7 days'"` |
+| **优化建议采纳率** | ≥ 30% | `psql -c "SELECT COUNT(*) FILTER (WHERE adopted) * 100.0 / COUNT(*) FROM optimization_suggestions"` |
+
+---
+
+### 3.4 阶段 4：Monetize（商业化）
+
+**Assumption**：A5
+
+**输入**：阶段 3 数据（指标 + 用户行为）
+
+**输出**：付费转化 + 续费 + 推荐奖励
+
+**核心形态**：**试用 + 转化**（Pieter Levels 逻辑，前 N 个用户免费，靠免费层漏斗验证后转化）
+
+**关键任务**（原子）：
+
+| 编号 | 任务 | 验收（单命令） |
+|:--|:---|:---|
+| 4-1 | 实现免费试用管理（默认 14 天试用） | `jq '.trial_days' src/monetize/trial.js == 14` |
+| 4-2 | 实现付费升级（Stage 4 独立框架：试用→¥699 早鸟→¥999 标准→¥50K Tier 3） | `jq '.tiers \| length' src/monetize/tiers.json == 3` |
+| 4-3 | 实现续费提醒（到期前 7 天 + 1 天 + 当天） | `jq '.reminders \| length' src/monetize/renewal.js == 3` |
+| 4-4 | 实现推荐奖励（推荐人 15%，独立于 Stage 4 通用规则） | `jq '.commission_pct' src/monetize/referral.json == 15` |
+| 4-5 | 实现支付集成（Stripe + 微信支付 + 支付宝） | `jq '.providers \| length' src/monetize/payment.json == 3` |
+| 4-6 | 实现转化漏斗仪表盘 | `test -f src/monetize/dashboard.ts` |
+| 4-7 | 实现"如何运营"知识库 | `ls docs/monetize/playbook/*.md \| wc -l >= 10` |
+
+**阶段 4 Eval**：
+
+| 指标 | 目标 | 验证命令（单条） |
+|:---|:---|:---|
+| **试用→付费转化率** | ≥ 10% | `psql -c "SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM trials WHERE created_at > NOW() - INTERVAL '90 days') FROM paid_users WHERE first_trial_at IS NOT NULL"` |
+| **续费率** | ≥ 70% | `psql -c "SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM paid_users WHERE created_at < NOW() - INTERVAL '30 days') FROM paid_users WHERE renewed_at IS NOT NULL"` |
+| **推荐率** | ≥ 20% | `psql -c "SELECT COUNT(DISTINCT referrer_id) * 100.0 / (SELECT COUNT(*) FROM paid_users) FROM referrals"` |
+| **LTV/CAC** | ≥ 3.0 | `python -c "ltv = calc_ltv(); cac = calc_cac(); print(ltv/cac)"` |
+
+---
+
+## 4. 两条线（主线 + 辅线）
+
+### 4.1 主线：线性成长（MVP → 验证 → 扩展品牌）
+
+```
+MVP（最小可行品牌）
+   ↓ (7 天指标验证)
+验证（核心假设：能跑通）
+   ↓ (用户决策：扩 / 收 / 转)
+扩展品牌（加内容线 / 加产品线 / 加渠道）
+```
+
+**主线 Eval**：
+| 阶段 | 触发条件 | 验证命令 |
+|:---|:---|:---|
+| MVP 上线 | 蓝图确认 + Agent 配置完成 | `psql -c "SELECT COUNT(*) FROM brand_buildings WHERE mvp_live = true"` |
+| 验证通过 | 7 天指标达 baseline | `psql -c "SELECT COUNT(*) FROM brand_buildings WHERE validated_at IS NOT NULL"` |
+| 扩展品牌 | 用户主动扩展 | `psql -c "SELECT COUNT(*) FROM brand_extensions"` |
+
+### 4.2 辅线：产品模块（获客 + 产品开发 + 售后）
+
+```
+获客（Agent 2 自动触达）
+   ↓ (转化漏斗)
+产品开发（Agent 3 按蓝图交付）
+   ↓ (用户使用)
+售后（Agent 4 跟进 + 复购触发）
+```
+
+**辅线 Eval**：
+| 阶段 | 触发条件 | 验证命令 |
+|:---|:---|:---|
+| 获客启动 | 品牌上线 | `psql -c "SELECT COUNT(*) FROM acquisitions WHERE created_at > NOW() - INTERVAL '30 days'"` |
+| 产品交付 | 用户付费 | `psql -c "SELECT COUNT(*) FROM product_deliveries WHERE status='completed'"` |
+| 售后跟进 | 用户活跃 | `psql -c "SELECT COUNT(*) FROM support_tickets WHERE status='resolved'"` |
+
+---
+
+## 5. 商业模式：3 Tier 定价 + Stage 4 独立商业化框架
+
+> **核心原则**（昴君 2026-06-21 决策）：
+> - 3 个 Tier 对应用户不同成熟阶段，用不同付费机制匹配
+> - Stage 4 商业化框架（试用→付费→续费→推荐）与 Tier 1-3 **完全解耦**
+
+### 5.1 3 Tier 定价总览
+
+| Tier | 用户成熟度 | 价值交换 | 价格 | 付费机制 |
+|:---|:---|:---|:---|:---|
+| **Tier 1** | ¥0 → ¥5K（建立 MVP） | 我们帮用户建立完整的自动化产品流程 | **¥999/月** | 月订阅 |
+| **Tier 2** | ¥5K → ¥30K（放大产品） | 我们提供运营 + 营销自动化放大 | **¥999/月** | 月订阅 |
+| **Tier 3** | ¥30K → ¥100K（突破天花板） | 私人定制 + 1v1 顾问 + 行业资源 | **¥50,000/次** | 一次性咨询 |
+
+### 5.2 Tier 1 · MVP 助推器（¥0 → ¥5K）
+
+**价值交换**：
+- 用户给：想法 + 能力 + 时间承诺
+- 我们给：**完整的自动化产品流程**（4 Agent 配置 + 模板 + 数据接入）
+
+**包含内容**：
+- Stage 1 Discovery 完整蓝图
+- Stage 2 Brand Building 4 Agent 全矩阵配置
+- Stage 3 Monitor 基础数据接入
+- 30/60/90 天跟进支持（按订阅时长）
+
+**价格**：**¥999/月**
+
+**为什么不免费？**
+- ✅ 符合 Pieter Levels 哲学："**charge from day one**"
+- ✅ 用户付出 ¥999 → 重视度提高 3 倍 → 完成率高 2 倍
+- ✅ 我们的基础运营成本回收
+
+**原子验证**：
+```bash
+# Tier 1 定价配置存在
+jq '.tier1.monthly_price' pricing.json == 999
+
+# Tier 1 套餐交付物完整
+ls products/tier-1/{4-agents.json, templates.json, data-integration.json} | wc -l == 3
+
+# Tier 1 用户数
+psql -c "SELECT COUNT(*) FROM tier1_users WHERE status='active'"
+
+# Tier 1 → Tier 2 转化率（≥ 20%）
+psql -c "SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM tier1_users WHERE tier1_end_at < NOW() - INTERVAL '30 days') FROM users WHERE tier1_completed_at IS NOT NULL AND tier2_started_at IS NOT NULL"
+```
+
+---
+
+### 5.3 Tier 2 · 产品放大器（¥5K → ¥30K）
+
+**价值交换**：
+- 用户给：已跑通的产品（月入 ¥5K+）
+- 我们给：**自动化运营 + 营销放大**（4 Agent 持续执行 + 多渠道获客 + 数据驱动优化）
+
+**包含内容**：
+- Stage 1-3 全部功能（含周报告 + 优化建议）
+- 4 Agent 持续执行（不是配置好就完了）
+- 多渠道获客自动化
+- 月度策略 review
+- 数据驱动的产品优化建议
+
+**价格**：**¥999/月**
+
+**与 Tier 1 的区别**：
+- Tier 1 = 一次性配置 + 持续支持（用户在"建立"阶段）
+- Tier 2 = 持续运营 + 营销放大（用户在"放大"阶段）
+- 用户可以同时订阅两个（建立期 + 放大期并行）
+
+**原子验证**：
+```bash
+# Tier 2 定价配置
+jq '.tier2.monthly_price' pricing.json == 999
+
+# Tier 2 用户从 Tier 1 转化率（≥ 30%）
+psql -c "SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM tier1_users WHERE tier1_end_at < NOW() - INTERVAL '30 days') FROM tier2_users WHERE tier1_completed_at IS NOT NULL"
+
+# Tier 2 用户月均增长（用户的月入变化）
+psql -c "SELECT AVG(tier2_revenue_growth) FROM tier2_users WHERE tier2_started_at < NOW() - INTERVAL '90 days'"
+```
+
+---
+
+### 5.4 Tier 3 · 系统性陪跑（¥30K → ¥100K）
+
+**价值交换**：
+- 用户给：已证明自己有 ¥5万+/月 潜力 + 资金承诺
+- 我们给：**私人定制 + 人力服务**（1v1 顾问 + 定制 Agent + 行业资源）
+
+**包含内容**：
+- Stage 1-2 全部功能
+- 12 个月 × 每月 4 次 1v1 顾问（每次 1 小时）
+- 完全定制 Agent（针对用户特定行业）
+- 行业资源对接（投资人/媒体/合作伙伴）
+- 月度深度复盘
+- 紧急响应（关键事件 24h 内响应）
+
+**价格**：**¥50,000/次**（一次性咨询陪跑）
+
+**为什么不订阅？**
+- ✅ 这是"咨询陪跑"范围，不是 SaaS 产品
+- ✅ ¥50K 是合理的高端咨询价格（类比：麦肯锡起步 ¥50万）
+- ✅ 一次性收费确保双方高度承诺
+- ✅ 用户的 ¥30K+ 收入支撑得起这个价格
+
+**原子验证**：
+```bash
+# Tier 3 定价配置
+jq '.tier3.one_time_price' pricing.json == 50000
+
+# Tier 3 用户必须从 Tier 2 转化（不允许直接进）
+psql -c "SELECT COUNT(*) FROM tier3_users WHERE tier2_completed_at IS NULL" == 0
+
+# Tier 3 顾问资源池
+ls consultants/tier-3/*.json | wc -l >= 5
+
+# Tier 3 行业资源库
+ls resources/tier-3-industry/*.json | wc -l >= 20
+
+# Tier 3 用户 12 个月后突破 ¥100K 比例（≥ 30%）
+psql -c "SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM tier3_users WHERE tier3_started_at < NOW() - INTERVAL '12 months') FROM tier3_users WHERE current_monthly_revenue >= 100000"
+```
+
+---
+
+### 5.5 Stage 4 · 独立商业化框架
+
+**关键**：Stage 4 **与 Tier 1-3 完全解耦**，不绑定到任何具体阶段。
+
+**Stage 4 只做通用商业化基础设施**：
+
+```
+14 天免费试用（试用管理）
+   ↓ (试用期结束前 3 天提醒)
+正式订阅/付费
+   ↓ (订阅期内)
+续费提醒（到期前 7/1/0 天）
+   ↓ (续费 OR 流失)
+推荐奖励（推荐人 15%）
+```
+
+**Stage 4 的关键不变量**：
+- ✅ 不与 Tier 1/2/3 的具体功能耦合
+- ✅ 不与 Stage 1/2/3 的具体业务耦合
+- ✅ 14 天试用对所有付费项生效
+- ✅ 推荐奖励通用
+
+**原子验证**：
+```bash
+# 14 天试用管理
+jq '.trial.duration_days' src/monetize/trial.json == 14
+
+# 试用结束前 3 天提醒
+jq '.trial.reminder_days_before' src/monetize/trial.json == 3
+
+# 续费提醒（到期前 7/1/0 天）
+jq '.renewal.reminder_days' src/monetize/renewal.json == [7,1,0]
+
+# 推荐奖励 15%
+jq '.referral.commission_pct' src/monetize/referral.json == 15
+```
+
+---
+
+### 5.6 3 Tier + Stage 4 的完整定价矩阵
+
+| 用户阶段 | Tier | 月费 | 一次性 | 分成 | 备注 |
+|:---|:---|:---|:---|:---|:---|
+| ¥0 → ¥5K（建立 MVP）| Tier 1 | ¥999/月 | — | — | 默认入口 |
+| ¥5K → ¥30K（放大产品）| Tier 1+2 | ¥1,998/月 | — | — | 可同时订阅 |
+| ¥30K → ¥100K（突破天花板）| Tier 1+2+3 | ¥1,998/月 | ¥50,000/次 | — | 12 个月陪跑 |
+
+---
+
+### 5.7 早鸟窗口
+
+| 期数 | 折扣 |
+|:---|:---|
+| **M1（前 100 用户）** | 锁价 ¥699/月（Tier 1/2）|
+| **M2-M6** | 标准价 ¥999/月 |
+| **首年结束** | 自动转标准价 |
+
+---
+
+## 6. 跨阶段 Eval 矩阵
+
+> ai-pm 方法论：Eval is the spine. 每个阶段必须有可机械化的 eval。
+
+### 6.1 用户旅程 Eval
+
+| 阶段 | 关键事件 | 验证命令 |
+|:---|:---|:---|
+| 进入 | 用户注册 | `psql -c "SELECT COUNT(*) FROM users WHERE created_at > NOW() - INTERVAL '7 days'"` |
+| 阶段 1 完成 | 蓝图生成 | `psql -c "SELECT COUNT(*) FROM users WHERE blueprint_id IS NOT NULL"` |
+| 阶段 2 完成 | MVP 上线 + 指标达 baseline | `psql -c "SELECT COUNT(*) FROM brand_buildings WHERE validated_at IS NOT NULL"` |
+| 阶段 3 活跃 | 用户每周查看监控 | `psql -c "SELECT COUNT(DISTINCT user_id) FROM report_views WHERE viewed_at > NOW() - INTERVAL '7 days'"` |
+| 阶段 4 付费 | 试用转付费 | `psql -c "SELECT COUNT(*) FROM paid_users"` |
+
+### 6.2 业务 Eval（北极星）
+
+| 指标 | 目标（M6） | 验证命令 |
+|:---|:---|:---|
+| **MAU** | ≥ 1000 | `psql -c "SELECT COUNT(DISTINCT user_id) FROM active_sessions WHERE created_at > NOW() - INTERVAL '30 days'"` |
+| **试用→付费转化** | ≥ 10% | 见 4.1 |
+| **续费率** | ≥ 70% | 见 4.1 |
+| **LTV/CAC** | ≥ 3.0 | 见 4.1 |
+| **推荐率** | ≥ 20% | 见 4.1 |
+
+---
+
+## 7. 风险与对冲（v4.2 深度版：基于 Reddit/GitHub/Stripe 实战）
+
+> **v4.2 新增**：基于真实案例（Reddit r/SaaS、GitHub production-readiness、Stripe 文档、Postgres RLS 实战）识别的风险。包含失败模式 + 回滚方案 + 验证命令。
+
+| # | 风险 | 等级 | 来源案例 | 失败模式 | 对冲 + 回滚 | 验证命令 |
+|:--|:---|:---|:---|:---|:---|:---|
+| **R1** | **🔴 CRITICAL: Stripe webhook race condition** | 致命 | GEMBA/Snowinch 实战 | 并发 SELECT-then-INSERT 导致双重扣费 | 用 `INSERT ... ON CONFLICT DO NOTHING` 不用 SELECT-then-INSERT | `grep "ON CONFLICT" src/api/webhooks/stripe.ts` ≥ 1 |
+| **R2** | **🔴 CRITICAL: Stripe 签名验证失败** | 致命 | Stripe docs + Reddit | 用 JSON parser 后签名验证必失败，攻击者伪造 | express.raw body + constructEvent | `grep "express.raw" src/api/webhooks/stripe.ts` ≥ 1 |
+| **R3** | **🔴 CRITICAL: 多租户数据泄漏** | 致命 | ClickHouse/AWS RLS | 漏 tenant_id WHERE → 跨租户读 | FORCE RLS + 复合索引 + 中间件 SET LOCAL | `psql -c "SET app.tenant_id='T1'; INSERT ...; SET app.tenant_id='T2'; SELECT * FROM ..."` 0 行 |
+| **R4** | **🔴 CRITICAL: 微信支付月度订阅失败** | 致命 | Dodo Payments 实战 | 微信支付无原生 recurring | 仅年度方案 + 手动续费提醒 | `grep "yearly\|annual" src/wechat/products.ts` ≥ 1 |
+| **R5** | **🔴 CRITICAL: 数据库备份恢复失败** | 高 | Gorrion checklist | 备份配置但从未测试 | 每周自动恢复测试 + 加密 | `createdb test_restore && pg_restore -d test_restore backup.dump && psql -d test_restore -c "SELECT COUNT(*) FROM users"` > 0 |
+| **R6** | **🔴 CRITICAL: Tier 3 入学门槛被绕过** | 高 | 商业策略 | API 直接进绕过 Tier 2 | 数据库 CHECK 约束 + 服务端校验 + 双重保险 | `psql -c "INSERT INTO tier_subscriptions(user_id,tier) VALUES('x','tier3')" \| grep "violates"` 必须 > 0 |
+| **R7** | **🔴 高: 第一付费客户被 bug 烧走** | 高 | DEV.to 实战 | 第一次付费用户卡住 2.5h → 流失 | 错误跟踪 + retry 所有 I/O + 主动监控 | `crontab -l \| grep "first_user_monitor"` |
+| **R8** | 🟡 高: 试用转化低于 OpenView 中位数 14.7% | 高 | OpenView 2025 PLG Benchmark | 用户 72h 内未达 first value | 行为触发器 + 14 天试用 + 早鸟 | `psql -c "SELECT COUNT(*) FILTER (WHERE first_trial_at IS NOT NULL) * 100.0 / COUNT(*) FROM users WHERE created_at > NOW() - INTERVAL '30 days'"` |
+| **R9** | 🟡 中: Stripe 订阅状态漂移 | 中 | Reddit r/SaaS 实战 | webhook 处理失败 → 数据库 vs Stripe 不一致 | 每 24h 对账 job + 自动告警 | `crontab -l \| grep "stripe-reconcile"` |
+| **R10** | 🟡 中: 失败支付不重试 → 用户失去访问 | 中 | Stripe dunning | 用户信用卡过期未更新 | dunning email + 3 天 grace period | `grep "grace_period.*3.days" src/monetize/renewal.ts` ≥ 1 |
+| **R11** | 🟡 中: design partner 不回复反馈 | 中 | Reddit r/SaaS 实战 | 邮件反馈被忽略 | 1:1 视频通话而非邮件 + 主动联系 | `psql -c "SELECT COUNT(*) FROM design_partner_video_calls"` ≥ 3 |
+| **R12** | 🟢 低: Tier 1/2 用户主动流失 | 低 | Pieter Levels 哲学 | 用户跑通后离开 | 早鸟锁价 + 推荐佣金 + 续费提醒 | `psql -c "SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM tier_subscriptions WHERE created_at < NOW() - INTERVAL '30 days') FROM tier_subscriptions WHERE canceled_at IS NOT NULL"` ≤ 30% |
+
+### 7.1 风险熔断机制
+
+**3 层熔断**（与 M1-SOP v4.2 对齐）：
+
+```bash
+# Layer 1：全局熔断
+touch ~/.claude/STOP
+
+# Layer 2：服务熔断（任一 CRITICAL 风险触发）
+psql -c "UPDATE tier_subscriptions SET status='paused' WHERE status='active'"
+curl -X POST "$FEISHU_WEBHOOK" -d '{"msg":"🚨 风险 R1-R6 触发，请立即响应"}'
+
+# Layer 3：自动回滚（如 webhook 重复事件触发 A9）
+psql -c "SELECT COUNT(*) - COUNT(DISTINCT event_id) FROM stripe_events WHERE created_at > NOW() - INTERVAL '1 hour'" 
+# 若 > 0：立即停止 webhook 处理 + 调查
+```
+
+### 7.2 失败恢复路径（每个 CRITICAL 风险的回滚方案）
+
+| 风险 | 失败时立即动作 | 恢复时间目标 |
+|:---|:---|:---|
+| R1 Stripe race | 关闭 webhook 处理（环境变量 `STRIPE_WEBHOOK_ENABLED=false`）| < 30 min |
+| R2 签名失败 | 立即丢弃所有 webhook + 调查签名逻辑 | < 1h |
+| R3 数据泄漏 | 停服 + 通知所有用户 + 数据审计 | < 4h |
+| R4 微信月度失败 | 强制改为年度方案 | < 1d |
+| R5 备份失败 | 人工立即备份 + 启用异地备份 | < 2h |
+| R6 Tier 3 绕过 | 立即修复 CHECK 约束 + 审计历史数据 | < 1h |
+
+---
+
+## 8. 成功标准
+
+### 8.1 阶段 1 完成（M3 末）
+
+- ✅ 50+ 用户完成 Discovery 蓝图
+- ✅ 蓝图用户满意度 ≥ 4.0/5.0
+- ✅ 60%+ 用户进入阶段 2
+
+### 8.2 阶段 2 完成（M6 末）
+
+- ✅ 30+ 用户 MVP 上线
+- ✅ 7 天指标 50% 达 baseline
+- ✅ 30%+ 用户进入阶段 3
+
+### 8.3 阶段 3 完成（M9 末）
+
+- ✅ 20+ 用户品牌监控中
+- ✅ 数据 push + pull 周活 ≥ 50%
+- ✅ 20%+ 用户进入阶段 4
+
+### 8.4 阶段 4 完成（M12 末）
+
+- ✅ 10+ 付费用户
+- ✅ LTV ≥ ¥500/月
+- ✅ 续费率 ≥ 70%
+- ✅ 推荐率 ≥ 20%
+
+---
+
+## 9. OPC 节点百科（不再独立）
+
+**OPC 节点作为品牌知识图谱的一部分**，不再是独立产品。
+
+| 用途 | 角色 |
+|:---|:---|
+| Discovery 阶段 1 | "展示用"案例库 |
+| Brand Building 阶段 2 | 内容素材库 |
+| Monitor 阶段 3 | 行业基准参考 |
+| 知识图谱 | 跨用户的可重用资产 |
+
+OPC 节点**作为 opcone 项目的内部资产存在**，不直接面向用户。
+
+---
+
+## 10. 变更记录
 
 | 日期 | 版本 | 变更 |
 |:---|:---|:---|
 | 2026-06-03 | v1.0 | 首次创建（21 用户故事 + 24 功能）|
-| 2026-06-03 | v2.0 | 重大升级（34 用户故事 + 38 功能 + 5 阶漏斗 + 12 Agent + 100 钩子 + 9.8 评分）|
+| 2026-06-03 | v2.0 | 重大升级（34 用户故事 + 38 功能 + 12 Agent）|
+| 2026-06-21 | v3.0 | 错位：32 Skill 框架 + 9 赛道 + 三轨定价（已被昴君纠正）|
+| 2026-06-21 | v4.0 | 纠正：4 阶段流水线 + 主辅双线 + 试用转化 + lead with assumption + 每个任务/验证原子级 |
+| 2026-06-21 | v4.1 | 3 Tier 定价 + Stage 4 解耦 + 12 个技术假设 A1-A12 |
+| **2026-06-21** | **v4.2** | **新增 8 个商业假设 B1-B8（GTM/CAC/LTV/续费）+ 配套 `ONE-MCN-COMMERCIAL.md`（竞品 + GTM + Unit Economics + 团队）+ 修复内部定价冲突（推荐 20%→15%，漏斗 ¥199→¥699 早鸟）** |
+| **2026-06-22** | **v5.0** | **OPC 节点百科全部删除（本地 + VPS）+ ONE-MCN 定位 = vibcoding roadmap + 0 员工 + 100% Loop Engineering 推进 + 5 文档作为活 roadmap 持续维护** |
 
 ---
 
-*本 PRD 由蕾姆基于 6 阶段方法论 + 昴君 Stage 1-5 决策生成。*
-*M1 实战后用真实数据校准。*
+*本 PRD v4.2 由蕾姆基于 ai-pm 方法论 + 昴君 4 轮深度问答 + 公开资料整理生成。*
+*12 个技术假设 + 8 个商业假设 + 12 个 CRITICAL 风险，每个都有 falsifiable 标准 + 监控命令 + 回滚方案。*

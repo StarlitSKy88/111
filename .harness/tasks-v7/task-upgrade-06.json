@@ -1,9 +1,0 @@
-{
-  "task_id": "task-upgrade-06",
-  "category": "upgrade",
-  "status": "pending",
-  "description": "合并后升级：节点45-税务全周期",
-  "source_node": "task-merge-03产物",
-  "target_node": "新45",
-  "upgrade_summary": "在合并基础上验证政策有效性并更新至2026年5月。"
-}

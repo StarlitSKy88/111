@@ -1,9 +1,0 @@
-{
-  "task_id": "task-upgrade-08",
-  "category": "upgrade",
-  "status": "pending",
-  "description": "合并后升级：节点06-技术选型",
-  "source_node": "task-merge-01产物",
-  "target_node": "新06",
-  "upgrade_summary": "在合并基础上验证AI工具价格/功能至2026年5月最新状态。"
-}

@@ -1,9 +1,0 @@
-{
-  "task_id": "task-upgrade-07",
-  "category": "upgrade",
-  "status": "pending",
-  "description": "合并后升级：节点46-现金流与财务基础",
-  "source_node": "task-merge-04产物",
-  "target_node": "新46",
-  "upgrade_summary": "在合并基础上验证工具推荐和计算模型的2026年有效性。"
-}
