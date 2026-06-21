@@ -145,12 +145,30 @@ is_deleted BOOLEAN DEFAULT FALSE  -- 软删除（GDPR right to erasure）
 
 ---
 
-## 3. M1 (Day 0-7): 138 个原子任务
+## 3. M1 (Day 0-7): 140 个原子任务
+
+> **v5.1.2 单一信息源原则（SSOT）**：本节仅给出 Day 0-7 的任务摘要 + 验证命令概述。
+> **每个 D0-X 任务的详细定义、失败模式、验证命令** 都在 `.harness/tasks/M1-DAY{n}.json`。
+> 修改任务 = 改 JSON，不改 SOP（避免双源不同步）。
+>
+> **v5.1 并行架构**：D0-1（数据库 + RLS）与 Discovery 对话引擎同时开工。
+> **轨道 A**（基础设施）：D0-1 → D0-24（数据库 + 速率限制 + HTTPS + CORS）
+> **轨道 B**（Discovery 引擎，并行启动）：**Day 1 即可 demo** — design partner 在 D1 就能跑"伪 Discovery"（人工扮演 AI）+ 真实对话引擎骨架
+> 这避免"D4 才有 Discovery，Day 1-3 design partner 无法 demo"的问题。
 
 ### Day 0：数据库基础设施 + 安全基线（24 任务）
 
-> **v5.1 并行架构**：D0-1（数据库 + RLS）与 Discovery 对话引擎同时开工。
-> **轨道 A**（基础设施）：D0-1 → D0-24（数据库 + 速率限制 + HTTPS + CORS）
+> **详细定义见** `.harness/tasks/M1-DAY0.json`（D0-1~D0-24 全部任务 + 验证命令 + 失败模式）
+> **当前完成度**：1/24（D0-1 schema.sql 已完成）
+
+| 任务 | 摘要 | 状态 |
+|:---|:---|:---:|
+| **D0-1** | 设计 8 张表 schema（+ early_bird_quota）| ✅ 已完成 |
+| **D0-2~D0-8** | 编写 migration + 验证 8 表 + tenant_id + created_at 索引 | 🔵 pending |
+| **D0-9~D0-14** | RLS 多租户隔离（ENABLE + FORCE + Policy + bypass + 连接池 + 中间件）| 🔵 pending |
+| **D0-15~D0-18** | 备份 + 加密 + 恢复测试 + 30 天滚动 | 🔵 pending |
+| **D0-19~D0-21** | secrets 环境变量 + .gitignore + bcrypt | 🔵 pending |
+| **D0-22~D0-24** | 速率限制 + HTTPS + CORS | 🔵 pending |
 > **轨道 B**（Discovery 引擎，并行启动）：**Day 1 即可 demo** — design partner 在 D1 就能跑"伪 Discovery"（人工扮演 AI）+ 真实对话引擎骨架
 > 这避免"D4 才有 Discovery，Day 1-3 design partner 无法 demo"的问题。
 

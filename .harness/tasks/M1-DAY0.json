@@ -1,0 +1,188 @@
+{
+  "task_id": "M1-DAY0",
+  "name": "数据库基础设施 + 安全基线",
+  "stage": "M1 Day 0",
+  "estimated_atomic_tasks": 24,
+  "verification_count": 8,
+  "source": "v5.1.2 — JSON 为 source of truth（蕾姆三角度评审 P1-2）",
+  "dependencies": [
+    "PostgreSQL 16+ running locally (docker / brew)",
+    "test_restore database created",
+    "DATABASE_URL set in .env"
+  ],
+  "tasks": [
+    {
+      "id": "D0-1",
+      "task": "设计 8 张表 schema（users/blueprints/brand_buildings/tier1_packages/monitor_metrics/tier2_executions/tier_subscriptions/stripe_events + early_bird_quota）",
+      "failure_mode": "缺外键导致孤儿数据",
+      "verification": "grep -c 'FOREIGN KEY' src/db/schema.sql >= 7",
+      "status": "completed"
+    },
+    {
+      "id": "D0-2",
+      "task": "编写 V001__initial.sql migration 脚本",
+      "failure_mode": "脚本幂等性失败",
+      "verification": "psql -f src/db/schema.sql 2>&1 | grep -c ERROR == 0",
+      "status": "pending"
+    },
+    {
+      "id": "D0-3",
+      "task": "在 staging 验证 migration 可重入",
+      "failure_mode": "第二次跑失败",
+      "verification": "psql -f V001__initial.sql && psql -f V001__initial.sql 2>&1 | grep -c ERROR == 0",
+      "status": "pending"
+    },
+    {
+      "id": "D0-4",
+      "task": "编写 V002__rollback.sql 回滚脚本",
+      "failure_mode": "回滚不完整",
+      "verification": "psql -f V002__rollback.sql && psql -c '\\dt' | wc -l == 0",
+      "status": "pending"
+    },
+    {
+      "id": "D0-5",
+      "task": "验证 8 张表全部创建",
+      "failure_mode": "漏表",
+      "verification": "psql -c '\\dt' | grep -E '(users|blueprints|brand_buildings|tier1_packages|monitor_metrics|tier2_executions|tier_subscriptions|stripe_events)' | wc -l == 8",
+      "status": "pending"
+    },
+    {
+      "id": "D0-6",
+      "task": "验证所有表有 tenant_id + created_at 字段",
+      "failure_mode": "漏字段",
+      "verification": "psql -c \"SELECT table_name FROM information_schema.columns WHERE column_name IN ('tenant_id','created_at') GROUP BY table_name HAVING COUNT(DISTINCT column_name) = 2\" | wc -l == 8",
+      "status": "pending"
+    },
+    {
+      "id": "D0-7",
+      "task": "验证 created_at 索引",
+      "failure_mode": "查询慢",
+      "verification": "psql -c \"SELECT COUNT(*) FROM pg_indexes WHERE indexname LIKE '%_created_at_idx'\" | awk '$1 >= 8'",
+      "status": "pending"
+    },
+    {
+      "id": "D0-8",
+      "task": "验证 tenant_id 复合索引",
+      "failure_mode": "多租户查询表扫描",
+      "verification": "psql -c \"SELECT COUNT(*) FROM pg_indexes WHERE indexdef LIKE '%tenant_id%'\" | awk '$1 >= 6'",
+      "status": "pending"
+    },
+    {
+      "id": "D0-9",
+      "task": "启用 RLS（8 张表都 ALTER TABLE ... ENABLE ROW LEVEL SECURITY）",
+      "failure_mode": "未启用 → 数据泄漏",
+      "verification": "psql -c \"SELECT COUNT(*) FROM pg_tables WHERE rowsecurity = true AND tablename IN ('users','blueprints','brand_buildings','tier1_packages','monitor_metrics','tier2_executions','tier_subscriptions','stripe_events')\" == 8",
+      "status": "pending"
+    },
+    {
+      "id": "D0-10",
+      "task": "FORCE RLS（避免 table owner 绕过）",
+      "failure_mode": "Owner 账户绕过 → 跨租户读",
+      "verification": "psql -c \"SELECT COUNT(*) FROM pg_tables WHERE rowsecurity = true AND schemaname='public'\" | awk '$1 >= 8'",
+      "status": "pending"
+    },
+    {
+      "id": "D0-11",
+      "task": "写 RLS policy（基于 current_setting('app.tenant_id')）",
+      "failure_mode": "Policy 错误 → 0 行返回",
+      "verification": "psql -c \"SET app.tenant_id='T1'; INSERT INTO users(email,tenant_id) VALUES ('a@t.com','T1'); SET app.tenant_id='T2'; SELECT email FROM users;\" 必须 = 0 行",
+      "status": "pending"
+    },
+    {
+      "id": "D0-12",
+      "task": "写 RLS bypass policy（admin/migration 用）",
+      "failure_mode": "Admin 误封",
+      "verification": "psql -c \"CREATE POLICY admin_bypass ON users TO admin_role USING (true)\" && psql -c \"SET ROLE admin_role; SELECT COUNT(*) FROM users;\" 应该返回所有行",
+      "status": "pending"
+    },
+    {
+      "id": "D0-13",
+      "task": "配置连接池（pgbouncer session 模式）",
+      "failure_mode": "transaction 模式破坏 RLS session var",
+      "verification": "pgbouncer -h | grep 'pool_mode = session'",
+      "status": "pending"
+    },
+    {
+      "id": "D0-14",
+      "task": "写 ORM 中间件（每事务 SET LOCAL app.tenant_id）",
+      "failure_mode": "漏设 → 跨租户",
+      "verification": "grep -r 'SET LOCAL app.tenant_id' src/db/middleware.ts >= 1",
+      "status": "pending"
+    },
+    {
+      "id": "D0-15",
+      "task": "配置每日备份脚本（pg_dump）",
+      "failure_mode": "备份失败",
+      "verification": "pg_dump opcone > /backup/$(date +%Y%m%d).sql && ls -la /backup/*.sql | tail -1 | awk '$5 > 0'",
+      "status": "pending"
+    },
+    {
+      "id": "D0-16",
+      "task": "备份加密（gpg）",
+      "failure_mode": "备份泄漏",
+      "verification": "gpg --symmetric --cipher-algo AES256 /backup/*.sql 成功",
+      "status": "pending"
+    },
+    {
+      "id": "D0-17",
+      "task": "恢复测试脚本（每周自动跑）",
+      "failure_mode": "恢复失败",
+      "verification": "createdb test_restore && pg_restore -d test_restore /backup/latest.dump && psql -d test_restore -c 'SELECT COUNT(*) FROM users' > 0",
+      "status": "pending"
+    },
+    {
+      "id": "D0-18",
+      "task": "备份保留策略（30 天滚动）",
+      "failure_mode": "磁盘满",
+      "verification": "find /backup -name '*.sql' -mtime +30 -delete 设置 cron",
+      "status": "pending"
+    },
+    {
+      "id": "D0-19",
+      "task": "secrets 用环境变量（不进代码）",
+      "failure_mode": "secret 泄漏到 git",
+      "verification": "grep -r 'STRIPE_SECRET\\|FEISHU_WEBHOOK\\|WECHAT_PAY_KEY' --include='*.ts' --include='*.js' src/ | grep -v '.env.example' | wc -l == 0",
+      "status": "pending"
+    },
+    {
+      "id": "D0-20",
+      "task": ".env 文件加 .gitignore",
+      "failure_mode": "secret 提交",
+      "verification": "grep -E '^\\.env$' .gitignore >= 1",
+      "status": "pending"
+    },
+    {
+      "id": "D0-21",
+      "task": "密码哈希（bcrypt cost=12）",
+      "failure_mode": "弱哈希被破解",
+      "verification": "grep -c 'bcrypt.hash' src/auth/password.ts >= 1 && grep 'cost' src/auth/password.ts | awk '{print $NF}' == 12",
+      "status": "pending"
+    },
+    {
+      "id": "D0-22",
+      "task": "API 速率限制（100 req/min per IP）",
+      "failure_mode": "DDoS 拖垮",
+      "verification": "curl -i localhost:3000/api/health 后连发 101 次，101st 必须 429",
+      "status": "pending"
+    },
+    {
+      "id": "D0-23",
+      "task": "HTTPS 配置（Let's Encrypt）",
+      "failure_mode": "中间人攻击",
+      "verification": "curl -I https://api.onemcn.com | grep 'HTTP/2 200'",
+      "status": "pending"
+    },
+    {
+      "id": "D0-24",
+      "task": "CORS 白名单（只允许 onemcn.com 域名）",
+      "failure_mode": "跨域攻击",
+      "verification": "curl -H 'Origin: https://evil.com' -i localhost:3000/api/health | grep 'Access-Control-Allow-Origin' 必须为空",
+      "status": "pending"
+    }
+  ],
+  "summary": {
+    "completed": 1,
+    "pending": 23,
+    "blocked_by": "PostgreSQL 环境未启动"
+  }
+}
