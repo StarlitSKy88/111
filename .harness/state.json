@@ -1,30 +1,42 @@
 {
   "project": "ONE-MCN",
-  "version": "v5.1",
+  "version": "v5.1.4",
   "current_stage": "M1",
-  "current_day": 0,
+  "current_day": 7,
   "current_loop": "L-W-INFRA-01",
-  "loop_status": "pending",
-  "task_total": 175,
+  "loop_status": "completed",
+  "task_total": 177,
   "loop_total": 40,
   "verification_total": 165,
   "team": "0 员工 + 100% vibcoding",
   "last_update": "2026-06-22",
-  "completed_loops": [],
-  "next_loop": {
-    "id": "L-W-INFRA-01",
-    "name": "数据库 Schema + RLS 多租户",
-    "estimated_time": "Day 0",
-    "verification": "psql SELECT table_name FROM information_schema.tables WHERE tablename IN ('users','blueprints','brand_buildings','tier1_packages','monitor_metrics','tier2_executions','tier_subscriptions','stripe_events') | wc -l == 8"
-  },
+  "completed_loops": [
+    "L-W-INFRA-01 (D0-1~D0-24 数据库 + server)",
+    "L-W-INFRA-02 (D0-12~D0-24 RLS/备份/CORS/速率限制)",
+    "L-W-DISC-01 (D4-1~D4-6 多轮对话状态机)",
+    "L-W-DISC-02 (D4-7~D4-12 蓝图生成器)",
+    "L-W-DISC-03 (D4-13~D4-16 5 维采集器)",
+    "L-W-MONITOR-01~04 (D5-1~D5-16 异常预警 + 推送)",
+    "L-W-AGENT-01~05 (D6-1~D6-5 4 Agent 矩阵)",
+    "L-W-MONETIZE-01~05 (D5-13~D5-16 试用 + 续费 + 推荐 + 早鸟)",
+    "L-W-INFRA-03 (D2 Stripe 集成占位)",
+    "L-W-INFRA-05 (D3 微信 + 支付宝占位)"
+  ],
+  "next_loop": "L-W-CROSS-01 (用户旅程 Eval — 待 design partner 上线)",
   "blockers": [
-    "PostgreSQL 环境未启动（vibcoding 启动前置）"
+    "Stripe/微信/支付宝 测试 key 缺失（D2/D3 占位）",
+    "design partner 缺失（v5.1 0 design partner 决策）",
+    "0 员工模式下真人验证 = 商业验证真空"
   ],
   "decisions": {
-    "one_mcn_position": "正在 vibcoding 的需求",
+    "one_mcn_position": "vibcoding roadmap（不是愿景）",
     "opc_status": "全部删除（本地 + VPS 自然死亡）",
-    "design_partner": "不招",
-    "verification_mode": "AI 验证为主",
-    "domain": "taomyst.top 保留，等上线前配置"
+    "design_partner": "0 design partner（v5.1 决策，v5.1.2 价格弹性测试替代）",
+    "verification_mode": "AI 验证为主 + 价格弹性测试",
+    "domain": "taomyst.top 保留，等上线前配置",
+    "icp": "35 岁上下被裁的中年人（v5.1.3）",
+    "gtm": "抖音/小红书/B站（v5.1.3）",
+    "pricing": "M1 阶段只 ¥999/月 + 14 天试用（v5.1.2）",
+    "stage_flow": "主路串行 + 旁路并行（v5.1.2）"
   }
 }
