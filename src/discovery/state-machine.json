@@ -1,0 +1,11 @@
+{
+  "states": ["opening", "capability", "need", "direction", "summary"],
+  "max_turns": 10,
+  "transitions": {
+    "opening": "capability",
+    "capability": "need",
+    "need": "direction",
+    "direction": "summary",
+    "summary": "complete"
+  }
+}
