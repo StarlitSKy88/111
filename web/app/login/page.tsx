@@ -1,6 +1,12 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Loader2 } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -35,19 +41,32 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-orange-50">
-      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-        <h1 className="text-3xl font-bold mb-6 text-center">登录 ONE-MCN</h1>
-        <input type="email" placeholder="邮箱" value={email} onChange={(e) => setEmail(e.target.value)} required className="w-full px-4 py-3 border rounded-lg mb-3" />
-        <input type="password" placeholder="密码" value={password} onChange={(e) => setPassword(e.target.value)} required className="w-full px-4 py-3 border rounded-lg mb-3" />
-        {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
-        <button type="submit" disabled={loading} className="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold py-3 rounded-lg disabled:opacity-50">
-          {loading ? '登录中...' : '登录'}
-        </button>
-        <p className="text-center text-sm mt-4 text-gray-500">
-          没账号？<a href="/register" className="text-brand-500 underline">注册</a>
-        </p>
-      </form>
+    <main className="min-h-screen flex items-center justify-center bg-orange-50 px-4">
+      <Card className="max-w-md w-full">
+        <CardHeader className="text-center">
+          <CardTitle className="text-2xl">登录 ONE-MCN</CardTitle>
+          <CardDescription>继续你的 1 人 MCN 业务</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">邮箱</Label>
+              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">密码</Label>
+              <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            </div>
+            {error && <p className="text-sm text-red-500">{error}</p>}
+            <Button type="submit" disabled={loading} className="w-full" size="lg">
+              {loading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />登录中...</> : '登录'}
+            </Button>
+            <p className="text-center text-sm text-gray-500">
+              没账号？<Link href="/register" className="text-brand-500 underline">注册</Link>
+            </p>
+          </form>
+        </CardContent>
+      </Card>
     </main>
   );
 }

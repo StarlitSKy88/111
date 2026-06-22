@@ -1,70 +1,153 @@
 /**
- * ONE-MCN Landing Page (v5.2)
- * 目标用户：35 岁上下被裁的中年人，想通过短视频/OPC 快速赚钱
- * 核心：1 个 CTA + 价格弹性测试入口
+ * ONE-MCN Landing Page v5.3
+ * shadcn/ui + 3 层定价
  */
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Sparkles, Target, Bot, BarChart3, Wallet, ShieldCheck, ArrowRight } from 'lucide-react';
 
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-orange-50 to-white">
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-20 text-center">
-        <h1 className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight">
+        <Badge variant="default" className="mb-6">
+          ⚠️ 本月仅前 100 用户享早鸟 ¥499 锁价
+        </Badge>
+        <h1 className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight tracking-tight">
           被裁了？35 岁？
           <br />
           <span className="text-brand-500">60 天用 AI 跑通你的 1 人品牌</span>
         </h1>
         <p className="mt-6 text-xl text-gray-700 max-w-2xl mx-auto">
           ONE-MCN 不是课程，不是工具。是一个 <strong>AI 合伙人</strong>，
-          帮你从"裁员通知"走到"第一个付费用户"，
-          全程 <strong>¥999/月</strong>。
+          帮你从"裁员通知"走到"第一个付费用户"。
         </p>
         <div className="mt-10 flex flex-col md:flex-row gap-4 justify-center">
-          <a
-            href="/register"
-            className="bg-brand-500 hover:bg-brand-600 text-white font-bold py-4 px-8 rounded-lg text-lg transition"
-          >
-            免费 14 天试用 →
-          </a>
-          <a
-            href="/pricing"
-            className="border-2 border-brand-500 text-brand-500 hover:bg-orange-50 font-bold py-4 px-8 rounded-lg text-lg transition"
-          >
-            价格弹性测试（5 个价格）
-          </a>
+          <Button asChild size="lg" className="text-lg px-8">
+            <Link href="/discovery">
+              免费试用 AI 问卷 →
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Link>
+          </Button>
+          <Button asChild size="lg" variant="outline" className="text-lg px-8">
+            <Link href="/pricing">查看 3 层定价</Link>
+          </Button>
         </div>
         <p className="mt-4 text-sm text-gray-500">
-          ⚠️ 本月仅前 100 用户享早鸟 ¥699/月锁价
+          ✨ Tier 1 免费 · Tier 2 ¥499 自动化搭建 · Tier 3 定制陪跑
         </p>
       </section>
 
       {/* 5 价值点 */}
       <section className="container mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold text-center mb-12">
-          你将得到的 5 个东西
-        </h2>
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <h2 className="text-3xl font-bold text-center mb-4">你将得到的 5 个东西</h2>
+        <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+          ONE-MCN 是 4 Agent + AI 合伙人的完整 1 人 MCN 操作系统
+        </p>
+        <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {[
-            { icon: '🎯', title: '1. 品牌蓝图', desc: 'AI 通过 5-10 轮对话挖掘你的能力、需求、方向，输出 5 章节可执行蓝图。' },
-            { icon: '🤖', title: '2. 4 Agent 矩阵', desc: '内容/获客/交付/售后 4 个 Agent 7×24 自动化运营你的 1 人 MCN 业务。' },
-            { icon: '📊', title: '3. 5 维数据监控', desc: '流量/转化/收入/品牌/留存 5 维度实时监控 + push 预警 + 周报。' },
-            { icon: '💰', title: '4. Stage 4 商业化', desc: '14 天试用 → ¥699 早鸟 → ¥999 标准，月订阅 + 推荐 15% 佣金。' },
-            { icon: '🛡️', title: '5. AI 合伙人审查', desc: '7 红线一致性 Agent + Agent 自我 review，避免内容违规 + 月度报告瓶颈。' },
+            { icon: Sparkles, title: '1. AI 合伙人', desc: '5-10 轮 AI 对话，挖掘你的能力、需求、方向，输出 5 章节可执行蓝图。' },
+            { icon: Bot, title: '2. 4 Agent 矩阵', desc: '内容/获客/交付/售后 4 个 Agent 7×24 自动化运营你的 1 人 MCN 业务。' },
+            { icon: BarChart3, title: '3. 5 维数据监控', desc: '流量/转化/收入/品牌/留存 5 维度实时监控 + push 预警 + 周报。' },
+            { icon: Wallet, title: '4. ¥499 自动化搭建', desc: 'AI 自动搭建你的 1 人品牌网站 + 4 Agent + 数据看板。一次性投入，长期运营。' },
+            { icon: ShieldCheck, title: '5. AI 合伙人审查', desc: '7 红线一致性 Agent + Agent 自我 review，避免内容违规 + 月度报告瓶颈。' },
+            { icon: Target, title: '6. 35 岁特别优化', desc: '针对被裁中年人的快速变现路径设计，60 天跑通 ROI。' },
           ].map((v) => (
-            <div key={v.title} className="bg-white p-6 rounded-lg shadow-md">
-              <div className="text-4xl mb-3">{v.icon}</div>
-              <h3 className="font-bold text-xl mb-2">{v.title}</h3>
-              <p className="text-gray-600">{v.desc}</p>
-            </div>
+            <Card key={v.title}>
+              <CardHeader>
+                <v.icon className="h-10 w-10 text-brand-500 mb-3" />
+                <CardTitle className="text-lg">{v.title}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600 text-sm">{v.desc}</p>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </section>
 
-      {/* ICP 共情段落 */}
+      {/* 3 层定价入口 */}
+      <section className="bg-gradient-to-b from-white to-orange-50 py-16">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-4">3 层定价 · 按需选</h2>
+          <p className="text-gray-600 mb-12">免费试用 → 自动化搭建 → 定制陪跑</p>
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-2xl">Tier 1</CardTitle>
+                <CardDescription>免费试用</CardDescription>
+                <div className="text-4xl font-bold mt-2">¥0</div>
+              </CardHeader>
+              <CardContent>
+                <ul className="text-sm text-gray-600 space-y-2 text-left">
+                  <li>✓ AI 问卷梳理可做项目</li>
+                  <li>✓ 5 状态机 Discovery</li>
+                  <li>✓ 5 章节品牌蓝图</li>
+                  <li>✗ 4 Agent 自动化</li>
+                  <li>✗ 数据监控</li>
+                </ul>
+                <Button asChild className="w-full mt-6" variant="outline">
+                  <Link href="/discovery">开始免费试用</Link>
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="border-2 border-brand-500 relative">
+              <Badge className="absolute -top-3 left-1/2 -translate-x-1/2">最受欢迎</Badge>
+              <CardHeader>
+                <CardTitle className="text-2xl">Tier 2</CardTitle>
+                <CardDescription>自动化搭建 + 运营</CardDescription>
+                <div className="text-4xl font-bold mt-2 text-brand-500">
+                  ¥499
+                  <span className="text-sm text-gray-500 font-normal"> + ¥999/月</span>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <ul className="text-sm text-gray-600 space-y-2 text-left">
+                  <li>✓ Tier 1 全部</li>
+                  <li>✓ 4 Agent 自动搭建</li>
+                  <li>✓ 1 人品牌网站</li>
+                  <li>✓ 5 维数据监控</li>
+                  <li>✓ 月度报告</li>
+                </ul>
+                <Button asChild className="w-full mt-6">
+                  <Link href="/register?plan=tier2">¥499 起步</Link>
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-2xl">Tier 3</CardTitle>
+                <CardDescription>定制化陪跑</CardDescription>
+                <div className="text-4xl font-bold mt-2">¥1万-5万</div>
+                <CardDescription>按需付费</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="text-sm text-gray-600 space-y-2 text-left">
+                  <li>✓ Tier 2 全部</li>
+                  <li>✓ 12 个月 1v1 顾问</li>
+                  <li>✓ 定制 Agent</li>
+                  <li>✓ 行业资源对接</li>
+                  <li>✓ 紧急响应 24h</li>
+                </ul>
+                <Button asChild className="w-full mt-6" variant="outline">
+                  <Link href="/tier3">联系顾问</Link>
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* ICP 共情 */}
       <section className="bg-gray-900 text-white py-16">
         <div className="container mx-auto px-4 max-w-4xl">
           <h2 className="text-3xl font-bold mb-8 text-center">写给 35 岁上下被裁的你</h2>
-          <div className="prose prose-invert text-lg space-y-4">
+          <div className="space-y-4 text-lg text-gray-300">
             <p>我知道你现在的心情：</p>
             <ul className="list-disc pl-6 space-y-2">
               <li>刚收到裁员通知（N+1 不够花）</li>
@@ -81,53 +164,23 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 价格弹性测试入口 */}
-      <section className="container mx-auto px-4 py-16 text-center">
-        <h2 className="text-3xl font-bold mb-6">不知道 ¥999/月值不值？</h2>
-        <p className="text-xl text-gray-700 mb-8">
-          我们给你 <strong>5 个价格</strong>选择 — 你觉得值多少就付多少
-        </p>
-        <div className="grid md:grid-cols-5 gap-4 max-w-4xl mx-auto">
-          {[
-            { price: '¥199', note: '最低验证' },
-            { price: '¥499', note: '中位弹性' },
-            { price: '¥999', note: '标准价' },
-            { price: '¥1,499', note: '高价位' },
-            { price: '¥2,999', note: '极限价' },
-          ].map((p) => (
-            <a
-              key={p.price}
-              href={`/register?plan=${p.price.replace('¥', '')}`}
-              className="bg-white border-2 border-gray-200 hover:border-brand-500 p-6 rounded-lg transition"
-            >
-              <div className="text-3xl font-bold text-brand-500">{p.price}</div>
-              <div className="text-sm text-gray-500 mt-2">/月</div>
-              <div className="text-xs text-gray-400 mt-1">{p.note}</div>
-            </a>
-          ))}
-        </div>
-      </section>
-
-      {/* CTA */}
+      {/* Final CTA */}
       <section className="bg-brand-500 text-white py-16 text-center">
-        <h2 className="text-4xl font-bold mb-6">
-          今天就开始，比明天多 24 小时
-        </h2>
-        <a
-          href="/register"
-          className="inline-block bg-white text-brand-500 hover:bg-gray-100 font-bold py-4 px-12 rounded-lg text-lg transition"
-        >
-          免费 14 天试用 →
-        </a>
+        <h2 className="text-4xl font-bold mb-6">今天就开始，比明天多 24 小时</h2>
+        <Button asChild size="lg" variant="secondary" className="text-lg px-12">
+          <Link href="/discovery">
+            免费试用 AI 问卷 →
+          </Link>
+        </Button>
       </section>
 
       {/* Footer */}
       <footer className="bg-gray-100 py-8 text-center text-sm text-gray-600">
         <p>ONE-MCN · 1 人 MCN 公司 · vibcoding roadmap</p>
-        <p className="mt-2">
-          <a href="/privacy" className="underline">隐私政策</a> ·{' '}
-          <a href="/terms" className="underline">服务条款</a> ·{' '}
-          <a href="/pricing" className="underline">价格</a>
+        <p className="mt-2 space-x-4">
+          <Link href="/privacy" className="underline hover:text-brand-500">隐私政策</Link>
+          <Link href="/terms" className="underline hover:text-brand-500">服务条款</Link>
+          <Link href="/pricing" className="underline hover:text-brand-500">价格</Link>
         </p>
       </footer>
     </main>
