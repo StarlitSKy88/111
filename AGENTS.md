@@ -456,7 +456,7 @@ touch ~/projects/my-website/progress.md
 - 14:35 拆成 3 个任务：写 login.ts、测试、部署
 - 14:40 提交给 @orchestrator 分配
 
-## 👩‍💻 programmer (蕾姆) — 最新动态
+## programmer (蕾姆) — 最新动态
 - 14:45 收到任务 1（写 login.ts）
 - 14:55 写完，commit abc123
 - 14:56 @reviewer 请 review，commit abc123

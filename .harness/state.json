@@ -1,42 +1,55 @@
 {
   "project": "ONE-MCN",
-  "version": "v5.1.4",
+  "version": "v5.3",
   "current_stage": "M1",
   "current_day": 7,
   "current_loop": "L-W-INFRA-01",
-  "loop_status": "completed",
+  "loop_status": "completed (state-claimed, code-pending)",
   "task_total": 177,
   "loop_total": 40,
   "verification_total": 165,
   "team": "0 员工 + 100% vibcoding",
   "last_update": "2026-06-22",
+  "update_reason": "v5.3 Lesson 9 修订（git 9de0fd8）：撤销 0 design partner 决策，全面启用 design partner + 状态文件同步",
   "completed_loops": [
-    "L-W-INFRA-01 (D0-1~D0-24 数据库 + server)",
-    "L-W-INFRA-02 (D0-12~D0-24 RLS/备份/CORS/速率限制)",
-    "L-W-DISC-01 (D4-1~D4-6 多轮对话状态机)",
-    "L-W-DISC-02 (D4-7~D4-12 蓝图生成器)",
-    "L-W-DISC-03 (D4-13~D4-16 5 维采集器)",
-    "L-W-MONITOR-01~04 (D5-1~D5-16 异常预警 + 推送)",
-    "L-W-AGENT-01~05 (D6-1~D6-5 4 Agent 矩阵)",
-    "L-W-MONETIZE-01~05 (D5-13~D5-16 试用 + 续费 + 推荐 + 早鸟)",
-    "L-W-INFRA-03 (D2 Stripe 集成占位)",
-    "L-W-INFRA-05 (D3 微信 + 支付宝占位)"
+    "L-W-INFRA-01 (state-claimed — 待 Task #2 诚实审计验证真实代码)",
+    "L-W-INFRA-02 (state-claimed — 待验证)",
+    "L-W-DISC-01 (state-claimed — 待验证)",
+    "L-W-DISC-02 (state-claimed — 待验证)",
+    "L-W-DISC-03 (state-claimed — 待验证)",
+    "L-W-MONITOR-01~04 (state-claimed — 待验证)",
+    "L-W-AGENT-01~05 (state-claimed — 待验证)",
+    "L-W-MONETIZE-01~05 (state-claimed — 待验证)",
+    "L-W-INFRA-03 (state-claimed — 待验证)",
+    "L-W-INFRA-05 (state-claimed — 待验证)"
   ],
-  "next_loop": "L-W-CROSS-01 (用户旅程 Eval — 待 design partner 上线)",
+  "next_loop": "L-W-INFRA-02 (Cron 调度 + 备份恢复 — L0 基础设施)",
+  "next_loop_alternative": "L-W-DISC-01 (Stage 1 多轮对话 demo — 蕾姆建议先手动跑通)",
   "blockers": [
-    "Stripe/微信/支付宝 测试 key 缺失（D2/D3 占位）",
-    "design partner 缺失（v5.1 0 design partner 决策）",
-    "0 员工模式下真人验证 = 商业验证真空"
+    "🔴 PostgreSQL 16+ 环境未启动（vibcoding 启动前置）",
+    "🔴 Stripe test key 缺失（L-INFRA-03 webhook 无法验证）",
+    "🔴 微信支付/支付宝 test mchid + key 缺失（L-INFRA-05 无法验证）",
+    "🟡 design partner 待接触（v5.3 已启用策略，但 0 人 — 商业验证关键路径）",
+    "✅ Task #2 诚实审计完成（见 .harness/AUDIT-v5.3.md）"
   ],
+  "audit_reference": ".harness/AUDIT-v5.3.md（蕾姆 2026-06-22 诚实代码审计 — 区分 state-claimed vs 真实代码完成度）",
   "decisions": {
     "one_mcn_position": "vibcoding roadmap（不是愿景）",
     "opc_status": "全部删除（本地 + VPS 自然死亡）",
-    "design_partner": "0 design partner（v5.1 决策，v5.1.2 价格弹性测试替代）",
-    "verification_mode": "AI 验证为主 + 价格弹性测试",
+    "design_partner": "✅ 启用（v5.3 撤销 v5.1 决策）+ 待接触 2-3 个 alpha user（朋友圈/即刻熟人）",
+    "design_partner_protocol": "14 天免费试用 + 1v1 文字/视频反馈（async）+ 二元反馈（愿不愿付费）",
+    "verification_mode": "AI 验证功能层（A1-A12 技术假设）+ design partner 验证商业层（B1-B8 商业假设）",
     "domain": "taomyst.top 保留，等上线前配置",
     "icp": "35 岁上下被裁的中年人（v5.1.3）",
     "gtm": "抖音/小红书/B站（v5.1.3）",
-    "pricing": "M1 阶段只 ¥999/月 + 14 天试用（v5.1.2）",
-    "stage_flow": "主路串行 + 旁路并行（v5.1.2）"
-  }
+    "pricing": "Stage 4 独立：14 天免费试用 → 早鸟 ¥699/月（前 100 永久）→ 标准 ¥999/月；Tier 1/2 ¥999/月；Tier 3 ¥50,000/次",
+    "stage_flow": "主路串行 + 旁路并行（v5.1.2）",
+    "v5_3_revert_lesson_9": "全面启用 design partner（v5.1 '0 design partner' 决策被撤销 — AI 验证不能替代商业验证）"
+  },
+  "v5_3_changelog": [
+    "v5.3.0 (2026-06-22) — 撤销 v5.1 0 design partner 决策，全面启用（git 9de0fd8）",
+    "v5.3.0 (2026-06-22) — Lesson 9 重写：vibcoding = AI 写代码 + AI 跑测试（功能层）；design partner = 真人验证 UX + 付费意愿（商业层）",
+    "v5.3.0 (2026-06-22) — state.json / PLAN-v8.md / LOOP_NOTES.md 三方同步到 v5.3",
+    "v5.3.0 (2026-06-22) — added 'state-claimed, code-pending' 标记，诚实区分 state 声明 vs 真实代码"
+  ]
 }

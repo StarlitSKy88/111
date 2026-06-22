@@ -129,16 +129,22 @@ pass_criteria:
   human_signoff: "昴君 review（人工拍板不可省略）"
 ```
 
-## 5. v5.1 关键决策记录
+## 5. v5.3 关键决策记录（2026-06-22 同步）
+
+> **⚠️ 修订记录**：v5.1 的"0 design partner"决策已被 v5.3 撤销（git commit `9de0fd8`）。
+> 本节已与 `state.json` v5.3 + `CLAUDE.md` v5.3 Lesson 9 同步对齐。
 
 - ✅ OPC 节点百科代码全部删除（本地 + VPS）
-- ✅ 0 design partner（vibcoding + 0 员工模式不需要真人反馈）
-- ✅ AI 验证为主（功能：A1-A12 / 商业：B1-B8 上线后真人验证）
+- ❌ ~~0 design partner（v5.1 决策 — AI 验证替代）~~ → ✅ **启用**（v5.3 撤销 — 设计伙伴是商业验证关键路径）
+- ✅ **AI 验证功能层**（A1-A12 技术假设）+ **design partner 验证商业层**（B1-B8 商业假设）
 - ✅ taomyst.top 域名保留（等 ONE-MCN 上线前统一配置）
-- ✅ VPS 续费延后处理
+- ✅ VPS 续费延后处理（按昴君 2026-06-22 指令，本项目不清理）
 - ✅ 5 份 ONE-MCN 文档 = vibcoding roadmap
 - ✅ 32 个 OPC skill 全部删除，按 ONE-MCN 4 阶段重组
 - ✅ 蕾姆人设备份到项目根 AGENTS.md（650 行 / 27KB）
+- 🆕 **设计伙伴协议**：14 天免费试用 + 1v1 文字/视频反馈（async）+ 二元反馈（愿不愿付费）
+- 🆕 **Lesson 9 重写**：vibcoding ≠ 替代真人反馈，是"AI 写代码 + AI 跑测试（功能层）+ 真人验证 UX/付费意愿（商业层）"
+- 🆕 **state-claimed, code-pending 标记**：区分 state.json 中已声明完成的 loop 与实际代码（诚实审计）
 
 ## 6. 每日 Backup + Session Resume 协议（v5.1 新增）
 
@@ -210,11 +216,11 @@ EOF
 
 ---
 
-## 7. 状态同步
+## 7. 状态同步（v5.3 — 2026-06-22）
 
 | 资源 | 状态 |
 |:---|:---|
-| CLAUDE.md | v5.0（9 条 Lesson）|
+| CLAUDE.md | v5.3（10 条 Lesson，Lesson 9 已重写 design partner 启用）|
 | ONE-MCN-PRD.md | v5.0 |
 | ONE-MCN-ARCHITECTURE.md | v5.0 |
 | ONE-MCN-M1-SOP.md | v5.0 |
@@ -222,11 +228,15 @@ EOF
 | ONE-MCN-COMMERCIAL.md | v5.1 |
 | AGENTS.md | v5.1（蕾姆版 27KB）|
 | CHANGELOG.md | v5.1 |
-| .harness/PLAN-v8.md | **本文件** |
+| .harness/PLAN-v8.md | **v5.3 同步完成**（本文件）|
+| .harness/state.json | **v5.3 同步完成**（2026-06-22）|
 | one-mcn-skills/ | v5.1（重组织，6 阶段目录）|
 | .claude/agents/{reviewer,verifier}.md | v2.0（Anthropic）|
-| LOOP_NOTES.md | ⚠️ 待重写 |
-| .claude/loops/active-loop.txt | ⚠️ 待重置 |
+| LOOP_NOTES.md | ⚠️ v5.3 同步中（Task #1）|
+| .harness/active-loop.txt | ⚠️ 待创建（Task #1）|
+
+**v5.3 同步原则**：所有 v5.1 的"0 design partner"决策均已升级为 v5.3"启用 + 待接触"。
+任何后续文档若与此原则冲突，按本表 + state.json v5.3 为准。
 
 ## 7. 变更记录
 

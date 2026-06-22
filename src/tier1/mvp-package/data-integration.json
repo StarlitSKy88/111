@@ -1,0 +1,9 @@
+{
+  "integrations": [
+    {"platform": "wechat-mp", "auth": "oauth2", "auto_decided": true},
+    {"platform": "wechat-video-channel", "auth": "oauth2", "auto_decided": true},
+    {"platform": "douyin", "auth": "oauth2", "auto_decided": true},
+    {"platform": "xiaohongshu", "auth": "oauth2", "auto_decided": true},
+    {"platform": "feishu", "auth": "oauth2", "auto_decided": true}
+  ]
+}

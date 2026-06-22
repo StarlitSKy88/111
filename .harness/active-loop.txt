@@ -1,0 +1,5 @@
+L-W-INFRA-02 (Cron 调度 + 备份恢复)
+status: pending (待 Task #2 诚实审计完成 + Task #4 PostgreSQL 启动)
+alternative: L-W-DISC-01 (Stage 1 多轮对话 demo — 蕾姆建议)
+last_update: 2026-06-22
+v5.3 同步：design_partner 启用 + 待接触（state.json v5.3）

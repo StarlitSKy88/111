@@ -16,7 +16,7 @@ export const STRIPE_CONFIG = {
 // D2-13 ~ D2-17: 事件处理（占位）
 // D2-18 ~ D2-20: 数据库状态对账（占位）
 // D2-21 ~ D2-22: 失败支付 + 退款（占位）
-// 真实集成需要 STRIPE_SECRET_KEY 测试 key
+// 真实集成需要从 .env 读取 stripe 的测试 key（待 v5.4 接入）
 
 export const stripeWebhookRoutes = [
   'POST /api/webhooks/stripe',

@@ -2,6 +2,10 @@ import 'dotenv/config';
 import express, { Request, Response, NextFunction } from 'express';
 import { Pool } from 'pg';
 import { authRouter } from './api/routes/auth';
+import { usersRouter } from './api/routes/users';
+import { discoveryRouter } from './api/discovery/routes';
+import { dashboardRouter } from './api/dashboard/north-star';
+import { onboardingRouter } from './api/onboarding/routes';
 import { errorHandler } from './api/middleware/errorHandler';
 import { apiLimiter } from './api/middleware/rateLimit';
 import { corsMiddleware } from './api/middleware/cors';
@@ -32,6 +36,10 @@ app.get('/api/health', async (req, res) => {
 });
 
 app.use('/api/auth', authRouter);
+app.use('/api/discovery', discoveryRouter);
+app.use('/api/users', usersRouter);
+app.use('/api/dashboard', dashboardRouter);
+app.use('/api/onboarding', onboardingRouter);
 
 app.use(errorHandler);
 

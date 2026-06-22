@@ -1,0 +1,36 @@
+{
+  "suggestion_types": [
+    {
+      "id": "low_engagement",
+      "trigger": "用户连续 7 天未活跃",
+      "suggestion": "发送个人化推送 + 1v1 视频邀请",
+      "expected_uplift": 0.15
+    },
+    {
+      "id": "low_conversion",
+      "trigger": "试用 7 天后未付费",
+      "trigger_2": "无明显互动",
+      "suggestion": "触发早鸟价格 + 7 天延长",
+      "expected_uplift": 0.08
+    },
+    {
+      "id": "agent_idle",
+      "trigger": "任一 Agent 7 天无输出",
+      "suggestion": "自动重新激活 + 提示用户",
+      "expected_uplift": 0.20
+    },
+    {
+      "id": "blueprint_stale",
+      "trigger": "蓝图 30 天未更新",
+      "suggestion": "触发 discovery 多轮对话 v2",
+      "expected_uplift": 0.25
+    },
+    {
+      "id": "referral_opportunity",
+      "trigger": "用户活跃 + 有推荐奖励可领",
+      "suggestion": "推送推荐链接 + 15% 佣金说明",
+      "expected_uplift": 0.10
+    }
+  ],
+  "adoption_target": 0.30
+}
