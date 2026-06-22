@@ -1,7 +1,123 @@
+/* ONE-MCN · v5.4 japanese-ma-minimalism（間）
+   暖墨色基底 + 极致留白 + 零渐变 + 零玻璃态
+*/
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --brand: #ff5a1f;
+  --color-ink-bg: #111110;
+  --color-ink-surface: #1A1A18;
+  --color-ink-line: #2A2825;
+  --color-ink-tertiary: #3A3835;
+  --color-ink-secondary: #7A7670;
+  --color-ink-primary: #F0EDE6;
+  --color-vermilion: #E05A47;
+  --font-mincho: 'Shippori Mincho', 'Noto Serif JP', serif;
+  --font-gothic: 'Noto Sans JP', system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    background: var(--color-ink-bg);
+    color: var(--color-ink-primary);
+    font-family: var(--font-gothic);
+    font-feature-settings: 'pkna' 1;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background: var(--color-ink-bg);
+    color: var(--color-ink-primary);
+    font-family: var(--font-gothic);
+    /* 纯静态背景，无渐变 */
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-mincho);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  /* 1px 结构线（侘寂 hairline） */
+  hr {
+    border: 0;
+    border-top: 1px solid var(--color-ink-line);
+    margin: 96px 0;
+  }
+
+  ::selection {
+    background: var(--color-vermilion);
+    color: var(--color-ink-bg);
+  }
+}
+
+@layer utilities {
+  .font-mincho {
+    font-family: var(--font-mincho);
+  }
+
+  .font-gothic {
+    font-family: var(--font-gothic);
+  }
+
+  .text-vermilion {
+    color: var(--color-vermilion);
+  }
+
+  .bg-vermilion {
+    background-color: var(--color-vermilion);
+  }
+
+  .border-vermilion {
+    border-color: var(--color-vermilion);
+  }
+
+  .border-ink-line {
+    border-color: var(--color-ink-line);
+  }
+
+  .bg-ink-bg {
+    background-color: var(--color-ink-bg);
+  }
+
+  .bg-ink-surface {
+    background-color: var(--color-ink-surface);
+  }
+
+  .text-ink-primary {
+    color: var(--color-ink-primary);
+  }
+
+  .text-ink-secondary {
+    color: var(--color-ink-secondary);
+  }
+
+  .text-ink-tertiary {
+    color: var(--color-ink-tertiary);
+  }
+
+  /* Ma 进度条 = 1px 细线 */
+  .progress-ma {
+    height: 1px;
+    background: var(--color-ink-line);
+    position: relative;
+  }
+
+  .progress-ma-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    background: var(--color-ink-primary);
+    transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* 可选：纸纹 SVG 噪点（侘寂质感） */
+  .washi-texture {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
 }

@@ -1,23 +1,39 @@
+/**
+ * ONE-MCN Dashboard · v5.4 japanese-ma-minimalism（間）
+ * 5 维数据 + 4 Agent · 不对称 12 列 · 墨色基底 · 1px hairline
+ */
 'use client';
+
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Bot, CheckCircle2, Loader2, Sparkles, BarChart3, Users, Wallet } from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
+import { Loader2 } from 'lucide-react';
 
 const AGENTS = [
-  { id: 'content', name: '内容 Agent', desc: '文章/视频/帖子自动生产', icon: '✍️' },
-  { id: 'acquisition', name: '获客 Agent', desc: '多渠道触达 + 私域引流', icon: '🎯' },
-  { id: 'delivery', name: '交付 Agent', desc: '产品交付 + 客服', icon: '📦' },
-  { id: 'support', name: '售后 Agent', desc: '复购触发 + 跟进', icon: '💬' },
+  { id: 'content', name: 'Content', desc: '文章 / 视频 / 帖子自动生产' },
+  { id: 'acquisition', name: 'Acquisition', desc: '多渠道触达 + 私域引流' },
+  { id: 'delivery', name: 'Delivery', desc: '产品交付 + 客服' },
+  { id: 'support', name: 'Support', desc: '复购触发 + 跟进' },
 ];
 
-const PLAN_LIMITS: Record<string, { name: string; price: string; maxAgents: number }> = {
+const PLAN_LIMITS: Record<
+  string,
+  { name: string; price: string; maxAgents: number }
+> = {
   tier1: { name: 'Tier 1 · 免费试用', price: '¥0', maxAgents: 0 },
-  tier2: { name: 'Tier 2 · 自动化搭建', price: '¥499 + ¥999/月', maxAgents: 4 },
-  tier3: { name: 'Tier 3 · 定制陪跑', price: '¥1万-5万', maxAgents: 4 },
+  tier2: { name: 'Tier 2 · 自动化搭建', price: '¥999/月', maxAgents: 4 },
+  tier3: { name: 'Tier 3 · 定制陪跑', price: '¥50,000', maxAgents: 4 },
 };
+
+const METRICS = [
+  { id: 'traffic', name: '流量', value: '12,847', change: '+23.5%' },
+  { id: 'conversion', name: '转化', value: '4.2%', change: '+1.8%' },
+  { id: 'revenue', name: '收入', value: '¥87,420', change: '+12.3%' },
+  { id: 'brand', name: '品牌', value: '428', change: '+34' },
+  { id: 'retention', name: '留存', value: '78.6%', change: '+5.2%' },
+];
 
 export default function DashboardPage() {
   const [userId, setUserId] = useState('');
@@ -54,123 +70,175 @@ export default function DashboardPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-xl font-bold">ONE-MCN Dashboard</h1>
-          <Badge variant={plan === 'tier1' ? 'secondary' : 'default'}>
-            {planInfo.name} · {planInfo.price}
-          </Badge>
+    <main className="min-h-screen bg-ink-bg text-ink-primary">
+      {/* Header — 1px hairline */}
+      <header className="border-b border-ink-line sticky top-0 z-50 bg-ink-bg/95">
+        <div className="max-w-7xl mx-auto px-8 py-6 flex justify-between items-center">
+          <div className="flex items-center gap-6">
+            <span className="font-mincho text-lg">ONE-MCN</span>
+            <span className="font-mono text-[10px] tracking-[0.15em] text-ink-tertiary uppercase">
+              Dashboard
+            </span>
+          </div>
+          <Badge variant="outline">{planInfo.name}</Badge>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-8 py-24">
         {/* Tier 1 升级提示 */}
         {plan === 'tier1' && (
-          <Card className="mb-8 border-brand-500 bg-orange-50">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-brand-500" />
+          <section className="border border-vermilion p-12 mb-24 grid grid-cols-12 gap-8">
+            <div className="col-span-12 md:col-span-8 space-y-4">
+              <span className="font-mono text-[10px] tracking-[0.15em] text-vermilion uppercase">
+                Tier 1 限制
+              </span>
+              <h2 className="text-title font-mincho">
                 升级到 Tier 2，解锁 4 Agent 自动化
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-700 mb-4">
-                你现在用的是 <strong>Tier 1 免费试用</strong>，可以做 Discovery 多轮对话梳理方向。
-                但 4 Agent 自动运营 + 数据监控需要 Tier 2（¥499 起步搭建 + ¥999/月）。
+              </h2>
+              <p className="text-ink-secondary leading-relaxed max-w-prose">
+                你现在用的是 Tier 1 免费试用，可以做 Discovery 多轮对话梳理方向。
+                但 4 Agent 自动运营 + 5 维数据监控需要 Tier 2（¥999/月，早鸟 ¥699 锁价）。
               </p>
-              <Button asChild>
-                <Link href="/register?plan=tier2">升级到 Tier 2 · ¥499 起步 →</Link>
+            </div>
+            <div className="col-span-12 md:col-span-4 flex md:justify-end items-start">
+              <Button variant="vermilion" size="lg" asChild>
+                <Link href="/register?plan=tier2">¥699 早鸟起步 →</Link>
               </Button>
-            </CardContent>
-          </Card>
+            </div>
+          </section>
         )}
 
+        {/* 5 维数据 — 不对称 12 列（5 个 metric 用 4+4+2+2 错位） */}
+        <section className="mb-32">
+          <header className="mb-16 grid grid-cols-12 gap-8 items-end">
+            <div className="col-span-12 md:col-span-6 space-y-3">
+              <span className="font-mono text-[10px] tracking-[0.15em] text-ink-tertiary uppercase">
+                01 — 数据
+              </span>
+              <h2 className="text-display font-mincho">5 维监控</h2>
+            </div>
+            {!canUseAgents && (
+              <div className="col-span-12 md:col-span-6 md:text-right">
+                <Badge variant="outline" className="font-mono text-[10px]">
+                  需升级 Tier 2
+                </Badge>
+              </div>
+            )}
+          </header>
+
+          <div className="grid grid-cols-12 gap-px bg-ink-line border border-ink-line">
+            {METRICS.map((m, i) => {
+              // 不对称 span: 4, 4, 2, 2, 4（合计 16，但 grid-cols-12 所以重新分配）
+              const span = i === 0 ? 5 : i === 1 ? 4 : i === 2 ? 3 : i === 3 ? 5 : 5;
+              return (
+                <article
+                  key={m.id}
+                  className={`col-span-12 md:col-span-${span} bg-ink-bg p-12 space-y-4`}
+                >
+                  <span className="font-mono text-[10px] tracking-[0.15em] text-ink-tertiary uppercase">
+                    0{i + 1} · {m.name}
+                  </span>
+                  <div className="text-title font-mincho">{m.value}</div>
+                  <span className="font-mono text-xs text-vermilion">{m.change}</span>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+
+        <Separator />
+
         {/* 4 Agent 控制台 */}
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold mb-4">4 Agent 控制台</h2>
-          {!canUseAgents && (
-            <p className="text-gray-500 mb-4">升级到 Tier 2 即可解锁 4 Agent</p>
-          )}
-          <div className="grid md:grid-cols-2 gap-4">
-            {AGENTS.map((agent) => (
-              <Card key={agent.id}>
-                <CardHeader>
-                  <CardTitle className="flex items-center justify-between text-lg">
-                    <span>{agent.icon} {agent.name}</span>
+        <section className="my-32">
+          <header className="mb-16 space-y-3">
+            <span className="font-mono text-[10px] tracking-[0.15em] text-ink-tertiary uppercase">
+              02 — Agent
+            </span>
+            <h2 className="text-display font-mincho">4 Agent 控制台</h2>
+          </header>
+
+          <div className="grid grid-cols-12 gap-px bg-ink-line border border-ink-line">
+            {AGENTS.map((agent, i) => {
+              const span = i % 2 === 0 ? 7 : 5;
+              const status = agentStatus[agent.id];
+              return (
+                <article
+                  key={agent.id}
+                  className={`col-span-12 md:col-span-${span} bg-ink-bg p-12 space-y-6`}
+                >
+                  <div className="flex justify-between items-start">
+                    <span className="font-mono text-[10px] tracking-[0.15em] text-ink-tertiary uppercase">
+                      0{i + 1} · {agent.name}
+                    </span>
                     <Badge
                       variant={
-                        agentStatus[agent.id] === 'completed' ? 'default' :
-                        agentStatus[agent.id] === 'running' ? 'secondary' : 'outline'
+                        status === 'completed'
+                          ? 'vermilion'
+                          : status === 'running'
+                          ? 'outline'
+                          : 'outline'
                       }
+                      className="font-mono text-[10px]"
                     >
-                      {agentStatus[agent.id] === 'completed' ? (
-                        <><CheckCircle2 className="h-3 w-3 mr-1" />已完成</>
-                      ) : agentStatus[agent.id] === 'running' ? (
-                        <><Loader2 className="h-3 w-3 mr-1 animate-spin" />运行中</>
-                      ) : (
-                        '待启动'
-                      )}
+                      {status === 'completed'
+                        ? '已完成'
+                        : status === 'running'
+                        ? '运行中'
+                        : '待启动'}
                     </Badge>
-                  </CardTitle>
-                  <CardDescription>{agent.desc}</CardDescription>
-                </CardHeader>
-                <CardContent>
+                  </div>
+                  <p className="text-ink-secondary leading-relaxed">{agent.desc}</p>
                   <Button
                     onClick={() => runAgent(agent.id)}
-                    disabled={!canUseAgents || agentStatus[agent.id] === 'running'}
-                    className="w-full"
+                    disabled={!canUseAgents || status === 'running'}
+                    variant="outline"
+                    size="lg"
                   >
-                    {agentStatus[agent.id] === 'running' ? '运行中...' : canUseAgents ? '运行' : '需升级 Tier 2'}
+                    {status === 'running' ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : canUseAgents ? (
+                      <>运行 →</>
+                    ) : (
+                      '需升级 Tier 2'
+                    )}
                   </Button>
-                </CardContent>
-              </Card>
-            ))}
+                </article>
+              );
+            })}
           </div>
-        </div>
+        </section>
+
+        <Separator />
 
         {/* 快捷入口 */}
-        <div>
-          <h2 className="text-2xl font-bold mb-4">快捷入口</h2>
-          <div className="grid md:grid-cols-3 gap-4">
-            <Card>
-              <CardHeader>
-                <Sparkles className="h-6 w-6 text-brand-500 mb-2" />
-                <CardTitle className="text-base">🎯 Stage 1: Discovery</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-600 mb-3">5-10 轮 AI 对话，生成你的品牌蓝图</p>
-                <Button asChild variant="outline" className="w-full">
-                  <Link href="/discovery">进入 Discovery →</Link>
-                </Button>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <BarChart3 className="h-6 w-6 text-brand-500 mb-2" />
-                <CardTitle className="text-base">📊 5 维数据监控</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-600 mb-3">流量/转化/收入/品牌/留存</p>
-                <Button asChild variant="outline" className="w-full" disabled={!canUseAgents}>
-                  <Link href="/monitor">{canUseAgents ? '查看数据 →' : '需升级 Tier 2'}</Link>
-                </Button>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <Users className="h-6 w-6 text-brand-500 mb-2" />
-                <CardTitle className="text-base">🤖 4 Agent 详情</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-600 mb-3">内容/获客/交付/售后 详细配置</p>
-                <Button asChild variant="outline" className="w-full" disabled={!canUseAgents}>
-                  <Link href="/agents">{canUseAgents ? '配置 Agent →' : '需升级 Tier 2'}</Link>
-                </Button>
-              </CardContent>
-            </Card>
+        <section>
+          <header className="mb-16 space-y-3">
+            <span className="font-mono text-[10px] tracking-[0.15em] text-ink-tertiary uppercase">
+              03 — 入口
+            </span>
+            <h2 className="text-display font-mincho">快捷入口</h2>
+          </header>
+
+          <div className="grid grid-cols-12 gap-px bg-ink-line border border-ink-line">
+            {[
+              { href: '/discovery', title: 'Stage 1', desc: '5-10 轮 AI 对话，生成品牌蓝图', span: 5 },
+              { href: '/pricing', title: '价格管理', desc: '3 层定价 + 推荐佣金', span: 4 },
+              { href: '/agents', title: '4 Agent 详情', desc: '内容/获客/交付/售后 配置', span: 3 },
+            ].map((entry) => (
+              <Link
+                key={entry.href}
+                href={entry.href}
+                className={`col-span-12 md:col-span-${entry.span} bg-ink-bg p-12 space-y-3 hover:bg-ink-surface transition-colors duration-300`}
+              >
+                <span className="font-mono text-[10px] tracking-[0.15em] text-ink-tertiary uppercase">
+                  {entry.title}
+                </span>
+                <p className="text-ink-secondary leading-relaxed">{entry.desc}</p>
+                <span className="font-mono text-xs text-vermilion">→</span>
+              </Link>
+            ))}
           </div>
-        </div>
+        </section>
       </div>
     </main>
   );
