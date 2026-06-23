@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>ONE-MCN 架构图 · v5.4 (diagram-design skill)</title>
+<style>
+:root {
+  --paper: #f5f5f5;
+  --paper-2: #ececec;
+  --ink: #2d3142;
+  --muted: #4f5d75;
+  --soft: #7a8399;
+  --rule: rgba(45,49,66,0.12);
+  --rule-solid: #bfc0c0;
+  --accent: #eb6c36;
+  --accent-tint: rgba(235,108,54,0.08);
+  --link: #2e5aa8;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--paper);
+  color: var(--ink);
+  padding: 40px;
+  line-height: 1.5;
+}
+h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+h1::before { content: '# '; color: var(--accent); font-weight: 700; }
+.subtitle {
+  color: var(--soft);
+  font-size: 13px;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--rule);
+}
+.diagram {
+  background: white;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 32px;
+  margin: 32px 0;
+}
+.diagram h2 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: var(--ink);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.diagram h2::before {
+  content: '§ ';
+  color: var(--accent);
+  font-weight: 700;
+}
+.layer {
+  margin: 16px 0;
+  padding: 16px;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: var(--paper-2);
+}
+.layer-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.node {
+  display: inline-block;
+  background: white;
+  border: 1px solid var(--ink);
+  padding: 8px 14px;
+  border-radius: 3px;
+  font-size: 12px;
+  margin: 4px 6px 4px 0;
+  font-family: 'JetBrains Mono', monospace;
+}
+.node.accent {
+  background: var(--accent-tint);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+.node.muted { color: var(--muted); border-style: dashed; }
+.arrow {
+  display: inline-block;
+  color: var(--soft);
+  margin: 0 4px;
+  font-size: 14px;
+}
+.arrow::before { content: '→'; }
+.note {
+  font-size: 11px;
+  color: var(--soft);
+  margin-top: 8px;
+  font-style: italic;
+}
+.legend {
+  margin-top: 40px;
+  padding: 16px;
+  background: white;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+}
+.legend h3 {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--accent);
+}
+.legend-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  font-size: 11px;
+}
+.legend-item { display: flex; align-items: center; gap: 8px; }
+</style>
+</head>
+<body>
+
+<h1>ONE-MCN 系统架构图</h1>
+<div class="subtitle">
+  v5.4 · 4 阶段流水线 · 3 Tier 定价 · 9 张表 RLS 多租户 · 175 任务 vibcoding
+</div>
+
+<!-- 图 1: 4 阶段流水线 -->
+<div class="diagram">
+  <h2>1. 4 阶段流水线（主路串行 + 旁路并行）</h2>
+  <div class="layer">
+    <div class="layer-title">Stage 1 · Discovery（多轮 AI 对话）</div>
+    <div class="node">用户注册</div>
+    <span class="arrow"></span>
+    <div class="node">5 状态机对话</div>
+    <span class="arrow"></span>
+    <div class="node accent">5 章节蓝图</div>
+    <div class="note">Tier 1 免费 · ¥0</div>
+  </div>
+  <div class="layer">
+    <div class="layer-title">Stage 2 · Brand Building（4 Agent 矩阵）</div>
+    <div class="node">蓝图</div>
+    <span class="arrow"></span>
+    <div class="node accent">content-agent</div>
+    <span class="arrow"></span>
+    <div class="node accent">acquisition-agent</div>
+    <span class="arrow"></span>
+    <div class="node accent">delivery-agent</div>
+    <span class="arrow"></span>
+    <div class="node accent">support-agent</div>
+    <div class="note">Tier 2 · ¥499 起步 + ¥999/月</div>
+  </div>
+  <div class="layer">
+    <div class="layer-title">Stage 3 · Monitor（5 维数据）</div>
+    <div class="node">traffic</div>
+    <span class="arrow"></span>
+    <div class="node">conversion</div>
+    <span class="arrow"></span>
+    <div class="node accent">revenue</div>
+    <span class="arrow"></span>
+    <div class="node">brand</div>
+    <span class="arrow"></span>
+    <div class="node">retention</div>
+    <div class="note">push 预警 + 周报告</div>
+  </div>
+  <div class="layer">
+    <div class="layer-title">Stage 4 · Monetize（独立商业化框架）</div>
+    <div class="node">14 天试用</div>
+    <span class="arrow"></span>
+    <div class="node accent">¥999/月订阅</div>
+    <span class="arrow"></span>
+    <div class="node">续费 7/1/0 天</div>
+    <span class="arrow"></span>
+    <div class="node">推荐 15%</div>
+    <div class="note">早鸟 ¥499（前 100 用户）</div>
+  </div>
+</div>
+
+<!-- 图 2: ER 图 -->
+<div class="diagram">
+  <h2>2. 数据模型 ER 图（9 张表）</h2>
+  <svg viewBox="0 0 900 600" style="width: 100%; max-width: 900px;">
+    <defs>
+      <marker id="arr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L9,3 z" fill="#4f5d75"/>
+      </marker>
+    </defs>
+
+    <!-- users -->
+    <rect x="40" y="40" width="180" height="100" fill="#fef9f4" stroke="#eb6c36" stroke-width="2"/>
+    <text x="130" y="65" text-anchor="middle" font-size="14" font-weight="700" fill="#2d3142">users</text>
+    <line x1="40" y1="75" x2="220" y2="75" stroke="rgba(45,49,66,0.12)"/>
+    <text x="50" y="92" font-size="10" fill="#4f5d75">id UUID PK</text>
+    <text x="50" y="106" font-size="10" fill="#4f5d75">email VARCHAR UNIQUE</text>
+    <text x="50" y="120" font-size="10" fill="#4f5d75">tenant_id UUID</text>
+    <text x="50" y="134" font-size="10" fill="#4f5d75">created_at TIMESTAMPTZ</text>
+
+    <!-- blueprints -->
+    <rect x="320" y="40" width="180" height="100" fill="#f5f5f5" stroke="#2d3142"/>
+    <text x="410" y="65" text-anchor="middle" font-size="14" font-weight="700" fill="#2d3142">blueprints</text>
+    <line x1="320" y1="75" x2="500" y2="75" stroke="rgba(45,49,66,0.12)"/>
+    <text x="330" y="92" font-size="10" fill="#4f5d75">id UUID PK</text>
+    <text x="330" y="106" font-size="10" fill="#4f5d75">user_id FK</text>
+    <text x="330" y="120" font-size="10" fill="#4f5d75">capabilities JSONB</text>
+    <text x="330" y="134" font-size="10" fill="#4f5d75">sections JSONB</text>
+
+    <line x1="220" y1="90" x2="320" y2="90" stroke="#4f5d75" stroke-width="1.5" marker-end="url(#arr)"/>
+
+    <!-- brand_buildings -->
+    <rect x="600" y="40" width="180" height="100" fill="#f5f5f5" stroke="#2d3142"/>
+    <text x="690" y="65" text-anchor="middle" font-size="14" font-weight="700" fill="#2d3142">brand_buildings</text>
+    <line x1="600" y1="75" x2="780" y2="75" stroke="rgba(45,49,66,0.12)"/>
+    <text x="610" y="92" font-size="10" fill="#4f5d75">id UUID PK</text>
+    <text x="610" y="106" font-size="10" fill="#4f5d75">blueprint_id FK</text>
+    <text x="610" y="120" font-size="10" fill="#4f5d75">mvp_live BOOLEAN</text>
+    <text x="610" y="134" font-size="10" fill="#4f5d75">agents_active JSONB</text>
+
+    <line x1="500" y1="90" x2="600" y2="90" stroke="#4f5d75" stroke-width="1.5" marker-end="url(#arr)"/>
+
+    <!-- monitor_metrics -->
+    <rect x="40" y="200" width="180" height="100" fill="#f5f5f5" stroke="#2d3142"/>
+    <text x="130" y="225" text-anchor="middle" font-size="14" font-weight="700" fill="#2d3142">monitor_metrics</text>
+    <line x1="40" y1="235" x2="220" y2="235" stroke="rgba(45,49,66,0.12)"/>
+    <text x="50" y="252" font-size="10" fill="#4f5d75">id BIGSERIAL PK</text>
+    <text x="50" y="266" font-size="10" fill="#4f5d75">user_id FK</text>
+    <text x="50" y="280" font-size="10" fill="#4f5d75">metric_type VARCHAR</text>
+    <text x="50" y="294" font-size="10" fill="#4f5d75">value NUMERIC</text>
+
+    <!-- tier1_packages -->
+    <rect x="320" y="200" width="180" height="100" fill="#f5f5f5" stroke="#2d3142"/>
+    <text x="410" y="225" text-anchor="middle" font-size="14" font-weight="700" fill="#2d3142">tier1_packages</text>
+    <line x1="320" y1="235" x2="500" y2="235" stroke="rgba(45,49,66,0.12)"/>
+    <text x="330" y="252" font-size="10" fill="#4f5d75">id UUID PK</text>
+    <text x="330" y="266" font-size="10" fill="#4f5d75">brand_building_id FK</text>
+    <text x="330" y="280" font-size="10" fill="#4f5d75">config JSONB</text>
+    <text x="330" y="294" font-size="10" fill="#4f5d75">delivered_at</text>
+
+    <line x1="690" y1="140" x2="410" y2="200" stroke="#4f5d75" stroke-width="1.5" stroke-dasharray="4" marker-end="url(#arr)"/>
+
+    <!-- tier2_executions -->
+    <rect x="600" y="200" width="180" height="100" fill="#f5f5f5" stroke="#2d3142"/>
+    <text x="690" y="225" text-anchor="middle" font-size="14" font-weight="700" fill="#2d3142">tier2_executions</text>
+    <line x1="600" y1="235" x2="780" y2="235" stroke="rgba(45,49,66,0.12)"/>
+    <text x="610" y="252" font-size="10" fill="#4f5d75">id BIGSERIAL PK</text>
+    <text x="610" y="266" font-size="10" fill="#4f5d75">user_id FK</text>
+    <text x="610" y="280" font-size="10" fill="#4f5d75">agent_type ENUM</text>
+    <text x="610" y="294" font-size="10" fill="#4f5d75">self_review_passed</text>
+
+    <!-- tier_subscriptions -->
+    <rect x="40" y="380" width="180" height="120" fill="#f5f5f5" stroke="#2d3142"/>
+    <text x="130" y="405" text-anchor="middle" font-size="14" font-weight="700" fill="#2d3142">tier_subscriptions</text>
+    <line x1="40" y1="415" x2="220" y2="415" stroke="rgba(45,49,66,0.12)"/>
+    <text x="50" y="432" font-size="10" fill="#4f5d75">id UUID PK</text>
+    <text x="50" y="446" font-size="10" fill="#4f5d75">user_id FK</text>
+    <text x="50" y="460" font-size="10" fill="#4f5d75">tier VARCHAR</text>
+    <text x="50" y="474" font-size="10" fill="#4f5d75">monthly_price_cny</text>
+    <text x="50" y="488" font-size="10" fill="#4f5d75">tier2_completed_at</text>
+
+    <!-- stripe_events -->
+    <rect x="320" y="380" width="180" height="120" fill="#fef9f4" stroke="#eb6c36" stroke-width="2"/>
+    <text x="410" y="405" text-anchor="middle" font-size="14" font-weight="700" fill="#2d3142">stripe_events</text>
+    <line x1="320" y1="415" x2="500" y2="415" stroke="rgba(45,49,66,0.12)"/>
+    <text x="330" y="432" font-size="10" fill="#4f5d75">event_id VARCHAR PK</text>
+    <text x="330" y="446" font-size="10" fill="#4f5d75">user_id FK</text>
+    <text x="330" y="460" font-size="10" fill="#4f5d75">event_type</text>
+    <text x="330" y="474" font-size="10" fill="#4f5d75">signature_verified</text>
+    <text x="330" y="488" font-size="10" fill="#4f5d75">created_at</text>
+
+    <!-- early_bird_quota -->
+    <rect x="600" y="380" width="180" height="120" fill="#f5f5f5" stroke="#2d3142" stroke-dasharray="4"/>
+    <text x="690" y="405" text-anchor="middle" font-size="14" font-weight="700" fill="#2d3142">early_bird_quota</text>
+    <line x1="600" y1="415" x2="780" y2="415" stroke="rgba(45,49,66,0.12)"/>
+    <text x="610" y="432" font-size="10" fill="#4f5d75">id INT PK</text>

@@ -6,6 +6,12 @@ import { usersRouter } from './api/routes/users';
 import { discoveryRouter } from './api/discovery/routes';
 import { dashboardRouter } from './api/dashboard/north-star';
 import { onboardingRouter } from './api/onboarding/routes';
+import { stripeWebhookRouter } from './api/payment/stripe-webhook';
+import { wechatWebhookRouter } from './api/payment/wechat-webhook';
+import { alipayWebhookRouter } from './api/payment/alipay-webhook';
+import { verifyCodeRouter } from './api/auth/verify-code';
+import { referralRouter } from './api/referral/routes';
+import { agentRunRouter } from './api/routes/agent-run';
 import { errorHandler } from './api/middleware/errorHandler';
 import { apiLimiter } from './api/middleware/rateLimit';
 import { corsMiddleware } from './api/middleware/cors';
@@ -36,10 +42,16 @@ app.get('/api/health', async (req, res) => {
 });
 
 app.use('/api/auth', authRouter);
+app.use('/api/auth', verifyCodeRouter);
 app.use('/api/discovery', discoveryRouter);
+app.use('/api/agent-run', agentRunRouter);
+app.use('/api/referral', referralRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/dashboard', dashboardRouter);
 app.use('/api/onboarding', onboardingRouter);
+app.use('/api/webhooks/stripe', stripeWebhookRouter);
+app.use('/api/webhooks/wechat', wechatWebhookRouter);
+app.use('/api/webhooks/alipay', alipayWebhookRouter);
 
 app.use(errorHandler);
 
