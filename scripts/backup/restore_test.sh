@@ -2,7 +2,8 @@
 # ONE-MCN 恢复测试（每周 cron 自动跑）
 set -euo pipefail
 
-BACKUP_FILE=$(ls -t /backup/*.sql.gpg 2>/dev/null | head -1)
+BACKUP_DIR="${HOME}/.one-mcn-backups"
+BACKUP_FILE=$(ls -t "$BACKUP_DIR"/*.sql.gpg 2>/dev/null | head -1)
 if [ -z "$BACKUP_FILE" ]; then
   echo "[$(date)] ERROR: 无备份文件"
   exit 1
@@ -12,12 +13,13 @@ fi
 DECRYPTED="/tmp/restore_test_$(date +%s).sql"
 gpg --decrypt "$BACKUP_FILE" > "$DECRYPTED"
 
-docker exec supabase_db_dulizhan psql -U postgres -d test_restore \
+# 用本地 PG（brew services start postgresql@16）
+psql -d test_restore \
   -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;" 2>&1 | head -3
-docker exec -i supabase_db_dulizhan psql -U postgres -d test_restore < "$DECRYPTED" 2>&1 | tail -3
+psql -d test_restore < "$DECRYPTED" 2>&1 | tail -3
 
 # 验证
-USER_COUNT=$(docker exec supabase_db_dulizhan psql -U postgres -d test_restore -t -c "SELECT COUNT(*) FROM users;" | tr -d ' ')
+USER_COUNT=$(psql -d test_restore -t -c "SELECT COUNT(*) FROM users;" | tr -d ' ')
 if [ "$USER_COUNT" -gt 0 ]; then
   echo "[$(date)] ✅ Restore test PASS: $USER_COUNT users"
 else
