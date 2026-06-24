@@ -45,6 +45,7 @@ discoveryRouter.post('/message', async (req: Request, res: Response) => {
       state: session.state,
       turn_count: session.turn_count,
       blueprint_progress: session.blueprint_progress,
+      completed: session.completed,
       blueprint_sections: session.blueprint_sections,
     });
   } catch (err: any) {
@@ -63,6 +64,8 @@ discoveryRouter.get('/session/:id', (req: Request, res: Response) => {
     state: session.state,
     turn_count: session.turn_count,
     blueprint_progress: session.blueprint_progress,
+    completed: session.completed,
+    answers: session.answers,
     blueprint_sections: session.blueprint_sections,
   });
 });

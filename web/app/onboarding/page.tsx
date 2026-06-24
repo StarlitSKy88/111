@@ -1,8 +1,7 @@
 /**
  * ONE-MCN Design Partner Onboarding 页面
- * v5.4 japanese-ma-minimalism（間）
- * 6 步：欢迎 → 注册 → Discovery → 蓝图 → 4 Agent → Dashboard
- * 墨色基底 · 1px hairline · 文字 CTA · 零 emoji · 零药丸
+ * v5.4.2 — Lesson 8 修复：Discovery 改成"用户手动回答 5 问题"
+ * 6 步：欢迎 → 注册 → Discovery(用户回答) → 蓝图 → 4 Agent → Dashboard
  */
 'use client';
 
@@ -27,14 +26,45 @@ const STEPS = [
   { num: 6, label: '试用', duration: '14天' },
 ];
 
+const QUESTIONS = [
+  {
+    key: 'opening',
+    question: 'Q1 · 你过去做过什么最有成就感的事？',
+    placeholder: '例如：做过 3 个 SaaS 从 0 到 1 / 帮朋友开过咖啡店 / 写过一本小说...',
+  },
+  {
+    key: 'capability',
+    question: 'Q2 · 你的核心技能可以用 3 个词形容吗？',
+    placeholder: '例如：产品 / 数据 / 内容',
+  },
+  {
+    key: 'need',
+    question: 'Q3 · 现在最想解决什么问题？',
+    placeholder: '例如：想搞副业但没方向 / 想建立个人品牌 / 想月入 5 万...',
+  },
+  {
+    key: 'direction',
+    question: 'Q4 · 如果今天只能做 1 件事，你会做什么？',
+    placeholder: '例如：用 AI 帮中小企业做营销自动化...',
+  },
+  {
+    key: 'summary',
+    question: 'Q5 · 你愿意为这件事每天花多少时间？',
+    placeholder: '例如：30 分钟 / 2 小时 / 全职',
+  },
+];
+
 export default function OnboardingPage() {
   const router = useRouter();
   const [step, setStep] = useState<Step>(1);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [userId, setUserId] = useState('');
+  const [sessionId, setSessionId] = useState('');
   const [blueprint, setBlueprint] = useState<any>(null);
   const [dailyFeedback, setDailyFeedback] = useState('');
+  const [currentQ, setCurrentQ] = useState(0);
+  const [currentAnswer, setCurrentAnswer] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -75,26 +105,37 @@ export default function OnboardingPage() {
   async function startDiscovery() {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:3000/api/discovery/start', { method: 'POST' });
-      const data = await res.json();
-      const messages = [
-        '我有 10 年产品经理经验，做过 3 个 SaaS',
-        '想做个人品牌，但没方向',
-        '希望在朋友圈变现',
-        '愿意每周发 1 篇深度文章',
-        '目标 6 个月内月入 ¥50000',
-      ];
-      for (const msg of messages) {
-        await fetch('http://localhost:3000/api/discovery/message', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ session_id: data.session_id, message: msg }),
-        });
+      const r = await fetch('http://localhost:3000/api/discovery/start', { method: 'POST' });
+      const data = await r.json();
+      setSessionId(data.session_id);
+      setCurrentQ(0);
+      setCurrentAnswer('');
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function submitAnswer() {
+    if (!currentAnswer.trim() || loading) return;
+    setLoading(true);
+    try {
+      const r = await fetch('http://localhost:3000/api/discovery/message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ session_id: sessionId, message: currentAnswer }),
+      });
+      const data = await r.json();
+      setCurrentAnswer('');
+      if (data.completed || data.state === 'summary') {
+        const finalR = await fetch(`http://localhost:3000/api/discovery/session/${sessionId}`);
+        const finalData = await finalR.json();
+        setBlueprint(finalData);
+        setStep(4);
+      } else {
+        setCurrentQ(currentQ + 1);
       }
-      const finalRes = await fetch(`http://localhost:3000/api/discovery/session/${data.session_id}`);
-      const finalData = await finalRes.json();
-      setBlueprint(finalData);
-      setStep(4);
     } catch (e: any) {
       setError(e.message);
     } finally {
@@ -126,29 +167,26 @@ export default function OnboardingPage() {
 
   return (
     <main className="min-h-screen bg-ink-bg text-ink-primary relative">
-      <div className="max-w-prose mx-auto px-8 py-24">
-        {/* 进度条 — 1px hairline */}
-        <div className="mb-16">
-          <Progress value={progress} className="mb-8" />
-          <div className="flex justify-between items-baseline">
+      <div className="max-w-prose mx-auto px-8 py-24 space-y-16">
+        {/* 进度条 */}
+        <div>
+          <Progress value={progress} className="mb-6" />
+          <div className="grid grid-cols-6 gap-2">
             {STEPS.map((s) => (
-              <div key={s.num} className="flex flex-col gap-1">
+              <div key={s.num} className="text-center">
                 <span
-                  className={`font-mono text-[10px] tracking-[0.15em] ${
+                  className={`block font-mono text-[10px] tracking-[0.15em] mb-1 ${
                     step >= s.num ? 'text-ink-primary' : 'text-ink-tertiary'
                   }`}
                 >
                   0{s.num}
                 </span>
                 <span
-                  className={`text-xs uppercase tracking-[0.08em] ${
+                  className={`block text-[10px] uppercase tracking-[0.05em] ${
                     step >= s.num ? 'text-ink-primary' : 'text-ink-tertiary'
                   }`}
                 >
                   {s.label}
-                </span>
-                <span className="font-mono text-[10px] text-ink-tertiary">
-                  {s.duration}
                 </span>
               </div>
             ))}
@@ -162,48 +200,24 @@ export default function OnboardingPage() {
               <span className="font-mono text-[10px] tracking-[0.15em] text-vermilion uppercase">
                 00 — 欢迎
               </span>
-              <h1 className="text-display font-mincho">
-                Design Partner
-              </h1>
-              <p className="text-ink-secondary max-w-prose leading-relaxed">
-                14 天免费试用 + 1v1 反馈通道。
+              <h1 className="text-display font-mincho">14 天试用</h1>
+              <p className="text-ink-secondary leading-relaxed max-w-prose">
+                蕾姆将陪你完成 5 个真实问题，生成 5 章节品牌蓝图。
                 <br />
-                不是工具，是合伙人。
+                不是模拟，是真做。
               </p>
             </header>
-
             <Separator />
-
-            <div className="space-y-8">
-              <div className="space-y-4">
-                <h2 className="text-xs font-mono tracking-[0.15em] uppercase text-ink-secondary">
-                  你将获得
-                </h2>
-                <ul className="space-y-2 text-ink-primary">
-                  <li>— 14 天全功能免费试用（价值 ¥999/月）</li>
-                  <li>— 1v1 优化你的个人品牌蓝图</li>
-                  <li>— 终身 8 折优惠（如果产品上线）</li>
-                </ul>
-              </div>
-
-              <div className="space-y-4">
-                <h2 className="text-xs font-mono tracking-[0.15em] uppercase text-ink-secondary">
-                  你的投入
-                </h2>
-                <ul className="space-y-2 text-ink-secondary">
-                  <li>— 每天 30 分钟试用</li>
-                  <li>— 每周 1 次 30 分钟 1v1 反馈</li>
-                  <li>— 14 天后告诉我：愿不愿每月付 ¥999 继续用？</li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="pt-8">
-              <Button variant="primary" size="lg" onClick={() => setStep(2)}>
-                我准备好了
-                <ArrowRight className="ml-3 w-4 h-4" />
-              </Button>
-            </div>
+            <ul className="space-y-2 text-ink-secondary text-sm">
+              <li>— 注册 1 分钟</li>
+              <li>— Discovery 5 个问题 5 分钟</li>
+              <li>— 蓝图生成 30 秒</li>
+              <li>— 试用 14 天</li>
+            </ul>
+            <Button variant="primary" size="lg" onClick={() => setStep(2)}>
+              开始
+              <ArrowRight className="ml-3 w-4 h-4" />
+            </Button>
           </section>
         )}
 
@@ -215,14 +229,12 @@ export default function OnboardingPage() {
                 01 — 注册
               </span>
               <h1 className="text-display font-mincho">1 分钟</h1>
-              <p className="text-ink-secondary">邮箱 + 密码即可</p>
+              <p className="text-ink-secondary">邮箱 + 密码（≥12 字符）</p>
             </header>
-
             <Separator />
-
             <form onSubmit={handleRegister} className="space-y-8">
               <div className="space-y-3">
-                <Label htmlFor="email" className="text-xs font-mono tracking-[0.15em] uppercase">
+                <Label htmlFor="email" className="font-mono text-[10px] tracking-[0.15em] uppercase">
                   邮箱
                 </Label>
                 <Input
@@ -235,7 +247,7 @@ export default function OnboardingPage() {
                 />
               </div>
               <div className="space-y-3">
-                <Label htmlFor="password" className="text-xs font-mono tracking-[0.15em] uppercase">
+                <Label htmlFor="password" className="font-mono text-[10px] tracking-[0.15em] uppercase">
                   密码
                 </Label>
                 <Input
@@ -247,113 +259,120 @@ export default function OnboardingPage() {
                   minLength={12}
                   className="bg-transparent border-ink-line"
                 />
+                <p className="text-xs text-ink-tertiary">12 字符以上</p>
               </div>
-              {error && (
-                <p className="font-mono text-xs text-vermilion">{error}</p>
-              )}
-              <div className="pt-4">
-                <Button type="submit" variant="primary" size="lg" disabled={loading}>
-                  {loading ? (
-                    <Loader2 className="animate-spin w-4 h-4" />
-                  ) : (
-                    <>
-                      创建账号 + 启动 14 天试用
-                      <ArrowRight className="ml-3 w-4 h-4" />
-                    </>
-                  )}
-                </Button>
-              </div>
+              {error && <p className="font-mono text-xs text-vermilion">{error}</p>}
+              <Button type="submit" variant="primary" size="lg" disabled={loading}>
+                {loading ? <Loader2 className="animate-spin w-4 h-4" /> : '创建账号'}
+              </Button>
             </form>
           </section>
         )}
 
-        {/* Step 3: Discovery */}
+        {/* Step 3: Discovery — 用户手动回答 5 问题 */}
         {step === 3 && (
           <section className="space-y-12">
             <header className="space-y-6">
               <span className="font-mono text-[10px] tracking-[0.15em] text-vermilion uppercase">
                 02 — Discovery
               </span>
-              <h1 className="text-display font-mincho">5 轮对话</h1>
-              <p className="text-ink-secondary max-w-prose">
-                5 状态机自动推进：opening → capability → need → direction → summary
+              <h1 className="text-display font-mincho">5 个真实问题</h1>
+              <p className="text-ink-secondary leading-relaxed max-w-prose">
+                不是 mock，是你的真实回答。
+                <br />
+                蕾姆会基于这 5 个回答生成 5 章节蓝图。
               </p>
             </header>
 
             <Separator />
 
-            <div className="space-y-6">
-              <h2 className="text-xs font-mono tracking-[0.15em] uppercase text-ink-secondary">
-                系统将自动完成 5 轮示例对话
-              </h2>
-              <ol className="space-y-3 text-ink-primary list-none">
-                {[
-                  '"我有 10 年产品经理经验，做过 3 个 SaaS"',
-                  '"想做个人品牌，但没方向"',
-                  '"希望在朋友圈变现"',
-                  '"愿意每周发 1 篇深度文章"',
-                  '"目标 6 个月内月入 ¥50000"',
-                ].map((m, i) => (
-                  <li key={i} className="border-l border-ink-line pl-6 font-gothic">
-                    <span className="font-mono text-[10px] tracking-[0.15em] text-ink-tertiary mr-4">
-                      0{i + 1}
-                    </span>
-                    {m}
-                  </li>
-                ))}
-              </ol>
-            </div>
+            {!sessionId ? (
+              <div className="space-y-6">
+                <p className="text-ink-secondary">
+                  点击开始，启动 Discovery session。
+                </p>
+                <Button onClick={startDiscovery} variant="primary" size="lg" disabled={loading}>
+                  {loading ? <Loader2 className="animate-spin w-4 h-4" /> : '开始 Discovery'}
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-8">
+                <div className="flex items-baseline justify-between">
+                  <span className="font-mono text-[10px] tracking-[0.15em] text-ink-tertiary uppercase">
+                    问题 {currentQ + 1} / {QUESTIONS.length}
+                  </span>
+                  <span className="font-mono text-xs text-vermilion">
+                    {Math.round(((currentQ) / QUESTIONS.length) * 100)}%
+                  </span>
+                </div>
 
-            <div className="pt-4">
-              <Button onClick={startDiscovery} variant="primary" size="lg" disabled={loading}>
-                {loading ? (
-                  <Loader2 className="animate-spin w-4 h-4" />
-                ) : (
-                  <>
-                    开始 Discovery
-                    <ArrowRight className="ml-3 w-4 h-4" />
-                  </>
-                )}
-              </Button>
-            </div>
+                <div className="space-y-4">
+                  <h2 className="text-title font-mincho">
+                    {QUESTIONS[currentQ].question}
+                  </h2>
+                  <textarea
+                    value={currentAnswer}
+                    onChange={(e) => setCurrentAnswer(e.target.value)}
+                    placeholder={QUESTIONS[currentQ].placeholder}
+                    rows={4}
+                    className="flex w-full bg-ink-surface border border-ink-line px-4 py-3 text-base text-ink-primary placeholder:text-ink-tertiary focus:outline-none focus:border-ink-secondary transition-colors duration-300"
+                  />
+                </div>
+
+                <div className="flex gap-4 items-center">
+                  <Button
+                    onClick={submitAnswer}
+                    variant="primary"
+                    size="lg"
+                    disabled={loading || !currentAnswer.trim()}
+                  >
+                    {loading ? (
+                      <Loader2 className="animate-spin w-4 h-4" />
+                    ) : currentQ < QUESTIONS.length - 1 ? (
+                      <>
+                        下一题
+                        <ArrowRight className="ml-3 w-4 h-4" />
+                      </>
+                    ) : (
+                      '生成蓝图'
+                    )}
+                  </Button>
+                  <span className="font-mono text-xs text-ink-tertiary">
+                    Enter 提交
+                  </span>
+                </div>
+              </div>
+            )}
+            {error && <p className="font-mono text-xs text-vermilion">{error}</p>}
           </section>
         )}
 
-        {/* Step 4: 蓝图 */}
+        {/* Step 4: 蓝图 — 基于用户真实回答 */}
         {step === 4 && (
           <section className="space-y-12">
             <header className="space-y-6">
               <span className="font-mono text-[10px] tracking-[0.15em] text-vermilion uppercase">
                 03 — 蓝图
               </span>
-              <h1 className="text-display font-mincho">已生成</h1>
-              <p className="text-ink-secondary">5 章节 · 可读可执行</p>
+              <h1 className="text-display font-mincho">5 章节</h1>
+              <p className="text-ink-secondary">基于你的 5 个真实回答</p>
             </header>
 
             <Separator />
 
-            <div className="space-y-8">
-              {blueprint?.blueprint_sections?.length > 0 ? (
-                blueprint.blueprint_sections.map((s: any, i: number) => (
-                  <article key={i} className="border-l border-vermilion pl-6 space-y-2">
-                    <h3 className="font-mono text-[10px] tracking-[0.15em] text-ink-tertiary uppercase">
-                      0{i + 1}
-                    </h3>
-                    <h2 className="text-title font-mincho">{s.title}</h2>
-                    <p className="text-ink-secondary leading-relaxed">{s.content}</p>
-                  </article>
-                ))
-              ) : (
-                <p className="text-ink-tertiary font-mono text-xs">蓝图生成中…</p>
-              )}
+            <div className="space-y-12">
+              {blueprint?.blueprint_sections?.map((s: any, i: number) => (
+                <article key={i} className="border-l border-vermilion pl-6 space-y-2">
+                  <h3 className="text-title font-mincho">{s.title}</h3>
+                  <p className="text-ink-secondary leading-relaxed">{s.content}</p>
+                </article>
+              ))}
             </div>
 
-            <div className="pt-4">
-              <Button onClick={() => setStep(5)} variant="primary" size="lg">
-                激活 4 Agent
-                <ArrowRight className="ml-3 w-4 h-4" />
-              </Button>
-            </div>
+            <Button onClick={() => setStep(5)} variant="primary" size="lg">
+              激活 4 Agent
+              <ArrowRight className="ml-3 w-4 h-4" />
+            </Button>
           </section>
         )}
 
@@ -364,12 +383,14 @@ export default function OnboardingPage() {
               <span className="font-mono text-[10px] tracking-[0.15em] text-vermilion uppercase">
                 04 — 4 Agent
               </span>
-              <h1 className="text-display font-mincho">已激活</h1>
-              <p className="text-ink-secondary">全权自动执行 + weekly review</p>
+              <h1 className="text-display font-mincho">激活中</h1>
+              <p className="text-ink-secondary leading-relaxed max-w-prose">
+                Content / Acquisition / Delivery / Support 4 Agent 将在试用期内持续工作。
+                <br />
+                <span className="text-ink-tertiary">（注：当前为配置阶段，真实 LLM 调用需 OPENAI_API_KEY）</span>
+              </p>
             </header>
-
             <Separator />
-
             <div className="space-y-6">
               {[
                 { name: 'Content', desc: '每天 5+ 条内容自动产出' },
@@ -385,17 +406,14 @@ export default function OnboardingPage() {
                 </div>
               ))}
             </div>
-
-            <div className="pt-4">
-              <Button onClick={() => setStep(6)} variant="primary" size="lg">
-                进入试用 Dashboard
-                <ArrowRight className="ml-3 w-4 h-4" />
-              </Button>
-            </div>
+            <Button onClick={() => setStep(6)} variant="primary" size="lg">
+              进入试用 Dashboard
+              <ArrowRight className="ml-3 w-4 h-4" />
+            </Button>
           </section>
         )}
 
-        {/* Step 6: 试用 Dashboard */}
+        {/* Step 6: 试用 */}
         {step === 6 && (
           <section className="space-y-12">
             <header className="space-y-6">
@@ -403,22 +421,18 @@ export default function OnboardingPage() {
                 05 — 试用
               </span>
               <h1 className="text-display font-mincho">14 天</h1>
-              <p className="text-ink-secondary max-w-prose">
-                每天花 30 分钟，每天告诉我们一次反馈
+              <p className="text-ink-secondary leading-relaxed max-w-prose">
+                每天 30 分钟，每天告诉我们一次反馈。
               </p>
             </header>
-
             <Separator />
-
             <div className="space-y-12">
               <div className="space-y-4">
                 <h2 className="font-mono text-[10px] tracking-[0.15em] uppercase text-ink-secondary">
                   试用倒计时
                 </h2>
                 <div className="text-hero font-mincho text-ink-primary">14 天</div>
-                <p className="text-ink-secondary">
-                  到期前 3 天提醒 · 到期可续 8 折
-                </p>
+                <p className="text-ink-secondary">到期前 3 天提醒 · 到期不强转</p>
               </div>
 
               <div className="space-y-4">
@@ -442,19 +456,7 @@ export default function OnboardingPage() {
                   提交今日反馈
                 </Button>
               </div>
-
-              <div className="space-y-4 pt-8 border-t border-ink-line">
-                <h2 className="font-mono text-[10px] tracking-[0.15em] uppercase text-ink-secondary">
-                  试用期内每周任务
-                </h2>
-                <ul className="space-y-2 text-ink-secondary">
-                  <li>— 每周一查看自动生成的周报告</li>
-                  <li>— 每周 1 次 30 分钟 1v1 视频反馈</li>
-                  <li>— 14 天后给一个明确答案：愿不愿每月付 ¥999 继续用？</li>
-                </ul>
-              </div>
             </div>
-
             <div className="pt-8">
               <Button onClick={() => router.push('/dashboard')} variant="ghost">
                 进入完整 Dashboard
@@ -463,9 +465,9 @@ export default function OnboardingPage() {
           </section>
         )}
 
-        <footer className="mt-32 pt-8 border-t border-ink-line">
+        <footer className="pt-16 border-t border-ink-line">
           <p className="font-mono text-[10px] tracking-[0.15em] text-ink-tertiary uppercase">
-            Rem · 一人公司 · 14 天试用
+            Rem · 一人公司 · v5.4.2
           </p>
         </footer>
       </div>
