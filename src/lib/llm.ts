@@ -1,14 +1,16 @@
 /**
  * ONE-MCN LLM 统一客户端
- * v5.4 — 支持 OpenAI + Anthropic 双引擎
+ * v5.4.3 — Lesson 8 修复：接通 Anthropic Claude API
  *
- * 待 LLM API key 后即可使用：
+ * 配置（用户已提供）：
+ *   ANTHROPIC_BASE_URL=https://relay.bytenote.net
+ *   ANTHROPIC_AUTH_TOKEN=cr_...
+ *
+ * 或 OpenAI:
  *   OPENAI_API_KEY=sk-...
- *   ANTHROPIC_API_KEY=sk-ant-...
- *
- * 默认：Anthropic Claude 3.5 Sonnet（中文友好 + 长 context）
  */
 import OpenAI from 'openai';
+import Anthropic from '@anthropic-ai/sdk';
 
 export type LLMProvider = 'openai' | 'anthropic';
 
@@ -31,7 +33,9 @@ function getProvider(): LLMProvider {
   const explicit = process.env.LLM_PROVIDER as LLMProvider | undefined;
   if (explicit === 'openai' || explicit === 'anthropic') return explicit;
   // 默认：anthropic（中文友好）
-  return process.env.ANTHROPIC_API_KEY ? 'anthropic' : 'openai';
+  return process.env.ANTHROPIC_AUTH_TOKEN || process.env.ANTHROPIC_API_KEY
+    ? 'anthropic'
+    : 'openai';
 }
 
 function getOpenAIClient(): OpenAI | null {
@@ -40,9 +44,21 @@ function getOpenAIClient(): OpenAI | null {
   return new OpenAI({ apiKey: key });
 }
 
+function getAnthropicClient(): Anthropic | null {
+  const token = process.env.ANTHROPIC_AUTH_TOKEN || process.env.ANTHROPIC_API_KEY;
+  if (!token) return null;
+
+  // 兼容 relay：支持 ANTHROPIC_BASE_URL + ANTHROPIC_AUTH_TOKEN
+  // @anthropic-ai/sdk 的 client options:
+  //   apiKey (必需) + baseURL (可选，relay 必需)
+  return new Anthropic({
+    apiKey: token,
+    baseURL: process.env.ANTHROPIC_BASE_URL || undefined,
+  });
+}
+
 /**
  * 统一 chat 接口
- * 待两个 SDK 都安装后接入
  */
 export async function chat(
   messages: ChatMessage[],
@@ -64,18 +80,26 @@ export async function chat(
     return completion.choices[0]?.message?.content || '';
   }
 
-  // Anthropic Claude（占位 — 需要装 @anthropic-ai/sdk）
-  // 真实集成时：
-  // const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-  // const msg = await anthropic.messages.create({
-  //   model: options.model || DEFAULT_MODEL_ANTHROPIC,
-  //   max_tokens: options.max_tokens ?? 1024,
-  //   messages: messages.filter(m => m.role !== 'system').map(m => ({ role: m.role, content: m.content })),
-  //   system: messages.find(m => m.role === 'system')?.content,
-  // });
-  // return msg.content[0]?.type === 'text' ? msg.content[0].text : '';
+  // Anthropic Claude
+  const client = getAnthropicClient();
+  if (!client) {
+    throw new Error('ANTHROPIC_API_KEY or ANTHROPIC_AUTH_TOKEN not set');
+  }
 
-  throw new Error('Anthropic SDK not installed yet. Run: pnpm add @anthropic-ai/sdk');
+  const systemMsg = messages.find((m) => m.role === 'system');
+  const userMsgs = messages.filter((m) => m.role !== 'system');
+
+  const response = await client.messages.create({
+    model: options.model || DEFAULT_MODEL_ANTHROPIC,
+    max_tokens: options.max_tokens ?? 1024,
+    temperature: options.temperature ?? 0.7,
+    system: systemMsg?.content,
+    messages: userMsgs.map((m) => ({ role: m.role as 'user' | 'assistant', content: m.content })),
+  });
+
+  // response.content 是 array，提取 text type
+  const textBlock = response.content.find((b) => b.type === 'text');
+  return textBlock?.type === 'text' ? textBlock.text : '';
 }
 
 /**
@@ -96,7 +120,7 @@ export async function complete(
 }
 
 /**
- * 流式输出（用于 dashboard 实时显示 Agent 思考过程）
+ * 流式输出（暂只支持 OpenAI）
  */
 export async function* chatStream(
   messages: ChatMessage[],
@@ -104,7 +128,6 @@ export async function* chatStream(
 ): AsyncIterable<string> {
   const provider = options.provider || getProvider();
   if (provider !== 'openai') {
-    // 暂只支持 OpenAI streaming
     throw new Error('Streaming only supported for OpenAI');
   }
   const client = getOpenAIClient();
