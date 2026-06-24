@@ -46,6 +46,10 @@ discoveryRouter.post('/message', async (req: Request, res: Response) => {
       turn_count: session.turn_count,
       blueprint_progress: session.blueprint_progress,
       completed: session.completed,
+      info_sufficiency: session.info_sufficiency,
+      known_unknowns: session.known_unknowns,
+      next_question: session.next_question,
+      probes: session.probes,
       blueprint_sections: session.blueprint_sections,
     });
   } catch (err: any) {
@@ -65,6 +69,10 @@ discoveryRouter.get('/session/:id', (req: Request, res: Response) => {
     turn_count: session.turn_count,
     blueprint_progress: session.blueprint_progress,
     completed: session.completed,
+    info_sufficiency: session.info_sufficiency,
+    known_unknowns: session.known_unknowns,
+    next_question: session.next_question,
+    probes: session.probes,
     answers: session.answers,
     blueprint_sections: session.blueprint_sections,
   });
