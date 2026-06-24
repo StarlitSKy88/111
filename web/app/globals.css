@@ -121,3 +121,62 @@
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
   }
 }
+
+/* === Semi Design 组件覆盖（修默认蓝色 rgb(0, 100, 250)）=== */
+.semi-button,
+.semi-button-primary,
+.semi-button-secondary,
+.semi-button-tertiary,
+.semi-button-warning,
+.semi-button-danger {
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--color-ink-primary) !important;
+  border: 1px solid var(--color-ink-line) !important;
+  font-family: var(--font-gothic) !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.08em;
+  transition: opacity 300ms ease !important;
+}
+
+.semi-button:hover {
+  background: var(--color-ink-surface) !important;
+  border-color: var(--color-ink-secondary) !important;
+}
+
+.semi-button-primary,
+.semi-button-warning,
+.semi-button-danger {
+  border-color: var(--color-vermilion) !important;
+  color: var(--color-vermilion) !important;
+}
+
+.semi-button-primary:hover,
+.semi-button-warning:hover,
+.semi-button-danger:hover {
+  background: rgba(224, 90, 71, 0.08) !important;
+}
+
+.semi-tag {
+  background: transparent !important;
+  border: 1px solid var(--color-ink-line) !important;
+  border-radius: 0 !important;
+  color: var(--color-ink-primary) !important;
+  font-family: var(--font-gothic) !important;
+}
+
+.semi-input-wrapper,
+.semi-input,
+.semi-text-area-wrapper,
+.semi-text-area {
+  background: transparent !important;
+  border-color: var(--color-ink-line) !important;
+  border-radius: 0 !important;
+  color: var(--color-ink-primary) !important;
+  font-family: var(--font-gothic) !important;
+}
+
+.semi-input-wrapper:focus-within,
+.semi-text-area-wrapper:focus-within {
+  border-color: var(--color-ink-secondary) !important;
+}
