@@ -13,8 +13,8 @@
   --color-ink-secondary: #7A7670;
   --color-ink-primary: #F0EDE6;
   --color-vermilion: #E05A47;
-  --font-mincho: 'Shippori Mincho', 'Noto Serif JP', serif;
-  --font-gothic: 'Noto Sans JP', system-ui, sans-serif;
+  --font-mincho: 'Songti SC', 'STSong', 'SimSun', 'Noto Serif JP', 'Hiragino Mincho ProN', serif;
+  --font-gothic: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans JP', system-ui, sans-serif;
 }
 
 @layer base {
