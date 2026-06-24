@@ -1,17 +1,12 @@
 /**
- * ONE-MCN Register · v5.4 japanese-ma-minimalism（間）
+ * ONE-MCN Register · v5.5 Semi + Ma 哲学
  */
 'use client';
 
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { Loader2 } from 'lucide-react';
+import { Button, Input, Tag } from '@douyinfe/semi-ui';
 
 const PLAN_LABELS: Record<string, { name: string; price: string }> = {
   tier1: { name: 'Tier 1 · 免费试用', price: '¥0' },
@@ -58,67 +53,59 @@ export default function RegisterPage() {
 
   return (
     <main className="min-h-screen bg-ink-bg text-ink-primary flex items-center">
-      <div className="w-full max-w-prose mx-auto px-8 py-24 space-y-12">
+      <div className="washi-texture" aria-hidden="true" />
+      <article className="w-full max-w-prose mx-auto px-8 py-24 space-y-12 relative z-10">
         <header className="space-y-6">
-          <span className="font-mono text-[10px] tracking-[0.15em] text-vermilion uppercase">
+          <Tag style={{ color: '#E05A47', borderColor: '#E05A47', background: 'transparent' }}>
             注册
-          </span>
+          </Tag>
           <h1 className="text-display font-mincho">ONE-MCN</h1>
           <div className="flex items-center gap-3">
-            <Badge variant="outline">{planInfo.name}</Badge>
+            <Tag style={{ color: '#7A7670', borderColor: '#2A2825', background: 'transparent' }}>
+              {planInfo.name}
+            </Tag>
             <span className="font-mono text-sm text-ink-secondary">{planInfo.price}</span>
           </div>
         </header>
-
-        <Separator />
-
+        <div className="border-t border-ink-line" />
         <form onSubmit={handleSubmit} className="space-y-8">
           <div className="space-y-3">
-            <Label htmlFor="email" className="font-mono text-[10px] tracking-[0.15em] uppercase">
+            <label className="font-mono text-[10px] tracking-[0.15em] uppercase text-ink-secondary">
               邮箱
-            </Label>
+            </label>
             <Input
-              id="email"
-              type="email"
-              placeholder="your@email.com"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="bg-transparent border-ink-line"
+              onChange={(v) => setEmail(v)}
+              type="email"
+              size="large"
             />
           </div>
           <div className="space-y-3">
-            <Label htmlFor="password" className="font-mono text-[10px] tracking-[0.15em] uppercase">
+            <label className="font-mono text-[10px] tracking-[0.15em] uppercase text-ink-secondary">
               密码（≥12 字符）
-            </Label>
+            </label>
             <Input
-              id="password"
-              type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
+              onChange={(v) => setPassword(v)}
+              type="password"
               minLength={12}
-              className="bg-transparent border-ink-line"
+              size="large"
             />
           </div>
-          {error && <p className="font-mono text-xs text-vermilion">{error}</p>}
+          {error && <p className="font-mono text-xs" style={{ color: '#E05A47' }}>{error}</p>}
           <div className="pt-4 flex flex-col md:flex-row gap-6 items-start md:items-center">
-            <Button type="submit" variant="vermilion" size="lg" disabled={loading}>
-              {loading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <>开始 14 天试用 →</>
-              )}
+            <Button htmlType="submit" type="warning" size="large" loading={loading}>
+              开始 14 天试用 →
             </Button>
             <p className="text-ink-secondary text-sm">
               已有账号？
-              <Link href="/login" className="text-ink-primary border-b border-ink-primary ml-1">
+              <Link href="/login" className="ml-1" style={{ color: '#F0EDE6', borderBottom: '1px solid #F0EDE6' }}>
                 登录
               </Link>
             </p>
           </div>
         </form>
-      </div>
+      </article>
     </main>
   );
 }
