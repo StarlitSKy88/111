@@ -83,9 +83,10 @@ ANTHROPIC_AUTH_TOKEN=cr_637c2f7a2343f0c29f4f4da6fb6147a4702b9b7d4f3abf9251402b22
 # OPENAI_API_KEY=sk-...
 
 # === 邮件（腾讯云 SMTP）===
-QCLOUD_MAIL_USER=nodemailer@taomyst.top
-QCLOUD_MAIL_PASS=your_smtp_password
-QCLOUD_MAIL_FROM=nodemailer@taomyst.top
+# ⚠️ 不能以 QCLOUD_/SCF_/TENCENTCLOUD_ 开头（腾讯云 SCF 限制）
+SMTP_USER=nodemailer@taomyst.top
+SMTP_PASS=your_smtp_password
+SMTP_FROM=nodemailer@taomyst.top
 
 # === Stripe（待 keys）===
 # STRIPE_SECRET_KEY=sk_live_...

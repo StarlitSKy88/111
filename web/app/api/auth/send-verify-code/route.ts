@@ -26,8 +26,8 @@ function saveCodes(codes: any[]) {
 }
 
 function getMailer() {
-  const user = process.env.QCLOUD_MAIL_USER || 'nodemailer@taomyst.top';
-  const pass = process.env.QCLOUD_MAIL_PASS;
+  const user = process.env.SMTP_USER || 'nodemailer@taomyst.top';
+  const pass = process.env.SMTP_PASS;
   if (!pass) return null;
   return nodemailer.createTransport({
     host: 'gz-smtp.qcloudmail.com',

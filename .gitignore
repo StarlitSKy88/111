@@ -63,3 +63,4 @@ attribution-dashboard-v4.png
 .claude/loops/*
 !.claude/loops/active-loop.txt
 !.claude/agents/
+web/.next/
