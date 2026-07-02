@@ -2,6 +2,7 @@
  * ONE-MCN Discovery Engine (Next.js + DB)
  * v5.6 — sessions 存 DB（in-memory 不能跨 Edge Function 共享）
  */
+import * as crypto from 'crypto';
 import { pool } from './db';
 import { complete } from './llm';
 
@@ -37,11 +38,27 @@ export interface DiscoverySession {
   completed: boolean;
 }
 
-function generateId() {
-  return `sess_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+// 固定的 system user UUID（用于 discovery_sessions 等无 user 上下文的场景）
+// monitor_metrics.user_id REFERENCES users(id) FK，所以 sessions 必须有有效 user_id
+// 这是 schema 的简化（用 system user 占位）。生产环境应该用 user_id 真正传入。
+const SYSTEM_USER_ID = '00000000-0000-0000-0000-000000000001';
+
+function generateId(): string {
+  return crypto.randomUUID();
+}
+
+async function ensureSystemUser(): Promise<void> {
+  // 确保 system user 存在（首次跑 startSession 时）
+  await pool.query(
+    `INSERT INTO users (id, email, password_hash, tenant_id)
+     VALUES ($1, 'system@one-mcn.local', 'noop', $1)
+     ON CONFLICT (id) DO NOTHING`,
+    [SYSTEM_USER_ID]
+  );
 }
 
 export async function startSession(): Promise<DiscoverySession> {
+  await ensureSystemUser();
   const id = generateId();
   const initial = {
     id,
@@ -56,20 +73,24 @@ export async function startSession(): Promise<DiscoverySession> {
     next_question: '你过去做过什么最有成就感的事？（1-2 句）',
     completed: false,
   };
+  // user_id = SYSTEM_USER_ID（FK 满足），id 存在 metadata JSONB 里
   await pool.query(
     `INSERT INTO monitor_metrics (user_id, tenant_id, metric_type, value, metadata, collected_at)
      VALUES ($1, $1, 'discovery_session', 0, $2, NOW())`,
-    [id, JSON.stringify(initial)]
+    [SYSTEM_USER_ID, JSON.stringify(initial)]
   );
   return initial;
 }
 
 async function loadSession(id: string): Promise<DiscoverySession | null> {
+  // 用 metadata->>'id' 查（而不是 user_id，因为所有 session 共用 system user）
   const r = await pool.query(
     `SELECT metadata FROM monitor_metrics
-     WHERE metric_type = 'discovery_session' AND user_id = $1::uuid
+     WHERE metric_type = 'discovery_session'
+       AND user_id = $1::uuid
+       AND metadata->>'id' = $2
      ORDER BY collected_at DESC LIMIT 1`,
-    [id]
+    [SYSTEM_USER_ID, id]
   );
   return r.rowCount ? r.rows[0].metadata : null;
 }
@@ -78,7 +99,7 @@ async function saveSession(s: DiscoverySession) {
   await pool.query(
     `INSERT INTO monitor_metrics (user_id, tenant_id, metric_type, value, metadata, collected_at)
      VALUES ($1, $1, 'discovery_session', $2, $3, NOW())`,
-    [s.id, s.turn_count, JSON.stringify(s)]
+    [SYSTEM_USER_ID, s.turn_count, JSON.stringify(s)]
   );
 }
 
